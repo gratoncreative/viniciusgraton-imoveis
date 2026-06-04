@@ -123,6 +123,11 @@ section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
 .section--light .faq-plus::before, .section--light .faq-plus::after { background: var(--gold-3); }
 .section--light .faq-item summary:hover, .section--light .faq-item[open] summary { color: var(--gold-3); }
 .section--light .passo .glow { background: radial-gradient(circle, rgba(184,134,47,0.18), transparent 70%); }
+/* cards de imóvel na seção clara (catálogo): dourado escuro p/ legibilidade */
+.section--light .im-ver { color: var(--gold-3); }
+.section--light .im-spec svg { color: var(--gold-3); }
+.section--light .im-spec { background: rgba(22, 26, 34, 0.05); }
+.section--light .cat-filtros input::placeholder { color: var(--text-mute); }
 
 /* variantes escuras para criar ritmo (evitar fundos iguais) */
 .section--panel { background: linear-gradient(180deg, #0d121d 0%, #090d15 100%); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -357,7 +362,7 @@ section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
 .det-info { position: sticky; top: 100px; }
 .det-local { color: var(--text-soft); font-size: 0.85rem; }
 .det-titulo { font-family: var(--font-head); font-weight: 700; font-size: 1.9rem; line-height: 1.15; margin: 6px 0 10px; }
-.det-preco { font-family: var(--font-head); font-weight: 700; font-size: 2.1rem; color: var(--gold-1); margin-bottom: 22px; }
+.det-preco { font-family: var(--font-head); font-weight: 800; font-size: 2.1rem; margin-bottom: 22px; background: linear-gradient(135deg, #c9962f, #9a6c1c); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .det-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 20px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .det-spec { display: flex; align-items: center; gap: 12px; }
 .det-spec-ico { width: 42px; height: 42px; border-radius: 11px; background: rgba(224,181,86,0.1); border: 1px solid var(--gold-3); display: grid; place-items: center; color: var(--gold-1); flex: none; }

@@ -33,10 +33,10 @@ export default function Home() {
     <main>
       <Hero />
       <Dores />
-      <Imoveis />
-      <Sobre />
       <Destaque />
       <ParallaxBand {...BANDS.b1} />
+      <Sobre />
+      <Imoveis />
       <ComoFunciona />
       <ParallaxBand {...BANDS.b2} />
       <Bairros />
