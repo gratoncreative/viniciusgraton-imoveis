@@ -1,0 +1,24 @@
+{
+  "name": "viniciusgraton-imoveis",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Site 3D premium - Vinicius Graton Consultor de Imoveis Uberlandia",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --host"
+  },
+  "dependencies": {
+    "@imgly/background-removal-node": "^1.4.5",
+    "framer-motion": "^11.11.17",
+    "lenis": "^1.1.18",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "adm-zip": "^0.5.17",
+    "vite": "^5.4.11"
+  }
+}

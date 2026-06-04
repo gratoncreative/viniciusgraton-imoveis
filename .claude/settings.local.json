@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\vinic\\\\.claude\\\\skills\\\\cerebro-coordenacao\\\\lock_manager.ps1\" -Action status)",
+      "mcp__Claude_in_Chrome__list_connected_browsers",
+      "mcp__Claude_in_Chrome__select_browser",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__computer",
+      "mcp__Claude_in_Chrome__get_page_text",
+      "mcp__Claude_in_Chrome__browser_batch",
+      "Bash(npm --version)",
+      "Bash(git --version)",
+      "Bash(npm install *)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npm run *)",
+      "Bash(find /c/Users/vinic/AppData/Local/Temp/claude /c/Users/vinic/AppData/Roaming/Claude -type f \\\\\\( -iname \"*.jpg\" -o -iname \"*.jpeg\" -o -iname \"*.png\" -o -iname \"*.webp\" \\\\\\) -mmin -30 2>/dev/null | head -40)",
+      "Bash(cp \"/c/Users/vinic/Downloads/c953c9ad-885e-45ba-b1d4-5fef6eda07ff.jpg\" \"/d/MEU SITE/public/vinicius-graton.jpg\" && ls -la \"/d/MEU SITE/public/\")",
+      "Bash(node scripts/remove-bg.mjs)",
+      "mcp__Claude_in_Chrome__tabs_create_mcp",
+      "mcp__Claude_in_Chrome__find",
+      "mcp__Claude_in_Chrome__file_upload",
+      "mcp__Claude_in_Chrome__read_console_messages",
+      "mcp__Claude_in_Chrome__read_network_requests",
+      "mcp__Claude_in_Chrome__javascript_tool",
+      "Bash(rm -f viniciusgraton-site.zip)",
+      "Bash(tar -a -c -f viniciusgraton-site.zip -C dist .)",
+      "Bash(powershell -NoProfile -Command \"Add-Type -A System.IO.Compression.FileSystem; [IO.Compression.ZipFile]::OpenRead\\('D:\\\\MEU SITE\\\\viniciusgraton-site.zip'\\).Entries | Select-Object -ExpandProperty FullName\")",
+      "Bash(nslookup viniciusgraton.com.br 8.8.8.8)",
+      "Bash(nslookup www.viniciusgraton.com.br 8.8.8.8)",
+      "Bash(npm uninstall *)",
+      "Bash(node scripts/make-zip.mjs)",
+      "Bash(cp viniciusgraton-site.zip \"/c/Users/vinic/Downloads/viniciusgraton-site.zip\")",
+      "Bash(node -e ' *)",
+      "WebSearch",
+      "Bash(git init *)",
+      "Bash(git config *)",
+      "Bash(git add *)",
+      "Bash(git commit -q -m 'Site Vinicius Graton Imoveis - versao inicial \\(Vite+React\\) *)"
+    ]
+  }
+}

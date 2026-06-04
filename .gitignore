@@ -1,0 +1,13 @@
+# dependências
+node_modules
+
+# build
+dist
+
+# pacotes de deploy
+*.zip
+
+# logs / sistema
+npm-debug.log*
+.DS_Store
+*.local
