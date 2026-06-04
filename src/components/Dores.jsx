@@ -3,7 +3,7 @@ import { DORES } from '../data'
 
 export default function Dores() {
   return (
-    <section id="dores" className="section--glow">
+    <section id="dores" className="section--light">
       <div className="container">
         <Reveal>
           <div style={{ textAlign: 'center', maxWidth: 700, margin: '0 auto 56px' }}>

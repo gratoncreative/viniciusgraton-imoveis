@@ -4,7 +4,7 @@ import { IconPin, IconArrow } from './icons'
 
 export default function Bairros() {
   return (
-    <section id="bairros" className="section--panel">
+    <section id="bairros" className="section--light">
       <div className="container">
         <div className="sec-head">
           <Reveal>

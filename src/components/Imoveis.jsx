@@ -65,7 +65,7 @@ export default function Imoveis() {
   const [modalSeg, setModalSeg] = useState(null)
 
   return (
-    <section id="imoveis" className="section--panel">
+    <section id="imoveis">
       <div className="container">
         <div className="sec-head">
           <Reveal>

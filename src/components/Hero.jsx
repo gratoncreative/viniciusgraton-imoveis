@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import Scene3D from './Scene3D'
 import { CONFIG, linkWhatsApp, WA } from '../data'
-import { IconWhats, IconArrow, IconPin, IconShield, IconTarget, IconTrend } from './icons'
+import { IconWhats, IconArrow } from './icons'
 
 const fade = (d) => ({
   initial: { opacity: 0, y: 30 },
@@ -48,15 +48,7 @@ export default function Hero() {
       <div className="hero-bg-tint" />
       <Scene3D />
 
-      <div className="hero-float" aria-hidden="true">
-        <span className="chip chip-a"><IconPin /> Uberlândia / MG</span>
-        <span className="chip chip-b"><IconTarget /> Curadoria personalizada</span>
-        <span className="chip chip-c"><IconShield /> Documentação conferida</span>
-        <span className="chip chip-d"><IconTrend /> Olhar de investimento</span>
-        <span className="chip chip-e"><IconWhats /> Atendimento direto comigo</span>
-      </div>
-
-      <div className="container hero-grid">
+<div className="container hero-grid">
         <div className="hero-left">
           <motion.div className="hero-badge" {...fade(0.1)}>
             <span className="dot" /> Consultoria imobiliária em Uberlândia e região

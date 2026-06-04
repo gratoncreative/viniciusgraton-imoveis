@@ -47,7 +47,7 @@ function FotoDepth() {
 
 export default function Sobre() {
   return (
-    <section id="sobre">
+    <section id="sobre" className="section--light">
       <div className="container sobre-grid">
         <Reveal>
           <FotoDepth />

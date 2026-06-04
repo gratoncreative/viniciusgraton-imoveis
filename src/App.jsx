@@ -3,7 +3,6 @@ import Lenis from 'lenis'
 import ScrollProgress from './components/ScrollProgress'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
-import Stats from './components/Stats'
 import Dores from './components/Dores'
 import Imoveis from './components/Imoveis'
 import Sobre from './components/Sobre'
@@ -58,11 +57,10 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
-        <Stats />
         <Dores />
         <Imoveis />
-        <ParallaxBand {...BANDS.b1} />
         <Sobre />
+        <ParallaxBand {...BANDS.b1} />
         <ComoFunciona />
         <ParallaxBand {...BANDS.b2} />
         <Bairros />
