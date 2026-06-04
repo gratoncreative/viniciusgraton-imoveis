@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
-import { getImovel, fotosDe, formatPreco, formatArea, linkWhatsApp, waImovel, CONFIG } from '../data'
+import Galeria from '../components/Galeria'
+import { getImovel, fotosDe, formatPreco, formatArea, resumoImovel, linkWhatsApp, waImovel, CONFIG } from '../data'
 import { IconWhats, IconArrow, ICONS } from './../components/icons'
 
 const plural = (n, s, p) => (n > 1 ? p : s)
@@ -23,7 +24,6 @@ export default function ImovelDetalhe() {
   const { codigo } = useParams()
   const im = getImovel(codigo)
   const fotos = fotosDe(im)
-  const [ativa, setAtiva] = useState(0)
 
   useEffect(() => {
     if (im) document.title = `${im.tipo} no ${im.bairro} — ${formatPreco(im.preco)} | ${CONFIG.nome}`
@@ -62,24 +62,8 @@ export default function ImovelDetalhe() {
         <div className="det-grid">
           {/* Galeria */}
           <div className="det-galeria">
-            <div className="det-foto">
-              <img src={fotos[ativa]} alt={`${im.tipo} no ${im.bairro}`} />
-              <span className="det-tag">{im.tipo}</span>
-            </div>
-            {fotos.length > 1 && (
-              <div className="det-thumbs">
-                {fotos.map((src, i) => (
-                  <button
-                    key={i}
-                    className={`det-thumb ${i === ativa ? 'on' : ''}`}
-                    onClick={() => setAtiva(i)}
-                    aria-label={`Foto ${i + 1}`}
-                  >
-                    <img src={src} alt="" loading="lazy" />
-                  </button>
-                ))}
-              </div>
-            )}
+            <span className="det-tag">{im.tipo}</span>
+            <Galeria fotos={fotos} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} />
           </div>
 
           {/* Painel de info */}
@@ -93,16 +77,7 @@ export default function ImovelDetalhe() {
                 {specs.map((s, i) => <Spec key={i} {...s} />)}
               </div>
 
-              <p className="det-desc">
-                {im.tipo} à venda no bairro {im.bairro}, em {im.cidade}.{' '}
-                {[
-                  im.quartos > 0 && `${im.quartos} ${plural(im.quartos, 'quarto', 'quartos')}`,
-                  im.suites > 0 && `${im.suites} ${plural(im.suites, 'suíte', 'suítes')}`,
-                  im.vagas > 0 && `${im.vagas} ${plural(im.vagas, 'vaga de garagem', 'vagas de garagem')}`,
-                  im.area > 0 && `${formatArea(im.area)} de área`,
-                ].filter(Boolean).join(', ')}
-                . Quer agendar uma visita ou tirar dúvidas? Fale comigo agora mesmo.
-              </p>
+              <p className="det-desc">{resumoImovel(im)}</p>
 
               <a className="btn btn-gold det-whats" href={linkWhatsApp(waImovel(im))} target="_blank" rel="noopener">
                 <IconWhats /> Tenho interesse neste imóvel

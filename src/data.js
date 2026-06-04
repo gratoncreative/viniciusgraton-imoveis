@@ -65,6 +65,30 @@ export const getImovel = (codigo) =>
 export const fotosDe = (im) =>
   im && im.fotos && im.fotos.length ? im.fotos : im && im.img ? [im.img] : []
 
+const _plural = (n, s, p) => (n > 1 ? p : s)
+
+// Resumo curto do imóvel: usa a descrição real (da fonte) se houver;
+// senão monta um resumo factual a partir dos dados reais (nada inventado)
+export const resumoImovel = (im) => {
+  if (!im) return ''
+  if (im.descricao && im.descricao.trim()) return im.descricao.trim()
+  const itens = [
+    im.quartos > 0 && `${im.quartos} ${_plural(im.quartos, 'quarto', 'quartos')}`,
+    im.suites > 0 && `${im.suites} ${_plural(im.suites, 'suíte', 'suítes')}`,
+    im.vagas > 0 && `${im.vagas} ${_plural(im.vagas, 'vaga', 'vagas')}`,
+    im.area > 0 && `${formatArea(im.area)}`,
+  ].filter(Boolean)
+  return `${im.tipo} à venda no ${im.bairro}, em ${im.cidade}.${itens.length ? ' ' + itens.join(', ') + '.' : ''}`
+}
+
+// Trunca texto preservando palavras (para a vitrine)
+export const truncar = (s, n = 200) => {
+  if (!s) return ''
+  const t = s.trim()
+  if (t.length <= n) return t
+  return t.slice(0, n - 1).replace(/\s+\S*$/, '').trimEnd() + '…'
+}
+
 // Opções de filtro derivadas dos imóveis reais (para o catálogo)
 export const TIPOS_IMOVEL = [...new Set(IMOVEIS.map((i) => i.tipo))].sort()
 export const BAIRROS_IMOVEL = [...new Set(IMOVEIS.map((i) => i.bairro))].sort((a, b) => a.localeCompare(b, 'pt-BR'))

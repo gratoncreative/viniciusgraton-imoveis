@@ -35,6 +35,7 @@ const ROOT = resolve(__dirname, '..')
 const DUMP = resolve(__dirname, '_imoview-dump.txt')
 const FOTOS = resolve(__dirname, '_imoview-fotos.json')      // { codigo: "url capa em alta" }
 const GALERIAS = resolve(__dirname, '_imoview-galerias.json') // { codigo: ["url1","url2",...] }
+const DESCRICOES = resolve(__dirname, '_imoview-descricoes.json') // { codigo: "texto da descrição" }
 const CANDIDATOS = resolve(__dirname, '_candidatos.json')
 const STAGING = resolve(__dirname, '_staging/imoveis')
 const OUT_JSON = resolve(ROOT, 'src/imoveis-destaque.json')
@@ -161,6 +162,16 @@ function publicar(codigosArg) {
 
   let galerias = {}
   if (existsSync(GALERIAS)) { try { galerias = JSON.parse(readFileSync(GALERIAS, 'utf8')) } catch {} }
+  let descricoes = {}
+  if (existsSync(DESCRICOES)) { try { descricoes = JSON.parse(readFileSync(DESCRICOES, 'utf8')) } catch {} }
+
+  const limparDesc = (t) =>
+    (t || '')
+      .replace(/\s+/g, ' ')
+      .replace(/\(?\d{2}\)?\s*9?\d{4}[-\s]?\d{4}/g, '') // remove telefones
+      .replace(/https?:\/\/\S+/gi, '') // remove links
+      .replace(/[\w.+-]+@[\w-]+\.[\w.-]+/g, '') // remove e-mails
+      .trim()
 
   mkdirSync(IMG_DIR, { recursive: true })
   for (const im of selecao) {
@@ -168,11 +179,12 @@ function publicar(codigosArg) {
     if (existsSync(src)) copyFileSync(src, resolve(IMG_DIR, `${im.codigo}.jpg`))
   }
 
-  // remove campos internos e monta a galeria (capa hospedada + demais fotos do CDN público)
+  // remove campos internos e monta a galeria (capa hospedada + demais fotos do CDN público) + descrição real
   const limpos = selecao.map(({ tipoRaw, ...rest }) => {
     const extras = (galerias[rest.codigo] || []).filter((u) => u && !/avatar\.jpg/i.test(u))
     const fotos = [rest.img, ...extras]
-    return { ...rest, fotos }
+    const descricao = limparDesc(descricoes[rest.codigo])
+    return { ...rest, descricao, fotos }
   })
   const out = {
     geradoEm: new Date().toISOString(),

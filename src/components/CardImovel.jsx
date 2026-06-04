@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { formatPreco, formatArea, linkWhatsApp, waImovel } from '../data'
+import { formatPreco, formatArea, resumoImovel, truncar, linkWhatsApp, waImovel } from '../data'
 import { IconWhats, ICONS } from './icons'
 
 const plural = (n, s, p) => (n > 1 ? p : s)
@@ -68,6 +68,7 @@ export default function CardImovel({ im }) {
       <div className="card-body im-body">
         <h3 className="im-bairro">{im.bairro}</h3>
         <p className="im-local">{im.cidade} — {im.uf} · Cód. {im.codigo}</p>
+        <p className="im-desc">{truncar(resumoImovel(im), 150)}</p>
         <div className="im-specs">
           {specs.map((s, i) => <Spec key={i} {...s} />)}
         </div>
