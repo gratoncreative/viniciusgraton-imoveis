@@ -44,7 +44,8 @@
       "Bash(git push *)",
       "Bash(git ls-remote *)",
       "Bash(git commit -q -m 'Secoes claras \\(leveza\\), pilares com fotos reais, segmentos alto padrao, faixa de luxo *)",
-      "Bash(git commit -q -m 'Pilares \\(Stats\\) com fundo claro *)"
+      "Bash(git commit -q -m 'Pilares \\(Stats\\) com fundo claro *)",
+      "Bash(git commit -q -m 'Ritmo visual: variantes de fundo \\(painel, brilho dourado\\) nas secoes escuras *)"
     ]
   }
 }

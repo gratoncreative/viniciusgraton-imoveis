@@ -124,6 +124,11 @@ section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
 .section--light .faq-item summary:hover, .section--light .faq-item[open] summary { color: var(--gold-3); }
 .section--light .passo .glow { background: radial-gradient(circle, rgba(184,134,47,0.18), transparent 70%); }
 
+/* variantes escuras para criar ritmo (evitar fundos iguais) */
+.section--panel { background: linear-gradient(180deg, #0d121d 0%, #090d15 100%); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.section--glow { background: radial-gradient(760px 420px at 50% -10%, rgba(224,181,86,0.10), transparent 62%), #0a0e16; }
+.section--glow-blue { background: radial-gradient(720px 420px at 80% -10%, rgba(74,108,255,0.10), transparent 60%), #090d16; }
+
 /* ---------- botões ---------- */
 .btn {
   display: inline-flex; align-items: center; gap: 10px;
