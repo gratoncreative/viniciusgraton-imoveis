@@ -5,6 +5,7 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Dores from './components/Dores'
 import Imoveis from './components/Imoveis'
+import Destaque from './components/Destaque'
 import Sobre from './components/Sobre'
 import ComoFunciona from './components/ComoFunciona'
 import Bairros from './components/Bairros'
@@ -60,6 +61,7 @@ export default function App() {
         <Dores />
         <Imoveis />
         <Sobre />
+        <Destaque />
         <ParallaxBand {...BANDS.b1} />
         <ComoFunciona />
         <ParallaxBand {...BANDS.b2} />

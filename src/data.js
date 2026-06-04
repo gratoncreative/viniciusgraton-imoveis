@@ -27,7 +27,35 @@ export const WA = {
   flutuante: 'Olá Vinícius! Estou no seu site e queria tirar uma dúvida rápida.',
   banda1: 'Olá Vinícius! Quero encontrar o imóvel certo pra minha rotina. Pode me ajudar?',
   banda2: 'Olá Vinícius! Quero começar a procurar meu imóvel com a sua ajuda, do início ao fim.',
+  destaque: 'Olá Vinícius! Quero ver os imóveis em destaque que estão no seu site.',
 }
+
+// =============================================================
+//  IMÓVEIS EM DESTAQUE — alimentado automaticamente (ver scripts/sync-imoveis.mjs)
+//  O arquivo imoveis-destaque.json é regerado na rotina diária a partir
+//  da lista de imóveis publicados na web da Rotina Imobiliária (Imoview).
+// =============================================================
+import destaqueData from './imoveis-destaque.json'
+
+export const IMOVEIS = destaqueData.imoveis || []
+export const IMOVEIS_INFO = { geradoEm: destaqueData.geradoEm, fonte: destaqueData.fonte }
+
+// Formata preço em reais de forma curta e elegante (R$ 3,3 mi / R$ 530 mil)
+export const formatPreco = (v) => {
+  if (!v || v <= 0) return 'Sob consulta'
+  if (v >= 1000000) {
+    const mi = v / 1000000
+    return `R$ ${mi.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 1 })} mi`
+  }
+  return `R$ ${Math.round(v / 1000)} mil`
+}
+
+export const formatArea = (a) =>
+  a ? `${a.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} m²` : null
+
+// Mensagem de WhatsApp personalizada por imóvel
+export const waImovel = (im) =>
+  `Olá Vinícius! Tenho interesse no imóvel cód. ${im.codigo} — ${im.tipo} no ${im.bairro} (${formatPreco(im.preco)}). Pode me passar mais informações?`
 
 // Faixas cinematográficas (mesmo estilo da capa) inseridas a cada 2 seções
 export const BANDS = {

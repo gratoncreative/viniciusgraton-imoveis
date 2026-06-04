@@ -296,6 +296,22 @@ section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
 .card-body .bairro svg { width: 15px; height: 15px; flex: none; }
 .card-specs { display: flex; gap: 18px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-soft); }
 .card-specs span { display: flex; align-items: center; gap: 6px; }
+
+/* ===== Imóveis em destaque (listagem real) ===== */
+.im-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; align-items: stretch; }
+.im-grid > * { height: 100%; }
+.im-media { aspect-ratio: 16/11; }
+.im-tag { position: absolute; top: 14px; left: 14px; z-index: 2; font-family: var(--font-head); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; padding: 6px 12px; border-radius: 100px; background: rgba(7,10,17,0.62); border: 1px solid var(--gold-3); color: var(--gold-1); backdrop-filter: blur(6px); transform: translateZ(46px); }
+.im-preco { position: absolute; bottom: 14px; left: 18px; right: 18px; z-index: 2; font-family: var(--font-head); font-weight: 700; font-size: 1.5rem; color: #fff; letter-spacing: -0.01em; transform: translateZ(56px); text-shadow: 0 2px 18px rgba(0,0,0,0.55); }
+.im-body { padding: 18px 22px 22px; }
+.im-bairro { font-family: var(--font-head); font-weight: 600; font-size: 1.16rem; line-height: 1.2; }
+.im-local { color: var(--text-soft); font-size: 0.82rem; margin-top: 5px; }
+.im-specs { display: flex; flex-wrap: wrap; gap: 8px 10px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+.im-spec { display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; color: var(--text-soft); padding: 5px 10px; border-radius: 9px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); }
+.im-spec svg { color: var(--gold-1); flex: none; }
+.im-cta { display: inline-flex; align-items: center; gap: 9px; margin-top: 18px; padding: 11px 18px; border-radius: 100px; font-family: var(--font-head); font-weight: 600; font-size: 0.88rem; color: #20160a; background: var(--gold-grad); align-self: flex-start; transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease); }
+.im-cta svg { flex: none; }
+.im-card:hover .im-cta { transform: translateY(-2px); box-shadow: 0 12px 28px -10px rgba(224,181,86,0.5); }
 .card-specs svg { width: 16px; height: 16px; color: var(--text-mute); }
 
 /* ---------- SOBRE ---------- */
@@ -529,6 +545,7 @@ section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
   .compromisso-photo { max-width: 420px; margin: 0 auto; }
   .passos { grid-template-columns: 1fr 1fr; }
   .imoveis-grid { grid-template-columns: 1fr 1fr; }
+  .im-grid { grid-template-columns: 1fr 1fr; }
   .dores-grid { grid-template-columns: 1fr; }
   .bairros-grid { grid-template-columns: 1fr 1fr; }
   .depo-grid { grid-template-columns: 1fr; }
@@ -541,6 +558,7 @@ section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
 @media (max-width: 600px) {
   .container { padding: 0 18px; }
   .imoveis-grid { grid-template-columns: 1fr; }
+  .im-grid { grid-template-columns: 1fr; }
   .passos { grid-template-columns: 1fr; }
   .bairros-grid { grid-template-columns: 1fr; }
   .dif-grid { grid-template-columns: 1fr; }
