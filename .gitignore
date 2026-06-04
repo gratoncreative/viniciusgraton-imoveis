@@ -11,3 +11,7 @@ dist
 npm-debug.log*
 .DS_Store
 *.local
+
+# coleta de imóveis (arquivos transitórios da rotina diária)
+scripts/_staging/
+scripts/_candidatos.json

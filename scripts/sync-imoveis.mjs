@@ -1,47 +1,55 @@
 /**
- * sync-imoveis.mjs
+ * sync-imoveis.mjs — coleta e publicação dos "Imóveis em destaque"
  * -----------------------------------------------------------------------------
- * Atualiza a seção "Imóveis em destaque" do site a partir da lista de imóveis
- * publicados na web da Rotina Imobiliária (Imoview).
+ * O site é o viniciusgraton.com.br. NÓS consultamos o painel da Rotina (Imoview),
+ * onde o Vinícius é corretor, para montar uma base própria de imóveis no site
+ * pessoal dele. Não usa API nem credenciais: lê só o que já está aberto na tela
+ * do corretor e as imagens que a própria Rotina já publica publicamente.
  *
- * COMO FUNCIONA (rotina diária):
- *   1. Uma sessão do Claude (já logada no Imoview no Chrome do Vinícius) abre:
- *        app.imoview.com.br/Imovel/FiltrarDetalhado?Finalidade=2&...&PublicarNaWeb=1&Pagina=1&Ordenacao=0
- *      e salva o TEXTO da página (get_page_text) em scripts/_imoview-dump.txt
- *   2. Roda este script:  node scripts/sync-imoveis.mjs
- *        - faz o parse dos imóveis
- *        - baixa a capa pública de cada um (cdn.imoview.com.br/.../avatar.jpg)
- *        - regrava src/imoveis-destaque.json
- *   3. git add -A && git commit && git push  -> Netlify publica sozinho.
+ * FLUXO (a coleta é automática; a PUBLICAÇÃO fica pendente da confirmação dele):
  *
- * Não usa API nem credenciais: lê só o que já está aberto na tela do corretor
- * e as imagens que a própria Rotina já publica publicamente.
+ *   1) PREPARAR (rotina diária — automático):
+ *        node scripts/sync-imoveis.mjs preparar
+ *      - lê scripts/_imoview-dump.txt (texto da página FiltrarDetalhado)
+ *      - lê scripts/_imoview-fotos.json (mapa codigo->foto em alta, opcional)
+ *      - baixa as capas para scripts/_staging/imoveis/
+ *      - grava scripts/_candidatos.json   (NÃO altera o site)
+ *
+ *   2) (Vinícius escolhe os melhores)
+ *
+ *   3) PUBLICAR (depois da confirmação):
+ *        node scripts/sync-imoveis.mjs publicar 86237,99496,64693,...
+ *        node scripts/sync-imoveis.mjs publicar        (= todos os candidatos)
+ *      - copia as fotos escolhidas de _staging para public/imoveis/
+ *      - grava src/imoveis-destaque.json  -> o site mostra esses imóveis
+ *      (depois: git add/commit/push -> Netlify publica)
  * -----------------------------------------------------------------------------
  */
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
+import { readFileSync, writeFileSync, mkdirSync, existsSync, copyFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import https from 'node:https'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')
-const DUMP = process.argv[2] || resolve(__dirname, '_imoview-dump.txt')
-const FOTOS = resolve(__dirname, '_imoview-fotos.json') // mapa opcional { "96587": "https://cdn.../foto.jpg" }
+const DUMP = resolve(__dirname, '_imoview-dump.txt')
+const FOTOS = resolve(__dirname, '_imoview-fotos.json')
+const CANDIDATOS = resolve(__dirname, '_candidatos.json')
+const STAGING = resolve(__dirname, '_staging/imoveis')
 const OUT_JSON = resolve(ROOT, 'src/imoveis-destaque.json')
 const IMG_DIR = resolve(ROOT, 'public/imoveis')
 const CDN = (codigo) => `https://cdn.imoview.com.br/rotina/Imoveis/${codigo}/avatar.jpg`
 
-// fotos em alta capturadas das páginas de detalhe (opcional); fallback = capa do CDN
-let FOTO_HD = {}
-if (existsSync(FOTOS)) {
-  try { FOTO_HD = JSON.parse(readFileSync(FOTOS, 'utf8')) } catch { FOTO_HD = {} }
-}
-
-const MAX_IMOVEIS = 12
-// tipos que NÃO entram no destaque (não rendem foto bonita)
+const MAX_CANDIDATOS = 15
 const TIPOS_EXCLUIDOS = /terreno|lote|galp[aã]o|barrac[aã]o/i
 
-// deixa o nome do tipo mais elegante para exibição
+// ---------- helpers ----------
+const num = (s) => {
+  if (!s) return 0
+  const n = String(s).replace(/\./g, '').replace(',', '.').replace(/[^\d.]/g, '')
+  return parseFloat(n) || 0
+}
+
 function normalizarTipo(t) {
   const s = (t || '').toLowerCase()
   if (/casa.*condom[ií]nio|condom[ií]nio.*casa/.test(s)) return 'Casa em condomínio'
@@ -51,105 +59,125 @@ function normalizarTipo(t) {
   if (/casa/.test(s)) return 'Casa'
   if (/loja/.test(s)) return 'Loja'
   if (/sala|comercial/.test(s)) return 'Comercial'
-  // título normal: primeira letra maiúscula
   return (t || '').replace(/\s+/g, ' ').trim().replace(/^\w/, (c) => c.toUpperCase())
 }
 
-// ---------- helpers ----------
-const num = (s) => {
-  if (!s) return 0
-  const n = String(s).replace(/\./g, '').replace(',', '.').replace(/[^\d.]/g, '')
-  return parseFloat(n) || 0
-}
-
-function baixarImagem(codigo) {
+function baixar(url, dest) {
   return new Promise((res) => {
-    const dest = resolve(IMG_DIR, `${codigo}.jpg`)
-    const url = FOTO_HD[codigo] || CDN(codigo) // alta resolução se disponível
-    const file = []
+    const buf = []
     https
       .get(url, (r) => {
-        if (r.statusCode !== 200) {
-          r.resume()
-          return res({ codigo, ok: false, status: r.statusCode })
-        }
-        r.on('data', (d) => file.push(d))
-        r.on('end', () => {
-          writeFileSync(dest, Buffer.concat(file))
-          res({ codigo, ok: true, bytes: Buffer.concat(file).length })
-        })
+        if (r.statusCode !== 200) { r.resume(); return res({ ok: false, status: r.statusCode }) }
+        r.on('data', (d) => buf.push(d))
+        r.on('end', () => { writeFileSync(dest, Buffer.concat(buf)); res({ ok: true, bytes: Buffer.concat(buf).length }) })
       })
-      .on('error', (e) => res({ codigo, ok: false, erro: e.message }))
+      .on('error', (e) => res({ ok: false, erro: e.message }))
   })
 }
 
-// ---------- parse do texto do Imoview ----------
 function parse(texto) {
-  // cada imóvel começa em "Cód. 12345"
   const blocos = texto.split(/Cód\.\s*/).slice(1)
   const imoveis = []
-
   for (const b of blocos) {
     const codigo = (b.match(/^(\d+)/) || [])[1]
     if (!codigo) continue
-
-    // linha de cabeçalho: "96587 - Aux. ... | Venda | Apartamento | / Brasil / ..."
-    const header = (b.split('\n')[0] || '')
+    const header = b.split('\n')[0] || ''
     const partes = header.split('|').map((p) => p.trim())
     const finalidade = partes[1] || ''
-    const tipo = (partes[2] || '').trim()
-    let bairroRaw = (partes[3] || '').replace(/^\/\s*/, '').trim()
-    // pega o primeiro segmento relevante do bairro
-    let bairro = bairroRaw.split('/')[0].trim()
+    const tipoRaw = (partes[2] || '').trim()
+    let bairro = (partes[3] || '').replace(/^\/\s*/, '').trim().split('/')[0].trim()
+    bairro = bairro.split(/\s+-\s+/)[0].trim() // tira sufixos tipo "- Edifício ..."
     bairro = bairro.replace(/^Cond\.\s*/i, '').replace(/^Loteamento\s*/i, '').trim()
-
-    const preco = num((b.match(/R\$\s*([\d.,]+)/) || [])[1])
-    const quartos = parseInt((b.match(/Quartos\s*\n?\s*(\d+)/i) || [])[1] || '0', 10)
-    const suites = parseInt((b.match(/Su[ií]tes\s*\n?\s*(\d+)/i) || [])[1] || '0', 10)
-    const banheiros = parseInt((b.match(/Banheiros\s*\n?\s*(\d+)/i) || [])[1] || '0', 10)
-    const vagas = parseInt((b.match(/Vagas\s*\n?\s*(\d+)/i) || [])[1] || '0', 10)
-    const area = num((b.match(/Área interna:\s*([\d.,]+)\s*m/i) || [])[1])
-
-    imoveis.push({ codigo, tipo: normalizarTipo(tipo), tipoRaw: tipo, finalidade, bairro, cidade: 'Uberlândia', uf: 'MG', preco, quartos, suites, banheiros, vagas, area, img: `./imoveis/${codigo}.jpg` })
+    imoveis.push({
+      codigo,
+      tipo: normalizarTipo(tipoRaw),
+      tipoRaw,
+      finalidade,
+      bairro,
+      cidade: 'Uberlândia',
+      uf: 'MG',
+      preco: num((b.match(/R\$\s*([\d.,]+)/) || [])[1]),
+      quartos: parseInt((b.match(/Quartos\s*\n?\s*(\d+)/i) || [])[1] || '0', 10),
+      suites: parseInt((b.match(/Su[ií]tes\s*\n?\s*(\d+)/i) || [])[1] || '0', 10),
+      banheiros: parseInt((b.match(/Banheiros\s*\n?\s*(\d+)/i) || [])[1] || '0', 10),
+      vagas: parseInt((b.match(/Vagas\s*\n?\s*(\d+)/i) || [])[1] || '0', 10),
+      area: num((b.match(/Área interna:\s*([\d.,]+)\s*m/i) || [])[1]),
+      img: `./imoveis/${codigo}.jpg`,
+    })
   }
   return imoveis
 }
 
-// ---------- main ----------
-async function main() {
+// ---------- modo PREPARAR ----------
+async function preparar() {
   if (!existsSync(DUMP)) {
-    console.error(`✗ Arquivo de dump não encontrado: ${DUMP}\n  Salve o texto da página FiltrarDetalhado nesse arquivo primeiro.`)
+    console.error(`✗ Dump não encontrado: ${DUMP}\n  Salve o texto da página FiltrarDetalhado nesse arquivo.`)
     process.exit(1)
   }
-  const texto = readFileSync(DUMP, 'utf8')
-  let imoveis = parse(texto)
-
-  // filtra: tira terrenos/galpões e mantém só os que têm capa boa
-  imoveis = imoveis.filter((i) => i.tipo && !TIPOS_EXCLUIDOS.test(i.tipoRaw || i.tipo))
-  imoveis = imoveis.slice(0, MAX_IMOVEIS)
+  let imoveis = parse(readFileSync(DUMP, 'utf8'))
+    .filter((i) => i.tipo && !TIPOS_EXCLUIDOS.test(i.tipoRaw || i.tipo))
+    .slice(0, MAX_CANDIDATOS)
 
   if (!imoveis.length) {
-    console.error('✗ Nenhum imóvel encontrado no dump. Abortei para não apagar dados bons.')
+    console.error('✗ Nenhum candidato no dump. Abortado.')
     process.exit(1)
   }
 
-  if (!existsSync(IMG_DIR)) mkdirSync(IMG_DIR, { recursive: true })
+  let fotosHd = {}
+  if (existsSync(FOTOS)) { try { fotosHd = JSON.parse(readFileSync(FOTOS, 'utf8')) } catch {} }
 
-  console.log(`→ ${imoveis.length} imóveis. Baixando capas...`)
-  const baixados = await Promise.all(imoveis.map((i) => baixarImagem(i.codigo)))
-  const ok = new Set(baixados.filter((r) => r.ok).map((r) => r.codigo))
-  baixados.forEach((r) => console.log(`   ${r.ok ? '✓' : '✗'} ${r.codigo} ${r.ok ? r.bytes + 'b' : r.status || r.erro}`))
-
-  // só mantém imóveis cuja capa baixou (evita card sem foto)
+  mkdirSync(STAGING, { recursive: true })
+  console.log(`→ ${imoveis.length} candidatos. Baixando capas para staging...`)
+  const ok = new Set()
+  for (const im of imoveis) {
+    const r = await baixar(fotosHd[im.codigo] || CDN(im.codigo), resolve(STAGING, `${im.codigo}.jpg`))
+    console.log(`   ${r.ok ? '✓' : '✗'} ${im.codigo} ${im.tipo} · ${im.bairro} · R$ ${im.preco.toLocaleString('pt-BR')} ${r.ok ? '' : '(' + (r.status || r.erro) + ')'}`)
+    if (r.ok) ok.add(im.codigo)
+  }
   imoveis = imoveis.filter((i) => ok.has(i.codigo))
 
+  writeFileSync(CANDIDATOS, JSON.stringify({ geradoEm: new Date().toISOString(), imoveis }, null, 2) + '\n')
+  console.log(`\n✓ ${imoveis.length} candidatos prontos em scripts/_candidatos.json`)
+  console.log('  Aguardando seleção. Para publicar: node scripts/sync-imoveis.mjs publicar <codigos>')
+}
+
+// ---------- modo PUBLICAR ----------
+function publicar(codigosArg) {
+  if (!existsSync(CANDIDATOS)) {
+    console.error('✗ Sem candidatos. Rode "preparar" primeiro.')
+    process.exit(1)
+  }
+  const { imoveis: candidatos } = JSON.parse(readFileSync(CANDIDATOS, 'utf8'))
+  let selecao = candidatos
+  if (codigosArg) {
+    const codes = codigosArg.split(/[,\s]+/).filter(Boolean)
+    selecao = codes.map((c) => candidatos.find((i) => i.codigo === c)).filter(Boolean)
+  }
+  if (!selecao.length) {
+    console.error('✗ Nenhum imóvel selecionado.')
+    process.exit(1)
+  }
+
+  mkdirSync(IMG_DIR, { recursive: true })
+  for (const im of selecao) {
+    const src = resolve(STAGING, `${im.codigo}.jpg`)
+    if (existsSync(src)) copyFileSync(src, resolve(IMG_DIR, `${im.codigo}.jpg`))
+  }
+
+  // remove campos internos do arquivo final
+  const limpos = selecao.map(({ tipoRaw, ...rest }) => rest)
   const out = {
     geradoEm: new Date().toISOString(),
     fonte: 'Imoview / Rotina Imobiliária — imóveis publicados na web',
-    imoveis,
+    imoveis: limpos,
   }
   writeFileSync(OUT_JSON, JSON.stringify(out, null, 2) + '\n')
-  console.log(`✓ ${imoveis.length} imóveis gravados em src/imoveis-destaque.json`)
+  console.log(`✓ ${limpos.length} imóveis publicados em src/imoveis-destaque.json`)
+  console.log('  Agora: git add -A && git commit && git push  (Netlify republica)')
 }
 
-main()
+// ---------- entrada ----------
+const modo = (process.argv[2] || 'preparar').toLowerCase()
+if (modo === 'preparar') preparar()
+else if (modo === 'publicar') publicar(process.argv[3])
+else { console.error(`Modo desconhecido: ${modo}. Use "preparar" ou "publicar".`); process.exit(1) }

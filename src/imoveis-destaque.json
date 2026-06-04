@@ -1,11 +1,10 @@
 {
-  "geradoEm": "2026-06-04T20:34:52.668Z",
+  "geradoEm": "2026-06-04T20:41:51.395Z",
   "fonte": "Imoview / Rotina Imobiliária — imóveis publicados na web",
   "imoveis": [
     {
       "codigo": "96587",
       "tipo": "Apartamento",
-      "tipoRaw": "Apartamento",
       "finalidade": "Venda",
       "bairro": "Brasil",
       "cidade": "Uberlândia",
@@ -21,7 +20,6 @@
     {
       "codigo": "93801",
       "tipo": "Casa",
-      "tipoRaw": "Casa",
       "finalidade": "Venda",
       "bairro": "Laranjeiras",
       "cidade": "Uberlândia",
@@ -37,7 +35,6 @@
     {
       "codigo": "86237",
       "tipo": "Casa em condomínio",
-      "tipoRaw": "Casa Condomínio Fechado",
       "finalidade": "Venda",
       "bairro": "Jardim Versailles",
       "cidade": "Uberlândia",
@@ -53,9 +50,8 @@
     {
       "codigo": "96076",
       "tipo": "Apartamento",
-      "tipoRaw": "Apartamento",
       "finalidade": "Venda",
-      "bairro": "Patrimônio - Edifício Torres Do Praia",
+      "bairro": "Patrimônio",
       "cidade": "Uberlândia",
       "uf": "MG",
       "preco": 530000,
@@ -69,7 +65,6 @@
     {
       "codigo": "99496",
       "tipo": "Casa em condomínio",
-      "tipoRaw": "Casa Condomínio Fechado",
       "finalidade": "Venda",
       "bairro": "Alphaville I",
       "cidade": "Uberlândia",
@@ -85,7 +80,6 @@
     {
       "codigo": "90195",
       "tipo": "Casa em condomínio",
-      "tipoRaw": "Casa Condomínio Fechado",
       "finalidade": "Venda",
       "bairro": "Tamboré",
       "cidade": "Uberlândia",
@@ -101,7 +95,6 @@
     {
       "codigo": "74455",
       "tipo": "Chácara",
-      "tipoRaw": "Chacara",
       "finalidade": "Venda",
       "bairro": "Chacaras Eldorado",
       "cidade": "Uberlândia",
@@ -117,7 +110,6 @@
     {
       "codigo": "71360",
       "tipo": "Casa",
-      "tipoRaw": "Casa",
       "finalidade": "Venda",
       "bairro": "Bom Jesus",
       "cidade": "Uberlândia",
@@ -133,7 +125,6 @@
     {
       "codigo": "97886",
       "tipo": "Casa",
-      "tipoRaw": "Casa",
       "finalidade": "Venda",
       "bairro": "Nossa Senhora Aparecida",
       "cidade": "Uberlândia",
@@ -149,7 +140,6 @@
     {
       "codigo": "91188",
       "tipo": "Apartamento",
-      "tipoRaw": "Apartamento",
       "finalidade": "Venda",
       "bairro": "Brasil",
       "cidade": "Uberlândia",
@@ -165,7 +155,6 @@
     {
       "codigo": "64693",
       "tipo": "Cobertura",
-      "tipoRaw": "Cobertura",
       "finalidade": "Venda",
       "bairro": "Morada da Colina",
       "cidade": "Uberlândia",
@@ -181,7 +170,6 @@
     {
       "codigo": "69377",
       "tipo": "Casa",
-      "tipoRaw": "Casa",
       "finalidade": "Venda",
       "bairro": "Cidade Jardim",
       "cidade": "Uberlândia",
