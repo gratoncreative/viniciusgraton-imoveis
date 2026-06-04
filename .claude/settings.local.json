@@ -46,7 +46,11 @@
       "Bash(git commit -q -m 'Secoes claras \\(leveza\\), pilares com fotos reais, segmentos alto padrao, faixa de luxo *)",
       "Bash(git commit -q -m 'Pilares \\(Stats\\) com fundo claro *)",
       "Bash(git commit -q -m 'Ritmo visual: variantes de fundo \\(painel, brilho dourado\\) nas secoes escuras *)",
-      "Bash(git commit -q -m 'Capa sem etiquetas; remove secao pilares; alternancia estrita claro/escuro *)"
+      "Bash(git commit -q -m 'Capa sem etiquetas; remove secao pilares; alternancia estrita claro/escuro *)",
+      "mcp__Claude_in_Chrome__read_page",
+      "PowerShell($dir = \"D:\\\\MEU SITE\\\\public\\\\imoveis\"; New-Item -ItemType Directory -Force $dir | Out-Null; $codes = @\\(86237,99496,90195,64693,74455,69377,97886,96076,93801,96587,91188\\); foreach\\($c in $codes\\){ try { Invoke-WebRequest -Uri \"https://cdn.imoview.com.br/rotina/Imoveis/$c/avatar.jpg\" -OutFile \"$dir\\\\$c.jpg\" -UseBasicParsing -ErrorAction Stop; $sz=\\(Get-Item \"$dir\\\\$c.jpg\"\\).Length; Write-Output \"$c OK $sz bytes\" } catch { Write-Output \"$c FALHOU $\\($_.Exception.Message\\)\" } })",
+      "Bash(find /c/Users/vinic/.claude -iname \"lock_manager*\" 2>/dev/null; find \"/d/MEU SITE\" -iname \"lock_manager*\" 2>/dev/null)",
+      "PowerShell(& \"C:\\\\Users\\\\vinic\\\\.claude\\\\skills\\\\cerebro-coordenacao\\\\lock_manager.ps1\" -Action release -Owner sessao-user 2>&1)"
     ]
   }
 }

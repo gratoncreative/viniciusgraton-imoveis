@@ -33,14 +33,15 @@ import https from 'node:https'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')
 const DUMP = resolve(__dirname, '_imoview-dump.txt')
-const FOTOS = resolve(__dirname, '_imoview-fotos.json')
+const FOTOS = resolve(__dirname, '_imoview-fotos.json')      // { codigo: "url capa em alta" }
+const GALERIAS = resolve(__dirname, '_imoview-galerias.json') // { codigo: ["url1","url2",...] }
 const CANDIDATOS = resolve(__dirname, '_candidatos.json')
 const STAGING = resolve(__dirname, '_staging/imoveis')
 const OUT_JSON = resolve(ROOT, 'src/imoveis-destaque.json')
 const IMG_DIR = resolve(ROOT, 'public/imoveis')
 const CDN = (codigo) => `https://cdn.imoview.com.br/rotina/Imoveis/${codigo}/avatar.jpg`
 
-const MAX_CANDIDATOS = 15
+const MAX_CANDIDATOS = 40
 const TIPOS_EXCLUIDOS = /terreno|lote|galp[aã]o|barrac[aã]o/i
 
 // ---------- helpers ----------
@@ -102,7 +103,7 @@ function parse(texto) {
       banheiros: parseInt((b.match(/Banheiros\s*\n?\s*(\d+)/i) || [])[1] || '0', 10),
       vagas: parseInt((b.match(/Vagas\s*\n?\s*(\d+)/i) || [])[1] || '0', 10),
       area: num((b.match(/Área interna:\s*([\d.,]+)\s*m/i) || [])[1]),
-      img: `./imoveis/${codigo}.jpg`,
+      img: `/imoveis/${codigo}.jpg`,
     })
   }
   return imoveis
@@ -158,14 +159,21 @@ function publicar(codigosArg) {
     process.exit(1)
   }
 
+  let galerias = {}
+  if (existsSync(GALERIAS)) { try { galerias = JSON.parse(readFileSync(GALERIAS, 'utf8')) } catch {} }
+
   mkdirSync(IMG_DIR, { recursive: true })
   for (const im of selecao) {
     const src = resolve(STAGING, `${im.codigo}.jpg`)
     if (existsSync(src)) copyFileSync(src, resolve(IMG_DIR, `${im.codigo}.jpg`))
   }
 
-  // remove campos internos do arquivo final
-  const limpos = selecao.map(({ tipoRaw, ...rest }) => rest)
+  // remove campos internos e monta a galeria (capa hospedada + demais fotos do CDN público)
+  const limpos = selecao.map(({ tipoRaw, ...rest }) => {
+    const extras = (galerias[rest.codigo] || []).filter((u) => u && !/avatar\.jpg/i.test(u))
+    const fotos = [rest.img, ...extras]
+    return { ...rest, fotos }
+  })
   const out = {
     geradoEm: new Date().toISOString(),
     fonte: 'Imoview / Rotina Imobiliária — imóveis publicados na web',

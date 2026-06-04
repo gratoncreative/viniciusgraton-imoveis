@@ -1,23 +1,23 @@
 import { useEffect } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
 import ScrollProgress from './components/ScrollProgress'
 import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import Dores from './components/Dores'
-import Imoveis from './components/Imoveis'
-import Destaque from './components/Destaque'
-import Sobre from './components/Sobre'
-import ComoFunciona from './components/ComoFunciona'
-import Bairros from './components/Bairros'
-import Compromisso from './components/Compromisso'
-import Faq from './components/Faq'
-import Contato from './components/Contato'
 import Footer from './components/Footer'
-import ParallaxBand from './components/ParallaxBand'
-import { linkWhatsApp, WA, BANDS } from './data'
+import Home from './pages/Home'
+import Catalogo from './pages/Catalogo'
+import ImovelDetalhe from './pages/ImovelDetalhe'
+import { linkWhatsApp, WA } from './data'
 import { IconWhats } from './components/icons'
 
 export default function App() {
+  const { pathname } = useLocation()
+
+  // sobe ao topo ao trocar de página
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduce) return
@@ -30,7 +30,7 @@ export default function App() {
     }
     raf = requestAnimationFrame(loop)
 
-    // âncoras com scroll suave
+    // âncoras com scroll suave (somente links que apontam para uma seção da mesma página)
     const onClick = (e) => {
       const a = e.target.closest('a[href^="#"]')
       if (!a) return
@@ -56,20 +56,12 @@ export default function App() {
     <>
       <ScrollProgress />
       <Navbar />
-      <main>
-        <Hero />
-        <Dores />
-        <Imoveis />
-        <Sobre />
-        <Destaque />
-        <ParallaxBand {...BANDS.b1} />
-        <ComoFunciona />
-        <ParallaxBand {...BANDS.b2} />
-        <Bairros />
-        <Compromisso />
-        <Faq />
-        <Contato />
-      </main>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/imoveis" element={<Catalogo />} />
+        <Route path="/imovel/:codigo" element={<ImovelDetalhe />} />
+        <Route path="*" element={<Home />} />
+      </Routes>
       <Footer />
 
       <a className="wa-float" href={linkWhatsApp(WA.flutuante)} target="_blank" rel="noopener" aria-label="Falar no WhatsApp">

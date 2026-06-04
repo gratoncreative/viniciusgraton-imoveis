@@ -1,32 +1,34 @@
 import { useState, useEffect } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CONFIG, linkWhatsApp, WA } from '../data'
 import { IconWhats, IconMenu, IconClose } from './icons'
 
-const LINKS = [
-  { href: '#imoveis', label: 'Imóveis' },
-  { href: '#sobre', label: 'Sobre' },
-  { href: '#processo', label: 'Como funciona' },
-  { href: '#compromisso', label: 'Compromisso' },
-  { href: '#contato', label: 'Contato' },
+// Links de seção da home + rota do catálogo
+const SECOES = [
+  { id: 'sobre', label: 'Sobre' },
+  { id: 'processo', label: 'Como funciona' },
+  { id: 'compromisso', label: 'Compromisso' },
+  { id: 'contato', label: 'Contato' },
 ]
 
 function Brand() {
   return (
-    <a href="#topo" className="brand" aria-label={CONFIG.marca}>
-      <img className="brand-mark" src="./favicon.svg" alt="" />
+    <Link to="/" className="brand" aria-label={CONFIG.marca}>
+      <img className="brand-mark" src="/favicon.svg" alt="" />
       <span className="brand-text">
         <span className="brand-name">{CONFIG.nome}</span>
         <span className="brand-sub">Imóveis · Uberlândia</span>
       </span>
-    </a>
+    </Link>
   )
 }
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
-  const [active, setActive] = useState('')
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -35,22 +37,16 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  useEffect(() => {
-    const ids = LINKS.map((l) => l.href.slice(1))
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id)
-        })
-      },
-      { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
-    )
-    ids.forEach((id) => {
-      const el = document.getElementById(id)
-      if (el) obs.observe(el)
-    })
-    return () => obs.disconnect()
-  }, [])
+  // navega até uma seção: na home rola; em outra página vai pra home e rola
+  const irSecao = (id) => (e) => {
+    e.preventDefault()
+    setOpen(false)
+    if (pathname === '/') {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      navigate('/', { state: { scrollTo: id } })
+    }
+  }
 
   return (
     <>
@@ -58,8 +54,9 @@ export default function Navbar() {
         <div className="container nav-inner">
           <Brand />
           <div className="nav-links">
-            {LINKS.map((l) => (
-              <a key={l.href} href={l.href} className={active === l.href.slice(1) ? 'active' : ''}>{l.label}</a>
+            <Link to="/imoveis">Imóveis</Link>
+            {SECOES.map((l) => (
+              <a key={l.id} href={`/#${l.id}`} onClick={irSecao(l.id)}>{l.label}</a>
             ))}
           </div>
           <div className="nav-cta">
@@ -82,8 +79,9 @@ export default function Navbar() {
             <button className="nav-toggle" style={{ position: 'absolute', top: 24, right: 24 }} onClick={() => setOpen(false)} aria-label="Fechar menu">
               <IconClose width={30} height={30} />
             </button>
-            {LINKS.map((l) => (
-              <a key={l.href} href={l.href} onClick={() => setOpen(false)}>{l.label}</a>
+            <Link to="/imoveis" onClick={() => setOpen(false)}>Imóveis</Link>
+            {SECOES.map((l) => (
+              <a key={l.id} href={`/#${l.id}`} onClick={irSecao(l.id)}>{l.label}</a>
             ))}
             <a className="btn btn-gold" href={linkWhatsApp(WA.navbar)} target="_blank" rel="noopener" onClick={() => setOpen(false)}>
               <IconWhats /> Falar no WhatsApp

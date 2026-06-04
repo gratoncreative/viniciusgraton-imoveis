@@ -57,6 +57,27 @@ export const formatArea = (a) =>
 export const waImovel = (im) =>
   `Olá Vinícius! Tenho interesse no imóvel cód. ${im.codigo} — ${im.tipo} no ${im.bairro} (${formatPreco(im.preco)}). Pode me passar mais informações?`
 
+// Busca um imóvel pelo código
+export const getImovel = (codigo) =>
+  IMOVEIS.find((i) => String(i.codigo) === String(codigo))
+
+// Galeria de fotos (usa fotos[] se houver; senão a capa)
+export const fotosDe = (im) =>
+  im && im.fotos && im.fotos.length ? im.fotos : im && im.img ? [im.img] : []
+
+// Opções de filtro derivadas dos imóveis reais (para o catálogo)
+export const TIPOS_IMOVEL = [...new Set(IMOVEIS.map((i) => i.tipo))].sort()
+export const BAIRROS_IMOVEL = [...new Set(IMOVEIS.map((i) => i.bairro))].sort((a, b) => a.localeCompare(b, 'pt-BR'))
+
+// Faixas de preço para filtro do catálogo
+export const FAIXAS_PRECO = [
+  { label: 'Até R$ 300 mil', min: 0, max: 300000 },
+  { label: 'R$ 300 mil a R$ 600 mil', min: 300000, max: 600000 },
+  { label: 'R$ 600 mil a R$ 1 mi', min: 600000, max: 1000000 },
+  { label: 'R$ 1 mi a R$ 2 mi', min: 1000000, max: 2000000 },
+  { label: 'Acima de R$ 2 mi', min: 2000000, max: Infinity },
+]
+
 // Faixas cinematográficas (mesmo estilo da capa) inseridas a cada 2 seções
 export const BANDS = {
   b1: {

@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-06-04T20:41:51.395Z",
+  "geradoEm": "2026-06-04T21:14:43.102Z",
   "fonte": "Imoview / Rotina Imobiliária — imóveis publicados na web",
   "imoveis": [
     {
@@ -15,7 +15,10 @@
       "banheiros": 2,
       "vagas": 0,
       "area": 73.97,
-      "img": "./imoveis/96587.jpg"
+      "img": "/imoveis/96587.jpg",
+      "fotos": [
+        "/imoveis/96587.jpg"
+      ]
     },
     {
       "codigo": "93801",
@@ -30,7 +33,10 @@
       "banheiros": 3,
       "vagas": 2,
       "area": 94,
-      "img": "./imoveis/93801.jpg"
+      "img": "/imoveis/93801.jpg",
+      "fotos": [
+        "/imoveis/93801.jpg"
+      ]
     },
     {
       "codigo": "86237",
@@ -45,7 +51,10 @@
       "banheiros": 7,
       "vagas": 4,
       "area": 253.7,
-      "img": "./imoveis/86237.jpg"
+      "img": "/imoveis/86237.jpg",
+      "fotos": [
+        "/imoveis/86237.jpg"
+      ]
     },
     {
       "codigo": "96076",
@@ -60,7 +69,10 @@
       "banheiros": 2,
       "vagas": 2,
       "area": 70.62,
-      "img": "./imoveis/96076.jpg"
+      "img": "/imoveis/96076.jpg",
+      "fotos": [
+        "/imoveis/96076.jpg"
+      ]
     },
     {
       "codigo": "99496",
@@ -75,7 +87,10 @@
       "banheiros": 5,
       "vagas": 4,
       "area": 231.73,
-      "img": "./imoveis/99496.jpg"
+      "img": "/imoveis/99496.jpg",
+      "fotos": [
+        "/imoveis/99496.jpg"
+      ]
     },
     {
       "codigo": "90195",
@@ -90,7 +105,10 @@
       "banheiros": 4,
       "vagas": 2,
       "area": 210,
-      "img": "./imoveis/90195.jpg"
+      "img": "/imoveis/90195.jpg",
+      "fotos": [
+        "/imoveis/90195.jpg"
+      ]
     },
     {
       "codigo": "74455",
@@ -105,7 +123,10 @@
       "banheiros": 4,
       "vagas": 4,
       "area": 350,
-      "img": "./imoveis/74455.jpg"
+      "img": "/imoveis/74455.jpg",
+      "fotos": [
+        "/imoveis/74455.jpg"
+      ]
     },
     {
       "codigo": "71360",
@@ -120,7 +141,10 @@
       "banheiros": 1,
       "vagas": 1,
       "area": 174,
-      "img": "./imoveis/71360.jpg"
+      "img": "/imoveis/71360.jpg",
+      "fotos": [
+        "/imoveis/71360.jpg"
+      ]
     },
     {
       "codigo": "97886",
@@ -135,7 +159,10 @@
       "banheiros": 4,
       "vagas": 2,
       "area": 225.05,
-      "img": "./imoveis/97886.jpg"
+      "img": "/imoveis/97886.jpg",
+      "fotos": [
+        "/imoveis/97886.jpg"
+      ]
     },
     {
       "codigo": "91188",
@@ -150,7 +177,10 @@
       "banheiros": 1,
       "vagas": 1,
       "area": 50,
-      "img": "./imoveis/91188.jpg"
+      "img": "/imoveis/91188.jpg",
+      "fotos": [
+        "/imoveis/91188.jpg"
+      ]
     },
     {
       "codigo": "64693",
@@ -165,7 +195,10 @@
       "banheiros": 3,
       "vagas": 4,
       "area": 270,
-      "img": "./imoveis/64693.jpg"
+      "img": "/imoveis/64693.jpg",
+      "fotos": [
+        "/imoveis/64693.jpg"
+      ]
     },
     {
       "codigo": "69377",
@@ -180,7 +213,10 @@
       "banheiros": 4,
       "vagas": 4,
       "area": 373.8,
-      "img": "./imoveis/69377.jpg"
+      "img": "/imoveis/69377.jpg",
+      "fotos": [
+        "/imoveis/69377.jpg"
+      ]
     }
   ]
 }

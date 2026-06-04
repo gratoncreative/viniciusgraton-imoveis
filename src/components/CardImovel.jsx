@@ -1,0 +1,90 @@
+import { useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { formatPreco, formatArea, linkWhatsApp, waImovel } from '../data'
+import { IconWhats, ICONS } from './icons'
+
+const plural = (n, s, p) => (n > 1 ? p : s)
+
+function Spec({ icon, valor, label }) {
+  const Icon = ICONS[icon]
+  return (
+    <span className="im-spec">
+      {Icon && <Icon width={17} height={17} />}
+      <b>{valor}</b>{label ? ' ' + label : ''}
+    </span>
+  )
+}
+
+export default function CardImovel({ im }) {
+  const ref = useRef(null)
+  const raf = useRef(0)
+  const navigate = useNavigate()
+
+  const onMove = (e) => {
+    const el = ref.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    const mx = (e.clientX - r.left) / r.width
+    const my = (e.clientY - r.top) / r.height
+    cancelAnimationFrame(raf.current)
+    raf.current = requestAnimationFrame(() => {
+      el.style.setProperty('--ry', `${(mx - 0.5) * 7}deg`)
+      el.style.setProperty('--rx', `${(0.5 - my) * 5}deg`)
+      el.style.setProperty('--act', '1')
+    })
+  }
+  const onLeave = () => {
+    const el = ref.current
+    if (!el) return
+    cancelAnimationFrame(raf.current)
+    el.style.setProperty('--ry', '0deg')
+    el.style.setProperty('--rx', '0deg')
+    el.style.setProperty('--act', '0')
+  }
+
+  const specs = [
+    im.quartos > 0 && { icon: 'bed', valor: im.quartos, label: plural(im.quartos, 'quarto', 'quartos') },
+    im.suites > 0 && { icon: 'sparkle', valor: im.suites, label: plural(im.suites, 'suíte', 'suítes') },
+    im.banheiros > 0 && { icon: 'bath', valor: im.banheiros, label: plural(im.banheiros, 'banheiro', 'banheiros') },
+    im.vagas > 0 && { icon: 'car', valor: im.vagas, label: plural(im.vagas, 'vaga', 'vagas') },
+    im.area > 0 && { icon: 'area', valor: formatArea(im.area), label: '' },
+  ].filter(Boolean)
+
+  const irParaImovel = () => navigate(`/imovel/${im.codigo}`)
+
+  return (
+    <article
+      ref={ref}
+      className="card-imovel im-card card-clickable"
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      onClick={irParaImovel}
+    >
+      <div className="card-media im-media" data-depth>
+        <img src={im.img} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} loading="lazy" />
+        <span className="im-tag">{im.tipo}</span>
+        <span className="im-preco">{formatPreco(im.preco)}</span>
+      </div>
+      <div className="card-body im-body">
+        <h3 className="im-bairro">{im.bairro}</h3>
+        <p className="im-local">{im.cidade} — {im.uf} · Cód. {im.codigo}</p>
+        <div className="im-specs">
+          {specs.map((s, i) => <Spec key={i} {...s} />)}
+        </div>
+        <div className="im-actions">
+          <span className="im-ver">Ver detalhes</span>
+          <a
+            className="im-cta"
+            href={linkWhatsApp(waImovel(im))}
+            target="_blank"
+            rel="noopener"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <IconWhats width={18} height={18} /> Tenho interesse
+          </a>
+        </div>
+      </div>
+      <span className="card-glare" aria-hidden="true" />
+    </article>
+  )
+}
