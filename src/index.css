@@ -102,6 +102,28 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
 
+/* ---------- seções com fundo claro (leveza, cores invertidas) ---------- */
+.section--light {
+  background: #f5f2ea;
+  --text: #161a22;
+  --text-soft: #3b4250;
+  --text-mute: #6c7480;
+  --surface: rgba(22, 26, 34, 0.04);
+  --surface-2: rgba(22, 26, 34, 0.07);
+  --border: rgba(22, 26, 34, 0.12);
+  --border-strong: rgba(22, 26, 34, 0.22);
+  color: var(--text);
+}
+.section--light .eyebrow,
+.section--light .eyebrow::before { color: var(--gold-3); background-color: var(--gold-3); }
+.section--light .eyebrow { background-color: transparent; }
+.section--light .section-title em,
+.section--light .passo .n { background: linear-gradient(135deg, #c9962f, #9a6c1c); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.section--light .bairro-ico { color: var(--gold-3); background: rgba(184, 134, 47, 0.12); }
+.section--light .faq-plus::before, .section--light .faq-plus::after { background: var(--gold-3); }
+.section--light .faq-item summary:hover, .section--light .faq-item[open] summary { color: var(--gold-3); }
+.section--light .passo .glow { background: radial-gradient(circle, rgba(184,134,47,0.18), transparent 70%); }
+
 /* ---------- botões ---------- */
 .btn {
   display: inline-flex; align-items: center; gap: 10px;
@@ -207,6 +229,15 @@ section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
 
 /* ---------- STATS / faixa ---------- */
 .stats { padding: 50px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.015); }
+/* pilares com foto real */
+.stats-fotos { padding: clamp(56px, 8vw, 96px) 0; }
+.stats-fotos .stats-grid { align-items: stretch; }
+.pilar-card { position: relative; height: 230px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease); }
+.pilar-card:hover { transform: translateY(-6px); box-shadow: 0 26px 50px -26px rgba(0,0,0,0.8); }
+.pilar-card-ico { position: absolute; top: 16px; left: 16px; width: 40px; height: 40px; border-radius: 11px; background: rgba(7,10,17,0.5); border: 1px solid var(--gold-3); backdrop-filter: blur(6px); display: grid; place-items: center; color: var(--gold-1); }
+.pilar-card-ico svg { width: 20px; height: 20px; }
+.pilar-card-text b { display: block; font-family: var(--font-head); font-weight: 600; font-size: 1.05rem; color: #fff; line-height: 1.2; }
+.pilar-card-text span { display: block; font-size: 0.84rem; color: rgba(255,255,255,0.72); margin-top: 5px; }
 .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
 .stat { text-align: center; }
 .stat b { display: block; font-family: var(--font-head); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 700; line-height: 1; }

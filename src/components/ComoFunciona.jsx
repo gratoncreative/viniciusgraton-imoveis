@@ -3,7 +3,7 @@ import { PASSOS } from '../data'
 
 export default function ComoFunciona() {
   return (
-    <section id="processo">
+    <section id="processo" className="section--light">
       <div className="container">
         <Reveal>
           <div style={{ textAlign: 'center', maxWidth: 680, margin: '0 auto 56px' }}>

@@ -47,10 +47,10 @@ export const BANDS = {
 
 // Pilares do atendimento (qualitativos, sem métricas inventadas)
 export const PILARES = [
-  { icon: 'home', titulo: 'Casa, apto e investimento', sub: 'orientação para cada objetivo' },
-  { icon: 'target', titulo: 'Curadoria personalizada', sub: 'só o que faz sentido pra você' },
-  { icon: 'shield', titulo: 'Documentação conferida', sub: 'compra com segurança' },
-  { icon: 'pin', titulo: 'Uberlândia e região', sub: 'o mercado que eu conheço' },
+  { icon: 'home', titulo: 'Casa, apto e investimento', sub: 'orientação para cada objetivo', foto: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=900&auto=format&fit=crop' },
+  { icon: 'target', titulo: 'Curadoria personalizada', sub: 'só o que faz sentido pra você', foto: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=900&auto=format&fit=crop' },
+  { icon: 'shield', titulo: 'Documentação conferida', sub: 'compra com segurança', foto: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=900&auto=format&fit=crop' },
+  { icon: 'pin', titulo: 'Uberlândia e região', sub: 'o mercado que eu conheço', foto: 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?q=80&w=900&auto=format&fit=crop' },
 ]
 
 // Segmentos com que o Vinícius atua (substitui listagem real até receber imóveis)
@@ -60,14 +60,14 @@ export const SEGMENTOS = [
     icon: 'building',
     titulo: 'Apartamentos',
     desc: 'Do compacto ao alto padrão, encontro a planta e a localização certas pra você.',
-    img: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1200&auto=format&fit=crop',
+    img: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1200&auto=format&fit=crop',
   },
   {
     id: 2,
     icon: 'home',
     titulo: 'Casas em condomínio',
     desc: 'Segurança, lazer e espaço pra família, nos melhores condomínios da região.',
-    img: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=1200&auto=format&fit=crop',
+    img: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=1200&auto=format&fit=crop',
   },
   {
     id: 3,

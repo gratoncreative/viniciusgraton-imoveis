@@ -4,7 +4,7 @@ import { IconWhats } from './icons'
 
 export default function Faq() {
   return (
-    <section id="faq">
+    <section id="faq" className="section--light">
       <div className="container faq-wrap">
         <Reveal>
           <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto 48px' }}>

@@ -36,7 +36,14 @@
       "Bash(git init *)",
       "Bash(git config *)",
       "Bash(git add *)",
-      "Bash(git commit -q -m 'Site Vinicius Graton Imoveis - versao inicial \\(Vite+React\\) *)"
+      "Bash(git commit -q -m 'Site Vinicius Graton Imoveis - versao inicial \\(Vite+React\\) *)",
+      "Bash(git commit -q -m 'Adiciona netlify.toml para deploy automatico *)",
+      "Bash(gh --version)",
+      "Bash(git branch *)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(git ls-remote *)",
+      "Bash(git commit -q -m 'Secoes claras \\(leveza\\), pilares com fotos reais, segmentos alto padrao, faixa de luxo *)"
     ]
   }
 }
