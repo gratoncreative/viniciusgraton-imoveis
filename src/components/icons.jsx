@@ -76,4 +76,8 @@ export const ICONS = {
   pin: IconPin,
   eye: IconEye,
   whats: IconWhats,
+  bed: IconBed,
+  bath: IconBath,
+  car: IconCar,
+  area: IconArea,
 }

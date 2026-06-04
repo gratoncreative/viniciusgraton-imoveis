@@ -6,11 +6,14 @@ import { IconArrow, IconWhats, ICONS } from './icons'
 function Spec({ icon, valor, label }) {
   const Icon = ICONS[icon]
   return (
-    <span className="im-spec" title={label}>
-      {Icon && <Icon width={16} height={16} />} {valor}
+    <span className="im-spec">
+      {Icon && <Icon width={17} height={17} />}
+      <b>{valor}</b>{label ? ' ' + label : ''}
     </span>
   )
 }
+
+const plural = (n, sing, plur) => (n > 1 ? plur : sing)
 
 function CardImovel({ im }) {
   const ref = useRef(null)
@@ -39,10 +42,11 @@ function CardImovel({ im }) {
   }
 
   const specs = [
-    im.quartos > 0 && { icon: 'home', valor: im.quartos, label: `${im.quartos} quartos` },
-    im.suites > 0 && { icon: 'sparkle', valor: im.suites, label: `${im.suites} suítes` },
-    im.vagas > 0 && { icon: 'key', valor: im.vagas, label: `${im.vagas} vagas` },
-    im.area > 0 && { icon: 'building', valor: formatArea(im.area), label: 'área' },
+    im.quartos > 0 && { icon: 'bed', valor: im.quartos, label: plural(im.quartos, 'quarto', 'quartos') },
+    im.suites > 0 && { icon: 'sparkle', valor: im.suites, label: plural(im.suites, 'suíte', 'suítes') },
+    im.banheiros > 0 && { icon: 'bath', valor: im.banheiros, label: plural(im.banheiros, 'banheiro', 'banheiros') },
+    im.vagas > 0 && { icon: 'car', valor: im.vagas, label: plural(im.vagas, 'vaga', 'vagas') },
+    im.area > 0 && { icon: 'area', valor: formatArea(im.area), label: '' },
   ].filter(Boolean)
 
   return (
