@@ -4,7 +4,7 @@ import { ICONS } from './icons'
 
 export default function Stats() {
   return (
-    <section className="stats-fotos">
+    <section className="stats-fotos section--light">
       <div className="container stats-grid">
         {PILARES.map((p, i) => {
           const Icon = ICONS[p.icon]
