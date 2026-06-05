@@ -403,6 +403,10 @@ section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
 .legal-body h2 { font-family: var(--font-head); font-weight: 700; font-size: 1.18rem; margin: 30px 0 8px; }
 .legal-body p { color: var(--text-soft); line-height: 1.75; margin-bottom: 10px; }
 .legal-body a { color: var(--gold-3); text-decoration: underline; }
+/* loader ao trocar de rota (lazy) */
+.rota-load { min-height: 72vh; display: grid; place-items: center; }
+.rota-spinner { width: 42px; height: 42px; border-radius: 50%; border: 3px solid rgba(224,181,86,0.2); border-top-color: var(--gold-2); animation: rota-spin 0.8s linear infinite; }
+@keyframes rota-spin { to { transform: rotate(360deg); } }
 @media (max-width: 600px) { .det-mapa-frame iframe { height: 300px; } }
 
 /* descrição curta no card da vitrine */

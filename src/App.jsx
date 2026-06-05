@@ -1,23 +1,42 @@
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
 import ScrollProgress from './components/ScrollProgress'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
-import Catalogo from './pages/Catalogo'
-import ImovelDetalhe from './pages/ImovelDetalhe'
-import Privacidade from './pages/Privacidade'
-import NotFound from './pages/NotFound'
-import { linkWhatsApp, WA } from './data'
+import { CONFIG, linkWhatsApp, WA } from './data'
 import { IconWhats } from './components/icons'
+
+// páginas internas carregadas sob demanda (home fica mais leve e rápida)
+const Catalogo = lazy(() => import('./pages/Catalogo'))
+const ImovelDetalhe = lazy(() => import('./pages/ImovelDetalhe'))
+const Privacidade = lazy(() => import('./pages/Privacidade'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 
 export default function App() {
   const { pathname } = useLocation()
 
-  // sobe ao topo ao trocar de página
+  // Google Analytics 4 (só ativa se CONFIG.gaId estiver preenchido)
+  useEffect(() => {
+    if (!CONFIG.gaId || window.gtagLoaded) return
+    window.gtagLoaded = true
+    const s = document.createElement('script')
+    s.async = true
+    s.src = `https://www.googletagmanager.com/gtag/js?id=${CONFIG.gaId}`
+    document.head.appendChild(s)
+    window.dataLayer = window.dataLayer || []
+    window.gtag = function () { window.dataLayer.push(arguments) }
+    window.gtag('js', new Date())
+    window.gtag('config', CONFIG.gaId, { send_page_view: false })
+  }, [])
+
+  // sobe ao topo e registra a visualização de página
   useEffect(() => {
     window.scrollTo(0, 0)
+    if (CONFIG.gaId && window.gtag) {
+      window.gtag('event', 'page_view', { page_path: pathname + window.location.search })
+    }
   }, [pathname])
 
   useEffect(() => {
@@ -58,13 +77,15 @@ export default function App() {
     <>
       <ScrollProgress />
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/imoveis" element={<Catalogo />} />
-        <Route path="/imovel/:codigo" element={<ImovelDetalhe />} />
-        <Route path="/privacidade" element={<Privacidade />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Suspense fallback={<div className="rota-load" aria-busy="true"><span className="rota-spinner" /></div>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/imoveis" element={<Catalogo />} />
+          <Route path="/imovel/:codigo" element={<ImovelDetalhe />} />
+          <Route path="/privacidade" element={<Privacidade />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
       <Footer />
 
       <a className="wa-float" href={linkWhatsApp(WA.flutuante)} target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
