@@ -104,18 +104,23 @@ export const FAIXAS_PRECO = [
 ]
 
 // Faixas cinematográficas (mesmo estilo da capa) inseridas a cada 2 seções
+// Faixas cinematográficas com IMÓVEIS REAIS da carteira (foto hospedada + selo clicável)
 export const BANDS = {
   b1: {
-    img: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=2000&auto=format&fit=crop',
+    img: '/imoveis/86237.jpg',
+    eyebrow: 'Padrão que você merece',
     frase: 'O imóvel certo muda a sua rotina inteira.',
     cta: 'Quero encontrar o meu',
     wa: 'banda1',
+    imovel: { codigo: '86237', tipo: 'Casa em condomínio', bairro: 'Jardim Versailles', preco: 3300000 },
   },
   b2: {
-    img: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=2000&auto=format&fit=crop',
-    frase: 'Da primeira conversa às chaves na sua mão.',
+    img: '/imoveis/99496.jpg',
+    eyebrow: 'Do primeiro contato às chaves',
+    frase: 'Da primeira conversa à chave na sua mão.',
     cta: 'Começar agora',
     wa: 'banda2',
+    imovel: { codigo: '99496', tipo: 'Casa em condomínio', bairro: 'Alphaville', preco: 2800000 },
   },
 }
 
