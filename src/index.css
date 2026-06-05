@@ -307,6 +307,7 @@ section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
 .im-grid > * { height: 100%; }
 .im-media { aspect-ratio: 16/11; }
 .im-tag { position: absolute; top: 14px; left: 14px; z-index: 2; font-family: var(--font-head); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; padding: 6px 12px; border-radius: 100px; background: rgba(7,10,17,0.62); border: 1px solid var(--gold-3); color: var(--gold-1); backdrop-filter: blur(6px); transform: translateZ(46px); }
+.im-novo { position: absolute; top: 14px; right: 14px; z-index: 3; font-family: var(--font-head); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; padding: 5px 11px; border-radius: 100px; background: var(--gold-grad); color: #20160a; transform: translateZ(50px); box-shadow: 0 6px 18px -6px rgba(224,181,86,0.6); }
 .im-preco { position: absolute; bottom: 14px; left: 18px; right: 18px; z-index: 2; font-family: var(--font-head); font-weight: 700; font-size: 1.5rem; color: #fff; letter-spacing: -0.01em; transform: translateZ(56px); text-shadow: 0 2px 18px rgba(0,0,0,0.55); }
 .im-body { padding: 18px 22px 22px; }
 .im-bairro { font-family: var(--font-head); font-weight: 600; font-size: 1.16rem; line-height: 1.2; }

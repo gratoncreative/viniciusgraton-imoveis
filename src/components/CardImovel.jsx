@@ -63,6 +63,7 @@ export default function CardImovel({ im }) {
       <div className="card-media im-media" data-depth>
         <img src={im.img} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} loading="lazy" />
         <span className="im-tag">{im.tipo}</span>
+        {im.novo && <span className="im-novo">Novo</span>}
         <span className="im-preco">{formatPreco(im.preco)}</span>
       </div>
       <div className="card-body im-body">

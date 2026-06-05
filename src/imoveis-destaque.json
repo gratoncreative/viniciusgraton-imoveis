@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-06-05T00:44:55.989Z",
+  "geradoEm": "2026-06-05T01:34:40.878Z",
   "fonte": "Imoview / Rotina Imobiliária — imóveis publicados na web",
   "imoveis": [
     {
@@ -21,7 +21,8 @@
         "/imoveis/96587.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/96587/zmml4-uberlandia-apto-2-quartos-armarios-banheiro-social-completo-sala-ampla-sacada-cozinha-armarios-area-de-servico-banheiro-de-servi-1764031730.jpg?v=1764031731",
         "https://cdn.imoview.com.br/rotina/Imoveis/96587/xy8em-uberlandia-apto-2-quartos-armarios-banheiro-social-completo-sala-ampla-sacada-cozinha-armarios-area-de-servico-banheiro-de-servi-1764031730.jpg?v=1764031731"
-      ]
+      ],
+      "novo": true
     },
     {
       "codigo": "93801",
@@ -42,7 +43,8 @@
         "/imoveis/93801.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/93801/t1bloi-uberlandia-casa-3-quartos-bairro-laranjeiras-6-1749130051.jpeg?v=1749130051",
         "https://cdn.imoview.com.br/rotina/Imoveis/93801/to5eu-uberlandia-casa-3-quartos-bairro-laranjeiras-5-1749130051.jpeg?v=1749130051"
-      ]
+      ],
+      "novo": true
     },
     {
       "codigo": "86237",
@@ -66,7 +68,8 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/86237/73jir-whatsapp-image-2024-03-20-at-172419-1-1711020184.jpeg?v=1711020184",
         "https://cdn.imoview.com.br/rotina/Imoveis/86237/a4pvx-whatsapp-image-2024-03-20-at-172420-2-1711020184.jpeg?v=1711020184",
         "https://cdn.imoview.com.br/rotina/Imoveis/86237/rzsow-whatsapp-image-2024-03-20-at-172421-4-1711020184.jpeg?v=1711020184"
-      ]
+      ],
+      "novo": false
     },
     {
       "codigo": "96076",
@@ -87,7 +90,8 @@
         "/imoveis/96076.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/96076/dltw-2-quartos-patrimonio-uberlandia-mg-24-1760644796.jpg?v=1760706575",
         "https://cdn.imoview.com.br/rotina/Imoveis/96076/guv7z-2-quartos-patrimonio-uberlandia-mg-23-1760644796.jpg?v=1760706575"
-      ]
+      ],
+      "novo": false
     },
     {
       "codigo": "99496",
@@ -108,7 +112,8 @@
         "/imoveis/99496.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/99496/0r2awl-whatsapp-image-2026-06-03-at-165025-1780517089.jpeg?v=1780517089",
         "https://cdn.imoview.com.br/rotina/Imoveis/99496/t8as8-whatsapp-image-2026-06-03-at-165026-1780517089.jpeg?v=1780517089"
-      ]
+      ],
+      "novo": false
     },
     {
       "codigo": "90195",
@@ -129,7 +134,8 @@
         "/imoveis/90195.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/90195/66w62-a0d03542-29ca-4889-9b77-234f17122301-1732206431.jpeg?v=1732559942",
         "https://cdn.imoview.com.br/rotina/Imoveis/90195/dx459-a62e1c95-c04c-4088-be6b-2df281a53e45-1732206431.jpeg?v=1732559942"
-      ]
+      ],
+      "novo": false
     },
     {
       "codigo": "74455",
@@ -150,7 +156,8 @@
         "/imoveis/74455.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/74455/whatsapp-image-2022-07-06-at-160132.jpeg?v=1657203455",
         "https://cdn.imoview.com.br/rotina/Imoveis/74455/whatsapp-image-2022-07-06-at-160134.jpeg?v=1657203455"
-      ]
+      ],
+      "novo": false
     },
     {
       "codigo": "71360",
@@ -171,7 +178,8 @@
         "/imoveis/71360.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/71360/whatsapp-image-2022-02-01-at-135323.jpeg?v=1644425747",
         "https://cdn.imoview.com.br/rotina/Imoveis/71360/whatsapp-image-2022-02-01-at-135324.jpeg?v=1644425747"
-      ]
+      ],
+      "novo": false
     },
     {
       "codigo": "97886",
@@ -192,7 +200,8 @@
         "/imoveis/97886.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/97886/ddyon-6-quartos-aparecida-uberlandia-mg-7-1772072120.jpeg?v=1780513815",
         "https://cdn.imoview.com.br/rotina/Imoveis/97886/q84ps-6-quartos-aparecida-uberlandia-mg-8-1772072120.jpeg?v=1780513815"
-      ]
+      ],
+      "novo": false
     },
     {
       "codigo": "91188",
@@ -213,7 +222,8 @@
         "/imoveis/91188.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/91188/w4ifq-5c1fmi-whatsapp-image-2023-04-25-at-131602-2-1682441340-1738780276.jpeg?v=1738780277",
         "https://cdn.imoview.com.br/rotina/Imoveis/91188/6w2sul-6wkcmf-whatsapp-image-2023-04-25-at-131603-1682441340-1738780276.jpeg?v=1738780277"
-      ]
+      ],
+      "novo": false
     },
     {
       "codigo": "64693",
@@ -234,7 +244,8 @@
         "/imoveis/64693.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/64693/whatsapp-image-2021-03-11-at-175846-1.jpeg?v=1615568900",
         "https://cdn.imoview.com.br/rotina/Imoveis/64693/whatsapp-image-2021-03-11-at-175851.jpeg?v=1615568900"
-      ]
+      ],
+      "novo": false
     },
     {
       "codigo": "69377",
@@ -255,7 +266,8 @@
         "/imoveis/69377.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/69377/whatsapp-image-2021-10-27-at-131219-1.jpeg?v=1635441824",
         "https://cdn.imoview.com.br/rotina/Imoveis/69377/whatsapp-image-2021-10-27-at-131214-1.jpeg?v=1635441824"
-      ]
+      ],
+      "novo": false
     }
   ]
 }

@@ -180,11 +180,11 @@ function publicar(codigosArg) {
   }
 
   // remove campos internos e monta a galeria (capa hospedada + demais fotos do CDN público) + descrição real
-  const limpos = selecao.map(({ tipoRaw, ...rest }) => {
+  const limpos = selecao.map(({ tipoRaw, ...rest }, i) => {
     const extras = (galerias[rest.codigo] || []).filter((u) => u && !/avatar\.jpg/i.test(u))
     const fotos = [rest.img, ...extras]
     const descricao = limparDesc(descricoes[rest.codigo])
-    return { ...rest, descricao, fotos }
+    return { ...rest, descricao, fotos, novo: i < 2 } // os 2 mais recentes ganham selo "Novo"
   })
   const out = {
     geradoEm: new Date().toISOString(),
