@@ -30,6 +30,43 @@ export default function ImovelDetalhe() {
     return () => { document.title = `${CONFIG.marca}` }
   }, [im])
 
+  // Dados estruturados (SEO / rich results no Google)
+  useEffect(() => {
+    if (!im) return
+    const origin = window.location.origin
+    const abs = (u) => (u && u.startsWith('http') ? u : origin + u)
+    const props = [
+      im.quartos > 0 && { '@type': 'PropertyValue', name: 'Quartos', value: im.quartos },
+      im.suites > 0 && { '@type': 'PropertyValue', name: 'Suítes', value: im.suites },
+      im.banheiros > 0 && { '@type': 'PropertyValue', name: 'Banheiros', value: im.banheiros },
+      im.vagas > 0 && { '@type': 'PropertyValue', name: 'Vagas', value: im.vagas },
+      im.area > 0 && { '@type': 'PropertyValue', name: 'Área', value: im.area, unitText: 'm²' },
+    ].filter(Boolean)
+    const data = {
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: `${im.tipo} no ${im.bairro}, Uberlândia`,
+      description: resumoImovel(im),
+      image: fotos.map(abs),
+      category: 'Imóvel à venda',
+      additionalProperty: props,
+      offers: {
+        '@type': 'Offer',
+        price: im.preco,
+        priceCurrency: 'BRL',
+        availability: 'https://schema.org/InStock',
+        url: window.location.href,
+        seller: { '@type': 'RealEstateAgent', name: CONFIG.marca, areaServed: 'Uberlândia - MG' },
+      },
+    }
+    const el = document.createElement('script')
+    el.type = 'application/ld+json'
+    el.id = 'ld-imovel'
+    el.text = JSON.stringify(data)
+    document.head.appendChild(el)
+    return () => { document.getElementById('ld-imovel')?.remove() }
+  }, [im, fotos])
+
   if (!im) {
     return (
       <main className="section--light det-vazio">
