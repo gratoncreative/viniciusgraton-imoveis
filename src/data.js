@@ -10,7 +10,7 @@ export const CONFIG = {
   instagram: 'https://www.instagram.com/viniciusgraton.imoveis/',
   cidade: 'Uberlândia / MG',
   email: 'contato@viniciusgraton.com.br',
-  gaId: '', // ID do Google Analytics 4 (G-XXXXXXX); vazio = analytics desligado
+  gaId: 'G-MYTY0KBK9E', // ID do Google Analytics 4; vazio = analytics desligado
   // Imagem realista da capa (troque por uma foto sua/local quando quiser)
   heroImg: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2400&auto=format&fit=crop',
 }
