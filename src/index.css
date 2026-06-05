@@ -324,7 +324,7 @@ section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
 .card-specs svg { width: 16px; height: 16px; color: var(--text-mute); }
 
 /* ===== Catálogo (/imoveis) ===== */
-.catalogo { padding-top: 120px; min-height: 100vh; }
+.catalogo { padding: 120px 0 110px; min-height: 100vh; }
 .cat-head { max-width: 640px; margin-bottom: 32px; }
 .cat-filtros { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
 .cat-filtros input, .cat-filtros select {
@@ -345,8 +345,8 @@ section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
 .cat-cta p { color: var(--text-soft); max-width: 520px; margin: 12px auto 24px; }
 
 /* ===== Detalhe do imóvel (/imovel/:codigo) ===== */
-.det { padding-top: 110px; min-height: 100vh; }
-.det-vazio { padding-top: 160px; min-height: 70vh; }
+.det { padding: 110px 0 110px; min-height: 100vh; }
+.det-vazio { padding: 160px 0 120px; min-height: 70vh; }
 .det-bread { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 24px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .det-bread a { color: var(--text-soft); }
 .det-bread a:hover { color: var(--gold-1); }
