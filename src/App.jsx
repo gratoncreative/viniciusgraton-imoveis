@@ -7,6 +7,7 @@ import Footer from './components/Footer'
 import Home from './pages/Home'
 import Catalogo from './pages/Catalogo'
 import ImovelDetalhe from './pages/ImovelDetalhe'
+import NotFound from './pages/NotFound'
 import { linkWhatsApp, WA } from './data'
 import { IconWhats } from './components/icons'
 
@@ -60,7 +61,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/imoveis" element={<Catalogo />} />
         <Route path="/imovel/:codigo" element={<ImovelDetalhe />} />
-        <Route path="*" element={<Home />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
 
