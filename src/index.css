@@ -338,6 +338,11 @@ section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
 .cat-filtros select { cursor: pointer; }
 .cat-limpar { background: none; border: 1px solid var(--border); border-radius: 11px; padding: 11px 16px; cursor: pointer; font-family: var(--font-head); font-weight: 600; font-size: 0.85rem; color: var(--text-soft); }
 .cat-limpar:hover { color: var(--gold-1); border-color: var(--gold-3); }
+.cat-chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 2px 0 16px; }
+.cat-chip { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-head); font-weight: 600; font-size: 0.8rem; color: var(--text); background: rgba(184,134,47,0.12); border: 1px solid var(--gold-3); border-radius: 100px; padding: 6px 13px; cursor: pointer; transition: background 0.2s; }
+.cat-chip:hover { background: rgba(184,134,47,0.22); }
+.cat-chip svg { color: var(--gold-3); flex: none; }
+.cat-chips .cat-limpar { padding: 6px 12px; font-size: 0.8rem; }
 .cat-count { color: var(--text-soft); font-size: 0.9rem; margin: 6px 0 26px; }
 .cat-vazio { text-align: center; padding: 60px 0; }
 .cat-vazio p { color: var(--text-soft); margin-bottom: 20px; font-size: 1.05rem; }

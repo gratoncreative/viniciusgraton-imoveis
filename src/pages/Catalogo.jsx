@@ -1,14 +1,31 @@
-import { useState, useMemo } from 'react'
+import { useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import CardImovel from '../components/CardImovel'
 import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, FAIXAS_PRECO, linkWhatsApp, WA } from '../data'
-import { IconWhats } from '../components/icons'
-
-const EMPTY = { q: '', tipo: '', bairro: '', faixa: -1, quartos: 0, vagas: 0, ordem: 'recentes' }
+import { IconWhats, IconClose } from '../components/icons'
 
 export default function Catalogo() {
-  const [f, setF] = useState(EMPTY)
-  const up = (k, v) => setF((s) => ({ ...s, [k]: v }))
+  const [params, setParams] = useSearchParams()
+
+  // a URL é a fonte da verdade dos filtros (busca compartilhável e botão voltar funciona)
+  const f = {
+    q: params.get('q') || '',
+    tipo: params.get('tipo') || '',
+    bairro: params.get('bairro') || '',
+    faixa: params.has('faixa') ? parseInt(params.get('faixa'), 10) : -1,
+    quartos: parseInt(params.get('quartos') || '0', 10),
+    vagas: parseInt(params.get('vagas') || '0', 10),
+    ordem: params.get('ordem') || 'recentes',
+  }
+
+  const up = (k, v) => {
+    const p = new URLSearchParams(params)
+    const vazio = v === '' || v == null || v === -1 || v === 0 || (k === 'ordem' && v === 'recentes')
+    if (vazio) p.delete(k)
+    else p.set(k, v)
+    setParams(p, { replace: true })
+  }
 
   const lista = useMemo(() => {
     let r = IMOVEIS.filter((im) => {
@@ -29,10 +46,19 @@ export default function Catalogo() {
     if (f.ordem === 'menor') r = [...r].sort((a, b) => a.preco - b.preco)
     if (f.ordem === 'maior') r = [...r].sort((a, b) => b.preco - a.preco)
     return r
-  }, [f])
+  }, [f.tipo, f.bairro, f.quartos, f.vagas, f.faixa, f.q, f.ordem])
 
-  const limpar = () => setF(EMPTY)
-  const ativos = f.tipo || f.bairro || f.faixa >= 0 || f.quartos || f.vagas || f.q
+  const limpar = () => setParams({}, { replace: true })
+
+  // chips dos filtros ativos (cada um removível)
+  const chips = [
+    f.q && { k: 'q', label: `“${f.q}”`, reset: '' },
+    f.tipo && { k: 'tipo', label: f.tipo, reset: '' },
+    f.bairro && { k: 'bairro', label: f.bairro, reset: '' },
+    f.faixa >= 0 && { k: 'faixa', label: FAIXAS_PRECO[f.faixa].label, reset: -1 },
+    f.quartos > 0 && { k: 'quartos', label: `${f.quartos}+ quartos`, reset: 0 },
+    f.vagas > 0 && { k: 'vagas', label: `${f.vagas}+ vagas`, reset: 0 },
+  ].filter(Boolean)
 
   return (
     <main className="section--light catalogo">
@@ -81,8 +107,18 @@ export default function Catalogo() {
             <option value="menor">Menor preço</option>
             <option value="maior">Maior preço</option>
           </select>
-          {ativos ? <button className="cat-limpar" onClick={limpar}>Limpar filtros</button> : null}
         </div>
+
+        {chips.length > 0 && (
+          <div className="cat-chips">
+            {chips.map((c) => (
+              <button key={c.k} className="cat-chip" onClick={() => up(c.k, c.reset)}>
+                {c.label} <IconClose width={13} height={13} />
+              </button>
+            ))}
+            <button className="cat-limpar" onClick={limpar}>Limpar tudo</button>
+          </div>
+        )}
 
         <p className="cat-count">{lista.length} {lista.length === 1 ? 'imóvel encontrado' : 'imóveis encontrados'}</p>
 
