@@ -392,6 +392,17 @@ section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
 .lead-ok { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; min-height: 320px; }
 .lead-ok-ico { width: 66px; height: 66px; border-radius: 50%; background: var(--gold-grad); color: #20160a; display: grid; place-items: center; box-shadow: 0 14px 36px -12px rgba(224,181,86,0.6); }
 .lead-ok p { color: var(--text-soft); max-width: 360px; line-height: 1.6; }
+.lead-consent { display: flex; gap: 10px; align-items: flex-start; font-size: 0.8rem; color: var(--text-soft); margin: 6px 0 2px; cursor: pointer; line-height: 1.45; }
+.lead-consent input { margin-top: 2px; flex: none; width: 16px; height: 16px; accent-color: var(--gold-2); cursor: pointer; }
+.lead-consent a { color: var(--gold-1); text-decoration: underline; }
+/* Páginas legais (privacidade) */
+.legal { padding-bottom: 110px; }
+.legal-back { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-head); font-weight: 600; font-size: 0.88rem; color: var(--gold-3); }
+.legal-back:hover { gap: 12px; }
+.legal-body { margin-top: 22px; }
+.legal-body h2 { font-family: var(--font-head); font-weight: 700; font-size: 1.18rem; margin: 30px 0 8px; }
+.legal-body p { color: var(--text-soft); line-height: 1.75; margin-bottom: 10px; }
+.legal-body a { color: var(--gold-3); text-decoration: underline; }
 @media (max-width: 600px) { .det-mapa-frame iframe { height: 300px; } }
 
 /* descrição curta no card da vitrine */

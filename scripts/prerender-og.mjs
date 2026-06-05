@@ -97,6 +97,7 @@ const urls = [
   { loc: `${SITE}/`, freq: 'weekly', pri: '1.0' },
   { loc: `${SITE}/imoveis`, freq: 'daily', pri: '0.9' },
   ...imoveis.map((im) => ({ loc: `${SITE}/imovel/${im.codigo}`, freq: 'weekly', pri: '0.8' })),
+  { loc: `${SITE}/privacidade`, freq: 'yearly', pri: '0.2' },
 ]
 const sitemap =
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +

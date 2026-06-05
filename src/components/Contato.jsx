@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Reveal from './Reveal'
 import { CONFIG, linkWhatsApp, WA } from '../data'
 import { IconWhats, IconPhone, IconMail, IconPin, IconInsta, IconArrow } from './icons'
@@ -118,6 +119,10 @@ export default function Contato() {
                 <label>
                   <span>Detalhes <i>(opcional)</i></span>
                   <textarea name="detalhes" rows="2" value={form.detalhes} onChange={set('detalhes')} placeholder="Bairro, faixa de valor, nº de quartos..." />
+                </label>
+                <label className="lead-consent">
+                  <input type="checkbox" required />
+                  <span>Concordo em ser contatado e com o tratamento dos meus dados conforme a <Link to="/privacidade" target="_blank">Política de Privacidade</Link>.</span>
                 </label>
                 <button type="submit" className="btn btn-gold lead-submit">
                   <IconWhats /> Quero falar com o Vinícius <IconArrow />
