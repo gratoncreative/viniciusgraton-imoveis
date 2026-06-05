@@ -2,7 +2,8 @@ import { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import Galeria from '../components/Galeria'
-import { getImovel, fotosDe, formatPreco, formatArea, resumoImovel, linkWhatsApp, waImovel, CONFIG } from '../data'
+import CardImovel from '../components/CardImovel'
+import { getImovel, fotosDe, formatPreco, formatArea, resumoImovel, IMOVEIS, linkWhatsApp, waImovel, CONFIG } from '../data'
 import { IconWhats, IconArrow, ICONS } from './../components/icons'
 
 const plural = (n, s, p) => (n > 1 ? p : s)
@@ -89,6 +90,22 @@ export default function ImovelDetalhe() {
     im.area > 0 && { icon: 'area', valor: formatArea(im.area), label: 'área interna' },
   ].filter(Boolean)
 
+  // outros imóveis (prioriza o mesmo tipo)
+  const relacionados = [
+    ...IMOVEIS.filter((i) => i.codigo !== im.codigo && i.tipo === im.tipo),
+    ...IMOVEIS.filter((i) => i.codigo !== im.codigo && i.tipo !== im.tipo),
+  ].slice(0, 3)
+
+  const compartilhar = async () => {
+    const url = window.location.href
+    const texto = `${im.tipo} no ${im.bairro} — ${formatPreco(im.preco)} | Vinícius Graton Imóveis`
+    if (navigator.share) {
+      try { await navigator.share({ title: texto, url }) } catch (e) { /* cancelado */ }
+    } else {
+      window.open(`https://wa.me/?text=${encodeURIComponent(texto + ' ' + url)}`, '_blank', 'noopener')
+    }
+  }
+
   return (
     <main className="section--light det">
       <div className="container">
@@ -127,6 +144,9 @@ export default function ImovelDetalhe() {
               >
                 Agendar uma visita
               </a>
+              <button type="button" className="det-share" onClick={compartilhar}>
+                <IconArrow width={16} height={16} /> Compartilhar este imóvel
+              </button>
 
               <p className="det-aviso">
                 Valores e disponibilidade sujeitos a confirmação. Atendimento direto comigo, do
@@ -135,6 +155,15 @@ export default function ImovelDetalhe() {
             </Reveal>
           </aside>
         </div>
+
+        {relacionados.length > 0 && (
+          <div className="det-rel">
+            <h2 className="det-rel-titulo">Veja também</h2>
+            <div className="im-grid" style={{ perspective: '1400px' }}>
+              {relacionados.map((r) => <CardImovel key={r.codigo} im={r} />)}
+            </div>
+          </div>
+        )}
 
         <div style={{ marginTop: 48 }}>
           <Link className="btn btn-ghost" to="/imoveis"><IconArrow style={{ transform: 'rotate(180deg)' }} /> Voltar para o catálogo</Link>

@@ -6,7 +6,7 @@
   "description": "Site 3D premium - Vinicius Graton Consultor de Imoveis Uberlandia",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender-og.mjs",
     "preview": "vite preview --host"
   },
   "dependencies": {

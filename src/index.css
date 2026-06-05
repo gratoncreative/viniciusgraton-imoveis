@@ -372,6 +372,11 @@ section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
 .det-whats { width: 100%; justify-content: center; margin-bottom: 12px; }
 .det-visita { width: 100%; justify-content: center; }
 .det-aviso { font-size: 0.78rem; color: var(--text-mute); margin-top: 18px; line-height: 1.5; }
+.det-share { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; background: none; border: none; cursor: pointer; font-family: var(--font-head); font-weight: 600; font-size: 0.9rem; color: var(--gold-3); padding: 4px 0; transition: gap 0.25s var(--ease); }
+.det-share:hover { gap: 12px; text-decoration: underline; text-underline-offset: 3px; }
+.det-rel { margin-top: 72px; padding-top: 48px; border-top: 1px solid var(--border); }
+.det-rel-titulo { font-family: var(--font-head); font-weight: 700; font-size: 1.7rem; margin-bottom: 28px; }
+.det-rel-titulo::after { content: ''; display: block; width: 54px; height: 3px; border-radius: 3px; margin-top: 12px; background: linear-gradient(135deg, #c9962f, #9a6c1c); }
 
 /* descrição curta no card da vitrine */
 .im-desc { color: var(--text-soft); font-size: 0.86rem; line-height: 1.5; margin-top: 10px; }
