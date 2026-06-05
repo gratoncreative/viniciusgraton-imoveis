@@ -561,6 +561,24 @@ section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
 .wa-float:hover { transform: scale(1.08) translateY(-2px); }
 .wa-float svg { width: 30px; height: 30px; color: #fff; }
 
+/* ===== Barra fixa de contato (estilo incorporadora) ===== */
+.barra-contato { position: fixed; left: 0; right: 0; bottom: 0; z-index: 95; transform: translateY(115%); transition: transform 0.5s var(--ease); }
+.barra-contato.on { transform: translateY(0); }
+.barra-inner { display: flex; align-items: center; gap: 22px; margin: 0 auto 14px; padding: 13px 16px 13px 26px; border-radius: 100px; background: rgba(12,16,23,0.86); border: 1px solid var(--gold-3); box-shadow: 0 18px 50px -16px rgba(0,0,0,0.7); backdrop-filter: blur(14px); }
+.barra-label { font-family: var(--font-head); font-weight: 700; font-size: 0.9rem; color: var(--gold-1); letter-spacing: 0.02em; white-space: nowrap; }
+.barra-acoes { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.barra-item { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-head); font-weight: 600; font-size: 0.86rem; color: #fff; padding: 9px 16px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.14); transition: background 0.25s, border-color 0.25s; white-space: nowrap; }
+.barra-item svg { flex: none; color: var(--gold-1); }
+.barra-item:hover { background: rgba(255,255,255,0.07); border-color: var(--gold-3); }
+.barra-whats { background: var(--gold-grad); color: #20160a; border-color: transparent; }
+.barra-whats svg { color: #20160a; }
+.barra-whats:hover { background: var(--gold-grad); filter: brightness(1.05); }
+.barra-fechar { flex: none; width: 34px; height: 34px; border-radius: 50%; border: none; background: rgba(255,255,255,0.06); color: var(--text-soft); cursor: pointer; display: grid; place-items: center; transition: background 0.2s, color 0.2s; }
+.barra-fechar:hover { background: rgba(255,255,255,0.12); color: #fff; }
+/* desktop usa a barra; mobile usa o botão flutuante */
+@media (min-width: 861px) { .wa-float { display: none; } }
+@media (max-width: 860px) { .barra-contato { display: none; } }
+
 /* ---------- mobile menu ---------- */
 .mobile-menu { position: fixed; inset: 0; z-index: 99; background: rgba(7,10,17,0.97); backdrop-filter: blur(16px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; }
 .mobile-menu a { font-family: var(--font-head); font-size: 1.6rem; font-weight: 600; }

@@ -4,6 +4,7 @@ import Lenis from 'lenis'
 import ScrollProgress from './components/ScrollProgress'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import BarraContato from './components/BarraContato'
 import Home from './pages/Home'
 import { CONFIG, linkWhatsApp, WA } from './data'
 import { IconWhats } from './components/icons'
@@ -91,6 +92,8 @@ export default function App() {
       <a className="wa-float" href={linkWhatsApp(WA.flutuante)} target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
         <IconWhats />
       </a>
+
+      <BarraContato />
     </>
   )
 }
