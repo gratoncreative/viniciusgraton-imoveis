@@ -4,7 +4,7 @@ import Reveal from '../components/Reveal'
 import Galeria from '../components/Galeria'
 import CardImovel from '../components/CardImovel'
 import { getImovel, fotosDe, formatPreco, formatArea, resumoImovel, IMOVEIS, linkWhatsApp, waImovel, CONFIG } from '../data'
-import { IconWhats, IconArrow, ICONS } from './../components/icons'
+import { IconWhats, IconArrow, IconPin, ICONS } from './../components/icons'
 
 const plural = (n, s, p) => (n > 1 ? p : s)
 
@@ -154,6 +154,20 @@ export default function ImovelDetalhe() {
               </p>
             </Reveal>
           </aside>
+        </div>
+
+        <div className="det-mapa">
+          <h2 className="det-rel-titulo">Localização</h2>
+          <p className="det-mapa-bairro"><IconPin width={18} height={18} /> {im.bairro}, {im.cidade} — {im.uf}</p>
+          <div className="det-mapa-frame">
+            <iframe
+              title={`Mapa do bairro ${im.bairro}`}
+              src={`https://maps.google.com/maps?q=${encodeURIComponent(`${im.bairro}, ${im.cidade}, MG, Brasil`)}&z=14&output=embed`}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+          <p className="det-mapa-aviso">Localização aproximada do bairro. O endereço exato é informado no atendimento.</p>
         </div>
 
         {relacionados.length > 0 && (
