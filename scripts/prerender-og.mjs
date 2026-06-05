@@ -16,7 +16,9 @@ const DIST = resolve(ROOT, 'dist')
 const SITE = 'https://viniciusgraton.com.br'
 
 const baseHtml = readFileSync(resolve(DIST, 'index.html'), 'utf8')
-const { imoveis } = JSON.parse(readFileSync(resolve(ROOT, 'src/imoveis-destaque.json'), 'utf8'))
+const dados = JSON.parse(readFileSync(resolve(ROOT, 'src/imoveis-destaque.json'), 'utf8'))
+const imoveis = dados.imoveis
+const lastmod = (dados.geradoEm || '').slice(0, 10) || '2026-06-04'
 
 const formatPreco = (v) => {
   if (!v || v <= 0) return 'Sob consulta'
@@ -89,3 +91,18 @@ for (const im of imoveis) {
   n++
 }
 console.log(`✓ prerender-og: ${n} páginas de imóvel geradas em dist/imovel/{codigo}/index.html`)
+
+// sitemap.xml completo (home + catálogo + cada imóvel)
+const urls = [
+  { loc: `${SITE}/`, freq: 'weekly', pri: '1.0' },
+  { loc: `${SITE}/imoveis`, freq: 'daily', pri: '0.9' },
+  ...imoveis.map((im) => ({ loc: `${SITE}/imovel/${im.codigo}`, freq: 'weekly', pri: '0.8' })),
+]
+const sitemap =
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+  urls
+    .map((u) => `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>\n  </url>`)
+    .join('\n') +
+  `\n</urlset>\n`
+writeFileSync(resolve(DIST, 'sitemap.xml'), sitemap)
+console.log(`✓ sitemap.xml: ${urls.length} URLs`)
