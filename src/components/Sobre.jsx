@@ -32,8 +32,9 @@ function FotoDepth() {
 
   return (
     <div ref={ref} className="sobre-photo" onMouseMove={onMove} onMouseLeave={onLeave}>
-      <img className="depth-bg" src="./vinicius-graton.jpg" alt="" aria-hidden="true" />
-      <img className="depth-fg" src="./vinicius-graton-cutout.png" alt="Vinícius Graton, consultor de imóveis em Uberlândia" />
+      <span className="sobre-glow" aria-hidden="true" />
+      <span className="sobre-floor" aria-hidden="true" />
+      <img className="depth-fg" src="/vinicius-graton-cutout.png" alt="Vinícius Graton, consultor de imóveis em Uberlândia" />
       <div className="sobre-badge">
         <span className="ico"><IconShield width={22} height={22} /></span>
         <div>
