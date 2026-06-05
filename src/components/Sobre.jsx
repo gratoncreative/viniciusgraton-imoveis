@@ -1,13 +1,13 @@
 import { useRef } from 'react'
 import Reveal from './Reveal'
-import { DIFERENCIAIS } from '../data'
-import { IconShield } from './icons'
+import { linkWhatsApp, WA } from '../data'
+import { IconShield, IconWhats } from './icons'
 
-function FotoDepth() {
+export default function Sobre() {
   const ref = useRef(null)
   const raf = useRef(0)
 
-  // fundo fica estático; apenas o recorte (corpo) se move com o mouse -> profundidade real
+  // cenário estático; apenas o recorte (corpo) se move com o mouse
   const onMove = (e) => {
     const el = ref.current
     if (!el) return
@@ -31,32 +31,14 @@ function FotoDepth() {
   }
 
   return (
-    <div ref={ref} className="sobre-photo" onMouseMove={onMove} onMouseLeave={onLeave}>
+    <section id="sobre" className="sobre-banner" ref={ref} onMouseMove={onMove} onMouseLeave={onLeave}>
       <img className="sobre-cenario" src="/escritorio.jpg" alt="" aria-hidden="true" />
       <span className="sobre-tint" aria-hidden="true" />
       <span className="sobre-glow" aria-hidden="true" />
-      <span className="sobre-floor" aria-hidden="true" />
-      <img className="depth-fg" src="/vinicius-graton-cutout.png" alt="Vinícius Graton, consultor de imóveis em Uberlândia" />
-      <div className="sobre-badge">
-        <span className="ico"><IconShield width={22} height={22} /></span>
-        <div>
-          <b>Compra segura, do início ao fim</b>
-          <span>Documentação e negociação acompanhadas de perto</span>
-        </div>
-      </div>
-    </div>
-  )
-}
+      <img className="sobre-recorte" src="/vinicius-graton-cutout.png" alt="Vinícius Graton, consultor de imóveis em Uberlândia" />
 
-export default function Sobre() {
-  return (
-    <section id="sobre" className="section--light">
-      <div className="container sobre-grid">
-        <Reveal>
-          <FotoDepth />
-        </Reveal>
-
-        <div className="sobre">
+      <div className="container sobre-banner-wrap">
+        <div className="sobre-banner-text">
           <Reveal>
             <span className="eyebrow">Quem te atende</span>
             <h2 className="section-title">Mais que vender imóvel, <em>te ajudo a decidir</em></h2>
@@ -68,22 +50,30 @@ export default function Sobre() {
               com pressa. Meu trabalho é tirar o medo dessa decisão.
             </p>
             <p>
-              Eu te escuto, entendo seu momento e só coloco na sua frente o que realmente faz sentido.
-              Cuido da curadoria, das visitas, da negociação e de toda a parte burocrática, pra você
-              comprar com clareza, no preço certo e com total segurança.
+              Eu te escuto, cuido da curadoria, das visitas, da negociação e de toda a burocracia,
+              pra você comprar com clareza, no preço certo e com total segurança.
             </p>
           </Reveal>
 
-          <div className="dif-grid">
-            {DIFERENCIAIS.map((d, i) => (
-              <Reveal key={i} delay={0.15 + i * 0.08}>
-                <div className="dif">
-                  <b><span className="check">✓</span> {d.titulo}</b>
-                  <p>{d.texto}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal delay={0.15}>
+            <ul className="sobre-checks">
+              <li><span className="check">✓</span> Curadoria, não catálogo</li>
+              <li><span className="check">✓</span> Olhar de investimento</li>
+              <li><span className="check">✓</span> Documentação conferida</li>
+              <li><span className="check">✓</span> Atendimento direto comigo</li>
+            </ul>
+          </Reveal>
+
+          <Reveal delay={0.2}>
+            <div className="sobre-banner-acoes">
+              <a className="btn btn-gold" href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener">
+                <IconWhats /> Falar comigo agora
+              </a>
+              <span className="sobre-selo">
+                <IconShield width={18} height={18} /> Compra segura, do início ao fim
+              </span>
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
