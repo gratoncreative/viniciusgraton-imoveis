@@ -14,21 +14,36 @@ function fmtPhone(w) {
 
 const OBJETIVOS = ['Comprar pra morar', 'Investir', 'Meu primeiro imóvel', 'Vender / avaliar', 'Ainda estou pesquisando']
 
+const encode = (data) =>
+  Object.keys(data)
+    .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
+    .join('&')
+
 export default function Contato() {
   const [form, setForm] = useState({ nome: '', telefone: '', objetivo: OBJETIVOS[0], detalhes: '' })
+  const [enviado, setEnviado] = useState(false)
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
   const enviar = (e) => {
     e.preventDefault()
+    // 1) salva o lead no Netlify Forms (painel + e-mail). Em dev pode falhar — seguimos mesmo assim.
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: encode({ 'form-name': 'contato', ...form }),
+    }).catch(() => {})
+
+    // 2) abre o WhatsApp já com a mensagem pronta
     const linhas = [
       `Olá Vinícius! Me chamo ${form.nome || '(sem nome)'}.`,
       `Objetivo: ${form.objetivo}.`,
       form.detalhes ? `Detalhes: ${form.detalhes}` : '',
       form.telefone ? `Meu telefone: ${form.telefone}` : '',
     ].filter(Boolean)
-    const url = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(linhas.join('\n'))}`
-    window.open(url, '_blank', 'noopener')
+    window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(linhas.join('\n'))}`, '_blank', 'noopener')
+
+    setEnviado(true)
   }
 
   return (
@@ -65,31 +80,51 @@ export default function Contato() {
                 </div>
               </div>
 
-              <form className="lead-form" onSubmit={enviar}>
+              {enviado ? (
+                <div className="lead-form lead-ok">
+                  <span className="lead-ok-ico"><IconWhats width={30} height={30} /></span>
+                  <h3>Recebido! 🎉</h3>
+                  <p>Seu contato foi registrado e eu já abri o WhatsApp pra gente conversar. Se não abriu, é só me chamar direto.</p>
+                  <a className="btn btn-gold" href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener">
+                    <IconWhats /> Falar no WhatsApp
+                  </a>
+                </div>
+              ) : (
+              <form
+                className="lead-form"
+                name="contato"
+                method="POST"
+                data-netlify="true"
+                netlify-honeypot="bot-field"
+                onSubmit={enviar}
+              >
+                <input type="hidden" name="form-name" value="contato" />
+                <p hidden><label>Não preencha: <input name="bot-field" onChange={() => {}} /></label></p>
                 <h3>Fale comigo agora</h3>
                 <label>
                   <span>Seu nome</span>
-                  <input type="text" value={form.nome} onChange={set('nome')} placeholder="Como posso te chamar?" required />
+                  <input type="text" name="nome" value={form.nome} onChange={set('nome')} placeholder="Como posso te chamar?" required />
                 </label>
                 <label>
                   <span>WhatsApp / telefone <i>(opcional)</i></span>
-                  <input type="tel" value={form.telefone} onChange={set('telefone')} placeholder="(34) 9____-____" />
+                  <input type="tel" name="telefone" value={form.telefone} onChange={set('telefone')} placeholder="(34) 9____-____" />
                 </label>
                 <label>
                   <span>O que você procura?</span>
-                  <select value={form.objetivo} onChange={set('objetivo')}>
+                  <select name="objetivo" value={form.objetivo} onChange={set('objetivo')}>
                     {OBJETIVOS.map((o) => <option key={o} value={o}>{o}</option>)}
                   </select>
                 </label>
                 <label>
                   <span>Detalhes <i>(opcional)</i></span>
-                  <textarea rows="2" value={form.detalhes} onChange={set('detalhes')} placeholder="Bairro, faixa de valor, nº de quartos..." />
+                  <textarea name="detalhes" rows="2" value={form.detalhes} onChange={set('detalhes')} placeholder="Bairro, faixa de valor, nº de quartos..." />
                 </label>
                 <button type="submit" className="btn btn-gold lead-submit">
-                  <IconWhats /> Enviar no WhatsApp <IconArrow />
+                  <IconWhats /> Quero falar com o Vinícius <IconArrow />
                 </button>
-                <p className="lead-note">Seus dados vão direto pro WhatsApp do Vinícius. Sem cadastro, sem spam.</p>
+                <p className="lead-note">Seu contato é registrado com segurança e você já fala comigo no WhatsApp. Sem spam.</p>
               </form>
+              )}
             </div>
           </div>
         </Reveal>
