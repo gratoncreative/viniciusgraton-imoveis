@@ -50,7 +50,8 @@
       "mcp__Claude_in_Chrome__read_page",
       "PowerShell($dir = \"D:\\\\MEU SITE\\\\public\\\\imoveis\"; New-Item -ItemType Directory -Force $dir | Out-Null; $codes = @\\(86237,99496,90195,64693,74455,69377,97886,96076,93801,96587,91188\\); foreach\\($c in $codes\\){ try { Invoke-WebRequest -Uri \"https://cdn.imoview.com.br/rotina/Imoveis/$c/avatar.jpg\" -OutFile \"$dir\\\\$c.jpg\" -UseBasicParsing -ErrorAction Stop; $sz=\\(Get-Item \"$dir\\\\$c.jpg\"\\).Length; Write-Output \"$c OK $sz bytes\" } catch { Write-Output \"$c FALHOU $\\($_.Exception.Message\\)\" } })",
       "Bash(find /c/Users/vinic/.claude -iname \"lock_manager*\" 2>/dev/null; find \"/d/MEU SITE\" -iname \"lock_manager*\" 2>/dev/null)",
-      "PowerShell(& \"C:\\\\Users\\\\vinic\\\\.claude\\\\skills\\\\cerebro-coordenacao\\\\lock_manager.ps1\" -Action release -Owner sessao-user 2>&1)"
+      "PowerShell(& \"C:\\\\Users\\\\vinic\\\\.claude\\\\skills\\\\cerebro-coordenacao\\\\lock_manager.ps1\" -Action release -Owner sessao-user 2>&1)",
+      "PowerShell(cd \"D:\\\\MEU SITE\"; node scripts/sync-imoveis.mjs publicar 2>&1 | Select-Object -Last 2; Write-Output \"--- amostra ---\"; \\(Get-Content -Raw -Encoding UTF8 src/imoveis-destaque.json | ConvertFrom-Json\\).imoveis[2] | Select-Object codigo,bairro,descricao,@{n='fotos';e={$_.fotos.Count}} | Format-List)"
     ]
   }
 }
