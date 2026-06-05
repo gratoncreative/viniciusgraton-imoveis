@@ -455,12 +455,12 @@ section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
   background: linear-gradient(180deg, #0a0f18 0%, #0e1320 48%, #17111a 100%);
   box-shadow: 0 34px 70px -34px rgba(0,0,0,0.75);
 }
-/* cenário virtual: escritório de luxo bem desfocado ao fundo */
-.sobre-cenario { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: blur(11px) brightness(0.5) saturate(1.06); transform: scale(1.14); }
-/* leve escurecimento p/ o recorte destacar e dar profundidade */
-.sobre-tint { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(8,11,18,0.5) 0%, rgba(8,11,18,0.32) 38%, rgba(8,11,18,0.82) 100%); }
-/* brilho dourado quente (luz ambiente do escritório) atrás do recorte */
-.sobre-glow { position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%); width: 92%; height: 64%; pointer-events: none; background: radial-gradient(ellipse at center, rgba(224,181,86,0.22), rgba(224,181,86,0.06) 46%, transparent 72%); filter: blur(16px); }
+/* cenário virtual: escritório de luxo levemente desfocado ao fundo (visível) */
+.sobre-cenario { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: blur(4px) brightness(0.92) saturate(1.06); transform: scale(1.07); }
+/* escurecimento só na base (selo legível) — topo permanece claro pra ver o escritório */
+.sobre-tint { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(8,11,18,0.04) 0%, rgba(8,11,18,0.04) 50%, rgba(8,11,18,0.66) 100%); }
+/* halo dourado quente bem sutil atrás do recorte */
+.sobre-glow { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 80%; height: 60%; pointer-events: none; background: radial-gradient(ellipse at center, rgba(224,181,86,0.14), transparent 66%); filter: blur(18px); }
 /* sombra de base, ancorando o recorte */
 .sobre-floor { position: absolute; left: 50%; bottom: 4%; transform: translateX(-50%); width: 70%; height: 26px; border-radius: 50%; pointer-events: none; background: radial-gradient(ellipse, rgba(0,0,0,0.55), transparent 70%); filter: blur(8px); }
 /* corpo recortado: nítido, em primeiro plano, parallax sutil só dele (cenário estático) */
