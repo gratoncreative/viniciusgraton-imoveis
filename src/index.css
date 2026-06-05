@@ -455,12 +455,12 @@ section { position: relative; padding: clamp(80px, 11vw, 140px) 0; }
   background: linear-gradient(180deg, #0a0f18 0%, #0e1320 48%, #17111a 100%);
   box-shadow: 0 34px 70px -34px rgba(0,0,0,0.75);
 }
-/* céu/atmosfera no topo (cenário virtual) */
-.sobre-sky { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(130% 70% at 50% -8%, rgba(124,150,196,0.12), transparent 58%); }
-/* brilho dourado de horizonte (luzes da cidade) atrás dos prédios */
-.sobre-glow { position: absolute; left: 50%; top: 60%; transform: translate(-50%, -50%); width: 104%; height: 58%; pointer-events: none; background: radial-gradient(ellipse at center, rgba(224,181,86,0.30), rgba(224,181,86,0.08) 44%, transparent 72%); filter: blur(14px); }
-/* skyline (silhueta de prédios) ao fundo */
-.sobre-skyline { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 44%; pointer-events: none; opacity: 0.96; }
+/* cenário virtual: escritório de luxo bem desfocado ao fundo */
+.sobre-cenario { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: blur(11px) brightness(0.5) saturate(1.06); transform: scale(1.14); }
+/* leve escurecimento p/ o recorte destacar e dar profundidade */
+.sobre-tint { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(8,11,18,0.5) 0%, rgba(8,11,18,0.32) 38%, rgba(8,11,18,0.82) 100%); }
+/* brilho dourado quente (luz ambiente do escritório) atrás do recorte */
+.sobre-glow { position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%); width: 92%; height: 64%; pointer-events: none; background: radial-gradient(ellipse at center, rgba(224,181,86,0.22), rgba(224,181,86,0.06) 46%, transparent 72%); filter: blur(16px); }
 /* sombra de base, ancorando o recorte */
 .sobre-floor { position: absolute; left: 50%; bottom: 4%; transform: translateX(-50%); width: 70%; height: 26px; border-radius: 50%; pointer-events: none; background: radial-gradient(ellipse, rgba(0,0,0,0.55), transparent 70%); filter: blur(8px); }
 /* corpo recortado: nítido, em primeiro plano, parallax sutil só dele (cenário estático) */
