@@ -760,6 +760,13 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
   .dust-p:nth-child(n+9) { display: none; }
 }
 
+/* Conteúdo só para leitores de tela (h1 de SEO sem duplicar o visual) */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Link ativo no menu */
+.nav-links a.is-active { color: var(--gold-1); }
+.nav-links a.is-active::after { transform: scaleX(1); }
+
 /* ---------- conector entre etapas (Como funciona) ---------- */
 @media (min-width: 981px) {
   .passos > *:not(:last-child) .passo::after { content: ''; position: absolute; top: 62px; right: -23px; width: 24px; height: 1px; background: linear-gradient(90deg, var(--gold-3), transparent); z-index: 3; }

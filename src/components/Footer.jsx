@@ -1,24 +1,17 @@
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { CONFIG, linkWhatsApp, WA } from '../data'
 import { IconInsta, IconWhats } from './icons'
 
-const SECOES = [
-  { id: 'sobre', label: 'Sobre' },
-  { id: 'processo', label: 'Como funciona' },
-  { id: 'compromisso', label: 'Compromisso' },
-  { id: 'contato', label: 'Contato' },
+const LINKS = [
+  { to: '/imoveis', label: 'Imóveis' },
+  { to: '/como-funciona', label: 'Como eu te ajudo' },
+  { to: '/sobre', label: 'Sobre mim' },
+  { to: '/regioes', label: 'Uberlândia' },
+  { to: '/contato', label: 'Contato' },
 ]
 
 export default function Footer() {
   const year = 2026
-  const navigate = useNavigate()
-  const { pathname } = useLocation()
-
-  const irSecao = (id) => (e) => {
-    e.preventDefault()
-    if (pathname === '/') document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-    else navigate('/', { state: { scrollTo: id } })
-  }
 
   return (
     <footer className="footer">
@@ -41,9 +34,8 @@ export default function Footer() {
           <div className="footer-cols">
             <div className="footer-col">
               <h5>Navegação</h5>
-              <Link to="/imoveis">Imóveis</Link>
-              {SECOES.map((s) => (
-                <a key={s.id} href={`/#${s.id}`} onClick={irSecao(s.id)}>{s.label}</a>
+              {LINKS.map((s) => (
+                <Link key={s.to} to={s.to}>{s.label}</Link>
               ))}
             </div>
             <div className="footer-col">

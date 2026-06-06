@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import Scene3D from './Scene3D'
 import { CONFIG, linkWhatsApp, WA } from '../data'
 import { IconWhats, IconArrow } from './icons'
@@ -58,11 +59,11 @@ export default function Hero() {
           </p>
 
           <div className="hero-actions">
-            <a className="btn btn-gold" href={linkWhatsApp(WA.hero)} target="_blank" rel="noopener">
+            <Link className="btn btn-gold" to="/imoveis">
+              Ver imóveis disponíveis <IconArrow />
+            </Link>
+            <a className="btn btn-ghost" href={linkWhatsApp(WA.hero)} target="_blank" rel="noopener">
               <IconWhats /> Quero ajuda pra comprar
-            </a>
-            <a className="btn btn-ghost" href="#imoveis">
-              Como eu te ajudo <IconArrow />
             </a>
           </div>
 

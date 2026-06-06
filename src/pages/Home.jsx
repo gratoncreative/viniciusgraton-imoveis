@@ -1,46 +1,25 @@
-import { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
 import Hero from '../components/Hero'
-import Dores from '../components/Dores'
-import Imoveis from '../components/Imoveis'
-import Sobre from '../components/Sobre'
 import Destaque from '../components/Destaque'
-import ComoFunciona from '../components/ComoFunciona'
-import Bairros from '../components/Bairros'
-import Compromisso from '../components/Compromisso'
-import Faq from '../components/Faq'
 import Contato from '../components/Contato'
 import ParallaxBand from '../components/ParallaxBand'
 import { BANDS } from '../data'
+import { useSEO } from '../useSEO'
 
+// Página inicial = VITRINE. Lidera com os imóveis disponíveis; o conteúdo de
+// apoio (como eu te ajudo, sobre, regiões) virou página própria no menu.
 export default function Home() {
-  const location = useLocation()
-
-  // rola até a seção quando navegamos de outra página (state.scrollTo)
-  useEffect(() => {
-    const id = location.state?.scrollTo
-    if (id) {
-      const tryScroll = () => {
-        const el = document.getElementById(id)
-        if (el) el.scrollIntoView({ behavior: 'smooth' })
-      }
-      const t = setTimeout(tryScroll, 120)
-      return () => clearTimeout(t)
-    }
-  }, [location.state])
+  useSEO({
+    title: 'Consultor de Imóveis em Uberlândia',
+    description:
+      'Imóveis à venda em Uberlândia com Vinícius Graton: casas, apartamentos, alto padrão e investimento. Compre seu imóvel sem medo de errar, com curadoria e segurança em cada etapa.',
+    path: '/',
+  })
 
   return (
     <main>
       <Hero />
-      <Destaque />
-      <Dores />
+      <Destaque limite={9} />
       <ParallaxBand {...BANDS.b1} />
-      <Sobre />
-      <Imoveis />
-      <ComoFunciona />
-      <Bairros />
-      <Compromisso />
-      <Faq />
       <Contato />
     </main>
   )

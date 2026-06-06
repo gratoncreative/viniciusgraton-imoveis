@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CONFIG, linkWhatsApp, WA } from '../data'
 import { IconWhats, IconMenu, IconClose } from './icons'
 
-// Links de seção da home + rota do catálogo
-const SECOES = [
-  { id: 'sobre', label: 'Sobre' },
-  { id: 'processo', label: 'Como funciona' },
-  { id: 'compromisso', label: 'Compromisso' },
-  { id: 'contato', label: 'Contato' },
+// Páginas do menu principal
+const LINKS = [
+  { to: '/imoveis', label: 'Imóveis' },
+  { to: '/como-funciona', label: 'Como eu te ajudo' },
+  { to: '/sobre', label: 'Sobre' },
+  { to: '/regioes', label: 'Uberlândia' },
+  { to: '/contato', label: 'Contato' },
 ]
 
 function Brand() {
@@ -27,7 +28,6 @@ function Brand() {
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
-  const navigate = useNavigate()
   const { pathname } = useLocation()
 
   useEffect(() => {
@@ -37,26 +37,19 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // navega até uma seção: na home rola; em outra página vai pra home e rola
-  const irSecao = (id) => (e) => {
-    e.preventDefault()
-    setOpen(false)
-    if (pathname === '/') {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-    } else {
-      navigate('/', { state: { scrollTo: id } })
-    }
-  }
+  // fora da home a navbar já entra sólida (legível sobre seções claras)
+  const solido = scrolled || pathname !== '/'
 
   return (
     <>
-      <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
+      <nav className={`nav ${solido ? 'scrolled' : ''}`}>
         <div className="container nav-inner">
           <Brand />
           <div className="nav-links">
-            <Link to="/imoveis">Imóveis</Link>
-            {SECOES.map((l) => (
-              <a key={l.id} href={`/#${l.id}`} onClick={irSecao(l.id)}>{l.label}</a>
+            {LINKS.map((l) => (
+              <NavLink key={l.to} to={l.to} className={({ isActive }) => (isActive ? 'is-active' : undefined)}>
+                {l.label}
+              </NavLink>
             ))}
           </div>
           <div className="nav-cta">
@@ -79,9 +72,8 @@ export default function Navbar() {
             <button className="nav-toggle" style={{ position: 'absolute', top: 24, right: 24 }} onClick={() => setOpen(false)} aria-label="Fechar menu">
               <IconClose width={30} height={30} />
             </button>
-            <Link to="/imoveis" onClick={() => setOpen(false)}>Imóveis</Link>
-            {SECOES.map((l) => (
-              <a key={l.id} href={`/#${l.id}`} onClick={irSecao(l.id)}>{l.label}</a>
+            {LINKS.map((l) => (
+              <Link key={l.to} to={l.to} onClick={() => setOpen(false)}>{l.label}</Link>
             ))}
             <a className="btn btn-gold" href={linkWhatsApp(WA.navbar)} target="_blank" rel="noopener" onClick={() => setOpen(false)}>
               <IconWhats /> Falar no WhatsApp

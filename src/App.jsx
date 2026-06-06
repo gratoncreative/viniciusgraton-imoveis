@@ -13,6 +13,10 @@ import { IconWhats } from './components/icons'
 // páginas internas carregadas sob demanda (home fica mais leve e rápida)
 const Catalogo = lazy(() => import('./pages/Catalogo'))
 const ImovelDetalhe = lazy(() => import('./pages/ImovelDetalhe'))
+const ComoAjudo = lazy(() => import('./pages/ComoAjudo'))
+const QuemSou = lazy(() => import('./pages/QuemSou'))
+const Regioes = lazy(() => import('./pages/Regioes'))
+const FaleComigo = lazy(() => import('./pages/FaleComigo'))
 const Privacidade = lazy(() => import('./pages/Privacidade'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
@@ -87,6 +91,10 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/imoveis" element={<Catalogo />} />
               <Route path="/imovel/:codigo" element={<ImovelDetalhe />} />
+              <Route path="/como-funciona" element={<ComoAjudo />} />
+              <Route path="/sobre" element={<QuemSou />} />
+              <Route path="/regioes" element={<Regioes />} />
+              <Route path="/contato" element={<FaleComigo />} />
               <Route path="/privacidade" element={<Privacidade />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

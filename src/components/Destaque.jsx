@@ -4,9 +4,9 @@ import CardImovel from './CardImovel'
 import { IMOVEIS } from '../data'
 import { IconArrow } from './icons'
 
-export default function Destaque() {
+export default function Destaque({ limite = 6 }) {
   if (!IMOVEIS.length) return null
-  const lista = IMOVEIS.slice(0, 6)
+  const lista = IMOVEIS.slice(0, limite)
 
   return (
     <section id="destaque">

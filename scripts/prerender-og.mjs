@@ -113,6 +113,10 @@ console.log(`✓ prerender-og: ${n} páginas de imóvel geradas em dist/imovel/{
 const urls = [
   { loc: `${SITE}/`, freq: 'weekly', pri: '1.0' },
   { loc: `${SITE}/imoveis`, freq: 'daily', pri: '0.9' },
+  { loc: `${SITE}/como-funciona`, freq: 'monthly', pri: '0.6' },
+  { loc: `${SITE}/sobre`, freq: 'monthly', pri: '0.6' },
+  { loc: `${SITE}/regioes`, freq: 'monthly', pri: '0.7' },
+  { loc: `${SITE}/contato`, freq: 'monthly', pri: '0.5' },
   ...imoveis.map((im) => ({
     loc: `${SITE}/imovel/${im.codigo}`,
     freq: 'weekly',
