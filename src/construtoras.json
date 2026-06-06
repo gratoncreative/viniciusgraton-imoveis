@@ -8,10 +8,10 @@
       "segmento": "Alto padrão · residencial e comercial",
       "descricao": "Incorporadora com mais de 20 anos de mercado, em Uberlândia desde 2020, com empreendimentos residenciais e comerciais de alto padrão.",
       "projetos": [
-        { "nome": "Chronos Tower", "bairro": "Morada da Colina", "status": "Em obras", "descricao": "Empreendimento de uso misto (corporativo e comercial), unidades de 38 a 376 m².", "url": "https://chronostower.perplan.com.br/" },
-        { "nome": "Casa'Alta", "bairro": "Altamira", "status": "Em obras", "descricao": "Condomínio residencial de alto padrão, unidades de 299 a 599 m².", "url": "https://perplan.com.br/empreendimentos/uberlandia" },
-        { "nome": "Grandverse Place", "bairro": "Villa Gávea", "status": "Em obras", "descricao": "Residencial com apartamentos de 77 a 90 m².", "url": "https://perplan.com.br/empreendimentos/uberlandia" },
-        { "nome": "Nuage Altamira", "bairro": "Altamira", "status": "Em obras", "descricao": "Residencial com apartamentos de 161 a 166 m².", "url": "https://perplan.com.br/empreendimentos/uberlandia" }
+        { "nome": "Chronos Tower", "bairro": "Morada da Colina", "status": "Em obras", "descricao": "Empreendimento de uso misto (corporativo e comercial), unidades de 38 a 376 m².", "url": "https://chronostower.perplan.com.br/", "capa": "https://cdnm.com.br/chronostowerperplancombr/media/c2/0a/d4/12/chronos-tower-20260311171921000.jpg", "video": "https://www.youtube.com/watch?v=2uBpum2TYFc", "galeria": ["https://cdnm.com.br/chronostowerperplancombr/media/aa/b3/23/14/chronos-tower-20260413091407000.jpg", "https://cdnm.com.br/chronostowerperplancombr/media/9b/f3/1c/15/chronos-tower-20260413091407000.jpg", "https://cdnm.com.br/chronostowerperplancombr/media/c7/4d/97/16/chronos-tower-20260413091407000.jpg"] },
+        { "nome": "Casa'Alta", "bairro": "Altamira", "status": "Em obras", "descricao": "Condomínio residencial de alto padrão, unidades de 299 a 599 m².", "url": "https://casaalta.perplan.com.br/", "capa": "https://cdnm.com.br/horizcasaalta/media/b6/d7/67/22/abril-de-2026-20260413090410000.png", "video": "https://www.youtube.com/watch?v=Lx7JszK7OGE", "galeria": ["https://cdnm.com.br/horizcasaalta/media/37/69/3c/23/abril-de-2026-20260413090449000.png", "https://cdnm.com.br/horizcasaalta/media/1f/f1/de/24/abril-de-2026-20260413090517000.png", "https://cdnm.com.br/horizcasaalta/media/8e/29/6a/25/abril-de-2026-20260413090623000.png"] },
+        { "nome": "Grandverse Place", "bairro": "Villa Gávea", "status": "Em obras", "descricao": "Residencial com apartamentos de 77 a 90 m².", "url": "https://perplan.com.br/empreendimento/grandverse-place", "capa": "https://perplansite.blob.core.windows.net/imagens/empreendimentos/grandverse-place//foto-1-grandverse-place-638694249520091344.jpg", "video": "", "galeria": ["https://perplansite.blob.core.windows.net/imagens/empreendimentos/grandverse-place//foto-2-grandverse-place-638694249540903351.jpg", "https://perplansite.blob.core.windows.net/imagens/empreendimentos/grandverse-place//foto-3-grandverse-place-638694249541822377.jpg", "https://perplansite.blob.core.windows.net/imagens/empreendimentos/grandverse-place//foto-4-grandverse-place-638694249542558668.jpg"] },
+        { "nome": "Nuage Altamira", "bairro": "Altamira", "status": "Em obras", "descricao": "Residencial com apartamentos de 161 a 166 m².", "url": "https://perplan.com.br/empreendimento/nuage-altamira", "capa": "https://perplansite.blob.core.windows.net/imagens/empreendimentos/nuage-altamira//foto-1-nuage-altamira-638756674372652081.jpg", "video": "https://www.youtube.com/watch?v=dyKKAKHMeRM", "galeria": ["https://perplansite.blob.core.windows.net/imagens/empreendimentos/nuage-altamira//foto-2-nuage-altamira-638756674375146179.jpg", "https://perplansite.blob.core.windows.net/imagens/empreendimentos/nuage-altamira//foto-3-nuage-altamira-638756674375781688.jpg", "https://perplansite.blob.core.windows.net/imagens/empreendimentos/nuage-altamira//foto-4-nuage-altamira-638756674376411697.jpg"] }
       ]
     },
     {
@@ -21,9 +21,8 @@
       "segmento": "Residencial e comercial",
       "descricao": "Construtora e incorporadora atuante em Uberlândia desde 1985, com mais de 2.000 imóveis entregues e certificação PBQP-H nível A.",
       "projetos": [
-        { "nome": "SOHO Exclusive", "bairro": "Copacabana", "status": "Lançamento", "descricao": "Empreendimento em lançamento no bairro Copacabana.", "url": "https://rfreitas.com.br/" },
-        { "nome": "Riviera New Home", "bairro": "Jaraguá", "status": "Pronto", "descricao": "Empreendimento residencial no bairro Jaraguá.", "url": "https://rfreitas.com.br/" },
-        { "nome": "UZ Tower", "bairro": "Tabajaras", "status": "Pronto", "descricao": "Torre residencial no bairro Tabajaras.", "url": "https://rfreitas.com.br/" }
+        { "nome": "SOHO Exclusive", "bairro": "Copacabana", "status": "Lançamento", "descricao": "Empreendimento em lançamento no bairro Copacabana.", "url": "https://rfreitas.com.br/empreendimento/soho-exclusive", "capa": "https://rfreitas.com.br/uploads/imagens/fachada-soho-exclusive-56.jpg", "video": "", "galeria": ["https://rfreitas.com.br/uploads/imagens/soho-exclusive-10-3214.jpg", "https://rfreitas.com.br/uploads/imagens/soho-exclusive-10-701.jpg", "https://rfreitas.com.br/uploads/imagens/soho-exclusive-10-529.jpg"] },
+        { "nome": "Riviera New Home", "bairro": "Jaraguá", "status": "Pronto", "descricao": "Empreendimento residencial no bairro Jaraguá.", "url": "https://rfreitas.com.br/empreendimento/riviera-new-home", "capa": "https://rfreitas.com.br/uploads/imagens/fachada-riviera-new-home-411.jpg", "video": "", "galeria": ["https://rfreitas.com.br/uploads/imagens/riviera-new-home-9-3439.jpg", "https://rfreitas.com.br/uploads/imagens/riviera-new-home-9-3197.jpg", "https://rfreitas.com.br/uploads/imagens/riviera-new-home-9-6429.jpg"] }
       ]
     },
     {
@@ -33,10 +32,10 @@
       "segmento": "Residencial e comercial",
       "descricao": "Construtora e incorporadora de Uberlândia com empreendimentos residenciais e comerciais nos principais bairros da cidade.",
       "projetos": [
-        { "nome": "World Trade Center Uberlândia", "bairro": "Gávea", "status": "Em obras", "descricao": "Complexo corporativo e comercial no bairro Gávea.", "url": "https://inconew.com.br/" },
-        { "nome": "Leme do Praia", "bairro": "Patrimônio", "status": "Em obras", "descricao": "Empreendimento residencial vertical no bairro Patrimônio.", "url": "https://inconew.com.br/empreendimentos/leme-do-praia/" },
-        { "nome": "Soleil Résidence", "bairro": "Gávea", "status": "Em obras", "descricao": "Empreendimento residencial no bairro Gávea.", "url": "https://inconew.com.br/" },
-        { "nome": "Cittadella 57", "bairro": "Gávea", "status": "Em obras", "descricao": "Condomínio residencial fechado no bairro Gávea.", "url": "https://inconew.com.br/" }
+        { "nome": "World Trade Center Uberlândia", "bairro": "Gávea", "status": "Em obras", "descricao": "Complexo corporativo e comercial no bairro Gávea.", "url": "https://inconew.com.br/empreendimentos/wtc-uberlandia/", "capa": "https://inconew.com.br/wp-content/uploads/2025/05/INCONEW_WTC_COMPLETO_IMG02_DRONE.jpg", "video": "", "galeria": ["https://inconew.com.br/wp-content/uploads/2025/05/WTC_FACHADA_IMAGEM_07-2-scaled.jpg", "https://inconew.com.br/wp-content/uploads/2025/05/IMAGEM-FACHADA-08-NOTURNA-DET-1-scaled.jpg", "https://inconew.com.br/wp-content/uploads/2025/05/INW_WTC_06-05_FINAL_LOBBY_img01-1-scaled.jpg"] },
+        { "nome": "Leme do Praia", "bairro": "Patrimônio", "status": "Em obras", "descricao": "Empreendimento residencial vertical no bairro Patrimônio.", "url": "https://inconew.com.br/empreendimentos/leme-do-praia/", "capa": "https://inconew.com.br/wp-content/uploads/2024/02/FACHADA_VISTA_dia_4_opc1.jpg", "video": "", "galeria": ["https://inconew.com.br/wp-content/uploads/2024/02/PLAYGROUND-.jpg", "https://inconew.com.br/wp-content/uploads/2024/02/ESPACO-FITNESS.jpg", "https://inconew.com.br/wp-content/uploads/2024/02/FIRE-PLACE.jpg"] },
+        { "nome": "Soleil Résidence", "bairro": "Gávea", "status": "Em obras", "descricao": "Empreendimento residencial no bairro Gávea.", "url": "https://inconew.com.br/empreendimentos/soleil-residence/", "capa": "https://inconew.com.br/wp-content/uploads/2024/02/FACHADA-SOLEIL-01.jpg", "video": "", "galeria": ["https://inconew.com.br/wp-content/uploads/2024/02/SOLEI-AREA-EXTERNA-10-DIA-2.jpg", "https://inconew.com.br/wp-content/uploads/2024/02/RENDERGOURMET.jpg", "https://inconew.com.br/wp-content/uploads/2024/02/ACADEMIA-SOLEIL_View01.jpg"] },
+        { "nome": "Cittadella 57", "bairro": "Gávea", "status": "Em obras", "descricao": "Condomínio residencial fechado no bairro Gávea.", "url": "https://inconew.com.br/", "capa": "", "video": "", "galeria": [] }
       ]
     },
     {
@@ -46,7 +45,7 @@
       "segmento": "Médio e alto padrão",
       "descricao": "Incorporadora de Uberlândia focada no mercado de médio e alto padrão; equipe com mais de 1.200 unidades entregues.",
       "projetos": [
-        { "nome": "Rio 1233", "bairro": "", "status": "Lançamento", "descricao": "Empreendimento de alto padrão, principal projeto atual da Urbanix.", "url": "https://rio1233.urbanixincorporadora.com.br/" }
+        { "nome": "Rio 1233", "bairro": "", "status": "Lançamento", "descricao": "Empreendimento de alto padrão, principal projeto atual da Urbanix.", "url": "https://rio1233.urbanixincorporadora.com.br/", "capa": "https://rio1233.urbanixincorporadora.com.br/images/fotos/fachada-high.jpg", "video": "", "galeria": ["https://rio1233.urbanixincorporadora.com.br/images/fotos/piscina.jpg", "https://rio1233.urbanixincorporadora.com.br/images/fotos/salaodefestas-ext.jpg", "https://rio1233.urbanixincorporadora.com.br/images/fotos/academia.jpg"] }
       ]
     },
     {
@@ -56,9 +55,9 @@
       "segmento": "Médio e alto padrão",
       "descricao": "Construtora e incorporadora do Grupo Zambon Pacheco, sediada em Uberlândia desde 2002, com empreendimentos residenciais em bairros nobres.",
       "projetos": [
-        { "nome": "Mirah", "bairro": "Altamira", "status": "Em obras", "descricao": "Apartamentos de alto padrão de 111 a 135 m², 3 suítes e 2 vagas.", "url": "https://zpempreendimentos.com.br/empreendimentos/mirah/" },
-        { "nome": "Santa Maria Lifestyle", "bairro": "Santa Maria", "status": "Pronto", "descricao": "Empreendimento residencial no bairro Santa Maria.", "url": "https://zpempreendimentos.com.br/empreendimentos/santa-maria-lifestyle/" },
-        { "nome": "Moove Residence", "bairro": "Cazeca", "status": "Pronto", "descricao": "Apartamentos no bairro Cazeca, próximo a shopping e centro comercial.", "url": "https://zpempreendimentos.com.br/empreendimentos/moove-residence/" }
+        { "nome": "Mirah", "bairro": "Altamira", "status": "Em obras", "descricao": "Apartamentos de alto padrão de 111 a 135 m², 3 suítes e 2 vagas.", "url": "https://zpempreendimentos.com.br/empreendimentos/mirah/", "capa": "https://zpempreendimentos.com.br/wp-content/uploads/2025/08/xyz-zp-mirah-detalhe-de-paisagismo-scaled.jpg", "video": "", "galeria": ["https://zpempreendimentos.com.br/wp-content/uploads/2025/08/zp-mirah-lobby-cam02-scaled.jpg", "https://zpempreendimentos.com.br/wp-content/uploads/2025/08/zp-mirah-piscina-01-scaled.jpg", "https://zpempreendimentos.com.br/wp-content/uploads/2025/08/zp-mirah-piscina-03-scaled.jpg"] },
+        { "nome": "Santa Maria Lifestyle", "bairro": "Santa Maria", "status": "Pronto", "descricao": "Empreendimento residencial no bairro Santa Maria.", "url": "https://zpempreendimentos.com.br/empreendimentos/santa-maria-lifestyle/", "capa": "https://zpempreendimentos.com.br/wp-content/uploads/2023/02/fachada-santa-maria-lifestyle-view-01-1-1-scaled.jpg", "video": "", "galeria": ["https://zpempreendimentos.com.br/wp-content/uploads/2023/02/sala-de-estar-living-santa-maria-lifestyle-002.jpg", "https://zpempreendimentos.com.br/wp-content/uploads/2023/02/piscina-santa-maria-lifestyle-view-02.jpg", "https://zpempreendimentos.com.br/wp-content/uploads/2023/02/salao-de-eventos-santa-maria-lifestyle-view-01.jpg"] },
+        { "nome": "Moove Residence", "bairro": "Cazeca", "status": "Pronto", "descricao": "Apartamentos no bairro Cazeca, próximo a shopping e centro comercial.", "url": "https://zpempreendimentos.com.br/empreendimentos/moove-residence/", "capa": "https://zpempreendimentos.com.br/wp-content/uploads/2023/07/fachada-noturna-moove-view01-scaled.jpg", "video": "", "galeria": ["https://zpempreendimentos.com.br/wp-content/uploads/2023/07/academia-moove-zp-view01-scaled.jpg", "https://zpempreendimentos.com.br/wp-content/uploads/2023/07/brinquedoteca-moove-zp-view01-scaled.jpg", "https://zpempreendimentos.com.br/wp-content/uploads/2023/07/gourmet-cobertura-moove-zp-view01-scaled.jpg"] }
       ]
     },
     {
@@ -68,9 +67,9 @@
       "segmento": "Residencial · especialista no Santa Mônica",
       "descricao": "Construtora e incorporadora de Uberlândia desde 1997, especializada em empreendimentos residenciais no bairro Santa Mônica.",
       "projetos": [
-        { "nome": "Isaac 321", "bairro": "Santa Mônica", "status": "Em obras", "descricao": "Apartamentos de 3 quartos a 1 minuto da UFU, com varanda gourmet e lazer.", "url": "https://moraisconstrutora.com/empreendimentos/isaac321/" },
-        { "nome": "Ed. Balcony", "bairro": "Santa Mônica", "status": "Pronto", "descricao": "Edifício residencial entregue em 2024.", "url": "https://moraisconstrutora.com/empreendimentos/" },
-        { "nome": "Ed. Belle Terrasse", "bairro": "Santa Mônica", "status": "Pronto", "descricao": "Edifício residencial entregue em 2023.", "url": "https://moraisconstrutora.com/empreendimentos/" }
+        { "nome": "Isaac 321", "bairro": "Santa Mônica", "status": "Em obras", "descricao": "Apartamentos de 3 quartos a 1 minuto da UFU, com varanda gourmet e lazer.", "url": "https://moraisconstrutora.com/empreendimentos/isaac321/", "capa": "https://moraisconstrutora.com/wp-content/uploads/2025/03/Fachada2_Isaac.jpg", "video": "", "galeria": ["https://moraisconstrutora.com/wp-content/uploads/2025/03/Varanda_Isaac.jpg", "https://moraisconstrutora.com/wp-content/uploads/2025/03/GourmetRooftop3_Isaac.jpg", "https://moraisconstrutora.com/wp-content/uploads/2025/03/Fitness2_Isaac.jpg"] },
+        { "nome": "Ed. Balcony", "bairro": "Santa Mônica", "status": "Pronto", "descricao": "Edifício residencial entregue em 2024.", "url": "https://moraisconstrutora.com/empreendimentos/", "capa": "", "video": "", "galeria": [] },
+        { "nome": "Ed. Belle Terrasse", "bairro": "Santa Mônica", "status": "Pronto", "descricao": "Edifício residencial entregue em 2023.", "url": "https://moraisconstrutora.com/empreendimentos/", "capa": "", "video": "", "galeria": [] }
       ]
     },
     {
@@ -80,9 +79,9 @@
       "segmento": "Alto padrão",
       "descricao": "Incorporadora de Uberlândia focada em apartamentos de alto padrão no bairro Santa Mônica.",
       "projetos": [
-        { "nome": "Supreme Tower", "bairro": "Santa Mônica", "status": "Em obras", "descricao": "Torre residencial de alto padrão, entrega prevista para 2026.", "url": "https://atpempreendimentos.com.br/empreendimentos/supreme-tower/" },
-        { "nome": "Saramago Residence", "bairro": "Santa Mônica", "status": "Pronto", "descricao": "Empreendimento residencial pronto no Santa Mônica.", "url": "https://atpempreendimentos.com.br/empreendimentos/saramago-residence/" },
-        { "nome": "Egeo Residence", "bairro": "Santa Mônica", "status": "Em obras", "descricao": "Empreendimento residencial em construção, entrega prevista para 2027.", "url": "https://atpempreendimentos.com.br/empreendimentos/egeo-residence/" }
+        { "nome": "Supreme Tower", "bairro": "Santa Mônica", "status": "Em obras", "descricao": "Torre residencial de alto padrão, entrega prevista para 2026.", "url": "https://atpempreendimentos.com.br/empreendimentos/supreme-tower/", "capa": "https://atpempreendimentos.com.br/wp-content/uploads/2024/05/fachada-supreme-tower.jpg", "video": "", "galeria": ["https://atpempreendimentos.com.br/wp-content/uploads/2024/05/planta-3-supreme.jpg", "https://atpempreendimentos.com.br/wp-content/uploads/2024/05/planta-2-4-supreme.jpg"] },
+        { "nome": "Saramago Residence", "bairro": "Santa Mônica", "status": "Pronto", "descricao": "Empreendimento residencial pronto no Santa Mônica.", "url": "https://atpempreendimentos.com.br/empreendimentos/saramago-residence/", "capa": "https://atpempreendimentos.com.br/wp-content/uploads/2023/03/Fachada-Saramago-Residence-1024x1024.jpg", "video": "", "galeria": ["https://atpempreendimentos.com.br/wp-content/uploads/2023/03/planta-01-Saramago.jpg", "https://atpempreendimentos.com.br/wp-content/uploads/2023/03/planta-02-Saramago.jpg"] },
+        { "nome": "Egeo Residence", "bairro": "Santa Mônica", "status": "Em obras", "descricao": "Empreendimento residencial em construção, entrega prevista para 2027.", "url": "https://atpempreendimentos.com.br/empreendimentos/egeo-residence/", "capa": "https://atpempreendimentos.com.br/wp-content/uploads/2025/07/fachada-Egeo-Residence.png", "video": "", "galeria": [] }
       ]
     },
     {
@@ -92,8 +91,8 @@
       "segmento": "Residencial e industrial",
       "descricao": "Construtora e incorporadora fundada em 2016 em Uberlândia, certificada ISO 9001 e PBQP-H nível A.",
       "projetos": [
-        { "nome": "Residencial Horizon", "bairro": "", "status": "Em obras", "descricao": "Empreendimento residencial com 160 unidades em Uberlândia.", "url": "https://trustconstrutora.com/" },
-        { "nome": "Mirante Boa Vista", "bairro": "", "status": "Em obras", "descricao": "Empreendimento residencial com 144 unidades em Uberlândia.", "url": "https://trustconstrutora.com/" }
+        { "nome": "Residencial Horizon", "bairro": "", "status": "Em obras", "descricao": "Empreendimento residencial com 160 unidades em Uberlândia.", "url": "https://trustconstrutora.com/empreendimentos/residencial-horizon", "capa": "https://trustconstrutora.com/images/Horizon-frente.jpg", "video": "", "galeria": ["https://trustconstrutora.com/images/Horizon.jpg", "https://trustconstrutora.com/images/Horizon-lazer.jpg"] },
+        { "nome": "Mirante Boa Vista", "bairro": "", "status": "Em obras", "descricao": "Empreendimento residencial com 144 unidades em Uberlândia.", "url": "https://trustconstrutora.com/empreendimentos/mirante-boa-vista", "capa": "https://trustconstrutora.com/images/Mirante-boavista.jpg", "video": "", "galeria": ["https://trustconstrutora.com/images/humanizada-mirante.png", "https://trustconstrutora.com/images/goumert-mirante.png", "https://trustconstrutora.com/images/academia-mirante.png"] }
       ]
     },
     {
@@ -103,9 +102,9 @@
       "segmento": "Médio e alto padrão · residencial e comercial",
       "descricao": "Construtora e incorporadora presente em Uberlândia desde 2018, com mais de 80 empreendimentos lançados no portfólio nacional.",
       "projetos": [
-        { "nome": "Domun", "bairro": "Jardim Sul", "status": "Pronto", "descricao": "Torre única, apartamentos de 2 a 3 suítes (105 a 130 m²) com 2 vagas.", "url": "https://bild.com.br/imoveis/uberlandia/domun-lancamento" },
-        { "nome": "Melliê", "bairro": "Complexo Vinhedos", "status": "Lançamento", "descricao": "Primeira torre do Complexo Vinhedos, plantas de 103 a 239 m².", "url": "https://bild.com.br/imoveis/uberlandia/mellie" },
-        { "nome": "Allma", "bairro": "", "status": "", "descricao": "Empreendimento residencial da Bild em Uberlândia.", "url": "https://bild.com.br/imoveis/uberlandia/allma" }
+        { "nome": "Domun", "bairro": "Jardim Sul", "status": "Pronto", "descricao": "Torre única, apartamentos de 2 a 3 suítes (105 a 130 m²) com 2 vagas.", "url": "https://bild.com.br/imoveis/uberlandia/domun-lancamento", "capa": "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/15950/content_140_EXT01_FACHADA_HR-.jpg", "video": "https://www.youtube.com/watch?v=Zcay-8Oi9e4", "galeria": ["https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/15953/content_140_EXT02_JARDIM_EXTERNO_HR.jpg", "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/15954/content_140_EXT04_PISCINA_HR.jpg", "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/15959/content_140_EXT07_PISCINA_AEREA_HR.jpg"] },
+        { "nome": "Melliê", "bairro": "Complexo Vinhedos", "status": "Lançamento", "descricao": "Primeira torre do Complexo Vinhedos, plantas de 103 a 239 m².", "url": "https://bild.com.br/imoveis/uberlandia/mellie", "capa": "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/23880/content_Bild_Rodobens_Piscina_R02.JPG", "video": "", "galeria": ["https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/23881/content_Bild_Rodobens_Lobby_R02.jpg", "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/23887/content_Bild_Rodobens_Festas_R04.jpg", "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/23893/content_Bild_Rodobens_Fitness_R02.jpg"] },
+        { "nome": "Allma", "bairro": "", "status": "Lançamento", "descricao": "Empreendimento residencial da Bild em Uberlândia.", "url": "https://bild.com.br/imoveis/uberlandia/allma", "capa": "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/31056/content_570_EXT01_FACHADA_V1_HR_Easy-Resize.com.jpg", "video": "", "galeria": ["https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/31062/content_570_EXT09_PISCINA_V2_HR_Easy-Resize.com.jpg", "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/31068/content_570_INT01_LOBBY_HR_Easy-Resize.com.jpg", "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/31072/content_570_INT02_ESPACO_FESTAS_HR_Easy-Resize.com.jpg"] }
       ]
     },
     {
@@ -115,8 +114,8 @@
       "segmento": "Econômico (MCMV) e médio padrão",
       "descricao": "Construtora e incorporadora com mais de 15 anos de mercado e 44 mil unidades lançadas; atua em Uberlândia e Uberaba.",
       "projetos": [
-        { "nome": "Arysta", "bairro": "Gávea Sul", "status": "Em obras", "descricao": "Condomínio com 198 apartamentos de 2 dormitórios (51 a 53 m²), entrega prevista para 2026.", "url": "https://vittaresidencial.com.br/uberlandia/imoveis/arysta" },
-        { "nome": "Mirante das Brisas", "bairro": "Alto Umuarama", "status": "Em obras", "descricao": "Residencial com três torres e área de lazer completa.", "url": "https://vittaresidencial.com.br/uberlandia/imoveis/mirante-das-brisas" }
+        { "nome": "Arysta", "bairro": "Gávea Sul", "status": "Em obras", "descricao": "Condomínio com 198 apartamentos de 2 dormitórios (51 a 53 m²), entrega prevista para 2026.", "url": "https://vittaresidencial.com.br/uberlandia/imoveis/arysta", "capa": "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/arysta/condominio/arysta-258.jpg", "video": "", "galeria": ["https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/arysta/condominio/arysta-261.jpg", "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/arysta/condominio/arysta-255.jpg", "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/arysta/condominio/arysta-941.jpg"] },
+        { "nome": "Mirante das Brisas", "bairro": "Alto Umuarama", "status": "Em obras", "descricao": "Residencial com três torres e área de lazer completa.", "url": "https://vittaresidencial.com.br/uberlandia/imoveis/mirante-das-brisas", "capa": "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/mirante-das-brisas/condominio/mirante-das-brisas-417.jpg", "video": "", "galeria": ["https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/mirante-das-brisas/condominio/mirante-das-brisas-496.jpg", "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/mirante-das-brisas/apartamento/mirante-das-brisas-32.jpg", "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/mirante-das-brisas/apartamento/mirante-das-brisas-38.jpg"] }
       ]
     },
     {
@@ -126,8 +125,8 @@
       "segmento": "Residencial · alto padrão",
       "descricao": "Construtora com empreendimentos no bairro planejado Granja Marileusa e em outras regiões de Uberlândia.",
       "projetos": [
-        { "nome": "Lançamento Granja Marileusa", "bairro": "Granja Marileusa", "status": "Lançamento", "descricao": "Empreendimento residencial no bairro planejado Granja Marileusa.", "url": "https://page.realizaconstrutora.com.br/lps/lancamento-granja-marileusa/" },
-        { "nome": "Prime Clube", "bairro": "", "status": "Lançamento", "descricao": "Empreendimento residencial Prime Clube, em Uberlândia.", "url": "https://page.realizaconstrutora.com.br/lps/prime-clube-uberlandia/" }
+        { "nome": "Bossa Home Design", "bairro": "Granja Marileusa", "status": "Lançamento", "descricao": "Condomínio com piscina, beach tennis e academia no bairro planejado Granja Marileusa.", "url": "https://page.realizaconstrutora.com.br/lps/lancamento-granja-marileusa/", "capa": "https://page.realizaconstrutora.com.br/lps/wp-content/uploads/2023/12/Img-Interna-LP-Bossa_Fachada.jpg", "video": "", "galeria": ["https://page.realizaconstrutora.com.br/lps/wp-content/uploads/2023/12/Img-LP-Bossa_Piscina.jpg", "https://page.realizaconstrutora.com.br/lps/wp-content/uploads/2023/12/Img-LP-Bossa_Beach-tennis.jpg", "https://page.realizaconstrutora.com.br/lps/wp-content/uploads/2023/12/Img-LP-Bossa_Academia.jpg"] },
+        { "nome": "Prime Clube", "bairro": "", "status": "Lançamento", "descricao": "Empreendimento residencial Prime Clube, em Uberlândia.", "url": "https://page.realizaconstrutora.com.br/lps/prime-clube-uberlandia/", "capa": "https://page.realizaconstrutora.com.br/lps/wp-content/uploads/2025/01/prime-clube-Uberlandia2-1024x991.png", "video": "", "galeria": [] }
       ]
     },
     {
@@ -137,8 +136,8 @@
       "segmento": "Residencial",
       "descricao": "Construtora e incorporadora com empreendimentos residenciais; confira os lançamentos atuais no site oficial.",
       "projetos": [
-        { "nome": "Residencial Nillo", "bairro": "", "status": "Lançamento", "descricao": "Residencial na Rua Nilo Peçanha, apartamentos de 52 a 115 m².", "url": "https://construtoratricon.com.br/lancamentos/" },
-        { "nome": "Residencial Avvio", "bairro": "", "status": "Lançamento", "descricao": "Empreendimento residencial entre os lançamentos atuais da Tricon.", "url": "https://construtoratricon.com.br/lancamentos/" }
+        { "nome": "Residencial Nillo", "bairro": "", "status": "Lançamento", "descricao": "Residencial na Rua Nilo Peçanha, apartamentos de 52 a 115 m².", "url": "https://construtoratricon.com.br/residencial-nillo/", "capa": "https://construtoratricon.com.br/wp-content/uploads/2024/07/nillo_2008-COMUNS-FINAL-PISCINA.webp", "video": "", "galeria": ["https://construtoratricon.com.br/wp-content/uploads/2024/07/ROOFTOP-GOURMET_v1-1.webp", "https://construtoratricon.com.br/wp-content/uploads/2024/07/nillo_2008-COMUNS-FINAL-GOURMET.webp", "https://construtoratricon.com.br/wp-content/uploads/2024/07/nillo_2008-COMUNS-FINAL-ACADEMIA.webp"] },
+        { "nome": "Residencial Avvio", "bairro": "", "status": "Lançamento", "descricao": "Empreendimento residencial entre os lançamentos atuais da Tricon.", "url": "https://construtoratricon.com.br/residencial-avvio/", "capa": "https://construtoratricon.com.br/wp-content/uploads/2024/07/avvio_jpeg_AVVIO14-768x965-1-e1721042005210.jpg", "video": "", "galeria": ["https://construtoratricon.com.br/wp-content/uploads/2024/07/avvio_jpeg_AVVIO15-768x965-1-e1721042064267.jpg"] }
       ]
     },
     {
@@ -148,7 +147,7 @@
       "segmento": "Loteamentos e condomínios fechados",
       "descricao": "Grupo de construção e incorporação fundado em 1987 em Uberlândia, atuante em loteamentos, urbanização e condomínios fechados.",
       "projetos": [
-        { "nome": "Reserva do Lago", "bairro": "Represa de Miranda", "status": "Em obras", "descricao": "Condomínio fechado de lotes na Represa de Miranda, com lazer completo e escrituração individual.", "url": "https://casanovaudi.com.br/reserva-do-lago/" }
+        { "nome": "Reserva do Lago", "bairro": "Represa de Miranda", "status": "Em obras", "descricao": "Condomínio fechado de lotes na Represa de Miranda, com lazer completo e escrituração individual.", "url": "https://casanovaudi.com.br/reserva-do-lago/", "capa": "https://casanovaudi.com.br/wp-content/uploads/2025/01/Reserva-do-LAGO-10-2048x1152.jpg", "video": "", "galeria": ["https://casanovaudi.com.br/wp-content/uploads/2025/01/Reserva-do-LAGO-22-2048x1152.jpg", "https://casanovaudi.com.br/wp-content/uploads/2025/01/Reserva-do-LAGO-19-2048x1152.jpg", "https://casanovaudi.com.br/wp-content/uploads/2025/01/Reserva-do-LAGO-7-2048x1152.jpg"] }
       ]
     },
     {
@@ -158,9 +157,9 @@
       "segmento": "Residencial econômico (MCMV)",
       "descricao": "Uma das maiores construtoras do Brasil, com forte presença em Uberlândia e mais de 10 empreendimentos comercializados na cidade.",
       "projetos": [
-        { "nome": "Parque Univitá", "bairro": "Jardim Holanda", "status": "Pronto", "descricao": "Condomínio de apartamentos no Jardim Holanda.", "url": "https://www.mrv.com.br/" },
-        { "nome": "Parque Unistella", "bairro": "Tubalina", "status": "Pronto", "descricao": "Empreendimento residencial de apartamentos no Tubalina.", "url": "https://www.mrv.com.br/" },
-        { "nome": "Parque Uniplace", "bairro": "Presidente Roosevelt", "status": "Pronto", "descricao": "Condomínio de apartamentos no Presidente Roosevelt.", "url": "https://www.mrv.com.br/" }
+        { "nome": "Parque Univitá", "bairro": "Jardim Holanda", "status": "Pronto", "descricao": "Condomínio de apartamentos no Jardim Holanda.", "url": "https://www.mrv.com.br/imoveis/apartamentos/minas-gerais/uberlandia/jardim-holanda/parque-univita", "capa": "", "video": "", "galeria": [] },
+        { "nome": "Parque Unistella", "bairro": "Tubalina", "status": "Pronto", "descricao": "Empreendimento residencial de apartamentos no Tubalina.", "url": "https://www.mrv.com.br/imoveis/apartamentos/minas-gerais/uberlandia/tubalina/parque-unistella", "capa": "", "video": "", "galeria": [] },
+        { "nome": "Parque Uniplace", "bairro": "Presidente Roosevelt", "status": "Pronto", "descricao": "Condomínio de apartamentos no Presidente Roosevelt.", "url": "https://www.mrv.com.br/", "capa": "", "video": "", "galeria": [] }
       ]
     },
     {
@@ -170,7 +169,7 @@
       "segmento": "Econômico (MCMV) · bairros planejados",
       "descricao": "Construtora nacional de habitação econômica via Minha Casa Minha Vida, com bairro planejado em condomínio fechado em Uberlândia.",
       "projetos": [
-        { "nome": "Moradas do Horizonte — Condomínio Ouro Preto", "bairro": "Shopping Park (zona sul)", "status": "Lançamento", "descricao": "Bairro planejado em condomínio fechado com infraestrutura completa, primeiro empreendimento da Pacaembu na cidade.", "url": "https://pacaembu.com/imoveis-residenciais/moradas-do-horizonte-condominio-ouro-preto" }
+        { "nome": "Moradas do Horizonte — Condomínio Ouro Preto", "bairro": "Shopping Park (zona sul)", "status": "Lançamento", "descricao": "Bairro planejado em condomínio fechado com infraestrutura completa, primeiro empreendimento da Pacaembu na cidade.", "url": "https://pacaembu.com/imoveis-residenciais/moradas-do-horizonte-condominio-ouro-preto", "capa": "https://cdnm.com.br/pacaembu/media/d5/e2/c0/2251/moradas-do-horizonte-condominio-ouro-preto-20260108101737000.jpg", "video": "", "galeria": ["https://cdnm.com.br/pacaembu/media/63/54/40/2252/moradas-do-horizonte-condominio-ouro-preto-20260108101737000.jpg", "https://cdnm.com.br/pacaembu/media/ce/6c/92/2253/moradas-do-horizonte-condominio-ouro-preto-20260108101738000.jpg", "https://cdnm.com.br/pacaembu/media/38/65/1c/2254/moradas-do-horizonte-condominio-ouro-preto-20260108101738000.jpg"] }
       ]
     }
   ]
