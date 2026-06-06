@@ -79,7 +79,8 @@
       "Write(C:/Users/vinic/.claude/**)",
       "Bash(node --input-type=module -e ' *)",
       "mcp__scheduled-tasks__list_scheduled_tasks",
-      "mcp__Claude_in_Chrome__tabs_close_mcp"
+      "mcp__Claude_in_Chrome__tabs_close_mcp",
+      "mcp__Claude_in_Chrome__resize_window"
     ]
   }
 }

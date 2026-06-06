@@ -31,7 +31,11 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: hidden; width: 100%; }
+
+/* Garantias de responsividade: nada ultrapassa a largura da tela em nenhum aparelho */
+img, svg, video, canvas, iframe { max-width: 100%; }
+h1, h2, h3, h4, p, a, span, li, .section-title { overflow-wrap: break-word; word-break: normal; }
 
 body {
   font-family: var(--font-body);
@@ -235,7 +239,8 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .hero-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #46d17e; box-shadow: 0 0 0 4px rgba(70, 209, 126, 0.18); }
 .hero h1 {
   font-family: var(--font-head); font-weight: 800;
-  font-size: clamp(2.6rem, 5.4vw, 4.7rem); line-height: 1.08; letter-spacing: -0.03em;
+  font-size: clamp(2rem, 8vw, 4.7rem); line-height: 1.08; letter-spacing: -0.03em;
+  overflow-wrap: break-word; hyphens: auto;
 }
 .hero h1 em { font-family: var(--font-serif); font-style: italic; font-weight: 500; }
 .hero p.lead { color: var(--text-soft); font-size: clamp(1.04rem, 1.4vw, 1.18rem); line-height: 1.6; margin-top: 24px; max-width: 500px; }
@@ -937,8 +942,13 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
   .passos { grid-template-columns: 1fr; }
   .bairros-grid { grid-template-columns: 1fr; }
   .dif-grid { grid-template-columns: 1fr; }
-  .hero-trust { gap: 18px; }
+  .hero { padding-top: 96px; padding-bottom: 48px; }
+  .hero-trust { gap: 18px 22px; }
+  .hero-trust .item b { font-size: 1.25rem; }
+  .hero-actions { gap: 12px; }
+  .hero-actions .btn { flex: 1 1 100%; justify-content: center; }
   .footer-top { flex-direction: column; }
+  .construtoras-grid { grid-template-columns: 1fr 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
