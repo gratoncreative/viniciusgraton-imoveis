@@ -1,8 +1,12 @@
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import Scene3D from './Scene3D'
-import { CONFIG, linkWhatsApp, WA } from '../data'
+import { CONFIG, linkWhatsApp, WA, IMOVEIS, formatPreco, formatArea } from '../data'
 import { IconWhats, IconArrow } from './icons'
+
+// imóvel em destaque no hero: o de maior valor (vitrine premium)
+const destaque = [...IMOVEIS].sort((a, b) => b.preco - a.preco)[0]
 
 const fade = (d) => ({
   initial: { opacity: 0, y: 30 },
@@ -79,7 +83,28 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <div className="hero-right" aria-hidden="true" />
+        <div className="hero-right">
+          {destaque && (
+            <div className="hero-card">
+              <Link to={`/imovel/${destaque.codigo}`}>
+                <div className="hero-card-media">
+                  <img src={destaque.img} alt={`${destaque.tipo} no ${destaque.bairro}`} />
+                  <span className="hero-card-badge">★ Destaque</span>
+                </div>
+                <div className="hero-card-body">
+                  <span className="hero-card-tipo">{destaque.tipo} · {destaque.bairro}</span>
+                  <span className="hero-card-preco">{formatPreco(destaque.preco)}</span>
+                  <div className="hero-card-specs">
+                    {destaque.suites > 0 && <span>{destaque.suites} suítes</span>}
+                    {destaque.vagas > 0 && <span>{destaque.vagas} vagas</span>}
+                    {destaque.area > 0 && <span>{formatArea(destaque.area)}</span>}
+                  </div>
+                  <span className="hero-card-cta">Ver imóvel <IconArrow width={15} height={15} /></span>
+                </div>
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="scroll-hint">
