@@ -361,7 +361,9 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .det-bread a { color: var(--text-soft); }
 .det-bread a:hover { color: var(--gold-1); }
 .det-bread b { color: var(--text); }
-.det-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 44px; align-items: start; }
+.det-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 44px; align-items: start; }
+.det-galeria, .det-info { min-width: 0; }
+.det-titulo { overflow-wrap: anywhere; }
 .det-foto { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 4/3; background: var(--surface); border: 1px solid var(--border); }
 .det-foto img { width: 100%; height: 100%; object-fit: cover; }
 .det-tag { position: absolute; top: 16px; left: 16px; font-family: var(--font-head); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; padding: 7px 13px; border-radius: 100px; background: rgba(7,10,17,0.7); border: 1px solid var(--gold-3); color: var(--gold-1); backdrop-filter: blur(6px); }

@@ -71,11 +71,36 @@ function baixar(url, dest) {
       .get(url, (r) => {
         if (r.statusCode !== 200) { r.resume(); return res({ ok: false, status: r.statusCode }) }
         r.on('data', (d) => buf.push(d))
-        r.on('end', () => { writeFileSync(dest, Buffer.concat(buf)); res({ ok: true, bytes: Buffer.concat(buf).length }) })
+        r.on('end', () => {
+          const out = Buffer.concat(buf)
+          writeFileSync(dest, out)
+          res({ ok: true, bytes: out.length, dim: jpegSize(out) })
+        })
       })
       .on('error', (e) => res({ ok: false, erro: e.message }))
   })
 }
+
+// lê a largura/altura de um JPEG direto dos bytes (sem dependência externa),
+// para garantir que a capa veio em ALTA resolução e não no avatar (~164px)
+function jpegSize(buf) {
+  try {
+    if (buf[0] !== 0xff || buf[1] !== 0xd8) return null
+    let o = 2
+    while (o < buf.length - 8) {
+      if (buf[o] !== 0xff) { o++; continue }
+      const m = buf[o + 1]
+      if (m >= 0xc0 && m <= 0xcf && m !== 0xc4 && m !== 0xc8 && m !== 0xcc) {
+        return { h: buf.readUInt16BE(o + 5), w: buf.readUInt16BE(o + 7) }
+      }
+      o += 2 + buf.readUInt16BE(o + 2)
+    }
+  } catch {}
+  return null
+}
+
+// largura mínima aceitável para a capa de um imóvel (abaixo disso = avatar/baixa qualidade)
+const MIN_LARGURA_CAPA = 800
 
 function parse(texto) {
   const blocos = texto.split(/Cód\.\s*/).slice(1)
@@ -127,16 +152,35 @@ async function preparar() {
 
   let fotosHd = {}
   if (existsSync(FOTOS)) { try { fotosHd = JSON.parse(readFileSync(FOTOS, 'utf8')) } catch {} }
+  let galerias = {}
+  if (existsSync(GALERIAS)) { try { galerias = JSON.parse(readFileSync(GALERIAS, 'utf8')) } catch {} }
+
+  // 1ª foto em ALTA da galeria (ignora o avatar de baixa resolução)
+  const primeiraAlta = (cod) => (galerias[cod] || []).find((u) => u && !/avatar\.jpg/i.test(u))
 
   mkdirSync(STAGING, { recursive: true })
-  console.log(`→ ${imoveis.length} candidatos. Baixando capas para staging...`)
+  console.log(`→ ${imoveis.length} candidatos. Baixando capas EM ALTA para staging...`)
   const ok = new Set()
+  const baixas = []
   for (const im of imoveis) {
-    const r = await baixar(fotosHd[im.codigo] || CDN(im.codigo), resolve(STAGING, `${im.codigo}.jpg`))
-    console.log(`   ${r.ok ? '✓' : '✗'} ${im.codigo} ${im.tipo} · ${im.bairro} · R$ ${im.preco.toLocaleString('pt-BR')} ${r.ok ? '' : '(' + (r.status || r.erro) + ')'}`)
+    // PRIORIDADE da capa: foto HD explícita → 1ª foto em alta da galeria → avatar (último recurso)
+    const capaUrl = fotosHd[im.codigo] || primeiraAlta(im.codigo) || CDN(im.codigo)
+    im.capaUrl = capaUrl
+    const r = await baixar(capaUrl, resolve(STAGING, `${im.codigo}.jpg`))
+    const w = r.dim?.w || 0
+    const baixa = r.ok && w > 0 && w < MIN_LARGURA_CAPA
+    const flag = !r.ok ? '✗' : baixa ? '⚠' : '✓'
+    console.log(`   ${flag} ${im.codigo} ${im.tipo} · ${im.bairro} · R$ ${im.preco.toLocaleString('pt-BR')}${r.dim ? ` [${r.dim.w}x${r.dim.h}]` : ''} ${r.ok ? '' : '(' + (r.status || r.erro) + ')'}`)
     if (r.ok) ok.add(im.codigo)
+    if (baixa) baixas.push(`${im.codigo} (${r.dim.w}px)`)
   }
   imoveis = imoveis.filter((i) => ok.has(i.codigo))
+
+  if (baixas.length) {
+    console.warn(`\n⚠ ATENÇÃO — capas em BAIXA resolução (< ${MIN_LARGURA_CAPA}px): ${baixas.join(', ')}`)
+    console.warn('  Esses imóveis provavelmente não têm galeria em alta no _imoview-galerias.json.')
+    console.warn('  Reextraia as fotos via app.imoview.com.br/Imovel/GerenciarFotos/{codigo} antes de publicar.')
+  }
 
   writeFileSync(CANDIDATOS, JSON.stringify({ geradoEm: new Date().toISOString(), imoveis }, null, 2) + '\n')
   console.log(`\n✓ ${imoveis.length} candidatos prontos em scripts/_candidatos.json`)
@@ -180,8 +224,9 @@ function publicar(codigosArg) {
   }
 
   // remove campos internos e monta a galeria (capa hospedada + demais fotos do CDN público) + descrição real
-  const limpos = selecao.map(({ tipoRaw, ...rest }, i) => {
-    const extras = (galerias[rest.codigo] || []).filter((u) => u && !/avatar\.jpg/i.test(u))
+  const limpos = selecao.map(({ tipoRaw, capaUrl, ...rest }, i) => {
+    // extras = galeria em alta, sem o avatar e sem repetir a foto que já virou capa
+    const extras = (galerias[rest.codigo] || []).filter((u) => u && !/avatar\.jpg/i.test(u) && u !== capaUrl)
     const fotos = [rest.img, ...extras]
     const descricao = limparDesc(descricoes[rest.codigo])
     return { ...rest, descricao, fotos, novo: i < 2 } // os 2 mais recentes ganham selo "Novo"
