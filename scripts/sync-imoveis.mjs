@@ -29,6 +29,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync, copyFileSync } from
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import https from 'node:https'
+import { execSync } from 'node:child_process'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')
@@ -238,7 +239,11 @@ function publicar(codigosArg) {
   }
   writeFileSync(OUT_JSON, JSON.stringify(out, null, 2) + '\n')
   console.log(`✓ ${limpos.length} imóveis publicados em src/imoveis-destaque.json`)
-  console.log('  Agora: git add -A && git commit && git push  (Netlify republica)')
+
+  // CONTROLE DE QUALIDADE automático — roda SEMPRE após publicar (evita retrabalho com fotos ruins)
+  console.log('\n— rodando QA de fotos (resolução + nitidez) —')
+  try { execSync('node ' + JSON.stringify(resolve(__dirname, 'qa-fotos.mjs')) + ' --local', { stdio: 'inherit' }) } catch (e) { console.warn('  (QA falhou: ' + e.message + ')') }
+  console.log('\n⚠ Revise visualmente as capas sinalizadas acima ANTES do git push. Depois: git add -A && git commit && git push (Cloudflare republica)')
 }
 
 // ---------- entrada ----------
