@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { formatPreco, formatArea, resumoImovel, truncar, linkWhatsApp, waImovel } from '../data'
 import { IconWhats, ICONS } from './icons'
+import Engajamento from './Engajamento'
 
 const plural = (n, s, p) => (n > 1 ? p : s)
 
@@ -64,6 +65,7 @@ export default function CardImovel({ im }) {
         <img src={im.img} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} loading="lazy" />
         <span className="im-tag">{im.tipo}</span>
         {im.novo && <span className="im-novo">Novo</span>}
+        <Engajamento im={im} variante="card" />
         <span className="im-preco">{formatPreco(im.preco)}</span>
       </div>
       <div className="card-body im-body">

@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import Galeria from '../components/Galeria'
 import CardImovel from '../components/CardImovel'
+import Engajamento from '../components/Engajamento'
 import {
   getImovel, fotosDe, formatPreco, formatArea, resumoImovel, subtituloImovel,
   destaquesImovel, ehCondominio, IMOVEIS, linkWhatsApp, waImovel, CONFIG,
@@ -139,16 +140,6 @@ export default function ImovelDetalhe() {
     ...IMOVEIS.filter((i) => i.codigo !== im.codigo && i.tipo !== im.tipo),
   ].slice(0, 3)
 
-  const compartilhar = async () => {
-    const url = window.location.href
-    const texto = `${im.tipo} no ${im.bairro} — ${formatPreco(im.preco)} | Vinícius Graton Imóveis`
-    if (navigator.share) {
-      try { await navigator.share({ title: texto, url }) } catch (e) { /* cancelado */ }
-    } else {
-      window.open(`https://wa.me/?text=${encodeURIComponent(texto + ' ' + url)}`, '_blank', 'noopener')
-    }
-  }
-
   return (
     <main className="section--light det">
       <div className="container">
@@ -186,9 +177,10 @@ export default function ImovelDetalhe() {
               >
                 Agendar uma visita
               </a>
-              <button type="button" className="det-share" onClick={compartilhar}>
-                <IconArrow width={16} height={16} /> Compartilhar este imóvel
-              </button>
+              <div className="det-engaj">
+                <Engajamento im={im} variante="detalhe" />
+                <span className="det-engaj-dica">Curta e compartilhe com quem vai amar este imóvel</span>
+              </div>
 
               <div className="det-trust">
                 <IconShield width={20} height={20} />
