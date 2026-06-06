@@ -7,7 +7,7 @@ export default function Sobre() {
     <section id="sobre" className="sobre-banner">
       <img
         className="sobre-cenario"
-        src="/sobre-banner.jpg"
+        src="/sobre-banner-hd.jpg"
         alt="Vinícius Graton, consultor de imóveis em Uberlândia, em seu escritório"
       />
       <span className="sobre-tint" aria-hidden="true" />

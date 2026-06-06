@@ -1,4 +1,5 @@
 import Hero from '../components/Hero'
+import Apresentacao from '../components/Apresentacao'
 import Destaque from '../components/Destaque'
 import Construtoras from '../components/Construtoras'
 import Contato from '../components/Contato'
@@ -17,6 +18,7 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <Apresentacao />
       <Destaque limite={9} />
       <Construtoras />
       <Contato />

@@ -775,6 +775,22 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .nav-links a.is-active { color: var(--gold-1); }
 .nav-links a.is-active::after { transform: scaleX(1); }
 
+/* ============ APRESENTAÇÃO (home) ============ */
+.apres-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(28px, 5vw, 68px); align-items: center; }
+.apres-foto { position: relative; max-width: 400px; border-radius: 20px; overflow: hidden; border: 1px solid rgba(22,26,34,0.12); box-shadow: 0 30px 60px -34px rgba(22,26,34,0.5); }
+.apres-foto img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; }
+.apres-selo { position: absolute; left: 14px; bottom: 14px; display: inline-flex; align-items: center; gap: 7px; padding: 8px 13px; border-radius: 100px; background: rgba(7,10,17,0.62); border: 1px solid var(--gold-3); backdrop-filter: blur(8px); color: var(--gold-1); font-family: var(--font-head); font-weight: 600; font-size: 0.76rem; }
+.apres-selo svg { flex: none; }
+.apres-lead { font-size: 1.12rem; line-height: 1.65; color: #2b3038; margin-top: 6px; }
+.apres-txt p { color: #5a6370; margin-top: 14px; line-height: 1.7; }
+.apres-lead b, .apres-txt b { color: #1a1f29; }
+.apres-acoes { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+@media (max-width: 860px) {
+  .apres-grid { grid-template-columns: 1fr; gap: 30px; }
+  .apres-foto { margin: 0 auto; }
+  .apres-acoes .btn { flex: 1 1 100%; justify-content: center; }
+}
+
 /* ============ CONSTRUTORAS ============ */
 .construtoras-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
 .construtora-marca { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 90px; padding: 18px 16px; border-radius: 14px; background: #ffffff; border: 1px solid rgba(22,26,34,0.10); box-shadow: 0 8px 24px -18px rgba(22,26,34,0.45); text-decoration: none; filter: grayscale(1); transition: transform 0.25s var(--ease), border-color 0.25s, box-shadow 0.25s, filter 0.25s; }
