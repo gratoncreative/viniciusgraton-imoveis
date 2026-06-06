@@ -107,12 +107,12 @@ export const FAIXAS_PRECO = [
 // Faixas cinematográficas com IMÓVEIS REAIS da carteira (foto hospedada + selo clicável)
 export const BANDS = {
   b1: {
-    img: '/imoveis/86237.jpg',
+    img: '/casa-conceito.jpg',
+    light: true,
     eyebrow: 'Padrão que você merece',
     frase: 'O imóvel certo muda a sua rotina inteira.',
     cta: 'Quero encontrar o meu',
     wa: 'banda1',
-    imovel: { codigo: '86237', tipo: 'Casa em condomínio', bairro: 'Jardim Versailles', preco: 3300000 },
   },
   b2: {
     img: '/imoveis/99496.jpg',
