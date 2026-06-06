@@ -1,15 +1,26 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { IconClose, IconArrow } from './icons'
+
+const DUR = 4.5 // segundos por foto no tour
 
 export default function Galeria({ fotos = [], alt = '' }) {
   const [i, setI] = useState(0)
   const [aberto, setAberto] = useState(false)
+  const [tour, setTour] = useState(false)
   const touchX = useRef(null)
 
   const total = fotos.length
   const ir = useCallback((n) => setI((p) => (n + total) % total), [total])
   const prox = useCallback(() => ir(i + 1), [ir, i])
   const ant = useCallback(() => ir(i - 1), [ir, i])
+
+  // autoplay do "tour em vídeo"
+  useEffect(() => {
+    if (!tour || total < 2) return
+    const t = setInterval(() => setI((p) => (p + 1) % total), DUR * 1000)
+    return () => clearInterval(t)
+  }, [tour, total])
 
   // teclado no lightbox
   useEffect(() => {
@@ -37,25 +48,54 @@ export default function Galeria({ fotos = [], alt = '' }) {
     else if (dx < -50) prox()
     touchX.current = null
   }
+  // navegação manual pausa o tour
+  const manual = (fn) => () => { setTour(false); fn() }
 
   return (
     <div className="gal">
-      <div className="gal-main">
-        <img src={fotos[i]} alt={alt} onClick={() => setAberto(true)} />
+      <div className={`gal-main ${tour ? 'gal-playing' : ''}`}>
+        <AnimatePresence initial={false}>
+          <motion.img
+            key={i}
+            className="gal-slide"
+            src={fotos[i]}
+            alt={alt}
+            onClick={() => setAberto(true)}
+            initial={{ opacity: 0, scale: 1.0 }}
+            animate={{ opacity: 1, scale: tour ? 1.1 : 1.0 }}
+            exit={{ opacity: 0 }}
+            transition={{
+              opacity: { duration: 0.9, ease: 'easeInOut' },
+              scale: { duration: tour ? DUR + 1 : 0.5, ease: 'linear' },
+            }}
+          />
+        </AnimatePresence>
+
+        {tour && total > 1 && (
+          <motion.span
+            className="gal-progress"
+            key={'p' + i}
+            initial={{ width: '0%' }}
+            animate={{ width: '100%' }}
+            transition={{ duration: DUR, ease: 'linear' }}
+          />
+        )}
+
         {total > 1 && (
           <>
-            <button className="gal-nav gal-prev" onClick={ant} aria-label="Foto anterior">
+            <button className="gal-nav gal-prev" onClick={manual(ant)} aria-label="Foto anterior">
               <IconArrow style={{ transform: 'rotate(180deg)' }} />
             </button>
-            <button className="gal-nav gal-next" onClick={prox} aria-label="Próxima foto">
+            <button className="gal-nav gal-next" onClick={manual(prox)} aria-label="Próxima foto">
               <IconArrow />
             </button>
             <span className="gal-count">{i + 1} / {total}</span>
+            <button className={`gal-tour ${tour ? 'on' : ''}`} onClick={() => setTour((t) => !t)} aria-label={tour ? 'Pausar tour' : 'Iniciar tour do imóvel'}>
+              <span className="gal-tour-ico">{tour ? '❚❚' : '▶'}</span> {tour ? 'Pausar tour' : 'Tour do imóvel'}
+            </button>
           </>
         )}
-        <button className="gal-zoom" onClick={() => setAberto(true)} aria-label="Ver em tela cheia">
-          Ver fotos em tela cheia
-        </button>
+        <button className="gal-zoom" onClick={() => setAberto(true)} aria-label="Ver em tela cheia">⛶ Tela cheia</button>
       </div>
 
       {total > 1 && (
@@ -64,7 +104,7 @@ export default function Galeria({ fotos = [], alt = '' }) {
             <button
               key={n}
               className={`gal-thumb ${n === i ? 'on' : ''}`}
-              onClick={() => setI(n)}
+              onClick={manual(() => setI(n))}
               aria-label={`Foto ${n + 1}`}
             >
               <img src={src} alt="" loading="lazy" />
@@ -83,7 +123,17 @@ export default function Galeria({ fotos = [], alt = '' }) {
                 <IconArrow style={{ transform: 'rotate(180deg)' }} />
               </button>
             )}
-            <img src={fotos[i]} alt={alt} />
+            <AnimatePresence initial={false} mode="popLayout">
+              <motion.img
+                key={i}
+                src={fotos[i]}
+                alt={alt}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+              />
+            </AnimatePresence>
             {total > 1 && (
               <button className="lb-nav lb-next" onClick={prox} aria-label="Próxima foto">
                 <IconArrow />
