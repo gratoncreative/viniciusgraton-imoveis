@@ -38,7 +38,6 @@ export default function Home() {
       <Sobre />
       <Imoveis />
       <ComoFunciona />
-      <ParallaxBand {...BANDS.b2} />
       <Bairros />
       <Compromisso />
       <Faq />
