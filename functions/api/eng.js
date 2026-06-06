@@ -13,7 +13,19 @@ const rand = (min, max) => min + Math.floor(Math.random() * (max - min + 1))
 const json = (obj, status = 200) =>
   new Response(JSON.stringify(obj), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } })
 
+// seed determinístico (djb2) — MESMO hash do frontend (src/engajamento.js)
+// p/ os números baterem quando o KV ainda não está ligado (sem flicker)
+function hashCod(cod) {
+  const s = String(cod)
+  let h = 5381
+  for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0
+  return h
+}
+const seedDe = (cod) => ({ likes: 50 + (hashCod(cod) % 41), shares: 50 + ((hashCod(cod) >>> 5) % 31) })
+const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
+
 async function getEng(env, cod) {
+  if (!temKV(env)) return seedDe(cod) // degrada gracioso: sem KV, devolve o seed (read-only)
   const key = 'eng:' + cod
   let data = await env.ENGAGEMENT.get(key, 'json')
   if (!data || typeof data.likes !== 'number') {
@@ -29,6 +41,7 @@ export async function onRequestGet({ env, request }) {
   const chave = url.searchParams.get('leads')
   if (chave) {
     if (chave !== SEGREDO_LEADS) return json({ error: 'nao autorizado' }, 403)
+    if (!temKV(env)) return json({ total: 0, leads: [], aviso: 'KV nao configurado' })
     const lista = await env.ENGAGEMENT.list({ prefix: 'lead:' })
     const leads = []
     for (const k of lista.keys) { const v = await env.ENGAGEMENT.get(k.name, 'json'); if (v) leads.push(v) }
@@ -48,10 +61,11 @@ export async function onRequestPost({ env, request }) {
     const nome = String(body.nome || '').slice(0, 80)
     const fone = String(body.fone || '').slice(0, 30)
     if (!nome || !fone) return json({ error: 'dados incompletos' }, 400)
+    if (!temKV(env)) return json({ ok: true, persistido: false }) // sem KV: não grava, mas o WhatsApp do visitante já abre
     const ts = Date.now()
     const lead = { ts, nome, fone, cod: String(cod || '').slice(0, 12), bairro: String(body.bairro || '').slice(0, 60), data: new Date(ts).toISOString() }
     await env.ENGAGEMENT.put('lead:' + ts + '-' + Math.random().toString(36).slice(2, 8), JSON.stringify(lead))
-    return json({ ok: true })
+    return json({ ok: true, persistido: true })
   }
 
   if (!cod || !['like', 'unlike', 'share'].includes(tipo)) return json({ error: 'requisicao invalida' }, 400)
@@ -59,6 +73,6 @@ export async function onRequestPost({ env, request }) {
   if (tipo === 'like') data.likes += 1
   else if (tipo === 'unlike') data.likes = Math.max(0, data.likes - 1)
   else if (tipo === 'share') data.shares += 1
-  await env.ENGAGEMENT.put('eng:' + cod, JSON.stringify(data))
+  if (temKV(env)) await env.ENGAGEMENT.put('eng:' + cod, JSON.stringify(data))
   return json(data)
 }
