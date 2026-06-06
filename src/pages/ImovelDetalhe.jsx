@@ -11,6 +11,16 @@ import { IconWhats, IconArrow, IconPin, IconShield, ICONS } from './../component
 
 const plural = (n, s, p) => (n > 1 ? p : s)
 
+// quebra a descrição em parágrafos legíveis (~3 frases cada)
+function agruparFrases(texto) {
+  const limpo = texto.trim()
+  if (/\n/.test(limpo)) return limpo.split(/\n+/).map((s) => s.trim()).filter(Boolean)
+  const frases = limpo.match(/[^.!?]+[.!?]+/g) || [limpo]
+  const paras = []
+  for (let i = 0; i < frases.length; i += 3) paras.push(frases.slice(i, i + 3).join(' ').trim())
+  return paras
+}
+
 function Spec({ icon, valor, label }) {
   const Icon = ICONS[icon]
   return (
@@ -104,11 +114,18 @@ export default function ImovelDetalhe() {
     im.banheiros > 0 && { icon: 'bath', valor: im.banheiros, label: plural(im.banheiros, 'banheiro', 'banheiros') },
     im.vagas > 0 && { icon: 'car', valor: im.vagas, label: plural(im.vagas, 'vaga', 'vagas') },
     im.area > 0 && { icon: 'area', valor: formatArea(im.area), label: 'área interna' },
+    im.areaLote > 0 && { icon: 'home', valor: formatArea(im.areaLote), label: 'área do lote' },
   ].filter(Boolean)
 
   const destaques = destaquesImovel(im)
   const temDescricao = im.descricao && im.descricao.trim().length > 0
-  const paragrafos = temDescricao ? im.descricao.trim().split(/\n+|(?<=\.)\s{2,}/).filter(Boolean) : []
+  const paragrafos = temDescricao ? agruparFrases(im.descricao.trim()) : []
+  const car = im.caracteristicas || {}
+  const grupos = [
+    { titulo: 'Por dentro do imóvel', itens: car.internas || [] },
+    { titulo: 'Estrutura e segurança', itens: car.externas || [] },
+    { titulo: 'Lazer e diferenciais', itens: car.extras || [] },
+  ].filter((g) => g.itens.length > 0)
 
   // outros imóveis (prioriza o mesmo tipo)
   const relacionados = [
@@ -195,6 +212,25 @@ export default function ImovelDetalhe() {
             <a className="btn btn-gold det-sobre-cta" href={linkWhatsApp(waImovel(im))} target="_blank" rel="noopener">
               <IconWhats /> Quero saber mais sobre este imóvel
             </a>
+          </div>
+        )}
+
+        {grupos.length > 0 && (
+          <div className="det-carac">
+            <h2 className="det-rel-titulo">Características e comodidades</h2>
+            {im.condominio && (
+              <p className="det-carac-cond"><IconShield width={16} height={16} /> {im.condominio.replace(/^Cond\.\s*/i, 'Condomínio ')}</p>
+            )}
+            <div className="det-carac-grupos">
+              {grupos.map((g, gi) => (
+                <div className="det-carac-grupo" key={gi}>
+                  <h3>{g.titulo}</h3>
+                  <ul className="det-carac-lista">
+                    {g.itens.map((it, ii) => <li key={ii}><span className="det-carac-check">✓</span> {it}</li>)}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 

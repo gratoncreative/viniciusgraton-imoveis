@@ -255,7 +255,7 @@
       "vagas": 0,
       "area": 73.97,
       "img": "/imoveis/96587.jpg",
-      "descricao": "Apartamento com 73,97m² bem localizado, em prédio com 2 elevadores. Conta com sala ampla em dois ambientes e sacada, dois quartos com armários, banheiro social com box e armário, cozinha funcional com armário, área de serviço e banheiro de serviço. Piso todo em cerâmica e ardósia na sala, oferecendo praticidade e fácil manutenção. Uma ótima opção para quem busca conforto, segurança e praticidade no dia a dia!",
+      "descricao": "Apartamento com 73,97m² bem localizado, em prédio com 2 elevadores. Conta com sala ampla em dois ambientes e sacada, dois quartos com armários, banheiro social com box e armário , cozinha funcional com armário, área de serviço e banheiro de serviço. Piso todo em cerâmica e ardósia na sala, oferecendo praticidade e fácil manutenção. Uma ótima opção para quem busca conforto, segurança e praticidade no dia a dia!",
       "fotos": [
         "/imoveis/96587.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/96587/zmml4-uberlandia-apto-2-quartos-armarios-banheiro-social-completo-sala-ampla-sacada-cozinha-armarios-area-de-servico-banheiro-de-servi-1764031730.jpg",
@@ -267,7 +267,24 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/96587/18oi5-uberlandia-apto-2-quartos-armarios-banheiro-social-completo-sala-ampla-sacada-cozinha-armarios-area-de-servico-banheiro-de-servi-1764031730.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/96587/t53cz-uberlandia-apto-2-quartos-armarios-banheiro-social-completo-sala-ampla-sacada-cozinha-armarios-area-de-servico-banheiro-de-servi-1764031730.jpg"
       ],
-      "novo": true
+      "novo": true,
+      "caracteristicas": {
+        "internas": [
+          "Armário banheiro",
+          "Box banheiro",
+          "Área serviço",
+          "Armário cozinha",
+          "Armário quarto"
+        ],
+        "externas": [
+          "Interfone"
+        ],
+        "extras": [
+          "Armários planejados",
+          "Box nos Banheiros",
+          "Sacada"
+        ]
+      }
     },
     {
       "codigo": "93801",
@@ -296,7 +313,22 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/93801/ypykv-uberlandia-casa-3-quartos-bairro-laranjeiras-7-1749130051.jpeg",
         "https://cdn.imoview.com.br/rotina/Imoveis/93801/fjqae-uberlandia-casa-3-quartos-bairro-laranjeiras-4-1749130051.jpeg"
       ],
-      "novo": true
+      "novo": true,
+      "caracteristicas": {
+        "internas": [
+          "Área serviço",
+          "Lavabo",
+          "Varanda gourmet"
+        ],
+        "externas": [
+          "Água individual",
+          "Gás canalizado",
+          "Portão eletrônico",
+          "Interfone"
+        ],
+        "extras": []
+      },
+      "areaLote": 150
     },
     {
       "codigo": "86237",
@@ -312,7 +344,7 @@
       "vagas": 4,
       "area": 253.7,
       "img": "/imoveis/86237.jpg",
-      "descricao": "Encante-se com esta deslumbrante casa sobrado situada em um condomínio fechado. Composta por 4 suítes no pavimento térreo, incluindo uma suíte master luxuosa com closet, banheira, box exclusivo para o vaso sanitário, duas cubas e dois chuveiros. No pavimento superior, uma suíte adicional que pode ser adaptada para escritório. A sala de TV apresenta pé direito duplo, enquanto a cozinha gourmet, com ilha central e parede em tijolinho ecológico, é um convite à culinária refinada. Destaques: lavanderia com depósito, piscina aquecida com pastilhas e cascata, ducha externa aquecida, energia fotovoltaica, bancadas em granito preto absoluto, louças Deca e torneiras com aquecimento solar. Janelas de alumínio preto com venezianas motorizadas, terraço em porcelanato, forro amadeirado e cortinas motorizadas na sala. Garagem para 4 carros e acabamentos de alta qualidade em todos os detalhes.",
+      "descricao": "Encante-se com esta deslumbrante casa sobrado situada em um condomínio fechado. Composta por 4 suítes no pavimento térreo, incluindo uma suíte master luxuosa com closet, banheira, box exclusivo para o vaso sanitário, duas cubas e dois chuveiros. No pavimento superior, uma suíte adicional que pode ser adaptada para escritório, proporcionando versatilidade. A sala de TV apresenta pé direito duplo, enquanto a cozinha gourmet, com uma ilha central e uma parede decorada em tijolinho ecológico cinza chumbo, é um convite à culinária refinada. Outros destaques incluem lavanderia com depósito, piscina aquecida com pastilhas e cascata, ducha externa aquecida e espaço para um amplo roupeiro. Com iluminação completa e paisagismo exuberante, cada detalhe foi cuidadosamente planejado. Energia fotovoltaica, bancadas em granito preto absoluto, louças Deca e torneiras com aquecimento solar são apenas algumas das características de luxo. As janelas de alumínio preto são equipadas com venezianas integradas motorizadas, proporcionando praticidade e conforto. Com um terraço encantador em porcelanato e forro amadeirado em vinílico, além de cortinas em tecido motorizadas na sala, esta casa oferece o máximo em conforto e estilo. Agende uma visita e descubra o seu novo lar de sonho, completo com garagem para 4 carros e acabamentos de alta qualidade em todos os detalhes.",
       "fotos": [
         "/imoveis/86237.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/86237/mdxul-whatsapp-image-2024-03-20-at-172419-2-1711020184.jpeg",
@@ -326,7 +358,30 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/86237/8gq5o-whatsapp-image-2024-03-20-at-172419-3-1711020184.jpeg",
         "https://cdn.imoview.com.br/rotina/Imoveis/86237/u4ij-whatsapp-image-2024-03-20-at-172419-5-1711020184.jpeg"
       ],
-      "novo": false
+      "novo": false,
+      "caracteristicas": {
+        "internas": [
+          "Área serviço",
+          "Lavabo",
+          "Closet",
+          "Escritório",
+          "Varanda gourmet"
+        ],
+        "externas": [
+          "Água individual",
+          "Aquec. solar",
+          "Gás canalizado",
+          "Segurança 24 horas",
+          "Circuito TV",
+          "Interfone",
+          "Portaria 24 horas"
+        ],
+        "extras": [
+          "Piscina"
+        ]
+      },
+      "condominio": "Cond. Jardim Versailles",
+      "areaLote": 433
     },
     {
       "codigo": "96076",
@@ -342,7 +397,7 @@
       "vagas": 2,
       "area": 70.62,
       "img": "/imoveis/96076.jpg",
-      "descricao": "Apartamento de 70,62 m² no condomínio Torres do Praia, zona sul de Uberlândia. Localização privilegiada, ao lado da Padaria Villa Carioca e próximo ao Praia Clube, escolas, supermercados e farmácias. Possui dois quartos, sendo uma suíte, sala para dois ambientes com iluminação planejada, cozinha funcional, lavanderia independente, varanda social e técnica. Armários planejados em todos os ambientes e banheiros com box em vidro. Duas vagas cobertas. Condomínio com água e gás inclusos, academia, salão de festas gourmet, churrasqueira, forno de pizza, pet place, mini mercado 24h e portaria 24h.",
+      "descricao": "Apartamento de 70,62 m² no condomínio Torres do Praia, zona sul de Uberlândia. Localização privilegiada, ao lado da Padaria Villa Carioca e próximo ao Praia Clube, escolas, supermercados e farmácias. Possui dois quartos, sendo uma suíte, sala para dois ambientes com iluminação planejada, cozinha funcional, lavanderia independente, varanda social e técnica. Conta com armários planejados em todos os ambientes e banheiros com box em vidro. São duas vagas cobertas. Condomínio com água e gás inclusos, academia, salão de festas gourmet, churrasqueira, forno de pizza, pet place, mini mercado 24h e portaria 24h.",
       "fotos": [
         "/imoveis/96076.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/96076/dltw-2-quartos-patrimonio-uberlandia-mg-24-1760644796.jpg",
@@ -356,7 +411,32 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/96076/aegfp-2-quartos-patrimonio-uberlandia-mg-21-1760644796.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/96076/nk2r1-2-quartos-patrimonio-uberlandia-mg-16-1760644796.jpg"
       ],
-      "novo": false
+      "novo": false,
+      "caracteristicas": {
+        "internas": [
+          "Armário banheiro",
+          "Box banheiro",
+          "Área serviço",
+          "Conexão internet",
+          "Armário cozinha",
+          "Armário quarto",
+          "Sol da manhã"
+        ],
+        "externas": [
+          "Gás canalizado",
+          "Jardim",
+          "Portão eletrônico",
+          "Circuito TV",
+          "Interfone",
+          "Portaria 24 horas"
+        ],
+        "extras": [
+          "Box nos Banheiros",
+          "Espaço Pet",
+          "Sacada"
+        ]
+      },
+      "condominio": "Edifício Torres Do Praia"
     },
     {
       "codigo": "99496",
@@ -372,7 +452,7 @@
       "vagas": 4,
       "area": 231.73,
       "img": "/imoveis/99496.jpg",
-      "descricao": "Residência térrea de alto padrão em uma das melhores localizações do Condomínio Alphaville 1, com 231,73m² de área construída em terreno de 463,50m². Projeto moderno e sofisticado, com hall de entrada com painel até o teto e sapateira, ampla sala em dois ambientes com pé-direito duplo e painel planejado. São 3 suítes com armários planejados, sendo uma máster com closet, painel, cabeceira e banheiro com cuba e chuveiro duplos. Possui ainda escritório, que pode virar uma quarta suíte. Cozinha gourmet totalmente planejada com churrasqueira, ilha central, cristaleira, forno, micro-ondas, cooktop e despensa. Área de lazer com piscina aquecida e hidromassagem, paisagismo e irrigação. Piso em porcelanato, janelas automatizadas, móveis planejados de primeira linha, iluminação 100% em LED e garagem para 4 veículos.",
+      "descricao": "Uma residência térrea de alto padrão em uma das melhores localizações do Condomínio Alphaville 1, com 231,73m² de área construída em um terreno de 463,50m², esta elegante residência oferece um projeto moderno e sofisticado, pensado nos mínimos detalhes para proporcionar conforto e praticidade. O imóvel conta com hall de entrada com painel até o teto e sapateira, ampla sala em dois ambientes com pé-direto duplo e painel planejado, além de corredor de acesso aos dormitórios com armário. São 3 suítes com armários planejados, sendo uma suíte máster com closet, painel, cabeceira e banheiro com cuba e chuveiro duplos. Possui ainda escritório, que pode ser facilmente revertido para uma quarta suíte. A cozinha gourmet é totalmente planejada, equipada com churrasqueira, ilha central, armários, cristaleira, forno, micro-ondas, cooktop, depurador e despensa com armários. Conta também com lavabo e área de serviço planejada. A área de lazer dispõe de piscina aquecida com hidromassagem, além de paisagismo e sistema de irrigação. Entre os diferenciais estão piso em porcelanato, janelas automatizadas com mosquiteiros nos quartos, móveis planejados de primeira linha, iluminação 100% em LED e garagem para 4 veículos.",
       "fotos": [
         "/imoveis/99496.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/99496/0r2awl-whatsapp-image-2026-06-03-at-165025-1780517089.jpeg",
@@ -383,7 +463,41 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/99496/1u2qq-whatsapp-image-2026-06-03-at-165026-2-1780517089.jpeg",
         "https://cdn.imoview.com.br/rotina/Imoveis/99496/f8idm-whatsapp-image-2026-06-03-at-165028-1780517089.jpeg"
       ],
-      "novo": false
+      "novo": false,
+      "caracteristicas": {
+        "internas": [
+          "Armário banheiro",
+          "Box banheiro",
+          "Área serviço",
+          "Lavabo",
+          "Cabeamento estruturado",
+          "Armário cozinha",
+          "Closet",
+          "Armário quarto",
+          "Escritório",
+          "Varanda gourmet"
+        ],
+        "externas": [
+          "Aquec. solar",
+          "Gás canalizado",
+          "Jardim",
+          "Portão eletrônico",
+          "Segurança 24 horas",
+          "Gramado",
+          "Circuito TV",
+          "Interfone",
+          "Portaria 24 horas"
+        ],
+        "extras": [
+          "Armários planejados",
+          "Box nos Banheiros",
+          "Cooktop",
+          "Hidromassagem",
+          "Piscina"
+        ]
+      },
+      "condominio": "Cond. Alphaville I",
+      "areaLote": 463
     },
     {
       "codigo": "90195",
@@ -399,7 +513,7 @@
       "vagas": 2,
       "area": 210,
       "img": "/imoveis/90195.jpg",
-      "descricao": "Belíssima casa térrea em condomínio de luxo, com acabamento de primeira linha e excelente infraestrutura. Ampla sala em 3 ambientes, cozinha com grandes bancadas integrada à varanda gourmet. Possui 3 suítes, sendo 1 master com closet e duchas. Conta ainda com lavanderia, amplo quintal gramado e garagem coberta para 2 carros. Localizada no prestigiado Condomínio Tamboré, oferece segurança, qualidade de vida e muito contato com a natureza, com quadra poliesportiva, campo de futebol society, portaria, piscinas, quadras de tênis e beach tênis. Agende sua visita e venha conhecer!",
+      "descricao": "Belíssima casa térrea em condomínio de luxo, com acabamento de primeira linha e excelente infraestrutura. Ampla sala em 3 ambientes, cozinha com grandes bancadas, integrada à varanda gourmet. A casa possui 3 suítes, sendo 1 master com closet e duchas. Conta ainda com lavanderia, amplo quintal gramado e garagem coberta para 2 carros. Localizada no prestigiado Condomínio Fechado Tamboré, oferece segurança, qualidade de vida, muito contato com a natureza, quadra poliesportiva e campo de futebol society. portaria, piscinas, quadras de tênis, Beach tênis, garantindo qualidade de vida com segurança e contato direto com a natureza. Agende sua visita e venha conhecer!",
       "fotos": [
         "/imoveis/90195.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/90195/66w62-a0d03542-29ca-4889-9b77-234f17122301-1732206431.jpeg",
@@ -412,7 +526,32 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/90195/cc1fo-5304c967-a305-4a76-a022-572661f53cd0-1732206432.jpeg",
         "https://cdn.imoview.com.br/rotina/Imoveis/90195/lrukw-15d5e0dc-e497-43f6-a285-d21249bbf16e-1732206432.jpeg"
       ],
-      "novo": false
+      "novo": false,
+      "caracteristicas": {
+        "internas": [
+          "Área serviço",
+          "Closet",
+          "Varanda gourmet"
+        ],
+        "externas": [
+          "Água individual",
+          "Cerca elétrica",
+          "Gás canalizado",
+          "Jardim",
+          "Portão eletrônico",
+          "Segurança 24 horas",
+          "Gramado",
+          "Interfone",
+          "Quintal",
+          "Portaria 24 horas"
+        ],
+        "extras": [
+          "3 suítes",
+          "Luminárias"
+        ]
+      },
+      "condominio": "Tamboré <di",
+      "areaLote": 398
     },
     {
       "codigo": "74455",
@@ -441,7 +580,21 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/74455/whatsapp-image-2022-07-06-at-160131.jpeg",
         "https://cdn.imoview.com.br/rotina/Imoveis/74455/whatsapp-image-2022-07-06-at-160123.jpeg"
       ],
-      "novo": false
+      "novo": false,
+      "caracteristicas": {
+        "internas": [],
+        "externas": [
+          "Jardim",
+          "Portão eletrônico",
+          "Gramado",
+          "Quintal",
+          "Portaria 24 horas"
+        ],
+        "extras": [
+          "Piscina"
+        ]
+      },
+      "areaLote": 5000
     },
     {
       "codigo": "71360",
@@ -470,7 +623,8 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/71360/whatsapp-image-2022-02-01-at-135352-1.jpeg",
         "https://cdn.imoview.com.br/rotina/Imoveis/71360/whatsapp-image-2022-02-01-at-135353-1.jpeg"
       ],
-      "novo": false
+      "novo": false,
+      "areaLote": 200
     },
     {
       "codigo": "97886",
@@ -486,7 +640,7 @@
       "vagas": 2,
       "area": 225.05,
       "img": "/imoveis/97886.jpg",
-      "descricao": "Ótima oportunidade para investidor: são duas casas à venda em excelente localização no bairro Aparecida. A casa da frente conta com sala de TV, sala de jantar, jardim de inverno, 3 quartos sendo 2 com armários e 1 suíte com closet, banheiro social e da suíte com box, ampla cozinha com armário, área de serviço, banheiro externo, despensa e 2 vagas de garagem cobertas. A casa dos fundos encontra-se locada, com sala, cozinha, 3 quartos e banheiro social, garantindo renda imediata e excelente potencial de valorização.",
+      "descricao": "Ótima oportunidade para investidor, são duas casas à venda em excelente localização no bairro Aparecida. A casa da frente conta com sala de TV, sala de jantar, jardim de inverno, 3 quartos sendo 2 com armários e 1 suíte com closet, banheiro social e banheiro da suíte com box, ampla cozinha com armário, área de serviço, banheiro externo, despensa e 2 vagas de garagem cobertas. A casa dos fundos encontra-se locada, composta por sala, cozinha, 3 quartos e banheiro social, garantindo renda imediata e excelente potencial de valorização.",
       "fotos": [
         "/imoveis/97886.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/97886/ddyon-6-quartos-aparecida-uberlandia-mg-7-1772072120.jpeg",
@@ -500,7 +654,26 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/97886/oj3la-6-quartos-aparecida-uberlandia-mg-27-1772072120.jpeg",
         "https://cdn.imoview.com.br/rotina/Imoveis/97886/7xxup-6-quartos-aparecida-uberlandia-mg-9-1772072120.jpeg"
       ],
-      "novo": false
+      "novo": false,
+      "caracteristicas": {
+        "internas": [
+          "Box banheiro",
+          "Despensa",
+          "Área serviço",
+          "Armário cozinha",
+          "Armário quarto"
+        ],
+        "externas": [
+          "Jardim",
+          "Portão eletrônico",
+          "Interfone",
+          "Quintal"
+        ],
+        "extras": [
+          "Armários planejados"
+        ]
+      },
+      "areaLote": 494
     },
     {
       "codigo": "91188",
@@ -516,7 +689,7 @@
       "vagas": 1,
       "area": 50,
       "img": "/imoveis/91188.jpg",
-      "descricao": "Ótimo apartamento, com excelente distribuição e comodidade! Conta com sala espaçosa, 2 sacadas, cozinha equipada com fogão cooktop e armário, área de serviço, 2 quartos (sendo o de casal com armário e semi suíte) e banheiro social. O imóvel ainda dispõe de 1 vaga de garagem. A localização e a praticidade dos ambientes tornam esse apartamento a escolha perfeita para quem busca conforto e funcionalidade. Não perca essa oportunidade!",
+      "descricao": "Ótimo apartamento, com excelente distribuição e comodidade! Conta com sala espaçosa, 2 sacadas, cozinha equipada com fogão cooktop e armário, área de serviço, 2 quartos, sendo o de casal com armário e semi suíte, além de banheiro social. O imóvel ainda dispõe de 1 vaga de garagem. A localização e a praticidade dos ambientes tornam esse apartamento a escolha perfeita para quem busca conforto e funcionalidade. Não perca essa oportunidade!",
       "fotos": [
         "/imoveis/91188.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/91188/w4ifq-5c1fmi-whatsapp-image-2023-04-25-at-131602-2-1682441340-1738780276.jpeg",
@@ -530,7 +703,22 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/91188/e7ibli-apyjv-whatsapp-image-2023-04-25-at-131606-1682441340-1738780277.jpeg",
         "https://cdn.imoview.com.br/rotina/Imoveis/91188/8rg3j-5364j-whatsapp-image-2023-04-25-at-131606-1-1682441340-1738780277.jpeg"
       ],
-      "novo": false
+      "novo": false,
+      "caracteristicas": {
+        "internas": [
+          "Armário banheiro",
+          "Box banheiro",
+          "Armário cozinha",
+          "Armário quarto",
+          "Sol da manhã"
+        ],
+        "externas": [],
+        "extras": [
+          "Armários planejados",
+          "Cooktop",
+          "Sacada"
+        ]
+      }
     },
     {
       "codigo": "64693",
@@ -546,7 +734,7 @@
       "vagas": 4,
       "area": 270,
       "img": "/imoveis/64693.jpg",
-      "descricao": "Belíssima cobertura duplex com excelente localização no bairro Morada da Colina. Pavimento inferior com ampla sala de TV com varanda, área de serviço, dependência completa de empregada, sacada e 4 quartos sendo duas suítes. Pavimento superior com sala ampla em três ambientes, cozinha com armários planejados, piscina, bar, churrasqueira, ducha e lavabo. Conta com 4 vagas de garagem e depósito.",
+      "descricao": "Belíssima cobertura Duplex, excelente localização no bairro Morada da Colina. Pavimento inferior contendo ampla sala de TV com varanda, área de serviço, dependência completa de empregada, sacada, 4 quartos sendo duas suítes. Pavimento superior contendo sala ampla em três ambientes, cozinha com armários planejados, piscina, bar, churrasqueira, ducha, lavabo, 04 vagas de garagem, depósito.",
       "fotos": [
         "/imoveis/64693.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/64693/whatsapp-image-2021-03-11-at-175846-1.jpeg",
@@ -560,7 +748,19 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/64693/whatsapp-image-2021-03-11-at-175848.jpeg",
         "https://cdn.imoview.com.br/rotina/Imoveis/64693/whatsapp-image-2021-03-11-at-175847.jpeg"
       ],
-      "novo": false
+      "novo": false,
+      "caracteristicas": {
+        "internas": [
+          "Armário banheiro",
+          "Box banheiro",
+          "Lavabo",
+          "Armário cozinha",
+          "Armário quarto",
+          "DCE"
+        ],
+        "externas": [],
+        "extras": []
+      }
     },
     {
       "codigo": "69377",
@@ -576,7 +776,7 @@
       "vagas": 4,
       "area": 373.8,
       "img": "/imoveis/69377.jpg",
-      "descricao": "Casas em excelente localização no bairro Cidade Jardim, próximas ao Praia Clube, com aproximadamente 380m² de área construída. A 1ª casa tem 3 salas, 3 quartos sendo uma suíte, copa, cozinha, banheiro social e área de serviço. A 2ª casa contém sala, 3 quartos, 2 banheiros, copa, cozinha, quintal com árvores frutíferas e 4 vagas de garagem.",
+      "descricao": "Casas em excelente localização no bairro Cidade Jardim, próximas ao Praia Clube, com aproximadamente 380m² de área construída; Sendo a 1° casa com 3 salas, 3 quartos sendo uma suíte, copa, cozinha, banheiro social, área de serviço, 2° casa contendo sala, 3 quartos, 2 banheiros, copa, cozinha, quintal, árvores frutíferas, 4 vagas de garagem.",
       "fotos": [
         "/imoveis/69377.jpg",
         "https://cdn.imoview.com.br/rotina/Imoveis/69377/whatsapp-image-2021-10-27-at-131219-1.jpeg",
@@ -590,7 +790,15 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/69377/whatsapp-image-2021-10-27-at-131213.jpeg",
         "https://cdn.imoview.com.br/rotina/Imoveis/69377/whatsapp-image-2021-10-27-at-131215-2.jpeg"
       ],
-      "novo": false
+      "novo": false,
+      "caracteristicas": {
+        "internas": [],
+        "externas": [
+          "Quintal"
+        ],
+        "extras": []
+      },
+      "areaLote": 1000
     }
   ]
 }

@@ -400,6 +400,16 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .det-sobre { margin-top: clamp(48px, 6vw, 80px); max-width: 900px; }
 .det-sobre-texto p { color: var(--text-soft); line-height: 1.8; font-size: 1.04rem; margin-top: 16px; }
 .det-sobre-cta { margin-top: 28px; }
+/* Características e comodidades */
+.det-carac { margin-top: clamp(48px, 6vw, 80px); }
+.det-carac-cond { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-head); font-weight: 600; color: var(--gold-3); margin-top: 12px; font-size: 0.95rem; }
+.det-carac-grupos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px 40px; margin-top: 26px; }
+.det-carac-grupo h3 { font-family: var(--font-head); font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.det-carac-lista { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+.det-carac-lista li { display: flex; align-items: center; gap: 10px; font-size: 0.95rem; color: var(--text-soft); }
+.det-carac-check { width: 20px; height: 20px; border-radius: 50%; background: rgba(184,134,47,0.14); color: var(--gold-3); display: grid; place-items: center; font-size: 0.7rem; font-weight: 700; flex: none; }
+@media (max-width: 860px) { .det-carac-grupos { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .det-carac-grupos { grid-template-columns: 1fr; } }
 @media (max-width: 860px) {
   .det-dest-grid { grid-template-columns: 1fr 1fr; }
 }
