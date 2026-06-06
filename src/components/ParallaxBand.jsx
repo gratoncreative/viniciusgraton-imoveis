@@ -32,8 +32,16 @@ export default function ParallaxBand({ img, eyebrow, frase, cta, wa, imovel, lig
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           >
-            <img src={img} alt="Casa de alto padrão" loading="lazy" />
-            <figcaption className="band-light-cap">Imagem ilustrativa</figcaption>
+            <img src={img} alt={imovel ? `${imovel.tipo} no ${imovel.bairro}, alto padrão em Uberlândia` : 'Casa de alto padrão'} loading="lazy" />
+            {imovel ? (
+              <Link className="band-credito" to={`/imovel/${imovel.codigo}`}>
+                <span className="band-credito-top">{imovel.selo || 'Imóvel da foto'}</span>
+                <span className="band-credito-nome">{imovel.tipo} · {imovel.bairro}</span>
+                <span className="band-credito-preco">{formatPreco(imovel.preco)} <IconArrow width={14} height={14} /></span>
+              </Link>
+            ) : (
+              <figcaption className="band-light-cap">Imagem ilustrativa</figcaption>
+            )}
           </motion.figure>
         </div>
       </section>

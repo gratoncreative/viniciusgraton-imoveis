@@ -158,12 +158,15 @@ export const FAIXAS_PRECO = [
 // Faixas cinematográficas com IMÓVEIS REAIS da carteira (foto hospedada + selo clicável)
 export const BANDS = {
   b1: {
-    img: '/casa-conceito.jpg',
+    img: '/imoveis/99549/1.jpg',
     light: true,
     eyebrow: 'Padrão que você merece',
     frase: 'O imóvel certo muda a sua rotina inteira.',
     cta: 'Quero encontrar o meu',
     wa: 'banda1',
+    // imóvel REAL da carteira (alto padrão, Alphaville) — selo verdadeiro que leva ao anúncio.
+    // Sem "imagem ilustrativa" e sem inventar venda. Trocar p/ selo "Vendido recentemente" quando houver venda real.
+    imovel: { codigo: '99549', tipo: 'Casa em condomínio', bairro: 'Alphaville', preco: 3900000 },
   },
   b2: {
     img: '/imoveis/99496.jpg',
