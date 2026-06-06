@@ -109,17 +109,36 @@ export const subtituloImovel = (im) => {
   return `${im.tipo} no ${im.bairro} — um dos endereços mais procurados de ${im.cidade}.${lista}`
 }
 
-// Destaques (benefícios) derivados dos specs reais — para os cards de destaque na página do imóvel.
+// Destaques (benefícios) — entre 6 e 12 cards, derivados dos specs + características reais
+// (e de palavras-chave da descrição real p/ imóveis sem o grid de características). Nada inventado.
 export const destaquesImovel = (im) => {
   if (!im) return []
+  const c = im.caracteristicas || {}
+  const blob = ([...(c.internas || []), ...(c.externas || []), ...(c.extras || []), im.descricao || ''].join(' ')).toLowerCase()
+  const tem = (re) => re.test(blob)
   const d = []
-  if (ehCondominio(im)) d.push({ icon: 'shield', titulo: 'Condomínio fechado', sub: 'Segurança e tranquilidade para a família' })
-  if (im.suites > 0) d.push({ icon: 'sparkle', titulo: `${im.suites} ${_plural(im.suites, 'suíte', 'suítes')}`, sub: 'Conforto e privacidade nos quartos' })
+  // specs (sempre disponíveis → garantem o mínimo de 6)
+  if (ehCondominio(im) || /condom/i.test(im.condominio || '')) d.push({ icon: 'shield', titulo: 'Condomínio fechado', sub: 'Segurança e tranquilidade' })
+  if (im.suites > 0) d.push({ icon: 'sparkle', titulo: `${im.suites} ${_plural(im.suites, 'suíte', 'suítes')}`, sub: 'Conforto e privacidade' })
+  if (im.quartos > im.suites) d.push({ icon: 'bed', titulo: `${im.quartos} ${_plural(im.quartos, 'quarto', 'quartos')}`, sub: 'Espaço para todos' })
   if (im.area > 0) d.push({ icon: 'area', titulo: formatArea(im.area), sub: 'Amplo espaço interno' })
-  if (im.vagas > 0) d.push({ icon: 'car', titulo: `${im.vagas} ${_plural(im.vagas, 'vaga', 'vagas')} na garagem`, sub: 'Espaço para os carros da família' })
-  if (im.quartos > 0) d.push({ icon: 'bed', titulo: `${im.quartos} ${_plural(im.quartos, 'quarto', 'quartos')}`, sub: 'Espaço para todos' })
-  d.push({ icon: 'pin', titulo: im.bairro, sub: `Localização valorizada em ${im.cidade}` })
-  return d.slice(0, 4)
+  if (im.vagas > 0) d.push({ icon: 'car', titulo: `${im.vagas} ${_plural(im.vagas, 'vaga', 'vagas')} na garagem`, sub: 'Espaço para os carros' })
+  if (im.banheiros > 0) d.push({ icon: 'bath', titulo: `${im.banheiros} ${_plural(im.banheiros, 'banheiro', 'banheiros')}`, sub: 'Comodidade no dia a dia' })
+  if (im.areaLote > 0) d.push({ icon: 'home', titulo: `Lote ${formatArea(im.areaLote)}`, sub: 'Terreno amplo' })
+  // diferenciais reais (características / descrição)
+  if (tem(/piscina/)) d.push({ icon: 'sparkle', titulo: 'Piscina', sub: 'Lazer e bem-estar em casa' })
+  if (tem(/varanda gourmet/)) d.push({ icon: 'sparkle', titulo: 'Varanda gourmet', sub: 'Perfeito para receber' })
+  if (tem(/churrasqueira/)) d.push({ icon: 'sparkle', titulo: 'Churrasqueira', sub: 'Encontros com a família' })
+  if (tem(/fotovolta|energia solar|aquec.*solar/)) d.push({ icon: 'sparkle', titulo: 'Energia/aquec. solar', sub: 'Economia e sustentabilidade' })
+  if (tem(/closet/)) d.push({ icon: 'sparkle', titulo: 'Closet', sub: 'Organização e sofisticação' })
+  if (tem(/elevador/)) d.push({ icon: 'building', titulo: 'Elevador', sub: 'Acesso prático e exclusivo' })
+  if (tem(/portaria 24|seguran[çc]a 24|portaria monitorada|reconhecimento facial/)) d.push({ icon: 'shield', titulo: 'Segurança 24h', sub: 'Portaria e monitoramento' })
+  if (tem(/academia/)) d.push({ icon: 'sparkle', titulo: 'Academia', sub: 'Saúde sem sair de casa' })
+  if (tem(/salão de festas|salao de festas/)) d.push({ icon: 'sparkle', titulo: 'Salão de festas', sub: 'Espaço para comemorar' })
+  // localização (sempre por último)
+  if (im.pontoReferencia) d.push({ icon: 'pin', titulo: 'Bem localizado', sub: im.pontoReferencia })
+  else d.push({ icon: 'pin', titulo: im.bairro, sub: `Localização valorizada em ${im.cidade}` })
+  return d.slice(0, 12)
 }
 
 // Opções de filtro derivadas dos imóveis reais (para o catálogo)

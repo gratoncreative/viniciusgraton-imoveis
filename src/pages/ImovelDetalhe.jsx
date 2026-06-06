@@ -127,6 +127,12 @@ export default function ImovelDetalhe() {
     { titulo: 'Lazer e diferenciais', itens: car.extras || [] },
   ].filter((g) => g.itens.length > 0)
 
+  const mapsQuery = encodeURIComponent(`${im.bairro}, ${im.cidade}, MG, Brasil`)
+  const prox = []
+  if (im.pontoReferencia) prox.push({ icon: 'pin', text: im.pontoReferencia })
+  if (im.condominio) prox.push({ icon: 'shield', text: im.condominio.replace(/^Cond\.\s*/i, 'Condomínio ') })
+  prox.push({ icon: 'home', text: `Bairro ${im.bairro}, ${im.cidade} — ${im.uf}` })
+
   // outros imóveis (prioriza o mesmo tipo)
   const relacionados = [
     ...IMOVEIS.filter((i) => i.codigo !== im.codigo && i.tipo === im.tipo),
@@ -235,18 +241,33 @@ export default function ImovelDetalhe() {
         )}
 
         <div className="det-mapa">
-          <h2 className="det-rel-titulo">Localização</h2>
+          <h2 className="det-rel-titulo">Localização e proximidades</h2>
           <p className="det-mapa-bairro"><IconPin width={18} height={18} /> {im.bairro}, {im.cidade} — {im.uf}</p>
-          {im.pontoReferencia && <p className="det-mapa-ref">Ponto de referência: <b>{im.pontoReferencia}</b></p>}
-          <div className="det-mapa-frame">
-            <iframe
-              title={`Mapa do bairro ${im.bairro}`}
-              src={`https://maps.google.com/maps?q=${encodeURIComponent(`${im.bairro}, ${im.cidade}, MG, Brasil`)}&z=14&output=embed`}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+          <div className="det-mapa-grid">
+            <figure className="det-mapa-col">
+              <div className="det-mapa-frame">
+                <iframe
+                  title={`Mapa do bairro ${im.bairro}`}
+                  src={`https://maps.google.com/maps?q=${mapsQuery}&z=15&output=embed`}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </div>
+              <a className="det-mapa-ampliar" href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`} target="_blank" rel="noopener">
+                ⛶ Ampliar e explorar a região no Google Maps
+              </a>
+            </figure>
+            <div className="det-mapa-prox">
+              <h3>O que valoriza este endereço</h3>
+              <ul className="det-prox-lista">
+                {prox.map((p, i) => {
+                  const I = ICONS[p.icon]
+                  return <li key={i}>{I && <span className="det-prox-ico"><I width={18} height={18} /></span>} {p.text}</li>
+                })}
+              </ul>
+              <p className="det-mapa-aviso">Localização aproximada do bairro — o mapa mostra escolas, comércio e serviços ao redor. O endereço exato é informado no atendimento.</p>
+            </div>
           </div>
-          <p className="det-mapa-aviso">Localização aproximada do bairro. O endereço exato é informado no atendimento.</p>
         </div>
 
         {relacionados.length > 0 && (

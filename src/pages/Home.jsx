@@ -32,8 +32,8 @@ export default function Home() {
   return (
     <main>
       <Hero />
-      <Dores />
       <Destaque />
+      <Dores />
       <ParallaxBand {...BANDS.b1} />
       <Sobre />
       <Imoveis />
