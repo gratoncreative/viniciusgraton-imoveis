@@ -90,6 +90,38 @@ export const truncar = (s, n = 200) => {
   return t.slice(0, n - 1).replace(/\s+\S*$/, '').trimEnd() + '…'
 }
 
+// É imóvel em condomínio fechado?
+export const ehCondominio = (im) => !!im && /condom[ií]nio/i.test(im.tipo || '')
+
+// Subtítulo persuasivo montado SÓ com dados reais (specs/tipo/bairro) — nada inventado.
+// Dá uma frase de venda mesmo para imóveis sem descrição cadastrada.
+export const subtituloImovel = (im) => {
+  if (!im) return ''
+  const specs = [
+    im.suites > 0 && `${im.suites} ${_plural(im.suites, 'suíte', 'suítes')}`,
+    im.quartos > 0 && im.suites === 0 && `${im.quartos} ${_plural(im.quartos, 'quarto', 'quartos')}`,
+    im.area > 0 && `${formatArea(im.area)}`,
+    im.vagas > 0 && `${im.vagas} ${_plural(im.vagas, 'vaga', 'vagas')}`,
+  ].filter(Boolean)
+  const lista = specs.length
+    ? ` São ${specs.join(', ')}, pensados para você viver com conforto, espaço e segurança.`
+    : ' Um imóvel pensado para você viver com conforto e segurança.'
+  return `${im.tipo} no ${im.bairro} — um dos endereços mais procurados de ${im.cidade}.${lista}`
+}
+
+// Destaques (benefícios) derivados dos specs reais — para os cards de destaque na página do imóvel.
+export const destaquesImovel = (im) => {
+  if (!im) return []
+  const d = []
+  if (ehCondominio(im)) d.push({ icon: 'shield', titulo: 'Condomínio fechado', sub: 'Segurança e tranquilidade para a família' })
+  if (im.suites > 0) d.push({ icon: 'sparkle', titulo: `${im.suites} ${_plural(im.suites, 'suíte', 'suítes')}`, sub: 'Conforto e privacidade nos quartos' })
+  if (im.area > 0) d.push({ icon: 'area', titulo: formatArea(im.area), sub: 'Amplo espaço interno' })
+  if (im.vagas > 0) d.push({ icon: 'car', titulo: `${im.vagas} ${_plural(im.vagas, 'vaga', 'vagas')} na garagem`, sub: 'Espaço para os carros da família' })
+  if (im.quartos > 0) d.push({ icon: 'bed', titulo: `${im.quartos} ${_plural(im.quartos, 'quarto', 'quartos')}`, sub: 'Espaço para todos' })
+  d.push({ icon: 'pin', titulo: im.bairro, sub: `Localização valorizada em ${im.cidade}` })
+  return d.slice(0, 4)
+}
+
 // Opções de filtro derivadas dos imóveis reais (para o catálogo)
 export const TIPOS_IMOVEL = [...new Set(IMOVEIS.map((i) => i.tipo))].sort()
 export const BAIRROS_IMOVEL = [...new Set(IMOVEIS.map((i) => i.bairro))].sort((a, b) => a.localeCompare(b, 'pt-BR'))

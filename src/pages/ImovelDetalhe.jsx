@@ -3,8 +3,11 @@ import { useParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import Galeria from '../components/Galeria'
 import CardImovel from '../components/CardImovel'
-import { getImovel, fotosDe, formatPreco, formatArea, resumoImovel, IMOVEIS, linkWhatsApp, waImovel, CONFIG } from '../data'
-import { IconWhats, IconArrow, IconPin, ICONS } from './../components/icons'
+import {
+  getImovel, fotosDe, formatPreco, formatArea, resumoImovel, subtituloImovel,
+  destaquesImovel, ehCondominio, IMOVEIS, linkWhatsApp, waImovel, CONFIG,
+} from '../data'
+import { IconWhats, IconArrow, IconPin, IconShield, ICONS } from './../components/icons'
 
 const plural = (n, s, p) => (n > 1 ? p : s)
 
@@ -16,6 +19,19 @@ function Spec({ icon, valor, label }) {
       <div>
         <b>{valor}</b>
         <span>{label}</span>
+      </div>
+    </div>
+  )
+}
+
+function Destaque({ icon, titulo, sub }) {
+  const Icon = ICONS[icon]
+  return (
+    <div className="det-dest">
+      <span className="det-dest-ico">{Icon && <Icon width={24} height={24} />}</span>
+      <div>
+        <b>{titulo}</b>
+        <span>{sub}</span>
       </div>
     </div>
   )
@@ -48,7 +64,7 @@ export default function ImovelDetalhe() {
       '@type': 'Product',
       name: `${im.tipo} no ${im.bairro}, Uberlândia`,
       description: resumoImovel(im),
-      image: fotos.map(abs),
+      image: fotos.map((u) => abs(u.split('?')[0])),
       category: 'Imóvel à venda',
       additionalProperty: props,
       offers: {
@@ -90,6 +106,10 @@ export default function ImovelDetalhe() {
     im.area > 0 && { icon: 'area', valor: formatArea(im.area), label: 'área interna' },
   ].filter(Boolean)
 
+  const destaques = destaquesImovel(im)
+  const temDescricao = im.descricao && im.descricao.trim().length > 0
+  const paragrafos = temDescricao ? im.descricao.trim().split(/\n+|(?<=\.)\s{2,}/).filter(Boolean) : []
+
   // outros imóveis (prioriza o mesmo tipo)
   const relacionados = [
     ...IMOVEIS.filter((i) => i.codigo !== im.codigo && i.tipo === im.tipo),
@@ -123,15 +143,14 @@ export default function ImovelDetalhe() {
           {/* Painel de info */}
           <aside className="det-info">
             <Reveal>
-              <p className="det-local">{im.cidade} — {im.uf} · Cód. {im.codigo}</p>
+              <p className="det-local"><IconPin width={15} height={15} /> {im.cidade} — {im.uf} · Cód. {im.codigo}</p>
               <h1 className="det-titulo">{im.tipo} no {im.bairro}</h1>
+              <p className="det-subtitulo">{subtituloImovel(im)}</p>
               <p className="det-preco">{formatPreco(im.preco)}</p>
 
               <div className="det-specs">
                 {specs.map((s, i) => <Spec key={i} {...s} />)}
               </div>
-
-              <p className="det-desc">{resumoImovel(im)}</p>
 
               <a className="btn btn-gold det-whats" href={linkWhatsApp(waImovel(im))} target="_blank" rel="noopener">
                 <IconWhats /> Tenho interesse neste imóvel
@@ -148,13 +167,36 @@ export default function ImovelDetalhe() {
                 <IconArrow width={16} height={16} /> Compartilhar este imóvel
               </button>
 
-              <p className="det-aviso">
-                Valores e disponibilidade sujeitos a confirmação. Atendimento direto comigo, do
-                primeiro contato à entrega das chaves.
-              </p>
+              <div className="det-trust">
+                <IconShield width={20} height={20} />
+                <p><b>Atendimento direto comigo</b>, do primeiro contato à entrega das chaves. Te ajudo na visita, na negociação e em toda a documentação — compra segura e sem dor de cabeça.</p>
+              </div>
             </Reveal>
           </aside>
         </div>
+
+        {/* Destaques (benefícios) */}
+        {destaques.length > 0 && (
+          <div className="det-destaques">
+            <h2 className="det-rel-titulo">Por que você vai gostar</h2>
+            <div className="det-dest-grid">
+              {destaques.map((d, i) => <Destaque key={i} {...d} />)}
+            </div>
+          </div>
+        )}
+
+        {/* Sobre o imóvel (descrição real da fonte) */}
+        {temDescricao && (
+          <div className="det-sobre">
+            <h2 className="det-rel-titulo">Sobre o imóvel</h2>
+            <div className="det-sobre-texto">
+              {paragrafos.map((p, i) => <p key={i}>{p}</p>)}
+            </div>
+            <a className="btn btn-gold det-sobre-cta" href={linkWhatsApp(waImovel(im))} target="_blank" rel="noopener">
+              <IconWhats /> Quero saber mais sobre este imóvel
+            </a>
+          </div>
+        )}
 
         <div className="det-mapa">
           <h2 className="det-rel-titulo">Localização</h2>

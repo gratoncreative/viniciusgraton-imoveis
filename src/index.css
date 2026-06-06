@@ -381,6 +381,31 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .det-spec b { display: block; font-family: var(--font-head); font-size: 1.05rem; font-weight: 700; }
 .det-spec span { font-size: 0.8rem; color: var(--text-soft); }
 .det-desc { color: var(--text-soft); line-height: 1.7; margin: 22px 0; font-size: 0.98rem; }
+/* ===== Página do imóvel — enriquecida (subtítulo, confiança, destaques, sobre) ===== */
+.det-local { display: inline-flex; align-items: center; gap: 6px; }
+.det-local svg { color: var(--gold-3); flex: none; }
+.det-subtitulo { color: var(--text-soft); line-height: 1.6; font-size: 1.02rem; margin: 0 0 18px; }
+.det-trust { display: flex; gap: 12px; align-items: flex-start; margin-top: 22px; padding: 16px 18px; border-radius: 14px; background: rgba(184,134,47,0.08); border: 1px solid rgba(184,134,47,0.22); }
+.det-trust svg { color: var(--gold-3); flex: none; margin-top: 2px; }
+.det-trust p { font-size: 0.9rem; line-height: 1.6; color: var(--text-soft); margin: 0; }
+.det-trust b { color: var(--text); }
+/* Destaques (benefícios) */
+.det-destaques { margin-top: clamp(48px, 6vw, 80px); }
+.det-dest-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 22px; }
+.det-dest { display: flex; gap: 14px; align-items: flex-start; padding: 20px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); }
+.det-dest-ico { width: 46px; height: 46px; border-radius: 12px; background: rgba(184,134,47,0.12); border: 1px solid rgba(184,134,47,0.3); display: grid; place-items: center; color: var(--gold-3); flex: none; }
+.det-dest b { display: block; font-family: var(--font-head); font-weight: 700; font-size: 1.02rem; color: var(--text); margin-bottom: 3px; }
+.det-dest span { font-size: 0.86rem; color: var(--text-soft); line-height: 1.45; }
+/* Sobre o imóvel (descrição real) */
+.det-sobre { margin-top: clamp(48px, 6vw, 80px); max-width: 900px; }
+.det-sobre-texto p { color: var(--text-soft); line-height: 1.8; font-size: 1.04rem; margin-top: 16px; }
+.det-sobre-cta { margin-top: 28px; }
+@media (max-width: 860px) {
+  .det-dest-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 520px) {
+  .det-dest-grid { grid-template-columns: 1fr; }
+}
 .det-whats { width: 100%; justify-content: center; margin-bottom: 12px; }
 .det-visita { width: 100%; justify-content: center; }
 .det-aviso { font-size: 0.78rem; color: var(--text-mute); margin-top: 18px; line-height: 1.5; }
