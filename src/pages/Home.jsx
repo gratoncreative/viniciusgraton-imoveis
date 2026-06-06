@@ -1,8 +1,6 @@
 import Hero from '../components/Hero'
 import Destaque from '../components/Destaque'
 import Contato from '../components/Contato'
-import ParallaxBand from '../components/ParallaxBand'
-import { BANDS } from '../data'
 import { useSEO } from '../useSEO'
 
 // Página inicial = VITRINE. Lidera com os imóveis disponíveis; o conteúdo de
@@ -19,7 +17,6 @@ export default function Home() {
     <main>
       <Hero />
       <Destaque limite={9} />
-      <ParallaxBand {...BANDS.b1} />
       <Contato />
     </main>
   )
