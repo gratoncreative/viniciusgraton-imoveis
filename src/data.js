@@ -37,9 +37,16 @@ export const WA = {
 //  da lista de imóveis publicados na web da Rotina Imobiliária (Imoview).
 // =============================================================
 import destaqueData from './imoveis-destaque.json'
+import construtorasData from './construtoras.json'
 
 export const IMOVEIS = destaqueData.imoveis || []
 export const IMOVEIS_INFO = { geradoEm: destaqueData.geradoEm, fonte: destaqueData.fonte }
+
+// Construtoras de Uberlândia (vitrine + página por construtora)
+export const CONSTRUTORAS = construtorasData.construtoras || []
+export const getConstrutora = (slug) => CONSTRUTORAS.find((c) => c.slug === slug)
+export const waConstrutora = (c, proj) =>
+  `Olá Vinícius! Tenho interesse ${proj ? `no empreendimento ${proj.nome} (${c.nome})` : `nos empreendimentos da ${c.nome}`} em Uberlândia. Pode me passar mais informações e agendar uma visita?`
 
 // Formata preço em reais de forma curta e elegante (R$ 3,3 mi / R$ 530 mil)
 export const formatPreco = (v) => {

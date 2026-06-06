@@ -4,6 +4,7 @@ import { IconInsta, IconWhats } from './icons'
 
 const LINKS = [
   { to: '/imoveis', label: 'Imóveis' },
+  { to: '/construtoras', label: 'Construtoras' },
   { to: '/como-funciona', label: 'Como eu te ajudo' },
   { to: '/sobre', label: 'Sobre mim' },
   { to: '/regioes', label: 'Uberlândia' },

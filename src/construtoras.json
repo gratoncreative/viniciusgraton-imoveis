@@ -1,0 +1,177 @@
+{
+  "atualizadoEm": "2026-06",
+  "construtoras": [
+    {
+      "slug": "perplan",
+      "nome": "Perplan",
+      "site": "https://perplan.com.br/empreendimentos/uberlandia",
+      "segmento": "Alto padrão · residencial e comercial",
+      "descricao": "Incorporadora com mais de 20 anos de mercado, em Uberlândia desde 2020, com empreendimentos residenciais e comerciais de alto padrão.",
+      "projetos": [
+        { "nome": "Chronos Tower", "bairro": "Morada da Colina", "status": "Em obras", "descricao": "Empreendimento de uso misto (corporativo e comercial), unidades de 38 a 376 m².", "url": "https://chronostower.perplan.com.br/" },
+        { "nome": "Casa'Alta", "bairro": "Altamira", "status": "Em obras", "descricao": "Condomínio residencial de alto padrão, unidades de 299 a 599 m².", "url": "https://perplan.com.br/empreendimentos/uberlandia" },
+        { "nome": "Grandverse Place", "bairro": "Villa Gávea", "status": "Em obras", "descricao": "Residencial com apartamentos de 77 a 90 m².", "url": "https://perplan.com.br/empreendimentos/uberlandia" },
+        { "nome": "Nuage Altamira", "bairro": "Altamira", "status": "Em obras", "descricao": "Residencial com apartamentos de 161 a 166 m².", "url": "https://perplan.com.br/empreendimentos/uberlandia" }
+      ]
+    },
+    {
+      "slug": "r-freitas",
+      "nome": "R. Freitas",
+      "site": "https://rfreitas.com.br/",
+      "segmento": "Residencial e comercial",
+      "descricao": "Construtora e incorporadora atuante em Uberlândia desde 1985, com mais de 2.000 imóveis entregues e certificação PBQP-H nível A.",
+      "projetos": [
+        { "nome": "SOHO Exclusive", "bairro": "Copacabana", "status": "Lançamento", "descricao": "Empreendimento em lançamento no bairro Copacabana.", "url": "https://rfreitas.com.br/" },
+        { "nome": "Riviera New Home", "bairro": "Jaraguá", "status": "Pronto", "descricao": "Empreendimento residencial no bairro Jaraguá.", "url": "https://rfreitas.com.br/" },
+        { "nome": "UZ Tower", "bairro": "Tabajaras", "status": "Pronto", "descricao": "Torre residencial no bairro Tabajaras.", "url": "https://rfreitas.com.br/" }
+      ]
+    },
+    {
+      "slug": "inconew",
+      "nome": "Inconew",
+      "site": "https://inconew.com.br/",
+      "segmento": "Residencial e comercial",
+      "descricao": "Construtora e incorporadora de Uberlândia com empreendimentos residenciais e comerciais nos principais bairros da cidade.",
+      "projetos": [
+        { "nome": "World Trade Center Uberlândia", "bairro": "Gávea", "status": "Em obras", "descricao": "Complexo corporativo e comercial no bairro Gávea.", "url": "https://inconew.com.br/" },
+        { "nome": "Leme do Praia", "bairro": "Patrimônio", "status": "Em obras", "descricao": "Empreendimento residencial vertical no bairro Patrimônio.", "url": "https://inconew.com.br/empreendimentos/leme-do-praia/" },
+        { "nome": "Soleil Résidence", "bairro": "Gávea", "status": "Em obras", "descricao": "Empreendimento residencial no bairro Gávea.", "url": "https://inconew.com.br/" },
+        { "nome": "Cittadella 57", "bairro": "Gávea", "status": "Em obras", "descricao": "Condomínio residencial fechado no bairro Gávea.", "url": "https://inconew.com.br/" }
+      ]
+    },
+    {
+      "slug": "urbanix",
+      "nome": "Urbanix",
+      "site": "https://urbanixincorporadora.com.br/",
+      "segmento": "Médio e alto padrão",
+      "descricao": "Incorporadora de Uberlândia focada no mercado de médio e alto padrão; equipe com mais de 1.200 unidades entregues.",
+      "projetos": [
+        { "nome": "Rio 1233", "bairro": "", "status": "Lançamento", "descricao": "Empreendimento de alto padrão, principal projeto atual da Urbanix.", "url": "https://rio1233.urbanixincorporadora.com.br/" }
+      ]
+    },
+    {
+      "slug": "zp",
+      "nome": "ZP Empreendimentos",
+      "site": "https://zpempreendimentos.com.br/empreendimentos/",
+      "segmento": "Médio e alto padrão",
+      "descricao": "Construtora e incorporadora do Grupo Zambon Pacheco, sediada em Uberlândia desde 2002, com empreendimentos residenciais em bairros nobres.",
+      "projetos": [
+        { "nome": "Mirah", "bairro": "Altamira", "status": "Em obras", "descricao": "Apartamentos de alto padrão de 111 a 135 m², 3 suítes e 2 vagas.", "url": "https://zpempreendimentos.com.br/empreendimentos/mirah/" },
+        { "nome": "Santa Maria Lifestyle", "bairro": "Santa Maria", "status": "Pronto", "descricao": "Empreendimento residencial no bairro Santa Maria.", "url": "https://zpempreendimentos.com.br/empreendimentos/santa-maria-lifestyle/" },
+        { "nome": "Moove Residence", "bairro": "Cazeca", "status": "Pronto", "descricao": "Apartamentos no bairro Cazeca, próximo a shopping e centro comercial.", "url": "https://zpempreendimentos.com.br/empreendimentos/moove-residence/" }
+      ]
+    },
+    {
+      "slug": "morais",
+      "nome": "Morais Construtora",
+      "site": "https://moraisconstrutora.com/empreendimentos/",
+      "segmento": "Residencial · especialista no Santa Mônica",
+      "descricao": "Construtora e incorporadora de Uberlândia desde 1997, especializada em empreendimentos residenciais no bairro Santa Mônica.",
+      "projetos": [
+        { "nome": "Isaac 321", "bairro": "Santa Mônica", "status": "Em obras", "descricao": "Apartamentos de 3 quartos a 1 minuto da UFU, com varanda gourmet e lazer.", "url": "https://moraisconstrutora.com/empreendimentos/isaac321/" },
+        { "nome": "Ed. Balcony", "bairro": "Santa Mônica", "status": "Pronto", "descricao": "Edifício residencial entregue em 2024.", "url": "https://moraisconstrutora.com/empreendimentos/" },
+        { "nome": "Ed. Belle Terrasse", "bairro": "Santa Mônica", "status": "Pronto", "descricao": "Edifício residencial entregue em 2023.", "url": "https://moraisconstrutora.com/empreendimentos/" }
+      ]
+    },
+    {
+      "slug": "atp",
+      "nome": "ATP Empreendimentos",
+      "site": "https://atpempreendimentos.com.br/empreendimentos/",
+      "segmento": "Alto padrão",
+      "descricao": "Incorporadora de Uberlândia focada em apartamentos de alto padrão no bairro Santa Mônica.",
+      "projetos": [
+        { "nome": "Supreme Tower", "bairro": "Santa Mônica", "status": "Em obras", "descricao": "Torre residencial de alto padrão, entrega prevista para 2026.", "url": "https://atpempreendimentos.com.br/empreendimentos/supreme-tower/" },
+        { "nome": "Saramago Residence", "bairro": "Santa Mônica", "status": "Pronto", "descricao": "Empreendimento residencial pronto no Santa Mônica.", "url": "https://atpempreendimentos.com.br/empreendimentos/saramago-residence/" },
+        { "nome": "Egeo Residence", "bairro": "Santa Mônica", "status": "Em obras", "descricao": "Empreendimento residencial em construção, entrega prevista para 2027.", "url": "https://atpempreendimentos.com.br/empreendimentos/egeo-residence/" }
+      ]
+    },
+    {
+      "slug": "trust",
+      "nome": "Trust Construtora",
+      "site": "https://trustconstrutora.com/",
+      "segmento": "Residencial e industrial",
+      "descricao": "Construtora e incorporadora fundada em 2016 em Uberlândia, certificada ISO 9001 e PBQP-H nível A.",
+      "projetos": [
+        { "nome": "Residencial Horizon", "bairro": "", "status": "Em obras", "descricao": "Empreendimento residencial com 160 unidades em Uberlândia.", "url": "https://trustconstrutora.com/" },
+        { "nome": "Mirante Boa Vista", "bairro": "", "status": "Em obras", "descricao": "Empreendimento residencial com 144 unidades em Uberlândia.", "url": "https://trustconstrutora.com/" }
+      ]
+    },
+    {
+      "slug": "bild",
+      "nome": "Bild Desenvolvimento Imobiliário",
+      "site": "https://bild.com.br/imoveis/uberlandia",
+      "segmento": "Médio e alto padrão · residencial e comercial",
+      "descricao": "Construtora e incorporadora presente em Uberlândia desde 2018, com mais de 80 empreendimentos lançados no portfólio nacional.",
+      "projetos": [
+        { "nome": "Domun", "bairro": "Jardim Sul", "status": "Pronto", "descricao": "Torre única, apartamentos de 2 a 3 suítes (105 a 130 m²) com 2 vagas.", "url": "https://bild.com.br/imoveis/uberlandia/domun-lancamento" },
+        { "nome": "Melliê", "bairro": "Complexo Vinhedos", "status": "Lançamento", "descricao": "Primeira torre do Complexo Vinhedos, plantas de 103 a 239 m².", "url": "https://bild.com.br/imoveis/uberlandia/mellie" },
+        { "nome": "Allma", "bairro": "", "status": "", "descricao": "Empreendimento residencial da Bild em Uberlândia.", "url": "https://bild.com.br/imoveis/uberlandia/allma" }
+      ]
+    },
+    {
+      "slug": "vitta",
+      "nome": "Vitta Residencial",
+      "site": "https://vittaresidencial.com.br/uberlandia",
+      "segmento": "Econômico (MCMV) e médio padrão",
+      "descricao": "Construtora e incorporadora com mais de 15 anos de mercado e 44 mil unidades lançadas; atua em Uberlândia e Uberaba.",
+      "projetos": [
+        { "nome": "Arysta", "bairro": "Gávea Sul", "status": "Em obras", "descricao": "Condomínio com 198 apartamentos de 2 dormitórios (51 a 53 m²), entrega prevista para 2026.", "url": "https://vittaresidencial.com.br/uberlandia/imoveis/arysta" },
+        { "nome": "Mirante das Brisas", "bairro": "Alto Umuarama", "status": "Em obras", "descricao": "Residencial com três torres e área de lazer completa.", "url": "https://vittaresidencial.com.br/uberlandia/imoveis/mirante-das-brisas" }
+      ]
+    },
+    {
+      "slug": "realiza",
+      "nome": "Realiza Construtora",
+      "site": "https://realizaconstrutora.com.br/",
+      "segmento": "Residencial · alto padrão",
+      "descricao": "Construtora com empreendimentos no bairro planejado Granja Marileusa e em outras regiões de Uberlândia.",
+      "projetos": [
+        { "nome": "Lançamento Granja Marileusa", "bairro": "Granja Marileusa", "status": "Lançamento", "descricao": "Empreendimento residencial no bairro planejado Granja Marileusa.", "url": "https://page.realizaconstrutora.com.br/lps/lancamento-granja-marileusa/" },
+        { "nome": "Prime Clube", "bairro": "", "status": "Lançamento", "descricao": "Empreendimento residencial Prime Clube, em Uberlândia.", "url": "https://page.realizaconstrutora.com.br/lps/prime-clube-uberlandia/" }
+      ]
+    },
+    {
+      "slug": "tricon",
+      "nome": "Tricon Construtora",
+      "site": "https://construtoratricon.com.br/lancamentos/",
+      "segmento": "Residencial",
+      "descricao": "Construtora e incorporadora com empreendimentos residenciais; confira os lançamentos atuais no site oficial.",
+      "projetos": [
+        { "nome": "Residencial Nillo", "bairro": "", "status": "Lançamento", "descricao": "Residencial na Rua Nilo Peçanha, apartamentos de 52 a 115 m².", "url": "https://construtoratricon.com.br/lancamentos/" },
+        { "nome": "Residencial Avvio", "bairro": "", "status": "Lançamento", "descricao": "Empreendimento residencial entre os lançamentos atuais da Tricon.", "url": "https://construtoratricon.com.br/lancamentos/" }
+      ]
+    },
+    {
+      "slug": "casanova",
+      "nome": "Casanova Incorporadora",
+      "site": "https://casanovaudi.com.br/",
+      "segmento": "Loteamentos e condomínios fechados",
+      "descricao": "Grupo de construção e incorporação fundado em 1987 em Uberlândia, atuante em loteamentos, urbanização e condomínios fechados.",
+      "projetos": [
+        { "nome": "Reserva do Lago", "bairro": "Represa de Miranda", "status": "Em obras", "descricao": "Condomínio fechado de lotes na Represa de Miranda, com lazer completo e escrituração individual.", "url": "https://casanovaudi.com.br/reserva-do-lago/" }
+      ]
+    },
+    {
+      "slug": "mrv",
+      "nome": "MRV Engenharia",
+      "site": "https://www.mrv.com.br/",
+      "segmento": "Residencial econômico (MCMV)",
+      "descricao": "Uma das maiores construtoras do Brasil, com forte presença em Uberlândia e mais de 10 empreendimentos comercializados na cidade.",
+      "projetos": [
+        { "nome": "Parque Univitá", "bairro": "Jardim Holanda", "status": "Pronto", "descricao": "Condomínio de apartamentos no Jardim Holanda.", "url": "https://www.mrv.com.br/" },
+        { "nome": "Parque Unistella", "bairro": "Tubalina", "status": "Pronto", "descricao": "Empreendimento residencial de apartamentos no Tubalina.", "url": "https://www.mrv.com.br/" },
+        { "nome": "Parque Uniplace", "bairro": "Presidente Roosevelt", "status": "Pronto", "descricao": "Condomínio de apartamentos no Presidente Roosevelt.", "url": "https://www.mrv.com.br/" }
+      ]
+    },
+    {
+      "slug": "pacaembu",
+      "nome": "Pacaembu Construtora",
+      "site": "https://pacaembu.com/imoveis-residenciais/moradas-do-horizonte-condominio-ouro-preto",
+      "segmento": "Econômico (MCMV) · bairros planejados",
+      "descricao": "Construtora nacional de habitação econômica via Minha Casa Minha Vida, com bairro planejado em condomínio fechado em Uberlândia.",
+      "projetos": [
+        { "nome": "Moradas do Horizonte — Condomínio Ouro Preto", "bairro": "Shopping Park (zona sul)", "status": "Lançamento", "descricao": "Bairro planejado em condomínio fechado com infraestrutura completa, primeiro empreendimento da Pacaembu na cidade.", "url": "https://pacaembu.com/imoveis-residenciais/moradas-do-horizonte-condominio-ouro-preto" }
+      ]
+    }
+  ]
+}

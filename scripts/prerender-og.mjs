@@ -18,6 +18,7 @@ const SITE = 'https://viniciusgraton.com.br'
 const baseHtml = readFileSync(resolve(DIST, 'index.html'), 'utf8')
 const dados = JSON.parse(readFileSync(resolve(ROOT, 'src/imoveis-destaque.json'), 'utf8'))
 const imoveis = dados.imoveis
+const construtoras = JSON.parse(readFileSync(resolve(ROOT, 'src/construtoras.json'), 'utf8')).construtoras || []
 const lastmod = (dados.geradoEm || '').slice(0, 10) || '2026-06-04'
 
 const formatPreco = (v) => {
@@ -116,6 +117,8 @@ const urls = [
   { loc: `${SITE}/como-funciona`, freq: 'monthly', pri: '0.6' },
   { loc: `${SITE}/sobre`, freq: 'monthly', pri: '0.6' },
   { loc: `${SITE}/regioes`, freq: 'monthly', pri: '0.7' },
+  { loc: `${SITE}/construtoras`, freq: 'weekly', pri: '0.7' },
+  ...construtoras.map((c) => ({ loc: `${SITE}/construtoras/${c.slug}`, freq: 'weekly', pri: '0.6' })),
   { loc: `${SITE}/contato`, freq: 'monthly', pri: '0.5' },
   ...imoveis.map((im) => ({
     loc: `${SITE}/imovel/${im.codigo}`,

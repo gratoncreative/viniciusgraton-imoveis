@@ -7,6 +7,7 @@ import { IconWhats, IconMenu, IconClose } from './icons'
 // Páginas do menu principal
 const LINKS = [
   { to: '/imoveis', label: 'Imóveis' },
+  { to: '/construtoras', label: 'Construtoras' },
   { to: '/como-funciona', label: 'Como eu te ajudo' },
   { to: '/sobre', label: 'Sobre' },
   { to: '/regioes', label: 'Uberlândia' },
