@@ -3,6 +3,7 @@ import Reveal from './Reveal'
 import { SEGMENTOS } from '../data'
 import { IconArrow, ICONS } from './icons'
 import FiltroModal from './FiltroModal'
+import { onImgError } from '../img'
 
 function CardSegmento({ s, onAbrir }) {
   const ref = useRef(null)
@@ -42,7 +43,7 @@ function CardSegmento({ s, onAbrir }) {
       onClick={() => onAbrir(s)}
     >
       <div className="card-media" data-depth>
-        <img src={s.img} alt={s.titulo} loading="lazy" />
+        <img src={s.img} alt={s.titulo} loading="lazy" decoding="async" onError={onImgError} />
         {Icon && <span className="card-seg-ico"><Icon /></span>}
         <span className="card-seg-title">{s.titulo}</span>
       </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { IconClose, IconArrow } from './icons'
+import { onImgError } from '../img'
 
 const DUR = 4.5 // segundos por foto no tour
 
@@ -11,7 +12,9 @@ export default function Galeria({ fotos = [], alt = '' }) {
   const touchX = useRef(null)
 
   const total = fotos.length
-  const ir = useCallback((n) => setI((p) => (n + total) % total), [total])
+  // se a lista de fotos mudar (troca de imóvel) e o índice ficar fora, volta ao começo
+  useEffect(() => { if (i >= total && total > 0) setI(0) }, [total, i])
+  const ir = useCallback((n) => setI(() => (n + total) % total), [total])
   const prox = useCallback(() => ir(i + 1), [ir, i])
   const ant = useCallback(() => ir(i - 1), [ir, i])
 
@@ -60,6 +63,7 @@ export default function Galeria({ fotos = [], alt = '' }) {
             className="gal-slide"
             src={fotos[i]}
             alt={alt}
+            onError={onImgError}
             onClick={() => setAberto(true)}
             initial={{ opacity: 0, scale: 1.0 }}
             animate={{ opacity: 1, scale: tour ? 1.1 : 1.0 }}
@@ -107,7 +111,7 @@ export default function Galeria({ fotos = [], alt = '' }) {
               onClick={manual(() => setI(n))}
               aria-label={`Foto ${n + 1}`}
             >
-              <img src={src} alt="" loading="lazy" />
+              <img src={src} alt="" loading="lazy" onError={onImgError} />
             </button>
           ))}
         </div>
@@ -128,6 +132,7 @@ export default function Galeria({ fotos = [], alt = '' }) {
                 key={i}
                 src={fotos[i]}
                 alt={alt}
+                onError={onImgError}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}

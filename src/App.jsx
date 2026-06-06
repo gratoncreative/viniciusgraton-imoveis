@@ -2,6 +2,7 @@ import { useEffect, lazy, Suspense } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
 import ScrollProgress from './components/ScrollProgress'
+import ErrorBoundary from './components/ErrorBoundary'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import BarraContato from './components/BarraContato'
@@ -76,17 +77,22 @@ export default function App() {
 
   return (
     <>
+      <a href="#conteudo" className="skip-link">Pular para o conteúdo</a>
       <ScrollProgress />
       <Navbar />
-      <Suspense fallback={<div className="rota-load" aria-busy="true"><span className="rota-spinner" /></div>}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/imoveis" element={<Catalogo />} />
-          <Route path="/imovel/:codigo" element={<ImovelDetalhe />} />
-          <Route path="/privacidade" element={<Privacidade />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
+      <div id="conteudo" tabIndex={-1}>
+        <ErrorBoundary>
+          <Suspense fallback={<div className="rota-load" aria-busy="true"><span className="rota-spinner" /></div>}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/imoveis" element={<Catalogo />} />
+              <Route path="/imovel/:codigo" element={<ImovelDetalhe />} />
+              <Route path="/privacidade" element={<Privacidade />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
+      </div>
       <Footer />
 
       <a className="wa-float" href={linkWhatsApp(WA.flutuante)} target="_blank" rel="noopener" aria-label="Falar no WhatsApp">

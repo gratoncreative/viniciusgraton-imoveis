@@ -329,7 +329,7 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .im-spec b { color: var(--text); font-weight: 700; margin-right: 1px; }
 .im-spec svg { color: var(--gold-1); flex: none; }
 .im-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
-.im-ver { font-family: var(--font-head); font-weight: 600; font-size: 0.84rem; color: var(--gold-1); white-space: nowrap; transition: gap 0.3s var(--ease); }
+.im-ver { font-family: var(--font-head); font-weight: 600; font-size: 0.84rem; color: var(--gold-1); white-space: nowrap; text-decoration: none; transition: gap 0.3s var(--ease); }
 .im-card:hover .im-ver { text-decoration: underline; text-underline-offset: 3px; }
 .im-cta { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 100px; font-family: var(--font-head); font-weight: 600; font-size: 0.84rem; color: #20160a; background: var(--gold-grad); transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease); }
 .im-cta svg { flex: none; }
@@ -740,6 +740,25 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 
 /* ---------- acessibilidade: foco visível ---------- */
 :focus-visible { outline: 2px solid var(--gold-2); outline-offset: 3px; border-radius: 6px; }
+
+/* Skip link — pular direto para o conteúdo (acessibilidade/teclado) */
+.skip-link { position: fixed; left: 12px; top: -64px; z-index: 600; background: var(--gold-grad); color: #20160a; font-family: var(--font-head); font-weight: 700; font-size: 0.9rem; padding: 11px 18px; border-radius: 10px; text-decoration: none; transition: top 0.22s var(--ease); }
+.skip-link:focus { top: 12px; }
+#conteudo:focus { outline: none; }
+
+/* Estados de botão consistentes (toque/teclado/desabilitado) */
+.btn:active { transform: translateY(-1px) scale(0.99); }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none !important; pointer-events: none; }
+
+/* Foco visível nos cards clicáveis navegando por teclado */
+.card-clickable:focus-visible { outline: 2px solid var(--gold-2); outline-offset: 4px; }
+/* fundo neutro enquanto a imagem do card carrega (sem flash branco) */
+.card-media { background: #11151d; }
+
+/* Menos partículas de poeira no mobile (alivia o compositor / bateria) */
+@media (max-width: 640px) {
+  .dust-p:nth-child(n+9) { display: none; }
+}
 
 /* ---------- conector entre etapas (Como funciona) ---------- */
 @media (min-width: 981px) {

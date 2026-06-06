@@ -16,8 +16,13 @@ export default function ShareModal({ im, onClose, onShared }) {
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
-    return () => { document.body.style.overflow = '' }
-  }, [])
+    const onKey = (e) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.body.style.overflow = ''
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [onClose])
 
   const url = `${window.location.origin}/imovel/${im.codigo}`
   const resumo = `${im.tipo} no ${im.bairro} — ${formatPreco(im.preco)}`

@@ -8,7 +8,7 @@ export default defineConfig({
   base: '/',
   build: {
     outDir: 'dist',
-    assetsInlineLimit: 0,
+    assetsInlineLimit: 4096,
     rollupOptions: {
       output: {
         manualChunks: {

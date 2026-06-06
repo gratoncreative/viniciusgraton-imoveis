@@ -1,8 +1,9 @@
 import { useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { formatPreco, formatArea, resumoImovel, truncar, linkWhatsApp, waImovel } from '../data'
 import { IconWhats, ICONS } from './icons'
 import Engajamento from './Engajamento'
+import { onImgError } from '../img'
 
 const plural = (n, s, p) => (n > 1 ? p : s)
 
@@ -62,7 +63,7 @@ export default function CardImovel({ im }) {
       onClick={irParaImovel}
     >
       <div className="card-media im-media" data-depth>
-        <img src={im.img} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} loading="lazy" />
+        <img src={im.img} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} loading="lazy" decoding="async" onError={onImgError} />
         <span className="im-tag">{im.tipo}</span>
         {im.novo && <span className="im-novo">Novo</span>}
         <Engajamento im={im} variante="card" />
@@ -76,7 +77,14 @@ export default function CardImovel({ im }) {
           {specs.map((s, i) => <Spec key={i} {...s} />)}
         </div>
         <div className="im-actions">
-          <span className="im-ver">Ver detalhes</span>
+          <Link
+            className="im-ver"
+            to={`/imovel/${im.codigo}`}
+            onClick={(e) => e.stopPropagation()}
+            aria-label={`Ver detalhes do ${im.tipo} no ${im.bairro}, ${im.cidade}`}
+          >
+            Ver detalhes
+          </Link>
           <a
             className="im-cta"
             href={linkWhatsApp(waImovel(im))}

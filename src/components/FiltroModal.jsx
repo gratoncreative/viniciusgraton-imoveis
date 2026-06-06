@@ -20,11 +20,17 @@ export default function FiltroModal({ seg, onClose }) {
     }
   }, [open, preset])
 
-  // trava o scroll do fundo enquanto o modal está aberto
+  // trava o scroll do fundo + fecha no Esc enquanto o modal está aberto
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
-  }, [open])
+    if (!open) return
+    const onKey = (e) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.body.style.overflow = ''
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open, onClose])
 
   const set = (k, v) => setF((s) => ({ ...s, [k]: v }))
   const toggleCarac = (c) =>
