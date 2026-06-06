@@ -1,41 +1,16 @@
-import { useRef } from 'react'
 import Reveal from './Reveal'
 import { linkWhatsApp, WA } from '../data'
 import { IconShield, IconWhats } from './icons'
 
 export default function Sobre() {
-  const ref = useRef(null)
-  const raf = useRef(0)
-
-  // cenário estático; apenas o recorte (corpo) se move com o mouse
-  const onMove = (e) => {
-    const el = ref.current
-    if (!el) return
-    const r = el.getBoundingClientRect()
-    const mx = (e.clientX - r.left) / r.width - 0.5
-    const my = (e.clientY - r.top) / r.height - 0.5
-    cancelAnimationFrame(raf.current)
-    raf.current = requestAnimationFrame(() => {
-      el.style.setProperty('--mx', mx.toFixed(3))
-      el.style.setProperty('--my', my.toFixed(3))
-      el.style.setProperty('--act', '1')
-    })
-  }
-  const onLeave = () => {
-    const el = ref.current
-    if (!el) return
-    cancelAnimationFrame(raf.current)
-    el.style.setProperty('--mx', '0')
-    el.style.setProperty('--my', '0')
-    el.style.setProperty('--act', '0')
-  }
-
   return (
-    <section id="sobre" className="sobre-banner" ref={ref} onMouseMove={onMove} onMouseLeave={onLeave}>
-      <img className="sobre-cenario" src="/escritorio.jpg" alt="" aria-hidden="true" />
+    <section id="sobre" className="sobre-banner">
+      <img
+        className="sobre-cenario"
+        src="/sobre-banner.jpg"
+        alt="Vinícius Graton, consultor de imóveis em Uberlândia, em seu escritório"
+      />
       <span className="sobre-tint" aria-hidden="true" />
-      <span className="sobre-glow" aria-hidden="true" />
-      <img className="sobre-recorte" src="/vinicius-graton-cutout.png" alt="Vinícius Graton, consultor de imóveis em Uberlândia" />
 
       <div className="container sobre-banner-wrap">
         <div className="sobre-banner-text">

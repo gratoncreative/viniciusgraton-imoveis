@@ -452,11 +452,11 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 
 /* ---------- SOBRE ---------- */
 /* ===== SOBRE — banner full-width (você à direita, texto à esquerda) ===== */
-.sobre-banner { --mx: 0; --my: 0; --act: 0; position: relative; overflow: hidden; padding: 92px 0; min-height: 640px; display: flex; align-items: center; background: #0a0e16; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-/* escritório desfocado preenchendo a largura toda */
-.sobre-cenario { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: blur(5px) brightness(0.82) saturate(1.05); transform: scale(1.06); }
-/* escurece a esquerda (legibilidade do texto) */
-.sobre-tint { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(6,9,14,0.96) 0%, rgba(6,9,14,0.86) 32%, rgba(6,9,14,0.48) 62%, rgba(6,9,14,0.6) 100%); }
+.sobre-banner { position: relative; overflow: hidden; padding: 92px 0; min-height: 560px; display: flex; align-items: center; background: #0a0e16; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+/* foto do escritório preenchendo a largura toda (nítida, o Vinícius já está nela) */
+.sobre-cenario { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: right center; filter: brightness(0.96); }
+/* escurece a esquerda (legibilidade do texto) e deixa a direita limpa (onde ele aparece) */
+.sobre-tint { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(6,9,14,0.95) 0%, rgba(6,9,14,0.85) 28%, rgba(6,9,14,0.45) 55%, rgba(6,9,14,0.12) 80%, rgba(6,9,14,0.04) 100%); }
 /* halo dourado atrás do recorte */
 .sobre-glow { position: absolute; right: 16%; top: 46%; transform: translate(50%, -50%); width: 46%; height: 82%; pointer-events: none; background: radial-gradient(ellipse at center, rgba(224,181,86,0.16), transparent 66%); filter: blur(20px); }
 /* recorte do Vinícius, à direita, parallax sutil só dele */
