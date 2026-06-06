@@ -408,6 +408,8 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .det-carac-lista { list-style: none; display: flex; flex-direction: column; gap: 11px; }
 .det-carac-lista li { display: flex; align-items: center; gap: 10px; font-size: 0.95rem; color: var(--text-soft); }
 .det-carac-check { width: 20px; height: 20px; border-radius: 50%; background: rgba(184,134,47,0.14); color: var(--gold-3); display: grid; place-items: center; font-size: 0.7rem; font-weight: 700; flex: none; }
+.det-mapa-ref { color: var(--text-soft); font-size: 0.95rem; margin-top: 4px; }
+.det-mapa-ref b { color: var(--text); }
 @media (max-width: 860px) { .det-carac-grupos { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 520px) { .det-carac-grupos { grid-template-columns: 1fr; } }
 @media (max-width: 860px) {

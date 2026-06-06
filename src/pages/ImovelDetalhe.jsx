@@ -237,6 +237,7 @@ export default function ImovelDetalhe() {
         <div className="det-mapa">
           <h2 className="det-rel-titulo">Localização</h2>
           <p className="det-mapa-bairro"><IconPin width={18} height={18} /> {im.bairro}, {im.cidade} — {im.uf}</p>
+          {im.pontoReferencia && <p className="det-mapa-ref">Ponto de referência: <b>{im.pontoReferencia}</b></p>}
           <div className="det-mapa-frame">
             <iframe
               title={`Mapa do bairro ${im.bairro}`}

@@ -16,7 +16,7 @@
       "vagas": 4,
       "area": 300,
       "img": "/imoveis/99549/1.jpg",
-      "descricao": "",
+      "descricao": "Casa de Alto Padrão no Condomínio Alphaville 1 com vista permanente para área de preservação ambiental, esta sofisticada residência oferece exclusividade, privacidade e integração com a natureza em uma das melhores localizações do condomínio. São 300m² de área construída em um terreno de 536,31m², com projeto moderno, ambientes amplos e acabamentos de alto padrão. O imóvel conta com 4 suítes, com possibilidade de utilização de uma delas como escritório, além de marcenaria completa em todos os ambientes e climatização total. Possui elevador, sistema de energia fotovoltaica, boiler de 600 litros para aquecimento de água, irrigação automatizada e paisagismo cuidadosamente planejado. A área de lazer foi projetada para proporcionar conforto e bem-estar, com piscina aquecida integrada à sauna, criando um ambiente ideal para momentos de descanso e confraternização. Uma residência que reúne tecnologia, sofisticação e uma vista exclusiva em um dos condomínios mais valorizados da cidade.",
       "fotos": [
         "/imoveis/99549/1.jpg",
         "/imoveis/99549/2.jpg",
@@ -38,7 +38,10 @@
         "/imoveis/99549/18.jpg",
         "/imoveis/99549/19.jpg"
       ],
-      "novo": true
+      "novo": true,
+      "condominio": "Cond. Alphaville I",
+      "pontoReferencia": "Granja Marileusa",
+      "areaLote": 536.31
     },
     {
       "codigo": "99629",
@@ -54,7 +57,7 @@
       "vagas": 3,
       "area": 237,
       "img": "/imoveis/99629/1.jpg",
-      "descricao": "",
+      "descricao": "Belíssima cobertura linear com vista para a cidade, cômodos amplos, sala em 4 ambientes, terraço descoberto, 4 quartos sendo 3 suítes, todos com armários, cozinha planejada, varanda gourmet com cozinha e churrasqueira, lavanderia independente e banheiro de serviço. São 3 vagas de garagem + box e elevadores. O condomínio oferece portaria monitorada, playground, salão de festas, ampla recepção com sala e hall de entrada, interfone, câmeras monitoradas com reconhecimento facial e jardinagem.",
       "fotos": [
         "/imoveis/99629/1.jpg",
         "/imoveis/99629/2.jpg",
@@ -84,7 +87,9 @@
         "/imoveis/99629/26.jpg",
         "/imoveis/99629/27.jpg"
       ],
-      "novo": true
+      "novo": true,
+      "condominio": "Edifício Maison Phoenix",
+      "pontoReferencia": "Av. Rondon Pacheco"
     },
     {
       "codigo": "99474",
@@ -100,7 +105,7 @@
       "vagas": 4,
       "area": 233.03,
       "img": "/imoveis/99474/1.jpg",
-      "descricao": "",
+      "descricao": "Moderna casa térrea no Condomínio Arts com 233,03m² de área construída em terreno de 420,46m², entregue averbada e com acabamento de alto padrão. O imóvel possui fachada contemporânea com detalhe em pedra ferro, 3 suítes, todas com closet, sendo uma máster, além de escritório que pode ser revertido para sala de TV ou quarta suíte. Conta com sala de jantar com pé-direito duplo, ampla área social integrada à varanda gourmet com ilha, churrasqueira e cuba inox com torneira monocomando Deca, despensa, depósito e área de serviço espaçosa. A área externa dispõe de paisagismo completo e piscina de aproximadamente 20m², revestida em pastilhas Tasos, com iluminação automatizada e quatro pontos de hidromassagem. Entre os diferenciais: porcelanato 94x94, esquadrias em alumínio preto com persianas automatizadas nas suítes, granitos São Gabriel e quartzito cinza, iluminação 100% em LED, preparação para seis aparelhos de ar-condicionado, aquecimento solar com boiler de 600 litros, louças e metais Deca, e garagem para até seis veículos, sendo três cobertas. Sofisticação, conforto e tecnologia em condomínio fechado.",
       "fotos": [
         "/imoveis/99474/1.jpg",
         "/imoveis/99474/2.jpg",
@@ -130,7 +135,10 @@
         "/imoveis/99474/26.jpg",
         "/imoveis/99474/27.jpg"
       ],
-      "novo": true
+      "novo": true,
+      "condominio": "Cond. GSP Arts",
+      "pontoReferencia": "Condomínio Arts — Zona Sul",
+      "areaLote": 420.46
     },
     {
       "codigo": "99660",
@@ -146,7 +154,7 @@
       "vagas": 4,
       "area": 100,
       "img": "/imoveis/99660/1.jpg",
-      "descricao": "",
+      "descricao": "Casa residencial em terreno único de 250m², no bairro Golden Ville, próximo à nova entrada do Aeroporto. Área total de construção de 100m². Salas e cozinha gourmet em ambiente integrado e amplo, lavanderia coberta em área separada, 1 suíte com dois chuveiros, 1 quarto, banheiro social, lavabo, hall para os quartos e garagem ampla para 2 carros. Esquadrias em alumínio, banheiros com encanamento para água quente e fria e pontos para ar-condicionado em todos os cômodos.",
       "fotos": [
         "/imoveis/99660/1.jpg",
         "/imoveis/99660/2.jpg",
@@ -163,7 +171,9 @@
         "/imoveis/99660/13.jpg",
         "/imoveis/99660/14.jpg"
       ],
-      "novo": true
+      "novo": true,
+      "pontoReferencia": "Próximo à nova entrada do Aeroporto",
+      "areaLote": 250
     },
     {
       "codigo": "99661",
@@ -179,7 +189,7 @@
       "vagas": 2,
       "area": 97,
       "img": "/imoveis/99661/1.jpg",
-      "descricao": "",
+      "descricao": "Excelente apartamento com 97,00m², sol da manhã. Sala ampla em dois ambientes com painel para TV e sacada com tela de proteção, banheiro social com armário e box, 3 quartos com armários sendo 1 suíte, cozinha toda planejada e área de serviço com armários. Gás canalizado, 2 elevadores e 2 vagas espaçosas de garagem em linha. O condomínio oferece espaço para academia, salão de festas, guarita, portaria virtual, interfone e portão eletrônico.",
       "fotos": [
         "/imoveis/99661/1.jpg",
         "/imoveis/99661/2.jpg",
@@ -211,7 +221,8 @@
         "/imoveis/99661/28.jpg",
         "/imoveis/99661/29.jpg"
       ],
-      "novo": true
+      "novo": true,
+      "condominio": "Condomínio Leandro Silva"
     },
     {
       "codigo": "99658",
@@ -227,7 +238,7 @@
       "vagas": 1,
       "area": 64,
       "img": "/imoveis/99658/1.jpg",
-      "descricao": "",
+      "descricao": "Apartamento com 64,00m² e boa localização. Sala ampla, banheiro social, 3 quartos sendo uma suíte, cozinha com armários planejados, área de serviço conjugada, piso em cerâmica e 1 vaga de garagem. O condomínio conta com portaria 24 horas, gás canalizado, salão de festas, quadra poliesportiva e playground.",
       "fotos": [
         "/imoveis/99658/1.jpg",
         "/imoveis/99658/2.jpg",
@@ -239,7 +250,9 @@
         "/imoveis/99658/8.jpg",
         "/imoveis/99658/9.jpg"
       ],
-      "novo": true
+      "novo": true,
+      "condominio": "Residencial Atlanta",
+      "pontoReferencia": "Próximo ao Terminal Planalto e ao Shopping Tem Tem"
     },
     {
       "codigo": "96587",
