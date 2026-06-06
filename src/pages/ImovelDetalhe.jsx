@@ -6,7 +6,7 @@ import CardImovel from '../components/CardImovel'
 import Engajamento from '../components/Engajamento'
 import {
   getImovel, fotosDe, formatPreco, formatArea, resumoImovel, subtituloImovel,
-  destaquesImovel, ehCondominio, IMOVEIS, linkWhatsApp, waImovel, CONFIG,
+  destaquesImovel, ehCondominio, IMOVEIS, linkWhatsApp, waImovel, CONFIG, BAIRROS,
 } from '../data'
 import { IconWhats, IconArrow, IconPin, IconShield, ICONS } from './../components/icons'
 
@@ -129,10 +129,27 @@ export default function ImovelDetalhe() {
   ].filter((g) => g.itens.length > 0)
 
   const mapsQuery = encodeURIComponent(`${im.bairro}, ${im.cidade}, MG, Brasil`)
+  const bairroInfo = BAIRROS.find((b) => b.nome.toLowerCase() === (im.bairro || '').toLowerCase())
   const prox = []
-  if (im.pontoReferencia) prox.push({ icon: 'pin', text: im.pontoReferencia })
-  if (im.condominio) prox.push({ icon: 'shield', text: im.condominio.replace(/^Cond\.\s*/i, 'Condomínio ') })
-  prox.push({ icon: 'home', text: `Bairro ${im.bairro}, ${im.cidade} — ${im.uf}` })
+  if (im.pontoReferencia)
+    prox.push({
+      icon: 'pin',
+      text: im.pontoReferencia,
+      sub: 'Ponto de referência próximo que facilita o acesso, encurta deslocamentos do dia a dia e valoriza o endereço.',
+    })
+  if (im.condominio)
+    prox.push({
+      icon: 'shield',
+      text: im.condominio.replace(/^Cond\.\s*/i, 'Condomínio '),
+      sub: 'Estrutura, segurança e áreas de lazer do condomínio agregam conforto, comodidade e valor de revenda ao imóvel.',
+    })
+  prox.push({
+    icon: 'home',
+    text: `Bairro ${im.bairro}, ${im.cidade} — ${im.uf}`,
+    sub: bairroInfo
+      ? bairroInfo.desc
+      : `Região consolidada de ${im.cidade}, com boa infraestrutura, comércio por perto e liquidez para uma compra segura.`,
+  })
 
   // outros imóveis (prioriza o mesmo tipo)
   const relacionados = [
@@ -254,7 +271,15 @@ export default function ImovelDetalhe() {
               <ul className="det-prox-lista">
                 {prox.map((p, i) => {
                   const I = ICONS[p.icon]
-                  return <li key={i}>{I && <span className="det-prox-ico"><I width={18} height={18} /></span>} {p.text}</li>
+                  return (
+                    <li key={i}>
+                      {I && <span className="det-prox-ico"><I width={18} height={18} /></span>}
+                      <div className="det-prox-txt">
+                        <b>{p.text}</b>
+                        {p.sub && <span>{p.sub}</span>}
+                      </div>
+                    </li>
+                  )
                 })}
               </ul>
               <p className="det-mapa-aviso">Localização aproximada do bairro — o mapa mostra escolas, comércio e serviços ao redor. O endereço exato é informado no atendimento.</p>
