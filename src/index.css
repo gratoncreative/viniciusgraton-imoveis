@@ -215,8 +215,17 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .chip-d { top: 62%; right: 28%; transform: translate3d(calc(var(--px) * 28px), calc(var(--py) * 20px), 0) scale(var(--cs, 1)); }
 .chip-e { top: 74%; right: 13%; transform: translate3d(calc(var(--px) * 18px), calc(var(--py) * 15px), 0) scale(var(--cs, 1)); }
 @media (max-width: 1180px) { .chip-b, .chip-d { display: none; } }
-.hero-grid { position: relative; z-index: 4; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 40px; align-items: center; width: 100%; }
-.hero-left { max-width: 640px; }
+.hero-grid { position: relative; z-index: 4; display: grid; grid-template-columns: 1fr; align-items: center; width: 100%; }
+.hero-left { max-width: 620px; }
+/* entrada do hero por CSS (compositor) — confiável mesmo com a cena 3D ocupando a thread JS */
+.hero-in > * { animation: heroIn 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+.hero-in > *:nth-child(1) { animation-delay: 0.05s; }
+.hero-in > *:nth-child(2) { animation-delay: 0.15s; }
+.hero-in > *:nth-child(3) { animation-delay: 0.28s; }
+.hero-in > *:nth-child(4) { animation-delay: 0.40s; }
+.hero-in > *:nth-child(5) { animation-delay: 0.52s; }
+@keyframes heroIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .hero-in > * { animation: none; } }
 .hero-badge {
   display: inline-flex; align-items: center; gap: 9px;
   padding: 8px 16px; border-radius: 100px;
@@ -226,29 +235,15 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .hero-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #46d17e; box-shadow: 0 0 0 4px rgba(70, 209, 126, 0.18); }
 .hero h1 {
   font-family: var(--font-head); font-weight: 800;
-  font-size: clamp(2.8rem, 6.2vw, 5.4rem); line-height: 1.0; letter-spacing: -0.035em;
+  font-size: clamp(2.6rem, 5.4vw, 4.7rem); line-height: 1.08; letter-spacing: -0.03em;
 }
 .hero h1 em { font-family: var(--font-serif); font-style: italic; font-weight: 500; }
-.hero p.lead { color: var(--text-soft); font-size: clamp(1.05rem, 1.5vw, 1.22rem); margin-top: 26px; max-width: 520px; }
-.hero-actions { display: flex; gap: 16px; margin-top: 38px; flex-wrap: wrap; }
-.hero-trust { display: flex; gap: 28px; margin-top: 44px; flex-wrap: wrap; }
+.hero p.lead { color: var(--text-soft); font-size: clamp(1.04rem, 1.4vw, 1.18rem); line-height: 1.6; margin-top: 24px; max-width: 500px; }
+.hero-actions { display: flex; gap: 16px; margin-top: 34px; flex-wrap: wrap; }
+.hero-trust { display: flex; gap: 32px; margin-top: 40px; flex-wrap: wrap; }
 .hero-trust .item { display: flex; flex-direction: column; }
 .hero-trust .item b { font-family: var(--font-head); font-size: 1.5rem; font-weight: 700; }
 .hero-trust .item span { font-size: 0.82rem; color: var(--text-mute); }
-.hero-right { position: relative; align-self: stretch; min-height: 460px; display: flex; align-items: center; justify-content: flex-end; }
-/* card de imóvel em destaque no hero (preenche o lado direito) */
-.hero-card { width: min(370px, 100%); background: rgba(10,14,22,0.55); border: 1px solid rgba(255,255,255,0.14); border-radius: 20px; overflow: hidden; backdrop-filter: blur(14px); box-shadow: 0 30px 70px -30px rgba(0,0,0,0.7); }
-.hero-card a { display: block; color: inherit; text-decoration: none; }
-.hero-card-media { position: relative; aspect-ratio: 16 / 10; overflow: hidden; }
-.hero-card-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s var(--ease); }
-.hero-card:hover .hero-card-media img { transform: scale(1.06); }
-.hero-card-badge { position: absolute; top: 12px; left: 12px; font-family: var(--font-head); font-size: 0.72rem; font-weight: 700; color: #0a0e16; background: linear-gradient(135deg, var(--gold-1), var(--gold-2)); padding: 5px 12px; border-radius: 100px; }
-.hero-card-body { padding: 18px 20px 20px; }
-.hero-card-tipo { display: block; font-size: 0.82rem; color: rgba(255,255,255,0.7); }
-.hero-card-preco { display: block; font-family: var(--font-head); font-weight: 800; font-size: 1.5rem; color: #fff; margin: 4px 0 10px; }
-.hero-card-specs { display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.8rem; color: rgba(255,255,255,0.78); margin-bottom: 14px; }
-.hero-card-cta { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-head); font-weight: 700; font-size: 0.9rem; color: var(--gold-1); }
-@media (max-width: 900px) { .hero-card { display: none; } }
 .scroll-hint { position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%); z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-mute); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; }
 .scroll-hint .mouse { width: 22px; height: 36px; border: 1.5px solid var(--text-mute); border-radius: 12px; position: relative; }
 .scroll-hint .mouse::after { content: ''; position: absolute; top: 7px; left: 50%; transform: translateX(-50%); width: 3px; height: 7px; background: var(--gold-2); border-radius: 3px; animation: scrolldot 1.6s infinite; }
