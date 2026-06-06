@@ -51,19 +51,33 @@ function render(im) {
   const image = abs(im.img)
   const ld = {
     '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: `${im.tipo} no ${im.bairro}, Uberlândia`,
-    description: resumo(im),
-    image: (im.fotos && im.fotos.length ? im.fotos : [im.img]).map(abs),
-    category: 'Imóvel à venda',
-    offers: {
-      '@type': 'Offer',
-      price: im.preco,
-      priceCurrency: 'BRL',
-      availability: 'https://schema.org/InStock',
-      url,
-      seller: { '@type': 'RealEstateAgent', name: 'Vinícius Graton Imóveis', areaServed: 'Uberlândia - MG' },
-    },
+    '@graph': [
+      {
+        '@type': 'Product',
+        '@id': `${url}#imovel`,
+        name: `${im.tipo} no ${im.bairro}, Uberlândia`,
+        description: resumo(im),
+        image: (im.fotos && im.fotos.length ? im.fotos : [im.img]).map(abs),
+        category: 'Imóvel à venda',
+        sku: String(im.codigo),
+        offers: {
+          '@type': 'Offer',
+          price: im.preco,
+          priceCurrency: 'BRL',
+          availability: 'https://schema.org/InStock',
+          url,
+          seller: { '@type': 'RealEstateAgent', name: 'Vinícius Graton Imóveis', areaServed: 'Uberlândia - MG' },
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Início', item: `${SITE}/` },
+          { '@type': 'ListItem', position: 2, name: 'Imóveis', item: `${SITE}/imoveis` },
+          { '@type': 'ListItem', position: 3, name: `${im.tipo} no ${im.bairro}`, item: url },
+        ],
+      },
+    ],
   }
 
   let html = baseHtml
@@ -73,7 +87,10 @@ function render(im) {
     .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
     .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${esc(url)}$2`)
     .replace(/(<meta property="og:image" content=")[^"]*(")/, `$1${esc(image)}$2`)
-    .replace(/(<meta property="og:image:alt" content=")[^"]*(")/, `$1${esc(im.tipo + ' no ' + im.bairro)}$2`)
+    .replace(/(<meta property="og:image:alt" content=")[^"]*(")/, `$1${esc(im.tipo + ' no ' + im.bairro + ', ' + im.cidade)}$2`)
+    .replace(/(<meta property="og:image:width" content=")[^"]*(")/, `$11200$2`)
+    .replace(/(<meta property="og:image:height" content=")[^"]*(")/, `$1900$2`)
+    .replace(/(<meta property="og:type" content=")[^"]*(")/, `$1article$2`)
     .replace(/(<meta name="twitter:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
     .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
     .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${esc(image)}$2`)
@@ -92,17 +109,28 @@ for (const im of imoveis) {
 }
 console.log(`✓ prerender-og: ${n} páginas de imóvel geradas em dist/imovel/{codigo}/index.html`)
 
-// sitemap.xml completo (home + catálogo + cada imóvel)
+// sitemap.xml completo (home + catálogo + cada imóvel, com imagem p/ o Google Imagens)
 const urls = [
   { loc: `${SITE}/`, freq: 'weekly', pri: '1.0' },
   { loc: `${SITE}/imoveis`, freq: 'daily', pri: '0.9' },
-  ...imoveis.map((im) => ({ loc: `${SITE}/imovel/${im.codigo}`, freq: 'weekly', pri: '0.8' })),
+  ...imoveis.map((im) => ({
+    loc: `${SITE}/imovel/${im.codigo}`,
+    freq: 'weekly',
+    pri: '0.8',
+    img: abs(im.img),
+    imgTitle: `${im.tipo} no ${im.bairro}, Uberlândia`,
+  })),
   { loc: `${SITE}/privacidade`, freq: 'yearly', pri: '0.2' },
 ]
 const sitemap =
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n` +
   urls
-    .map((u) => `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>\n  </url>`)
+    .map((u) => {
+      const imgBlock = u.img
+        ? `\n    <image:image>\n      <image:loc>${esc(u.img)}</image:loc>\n      <image:title>${esc(u.imgTitle)}</image:title>\n    </image:image>`
+        : ''
+      return `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>${imgBlock}\n  </url>`
+    })
     .join('\n') +
   `\n</urlset>\n`
 writeFileSync(resolve(DIST, 'sitemap.xml'), sitemap)

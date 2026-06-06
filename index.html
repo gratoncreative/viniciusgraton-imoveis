@@ -15,35 +15,95 @@
     <meta property="og:site_name" content="Vinícius Graton Imóveis" />
     <meta property="og:image" content="https://viniciusgraton.com.br/vinicius-graton.jpg" />
     <meta property="og:image:alt" content="Vinícius Graton, consultor de imóveis em Uberlândia" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="1200" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Vinícius Graton | Imóveis em Uberlândia" />
     <meta name="twitter:description" content="Compre seu imóvel em Uberlândia sem medo de errar. Consultoria personalizada e segura." />
     <meta name="twitter:image" content="https://viniciusgraton.com.br/vinicius-graton.jpg" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="keywords" content="imóveis em Uberlândia, casas à venda em Uberlândia, apartamentos em Uberlândia, imóveis de alto padrão Uberlândia, casas em condomínio Uberlândia, consultor de imóveis Uberlândia, comprar imóvel Uberlândia, Vinícius Graton" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://images.unsplash.com" />
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,500&display=swap" rel="stylesheet" />
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1920&auto=format&fit=crop" fetchpriority="high" />
     <link rel="canonical" href="https://viniciusgraton.com.br/" />
     <meta name="author" content="Vinícius Graton" />
     <meta name="geo.region" content="BR-MG" />
     <meta name="geo.placename" content="Uberlândia" />
+    <meta name="geo.position" content="-18.9186;-48.2772" />
+    <meta name="ICBM" content="-18.9186, -48.2772" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "RealEstateAgent",
-        "name": "Vinícius Graton Imóveis",
-        "description": "Consultoria imobiliária em Uberlândia. Ajudo você a comprar casa, apartamento ou investir com segurança em cada etapa.",
-        "url": "https://viniciusgraton.com.br",
-        "telephone": "+5534991570494",
-        "email": "contato@viniciusgraton.com.br",
-        "areaServed": { "@type": "City", "name": "Uberlândia" },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Uberlândia",
-          "addressRegion": "MG",
-          "addressCountry": "BR"
-        },
-        "sameAs": ["https://www.instagram.com/viniciusgraton.imoveis/"]
+        "@graph": [
+          {
+            "@type": "RealEstateAgent",
+            "@id": "https://viniciusgraton.com.br/#agent",
+            "name": "Vinícius Graton Imóveis",
+            "alternateName": "Vinícius Graton — Consultor de Imóveis em Uberlândia",
+            "description": "Consultor de imóveis em Uberlândia (MG). Ajudo você a comprar casa, apartamento ou investir com segurança, do primeiro contato à entrega das chaves.",
+            "url": "https://viniciusgraton.com.br",
+            "telephone": "+5534991570494",
+            "email": "contato@viniciusgraton.com.br",
+            "image": "https://viniciusgraton.com.br/vinicius-graton.jpg",
+            "logo": "https://viniciusgraton.com.br/vinicius-graton.jpg",
+            "priceRange": "$$$",
+            "currenciesAccepted": "BRL",
+            "areaServed": [
+              { "@type": "City", "name": "Uberlândia" },
+              { "@type": "AdministrativeArea", "name": "Triângulo Mineiro" }
+            ],
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Uberlândia",
+              "addressRegion": "MG",
+              "addressCountry": "BR"
+            },
+            "geo": { "@type": "GeoCoordinates", "latitude": -18.9186, "longitude": -48.2772 },
+            "hasMap": "https://www.google.com/maps/place/Uberl%C3%A2ndia,+MG",
+            "knowsAbout": [
+              "compra e venda de imóveis em Uberlândia",
+              "financiamento imobiliário",
+              "uso do FGTS na compra de imóvel",
+              "investimento imobiliário",
+              "casas em condomínio fechado",
+              "apartamentos de alto padrão",
+              "imóveis comerciais"
+            ],
+            "slogan": "Compre seu imóvel sem medo de errar.",
+            "founder": { "@id": "https://viniciusgraton.com.br/#vinicius" },
+            "sameAs": ["https://www.instagram.com/viniciusgraton.imoveis/"]
+          },
+          {
+            "@type": "Person",
+            "@id": "https://viniciusgraton.com.br/#vinicius",
+            "name": "Vinícius Graton",
+            "jobTitle": "Consultor de Imóveis",
+            "description": "Consultor de imóveis em Uberlândia e região, especializado em compra segura de casas, apartamentos e investimentos.",
+            "worksFor": { "@id": "https://viniciusgraton.com.br/#agent" },
+            "image": "https://viniciusgraton.com.br/vinicius-graton.jpg",
+            "url": "https://viniciusgraton.com.br",
+            "knowsLanguage": "pt-BR",
+            "areaServed": { "@type": "City", "name": "Uberlândia" },
+            "sameAs": ["https://www.instagram.com/viniciusgraton.imoveis/"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://viniciusgraton.com.br/#website",
+            "url": "https://viniciusgraton.com.br",
+            "name": "Vinícius Graton Imóveis",
+            "inLanguage": "pt-BR",
+            "publisher": { "@id": "https://viniciusgraton.com.br/#agent" },
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": { "@type": "EntryPoint", "urlTemplate": "https://viniciusgraton.com.br/imoveis?q={search_term_string}" },
+              "query-input": "required name=search_term_string"
+            }
+          }
+        ]
       }
     </script>
     <script type="application/ld+json">
@@ -81,13 +141,6 @@
     </script>
   </head>
   <body>
-    <!-- Formulário oculto para o Netlify Forms detectar no build (lead capture) -->
-    <form name="contato" data-netlify="true" netlify-honeypot="bot-field" hidden>
-      <input type="text" name="nome" />
-      <input type="tel" name="telefone" />
-      <input type="text" name="objetivo" />
-      <textarea name="detalhes"></textarea>
-    </form>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
