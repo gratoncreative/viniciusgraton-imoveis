@@ -298,8 +298,9 @@ export const COMPROMISSO = [
 ]
 
 // Foto humana ilustrativa para a seção de compromisso (família feliz / sonho realizado)
+// Casal esperando um bebê, na luz dourada da cozinha do novo lar — emoção + recomeço + segurança.
 export const COMPROMISSO_IMG =
-  'https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?q=80&w=1200&auto=format&fit=crop'
+  'https://images.unsplash.com/photo-1776741147201-cbaa6155646c?q=80&w=1400&auto=format&fit=crop'
 
 // Dores reais do comprador -> como o Vinícius resolve
 export const DORES = [

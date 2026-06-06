@@ -8,7 +8,7 @@ export default function Compromisso() {
       <div className="container compromisso-grid">
         <Reveal>
           <div className="compromisso-photo">
-            <img src={COMPROMISSO_IMG} alt="Casal feliz realizando o sonho do imóvel próprio" loading="lazy" />
+            <img src={COMPROMISSO_IMG} alt="Casal feliz no novo lar, realizando o sonho do imóvel próprio" loading="lazy" />
             <div className="compromisso-photo-tag">O sonho do imóvel próprio, com segurança</div>
           </div>
         </Reveal>
