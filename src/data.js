@@ -45,6 +45,12 @@ export const IMOVEIS_INFO = { geradoEm: destaqueData.geradoEm, fonte: destaqueDa
 // Construtoras de Uberlândia (vitrine + página por construtora)
 export const CONSTRUTORAS = construtorasData.construtoras || []
 export const getConstrutora = (slug) => CONSTRUTORAS.find((c) => c.slug === slug)
+export const getEmpreendimento = (cslug, pslug) => {
+  const c = getConstrutora(cslug)
+  if (!c) return null
+  const p = (c.projetos || []).find((x) => x.slug === pslug)
+  return p ? { construtora: c, projeto: p } : null
+}
 export const waConstrutora = (c, proj) =>
   `Olá Vinícius! Tenho interesse ${proj ? `no empreendimento ${proj.nome} (${c.nome})` : `nos empreendimentos da ${c.nome}`} em Uberlândia. Pode me passar mais informações e agendar uma visita?`
 

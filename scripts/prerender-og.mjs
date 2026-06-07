@@ -150,6 +150,47 @@ for (const b of bairrosSeo) {
 }
 console.log(`✓ prerender bairros: ${nb} páginas em dist/imoveis/uberlandia/{bairro}/`)
 
+// páginas de empreendimento (construtora) — ficha completa, meta + JSON-LD
+function renderEmpre(c, p) {
+  const titulo = `${p.nome} — ${c.nome}, ${p.bairro || 'Uberlândia'}`
+  const desc = trunc(`${p.descricao || ''} Fale com o Vinícius Graton e agende uma visita ao ${p.nome}, da ${c.nome}, em Uberlândia.`)
+  const url = `${SITE}/construtoras/${c.slug}/${p.slug}`
+  const image = p.capa ? abs(p.capa) : `${SITE}/vinicius-graton.jpg`
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'Residence',
+    name: `${p.nome} — ${c.nome}`,
+    description: p.descricao || desc,
+    url,
+    image,
+    address: { '@type': 'PostalAddress', addressLocality: 'Uberlândia', addressRegion: 'MG', addressCountry: 'BR', streetAddress: p.endereco || p.bairro || '' },
+  }
+  return baseHtml
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)} | Vinícius Graton</title>`)
+    .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
+    .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${esc(url)}$2`)
+    .replace(/(<meta property="og:image" content=")[^"]*(")/, `$1${esc(image)}$2`)
+    .replace(/(<meta property="og:type" content=")[^"]*(")/, `$1article$2`)
+    .replace(/(<meta name="twitter:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
+    .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${esc(image)}$2`)
+    .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
+    .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
+}
+
+let nemp = 0
+for (const c of construtoras) {
+  for (const p of c.projetos || []) {
+    const dir = resolve(DIST, 'construtoras', c.slug, p.slug)
+    mkdirSync(dir, { recursive: true })
+    writeFileSync(resolve(dir, 'index.html'), renderEmpre(c, p))
+    nemp++
+  }
+}
+console.log(`✓ prerender empreendimentos: ${nemp} páginas em dist/construtoras/{construtora}/{empreendimento}/`)
+
 // sitemap.xml completo (home + catálogo + cada imóvel, com imagem p/ o Google Imagens)
 const urls = [
   { loc: `${SITE}/`, freq: 'weekly', pri: '1.0' },
@@ -159,6 +200,13 @@ const urls = [
   { loc: `${SITE}/regioes`, freq: 'monthly', pri: '0.7' },
   { loc: `${SITE}/construtoras`, freq: 'weekly', pri: '0.7' },
   ...construtoras.map((c) => ({ loc: `${SITE}/construtoras/${c.slug}`, freq: 'weekly', pri: '0.6' })),
+  ...construtoras.flatMap((c) => (c.projetos || []).map((p) => ({
+    loc: `${SITE}/construtoras/${c.slug}/${p.slug}`,
+    freq: 'weekly',
+    pri: '0.7',
+    img: p.capa ? abs(p.capa) : '',
+    imgTitle: `${p.nome} — ${c.nome}, Uberlândia`,
+  }))),
   { loc: `${SITE}/contato`, freq: 'monthly', pri: '0.5' },
   ...bairrosSeo.map((b) => ({ loc: `${SITE}/imoveis/uberlandia/${b.slug}`, freq: 'weekly', pri: '0.7' })),
   ...imoveis.map((im) => ({

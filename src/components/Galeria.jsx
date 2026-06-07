@@ -63,6 +63,7 @@ export default function Galeria({ fotos = [], alt = '' }) {
             className="gal-slide"
             src={fotos[i]}
             alt={alt}
+            referrerPolicy="no-referrer"
             onError={onImgError}
             onClick={() => setAberto(true)}
             initial={{ opacity: 0, scale: 1.0 }}
