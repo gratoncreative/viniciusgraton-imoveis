@@ -3,17 +3,19 @@ import Reveal from '../components/Reveal'
 import CardImovel from '../components/CardImovel'
 import AviseMe from '../components/AviseMe'
 import { getBairroSeo, imoveisDoBairro, BAIRROS_SEO, linkWhatsApp } from '../data'
+import { getBairroEditorial } from '../bairros-editorial'
 import { useSEO } from '../useSEO'
-import { IconWhats, IconArrow, IconPin } from '../components/icons'
+import { IconWhats, IconArrow, IconPin, IconShield } from '../components/icons'
 
 export default function Bairro() {
   const { bairro: slug } = useParams()
   const b = getBairroSeo(slug)
+  const ed = getBairroEditorial(slug)
 
   useSEO({
-    title: b ? `Imóveis à venda em ${b.nome}, Uberlândia` : 'Bairro não encontrado',
+    title: b ? `Imóveis à venda em ${b.nome}, Uberlândia — guia do bairro` : 'Bairro não encontrado',
     description: b
-      ? `${b.desc} Casas e apartamentos à venda em ${b.nome}, Uberlândia, com Vinícius Graton — consultor credenciado da Rotina Imobiliária.`
+      ? `${ed ? ed.intro.slice(0, 150) : b.desc} Casas e apartamentos à venda em ${b.nome}, Uberlândia, com Vinícius Graton.`
       : 'Bairro não encontrado.',
     path: `/imoveis/uberlandia/${slug || ''}`,
   })
@@ -42,7 +44,7 @@ export default function Bairro() {
           </nav>
           <span className="eyebrow"><IconPin width={14} height={14} /> Uberlândia</span>
           <h1 className="section-title">Imóveis à venda em <em>{b.nome}</em></h1>
-          <p className="construtora-desc">{b.desc}</p>
+          <p className="construtora-desc">{ed ? ed.intro : b.desc}</p>
           <div className="construtora-hero-acoes">
             <a className="btn btn-gold" href={linkWhatsApp(`Olá Vinícius! Quero ver imóveis à venda em ${b.nome}, Uberlândia.`)} target="_blank" rel="noopener">
               <IconWhats /> Quero opções em {b.nome}
@@ -52,7 +54,48 @@ export default function Bairro() {
         </div>
       </header>
 
-      <section className="section--light">
+      {ed && (
+        <section className="section--light bairro-editorial">
+          <div className="container">
+            <div className="bairro-ed-grid">
+              <div className="bairro-ed-main">
+                {ed.historia && (
+                  <>
+                    <h2 className="det-rel-titulo">A história do {b.nome}</h2>
+                    <p className="bairro-ed-texto">{ed.historia}</p>
+                  </>
+                )}
+                {(ed.curiosidades || []).length > 0 && (
+                  <>
+                    <h3 className="bairro-ed-sub">Curiosidades e o que tem por perto</h3>
+                    <ul className="bairro-ed-curios">
+                      {ed.curiosidades.map((c, i) => <li key={i}><span>★</span> {c}</li>)}
+                    </ul>
+                  </>
+                )}
+              </div>
+              <aside className="bairro-ed-side">
+                {(ed.destaques || []).length > 0 && (
+                  <div className="bairro-ed-card">
+                    <h3 className="bairro-ed-sub">Por que morar aqui</h3>
+                    <ul className="empre-amen">
+                      {ed.destaques.map((d, i) => <li key={i}><span className="det-carac-check">✓</span> {d}</li>)}
+                    </ul>
+                  </div>
+                )}
+                {ed.perfil && (
+                  <div className="det-trust" style={{ marginTop: 16 }}>
+                    <IconShield width={20} height={20} />
+                    <p><b>Pra quem é:</b> {ed.perfil}</p>
+                  </div>
+                )}
+              </aside>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section className="section--light" style={ed ? { paddingTop: 0 } : undefined}>
         <div className="container">
           {lista.length ? (
             <>
