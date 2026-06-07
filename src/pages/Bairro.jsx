@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import CardImovel from '../components/CardImovel'
+import AviseMe from '../components/AviseMe'
 import { getBairroSeo, imoveisDoBairro, BAIRROS_SEO, linkWhatsApp } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow, IconPin } from '../components/icons'
@@ -70,6 +71,7 @@ export default function Bairro() {
               </a>
             </div>
           )}
+          <AviseMe contexto={b.nome} />
         </div>
       </section>
 

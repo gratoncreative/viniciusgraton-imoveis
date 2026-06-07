@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CONFIG, linkWhatsApp, WA } from '../data'
-import { IconWhats, IconMenu, IconClose } from './icons'
+import { favoritos } from '../engajamento'
+import { IconWhats, IconMenu, IconClose, IconHeart } from './icons'
 
 // Páginas do menu principal
 const LINKS = [
@@ -29,6 +30,7 @@ function Brand() {
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const [favs, setFavs] = useState(0)
   const { pathname } = useLocation()
 
   useEffect(() => {
@@ -37,6 +39,18 @@ export default function Navbar() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  // contador de favoritos (atualiza ao curtir/descurtir)
+  useEffect(() => {
+    const ler = () => setFavs(favoritos().length)
+    ler()
+    window.addEventListener('vg-fav', ler)
+    window.addEventListener('storage', ler)
+    return () => {
+      window.removeEventListener('vg-fav', ler)
+      window.removeEventListener('storage', ler)
+    }
+  }, [pathname])
 
   // fora da home a navbar já entra sólida (legível sobre seções claras)
   const solido = scrolled || pathname !== '/'
@@ -54,6 +68,10 @@ export default function Navbar() {
             ))}
           </div>
           <div className="nav-cta">
+            <Link to="/favoritos" className="nav-fav" aria-label={`Meus favoritos${favs ? ` (${favs})` : ''}`}>
+              <IconHeart filled={favs > 0} width={20} height={20} />
+              {favs > 0 && <span className="nav-fav-badge">{favs}</span>}
+            </Link>
             <a className="btn btn-gold" href={linkWhatsApp(WA.navbar)} target="_blank" rel="noopener">
               <IconWhats /> Falar agora
             </a>
@@ -76,6 +94,7 @@ export default function Navbar() {
             {LINKS.map((l) => (
               <Link key={l.to} to={l.to} onClick={() => setOpen(false)}>{l.label}</Link>
             ))}
+            <Link to="/favoritos" onClick={() => setOpen(false)}>Favoritos{favs > 0 ? ` (${favs})` : ''}</Link>
             <a className="btn btn-gold" href={linkWhatsApp(WA.navbar)} target="_blank" rel="noopener" onClick={() => setOpen(false)}>
               <IconWhats /> Falar no WhatsApp
             </a>

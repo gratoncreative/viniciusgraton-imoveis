@@ -1,6 +1,16 @@
 {
   "permissions": {
+    "defaultMode": "bypassPermissions",
     "allow": [
+      "Edit",
+      "Write",
+      "Read",
+      "Bash(*)",
+      "PowerShell(*)",
+      "mcp__Claude_in_Chrome",
+      "mcp__computer-use",
+      "mcp__scheduled-tasks",
+      "mcp__ccd_session",
       "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\vinic\\\\.claude\\\\skills\\\\cerebro-coordenacao\\\\lock_manager.ps1\" -Action status)",
       "mcp__Claude_in_Chrome__list_connected_browsers",
       "mcp__Claude_in_Chrome__select_browser",

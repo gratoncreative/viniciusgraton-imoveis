@@ -26,11 +26,15 @@ const grava = (arr) => {
   try { localStorage.setItem(LSK, JSON.stringify(arr)) } catch {}
 }
 export const jaCurtiu = (cod) => lidos().includes(String(cod))
+// lista de imóveis favoritados (= curtidos) deste visitante, p/ a página /favoritos
+export const favoritos = () => lidos()
 const marcar = (cod, on) => {
   const c = String(cod)
   const arr = lidos().filter((x) => x !== c)
   if (on) arr.push(c)
   grava(arr)
+  // avisa a navbar (contador de favoritos) p/ atualizar na hora
+  try { window.dispatchEvent(new Event('vg-fav')) } catch {}
 }
 
 // ---- chamadas à API (sempre tolerantes a falha) ----

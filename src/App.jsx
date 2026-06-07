@@ -20,6 +20,7 @@ const FaleComigo = lazy(() => import('./pages/FaleComigo'))
 const ConstrutorasPage = lazy(() => import('./pages/Construtoras'))
 const ConstrutoraDetalhe = lazy(() => import('./pages/ConstrutoraDetalhe'))
 const Bairro = lazy(() => import('./pages/Bairro'))
+const Favoritos = lazy(() => import('./pages/Favoritos'))
 const Privacidade = lazy(() => import('./pages/Privacidade'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
@@ -101,6 +102,7 @@ export default function App() {
               <Route path="/construtoras" element={<ConstrutorasPage />} />
               <Route path="/construtoras/:slug" element={<ConstrutoraDetalhe />} />
               <Route path="/contato" element={<FaleComigo />} />
+              <Route path="/favoritos" element={<Favoritos />} />
               <Route path="/privacidade" element={<Privacidade />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
