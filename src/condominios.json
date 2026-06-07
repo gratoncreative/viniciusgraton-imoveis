@@ -331,8 +331,14 @@
         "Área total de 361.479 m²",
         "Portaria e segurança 24h"
       ],
-      "capa": "",
-      "galeria": [],
+      "capa": "/img/cond/alphaville-uberlandia-2.jpg",
+      "galeria": [
+        "https://www.itvurbanismo.com.br/wp-content/uploads/2020/08/itv-urbanismo-alphaville-uberlandia-2-piscina.jpeg",
+        "https://www.itvurbanismo.com.br/wp-content/uploads/2020/08/itv-urbanismo-alphaville-uberlandia-2-area-de-lazer.jpeg",
+        "https://www.itvurbanismo.com.br/wp-content/uploads/2020/08/itv-urbanismo-alphaville-uberlandia-2-campo-de-futebol.jpeg"
+      ],
+      "fonteNome": "ITV Urbanismo (loteadora oficial)",
+      "fonteUrl": "https://www.itvurbanismo.com.br/empreendimentos/alphaville-uberlandia-2/",
       "segmento": "Alto padrão"
     },
     {
@@ -382,8 +388,12 @@
         "Clube completo de lazer",
         "Ruas pavimentadas e arborizadas"
       ],
-      "capa": "",
-      "galeria": [],
+      "capa": "/img/cond/buritis-club-village.jpg",
+      "galeria": [
+        "https://www.gfcurbanizadora.com.br/assets/upload/529767e71c8304bf909e37291e32691f.jpg"
+      ],
+      "fonteNome": "GFC Urbanizadora (loteadora oficial)",
+      "fonteUrl": "https://www.gfcurbanizadora.com.br/buritisclubvillage",
       "segmento": "Médio padrão"
     },
     {
@@ -1427,8 +1437,14 @@
         "Baixa taxa de condomínio",
         "Bairro Novo Mundo"
       ],
-      "capa": "",
-      "galeria": []
+      "capa": "/img/cond/reserva-novo-mundo.jpg",
+      "galeria": [
+        "https://www.itvurbanismo.com.br/wp-content/uploads/2022/08/02-PISCINA-ADULTO.jpg",
+        "https://www.itvurbanismo.com.br/wp-content/uploads/2022/08/05-BEACH-TENNIS.jpg",
+        "https://www.itvurbanismo.com.br/wp-content/uploads/2022/08/06-CAMPO-FUTEBOL.jpg"
+      ],
+      "fonteNome": "ITV Urbanismo (loteadora oficial)",
+      "fonteUrl": "https://www.itvurbanismo.com.br/empreendimentos/reserva-novo-mundo/"
     },
     {
       "slug": "terra-nova-3",
@@ -1482,6 +1498,249 @@
         "terra-nova-2",
         "terra-nova-3"
       ]
+    },
+    {
+      "slug": "porto-do-granja",
+      "nome": "Porto do Granja",
+      "tipo": "Lotes em condomínio",
+      "regiao": "Granja Marileusa, Zona Leste",
+      "segmento": "Alto padrão",
+      "status": "Em comercialização",
+      "descricao": "Primeiro condomínio fechado de alto padrão assinado pela Granja Marileusa Desenvolvedora, dentro do bairro planejado Granja Marileusa. Lotes a partir de 500 m², com acesso rápido por quatro rotas e proximidade ao aeroporto, à UFU e ao Hospital de Clínicas. Aposta em sustentabilidade (compostagem, pontos de recarga de veículos elétricos e energia fotovoltaica) e conectividade 5G.",
+      "amenidades": [
+        "Piscina semiolímpica coberta",
+        "Piscina externa",
+        "Academia",
+        "Quadra de beach tennis",
+        "Wine bar e sports bar",
+        "Sauna",
+        "Playground",
+        "Pet place",
+        "Living externo com lareira"
+      ],
+      "destaques": [
+        "Lotes a partir de 500 m²",
+        "Assinatura Granja Marileusa Desenvolvedora",
+        "Infraestrutura sustentável e 5G",
+        "Dentro da Granja Marileusa"
+      ],
+      "capa": "",
+      "galeria": [],
+      "fonteNome": "Porto do Granja (site oficial)",
+      "fonteUrl": "https://www.portogranja.com/"
+    },
+    {
+      "slug": "cittadella-57",
+      "nome": "Cittadella 57",
+      "tipo": "Casas em condomínio",
+      "regiao": "Shopping Park, Zona Sul",
+      "segmento": "Alto padrão",
+      "status": "Consolidado",
+      "descricao": "Condomínio fechado de sobrados prontos na Zona Sul de Uberlândia, com apenas 57 casas de cerca de 128 m² de área construída em lotes de 142 a 158 m². Lançado em 2023, tem lazer completo voltado ao convívio familiar.",
+      "amenidades": [
+        "Piscina",
+        "Quadra de beach tennis",
+        "Academia equipada",
+        "Salão de festas",
+        "Espaço gourmet",
+        "Sauna",
+        "Playground",
+        "Pet place",
+        "Coworking",
+        "Brinquedoteca",
+        "Espaço zen"
+      ],
+      "destaques": [
+        "Apenas 57 casas",
+        "Sobrados prontos para morar",
+        "Lazer completo",
+        "Shopping Park, Zona Sul"
+      ],
+      "capa": "",
+      "galeria": [],
+      "fonteNome": "Cittadella 57 (site oficial)",
+      "fonteUrl": "https://cittadella57.com.br/"
+    },
+    {
+      "slug": "bossa-home-design",
+      "nome": "Bossa Home Design",
+      "tipo": "Casas em condomínio",
+      "regiao": "Granja Marileusa, Zona Leste",
+      "segmento": "Alto padrão",
+      "status": "Em comercialização",
+      "descricao": "Condomínio fechado de sobrados ao lado do Alphaville Uberlândia 1, no bairro Granja Marileusa. São 86 casas tipo sobrado em terreno de cerca de 28.000 m², com lotes a partir de 180 m² e unidades de aproximadamente 150 m² com 3 suítes. Empreendimento da Realiza Construtora.",
+      "amenidades": [
+        "Lazer completo",
+        "Espaço gourmet",
+        "Áreas de convívio"
+      ],
+      "destaques": [
+        "86 sobrados de 3 suítes",
+        "Ao lado do Alphaville 1",
+        "Realiza Construtora",
+        "Granja Marileusa"
+      ],
+      "capa": "",
+      "galeria": [],
+      "fonteNome": "Realiza Construtora",
+      "fonteUrl": "https://realizaconstrutora.com.br/imovel/bossa-home-design"
+    },
+    {
+      "slug": "paradiso-ecologico",
+      "nome": "Condomínio Paradiso Ecológico",
+      "tipo": "Lotes em condomínio",
+      "regiao": "Bosque dos Buritis, Zona Leste",
+      "segmento": "Médio padrão",
+      "status": "Consolidado",
+      "descricao": "Condomínio fechado horizontal consolidado em Uberlândia, com lotes e casas para venda e locação. Conta com clube e ampla área verde, voltado à integração com a natureza e segurança 24 horas.",
+      "amenidades": [
+        "Portaria e monitoramento 24h",
+        "Piscinas",
+        "Quadras esportivas",
+        "Campo de futebol",
+        "Quadra de tênis",
+        "Bosque",
+        "Sauna",
+        "Salão de festas",
+        "Playground",
+        "Brinquedoteca",
+        "Minigranja",
+        "Áreas verdes"
+      ],
+      "destaques": [
+        "Clube completo",
+        "Amplas áreas verdes",
+        "Segurança 24h",
+        "Bosque dos Buritis"
+      ],
+      "capa": "",
+      "galeria": [],
+      "fonteNome": "Paradiso Ecológico (site oficial)",
+      "fonteUrl": "https://www.paradisoecologico.com/"
+    },
+    {
+      "slug": "dolce-vita",
+      "nome": "Condomínio Dolce Vita",
+      "tipo": "Casas em condomínio",
+      "regiao": "Jardim Karaíba, Zona Sul",
+      "segmento": "Alto padrão",
+      "status": "Consolidado",
+      "descricao": "Condomínio fechado de sobrados no Jardim Karaíba, Zona Sul de Uberlândia, em região valorizada próxima a comércios, escolas e serviços. Casas modernas, com ambientes amplos e bem iluminados.",
+      "amenidades": [
+        "Piscina",
+        "Sauna",
+        "Quadra de tênis",
+        "Academia",
+        "Playground",
+        "Churrasqueira",
+        "Adega"
+      ],
+      "destaques": [
+        "Sobrados modernos",
+        "Jardim Karaíba valorizado",
+        "Lazer completo",
+        "Zona Sul"
+      ],
+      "capa": "",
+      "galeria": [],
+      "fonteNome": "Polo Negócios Imobiliários",
+      "fonteUrl": "https://www.polonegociosimobiliarios.com.br/"
+    },
+    {
+      "slug": "village-karaiba",
+      "nome": "Village Karaíba",
+      "tipo": "Casas em condomínio",
+      "regiao": "Jardim Karaíba, Zona Sul",
+      "segmento": "Alto padrão",
+      "status": "Consolidado",
+      "descricao": "Condomínio fechado horizontal no Jardim Karaíba, em meio a ampla área verde preservada que proporciona tranquilidade e temperatura amena. Conta com sobrados amplos e segurança 24 horas.",
+      "amenidades": [
+        "Academia",
+        "Área de churrasco",
+        "Quadra de futebol",
+        "Playground",
+        "Segurança 24h",
+        "Área verde preservada"
+      ],
+      "destaques": [
+        "Ampla área verde preservada",
+        "Localização privilegiada",
+        "Segurança 24h",
+        "Jardim Karaíba"
+      ],
+      "capa": "",
+      "galeria": [],
+      "fonteNome": "Olimpus Imóveis de Luxo",
+      "fonteUrl": "https://www.olimpusimoveisdeluxo.com.br/"
+    },
+    {
+      "slug": "villa-do-sol",
+      "nome": "Condomínio Villa do Sol",
+      "tipo": "Casas em condomínio",
+      "regiao": "Jardim Karaíba, Zona Sul",
+      "segmento": "Alto padrão",
+      "status": "Consolidado",
+      "descricao": "Condomínio fechado de alto padrão no coração do Jardim Karaíba, Zona Sul de Uberlândia. Residências de luxo com lotes de cerca de 525 m² e áreas construídas em torno de 330 m².",
+      "amenidades": [
+        "Portaria e segurança",
+        "Áreas de lazer",
+        "Paisagismo"
+      ],
+      "destaques": [
+        "Alto padrão no Jardim Karaíba",
+        "Lotes amplos (~525 m²)",
+        "Casas de luxo",
+        "Zona Sul"
+      ],
+      "capa": "",
+      "galeria": [],
+      "fonteNome": "Rotina Imobiliária",
+      "fonteUrl": "https://www.rotina.com.br/"
+    },
+    {
+      "slug": "terras-altas",
+      "nome": "Terras Altas",
+      "tipo": "Lotes em condomínio",
+      "regiao": "Jardim Sul, Zona Sul",
+      "segmento": "Alto padrão",
+      "status": "Em comercialização",
+      "descricao": "Condomínio fechado de lotes na Zona Sul de Uberlândia, no Jardim Sul (Avenida Arrábio), com lotes de cerca de 420 m² (14x30 m). Não confundir com o Terras Alpha, da Granja Marileusa.",
+      "amenidades": [
+        "Portaria e segurança",
+        "Infraestrutura de loteamento fechado"
+      ],
+      "destaques": [
+        "Lotes de ~420 m²",
+        "Jardim Sul valorizado",
+        "Zona Sul"
+      ],
+      "capa": "",
+      "galeria": [],
+      "fonteNome": "Attria",
+      "fonteUrl": "https://www.attria.com.br/"
+    },
+    {
+      "slug": "praca-alto-umuarama",
+      "nome": "Praça Alto Umuarama",
+      "tipo": "Lotes em condomínio",
+      "regiao": "Alto Umuarama, Zona Leste",
+      "segmento": "Médio padrão",
+      "status": "Consolidado",
+      "descricao": "Loteamento fechado da GFC Urbanizadora no Alto Umuarama, região leste de Uberlândia, com lotes (uso comercial e residencial) a partir de 280 m² e uma praça central de mais de 18.000 m². Vizinho ao Raros Alto Umuarama.",
+      "amenidades": [
+        "Praça central de mais de 18.000 m²",
+        "Infraestrutura completa de loteamento fechado"
+      ],
+      "destaques": [
+        "Praça central de 18.000 m²",
+        "Lotes a partir de 280 m²",
+        "Pronto para construir",
+        "Alto Umuarama"
+      ],
+      "capa": "",
+      "galeria": [],
+      "fonteNome": "GFC Urbanizadora",
+      "fonteUrl": "https://www.gfcurbanizadora.com.br/"
     }
   ]
 }
