@@ -1,7 +1,8 @@
+import { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import Galeria from '../components/Galeria'
 import CondominioLead from '../components/CondominioLead'
-import { getCondominio, CONDOMINIOS } from '../data'
+import { getCondominio, CONDOMINIOS, CONFIG } from '../data'
 import { useSEO } from '../useSEO'
 import { onImgError } from '../img'
 import { IconArrow, IconPin, IconBuilding } from '../components/icons'
@@ -17,6 +18,30 @@ export default function CondominioDetalhe() {
       : 'Condomínio não encontrado.',
     path: `/condominios/${slug || ''}`,
   })
+
+  // Dados estruturados (SEO / rich results no Google e leitura por IAs)
+  useEffect(() => {
+    if (!c) return
+    const origin = window.location.origin
+    const abs = (u) => (u && u.startsWith('http') ? u : origin + u)
+    const imgs = [c.capa, ...(c.galeria || [])].filter(Boolean).map((u) => abs(u.split('?')[0]))
+    const data = {
+      '@context': 'https://schema.org',
+      '@type': 'Residence',
+      name: c.nome,
+      description: c.descricao || `${c.nome}, condomínio fechado em ${c.regiao}, Uberlândia.`,
+      ...(imgs.length ? { image: imgs } : {}),
+      address: { '@type': 'PostalAddress', addressLocality: 'Uberlândia', addressRegion: 'MG', addressCountry: 'BR' },
+      ...(c.amenidades?.length ? { amenityFeature: c.amenidades.map((a) => ({ '@type': 'LocationFeatureSpecification', name: a, value: true })) } : {}),
+      brand: { '@type': 'RealEstateAgent', name: CONFIG.marca, areaServed: 'Uberlândia - MG', url: 'https://viniciusgraton.com.br' },
+    }
+    const el = document.createElement('script')
+    el.type = 'application/ld+json'
+    el.id = 'ld-condominio'
+    el.text = JSON.stringify(data)
+    document.head.appendChild(el)
+    return () => { document.getElementById('ld-condominio')?.remove() }
+  }, [c])
 
   if (!c) {
     return (
