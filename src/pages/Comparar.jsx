@@ -1,0 +1,71 @@
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import Reveal from '../components/Reveal'
+import { IMOVEIS, fotosDe, formatPreco, formatArea } from '../data'
+import { onImgError } from '../img'
+import { useSEO } from '../useSEO'
+import { IconArrow, IconClose } from '../components/icons'
+
+const rs = (n) => (n > 0 ? n : 0)
+const precoM2 = (im) => (im.preco > 0 && im.area > 0 ? im.preco / im.area : 0)
+
+const LINHAS = [
+  ['Preço', (im) => formatPreco(im.preco)],
+  ['Bairro', (im) => im.bairro || '—'],
+  ['Tipo', (im) => im.tipo || '—'],
+  ['Área', (im) => (im.area ? formatArea(im.area) : '—')],
+  ['Quartos', (im) => rs(im.quartos) || '—'],
+  ['Suítes', (im) => rs(im.suites) || '—'],
+  ['Vagas', (im) => rs(im.vagas) || '—'],
+  ['Preço por m²', (im) => (precoM2(im) ? formatPreco(Math.round(precoM2(im))) : '—')],
+]
+
+export default function Comparar() {
+  useSEO({ title: 'Comparar imóveis lado a lado — Uberlândia', description: 'Compare imóveis de Uberlândia lado a lado: preço, área, quartos, vagas e preço por m². Ferramenta gratuita do consultor Vinícius Graton.', path: '/comparar' })
+  const [sel, setSel] = useState([])
+  const toggle = (cod) => setSel((s) => s.includes(cod) ? s.filter((x) => x !== cod) : (s.length >= 4 ? s : [...s, cod]))
+  const escolhidos = sel.map((c) => IMOVEIS.find((i) => i.codigo === c)).filter(Boolean)
+
+  return (
+    <main className="pagina section--light det comparar-pg">
+      <div className="container">
+        <Reveal>
+          <div style={{ textAlign: 'center', maxWidth: 680, margin: '0 auto 10px' }}>
+            <span className="eyebrow" style={{ justifyContent: 'center' }}>Comparador</span>
+            <h1 className="section-title">Compare imóveis <em>lado a lado</em></h1>
+            <p className="section-sub" style={{ marginTop: 14 }}>Selecione até 4 imóveis e veja tudo numa tabela — preço, área, quartos, vagas e preço por m². Decida com clareza.</p>
+          </div>
+        </Reveal>
+
+        {escolhidos.length >= 2 && (
+          <div className="cmp-scroll" style={{ marginBottom: 30 }}>
+            <table className="cmp-table comparar-table">
+              <thead><tr><th></th>{escolhidos.map((im) => (
+                <th key={im.codigo}>
+                  <span className="comparar-th">
+                    <img src={fotosDe(im)[0]} alt={im.tipo} onError={onImgError} referrerPolicy="no-referrer" />
+                    <b>{im.tipo} · {im.bairro}</b>
+                  </span>
+                </th>))}</tr></thead>
+              <tbody>
+                {LINHAS.map(([rot, fn]) => <tr key={rot}><td className="cmp-rot">{rot}</td>{escolhidos.map((im) => <td key={im.codigo}>{fn(im)}</td>)}</tr>)}
+                <tr><td className="cmp-rot"></td>{escolhidos.map((im) => <td key={im.codigo}><Link className="btn btn-gold cmp-ver" to={`/imovel/${im.codigo}`}>Ver <IconArrow width={13} height={13} /></Link></td>)}</tr>
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        <p className="cat-count">{sel.length}/4 selecionados {sel.length > 0 && <button className="condo-limpar" onClick={() => setSel([])}>limpar</button>}</p>
+        <div className="comparar-grid">
+          {IMOVEIS.map((im) => (
+            <button key={im.codigo} className={`comparar-mini ${sel.includes(im.codigo) ? 'on' : ''}`} onClick={() => toggle(im.codigo)} aria-pressed={sel.includes(im.codigo)}>
+              <span className="comparar-mini-capa"><img src={fotosDe(im)[0]} alt={im.tipo} loading="lazy" onError={onImgError} referrerPolicy="no-referrer" />{sel.includes(im.codigo) && <span className="comparar-check">✓</span>}</span>
+              <span className="comparar-mini-b">{formatPreco(im.preco)}</span>
+              <span className="comparar-mini-s">{im.tipo} · {im.bairro}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </main>
+  )
+}

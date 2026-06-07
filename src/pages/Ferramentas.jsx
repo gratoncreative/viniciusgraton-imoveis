@@ -23,8 +23,11 @@ const TOOLS = [
   { id: 'valorm2', nome: 'Quanto vale o m² do bairro', desc: 'Preço médio por m² na minha carteira.', icon: '🏠', cat: 'voce' },
   { id: 'score', nome: 'Chance de aprovação', desc: 'Estimativa da sua chance no banco.', icon: '✅', cat: 'voce' },
   { id: 'checklist', nome: 'Checklist de documentos', desc: 'Tudo que você precisa, por etapa.', icon: '📋', cat: 'voce' },
+  { id: 'comparar', nome: 'Comparar imóveis', desc: 'Veja imóveis lado a lado.', icon: '⚖️', cat: 'voce', to: '/comparar' },
+  { id: 'mapa', nome: 'Buscar no mapa', desc: 'Explore os imóveis por região.', icon: '🗺️', cat: 'voce', to: '/mapa' },
   { id: 'comissao', nome: 'Calculadora de comissão', desc: 'Comissão e repasse de uma venda.', icon: '💰', cat: 'corretor' },
   { id: 'ficha', nome: 'Ficha de avaliação rápida', desc: 'Gera um resumo do imóvel pra enviar.', icon: '📝', cat: 'corretor' },
+  { id: 'painel', nome: 'Painel de leads', desc: 'Seus cadastros e leads (acesso restrito).', icon: '🔔', cat: 'corretor', to: '/painel' },
 ]
 
 function Campo({ label, valor, onChange, sufixo, step = '1', min = '0' }) {
@@ -151,6 +154,9 @@ export default function Ferramentas() {
   const Ativa = RENDER[ativa]
   const escolher = (id) => { setAtiva(id); setTimeout(() => painelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60) }
   const grupo = (cat) => TOOLS.filter((t) => t.cat === cat)
+  const Card = (t) => t.to
+    ? <Link key={t.id} className="ferr-card" to={t.to}><span className="ferr-ico">{t.icon}</span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></Link>
+    : <button key={t.id} className={`ferr-card ${ativa === t.id ? 'on' : ''}`} onClick={() => escolher(t.id)}><span className="ferr-ico">{t.icon}</span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></button>
 
   return (
     <main className="pagina section--light det ferramentas-pg">
@@ -165,10 +171,10 @@ export default function Ferramentas() {
         </Reveal>
 
         <h3 className="ferr-cat">Para você — comprador e investidor</h3>
-        <div className="ferr-grid">{grupo('voce').map((t) => <button key={t.id} className={`ferr-card ${ativa === t.id ? 'on' : ''}`} onClick={() => escolher(t.id)}><span className="ferr-ico">{t.icon}</span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></button>)}</div>
+        <div className="ferr-grid">{grupo('voce').map(Card)}</div>
 
         <h3 className="ferr-cat">Para o corretor</h3>
-        <div className="ferr-grid">{grupo('corretor').map((t) => <button key={t.id} className={`ferr-card ${ativa === t.id ? 'on' : ''}`} onClick={() => escolher(t.id)}><span className="ferr-ico">{t.icon}</span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></button>)}</div>
+        <div className="ferr-grid">{grupo('corretor').map(Card)}</div>
 
         <div className="calc-painel" ref={painelRef} style={{ marginTop: 30 }}>
           <h3 className="calc-painel-tit"><span style={{ marginRight: 8 }}>{atual.icon}</span>{atual.nome}</h3>
