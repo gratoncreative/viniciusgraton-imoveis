@@ -129,6 +129,10 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .section--light .passo .glow { background: radial-gradient(circle, rgba(184,134,47,0.18), transparent 70%); }
 /* cards de imóvel na seção clara (catálogo): dourado escuro p/ legibilidade */
 .section--light .im-ver { color: var(--gold-3); }
+/* botão fantasma legível em seção clara (era quase invisível: texto claro + borda fraca) */
+.section--light .btn-ghost { background: rgba(22,26,34,0.05); color: #20252e; border-color: rgba(22,26,34,0.3); backdrop-filter: none; }
+.section--light .btn-ghost:hover { background: rgba(22,26,34,0.09); border-color: var(--gold-3); color: #161a22; }
+.section--light .btn-ghost svg { background: rgba(184,134,47,0.16); color: var(--gold-3); }
 .section--light .im-spec svg { color: var(--gold-3); }
 .section--light .im-spec { background: rgba(22, 26, 34, 0.05); }
 .section--light .cat-filtros input::placeholder { color: var(--text-mute); }
@@ -395,7 +399,7 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .cat-cta p { color: var(--text-soft); max-width: 520px; margin: 12px auto 24px; }
 
 /* Avise-me (captação de lead por critério) */
-.aviseme { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 4vw, 48px); align-items: center; margin-top: 56px; padding: clamp(26px, 4vw, 44px); border-radius: 22px; background: linear-gradient(135deg, #15110a 0%, #0b0e16 70%); border: 1px solid rgba(184,134,47,0.3); box-shadow: 0 30px 70px -40px rgba(0,0,0,0.7); }
+.aviseme { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 4vw, 48px); align-items: center; margin-top: 56px; padding: clamp(26px, 4vw, 44px); border-radius: 22px; background: linear-gradient(135deg, #15110a 0%, #0b0e16 70%); border: 1px solid rgba(184,134,47,0.3); box-shadow: 0 30px 70px -40px rgba(0,0,0,0.7); --text: #f4f1ea; --text-soft: #d3d8e1; --text-mute: #9298a6; --surface: rgba(255,255,255,0.06); --surface-2: rgba(255,255,255,0.1); --border: rgba(255,255,255,0.14); --border-strong: rgba(255,255,255,0.22); color: #f4f1ea; }
 .aviseme-txt h3 { font-family: var(--font-head); font-weight: 700; font-size: clamp(1.4rem, 2.4vw, 1.9rem); color: #fff; margin-top: 8px; line-height: 1.15; }
 .aviseme-txt p { color: var(--text-soft); margin-top: 12px; line-height: 1.6; font-size: 0.96rem; }
 .aviseme-form { display: flex; flex-direction: column; gap: 10px; }
