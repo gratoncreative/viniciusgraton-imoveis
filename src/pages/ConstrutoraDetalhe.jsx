@@ -1,8 +1,8 @@
 import { useParams, Link } from 'react-router-dom'
 import { getConstrutora, CONSTRUTORAS, linkWhatsApp, waConstrutora } from '../data'
 import { useSEO } from '../useSEO'
-import { onImgError } from '../img'
-import { IconWhats, IconArrow, IconPin, IconBuilding, IconShield } from '../components/icons'
+import ComparadorEmpreendimentos from '../components/ComparadorEmpreendimentos'
+import { IconWhats, IconArrow, IconShield } from '../components/icons'
 
 export default function ConstrutoraDetalhe() {
   const { slug } = useParams()
@@ -107,32 +107,7 @@ export default function ConstrutoraDetalhe() {
       <section className="section--light" style={{ paddingTop: 0 }}>
         <div className="container">
           <h2 className="det-rel-titulo">Empreendimentos em Uberlândia</h2>
-          {c.projetos && c.projetos.length ? (
-            <div className="construtora-projs">
-              {c.projetos.map((p) => (
-                <Link className="proj-card" key={p.slug} to={`/construtoras/${c.slug}/${p.slug}`}>
-                  <span className="proj-capa">
-                    {p.capa ? (
-                      <img src={p.capa} alt={`${p.nome} — ${c.nome}, Uberlândia`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
-                    ) : (
-                      <span className="proj-capa-vazia"><IconBuilding width={34} height={34} /></span>
-                    )}
-                    {p.status && <span className="proj-status proj-status--over">{p.status}</span>}
-                    {p.video && <span className="proj-capa-video">▶ vídeo</span>}
-                    {(p.galeria || []).length > 0 && <span className="proj-capa-fotos">{(p.galeria || []).length + 1} fotos</span>}
-                  </span>
-                  <span className="proj-body">
-                    <b className="proj-nome">{p.nome}</b>
-                    {p.bairro && <span className="proj-bairro"><IconPin width={15} height={15} /> {p.bairro}, Uberlândia</span>}
-                    {p.descricao && <span className="proj-desc">{p.descricao.length > 110 ? p.descricao.slice(0, 109) + '…' : p.descricao}</span>}
-                    <span className="proj-ver">Ver empreendimento <IconArrow width={14} height={14} /></span>
-                  </span>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <p className="section-sub">Em breve, lançamentos da {c.nome} por aqui. Me chame no WhatsApp que eu te mostro as opções.</p>
-          )}
+          <ComparadorEmpreendimentos c={c} />
 
           <div className="det-trust" style={{ marginTop: 28 }}>
             <IconShield width={20} height={20} />
