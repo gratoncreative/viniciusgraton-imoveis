@@ -11,10 +11,9 @@ const LINKS = [
   { to: '/construtoras', label: 'Construtoras' },
   { to: '/condominios', label: 'Condomínios' },
   { to: '/ferramentas', label: 'Ferramentas' },
-  { to: '/como-funciona', label: 'Como eu te ajudo' },
   { to: '/sobre', label: 'Sobre' },
   { to: '/regioes', label: 'Uberlândia' },
-  { to: '/contato', label: 'Contato' },
+  { to: '/anunciar', label: 'Anunciar imóvel', destaque: true },
 ]
 
 function Brand() {
@@ -64,7 +63,7 @@ export default function Navbar() {
           <Brand />
           <div className="nav-links">
             {LINKS.map((l) => (
-              <NavLink key={l.to} to={l.to} className={({ isActive }) => (isActive ? 'is-active' : undefined)}>
+              <NavLink key={l.to} to={l.to} className={({ isActive }) => [isActive ? 'is-active' : '', l.destaque ? 'nav-destaque' : ''].filter(Boolean).join(' ') || undefined}>
                 {l.label}
               </NavLink>
             ))}

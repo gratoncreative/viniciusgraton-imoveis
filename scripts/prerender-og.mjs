@@ -199,6 +199,7 @@ const urls = [
   { loc: `${SITE}/como-funciona`, freq: 'monthly', pri: '0.6' },
   { loc: `${SITE}/ferramentas`, freq: 'monthly', pri: '0.6' },
   { loc: `${SITE}/condominios`, freq: 'weekly', pri: '0.7' },
+  { loc: `${SITE}/anunciar`, freq: 'monthly', pri: '0.7' },
   ...condominios.map((c) => ({ loc: `${SITE}/condominios/${c.slug}`, freq: 'weekly', pri: '0.6' })),
   { loc: `${SITE}/sobre`, freq: 'monthly', pri: '0.6' },
   { loc: `${SITE}/regioes`, freq: 'monthly', pri: '0.7' },

@@ -19,6 +19,7 @@ const Regioes = lazy(() => import('./pages/Regioes'))
 const FaleComigo = lazy(() => import('./pages/FaleComigo'))
 const Ferramentas = lazy(() => import('./pages/Ferramentas'))
 const Condominios = lazy(() => import('./pages/Condominios'))
+const Anunciar = lazy(() => import('./pages/Anunciar'))
 const CondominioDetalhe = lazy(() => import('./pages/CondominioDetalhe'))
 const ConstrutorasPage = lazy(() => import('./pages/Construtoras'))
 const ConstrutoraDetalhe = lazy(() => import('./pages/ConstrutoraDetalhe'))
@@ -109,6 +110,7 @@ export default function App() {
               <Route path="/ferramentas" element={<Ferramentas />} />
               <Route path="/condominios" element={<Condominios />} />
               <Route path="/condominios/:slug" element={<CondominioDetalhe />} />
+              <Route path="/anunciar" element={<Anunciar />} />
               <Route path="/contato" element={<FaleComigo />} />
               <Route path="/favoritos" element={<Favoritos />} />
               <Route path="/privacidade" element={<Privacidade />} />
