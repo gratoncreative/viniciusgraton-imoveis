@@ -1194,62 +1194,70 @@
       "slug": "terra-nova-1",
       "nome": "Terra Nova 1",
       "tipo": "Casas em condomínio",
-      "regiao": "Terra Nova (próximo ao aeroporto)",
+      "regiao": "Jardim Califórnia, Zona Leste (Av. dos Ferreiras, 475)",
       "segmento": "Médio padrão",
-      "status": "Consolidado",
-      "descricao": "Condomínio fechado de casas próximo ao aeroporto, com comércio nas redondezas. Casas de 68 a 150 m² (2 a 3 quartos), lazer completo com piscina e quadras, portaria 24h.",
+      "status": "Pronto / em operação",
+      "descricao": "Terra Nova 1 é o condomínio horizontal fechado mais antigo do conjunto Terra Nova, na Av. dos Ferreiras, 475, Jardim Califórnia, próximo ao Aeroporto de Uberlândia. Reúne casas de 2 a 3 quartos (até 2 suítes), de 68 a 150 m² e 1 a 3 vagas, com portaria 24h e lazer completo. Consolidado há mais de uma década, é cercado de comércio, supermercados, academias e transporte.",
       "amenidades": [
-        "Portaria 24h",
+        "Portaria e segurança 24h",
         "Salão de festas",
-        "Quadra esportiva",
         "Piscina",
-        "Playground",
+        "Quadra poliesportiva",
         "Quadra de tênis",
+        "Playground",
         "Academia",
         "Churrasqueira",
-        "Home cinema"
+        "Home cinema",
+        "Áreas verdes",
+        "Portão eletrônico e alarme"
       ],
       "destaques": [
         "Casas de 68 a 150 m²",
-        "2 a 3 quartos",
-        "Próximo ao aeroporto",
-        "Portaria 24h"
+        "2 a 3 quartos (até 2 suítes)",
+        "1 a 3 vagas",
+        "Portaria/segurança 24h",
+        "Próximo ao aeroporto"
       ],
       "capa": "/img/cond/terra-nova-1.jpg",
       "galeria": [
         "https://cdn.imoview.com.br/objetiva/Condominios/31/terras-novas-3.jpeg",
         "https://cdn.imoview.com.br/objetiva/Condominios/31/terras-novas-2.jpeg",
         "https://cdn.imoview.com.br/objetiva/Condominios/31/terra-nova-011.jpg"
-      ]
+      ],
+      "grupo": "terra-nova"
     },
     {
       "slug": "terra-nova-2",
       "nome": "Terra Nova 2",
       "tipo": "Casas em condomínio",
-      "regiao": "Terra Nova (próximo ao aeroporto)",
+      "regiao": "Jardim Califórnia, Zona Leste (Av. dos Ferreiras, 525)",
       "segmento": "Médio padrão",
-      "status": "Consolidado",
-      "descricao": "Segunda fase do Terra Nova, condomínio fechado de casas próximo ao aeroporto. Casas de 50 a 145 m² (2 a 3 quartos), lazer completo com piscina e quadras, portaria 24h.",
+      "status": "Pronto / em operação",
+      "descricao": "Terra Nova 2 é o maior do conjunto, com 602 casas em um bairro planejado na Av. dos Ferreiras, 525, Jardim Califórnia, perto do Aeroporto e da Granja Marileusa. Casas de 2 a 3 quartos (1 a 2 suítes), de 50 a 145 m² e 2 a 3 vagas. Tem administração e site oficial próprios, segurança 24h com cerca elétrica e CFTV, e lazer completo.",
       "amenidades": [
-        "Portaria 24h",
-        "Piscina",
-        "Quadra esportiva",
+        "Portaria e segurança 24h",
+        "Salão de festas",
+        "2 quiosques completos",
+        "Quadra poliesportiva",
+        "Campo de futebol",
         "Playground",
+        "Piscina",
+        "Quadra de tênis/squash",
         "Academia",
-        "Churrasqueira",
-        "Home cinema",
-        "Quadra de tênis"
+        "Cerca elétrica, CFTV e alarme"
       ],
       "destaques": [
-        "Casas de 50 a 145 m²",
-        "2 a 3 quartos",
-        "Próximo ao aeroporto",
-        "Portaria 24h"
+        "602 casas",
+        "Unidades de 50 a 145 m²",
+        "2 a 3 quartos (1 a 2 suítes)",
+        "2 a 3 vagas",
+        "Segurança 24h com cerca elétrica e CFTV"
       ],
       "capa": "/img/cond/terra-nova-2.jpg",
       "galeria": [
         "https://cdn.imoview.com.br/objetiva/Condominios/32/terras-novas-5.jpeg"
-      ]
+      ],
+      "grupo": "terra-nova"
     },
     {
       "slug": "chacaras-eldorado",
@@ -1421,6 +1429,59 @@
       ],
       "capa": "",
       "galeria": []
+    },
+    {
+      "slug": "terra-nova-3",
+      "nome": "Terra Nova 3",
+      "tipo": "Casas em condomínio",
+      "regiao": "Jardim Califórnia, Zona Leste (Av. dos Ferreiras)",
+      "segmento": "Médio padrão",
+      "status": "Pronto / em operação",
+      "grupo": "terra-nova",
+      "descricao": "Terra Nova 3 é a terceira fase do conjunto Terra Nova, na Av. dos Ferreiras, Jardim Califórnia, próxima ao Aeroporto de Uberlândia e à Granja Marileusa, em uma das regiões de maior crescimento da Zona Leste. Casas de 2 e 3 quartos em comunidade fechada, com portaria 24h e área de lazer, cercada por forte desenvolvimento comercial e fácil acesso às principais vias.",
+      "amenidades": [
+        "Portaria e segurança 24h",
+        "Piscina",
+        "Quadra esportiva",
+        "Salão de festas",
+        "Churrasqueira",
+        "Playground"
+      ],
+      "destaques": [
+        "Casas de 2 e 3 quartos",
+        "Comunidade fechada com segurança 24h",
+        "Av. dos Ferreiras, próximo ao aeroporto",
+        "Forte desenvolvimento comercial no entorno"
+      ],
+      "capa": "",
+      "galeria": []
+    },
+    {
+      "slug": "terra-nova",
+      "nome": "Terra Nova",
+      "tipo": "Casas em condomínio · 3 fases",
+      "regiao": "Jardim Califórnia, Zona Leste",
+      "segmento": "Médio padrão",
+      "status": "Pronto / em operação",
+      "descricao": "Terra Nova é uma família de condomínios horizontais fechados de Uberlândia, ao longo da Avenida dos Ferreiras, no Jardim Califórnia (Zona Leste), em uma das regiões de crescimento mais acelerado da cidade — próximo ao Aeroporto de Uberlândia e à Granja Marileusa. O conjunto reúne três fases (Terra Nova 1, 2 e 3), todas com casas de 2 e 3 quartos, portaria, segurança 24h e áreas de lazer próprias, mirando conforto, segurança e bom custo-benefício para famílias.",
+      "amenidades": [
+        "Portaria e segurança 24h",
+        "Lazer completo (piscina, quadras, salão)",
+        "Bairro planejado"
+      ],
+      "destaques": [
+        "3 fases: Terra Nova 1, 2 e 3",
+        "Av. dos Ferreiras, próximo ao aeroporto",
+        "Segurança 24h",
+        "Casas de 2 e 3 quartos"
+      ],
+      "capa": "/img/cond/terra-nova-2.jpg",
+      "galeria": [],
+      "fases": [
+        "terra-nova-1",
+        "terra-nova-2",
+        "terra-nova-3"
+      ]
     }
   ]
 }

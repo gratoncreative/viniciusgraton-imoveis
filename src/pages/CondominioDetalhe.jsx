@@ -29,9 +29,47 @@ export default function CondominioDetalhe() {
     )
   }
 
+  // Condomínio com FASES (ex.: Terra Nova 1, 2 e 3) — mostra as fases como cards
+  if (c.fases && c.fases.length) {
+    const fases = c.fases.map((s) => getCondominio(s)).filter(Boolean)
+    return (
+      <main className="pagina section--light det condos-pg">
+        <div className="container">
+          <nav className="det-bread">
+            <Link to="/">Início</Link> <span>/</span> <Link to="/condominios">Condomínios</Link> <span>/</span> <b>{c.nome}</b>
+          </nav>
+          <div style={{ maxWidth: 760, margin: '8px 0 4px' }}>
+            <span className="eyebrow"><IconPin width={14} height={14} /> {c.regiao}</span>
+            <h1 className="section-title" style={{ marginTop: 8 }}>{c.nome}</h1>
+            <p className="section-sub" style={{ marginTop: 12 }}>{c.descricao}</p>
+          </div>
+          <h2 className="det-rel-titulo" style={{ marginTop: 30 }}>As fases do {c.nome}</h2>
+          <div className="construtora-projs condo-grid">
+            {fases.map((f) => (
+              <Link className="condo-card" to={`/condominios/${f.slug}`} key={f.slug}>
+                <span className="condo-capa">
+                  {f.capa ? <img src={f.capa} alt={`${f.nome} — Uberlândia`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} /> : <span className="condo-capa-vazia"><IconBuilding width={32} height={32} /></span>}
+                  <span className="condo-tipo">{f.tipo}</span>
+                </span>
+                <span className="condo-body">
+                  <b className="condo-nome">{f.nome}</b>
+                  <span className="condo-regiao"><IconPin width={14} height={14} /> {f.regiao}</span>
+                  {(f.destaques || []).length > 0 && <span className="condo-destaque">{f.destaques[0]}</span>}
+                  <span className="condo-ver">Ver fase <IconArrow width={14} height={14} /></span>
+                </span>
+              </Link>
+            ))}
+          </div>
+          <div style={{ marginTop: 10 }}><CondominioLead condominio={c.nome} /></div>
+          <div style={{ marginTop: 36 }}><Link className="btn btn-ghost" to="/condominios"><IconArrow style={{ transform: 'rotate(180deg)' }} /> Ver todos os condomínios</Link></div>
+        </div>
+      </main>
+    )
+  }
+
   const fotos = [c.capa, ...(c.galeria || [])].filter(Boolean)
   const mapsQuery = encodeURIComponent(`${c.nome}, ${c.regiao}, Uberlândia, MG`)
-  const outros = CONDOMINIOS.filter((x) => x.slug !== c.slug).slice(0, 6)
+  const outros = CONDOMINIOS.filter((x) => x.slug !== c.slug && !x.fases && !x.grupo).slice(0, 6)
 
   return (
     <main className="pagina section--light det condos-pg">

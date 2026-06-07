@@ -48,6 +48,7 @@ export default function Condominios() {
   const [seg, setSeg] = useState('')
 
   const lista = useMemo(() => CONDOMINIOS.filter((c) =>
+    !c.grupo &&
     (!zona || zonaDe(c.regiao) === zona) &&
     (!tipo || ehTipo(c.tipo, tipo)) &&
     (!seg || c.segmento === seg)
