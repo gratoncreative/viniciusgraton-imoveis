@@ -8,10 +8,31 @@
       "regiao": "Zona Sul (Jardim Inconfidência / Granada)",
       "status": "Em comercialização",
       "descricao": "Loteamento fechado de alto padrão na Zona Sul de Uberlândia, com lotes a partir de 440 m², na Av. Vereador Carlito Cordeiro. Construído sobre pilares de sustentabilidade: salão de festas bioclimático, reuso de água da chuva, iluminação LED e painéis fotovoltaicos. Segurança com cerca elétrica, câmeras, controle por tag e reconhecimento facial. Próximo a Mart Minas, Pão de Açúcar e ao Uberlândia Medical Center.",
-      "amenidades": ["Portaria 24h e reconhecimento facial", "Salão de festas bioclimático", "Espaço fitness", "Praça da água", "Quadra poliesportiva", "Quadra de beach tennis", "Pet place", "Horta comunitária", "Trilhas"],
-      "destaques": ["Lotes a partir de 440 m²", "Portaria 24h com tag e facial", "Reuso de água e energia solar", "Alto padrão na Zona Sul"],
+      "amenidades": [
+        "Portaria 24h e reconhecimento facial",
+        "Salão de festas bioclimático",
+        "Espaço fitness",
+        "Praça da água",
+        "Quadra poliesportiva",
+        "Quadra de beach tennis",
+        "Pet place",
+        "Horta comunitária",
+        "Trilhas"
+      ],
+      "destaques": [
+        "Lotes a partir de 440 m²",
+        "Portaria 24h com tag e facial",
+        "Reuso de água e energia solar",
+        "Alto padrão na Zona Sul"
+      ],
       "capa": "https://vilarealexclusive.com.br/wp-content/uploads/2026/05/vila-real-16-scaled.png",
-      "galeria": ["https://vilarealexclusive.com.br/wp-content/uploads/2026/05/vila-real-52-scaled.png", "https://vilarealexclusive.com.br/wp-content/uploads/2026/05/vila-real-56-scaled.png", "https://vilarealexclusive.com.br/wp-content/uploads/2026/05/vila-real-35-scaled.png", "https://vilarealexclusive.com.br/wp-content/uploads/2026/05/vila-real-51-02-scaled.png"]
+      "galeria": [
+        "https://vilarealexclusive.com.br/wp-content/uploads/2026/05/vila-real-52-scaled.png",
+        "https://vilarealexclusive.com.br/wp-content/uploads/2026/05/vila-real-56-scaled.png",
+        "https://vilarealexclusive.com.br/wp-content/uploads/2026/05/vila-real-35-scaled.png",
+        "https://vilarealexclusive.com.br/wp-content/uploads/2026/05/vila-real-51-02-scaled.png"
+      ],
+      "segmento": "Alto padrão"
     },
     {
       "slug": "arts-uberlandia",
@@ -20,10 +41,27 @@
       "regiao": "Zona Sul (Granada / Jardim Botânico)",
       "status": "Em comercialização",
       "descricao": "Loteamento fechado de alto padrão da GSP, na Zona Sul de Uberlândia, com projeto assinado pelo escritório internacional Ennead Architects. Área total de 183.626 m², 283 lotes a partir de 420 m², com 14.000 m² de áreas verdes e 12.607 m² de lazer. Pronto para construir, com fiação subterrânea. Av. Vereador Carlito Cordeiro, 2885, bairro Granada.",
-      "amenidades": ["Quadra poliesportiva", "Quadra de tênis", "Campo de futebol", "Piscina", "Salão de festas", "Fiação subterrânea"],
-      "destaques": ["283 lotes", "Lotes a partir de 420 m²", "Projeto assinado pela Ennead Architects", "Área total de 183.626 m²"],
+      "amenidades": [
+        "Quadra poliesportiva",
+        "Quadra de tênis",
+        "Campo de futebol",
+        "Piscina",
+        "Salão de festas",
+        "Fiação subterrânea"
+      ],
+      "destaques": [
+        "283 lotes",
+        "Lotes a partir de 420 m²",
+        "Projeto assinado pela Ennead Architects",
+        "Área total de 183.626 m²"
+      ],
       "capa": "https://gsp.com.br/wp-content/uploads/2021/10/arts-uberlandia_out23_1-1.jpg",
-      "galeria": ["https://gsp.com.br/wp-content/uploads/2021/10/arts-uberlandia_out23_3-1.jpg", "https://gsp.com.br/wp-content/uploads/2021/10/arts-uberlandia_out23_2-1.jpg", "https://gsp.com.br/wp-content/uploads/2021/10/artsuberlandia_implantacao.jpg"]
+      "galeria": [
+        "https://gsp.com.br/wp-content/uploads/2021/10/arts-uberlandia_out23_3-1.jpg",
+        "https://gsp.com.br/wp-content/uploads/2021/10/arts-uberlandia_out23_2-1.jpg",
+        "https://gsp.com.br/wp-content/uploads/2021/10/artsuberlandia_implantacao.jpg"
+      ],
+      "segmento": "Alto padrão"
     },
     {
       "slug": "reserva-do-lago",
@@ -32,10 +70,30 @@
       "regiao": "Represa de Miranda (~22 km de Uberlândia)",
       "status": "Em comercialização",
       "descricao": "Condomínio fechado de lotes urbanos no ponto mais desejado da Represa de Miranda, a 22 km de Uberlândia com acesso 100% asfaltado. Restrito a apenas 130 unidades, lotes de 657 a 1.132 m², totalmente registrado em cartório e com matrículas individuais. Lazer na água e em terra firme, com infraestrutura premium à beira do lago.",
-      "amenidades": ["Portaria 24h", "Piscina de borda infinita com praia artificial", "Quadra de beach tennis", "Academia", "Pier flutuante de concreto e rampa para barcos", "Guarda-barco e heliponto", "Ciclovia e pista de caminhada", "Salão de festas"],
-      "destaques": ["Apenas 130 lotes", "Lotes de 657 a 1.132 m²", "Frente para a Represa de Miranda", "Matrículas individuais registradas"],
+      "amenidades": [
+        "Portaria 24h",
+        "Piscina de borda infinita com praia artificial",
+        "Quadra de beach tennis",
+        "Academia",
+        "Pier flutuante de concreto e rampa para barcos",
+        "Guarda-barco e heliponto",
+        "Ciclovia e pista de caminhada",
+        "Salão de festas"
+      ],
+      "destaques": [
+        "Apenas 130 lotes",
+        "Lotes de 657 a 1.132 m²",
+        "Frente para a Represa de Miranda",
+        "Matrículas individuais registradas"
+      ],
       "capa": "https://inconew.com.br/wp-content/uploads/2024/02/R10.jpg",
-      "galeria": ["https://inconew.com.br/wp-content/uploads/2024/02/R04.jpg", "https://inconew.com.br/wp-content/uploads/2024/02/R05.jpg", "https://inconew.com.br/wp-content/uploads/2024/02/R06.jpg", "https://inconew.com.br/wp-content/uploads/2024/02/R07.jpg"]
+      "galeria": [
+        "https://inconew.com.br/wp-content/uploads/2024/02/R04.jpg",
+        "https://inconew.com.br/wp-content/uploads/2024/02/R05.jpg",
+        "https://inconew.com.br/wp-content/uploads/2024/02/R06.jpg",
+        "https://inconew.com.br/wp-content/uploads/2024/02/R07.jpg"
+      ],
+      "segmento": "Alto padrão"
     },
     {
       "slug": "tambore-uberlandia",
@@ -44,10 +102,29 @@
       "regiao": "Zona Sul (próximo ao Uberlândia Shopping)",
       "status": "Em comercialização",
       "descricao": "Condomínio fechado de lotes de alto padrão da Tamboré, na Zona Sul de Uberlândia, próximo ao Uberlândia Shopping e ao Gávea Paradiso. Cerca de 281.754 m² de área total e ~346 unidades, com lotes de 360 a 582 m². Fiação subterrânea, irrigação automatizada e energia por painéis fotovoltaicos, com clube de lazer completo e segurança 24h.",
-      "amenidades": ["Portaria 24h com controle de acesso e câmeras", "Piscina raiada de 25m e infantil climatizadas", "Spa e deck molhado", "Academia e sauna", "Quadras de tênis, beach tennis e campo society", "Salão de festas e de jogos", "Espaço gourmet", "Cinema ao ar livre"],
-      "destaques": ["Lotes de 360 a 582 m²", "~346 unidades", "Fiação subterrânea e energia solar", "Próximo ao Uberlândia Shopping"],
+      "amenidades": [
+        "Portaria 24h com controle de acesso e câmeras",
+        "Piscina raiada de 25m e infantil climatizadas",
+        "Spa e deck molhado",
+        "Academia e sauna",
+        "Quadras de tênis, beach tennis e campo society",
+        "Salão de festas e de jogos",
+        "Espaço gourmet",
+        "Cinema ao ar livre"
+      ],
+      "destaques": [
+        "Lotes de 360 a 582 m²",
+        "~346 unidades",
+        "Fiação subterrânea e energia solar",
+        "Próximo ao Uberlândia Shopping"
+      ],
       "capa": "https://cdn.imoview.com.br/objetiva/Condominios/29/whatsapp-image-2022-08-17-at-140656.jpeg?1676490474",
-      "galeria": ["https://cdn.imoview.com.br/objetiva/Condominios/29/whatsapp-image-2022-08-17-at-140659.jpeg?1676490474", "https://cdn.imoview.com.br/objetiva/Condominios/29/whatsapp-image-2022-08-17-at-140700.jpeg?1676490474", "https://cdn.imoview.com.br/objetiva/Condominios/29/whatsapp-image-2022-08-17-at-140701.jpeg?1676490474"]
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/29/whatsapp-image-2022-08-17-at-140659.jpeg?1676490474",
+        "https://cdn.imoview.com.br/objetiva/Condominios/29/whatsapp-image-2022-08-17-at-140700.jpeg?1676490474",
+        "https://cdn.imoview.com.br/objetiva/Condominios/29/whatsapp-image-2022-08-17-at-140701.jpeg?1676490474"
+      ],
+      "segmento": "Alto padrão"
     },
     {
       "slug": "reserva-do-vale",
@@ -56,10 +133,28 @@
       "regiao": "Zona Sul (Rua da Carioca)",
       "status": "Em comercialização (revenda)",
       "descricao": "Condomínio de altíssimo padrão em localização privilegiada de Uberlândia, com casas que figuram entre as mais valorizadas da cidade. Lotes de 312 a 743 m², casas de até 5 suítes. Conta com cascata d'água e lagos naturais, ampla área de lazer e segurança 24h.",
-      "amenidades": ["Portaria e segurança 24h", "Duas academias", "Cascata d'água e 2 lagos naturais", "Salão de festas", "Quadras de tênis e beach tennis", "Playgrounds", "Piscina", "Home cinema"],
-      "destaques": ["Lotes de 312 a 743 m²", "Casas de altíssimo padrão", "Lagos naturais e cascata d'água"],
+      "amenidades": [
+        "Portaria e segurança 24h",
+        "Duas academias",
+        "Cascata d'água e 2 lagos naturais",
+        "Salão de festas",
+        "Quadras de tênis e beach tennis",
+        "Playgrounds",
+        "Piscina",
+        "Home cinema"
+      ],
+      "destaques": [
+        "Lotes de 312 a 743 m²",
+        "Casas de altíssimo padrão",
+        "Lagos naturais e cascata d'água"
+      ],
       "capa": "https://cdn.imoview.com.br/objetiva/Condominios/21/reserva-do-vale.jpeg?1726238230",
-      "galeria": ["https://cdn.imoview.com.br/objetiva/Condominios/21/reserva-do-vale-2.jpeg?1726238230", "https://cdn.imoview.com.br/objetiva/Condominios/21/whatsapp-image-2024-09-13-at-112759.jpeg?1726238230", "https://cdn.imoview.com.br/objetiva/Condominios/21/whatsapp-image-2022-08-17-at-163110.jpeg?1726238230"]
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/21/reserva-do-vale-2.jpeg?1726238230",
+        "https://cdn.imoview.com.br/objetiva/Condominios/21/whatsapp-image-2024-09-13-at-112759.jpeg?1726238230",
+        "https://cdn.imoview.com.br/objetiva/Condominios/21/whatsapp-image-2022-08-17-at-163110.jpeg?1726238230"
+      ],
+      "segmento": "Alto padrão"
     },
     {
       "slug": "gavea-paradiso",
@@ -68,10 +163,30 @@
       "regiao": "Bairro Gávea, Zona Sul",
       "status": "Em comercialização",
       "descricao": "Loteamento fechado de alto padrão no bairro Gávea, Zona Sul de Uberlândia, na Av. Paulo Gracindo. Área total de 148.404 m² com 350 lotes. Residências de padrão elevado (211 a 555 m², 3 a 5 suítes), muito verde, lazer completo e segurança reforçada.",
-      "amenidades": ["Portaria 24h", "Campo de minigolfe", "Academia", "Campo society", "Quadras de tênis, badminton e poliesportiva", "Sauna", "Salão de festas", "Parque ecológico", "Irrigação automatizada"],
-      "destaques": ["350 lotes", "Casas de 211 a 555 m²", "Até 5 suítes", "Alto padrão na Zona Sul"],
+      "amenidades": [
+        "Portaria 24h",
+        "Campo de minigolfe",
+        "Academia",
+        "Campo society",
+        "Quadras de tênis, badminton e poliesportiva",
+        "Sauna",
+        "Salão de festas",
+        "Parque ecológico",
+        "Irrigação automatizada"
+      ],
+      "destaques": [
+        "350 lotes",
+        "Casas de 211 a 555 m²",
+        "Até 5 suítes",
+        "Alto padrão na Zona Sul"
+      ],
       "capa": "https://cdn.imoview.com.br/objetiva/Condominios/28/gavea-paradiso.png?1775835754",
-      "galeria": ["https://cdn.imoview.com.br/objetiva/Condominios/28/whatsapp-image-2026-04-10-at-124135.jpeg?1775835754", "https://cdn.imoview.com.br/objetiva/Condominios/28/whatsapp-image-2026-04-10-at-124134.jpeg?1775835754", "https://cdn.imoview.com.br/objetiva/Condominios/28/whatsapp-image-2026-04-10-at-124137.jpeg?1775835754"]
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/28/whatsapp-image-2026-04-10-at-124135.jpeg?1775835754",
+        "https://cdn.imoview.com.br/objetiva/Condominios/28/whatsapp-image-2026-04-10-at-124134.jpeg?1775835754",
+        "https://cdn.imoview.com.br/objetiva/Condominios/28/whatsapp-image-2026-04-10-at-124137.jpeg?1775835754"
+      ],
+      "segmento": "Alto padrão"
     },
     {
       "slug": "splendido",
@@ -80,10 +195,32 @@
       "regiao": "Zona Sul (Laranjeiras)",
       "status": "Em comercialização",
       "descricao": "Loteamento fechado no bairro Laranjeiras, Zona Sul de Uberlândia, voltado a famílias de alto padrão. Área total de 447.335 m², 729 lotes a partir de 360 m² e cerca de 24.520 m² de área de lazer, na Av. Vereador Carlito Cordeiro. Ampla estrutura esportiva e de convivência.",
-      "amenidades": ["Portaria 24h", "Segurança monitorada", "Academia", "Salão de festas", "Quadras poliesportiva, tênis, beach tennis e badminton", "Campo de futebol", "Pista de caminhada", "Ciclofaixa", "Playground", "Quiosques com churrasqueira"],
-      "destaques": ["729 lotes", "Lotes a partir de 360 m²", "Área total de 447.335 m²", "Portaria 24h"],
+      "amenidades": [
+        "Portaria 24h",
+        "Segurança monitorada",
+        "Academia",
+        "Salão de festas",
+        "Quadras poliesportiva, tênis, beach tennis e badminton",
+        "Campo de futebol",
+        "Pista de caminhada",
+        "Ciclofaixa",
+        "Playground",
+        "Quiosques com churrasqueira"
+      ],
+      "destaques": [
+        "729 lotes",
+        "Lotes a partir de 360 m²",
+        "Área total de 447.335 m²",
+        "Portaria 24h"
+      ],
       "capa": "https://cdn.imoview.com.br/objetiva/Condominios/10/splendido-1.jpg?1752784053",
-      "galeria": ["https://cdn.imoview.com.br/objetiva/Condominios/10/splendido-2.jpg?1752784053", "https://cdn.imoview.com.br/objetiva/Condominios/10/splendido-5.jpg?1752784053", "https://cdn.imoview.com.br/objetiva/Condominios/10/splendido-3.jpg?1752784053", "https://cdn.imoview.com.br/objetiva/Condominios/10/splendido-4.jpg?1752784053"]
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/10/splendido-2.jpg?1752784053",
+        "https://cdn.imoview.com.br/objetiva/Condominios/10/splendido-5.jpg?1752784053",
+        "https://cdn.imoview.com.br/objetiva/Condominios/10/splendido-3.jpg?1752784053",
+        "https://cdn.imoview.com.br/objetiva/Condominios/10/splendido-4.jpg?1752784053"
+      ],
+      "segmento": "Médio padrão"
     },
     {
       "slug": "villa-dos-ipes",
@@ -92,10 +229,27 @@
       "regiao": "Zona Sul",
       "status": "Em comercialização (revenda)",
       "descricao": "Condomínio de alto padrão na região mais nobre de Uberlândia, setor sul. Reúne casas amplas de 300 a 550 m², com até 4 suítes e múltiplas vagas. Infraestrutura completa de lazer e segurança 24h.",
-      "amenidades": ["Portaria e segurança 24h", "Academia", "Churrasqueira e espaço gourmet", "Home cinema", "Piscina", "Playground", "Quadras esportiva, tênis e squash"],
-      "destaques": ["Casas de 300 a 550 m²", "Até 4 suítes", "Setor sul nobre"],
+      "amenidades": [
+        "Portaria e segurança 24h",
+        "Academia",
+        "Churrasqueira e espaço gourmet",
+        "Home cinema",
+        "Piscina",
+        "Playground",
+        "Quadras esportiva, tênis e squash"
+      ],
+      "destaques": [
+        "Casas de 300 a 550 m²",
+        "Até 4 suítes",
+        "Setor sul nobre"
+      ],
       "capa": "https://cdn.imoview.com.br/objetiva/Condominios/41/whatsapp-image-2024-12-17-at-142304.jpeg?1734456469",
-      "galeria": ["https://cdn.imoview.com.br/objetiva/Condominios/41/whatsapp-image-2024-12-17-at-141757.jpeg?1734456469", "https://cdn.imoview.com.br/objetiva/Condominios/41/whatsapp-image-2024-12-17-at-141852.jpeg?1734456469", "https://cdn.imoview.com.br/objetiva/Condominios/41/whatsapp-image-2024-12-17-at-141900.jpeg?1734456469"]
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/41/whatsapp-image-2024-12-17-at-141757.jpeg?1734456469",
+        "https://cdn.imoview.com.br/objetiva/Condominios/41/whatsapp-image-2024-12-17-at-141852.jpeg?1734456469",
+        "https://cdn.imoview.com.br/objetiva/Condominios/41/whatsapp-image-2024-12-17-at-141900.jpeg?1734456469"
+      ],
+      "segmento": "Alto padrão"
     },
     {
       "slug": "golden-village",
@@ -104,10 +258,27 @@
       "regiao": "Zona Sul",
       "status": "Em comercialização",
       "descricao": "Condomínio fechado de alto padrão na Zona Sul de Uberlândia, próximo ao Uberlândia Shopping, universidades e clubes. Lotes a partir de 407 m², paisagismo completo, área verde e infraestrutura de lazer e segurança 24h.",
-      "amenidades": ["Portaria 24h", "Quadras de tênis, poliesportiva e beach tennis", "Espaço gourmet para ~250 pessoas", "Salão de festas", "Academia", "Playground", "Piscina"],
-      "destaques": ["Lotes a partir de 407 m²", "Espaço gourmet para ~250 pessoas", "Zona Sul valorizada"],
+      "amenidades": [
+        "Portaria 24h",
+        "Quadras de tênis, poliesportiva e beach tennis",
+        "Espaço gourmet para ~250 pessoas",
+        "Salão de festas",
+        "Academia",
+        "Playground",
+        "Piscina"
+      ],
+      "destaques": [
+        "Lotes a partir de 407 m²",
+        "Espaço gourmet para ~250 pessoas",
+        "Zona Sul valorizada"
+      ],
       "capa": "https://cdn.imoview.com.br/objetiva/Condominios/18/1.jpg?1701971926",
-      "galeria": ["https://cdn.imoview.com.br/objetiva/Condominios/18/rua-landscap-1870-rua-village-laje-70-1.jpeg?1701971926", "https://cdn.imoview.com.br/objetiva/Condominios/18/rua-landscap-1870-rua-village-laje-70-3.jpeg?1701971926", "https://cdn.imoview.com.br/objetiva/Condominios/18/rua-landscap-1870-rua-village-laje-70-5.jpeg?1701971926"]
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/18/rua-landscap-1870-rua-village-laje-70-1.jpeg?1701971926",
+        "https://cdn.imoview.com.br/objetiva/Condominios/18/rua-landscap-1870-rua-village-laje-70-3.jpeg?1701971926",
+        "https://cdn.imoview.com.br/objetiva/Condominios/18/rua-landscap-1870-rua-village-laje-70-5.jpeg?1701971926"
+      ],
+      "segmento": "Alto padrão"
     },
     {
       "slug": "alphaville-uberlandia-1",
@@ -116,10 +287,29 @@
       "regiao": "Granja Marileusa, Zona Leste",
       "status": "Implantado",
       "descricao": "Primeiro condomínio fechado de lotes do Grupo Alphaville em Uberlândia, dentro do bairro planejado Granja Marileusa. Cerca de 361.479 m² de área total, lotes de área média de 482 m² e mais de 145 mil m² de áreas verdes. Clube de lazer com mais de 19.000 m² e segurança 24h.",
-      "amenidades": ["Segurança e portaria 24h", "Piscina olímpica", "Quadra de tênis e poliesportiva", "Salão de festas com espaço gourmet", "Academia", "Playgrounds e praças", "Mais de 145 mil m² de áreas verdes"],
-      "destaques": ["Lotes médios de 482 m²", "Clube de mais de 19.000 m²", "Área total de ~361 mil m²", "Dentro da Granja Marileusa"],
+      "amenidades": [
+        "Segurança e portaria 24h",
+        "Piscina olímpica",
+        "Quadra de tênis e poliesportiva",
+        "Salão de festas com espaço gourmet",
+        "Academia",
+        "Playgrounds e praças",
+        "Mais de 145 mil m² de áreas verdes"
+      ],
+      "destaques": [
+        "Lotes médios de 482 m²",
+        "Clube de mais de 19.000 m²",
+        "Área total de ~361 mil m²",
+        "Dentro da Granja Marileusa"
+      ],
       "capa": "https://cdn.imoview.com.br/objetiva/Condominios/2/alphaville-1-granja-marileusa-entrada-1.jpg?1659562034",
-      "galeria": ["https://cdn.imoview.com.br/objetiva/Condominios/2/alphaville-1-granja-marileusa-piscina-1.jpg?1659562034", "https://cdn.imoview.com.br/objetiva/Condominios/2/alphaville-1-granja-marileusa-quadra-de-tennis-1.jpg?1659562034", "https://cdn.imoview.com.br/objetiva/Condominios/2/alphaville-1-granja-marileusa-clube-interno-1.jpg?1659562034", "https://cdn.imoview.com.br/objetiva/Condominios/2/alphaville-1-granja-marileusa-salao-de-festa-1.jpg?1659562034"]
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/2/alphaville-1-granja-marileusa-piscina-1.jpg?1659562034",
+        "https://cdn.imoview.com.br/objetiva/Condominios/2/alphaville-1-granja-marileusa-quadra-de-tennis-1.jpg?1659562034",
+        "https://cdn.imoview.com.br/objetiva/Condominios/2/alphaville-1-granja-marileusa-clube-interno-1.jpg?1659562034",
+        "https://cdn.imoview.com.br/objetiva/Condominios/2/alphaville-1-granja-marileusa-salao-de-festa-1.jpg?1659562034"
+      ],
+      "segmento": "Alto padrão"
     },
     {
       "slug": "alphaville-uberlandia-2",
@@ -128,10 +318,22 @@
       "regiao": "Granja Marileusa, Zona Leste",
       "status": "Em comercialização",
       "descricao": "Condomínio fechado de lotes residenciais do Grupo Alphaville, no coração do bairro planejado Granja Marileusa. Área total de 361.479 m², lotes de área média de 482 m² e clube de lazer de cerca de 29.700 m². Infraestrutura 100% subterrânea, ruas amplas e arborizadas, monitoramento 24h e controle de acesso rigoroso (Rua Lapa do Lobo, 1250).",
-      "amenidades": ["Clube de lazer completo", "Monitoramento 24h", "Controle de acesso", "Cerca perimetral", "Fiação 100% subterrânea"],
-      "destaques": ["Lotes de área média de 482 m²", "Clube de ~29.700 m²", "Área total de 361.479 m²", "Portaria e segurança 24h"],
+      "amenidades": [
+        "Clube de lazer completo",
+        "Monitoramento 24h",
+        "Controle de acesso",
+        "Cerca perimetral",
+        "Fiação 100% subterrânea"
+      ],
+      "destaques": [
+        "Lotes de área média de 482 m²",
+        "Clube de ~29.700 m²",
+        "Área total de 361.479 m²",
+        "Portaria e segurança 24h"
+      ],
       "capa": "",
-      "galeria": []
+      "galeria": [],
+      "segmento": "Alto padrão"
     },
     {
       "slug": "terras-alpha",
@@ -140,10 +342,23 @@
       "regiao": "Granja Marileusa, Zona Leste",
       "status": "Em comercialização",
       "descricao": "Terceiro projeto do Grupo Alphaville dentro do bairro planejado Granja Marileusa, com área total de 368.978 m². Lotes de área média de 305 m² e clube de cerca de 10.586 m². Condomínio fechado focado em conforto, qualidade de vida e segurança, com ampla área verde (Av. Floriano Peixoto, 7805).",
-      "amenidades": ["Quadra de tênis", "Campo de futebol", "Quadra poliesportiva", "Quadra de beach tennis", "Espaço churrasqueira", "Academia"],
-      "destaques": ["Lotes de área média de 305 m²", "Área total de 368.978 m²", "Clube de 10.586 m²", "Dentro da Granja Marileusa"],
+      "amenidades": [
+        "Quadra de tênis",
+        "Campo de futebol",
+        "Quadra poliesportiva",
+        "Quadra de beach tennis",
+        "Espaço churrasqueira",
+        "Academia"
+      ],
+      "destaques": [
+        "Lotes de área média de 305 m²",
+        "Área total de 368.978 m²",
+        "Clube de 10.586 m²",
+        "Dentro da Granja Marileusa"
+      ],
       "capa": "",
-      "galeria": []
+      "galeria": [],
+      "segmento": "Alto padrão"
     },
     {
       "slug": "buritis-club-village",
@@ -152,10 +367,24 @@
       "regiao": "Zona Leste (ao lado da Granja Marileusa)",
       "status": "Em comercialização",
       "descricao": "Loteamento fechado lançado ao lado do bairro Granja Marileusa, em Uberlândia. Possui 272 lotes residenciais a partir de 275 m², com clube completo de lazer. Ruas pavimentadas e arborizadas, rede elétrica subterrânea e sistema completo de drenagem e esgoto.",
-      "amenidades": ["Piscinas adulto e infantil", "Academia equipada", "Quadras esportivas", "Espaço gourmet com churrasqueira", "Salão de festas", "Brinquedoteca e playground", "Rede elétrica subterrânea"],
-      "destaques": ["272 lotes", "Lotes a partir de 275 m²", "Clube completo de lazer", "Ruas pavimentadas e arborizadas"],
+      "amenidades": [
+        "Piscinas adulto e infantil",
+        "Academia equipada",
+        "Quadras esportivas",
+        "Espaço gourmet com churrasqueira",
+        "Salão de festas",
+        "Brinquedoteca e playground",
+        "Rede elétrica subterrânea"
+      ],
+      "destaques": [
+        "272 lotes",
+        "Lotes a partir de 275 m²",
+        "Clube completo de lazer",
+        "Ruas pavimentadas e arborizadas"
+      ],
       "capa": "",
-      "galeria": []
+      "galeria": [],
+      "segmento": "Médio padrão"
     },
     {
       "slug": "tambore-miranda",
@@ -164,10 +393,22 @@
       "regiao": "Represa de Miranda",
       "status": "Em comercialização",
       "descricao": "Condomínio fechado exclusivo da Tamboré às margens da Represa de Miranda, voltado a lazer e moradia em contato com a água. Possui 266 lotes a partir de 700 m² e cerca de 367 mil m² de área verde, com o padrão Tamboré de segurança e infraestrutura.",
-      "amenidades": ["Portaria 24h", "Acesso à represa", "Áreas verdes", "Estrutura de lazer", "Segurança monitorada"],
-      "destaques": ["266 lotes", "Lotes a partir de 700 m²", "367 mil m² de área verde", "Às margens da Represa de Miranda"],
+      "amenidades": [
+        "Portaria 24h",
+        "Acesso à represa",
+        "Áreas verdes",
+        "Estrutura de lazer",
+        "Segurança monitorada"
+      ],
+      "destaques": [
+        "266 lotes",
+        "Lotes a partir de 700 m²",
+        "367 mil m² de área verde",
+        "Às margens da Represa de Miranda"
+      ],
       "capa": "",
-      "galeria": []
+      "galeria": [],
+      "segmento": "Alto padrão"
     },
     {
       "slug": "park-sul",
@@ -176,10 +417,22 @@
       "regiao": "Zona Sul (próximo ao Uberlândia Shopping e Unitri)",
       "status": "Em comercialização",
       "descricao": "Condomínio fechado boutique com apenas 91 lotes, de topografia totalmente plana, na Zona Sul de Uberlândia. A cerca de 1 minuto do Shopping Uberlândia e da Unitri, com fácil acesso ao centro e à rodovia. Segurança 24h e áreas comuns com lazer e jardim completo.",
-      "amenidades": ["Segurança e portaria 24h", "Playground", "Quadra esportiva e de tênis", "Piscina", "Quiosque e churrasqueira", "Jardim e paisagismo"],
-      "destaques": ["Apenas 91 lotes", "Terreno totalmente plano", "A 1 minuto do Uberlândia Shopping"],
+      "amenidades": [
+        "Segurança e portaria 24h",
+        "Playground",
+        "Quadra esportiva e de tênis",
+        "Piscina",
+        "Quiosque e churrasqueira",
+        "Jardim e paisagismo"
+      ],
+      "destaques": [
+        "Apenas 91 lotes",
+        "Terreno totalmente plano",
+        "A 1 minuto do Uberlândia Shopping"
+      ],
       "capa": "https://cdn.imoview.com.br/objetiva/Condominios/23/538263172812418.jpg?1660750527",
-      "galeria": []
+      "galeria": [],
+      "segmento": "Médio padrão"
     },
     {
       "slug": "reserva-dos-ipes",
@@ -188,10 +441,30 @@
       "regiao": "Bairro Novo Mundo",
       "status": "Implantado (revenda de casas)",
       "descricao": "Loteamento fechado da ITV Urbanismo planejado para o dia a dia da família, com lotes de área média de 336 m². Área total de 267.175 m² e clube de cerca de 5.183 m². É pet-friendly e tem lazer completo para adultos e crianças. Lotes já implantados; casas em revenda.",
-      "amenidades": ["Piscinas adulto e infantil", "Salão de festas", "Espaço fitness e academia", "Salão de jogos", "Churrasqueira", "Playground", "Quadra de futsal", "Pet place"],
-      "destaques": ["Lotes de ~336 m²", "Área total de ~267 mil m²", "Pet-friendly", "Clube de lazer completo"],
+      "amenidades": [
+        "Piscinas adulto e infantil",
+        "Salão de festas",
+        "Espaço fitness e academia",
+        "Salão de jogos",
+        "Churrasqueira",
+        "Playground",
+        "Quadra de futsal",
+        "Pet place"
+      ],
+      "destaques": [
+        "Lotes de ~336 m²",
+        "Área total de ~267 mil m²",
+        "Pet-friendly",
+        "Clube de lazer completo"
+      ],
       "capa": "https://www.itvurbanismo.com.br/wp-content/uploads/2020/06/ITV-Reserva-dos-Ipes-01.jpg",
-      "galeria": ["https://www.itvurbanismo.com.br/wp-content/uploads/2020/06/urbanismo_reservadosipes_galeria1.jpg", "https://www.itvurbanismo.com.br/wp-content/uploads/2020/06/urbanismo_reservadosipes_galeria2.jpg", "https://www.itvurbanismo.com.br/wp-content/uploads/2020/06/urbanismo_reservadosipes_galeria3.jpg", "https://www.itvurbanismo.com.br/wp-content/uploads/2020/06/urbanismo_reservadosipes_galeria4.jpg"]
+      "galeria": [
+        "https://www.itvurbanismo.com.br/wp-content/uploads/2020/06/urbanismo_reservadosipes_galeria1.jpg",
+        "https://www.itvurbanismo.com.br/wp-content/uploads/2020/06/urbanismo_reservadosipes_galeria2.jpg",
+        "https://www.itvurbanismo.com.br/wp-content/uploads/2020/06/urbanismo_reservadosipes_galeria3.jpg",
+        "https://www.itvurbanismo.com.br/wp-content/uploads/2020/06/urbanismo_reservadosipes_galeria4.jpg"
+      ],
+      "segmento": "Médio padrão"
     },
     {
       "slug": "royal-park",
@@ -200,10 +473,21 @@
       "regiao": "Zona Sul (próximo ao Jardim Inconfidência)",
       "status": "Em comercialização (revenda)",
       "descricao": "Condomínio fechado na Zona Sul de Uberlândia com portaria e monitoramento 24h. Casas de cerca de 180 m² a mais de 300 m² de área construída, muitas com acabamento de alto padrão, piscina aquecida e área gourmet. Conta com salão de festas, academia, playground e quadras.",
-      "amenidades": ["Portaria e monitoramento 24h", "Salão de festas", "Academia", "Playground", "Quadras esportivas"],
-      "destaques": ["Casas de ~180 a 300+ m² construídos", "Acabamento de alto padrão", "Zona Sul"],
+      "amenidades": [
+        "Portaria e monitoramento 24h",
+        "Salão de festas",
+        "Academia",
+        "Playground",
+        "Quadras esportivas"
+      ],
+      "destaques": [
+        "Casas de ~180 a 300+ m² construídos",
+        "Acabamento de alto padrão",
+        "Zona Sul"
+      ],
       "capa": "",
-      "galeria": []
+      "galeria": [],
+      "segmento": "Alto padrão"
     },
     {
       "slug": "cyrela-bosque-dos-buritis",
@@ -212,10 +496,22 @@
       "regiao": "Bairro Bosque dos Buritis",
       "status": "Em comercialização (revenda)",
       "descricao": "Condomínio fechado de alto padrão da Cyrela no bairro Bosque dos Buritis, uma das regiões mais valorizadas de Uberlândia. Arquitetura moderna e infraestrutura completa, com casas amplas (cerca de 278 a 450 m² construídos) com suítes, área gourmet e quintal. Lazer completo e monitoramento 24h.",
-      "amenidades": ["Monitoramento e segurança 24h", "Academia", "Quadras esportivas", "Sauna", "Piscina", "Fazendinha"],
-      "destaques": ["Bairro Bosque dos Buritis valorizado", "Casas de ~278 a 450 m² construídos", "Alto padrão"],
+      "amenidades": [
+        "Monitoramento e segurança 24h",
+        "Academia",
+        "Quadras esportivas",
+        "Sauna",
+        "Piscina",
+        "Fazendinha"
+      ],
+      "destaques": [
+        "Bairro Bosque dos Buritis valorizado",
+        "Casas de ~278 a 450 m² construídos",
+        "Alto padrão"
+      ],
       "capa": "",
-      "galeria": []
+      "galeria": [],
+      "segmento": "Alto padrão"
     },
     {
       "slug": "hamoa-resort",
@@ -224,10 +520,23 @@
       "regiao": "Uberlândia",
       "status": "Em comercialização",
       "descricao": "Primeiro condomínio residencial em conceito de resort de Uberlândia, com mais de 636.000 m² de área total. Tem 495 lotes residenciais de 400 m² a 1.570 m² (média de ~600 m²), 93.000 m² de área verde e 62.000 m² de complexo social e de lazer. Combina alto padrão e infraestrutura completa típica de resort.",
-      "amenidades": ["Parque aquático", "Complexo esportivo", "Áreas verdes amplas", "Gastronomia", "Serviços de bem-estar", "Segurança"],
-      "destaques": ["495 lotes", "Lotes de 400 a 1.570 m²", "Mais de 636 mil m² de área total", "Conceito resort"],
+      "amenidades": [
+        "Parque aquático",
+        "Complexo esportivo",
+        "Áreas verdes amplas",
+        "Gastronomia",
+        "Serviços de bem-estar",
+        "Segurança"
+      ],
+      "destaques": [
+        "495 lotes",
+        "Lotes de 400 a 1.570 m²",
+        "Mais de 636 mil m² de área total",
+        "Conceito resort"
+      ],
       "capa": "",
-      "galeria": []
+      "galeria": [],
+      "segmento": "Alto padrão"
     },
     {
       "slug": "granja-marileusa",
@@ -236,10 +545,21 @@
       "regiao": "Zona Leste",
       "status": "Em comercialização",
       "descricao": "Primeiro bairro planejado de Uberlândia, na Zona Leste, próximo ao aeroporto e às principais vias. Reúne mais de 790 mil m² de áreas verdes, parque linear, ciclovias e praças arborizadas. Abriga os condomínios fechados de lotes Alphaville 1 e 2, Terras Alpha e o Buritis Club Village, além de torres residenciais e edifícios office.",
-      "amenidades": ["Parque linear", "Ciclovias e bicicletários", "Praças arborizadas", "Áreas de preservação", "Infraestrutura urbana planejada"],
-      "destaques": ["Mais de 790 mil m² de áreas verdes", "Primeiro bairro planejado da cidade", "Abriga vários condomínios fechados de lotes"],
+      "amenidades": [
+        "Parque linear",
+        "Ciclovias e bicicletários",
+        "Praças arborizadas",
+        "Áreas de preservação",
+        "Infraestrutura urbana planejada"
+      ],
+      "destaques": [
+        "Mais de 790 mil m² de áreas verdes",
+        "Primeiro bairro planejado da cidade",
+        "Abriga vários condomínios fechados de lotes"
+      ],
       "capa": "",
-      "galeria": []
+      "galeria": [],
+      "segmento": "Alto padrão"
     },
     {
       "slug": "lago-verde",
@@ -248,10 +568,20 @@
       "regiao": "Represa de Miranda (a 35 km de Uberlândia)",
       "status": "Em comercialização",
       "descricao": "Condomínio de chácaras às margens da Represa de Miranda, no município de Uberlândia, a 35 km da cidade. Possui loteamento aprovado e registrado em cartório, IPTU individual e está totalmente legalizado pelos órgãos ambientais e pela prefeitura. Chácaras com áreas superiores a 500 m² em meio à natureza, à beira do lago.",
-      "amenidades": ["Acesso à represa", "Áreas verdes", "Loteamento legalizado e registrado"],
-      "destaques": ["Chácaras acima de 500 m²", "A 35 km de Uberlândia", "Loteamento registrado em cartório", "IPTU individual"],
+      "amenidades": [
+        "Acesso à represa",
+        "Áreas verdes",
+        "Loteamento legalizado e registrado"
+      ],
+      "destaques": [
+        "Chácaras acima de 500 m²",
+        "A 35 km de Uberlândia",
+        "Loteamento registrado em cartório",
+        "IPTU individual"
+      ],
       "capa": "",
-      "galeria": []
+      "galeria": [],
+      "segmento": "Médio padrão"
     }
   ]
 }

@@ -152,11 +152,24 @@ export default function ImovelDetalhe() {
       : `Região consolidada de ${im.cidade}, com boa infraestrutura, comércio por perto e liquidez para uma compra segura.`,
   })
 
-  // outros imóveis (prioriza o mesmo tipo)
-  const relacionados = [
-    ...IMOVEIS.filter((i) => i.codigo !== im.codigo && i.tipo === im.tipo),
-    ...IMOVEIS.filter((i) => i.codigo !== im.codigo && i.tipo !== im.tipo),
-  ].slice(0, 3)
+  // "Veja também" por SIMILARIDADE de filtros (mesmo tipo, bairro, faixa de preço,
+  // quartos/suítes) — entregamos o mesmo perfil que o lead está olhando.
+  const precoRef = im.preco || 0
+  const similaridade = (i) => {
+    let s = 0
+    if (i.tipo === im.tipo) s += 3
+    if ((i.bairro || '').toLowerCase() === (im.bairro || '').toLowerCase()) s += 3
+    if (precoRef && i.preco && Math.abs(i.preco - precoRef) <= precoRef * 0.3) s += 2
+    if ((i.quartos || 0) === (im.quartos || 0)) s += 1
+    if ((i.suites || 0) === (im.suites || 0)) s += 1
+    return s
+  }
+  const relacionados = IMOVEIS
+    .filter((i) => i.codigo !== im.codigo)
+    .map((i) => ({ i, s: similaridade(i) }))
+    .sort((a, b) => b.s - a.s)
+    .slice(0, 3)
+    .map((x) => x.i)
 
   return (
     <main className="section--light det">

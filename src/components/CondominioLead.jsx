@@ -1,15 +1,18 @@
 import { useState } from 'react'
 import { CONFIG } from '../data'
 import { registrarLead } from '../engajamento'
+import { formatBRL } from '../extenso'
+import CampoMoeda from './CampoMoeda'
 import { IconWhats, IconArrow } from './icons'
 
 // Lead qualificado de condomínio: cliente diz o perfil (quartos, suítes, vagas,
 // terreno/casa, orçamento) e o Vinícius faz a curadoria e o levantamento de
 // terrenos/imóveis disponíveis no condomínio escolhido.
 export default function CondominioLead({ condominio = '' }) {
-  const [f, setF] = useState({ nome: '', fone: '', quartos: '', suites: '', vagas: '', perfil: '', orcamento: '' })
+  const [f, setF] = useState({ nome: '', fone: '', quartos: '', suites: '', vagas: '', perfil: '', orcamento: 0 })
   const [enviado, setEnviado] = useState(false)
   const set = (k) => (e) => setF((s) => ({ ...s, [k]: e.target.value }))
+  const setOrcamento = (v) => setF((s) => ({ ...s, orcamento: v }))
 
   const enviar = (e) => {
     e.preventDefault()
@@ -19,7 +22,7 @@ export default function CondominioLead({ condominio = '' }) {
       f.suites && `${f.suites} suíte(s)`,
       f.vagas && `${f.vagas} vaga(s)`,
       f.perfil && f.perfil,
-      f.orcamento && `orçamento ${f.orcamento}`,
+      f.orcamento > 0 && `orçamento de ${formatBRL(f.orcamento)}`,
     ].filter(Boolean)
     const perfilTxt = partes.length ? partes.join(', ') : 'meu perfil'
     const onde = condominio ? `no ${condominio}` : 'em um condomínio fechado de Uberlândia'
@@ -79,7 +82,7 @@ export default function CondominioLead({ condominio = '' }) {
             <option value="tanto faz">Tanto faz</option>
           </select>
         </div>
-        <input type="text" value={f.orcamento} onChange={set('orcamento')} placeholder="Orçamento aproximado (opcional)" aria-label="Orçamento" />
+        <CampoMoeda valor={f.orcamento} onChange={setOrcamento} placeholder="Orçamento aproximado (opcional)" />
         <button type="submit" className="btn btn-gold aviseme-btn">
           <IconWhats /> Quero a curadoria do Vinícius <IconArrow />
         </button>
