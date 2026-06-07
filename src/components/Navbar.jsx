@@ -18,7 +18,7 @@ const LINKS = [
   { to: '/construtoras', label: 'Construtoras' },
   { to: '/condominios', label: 'Condomínios' },
   { to: '/ferramentas', label: 'Ferramentas' },
-  { to: '/sobre', label: 'Sobre' },
+  { to: '/blog', label: 'Blog' },
   { to: '/regioes', label: 'Uberlândia' },
   { to: '/anunciar', label: 'Anunciar imóvel', destaque: true },
 ]

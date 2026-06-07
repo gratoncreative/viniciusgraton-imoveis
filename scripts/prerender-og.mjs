@@ -20,6 +20,9 @@ const dados = JSON.parse(readFileSync(resolve(ROOT, 'src/imoveis-destaque.json')
 const imoveis = dados.imoveis
 const construtoras = JSON.parse(readFileSync(resolve(ROOT, 'src/construtoras.json'), 'utf8')).construtoras || []
 const condominios = JSON.parse(readFileSync(resolve(ROOT, 'src/condominios.json'), 'utf8')).condominios || []
+// posts do blog (extrai os slugs do src/blog.js sem precisar de bundler)
+const blogSrc = readFileSync(resolve(ROOT, 'src/blog.js'), 'utf8')
+const blogSlugs = [...blogSrc.matchAll(/slug:\s*'([^']+)'/g)].map((m) => m[1])
 const lastmod = (dados.geradoEm || '').slice(0, 10) || '2026-06-04'
 
 const formatPreco = (v) => {
@@ -200,6 +203,8 @@ const urls = [
   { loc: `${SITE}/ferramentas`, freq: 'monthly', pri: '0.6' },
   { loc: `${SITE}/condominios`, freq: 'weekly', pri: '0.7' },
   { loc: `${SITE}/anunciar`, freq: 'monthly', pri: '0.7' },
+  { loc: `${SITE}/blog`, freq: 'weekly', pri: '0.7' },
+  ...blogSlugs.map((s) => ({ loc: `${SITE}/blog/${s}`, freq: 'monthly', pri: '0.6' })),
   ...condominios.map((c) => ({ loc: `${SITE}/condominios/${c.slug}`, freq: 'weekly', pri: '0.6' })),
   { loc: `${SITE}/sobre`, freq: 'monthly', pri: '0.6' },
   { loc: `${SITE}/regioes`, freq: 'monthly', pri: '0.7' },
