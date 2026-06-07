@@ -10,6 +10,7 @@ export const POSTS = [
     data: '2026-06-05',
     destaque: true,
     cor: 0,
+    capa: '/img/emp/vitta__arysta.jpg',
     conteudo: [
       { tipo: 'p', txt: 'O FGTS é um dos maiores aliados de quem quer comprar o primeiro imóvel — e muita gente não usa todo o potencial dele. Neste guia, explico de forma simples o que você pode fazer com o seu saldo e como se planejar.' },
       { tipo: 'h', txt: 'Quem pode usar o FGTS na compra' },
@@ -30,6 +31,7 @@ export const POSTS = [
     data: '2026-06-04',
     destaque: true,
     cor: 1,
+    capa: '/img/emp/zp__santa-maria-lifestyle.jpg',
     conteudo: [
       { tipo: 'p', txt: 'Financiar assusta quem nunca passou pelo processo, mas ele é mais organizado do que parece. Aqui vai o caminho completo, do início ao fim.' },
       { tipo: 'h', txt: '1. Simulação e capacidade' },
@@ -52,6 +54,7 @@ export const POSTS = [
     data: '2026-06-03',
     destaque: true,
     cor: 2,
+    capa: '/img/emp/inconew__leme-do-praia.jpg',
     conteudo: [
       { tipo: 'p', txt: 'Na hora de comprar, o preço do imóvel não é a única conta. Existem os custos de transferência — e quem não se planeja acaba apertado no fim. Veja o que reservar.' },
       { tipo: 'h', txt: 'ITBI — o imposto da transferência' },
@@ -71,6 +74,7 @@ export const POSTS = [
     data: '2026-06-02',
     destaque: false,
     cor: 3,
+    capa: '/img/cond/bosque-karaiba.jpg',
     conteudo: [
       { tipo: 'p', txt: 'O Jardim Karaíba é, hoje, um dos endereços mais desejados de Uberlândia. Mas será que ele combina com o seu momento? Vou te dar um panorama honesto.' },
       { tipo: 'h', txt: 'O perfil do bairro' },
@@ -90,6 +94,7 @@ export const POSTS = [
     data: '2026-06-01',
     destaque: false,
     cor: 4,
+    capa: '/img/emp/perplan__grandverse-place.jpg',
     conteudo: [
       { tipo: 'p', txt: 'Uma das primeiras dúvidas de quem vai comprar: lançamento na planta ou um imóvel pronto? As duas opções são boas — depende do seu momento.' },
       { tipo: 'h', txt: 'Comprar na planta' },

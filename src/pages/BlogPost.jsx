@@ -62,6 +62,7 @@ export default function BlogPost() {
         </nav>
 
         <div className={`post-hero blog-cor-${p.cor}`}>
+          {p.capa && <img className="post-hero-img" src={p.capa} alt={p.titulo} />}
           <span className="post-cat">{p.categoria}</span>
           <h1>{p.titulo}</h1>
           <p className="post-hero-meta">{dataFmt} · {p.leitura} de leitura{views > 0 ? ` · ${views} ${views === 1 ? 'leitura' : 'leituras'}` : ''} · por Vinícius Graton</p>

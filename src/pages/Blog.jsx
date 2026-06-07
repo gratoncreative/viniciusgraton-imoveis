@@ -12,6 +12,7 @@ export function CardPost({ p, views }) {
   return (
     <Link className="post-card" to={`/blog/${p.slug}`}>
       <span className={`post-capa blog-cor-${p.cor}`}>
+        {p.capa && <img className="post-capa-img" src={p.capa} alt={p.titulo} loading="lazy" />}
         <span className="post-cat">{p.categoria}</span>
       </span>
       <span className="post-body">
