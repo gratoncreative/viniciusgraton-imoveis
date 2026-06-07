@@ -112,7 +112,7 @@ export default function Galeria({ fotos = [], alt = '' }) {
               onClick={manual(() => setI(n))}
               aria-label={`Foto ${n + 1}`}
             >
-              <img src={src} alt="" loading="lazy" onError={onImgError} />
+              <img src={src} alt="" loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
             </button>
           ))}
         </div>

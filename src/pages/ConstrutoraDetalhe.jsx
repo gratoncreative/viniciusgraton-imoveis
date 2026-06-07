@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 import { getConstrutora, CONSTRUTORAS, linkWhatsApp, waConstrutora } from '../data'
 import { useSEO } from '../useSEO'
 import { onImgError } from '../img'
-import { IconWhats, IconArrow, IconPin, IconBuilding } from '../components/icons'
+import { IconWhats, IconArrow, IconPin, IconBuilding, IconShield } from '../components/icons'
 
 export default function ConstrutoraDetalhe() {
   const { slug } = useParams()
@@ -11,7 +11,7 @@ export default function ConstrutoraDetalhe() {
   useSEO({
     title: c ? `${c.nome} — empreendimentos em Uberlândia` : 'Construtora não encontrada',
     description: c
-      ? `${c.descricao} Veja fotos, plantas e detalhes dos lançamentos da ${c.nome} em Uberlândia e fale com o Vinícius para visitar.`
+      ? `${c.descricao} Veja fotos, plantas, vídeos e detalhes dos lançamentos da ${c.nome} em Uberlândia e fale com o Vinícius para visitar.`
       : 'Construtora não encontrada.',
     path: `/construtoras/${slug || ''}`,
   })
@@ -31,6 +31,11 @@ export default function ConstrutoraDetalhe() {
   }
 
   const outras = CONSTRUTORAS.filter((x) => x.slug !== c.slug)
+  const stats = [
+    c.fundacao && { rotulo: 'No mercado desde', valor: c.fundacao },
+    c.atuacao && { rotulo: 'Atuação', valor: c.atuacao },
+    c.entregas && { rotulo: 'Histórico', valor: c.entregas },
+  ].filter(Boolean)
 
   return (
     <main className="pagina construtora-pg">
@@ -47,11 +52,59 @@ export default function ConstrutoraDetalhe() {
             <a className="btn btn-gold" href={linkWhatsApp(waConstrutora(c))} target="_blank" rel="noopener">
               <IconWhats /> Falar com o Vinícius
             </a>
+            {c.instagram && (
+              <a className="btn btn-ghost" href={c.instagram} target="_blank" rel="noopener noreferrer">
+                Instagram oficial
+              </a>
+            )}
           </div>
         </div>
       </header>
 
-      <section className="section--light">
+      {(stats.length > 0 || c.descricaoLonga || (c.diferenciais || []).length > 0 || (c.certificacoes || []).length > 0) && (
+        <section className="section--light construtora-sobre">
+          <div className="container">
+            {stats.length > 0 && (
+              <div className="construtora-stats">
+                {stats.map((s, i) => (
+                  <div className="construtora-stat" key={i}>
+                    <span className="construtora-stat-rot">{s.rotulo}</span>
+                    <b className="construtora-stat-val">{s.valor}</b>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {c.descricaoLonga && (
+              <div className="construtora-bio">
+                <h2 className="det-rel-titulo">Sobre a {c.nome}</h2>
+                <p>{c.descricaoLonga}</p>
+              </div>
+            )}
+
+            <div className="construtora-cols">
+              {(c.diferenciais || []).length > 0 && (
+                <div className="construtora-col">
+                  <h3 className="construtora-col-tit">Diferenciais</h3>
+                  <ul className="empre-amen">
+                    {c.diferenciais.map((d, i) => <li key={i}><span className="det-carac-check">✓</span> {d}</li>)}
+                  </ul>
+                </div>
+              )}
+              {(c.certificacoes || []).length > 0 && (
+                <div className="construtora-col">
+                  <h3 className="construtora-col-tit">Certificações</h3>
+                  <div className="construtora-selos">
+                    {c.certificacoes.map((s, i) => <span className="construtora-selo" key={i}>{s}</span>)}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section className="section--light" style={{ paddingTop: 0 }}>
         <div className="container">
           <h2 className="det-rel-titulo">Empreendimentos em Uberlândia</h2>
           {c.projetos && c.projetos.length ? (
@@ -60,11 +113,12 @@ export default function ConstrutoraDetalhe() {
                 <Link className="proj-card" key={p.slug} to={`/construtoras/${c.slug}/${p.slug}`}>
                   <span className="proj-capa">
                     {p.capa ? (
-                      <img src={p.capa} alt={`${p.nome} — ${c.nome}, Uberlândia`} loading="lazy" onError={onImgError} />
+                      <img src={p.capa} alt={`${p.nome} — ${c.nome}, Uberlândia`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
                     ) : (
                       <span className="proj-capa-vazia"><IconBuilding width={34} height={34} /></span>
                     )}
                     {p.status && <span className="proj-status proj-status--over">{p.status}</span>}
+                    {p.video && <span className="proj-capa-video">▶ vídeo</span>}
                     {(p.galeria || []).length > 0 && <span className="proj-capa-fotos">{(p.galeria || []).length + 1} fotos</span>}
                   </span>
                   <span className="proj-body">
@@ -79,10 +133,11 @@ export default function ConstrutoraDetalhe() {
           ) : (
             <p className="section-sub">Em breve, lançamentos da {c.nome} por aqui. Me chame no WhatsApp que eu te mostro as opções.</p>
           )}
-          <p className="construtora-aviso">
-            Marcas, imagens e materiais são das respectivas construtoras e usados para divulgação dos empreendimentos.
-            Valores e disponibilidade são confirmados no atendimento — eu te acompanho na visita e em toda a negociação.
-          </p>
+
+          <div className="det-trust" style={{ marginTop: 28 }}>
+            <IconShield width={20} height={20} />
+            <p><b>Faço a curadoria de cada empreendimento</b> antes de indicar — confiro construtora, documentação, localização e padrão de entrega, pra te apresentar só o que tem qualidade e excelência. Marcas, imagens e materiais são das respectivas construtoras. Valores e disponibilidade são confirmados no atendimento, e eu te acompanho na visita e em toda a negociação.</p>
+          </div>
         </div>
       </section>
 

@@ -8,11 +8,139 @@
       "segmento": "Alto padrão · residencial e comercial",
       "descricao": "Incorporadora com mais de 20 anos de mercado, em Uberlândia desde 2020, com empreendimentos residenciais e comerciais de alto padrão.",
       "projetos": [
-        { "slug": "chronos-tower", "nome": "Chronos Tower", "bairro": "Morada da Colina", "status": "Em obras", "entrega": "", "endereco": "Av. Francisco Galassi, 1085 — Morada da Colina, Uberlândia", "preco": "", "descricao": "Torre comercial de grande porte na Morada da Colina, em Uberlândia, com salas comerciais moduláveis de 38 a 376 m² e possibilidade de junção de unidades. Endereço de prestígio, com infraestrutura corporativa completa, elevadores inteligentes e controle de acesso.", "tipologias": ["Salas comerciais · 38 a 376 m²", "Junção salas 01+02 · 85,61 m²", "Junção salas 08+09 · 99,02 m²", "Junção 06+07+08+09 · 201,52 m²"], "amenidades": ["Salas de reunião", "Espaço de jogos e descompressão", "Copa coletiva", "Vestiários", "Auditório com acesso independente", "Estacionamento com valet", "Controle de acesso no lobby", "Elevadores inteligentes"], "video": "https://www.youtube.com/watch?v=2uBpum2TYFc", "capa": "https://cdnm.com.br/chronostowerperplancombr/media/6f/49/22/18/chronos-tower-20260413091407000.jpg", "galeria": ["https://cdnm.com.br/chronostowerperplancombr/media/70/ef/df/17/chronos-tower-20260413091407000.jpg", "https://cdnm.com.br/chronostowerperplancombr/media/9b/f3/1c/15/chronos-tower-20260413091407000.jpg"] },
-        { "slug": "casa-alta", "nome": "Casa'Alta", "bairro": "Morada da Colina", "status": "Em obras", "entrega": "", "endereco": "Rua Marieta de Castro Santos, 210 — Morada da Colina, Uberlândia", "preco": "", "descricao": "Residencial de alto padrão com o conceito \"amplitude de casa, privacidade de apartamento\". Arquitetura minimalista, paisagismo exuberante e lazer com conceito de clube completo. Tipologias amplas de 299 m² a penthouses de quase 600 m².", "tipologias": ["Planta tipo · 3 suítes · 299 m²", "Maison Jardin · 4 suítes · 352 m²", "Duplex · 4 suítes · 535 m²", "Penthouse · 4 suítes · 599 m²"], "amenidades": ["Piscina com borda infinita (raia 25 m)", "Fitness interno e externo", "Confraria/Wine Bar", "Salão de jogos", "Family club", "Playground", "Brinquedoteca", "Sauna", "Pet Place", "Salão de festas pé-direito duplo", "Quadra recreativa", "Deck molhado e solarium"], "video": "https://www.youtube.com/watch?v=Lx7JszK7OGE", "capa": "https://cdnm.com.br/horizcasaalta/open-graph/facebook/perplan-casaalta.png", "galeria": [] },
-        { "slug": "grandverse-place", "nome": "Grandverse Place", "bairro": "Villa Gávea", "status": "Em obras", "entrega": "abr/2026", "endereco": "Villa Gávea, Uberlândia", "preco": "", "descricao": "Empreendimento residencial no Villa Gávea com 148 unidades, conceito open space, double suíte, acqua club e lazer estilo resort com mais de 20 itens de entretenimento e conveniência.", "tipologias": ["2 suítes + lavabo · 76,88 m² · 1 a 2 vagas", "2 suítes + escritório + cozinha fechada · 90,12 m²", "2 suítes + estar ampliado · 90,12 m²"], "amenidades": ["Acqua club", "Lazer estilo resort (20+ itens)", "Double suíte"], "video": "", "capa": "https://perplansite.blob.core.windows.net/imagens/empreendimentos/grandverse-place/banner-destaque-grandverse-place-638694240568533100.jpg", "galeria": ["https://perplansite.blob.core.windows.net/imagens/empreendimentos/grandverse-place//foto-1-grandverse-place-638694249520091344.jpg", "https://perplansite.blob.core.windows.net/imagens/empreendimentos/grandverse-place//foto-2-grandverse-place-638694249540903351.jpg", "https://perplansite.blob.core.windows.net/imagens/empreendimentos/grandverse-place//foto-3-grandverse-place-638694249541822377.jpg", "https://perplansite.blob.core.windows.net/imagens/empreendimentos/grandverse-place//foto-4-grandverse-place-638694249542558668.jpg", "https://perplansite.blob.core.windows.net/imagens/empreendimentos/grandverse-place/plantas/foto-1-grandverse-place-638749467064052508.jpg"] },
-        { "slug": "nuage-altamira", "nome": "Nuage Altamira", "bairro": "Morada da Colina", "status": "Em obras", "entrega": "", "endereco": "Rua Otília Souza Oliveira, 90 — Morada da Colina, Uberlândia", "preco": "", "descricao": "Empreendimento residencial exclusivo na Morada da Colina, com apenas 70 unidades e o mote \"o design do horizonte para você\". Arquitetura atemporal e apartamentos amplos de 3 suítes (ou 2 suítes com Home TV).", "tipologias": ["Pavimento par · 3 suítes · 161,66 m² · 2 a 4 vagas", "Pavimento ímpar · 3 suítes · 166,02 m² · 2 a 4 vagas"], "amenidades": ["Alto padrão", "Vista privilegiada", "Exclusividade (70 unidades)"], "video": "https://www.youtube.com/watch?v=dyKKAKHMeRM", "capa": "https://perplansite.blob.core.windows.net/imagens/empreendimentos/nuage-altamira/banner-destaque-nuage-altamira-638773648183725181.jpg", "galeria": ["https://perplansite.blob.core.windows.net/imagens/empreendimentos/nuage-altamira//foto-1-nuage-altamira-638756674372652081.jpg", "https://perplansite.blob.core.windows.net/imagens/empreendimentos/nuage-altamira//foto-2-nuage-altamira-638756674375146179.jpg", "https://perplansite.blob.core.windows.net/imagens/empreendimentos/nuage-altamira//foto-3-nuage-altamira-638756674375781688.jpg", "https://perplansite.blob.core.windows.net/imagens/empreendimentos/nuage-altamira/plantas/foto-1-nuage-altamira-638756684858619391.jpg"] }
-      ]
+        {
+          "slug": "chronos-tower",
+          "nome": "Chronos Tower",
+          "bairro": "Morada da Colina",
+          "status": "Em obras",
+          "entrega": "",
+          "endereco": "Av. Francisco Galassi, 1085 — Morada da Colina, Uberlândia",
+          "preco": "",
+          "descricao": "Torre comercial de grande porte na Morada da Colina, em Uberlândia, com salas comerciais moduláveis de 38 a 376 m² e possibilidade de junção de unidades. Endereço de prestígio, com infraestrutura corporativa completa, elevadores inteligentes e controle de acesso.",
+          "tipologias": [
+            "Salas comerciais · 38 a 376 m²",
+            "Junção salas 01+02 · 85,61 m²",
+            "Junção salas 08+09 · 99,02 m²",
+            "Junção 06+07+08+09 · 201,52 m²"
+          ],
+          "amenidades": [
+            "Salas de reunião",
+            "Espaço de jogos e descompressão",
+            "Copa coletiva",
+            "Vestiários",
+            "Auditório com acesso independente",
+            "Estacionamento com valet",
+            "Controle de acesso no lobby",
+            "Elevadores inteligentes"
+          ],
+          "video": "https://www.youtube.com/watch?v=3Ckgfdo6fAE",
+          "capa": "https://cdnm.com.br/chronostowerperplancombr/media/6f/49/22/18/chronos-tower-20260413091407000.jpg",
+          "galeria": [
+            "https://cdnm.com.br/chronostowerperplancombr/media/70/ef/df/17/chronos-tower-20260413091407000.jpg",
+            "https://cdnm.com.br/chronostowerperplancombr/media/9b/f3/1c/15/chronos-tower-20260413091407000.jpg"
+          ]
+        },
+        {
+          "slug": "casa-alta",
+          "nome": "Casa'Alta",
+          "bairro": "Morada da Colina",
+          "status": "Em obras",
+          "entrega": "",
+          "endereco": "Rua Marieta de Castro Santos, 210 — Morada da Colina, Uberlândia",
+          "preco": "",
+          "descricao": "Residencial de alto padrão com o conceito \"amplitude de casa, privacidade de apartamento\". Arquitetura minimalista, paisagismo exuberante e lazer com conceito de clube completo. Tipologias amplas de 299 m² a penthouses de quase 600 m².",
+          "tipologias": [
+            "Planta tipo · 3 suítes · 299 m²",
+            "Maison Jardin · 4 suítes · 352 m²",
+            "Duplex · 4 suítes · 535 m²",
+            "Penthouse · 4 suítes · 599 m²"
+          ],
+          "amenidades": [
+            "Piscina com borda infinita (raia 25 m)",
+            "Fitness interno e externo",
+            "Confraria/Wine Bar",
+            "Salão de jogos",
+            "Family club",
+            "Playground",
+            "Brinquedoteca",
+            "Sauna",
+            "Pet Place",
+            "Salão de festas pé-direito duplo",
+            "Quadra recreativa",
+            "Deck molhado e solarium"
+          ],
+          "video": "https://www.youtube.com/watch?v=Lx7JszK7OGE",
+          "capa": "https://cdnm.com.br/horizcasaalta/open-graph/facebook/perplan-casaalta.png",
+          "galeria": []
+        },
+        {
+          "slug": "grandverse-place",
+          "nome": "Grandverse Place",
+          "bairro": "Villa Gávea",
+          "status": "Em obras",
+          "entrega": "abr/2026",
+          "endereco": "Villa Gávea, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento residencial no Villa Gávea com 148 unidades, conceito open space, double suíte, acqua club e lazer estilo resort com mais de 20 itens de entretenimento e conveniência.",
+          "tipologias": [
+            "2 suítes + lavabo · 76,88 m² · 1 a 2 vagas",
+            "2 suítes + escritório + cozinha fechada · 90,12 m²",
+            "2 suítes + estar ampliado · 90,12 m²"
+          ],
+          "amenidades": [
+            "Acqua club",
+            "Lazer estilo resort (20+ itens)",
+            "Double suíte"
+          ],
+          "video": "https://www.youtube.com/watch?v=46uZtaIebw4",
+          "capa": "https://perplansite.blob.core.windows.net/imagens/empreendimentos/grandverse-place/banner-destaque-grandverse-place-638694240568533100.jpg",
+          "galeria": [
+            "https://perplansite.blob.core.windows.net/imagens/empreendimentos/grandverse-place//foto-1-grandverse-place-638694249520091344.jpg",
+            "https://perplansite.blob.core.windows.net/imagens/empreendimentos/grandverse-place//foto-2-grandverse-place-638694249540903351.jpg",
+            "https://perplansite.blob.core.windows.net/imagens/empreendimentos/grandverse-place//foto-3-grandverse-place-638694249541822377.jpg",
+            "https://perplansite.blob.core.windows.net/imagens/empreendimentos/grandverse-place//foto-4-grandverse-place-638694249542558668.jpg",
+            "https://perplansite.blob.core.windows.net/imagens/empreendimentos/grandverse-place/plantas/foto-1-grandverse-place-638749467064052508.jpg"
+          ]
+        },
+        {
+          "slug": "nuage-altamira",
+          "nome": "Nuage Altamira",
+          "bairro": "Morada da Colina",
+          "status": "Em obras",
+          "entrega": "",
+          "endereco": "Rua Otília Souza Oliveira, 90 — Morada da Colina, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento residencial exclusivo na Morada da Colina, com apenas 70 unidades e o mote \"o design do horizonte para você\". Arquitetura atemporal e apartamentos amplos de 3 suítes (ou 2 suítes com Home TV).",
+          "tipologias": [
+            "Pavimento par · 3 suítes · 161,66 m² · 2 a 4 vagas",
+            "Pavimento ímpar · 3 suítes · 166,02 m² · 2 a 4 vagas"
+          ],
+          "amenidades": [
+            "Alto padrão",
+            "Vista privilegiada",
+            "Exclusividade (70 unidades)"
+          ],
+          "video": "https://www.youtube.com/watch?v=7W7CmcC5h88",
+          "capa": "https://perplansite.blob.core.windows.net/imagens/empreendimentos/nuage-altamira/banner-destaque-nuage-altamira-638773648183725181.jpg",
+          "galeria": [
+            "https://perplansite.blob.core.windows.net/imagens/empreendimentos/nuage-altamira//foto-1-nuage-altamira-638756674372652081.jpg",
+            "https://perplansite.blob.core.windows.net/imagens/empreendimentos/nuage-altamira//foto-2-nuage-altamira-638756674375146179.jpg",
+            "https://perplansite.blob.core.windows.net/imagens/empreendimentos/nuage-altamira//foto-3-nuage-altamira-638756674375781688.jpg",
+            "https://perplansite.blob.core.windows.net/imagens/empreendimentos/nuage-altamira/plantas/foto-1-nuage-altamira-638756684858619391.jpg"
+          ]
+        }
+      ],
+      "fundacao": "2000",
+      "entregas": "mais de 7 mil unidades entregues e mais de 6 milhões de m² urbanizados",
+      "certificacoes": [],
+      "atuacao": "São Paulo, Minas Gerais, Mato Grosso do Sul e Goiás (mais de 20 cidades), incluindo Uberlândia",
+      "diferenciais": [
+        "Loteamentos e bairros planejados de alto padrão",
+        "Foco em desenvolvimento urbano",
+        "Mais de 40 empreendimentos lançados"
+      ],
+      "descricaoLonga": "A Perplan foi fundada em 2000, em Ribeirão Preto (SP), a partir da união de empresas com décadas de experiência no mercado imobiliário. Atua com loteamentos, bairros planejados e empreendimentos residenciais e comerciais, hoje presente em quatro estados (SP, MG, MS e GO) e mais de 20 cidades, entre elas Uberlândia.",
+      "instagram": "https://www.instagram.com/perplanbrasil/"
     },
     {
       "slug": "r-freitas",
@@ -21,9 +149,84 @@
       "segmento": "Residencial e comercial",
       "descricao": "Construtora e incorporadora atuante em Uberlândia desde 1985, com mais de 2.000 imóveis entregues e certificação PBQP-H nível A.",
       "projetos": [
-        { "slug": "soho-exclusive", "nome": "SOHO Exclusive", "bairro": "Copacabana", "status": "Lançamento", "entrega": "", "endereco": "Av. Liberdade, 101 — Copacabana, Uberlândia", "preco": "", "descricao": "Empreendimento inspirado no bairro SOHO de Nova York, com energia urbana e contemporânea — \"aqui, a vida pulsa\". Áreas de convivência, trabalho e lazer integradas, no bairro Copacabana.", "tipologias": [], "amenidades": ["Piscina com borda infinita", "Academia", "Churrasqueira gourmet", "Coworking", "Sauna", "Pet Place", "Brinquedoteca", "Bicicletário", "Lavanderia", "Salão de festas", "Soho Market (lobby e rooftop)"], "video": "", "capa": "https://rfreitas.com.br/uploads/imagens/fachada-soho-exclusive-56.jpg", "galeria": ["https://rfreitas.com.br/uploads/imagens/banner-soho-exclusive-962.jpg", "https://rfreitas.com.br/uploads/imagens/soho-exclusive-10-177.jpg", "https://rfreitas.com.br/uploads/imagens/soho-exclusive-10-206.jpg", "https://rfreitas.com.br/uploads/imagens/soho-exclusive-10-1315.jpg", "https://rfreitas.com.br/uploads/imagens/soho-exclusive-10-1955.jpg"] },
-        { "slug": "riviera-new-home", "nome": "Riviera New Home", "bairro": "Jaraguá", "status": "Pronto", "entrega": "", "endereco": "Av. Jacarandá, 100 — Jaraguá, Uberlândia", "preco": "", "descricao": "Condomínio-clube às margens do rio Uberabinha, no bairro Jaraguá — \"uma vida verde te espera em casa\". Apartamentos com vista para a natureza e piscina elevada com vista da cidade.", "tipologias": ["1 suíte · 54,51 m²", "1 suíte · 55,54 m²", "1 suíte · 58,84 m²", "1 suíte · 51,88 m²"], "amenidades": ["Piscina elevada", "Piscina infantil", "Quadra esportiva", "Churrasqueira", "Brinquedoteca", "Salão de festas", "Playground", "Portaria 24h"], "video": "", "capa": "https://rfreitas.com.br/uploads/imagens/fachada-riviera-new-home-411.jpg", "galeria": ["https://rfreitas.com.br/uploads/imagens/banner-riviera-new-home-854.jpg", "https://rfreitas.com.br/uploads/imagens/planta-tipo-01-431.jpg", "https://rfreitas.com.br/uploads/imagens/planta-tipo-04-993.jpg"] }
-      ]
+        {
+          "slug": "soho-exclusive",
+          "nome": "SOHO Exclusive",
+          "bairro": "Copacabana",
+          "status": "Lançamento",
+          "entrega": "",
+          "endereco": "Av. Liberdade, 101 — Copacabana, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento inspirado no bairro SOHO de Nova York, com energia urbana e contemporânea — \"aqui, a vida pulsa\". Áreas de convivência, trabalho e lazer integradas, no bairro Copacabana.",
+          "tipologias": [],
+          "amenidades": [
+            "Piscina com borda infinita",
+            "Academia",
+            "Churrasqueira gourmet",
+            "Coworking",
+            "Sauna",
+            "Pet Place",
+            "Brinquedoteca",
+            "Bicicletário",
+            "Lavanderia",
+            "Salão de festas",
+            "Soho Market (lobby e rooftop)"
+          ],
+          "video": "https://www.youtube.com/watch?v=D9sMOn9g8B0",
+          "capa": "https://rfreitas.com.br/uploads/imagens/fachada-soho-exclusive-56.jpg",
+          "galeria": [
+            "https://rfreitas.com.br/uploads/imagens/banner-soho-exclusive-962.jpg",
+            "https://rfreitas.com.br/uploads/imagens/soho-exclusive-10-177.jpg",
+            "https://rfreitas.com.br/uploads/imagens/soho-exclusive-10-206.jpg",
+            "https://rfreitas.com.br/uploads/imagens/soho-exclusive-10-1315.jpg",
+            "https://rfreitas.com.br/uploads/imagens/soho-exclusive-10-1955.jpg"
+          ]
+        },
+        {
+          "slug": "riviera-new-home",
+          "nome": "Riviera New Home",
+          "bairro": "Jaraguá",
+          "status": "Pronto",
+          "entrega": "",
+          "endereco": "Av. Jacarandá, 100 — Jaraguá, Uberlândia",
+          "preco": "",
+          "descricao": "Condomínio-clube às margens do rio Uberabinha, no bairro Jaraguá — \"uma vida verde te espera em casa\". Apartamentos com vista para a natureza e piscina elevada com vista da cidade.",
+          "tipologias": [
+            "1 suíte · 54,51 m²",
+            "1 suíte · 55,54 m²",
+            "1 suíte · 58,84 m²",
+            "1 suíte · 51,88 m²"
+          ],
+          "amenidades": [
+            "Piscina elevada",
+            "Piscina infantil",
+            "Quadra esportiva",
+            "Churrasqueira",
+            "Brinquedoteca",
+            "Salão de festas",
+            "Playground",
+            "Portaria 24h"
+          ],
+          "video": "",
+          "capa": "https://rfreitas.com.br/uploads/imagens/fachada-riviera-new-home-411.jpg",
+          "galeria": [
+            "https://rfreitas.com.br/uploads/imagens/banner-riviera-new-home-854.jpg",
+            "https://rfreitas.com.br/uploads/imagens/planta-tipo-01-431.jpg",
+            "https://rfreitas.com.br/uploads/imagens/planta-tipo-04-993.jpg"
+          ]
+        }
+      ],
+      "fundacao": "1985",
+      "entregas": "",
+      "certificacoes": [],
+      "atuacao": "Uberlândia, MG",
+      "diferenciais": [
+        "Cliente em primeiro lugar",
+        "Crescimento com segurança e qualidade",
+        "Transparência e solidez financeira"
+      ],
+      "descricaoLonga": "A R. Freitas é uma construtora de Uberlândia-MG que atua na construção civil desde 1985, sendo uma das empresas mais longevas do setor na cidade. A empresa declara como princípio colocar o cliente em primeiro lugar e crescer com segurança, qualidade e transparência.",
+      "instagram": "https://www.instagram.com/rfreitasconstrutora/"
     },
     {
       "slug": "inconew",
@@ -32,11 +235,144 @@
       "segmento": "Residencial e comercial",
       "descricao": "Construtora e incorporadora de Uberlândia com empreendimentos residenciais e comerciais nos principais bairros da cidade.",
       "projetos": [
-        { "slug": "wtc-uberlandia", "nome": "World Trade Center Uberlândia", "bairro": "Gávea", "status": "Em obras", "entrega": "", "endereco": "Av. Lidormira Borges do Nascimento — Gávea, Uberlândia", "preco": "", "descricao": "Complexo corporativo de padrão internacional no bairro Gávea — \"presença local, negócios globais\". Torre de 36 pavimentos, 102 salas comerciais a partir de 168 m², lajes corporativas, lojas, apartamentos estúdio (WTC Studio) e torres residenciais (WTC Gávea Residence), em mais de 46 mil m² de construção.", "tipologias": ["Salas comerciais · a partir de 168 m²", "Lajes corporativas", "Apartamentos estúdio (Studio Home & Office)", "Residencial de alto padrão (Gávea Residence)"], "amenidades": ["Restaurante com mirante 180°", "Auditório para 210 pessoas", "Heliponto", "Centro de eventos (WTC Convention)"], "video": "", "capa": "https://inconew.com.br/wp-content/uploads/2024/04/WTC_FACHADA_IMAGEM_07-scaled.jpg", "galeria": ["https://inconew.com.br/wp-content/uploads/2025/05/INCONEW_WTC_COMPLETO_IMG02_DRONE.jpg", "https://inconew.com.br/wp-content/uploads/2025/05/IMAGEM-FACHADA-08-NOTURNA-DET-1-scaled.jpg", "https://inconew.com.br/wp-content/uploads/2025/05/INW_WTC_06-05_FINAL_LOBBY_img01-1-scaled.jpg", "https://inconew.com.br/wp-content/uploads/2025/05/INW_WTC_HALL_ELEVADORES_FINAL_01-scaled.jpg"] },
-        { "slug": "leme-do-praia", "nome": "Leme do Praia", "bairro": "Morada da Colina", "status": "Em obras", "entrega": "", "endereco": "Morada da Colina, Uberlândia (próximo ao Praia Clube)", "preco": "", "descricao": "Empreendimento residencial exclusivo de torre única com apenas 40 unidades, na Morada da Colina, pertinho do Praia Clube. Apartamentos de 3 quartos (1 suíte) com varanda, e opções de cobertura duplex.", "tipologias": ["3 quartos (1 suíte) · 85 a 181 m² · 1 a 3 vagas", "Cobertura duplex · até 181 m²"], "amenidades": ["Lobby com Grab'n Go", "Fire Place", "Playground", "Pet Place", "Espaço gourmet", "Espaço fitness equipado", "Salão de festas com varanda"], "video": "", "capa": "https://inconew.com.br/wp-content/uploads/2024/02/FACHADA_VISTA_dia_4_opc1.jpg", "galeria": ["https://inconew.com.br/wp-content/uploads/2024/02/ESPACO-FITNESS.jpg", "https://inconew.com.br/wp-content/uploads/2024/02/FIRE-PLACE.jpg", "https://inconew.com.br/wp-content/uploads/2024/02/PLAYGROUND-.jpg", "https://inconew.com.br/wp-content/uploads/2024/07/INCONEW_LEME_DO_PRAIA_PLANTA_-PAV_TIPO_ATUALIZADA_COM_TEXTO.png"] },
-        { "slug": "soleil-residence", "nome": "Soleil Résidence", "bairro": "Gávea", "status": "Em obras", "entrega": "", "endereco": "Rua GS, 755 — Gávea, Uberlândia", "preco": "", "descricao": "Empreendimento de centralidade em esquina privilegiada do Villa Gávea, com infraestrutura comercial integrada (supermercado D'Ville e 5 lojas) e 18 itens de lazer. Plantas de 1, 2 ou 3 quartos.", "tipologias": ["1, 2 ou 3 quartos · 55 a 204 m² · 1 a 2 vagas"], "amenidades": ["Supermercado D'Ville integrado", "5 lojas comerciais", "Piscinas adulto e infantil com solário", "Academia", "Espaço Fit", "Sauna com espaço relax", "Coworking", "Espaço gourmet com Fire Place", "Quadra de streetball", "Playground", "Pet place"], "video": "", "capa": "https://inconew.com.br/wp-content/uploads/2024/02/FACHADA-SOLEIL-01.jpg", "galeria": ["https://inconew.com.br/wp-content/uploads/2024/02/SOLEI-AREA-EXTERNA-10-DIA-2.jpg", "https://inconew.com.br/wp-content/uploads/2024/02/RENDERGOURMET.jpg", "https://inconew.com.br/wp-content/uploads/2024/02/ACADEMIA-SOLEIL_View01.jpg", "https://inconew.com.br/wp-content/uploads/2024/02/QUADRA-1.jpg"] },
-        { "slug": "cittadella-57", "nome": "Cittadella 57", "bairro": "Gávea", "status": "Em obras", "entrega": "", "endereco": "Av. Argemiro Evangelista Ferreira, 215 — Gávea, Uberlândia", "preco": "", "descricao": "Condomínio fechado exclusivo de apenas 57 casas na Zona Sul de Uberlândia, no bairro Gávea. Une exclusividade, conforto e segurança, cercado por supermercados, escolas, shoppings e lazer.", "tipologias": ["Casas · 128,26 m² · 3 quartos (1 suíte com closet + 2 suítes) · 2 vagas (tomada p/ carro elétrico)"], "amenidades": ["Piscina com deck molhado", "Quadra de Beach Tennis", "Academia", "Sauna", "Salão de festas", "Espaço gourmet", "Coworking", "Brinquedoteca", "Playground", "Pet Place"], "video": "", "capa": "https://inconew.com.br/wp-content/uploads/2024/02/FACHADA-CITTADELLA-02.jpg", "galeria": ["https://inconew.com.br/wp-content/uploads/2024/02/IMPLANTACAO-02.jpg", "https://inconew.com.br/wp-content/uploads/2024/02/PISCINA-SAUNA.jpg"] }
-      ]
+        {
+          "slug": "wtc-uberlandia",
+          "nome": "World Trade Center Uberlândia",
+          "bairro": "Gávea",
+          "status": "Em obras",
+          "entrega": "",
+          "endereco": "Av. Lidormira Borges do Nascimento — Gávea, Uberlândia",
+          "preco": "",
+          "descricao": "Complexo corporativo de padrão internacional no bairro Gávea — \"presença local, negócios globais\". Torre de 36 pavimentos, 102 salas comerciais a partir de 168 m², lajes corporativas, lojas, apartamentos estúdio (WTC Studio) e torres residenciais (WTC Gávea Residence), em mais de 46 mil m² de construção.",
+          "tipologias": [
+            "Salas comerciais · a partir de 168 m²",
+            "Lajes corporativas",
+            "Apartamentos estúdio (Studio Home & Office)",
+            "Residencial de alto padrão (Gávea Residence)"
+          ],
+          "amenidades": [
+            "Restaurante com mirante 180°",
+            "Auditório para 210 pessoas",
+            "Heliponto",
+            "Centro de eventos (WTC Convention)"
+          ],
+          "video": "https://www.youtube.com/watch?v=JhWbdAMxmM4",
+          "capa": "https://inconew.com.br/wp-content/uploads/2024/04/WTC_FACHADA_IMAGEM_07-scaled.jpg",
+          "galeria": [
+            "https://inconew.com.br/wp-content/uploads/2025/05/INCONEW_WTC_COMPLETO_IMG02_DRONE.jpg",
+            "https://inconew.com.br/wp-content/uploads/2025/05/IMAGEM-FACHADA-08-NOTURNA-DET-1-scaled.jpg",
+            "https://inconew.com.br/wp-content/uploads/2025/05/INW_WTC_06-05_FINAL_LOBBY_img01-1-scaled.jpg",
+            "https://inconew.com.br/wp-content/uploads/2025/05/INW_WTC_HALL_ELEVADORES_FINAL_01-scaled.jpg"
+          ]
+        },
+        {
+          "slug": "leme-do-praia",
+          "nome": "Leme do Praia",
+          "bairro": "Morada da Colina",
+          "status": "Em obras",
+          "entrega": "",
+          "endereco": "Morada da Colina, Uberlândia (próximo ao Praia Clube)",
+          "preco": "",
+          "descricao": "Empreendimento residencial exclusivo de torre única com apenas 40 unidades, na Morada da Colina, pertinho do Praia Clube. Apartamentos de 3 quartos (1 suíte) com varanda, e opções de cobertura duplex.",
+          "tipologias": [
+            "3 quartos (1 suíte) · 85 a 181 m² · 1 a 3 vagas",
+            "Cobertura duplex · até 181 m²"
+          ],
+          "amenidades": [
+            "Lobby com Grab'n Go",
+            "Fire Place",
+            "Playground",
+            "Pet Place",
+            "Espaço gourmet",
+            "Espaço fitness equipado",
+            "Salão de festas com varanda"
+          ],
+          "video": "https://www.youtube.com/watch?v=5Ql0Mx2rAwY",
+          "capa": "https://inconew.com.br/wp-content/uploads/2024/02/FACHADA_VISTA_dia_4_opc1.jpg",
+          "galeria": [
+            "https://inconew.com.br/wp-content/uploads/2024/02/ESPACO-FITNESS.jpg",
+            "https://inconew.com.br/wp-content/uploads/2024/02/FIRE-PLACE.jpg",
+            "https://inconew.com.br/wp-content/uploads/2024/02/PLAYGROUND-.jpg",
+            "https://inconew.com.br/wp-content/uploads/2024/07/INCONEW_LEME_DO_PRAIA_PLANTA_-PAV_TIPO_ATUALIZADA_COM_TEXTO.png"
+          ]
+        },
+        {
+          "slug": "soleil-residence",
+          "nome": "Soleil Résidence",
+          "bairro": "Gávea",
+          "status": "Em obras",
+          "entrega": "",
+          "endereco": "Rua GS, 755 — Gávea, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento de centralidade em esquina privilegiada do Villa Gávea, com infraestrutura comercial integrada (supermercado D'Ville e 5 lojas) e 18 itens de lazer. Plantas de 1, 2 ou 3 quartos.",
+          "tipologias": [
+            "1, 2 ou 3 quartos · 55 a 204 m² · 1 a 2 vagas"
+          ],
+          "amenidades": [
+            "Supermercado D'Ville integrado",
+            "5 lojas comerciais",
+            "Piscinas adulto e infantil com solário",
+            "Academia",
+            "Espaço Fit",
+            "Sauna com espaço relax",
+            "Coworking",
+            "Espaço gourmet com Fire Place",
+            "Quadra de streetball",
+            "Playground",
+            "Pet place"
+          ],
+          "video": "https://www.youtube.com/watch?v=kO-txGSzoHU",
+          "capa": "https://inconew.com.br/wp-content/uploads/2024/02/FACHADA-SOLEIL-01.jpg",
+          "galeria": [
+            "https://inconew.com.br/wp-content/uploads/2024/02/SOLEI-AREA-EXTERNA-10-DIA-2.jpg",
+            "https://inconew.com.br/wp-content/uploads/2024/02/RENDERGOURMET.jpg",
+            "https://inconew.com.br/wp-content/uploads/2024/02/ACADEMIA-SOLEIL_View01.jpg",
+            "https://inconew.com.br/wp-content/uploads/2024/02/QUADRA-1.jpg"
+          ]
+        },
+        {
+          "slug": "cittadella-57",
+          "nome": "Cittadella 57",
+          "bairro": "Gávea",
+          "status": "Em obras",
+          "entrega": "",
+          "endereco": "Av. Argemiro Evangelista Ferreira, 215 — Gávea, Uberlândia",
+          "preco": "",
+          "descricao": "Condomínio fechado exclusivo de apenas 57 casas na Zona Sul de Uberlândia, no bairro Gávea. Une exclusividade, conforto e segurança, cercado por supermercados, escolas, shoppings e lazer.",
+          "tipologias": [
+            "Casas · 128,26 m² · 3 quartos (1 suíte com closet + 2 suítes) · 2 vagas (tomada p/ carro elétrico)"
+          ],
+          "amenidades": [
+            "Piscina com deck molhado",
+            "Quadra de Beach Tennis",
+            "Academia",
+            "Sauna",
+            "Salão de festas",
+            "Espaço gourmet",
+            "Coworking",
+            "Brinquedoteca",
+            "Playground",
+            "Pet Place"
+          ],
+          "video": "https://www.youtube.com/watch?v=pnOgwESx_aw",
+          "capa": "https://inconew.com.br/wp-content/uploads/2024/02/FACHADA-CITTADELLA-02.jpg",
+          "galeria": [
+            "https://inconew.com.br/wp-content/uploads/2024/02/IMPLANTACAO-02.jpg",
+            "https://inconew.com.br/wp-content/uploads/2024/02/PISCINA-SAUNA.jpg"
+          ]
+        }
+      ],
+      "fundacao": "",
+      "entregas": "",
+      "certificacoes": [],
+      "atuacao": "Uberlândia e Uberaba (MG), com obras em diversas regiões do país",
+      "diferenciais": [
+        "Soluções inovadoras na construção civil",
+        "Obras comerciais, residenciais, industriais e loteamentos",
+        "Acompanhamento do planejamento ao pós-venda"
+      ],
+      "descricaoLonga": "A Inconew é uma empresa de construção civil e incorporação que nasceu com o propósito de oferecer soluções inovadoras no setor. Atua em obras comerciais, residenciais, industriais e loteamentos, com sede em Uberlândia-MG e atuação que se estende a Uberaba e outras regiões.",
+      "instagram": "https://www.instagram.com/grupoinconew/"
     },
     {
       "slug": "urbanix",
@@ -45,8 +381,49 @@
       "segmento": "Médio e alto padrão",
       "descricao": "Incorporadora de Uberlândia focada no mercado de médio e alto padrão; equipe com mais de 1.200 unidades entregues.",
       "projetos": [
-        { "slug": "rio-1233", "nome": "Rio 1233", "bairro": "Cazeca", "status": "Lançamento", "entrega": "", "endereco": "Bairro Cazeca, região central de Uberlândia", "preco": "", "descricao": "Empreendimento de alto padrão na região central de Uberlândia, no bairro Cazeca — \"viva o clássico, desfrute o novo\". Combina inovação e sofisticação com a praticidade do bairro.", "tipologias": ["Apartamentos · 120 m² · 3 suítes (1 master com varanda) · lavabo · 2 vagas", "Coberturas duplex · 240 m² · 4 suítes · varanda gourmet · terraço com SPA · 3 vagas"], "amenidades": ["Piscina", "Espaço Living", "Espaço Multiuso", "Academia", "Bicicletário", "Playground"], "video": "", "capa": "https://rio1233.urbanixincorporadora.com.br/images/fotos/fachada-high.jpg", "galeria": ["https://rio1233.urbanixincorporadora.com.br/images/fotos/piscina.jpg", "https://rio1233.urbanixincorporadora.com.br/images/fotos/salaodefestas-ext.jpg", "https://rio1233.urbanixincorporadora.com.br/images/fotos/salaodefestas-int.jpg", "https://rio1233.urbanixincorporadora.com.br/images/fotos/academia.jpg"] }
-      ]
+        {
+          "slug": "rio-1233",
+          "nome": "Rio 1233",
+          "bairro": "Cazeca",
+          "status": "Lançamento",
+          "entrega": "",
+          "endereco": "Bairro Cazeca, região central de Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento de alto padrão na região central de Uberlândia, no bairro Cazeca — \"viva o clássico, desfrute o novo\". Combina inovação e sofisticação com a praticidade do bairro.",
+          "tipologias": [
+            "Apartamentos · 120 m² · 3 suítes (1 master com varanda) · lavabo · 2 vagas",
+            "Coberturas duplex · 240 m² · 4 suítes · varanda gourmet · terraço com SPA · 3 vagas"
+          ],
+          "amenidades": [
+            "Piscina",
+            "Espaço Living",
+            "Espaço Multiuso",
+            "Academia",
+            "Bicicletário",
+            "Playground"
+          ],
+          "video": "",
+          "capa": "https://rio1233.urbanixincorporadora.com.br/images/fotos/fachada-high.jpg",
+          "galeria": [
+            "https://rio1233.urbanixincorporadora.com.br/images/fotos/piscina.jpg",
+            "https://rio1233.urbanixincorporadora.com.br/images/fotos/salaodefestas-ext.jpg",
+            "https://rio1233.urbanixincorporadora.com.br/images/fotos/salaodefestas-int.jpg",
+            "https://rio1233.urbanixincorporadora.com.br/images/fotos/academia.jpg"
+          ]
+        }
+      ],
+      "fundacao": "2022",
+      "entregas": "mais de 1.200 unidades habitacionais entregues e mais de 250 mil m² desenvolvidos (últimos três anos)",
+      "certificacoes": [
+        "PBQP-H Nível A"
+      ],
+      "atuacao": "Uberlândia, MG",
+      "diferenciais": [
+        "Foco em médio e alto padrão",
+        "Inovação no mercado imobiliário"
+      ],
+      "descricaoLonga": "A Urbanix é uma incorporadora de Uberlândia-MG constituída em 2022, surgida da trajetória de João Pedro Morais na construção civil. Tem como missão transformar o mercado imobiliário de médio e alto padrão na cidade, declarando mais de 1.200 unidades entregues e mais de 250 mil m² desenvolvidos nos últimos anos.",
+      "instagram": "https://www.instagram.com/urbanixincorporadora/"
     },
     {
       "slug": "zp",
@@ -55,10 +432,122 @@
       "segmento": "Médio e alto padrão",
       "descricao": "Construtora e incorporadora do Grupo Zambon Pacheco, sediada em Uberlândia desde 2002, com empreendimentos residenciais em bairros nobres.",
       "projetos": [
-        { "slug": "mirah", "nome": "Mirah", "bairro": "Altamira", "status": "Em obras", "entrega": "abr/2029", "endereco": "Av. Nicomedes Alves dos Santos, 1592 — Altamira, Uberlândia", "preco": "", "descricao": "Empreendimento de alto padrão na Zona Sul, no bairro Altamira, com o conceito \"um universo só seu\". Arquitetura em movimento, paisagismo biofílico, academia no rooftop e apartamentos amplos de 3 suítes personalizáveis (serviço Tailor Made).", "tipologias": ["3 suítes · 111 m²", "3 suítes · 130 m²", "3 suítes · 135 m²"], "amenidades": ["Academia no rooftop", "Piscina adulto e infantil", "Sauna", "Paisagismo biofílico", "Coworking", "Espaço beleza e massagem", "Pub bistrô e lounge", "Brinquedoteca", "Salão de festas", "Quadra", "Pet Place", "Mini mercado"], "video": "", "capa": "https://zpempreendimentos.com.br/wp-content/uploads/2025/08/02-scaled.jpg", "galeria": ["https://zpempreendimentos.com.br/wp-content/uploads/2025/08/10-scaled.jpg", "https://zpempreendimentos.com.br/wp-content/uploads/2025/08/living-130m-mirah-view01-scaled.jpg", "https://zpempreendimentos.com.br/wp-content/uploads/2025/08/coworking-mirah-view01-scaled.jpg", "https://zpempreendimentos.com.br/wp-content/uploads/2025/08/planta-ap130m-mirah-textos-scaled.png"] },
-        { "slug": "santa-maria-lifestyle", "nome": "Santa Maria Lifestyle", "bairro": "Santa Maria", "status": "Em obras", "entrega": "dez/2025", "endereco": "Av. José Zacharia Junqueira, 224 — Santa Maria, Uberlândia", "preco": "", "descricao": "Padrão luxury no bairro Santa Maria, pensado para o morador resolver quase tudo sem sair de casa. Apartamentos de 3 quartos (1 suíte) com suíte grand master, varanda gourmet e forte apelo sustentável (energia fotovoltaica, vaga para carro elétrico).", "tipologias": ["3 quartos (1 suíte) · 112 m²", "3 quartos (1 suíte) · 112 m² (Garden)"], "amenidades": ["Piscina", "Cinema", "Coworking", "Academia", "Salão de festas", "Espaço grill", "Lounge", "Bicicletário", "Espaço pet", "Brinquedoteca", "Energia fotovoltaica", "Vaga para carro elétrico"], "video": "", "capa": "https://zpempreendimentos.com.br/wp-content/uploads/2023/02/fachada-santa-maria-lifestyle-view-03-1-1920x1080.jpg", "galeria": ["https://zpempreendimentos.com.br/wp-content/uploads/2023/02/cinema-santa-maria-lifestyle-view-02.jpg", "https://zpempreendimentos.com.br/wp-content/uploads/2023/02/coworking-santa-maria-lifestyle-view-02.jpg", "https://zpempreendimentos.com.br/wp-content/uploads/2023/02/espaco-fitness-santa-maria-lifestyle-view02.jpg", "https://zpempreendimentos.com.br/wp-content/uploads/2023/02/hall-recepcao-santa-maria-lifestyle-view-01.jpg"] },
-        { "slug": "moove-residence", "nome": "Moove Residence", "bairro": "Cazeca", "status": "Em obras", "entrega": "", "endereco": "Rua Mario Rezende Ribeiro, 70 — Cazeca, Uberlândia", "preco": "", "descricao": "Empreendimento contemporâneo no bairro Cazeca, alto padrão construtivo, com rooftop de lazer completo. Apartamentos de 3 quartos (1 suíte) com 91 m², em versões com e sem garden.", "tipologias": ["3 quartos (1 suíte) · 91 m²", "3 quartos (1 suíte) · 91 m² (com garden)"], "amenidades": ["Rooftop com lazer completo", "Espaço gourmet", "Academia", "Coworking", "Brinquedoteca", "Espaço vinho", "Elevador"], "video": "", "capa": "https://zpempreendimentos.com.br/wp-content/uploads/2023/07/fachada-noturna-moove-view03-1920x1080.jpg", "galeria": ["https://zpempreendimentos.com.br/wp-content/uploads/2023/07/academia-moove-zp-view01-scaled.jpg", "https://zpempreendimentos.com.br/wp-content/uploads/2023/07/brinquedoteca-moove-zp-view01-scaled.jpg", "https://zpempreendimentos.com.br/wp-content/uploads/2023/07/gourmet-cobertura-moove-zp-view01-scaled.jpg"] }
-      ]
+        {
+          "slug": "mirah",
+          "nome": "Mirah",
+          "bairro": "Altamira",
+          "status": "Em obras",
+          "entrega": "abr/2029",
+          "endereco": "Av. Nicomedes Alves dos Santos, 1592 — Altamira, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento de alto padrão na Zona Sul, no bairro Altamira, com o conceito \"um universo só seu\". Arquitetura em movimento, paisagismo biofílico, academia no rooftop e apartamentos amplos de 3 suítes personalizáveis (serviço Tailor Made).",
+          "tipologias": [
+            "3 suítes · 111 m²",
+            "3 suítes · 130 m²",
+            "3 suítes · 135 m²"
+          ],
+          "amenidades": [
+            "Academia no rooftop",
+            "Piscina adulto e infantil",
+            "Sauna",
+            "Paisagismo biofílico",
+            "Coworking",
+            "Espaço beleza e massagem",
+            "Pub bistrô e lounge",
+            "Brinquedoteca",
+            "Salão de festas",
+            "Quadra",
+            "Pet Place",
+            "Mini mercado"
+          ],
+          "video": "",
+          "capa": "https://zpempreendimentos.com.br/wp-content/uploads/2025/08/02-scaled.jpg",
+          "galeria": [
+            "https://zpempreendimentos.com.br/wp-content/uploads/2025/08/10-scaled.jpg",
+            "https://zpempreendimentos.com.br/wp-content/uploads/2025/08/living-130m-mirah-view01-scaled.jpg",
+            "https://zpempreendimentos.com.br/wp-content/uploads/2025/08/coworking-mirah-view01-scaled.jpg",
+            "https://zpempreendimentos.com.br/wp-content/uploads/2025/08/planta-ap130m-mirah-textos-scaled.png"
+          ]
+        },
+        {
+          "slug": "santa-maria-lifestyle",
+          "nome": "Santa Maria Lifestyle",
+          "bairro": "Santa Maria",
+          "status": "Em obras",
+          "entrega": "dez/2025",
+          "endereco": "Av. José Zacharia Junqueira, 224 — Santa Maria, Uberlândia",
+          "preco": "",
+          "descricao": "Padrão luxury no bairro Santa Maria, pensado para o morador resolver quase tudo sem sair de casa. Apartamentos de 3 quartos (1 suíte) com suíte grand master, varanda gourmet e forte apelo sustentável (energia fotovoltaica, vaga para carro elétrico).",
+          "tipologias": [
+            "3 quartos (1 suíte) · 112 m²",
+            "3 quartos (1 suíte) · 112 m² (Garden)"
+          ],
+          "amenidades": [
+            "Piscina",
+            "Cinema",
+            "Coworking",
+            "Academia",
+            "Salão de festas",
+            "Espaço grill",
+            "Lounge",
+            "Bicicletário",
+            "Espaço pet",
+            "Brinquedoteca",
+            "Energia fotovoltaica",
+            "Vaga para carro elétrico"
+          ],
+          "video": "https://www.youtube.com/watch?v=Q465ybcFYDA",
+          "capa": "https://zpempreendimentos.com.br/wp-content/uploads/2023/02/fachada-santa-maria-lifestyle-view-03-1-1920x1080.jpg",
+          "galeria": [
+            "https://zpempreendimentos.com.br/wp-content/uploads/2023/02/cinema-santa-maria-lifestyle-view-02.jpg",
+            "https://zpempreendimentos.com.br/wp-content/uploads/2023/02/coworking-santa-maria-lifestyle-view-02.jpg",
+            "https://zpempreendimentos.com.br/wp-content/uploads/2023/02/espaco-fitness-santa-maria-lifestyle-view02.jpg",
+            "https://zpempreendimentos.com.br/wp-content/uploads/2023/02/hall-recepcao-santa-maria-lifestyle-view-01.jpg"
+          ]
+        },
+        {
+          "slug": "moove-residence",
+          "nome": "Moove Residence",
+          "bairro": "Cazeca",
+          "status": "Em obras",
+          "entrega": "",
+          "endereco": "Rua Mario Rezende Ribeiro, 70 — Cazeca, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento contemporâneo no bairro Cazeca, alto padrão construtivo, com rooftop de lazer completo. Apartamentos de 3 quartos (1 suíte) com 91 m², em versões com e sem garden.",
+          "tipologias": [
+            "3 quartos (1 suíte) · 91 m²",
+            "3 quartos (1 suíte) · 91 m² (com garden)"
+          ],
+          "amenidades": [
+            "Rooftop com lazer completo",
+            "Espaço gourmet",
+            "Academia",
+            "Coworking",
+            "Brinquedoteca",
+            "Espaço vinho",
+            "Elevador"
+          ],
+          "video": "",
+          "capa": "https://zpempreendimentos.com.br/wp-content/uploads/2023/07/fachada-noturna-moove-view03-1920x1080.jpg",
+          "galeria": [
+            "https://zpempreendimentos.com.br/wp-content/uploads/2023/07/academia-moove-zp-view01-scaled.jpg",
+            "https://zpempreendimentos.com.br/wp-content/uploads/2023/07/brinquedoteca-moove-zp-view01-scaled.jpg",
+            "https://zpempreendimentos.com.br/wp-content/uploads/2023/07/gourmet-cobertura-moove-zp-view01-scaled.jpg"
+          ]
+        }
+      ],
+      "fundacao": "2002",
+      "entregas": "mais de 30 empreendimentos construídos",
+      "certificacoes": [],
+      "atuacao": "Uberlândia (MG), com empreendimento em São Paulo (SP)",
+      "diferenciais": [
+        "Médio e alto padrão",
+        "Personalização com ZP Design",
+        "Entrega de obras dentro do prazo",
+        "Tecnologia construtiva e infraestrutura para veículos elétricos"
+      ],
+      "descricaoLonga": "A ZP Empreendimentos, do Grupo Zambon Pacheco, atua na construção civil desde 2002 com foco em empreendimentos residenciais de médio e alto padrão. Com sede em Uberlândia-MG, declara mais de 30 empreendimentos construídos e oferece serviços como a personalização ZP Design.",
+      "instagram": "https://www.instagram.com/zpempreendimentos"
     },
     {
       "slug": "morais",
@@ -67,8 +556,53 @@
       "segmento": "Residencial · especialista no Santa Mônica",
       "descricao": "Construtora e incorporadora de Uberlândia desde 1997, especializada em empreendimentos residenciais no bairro Santa Mônica.",
       "projetos": [
-        { "slug": "isaac-321", "nome": "Isaac 321", "bairro": "Santa Mônica", "status": "Pronto", "entrega": "", "endereco": "R. Isaac de Oliveira, 321 — Santa Mônica, Uberlândia", "preco": "", "descricao": "Residencial de alto padrão no Santa Mônica, a 1 minuto da UFU e 5 do Center Shopping. Áreas de lazer exclusivas em torre única; obra entregue um mês antes do prazo. Próximo ao Parque do Sabiá e Hospital Madrecor.", "tipologias": ["3 quartos (1 suíte) · 82 m² · 2 vagas", "3 quartos (1 suíte) · 84 m² · 2 vagas", "3 quartos (1 suíte) · 88 m² · 2 vagas", "Cobertura duplex · 183,40 m²"], "amenidades": ["Varanda gourmet com churrasqueira a carvão", "Espaço fitness", "Coworking", "Lounge gourmet no rooftop", "Espaço kids", "Bicicletário", "Carregadores para veículos elétricos", "Dois elevadores"], "video": "", "capa": "https://moraisconstrutora.com/wp-content/uploads/2025/03/Fachada_Isaac.jpg", "galeria": ["https://moraisconstrutora.com/wp-content/uploads/2025/03/Varanda_Isaac.jpg", "https://moraisconstrutora.com/wp-content/uploads/2025/03/GourmetRooftop3_Isaac.jpg", "https://moraisconstrutora.com/wp-content/uploads/2025/03/Fitness2_Isaac.jpg", "https://moraisconstrutora.com/wp-content/uploads/2025/03/Coworking_Isaac.jpg"] }
-      ]
+        {
+          "slug": "isaac-321",
+          "nome": "Isaac 321",
+          "bairro": "Santa Mônica",
+          "status": "Pronto",
+          "entrega": "",
+          "endereco": "R. Isaac de Oliveira, 321 — Santa Mônica, Uberlândia",
+          "preco": "",
+          "descricao": "Residencial de alto padrão no Santa Mônica, a 1 minuto da UFU e 5 do Center Shopping. Áreas de lazer exclusivas em torre única; obra entregue um mês antes do prazo. Próximo ao Parque do Sabiá e Hospital Madrecor.",
+          "tipologias": [
+            "3 quartos (1 suíte) · 82 m² · 2 vagas",
+            "3 quartos (1 suíte) · 84 m² · 2 vagas",
+            "3 quartos (1 suíte) · 88 m² · 2 vagas",
+            "Cobertura duplex · 183,40 m²"
+          ],
+          "amenidades": [
+            "Varanda gourmet com churrasqueira a carvão",
+            "Espaço fitness",
+            "Coworking",
+            "Lounge gourmet no rooftop",
+            "Espaço kids",
+            "Bicicletário",
+            "Carregadores para veículos elétricos",
+            "Dois elevadores"
+          ],
+          "video": "",
+          "capa": "https://moraisconstrutora.com/wp-content/uploads/2025/03/Fachada_Isaac.jpg",
+          "galeria": [
+            "https://moraisconstrutora.com/wp-content/uploads/2025/03/Varanda_Isaac.jpg",
+            "https://moraisconstrutora.com/wp-content/uploads/2025/03/GourmetRooftop3_Isaac.jpg",
+            "https://moraisconstrutora.com/wp-content/uploads/2025/03/Fitness2_Isaac.jpg",
+            "https://moraisconstrutora.com/wp-content/uploads/2025/03/Coworking_Isaac.jpg"
+          ]
+        }
+      ],
+      "fundacao": "2008",
+      "entregas": "",
+      "certificacoes": [],
+      "atuacao": "Uberlândia, MG",
+      "diferenciais": [
+        "Localização estratégica",
+        "Qualidade construtiva e materiais de alto padrão",
+        "Atendimento personalizado",
+        "Pontualidade na entrega"
+      ],
+      "descricaoLonga": "A Morais Construtora atua na incorporação e construção de empreendimentos residenciais em Uberlândia-MG desde 2008. A empresa posiciona-se em torno de qualidade construtiva, materiais de alto padrão, atendimento personalizado e pontualidade na entrega.",
+      "instagram": "https://www.instagram.com/moraisconstrutora/"
     },
     {
       "slug": "atp",
@@ -77,10 +611,100 @@
       "segmento": "Alto padrão",
       "descricao": "Incorporadora de Uberlândia focada em apartamentos de alto padrão no bairro Santa Mônica.",
       "projetos": [
-        { "slug": "supreme-tower", "nome": "Supreme Tower", "bairro": "Santa Mônica", "status": "Em obras", "entrega": "set/2026", "endereco": "R. João Velasco de Andrade, 455 — Santa Mônica, Uberlândia", "preco": "A partir de R$ 453.900", "descricao": "Edifício residencial de 11 andares e 40 unidades no Santa Mônica, com distribuição interna bem planejada e acabamentos de qualidade.", "tipologias": ["2 quartos (1 suíte) · 61,20 m² · 2 vagas", "2 quartos (1 suíte) · 63,31 m² · 2 vagas", "2 quartos (1 suíte) · 67,41 m² · 2 vagas"], "amenidades": ["Academia equipada", "Espaço churrasco", "Coworking", "Espaço de convivência", "Espaço gourmet", "Salão de festas", "Bicicletário", "Gás canalizado", "Preparação para ar condicionado", "Portaria 24h"], "video": "", "capa": "https://atpempreendimentos.com.br/wp-content/uploads/2024/05/fachada-supreme-tower.jpg", "galeria": ["https://atpempreendimentos.com.br/wp-content/uploads/2024/05/planta-3-supreme.jpg", "https://atpempreendimentos.com.br/wp-content/uploads/2024/05/planta-2-4-supreme.jpg", "https://atpempreendimentos.com.br/wp-content/uploads/2024/05/planta-1-5-supreme.jpg"] },
-        { "slug": "saramago-residence", "nome": "Saramago Residence", "bairro": "Santa Mônica", "status": "Pronto", "entrega": "", "endereco": "R. José Miguel Saramago, 896 — Santa Mônica, Uberlândia", "preco": "A partir de R$ 603.900", "descricao": "Residencial pronto para morar no Santa Mônica, 11 andares e 27 apartamentos (3 por andar), com distribuição interna otimizada e varanda gourmet com churrasqueira a carvão.", "tipologias": ["3 quartos (1 a 2 suítes) · 86,49 m² · 2 vagas", "3 quartos (1 a 2 suítes) · 86,65 m² · 2 vagas"], "amenidades": ["Varanda gourmet com churrasqueira a carvão", "Áreas comuns", "Garagens (térreo e G1)"], "video": "", "capa": "https://atpempreendimentos.com.br/wp-content/uploads/2023/03/Fachada-Saramago-Residence-1024x1024.jpg", "galeria": ["https://atpempreendimentos.com.br/wp-content/uploads/2023/03/planta-01-Saramago.jpg", "https://atpempreendimentos.com.br/wp-content/uploads/2023/03/planta-02-Saramago.jpg"] },
-        { "slug": "egeo-residence", "nome": "Egeo Residence", "bairro": "Santa Mônica", "status": "Em obras", "entrega": "out/2027", "endereco": "Av. Profa. Juvenília dos Santos, 1245 — Santa Mônica, Uberlândia", "preco": "A partir de R$ 463.400", "descricao": "Empreendimento de 12 andares e 36 apartamentos (4 por andar) no Santa Mônica, com grande atenção à distribuição interna dos apartamentos.", "tipologias": ["2 quartos (1 suíte) · 55 m² · 2 vagas", "3 quartos (1 suíte) · 75 m² · 2 vagas"], "amenidades": ["Varanda gourmet (unidades de 3 quartos)", "Áreas comuns no térreo e G1"], "video": "", "capa": "https://atpempreendimentos.com.br/wp-content/uploads/2025/07/fachada-Egeo-Residence.png", "galeria": ["https://atpempreendimentos.com.br/wp-content/uploads/2025/07/PLT05-APTO-3Q-EGEO-scaled.png"] }
-      ]
+        {
+          "slug": "supreme-tower",
+          "nome": "Supreme Tower",
+          "bairro": "Santa Mônica",
+          "status": "Em obras",
+          "entrega": "set/2026",
+          "endereco": "R. João Velasco de Andrade, 455 — Santa Mônica, Uberlândia",
+          "preco": "A partir de R$ 453.900",
+          "descricao": "Edifício residencial de 11 andares e 40 unidades no Santa Mônica, com distribuição interna bem planejada e acabamentos de qualidade.",
+          "tipologias": [
+            "2 quartos (1 suíte) · 61,20 m² · 2 vagas",
+            "2 quartos (1 suíte) · 63,31 m² · 2 vagas",
+            "2 quartos (1 suíte) · 67,41 m² · 2 vagas"
+          ],
+          "amenidades": [
+            "Academia equipada",
+            "Espaço churrasco",
+            "Coworking",
+            "Espaço de convivência",
+            "Espaço gourmet",
+            "Salão de festas",
+            "Bicicletário",
+            "Gás canalizado",
+            "Preparação para ar condicionado",
+            "Portaria 24h"
+          ],
+          "video": "",
+          "capa": "https://atpempreendimentos.com.br/wp-content/uploads/2024/05/fachada-supreme-tower.jpg",
+          "galeria": [
+            "https://atpempreendimentos.com.br/wp-content/uploads/2024/05/planta-3-supreme.jpg",
+            "https://atpempreendimentos.com.br/wp-content/uploads/2024/05/planta-2-4-supreme.jpg",
+            "https://atpempreendimentos.com.br/wp-content/uploads/2024/05/planta-1-5-supreme.jpg"
+          ]
+        },
+        {
+          "slug": "saramago-residence",
+          "nome": "Saramago Residence",
+          "bairro": "Santa Mônica",
+          "status": "Pronto",
+          "entrega": "",
+          "endereco": "R. José Miguel Saramago, 896 — Santa Mônica, Uberlândia",
+          "preco": "A partir de R$ 603.900",
+          "descricao": "Residencial pronto para morar no Santa Mônica, 11 andares e 27 apartamentos (3 por andar), com distribuição interna otimizada e varanda gourmet com churrasqueira a carvão.",
+          "tipologias": [
+            "3 quartos (1 a 2 suítes) · 86,49 m² · 2 vagas",
+            "3 quartos (1 a 2 suítes) · 86,65 m² · 2 vagas"
+          ],
+          "amenidades": [
+            "Varanda gourmet com churrasqueira a carvão",
+            "Áreas comuns",
+            "Garagens (térreo e G1)"
+          ],
+          "video": "",
+          "capa": "https://atpempreendimentos.com.br/wp-content/uploads/2023/03/Fachada-Saramago-Residence-1024x1024.jpg",
+          "galeria": [
+            "https://atpempreendimentos.com.br/wp-content/uploads/2023/03/planta-01-Saramago.jpg",
+            "https://atpempreendimentos.com.br/wp-content/uploads/2023/03/planta-02-Saramago.jpg"
+          ]
+        },
+        {
+          "slug": "egeo-residence",
+          "nome": "Egeo Residence",
+          "bairro": "Santa Mônica",
+          "status": "Em obras",
+          "entrega": "out/2027",
+          "endereco": "Av. Profa. Juvenília dos Santos, 1245 — Santa Mônica, Uberlândia",
+          "preco": "A partir de R$ 463.400",
+          "descricao": "Empreendimento de 12 andares e 36 apartamentos (4 por andar) no Santa Mônica, com grande atenção à distribuição interna dos apartamentos.",
+          "tipologias": [
+            "2 quartos (1 suíte) · 55 m² · 2 vagas",
+            "3 quartos (1 suíte) · 75 m² · 2 vagas"
+          ],
+          "amenidades": [
+            "Varanda gourmet (unidades de 3 quartos)",
+            "Áreas comuns no térreo e G1"
+          ],
+          "video": "",
+          "capa": "https://atpempreendimentos.com.br/wp-content/uploads/2025/07/fachada-Egeo-Residence.png",
+          "galeria": [
+            "https://atpempreendimentos.com.br/wp-content/uploads/2025/07/PLT05-APTO-3Q-EGEO-scaled.png"
+          ]
+        }
+      ],
+      "fundacao": "2013",
+      "entregas": "mais de 250 unidades entregues",
+      "certificacoes": [],
+      "atuacao": "Uberlândia, MG (bairro Santa Mônica)",
+      "diferenciais": [
+        "Sem INCC, sem juros e sem evolução de obras",
+        "Estrutura 100% em alvenaria convencional",
+        "Acabamento Clean Design"
+      ],
+      "descricaoLonga": "A ATP Empreendimentos atua na construção civil desde 2013, especializada em edifícios residenciais de arquitetura moderna no bairro Santa Mônica, em Uberlândia-MG. Declara mais de 250 unidades entregues e destaca condições comerciais como ausência de INCC e de juros durante a obra.",
+      "instagram": "https://www.instagram.com/atpempreendimentos/"
     },
     {
       "slug": "trust",
@@ -89,9 +713,74 @@
       "segmento": "Residencial",
       "descricao": "Construtora e incorporadora fundada em 2016 em Uberlândia, certificada ISO 9001 e PBQP-H nível A.",
       "projetos": [
-        { "slug": "residencial-horizon", "nome": "Residencial Horizon", "bairro": "Jardins Mansour", "status": "Em obras", "entrega": "dez/2027", "endereco": "Quadra 4, Jardins Mansour, Uberlândia", "preco": "", "descricao": "Empreendimento fechado com lazer completo e segurança no bairro Jardins Mansour. Duas torres de 8 andares, 160 unidades de apartamentos de 2 quartos.", "tipologias": ["2 quartos"], "amenidades": ["Empreendimento fechado", "Lazer completo", "Sistema de segurança"], "video": "", "capa": "https://trustconstrutora.com/images/Horizon-frente.jpg", "galeria": ["https://trustconstrutora.com/images/Horizon.jpg", "https://trustconstrutora.com/images/Horizon-lazer.jpg"] },
-        { "slug": "mirante-boa-vista", "nome": "Mirante Boa Vista", "bairro": "Jardins Mansour", "status": "Em obras", "entrega": "dez/2027", "endereco": "Quadra 3, Jardins Mansour, Uberlândia", "preco": "", "descricao": "Empreendimento supereconômico da Trust, com ótimo custo-benefício, apartamentos bem planejados e área de lazer completa, no bairro Jardins Mansour. Duas torres de 6 andares, 144 unidades.", "tipologias": [], "amenidades": ["Academia", "Salão de eventos", "Playground", "Pet Place", "Bicicletário", "Portaria com segurança", "Guarita"], "video": "", "capa": "https://trustconstrutora.com/images/Mirante-boavista.jpg", "galeria": ["https://trustconstrutora.com/images/humanizada-mirante.png", "https://trustconstrutora.com/images/goumert-mirante.png", "https://trustconstrutora.com/images/academia-mirante.png", "https://trustconstrutora.com/images/playground-mirante.png"] }
-      ]
+        {
+          "slug": "residencial-horizon",
+          "nome": "Residencial Horizon",
+          "bairro": "Jardins Mansour",
+          "status": "Em obras",
+          "entrega": "dez/2027",
+          "endereco": "Quadra 4, Jardins Mansour, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento fechado com lazer completo e segurança no bairro Jardins Mansour. Duas torres de 8 andares, 160 unidades de apartamentos de 2 quartos.",
+          "tipologias": [
+            "2 quartos"
+          ],
+          "amenidades": [
+            "Empreendimento fechado",
+            "Lazer completo",
+            "Sistema de segurança"
+          ],
+          "video": "",
+          "capa": "https://trustconstrutora.com/images/Horizon-frente.jpg",
+          "galeria": [
+            "https://trustconstrutora.com/images/Horizon.jpg",
+            "https://trustconstrutora.com/images/Horizon-lazer.jpg"
+          ]
+        },
+        {
+          "slug": "mirante-boa-vista",
+          "nome": "Mirante Boa Vista",
+          "bairro": "Jardins Mansour",
+          "status": "Em obras",
+          "entrega": "dez/2027",
+          "endereco": "Quadra 3, Jardins Mansour, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento supereconômico da Trust, com ótimo custo-benefício, apartamentos bem planejados e área de lazer completa, no bairro Jardins Mansour. Duas torres de 6 andares, 144 unidades.",
+          "tipologias": [],
+          "amenidades": [
+            "Academia",
+            "Salão de eventos",
+            "Playground",
+            "Pet Place",
+            "Bicicletário",
+            "Portaria com segurança",
+            "Guarita"
+          ],
+          "video": "",
+          "capa": "https://trustconstrutora.com/images/Mirante-boavista.jpg",
+          "galeria": [
+            "https://trustconstrutora.com/images/humanizada-mirante.png",
+            "https://trustconstrutora.com/images/goumert-mirante.png",
+            "https://trustconstrutora.com/images/academia-mirante.png",
+            "https://trustconstrutora.com/images/playground-mirante.png"
+          ]
+        }
+      ],
+      "fundacao": "2016",
+      "entregas": "408 unidades habitacionais entregues",
+      "certificacoes": [
+        "ISO 9001",
+        "PBQP-H Nível A"
+      ],
+      "atuacao": "Uberlândia e Uberaba, MG",
+      "diferenciais": [
+        "Excelência técnica",
+        "Integridade e ética",
+        "Responsabilidade socioambiental",
+        "Inovação contínua"
+      ],
+      "descricaoLonga": "A Trust Construtora é uma incorporadora de Uberlândia-MG, atuante desde 2016 em edificações residenciais e industriais. A empresa alia técnica, inovação e qualidade, declarando 408 unidades entregues e certificações ISO 9001 e PBQP-H Nível A.",
+      "instagram": "https://www.instagram.com/trustconstrutora"
     },
     {
       "slug": "bild",
@@ -100,10 +789,123 @@
       "segmento": "Médio e alto padrão · residencial e comercial",
       "descricao": "Construtora e incorporadora presente em Uberlândia desde 2018, com mais de 80 empreendimentos lançados no portfólio nacional.",
       "projetos": [
-        { "slug": "domun", "nome": "Domun", "bairro": "Jardim Sul", "status": "Pronto", "entrega": "jun/2024", "endereco": "Alameda Pastor Pompeo Zanatta, 80 — Jardim Sul, Uberlândia", "preco": "", "descricao": "Empreendimento no Jardim Sul, uma das áreas mais valorizadas de Uberlândia. Apartamentos de até 3 suítes (106 a 130 m²), 2 vagas e depósito privativo. Pronto para morar, 126 unidades.", "tipologias": ["2 dormitórios (suíte canadense) · 106 m² · 2 vagas", "3 dormitórios (1 suíte) · 106 m² · 2 vagas", "3 suítes · 130 m² · 2 vagas"], "amenidades": ["Piscina privativa com churrasqueira", "Espaço fitness climatizado", "Salão de festas", "Espaço gourmet com grill", "Family Club", "B-market", "Brinquedoteca", "Monitoramento por câmeras", "Leitor biométrico na portaria", "Estacionamento coberto"], "video": "https://www.youtube.com/embed/Zcay-8Oi9e4", "capa": "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/15950/content_140_EXT01_FACHADA_HR-.jpg", "galeria": ["https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/15954/content_140_EXT04_PISCINA_HR.jpg", "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/15964/content_140_INT02_SALAO_DE_FESTAS_HR.jpg", "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/15966/content_140_INT01_LOBBY_HR.jpg", "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/15978/content_140_INT09_APTO_TIPO_A_SALA_HR.jpg"] },
-        { "slug": "mellie", "nome": "Melliê", "bairro": "Jardim Karaíba", "status": "Em obras", "entrega": "ago/2026", "endereco": "Rua José Elias, 300 — Jardim Karaíba, Uberlândia", "preco": "", "descricao": "Empreendimento de sofisticação no Jardim Karaíba, inspirado no universo do cinema. Lazer climatizado, acabamentos premium e coberturas penthouse. 159 unidades de 2 a 4 dormitórios, com certificação Green Bild.", "tipologias": ["2 quartos · 102,79 m² · 2 vagas", "3 quartos · 120,62 m² · 2 vagas", "Penthouse La Lune · 3 quartos · 227,61 m²", "Penthouse Le Manoir · 4 quartos · 239,46 m²"], "amenidades": ["Piscina adulto", "Quadra de beach tennis", "Espaço gourmet com piscina privativa", "Sala de jogos", "Salão de festas", "Brinquedoteca", "Coworking", "Fitness", "Pub e lounge", "Wine bar", "Car wash", "Acesso biométrico"], "video": "", "capa": "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/23909/content_Bild_Rodobens_Fachada_02_R02.jpg", "galeria": ["https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/23880/content_Bild_Rodobens_Piscina_R02.JPG", "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/23881/content_Bild_Rodobens_Lobby_R02.jpg", "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/23895/content_Bild_Rodobens_Beach_Tennis_R02.jpg", "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/23887/content_Bild_Rodobens_Festas_R04.jpg"] },
-        { "slug": "allma", "nome": "Allma", "bairro": "Jardim Karaíba", "status": "Em obras", "entrega": "fev/2027", "endereco": "Rua José Elias, 100 — Jardim Karaíba, Uberlândia", "preco": "", "descricao": "Empreendimento de alto padrão no Jardim Karaíba, novo conceito de moradia. Apartamentos amplos de 3 a 5 dormitórios e coberturas (170 a 349 m²). 106 unidades, com compromisso de sustentabilidade Green Bild.", "tipologias": ["3 a 5 dormitórios (5 a 8 suítes) · 170 a 349 m² · 3 a 5 vagas"], "amenidades": ["Complexo de piscinas", "Family Club com piscina privativa", "Wine bar / espaço gourmet", "Espaço festas", "Fitness", "Brinquedoteca e Movie Games", "Lobby", "Garagem com vagas box"], "video": "", "capa": "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/31056/content_570_EXT01_FACHADA_V1_HR_Easy-Resize.com.jpg", "galeria": ["https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/31062/content_570_EXT09_PISCINA_V2_HR_Easy-Resize.com.jpg", "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/31068/content_570_INT01_LOBBY_HR_Easy-Resize.com.jpg", "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/31080/content_570_INT05_SALA_APTO_TIPO_PE-_Easy-Resize.com.jpg"] }
-      ]
+        {
+          "slug": "domun",
+          "nome": "Domun",
+          "bairro": "Jardim Sul",
+          "status": "Pronto",
+          "entrega": "jun/2024",
+          "endereco": "Alameda Pastor Pompeo Zanatta, 80 — Jardim Sul, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento no Jardim Sul, uma das áreas mais valorizadas de Uberlândia. Apartamentos de até 3 suítes (106 a 130 m²), 2 vagas e depósito privativo. Pronto para morar, 126 unidades.",
+          "tipologias": [
+            "2 dormitórios (suíte canadense) · 106 m² · 2 vagas",
+            "3 dormitórios (1 suíte) · 106 m² · 2 vagas",
+            "3 suítes · 130 m² · 2 vagas"
+          ],
+          "amenidades": [
+            "Piscina privativa com churrasqueira",
+            "Espaço fitness climatizado",
+            "Salão de festas",
+            "Espaço gourmet com grill",
+            "Family Club",
+            "B-market",
+            "Brinquedoteca",
+            "Monitoramento por câmeras",
+            "Leitor biométrico na portaria",
+            "Estacionamento coberto"
+          ],
+          "video": "https://www.youtube.com/embed/Zcay-8Oi9e4",
+          "capa": "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/15950/content_140_EXT01_FACHADA_HR-.jpg",
+          "galeria": [
+            "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/15954/content_140_EXT04_PISCINA_HR.jpg",
+            "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/15964/content_140_INT02_SALAO_DE_FESTAS_HR.jpg",
+            "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/15966/content_140_INT01_LOBBY_HR.jpg",
+            "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/15978/content_140_INT09_APTO_TIPO_A_SALA_HR.jpg"
+          ]
+        },
+        {
+          "slug": "mellie",
+          "nome": "Melliê",
+          "bairro": "Jardim Karaíba",
+          "status": "Em obras",
+          "entrega": "ago/2026",
+          "endereco": "Rua José Elias, 300 — Jardim Karaíba, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento de sofisticação no Jardim Karaíba, inspirado no universo do cinema. Lazer climatizado, acabamentos premium e coberturas penthouse. 159 unidades de 2 a 4 dormitórios, com certificação Green Bild.",
+          "tipologias": [
+            "2 quartos · 102,79 m² · 2 vagas",
+            "3 quartos · 120,62 m² · 2 vagas",
+            "Penthouse La Lune · 3 quartos · 227,61 m²",
+            "Penthouse Le Manoir · 4 quartos · 239,46 m²"
+          ],
+          "amenidades": [
+            "Piscina adulto",
+            "Quadra de beach tennis",
+            "Espaço gourmet com piscina privativa",
+            "Sala de jogos",
+            "Salão de festas",
+            "Brinquedoteca",
+            "Coworking",
+            "Fitness",
+            "Pub e lounge",
+            "Wine bar",
+            "Car wash",
+            "Acesso biométrico"
+          ],
+          "video": "",
+          "capa": "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/23909/content_Bild_Rodobens_Fachada_02_R02.jpg",
+          "galeria": [
+            "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/23880/content_Bild_Rodobens_Piscina_R02.JPG",
+            "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/23881/content_Bild_Rodobens_Lobby_R02.jpg",
+            "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/23895/content_Bild_Rodobens_Beach_Tennis_R02.jpg",
+            "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/23887/content_Bild_Rodobens_Festas_R04.jpg"
+          ]
+        },
+        {
+          "slug": "allma",
+          "nome": "Allma",
+          "bairro": "Jardim Karaíba",
+          "status": "Em obras",
+          "entrega": "fev/2027",
+          "endereco": "Rua José Elias, 100 — Jardim Karaíba, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento de alto padrão no Jardim Karaíba, novo conceito de moradia. Apartamentos amplos de 3 a 5 dormitórios e coberturas (170 a 349 m²). 106 unidades, com compromisso de sustentabilidade Green Bild.",
+          "tipologias": [
+            "3 a 5 dormitórios (5 a 8 suítes) · 170 a 349 m² · 3 a 5 vagas"
+          ],
+          "amenidades": [
+            "Complexo de piscinas",
+            "Family Club com piscina privativa",
+            "Wine bar / espaço gourmet",
+            "Espaço festas",
+            "Fitness",
+            "Brinquedoteca e Movie Games",
+            "Lobby",
+            "Garagem com vagas box"
+          ],
+          "video": "",
+          "capa": "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/31056/content_570_EXT01_FACHADA_V1_HR_Easy-Resize.com.jpg",
+          "galeria": [
+            "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/31062/content_570_EXT09_PISCINA_V2_HR_Easy-Resize.com.jpg",
+            "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/31068/content_570_INT01_LOBBY_HR_Easy-Resize.com.jpg",
+            "https://bildvitta.blob.core.windows.net/bild/uploads/photo/file/31080/content_570_INT05_SALA_APTO_TIPO_PE-_Easy-Resize.com.jpg"
+          ]
+        }
+      ],
+      "fundacao": "2007",
+      "entregas": "mais de 105 empreendimentos e mais de 24 mil unidades; mais de 15 mil unidades lançadas",
+      "certificacoes": [
+        "Selo Green Bild"
+      ],
+      "atuacao": "São Paulo, Minas Gerais e Mato Grosso (diversas cidades), incluindo Uberlândia e Uberaba",
+      "diferenciais": [
+        "Selo de sustentabilidade Green Bild",
+        "Energia fotovoltaica em áreas comuns",
+        "Plantas inteligentes e áreas de lazer completas"
+      ],
+      "descricaoLonga": "A Bild Desenvolvimento Imobiliário é uma construtora e incorporadora fundada em 2007, em Ribeirão Preto (SP). Expandiu sua atuação para diversas cidades de São Paulo, Minas Gerais e Mato Grosso, com sustentabilidade como um de seus pilares, materializado no selo próprio Green Bild.",
+      "instagram": "https://www.instagram.com/bilddesenvolvimentoimobiliario"
     },
     {
       "slug": "vitta",
@@ -112,9 +914,90 @@
       "segmento": "Econômico (MCMV) e médio padrão",
       "descricao": "Construtora e incorporadora com mais de 15 anos de mercado e 44 mil unidades lançadas; atua em Uberlândia e Uberaba.",
       "projetos": [
-        { "slug": "arysta", "nome": "Arysta", "bairro": "Gávea Sul", "status": "Em obras", "entrega": "nov/2026", "endereco": "Rua Rita Pereira de Rezende, 201 — Gávea Sul, Uberlândia", "preco": "", "descricao": "Empreendimento residencial no Gávea Sul, ideal para morar ou investir. 198 unidades de 2 dormitórios com 1 vaga, plantas otimizadas e opções de térreo com garden, complexo aquático e ampla área de lazer.", "tipologias": ["2 quartos · 51,53 m² · 1 vaga", "2 quartos · 52,87 m² · 1 vaga", "2 quartos térreo com garden · 52,87 + 42,76 m²"], "amenidades": ["Complexo aquático (piscina adulto e infantil)", "Espaço Fitness", "Salão de Festas", "Solarium", "Play Kids", "Car Wash", "Espaço Happy Hour", "Espaço Pet", "Churrasqueira Gourmet", "Sauna", "Quadra de areia"], "video": "", "capa": "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/arysta/condominio/arysta-255.jpg", "galeria": ["https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/arysta/condominio/arysta-258.jpg", "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/arysta/condominio/arysta-261.jpg", "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/arysta/apartamento/arysta-840.jpg", "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/arysta/plantas/arysta-374.jpg"] },
-        { "slug": "mirante-das-brisas", "nome": "Mirante das Brisas", "bairro": "Alto Umuarama", "status": "Pronto", "entrega": "mar/2024", "endereco": "Rua Ciano, 385 — Alto Umuarama, Uberlândia", "preco": "", "descricao": "Empreendimento no Alto Umuarama, com moderna infraestrutura de lazer para famílias. 274 unidades de 2 dormitórios com 1 vaga, incluindo opções de térreo com garden. Pronto para morar.", "tipologias": ["2 quartos · 47,90 m² · 1 vaga", "2 quartos · 48,22 m² · 1 vaga", "2 quartos térreo com garden · 47,90 + 35,02 m²"], "amenidades": ["Piscina adulto com solarium", "Salão de Festas", "Brinquedoteca", "Play Kids", "Coworking", "Movie Games", "Espaço Happy Hour", "Pet Care", "Ateliê", "Churrasqueira Gourmet", "Espaço de leitura", "Pomar com gazebo"], "video": "", "capa": "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/mirante-das-brisas/condominio/mirante-das-brisas-417.jpg", "galeria": ["https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/mirante-das-brisas/condominio/mirante-das-brisas-423.jpg", "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/mirante-das-brisas/condominio/mirante-das-brisas-433.jpg", "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/mirante-das-brisas/apartamento/mirante-das-brisas-32.jpg", "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/mirante-das-brisas/plantas/mirante-das-brisas-134.jpg"] }
-      ]
+        {
+          "slug": "arysta",
+          "nome": "Arysta",
+          "bairro": "Gávea Sul",
+          "status": "Em obras",
+          "entrega": "nov/2026",
+          "endereco": "Rua Rita Pereira de Rezende, 201 — Gávea Sul, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento residencial no Gávea Sul, ideal para morar ou investir. 198 unidades de 2 dormitórios com 1 vaga, plantas otimizadas e opções de térreo com garden, complexo aquático e ampla área de lazer.",
+          "tipologias": [
+            "2 quartos · 51,53 m² · 1 vaga",
+            "2 quartos · 52,87 m² · 1 vaga",
+            "2 quartos térreo com garden · 52,87 + 42,76 m²"
+          ],
+          "amenidades": [
+            "Complexo aquático (piscina adulto e infantil)",
+            "Espaço Fitness",
+            "Salão de Festas",
+            "Solarium",
+            "Play Kids",
+            "Car Wash",
+            "Espaço Happy Hour",
+            "Espaço Pet",
+            "Churrasqueira Gourmet",
+            "Sauna",
+            "Quadra de areia"
+          ],
+          "video": "",
+          "capa": "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/arysta/condominio/arysta-255.jpg",
+          "galeria": [
+            "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/arysta/condominio/arysta-258.jpg",
+            "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/arysta/condominio/arysta-261.jpg",
+            "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/arysta/apartamento/arysta-840.jpg",
+            "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/arysta/plantas/arysta-374.jpg"
+          ]
+        },
+        {
+          "slug": "mirante-das-brisas",
+          "nome": "Mirante das Brisas",
+          "bairro": "Alto Umuarama",
+          "status": "Pronto",
+          "entrega": "mar/2024",
+          "endereco": "Rua Ciano, 385 — Alto Umuarama, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento no Alto Umuarama, com moderna infraestrutura de lazer para famílias. 274 unidades de 2 dormitórios com 1 vaga, incluindo opções de térreo com garden. Pronto para morar.",
+          "tipologias": [
+            "2 quartos · 47,90 m² · 1 vaga",
+            "2 quartos · 48,22 m² · 1 vaga",
+            "2 quartos térreo com garden · 47,90 + 35,02 m²"
+          ],
+          "amenidades": [
+            "Piscina adulto com solarium",
+            "Salão de Festas",
+            "Brinquedoteca",
+            "Play Kids",
+            "Coworking",
+            "Movie Games",
+            "Espaço Happy Hour",
+            "Pet Care",
+            "Ateliê",
+            "Churrasqueira Gourmet",
+            "Espaço de leitura",
+            "Pomar com gazebo"
+          ],
+          "video": "https://www.youtube.com/watch?v=YOXJbZxL-BI",
+          "capa": "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/mirante-das-brisas/condominio/mirante-das-brisas-417.jpg",
+          "galeria": [
+            "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/mirante-das-brisas/condominio/mirante-das-brisas-423.jpg",
+            "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/mirante-das-brisas/condominio/mirante-das-brisas-433.jpg",
+            "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/mirante-das-brisas/apartamento/mirante-das-brisas-32.jpg",
+            "https://bildvitta.blob.core.windows.net/vitta/Imoveis/uberlandia/mirante-das-brisas/plantas/mirante-das-brisas-134.jpg"
+          ]
+        }
+      ],
+      "fundacao": "",
+      "entregas": "mais de 190 empreendimentos lançados e mais de 28 mil famílias atendidas",
+      "certificacoes": [],
+      "atuacao": "Mais de 20 cidades em SP, MG, GO e PR, incluindo Uberlândia e Uberaba",
+      "diferenciais": [
+        "Foco no programa Minha Casa Minha Vida",
+        "Imóveis acessíveis sem surpresas"
+      ],
+      "descricaoLonga": "A Vitta Residencial atua no mercado imobiliário há mais de 15 anos com o propósito de realizar o sonho da casa própria. Trabalha fortemente com o programa Minha Casa Minha Vida, declarando mais de 190 empreendimentos lançados e mais de 28 mil famílias atendidas em mais de 20 cidades, entre elas Uberlândia.",
+      "instagram": "https://www.instagram.com/vittaresidencial"
     },
     {
       "slug": "realiza",
@@ -123,9 +1006,78 @@
       "segmento": "Residencial · Granja Marileusa",
       "descricao": "Construtora com empreendimentos no bairro planejado Granja Marileusa e em outras regiões de Uberlândia.",
       "projetos": [
-        { "slug": "bossa-home-design", "nome": "Bossa Home Design", "bairro": "Granja Marileusa", "status": "Lançamento", "entrega": "", "endereco": "Av. Lapa do Lobo — Granja Marileusa, Uberlândia", "preco": "", "descricao": "Condomínio fechado contemporâneo na Granja Marileusa, no ponto mais elevado do bairro, em frente à Algar Holding. 86 sobrados de dois andares, com arquitetura assinada por profissionais renomados.", "tipologias": ["Sobrados de 2 andares · 150,61 m² · 3 suítes · 2 vagas"], "amenidades": ["Piscinas", "Quadra de Beach Tennis", "Academia", "Slackline", "Playground", "Espaço Pet", "Espaço Fogo (churrasqueira)", "Redário", "Minimarket", "Espaço Gourmet", "Salão de Festas", "Pomar e Horta"], "video": "", "capa": "https://page.realizaconstrutora.com.br/lps/wp-content/uploads/2023/12/Img-Interna-LP-Bossa_Fachada.jpg", "galeria": ["https://page.realizaconstrutora.com.br/lps/wp-content/uploads/2023/12/Img-LP-Bossa_Piscina.jpg", "https://page.realizaconstrutora.com.br/lps/wp-content/uploads/2023/12/Img-LP-Bossa_Beach-tennis.jpg", "https://page.realizaconstrutora.com.br/lps/wp-content/uploads/2023/12/Img-LP-Bossa_Academia.jpg"] },
-        { "slug": "prime-clube", "nome": "Prime Clube", "bairro": "Granja Marileusa", "status": "Lançamento", "entrega": "", "endereco": "Granja Marileusa (próximo à Av. Floriano), Uberlândia", "preco": "", "descricao": "Primeiro empreendimento Minha Casa, Minha Vida da Realiza na região da Granja Marileusa. Condomínio clube com plantas inteligentes de 2 quartos, integração de ambientes e design moderno, cercado por natureza.", "tipologias": ["2 quartos"], "amenidades": ["Piscinas climatizadas com deck", "Salão de festas com churrasqueira a carvão", "Academia e espaço fitness", "Playground", "Quiosque gourmet", "Pet place e banho pet", "Quadra de esportes", "Bicicletário com recarga para e-bike", "Pomar"], "video": "", "capa": "https://page.realizaconstrutora.com.br/lps/wp-content/uploads/2025/01/prime-clube-Uberlandia2-1024x991.png", "galeria": [] }
-      ]
+        {
+          "slug": "bossa-home-design",
+          "nome": "Bossa Home Design",
+          "bairro": "Granja Marileusa",
+          "status": "Lançamento",
+          "entrega": "",
+          "endereco": "Av. Lapa do Lobo — Granja Marileusa, Uberlândia",
+          "preco": "",
+          "descricao": "Condomínio fechado contemporâneo na Granja Marileusa, no ponto mais elevado do bairro, em frente à Algar Holding. 86 sobrados de dois andares, com arquitetura assinada por profissionais renomados.",
+          "tipologias": [
+            "Sobrados de 2 andares · 150,61 m² · 3 suítes · 2 vagas"
+          ],
+          "amenidades": [
+            "Piscinas",
+            "Quadra de Beach Tennis",
+            "Academia",
+            "Slackline",
+            "Playground",
+            "Espaço Pet",
+            "Espaço Fogo (churrasqueira)",
+            "Redário",
+            "Minimarket",
+            "Espaço Gourmet",
+            "Salão de Festas",
+            "Pomar e Horta"
+          ],
+          "video": "https://www.youtube.com/watch?v=V_0h4DLBFWE",
+          "capa": "https://page.realizaconstrutora.com.br/lps/wp-content/uploads/2023/12/Img-Interna-LP-Bossa_Fachada.jpg",
+          "galeria": [
+            "https://page.realizaconstrutora.com.br/lps/wp-content/uploads/2023/12/Img-LP-Bossa_Piscina.jpg",
+            "https://page.realizaconstrutora.com.br/lps/wp-content/uploads/2023/12/Img-LP-Bossa_Beach-tennis.jpg",
+            "https://page.realizaconstrutora.com.br/lps/wp-content/uploads/2023/12/Img-LP-Bossa_Academia.jpg"
+          ]
+        },
+        {
+          "slug": "prime-clube",
+          "nome": "Prime Clube",
+          "bairro": "Granja Marileusa",
+          "status": "Lançamento",
+          "entrega": "",
+          "endereco": "Granja Marileusa (próximo à Av. Floriano), Uberlândia",
+          "preco": "",
+          "descricao": "Primeiro empreendimento Minha Casa, Minha Vida da Realiza na região da Granja Marileusa. Condomínio clube com plantas inteligentes de 2 quartos, integração de ambientes e design moderno, cercado por natureza.",
+          "tipologias": [
+            "2 quartos"
+          ],
+          "amenidades": [
+            "Piscinas climatizadas com deck",
+            "Salão de festas com churrasqueira a carvão",
+            "Academia e espaço fitness",
+            "Playground",
+            "Quiosque gourmet",
+            "Pet place e banho pet",
+            "Quadra de esportes",
+            "Bicicletário com recarga para e-bike",
+            "Pomar"
+          ],
+          "video": "https://www.youtube.com/watch?v=R4iKIx2XghI",
+          "capa": "https://page.realizaconstrutora.com.br/lps/wp-content/uploads/2025/01/prime-clube-Uberlandia2-1024x991.png",
+          "galeria": []
+        }
+      ],
+      "fundacao": "",
+      "entregas": "",
+      "certificacoes": [],
+      "atuacao": "Goiás, Minas Gerais (Uberlândia e Araguari), Mato Grosso do Sul, São Paulo e Rio de Janeiro",
+      "diferenciais": [
+        "Décadas de atuação no setor",
+        "Foco na realização do sonho da casa própria"
+      ],
+      "descricaoLonga": "A Realiza Construtora, com origem em Rio Verde (GO), atua no mercado da construção civil com foco em transformar vidas e realizar o sonho da moradia própria. Tem presença em diversos estados (GO, MG, MS, SP e RJ), incluindo Uberlândia e Araguari, em Minas Gerais.",
+      "instagram": "https://www.instagram.com/realizaconstrutora/"
     },
     {
       "slug": "casanova",
@@ -134,8 +1086,52 @@
       "segmento": "Loteamentos e condomínios fechados",
       "descricao": "Grupo de construção e incorporação fundado em 1987 em Uberlândia, atuante em loteamentos, urbanização e condomínios fechados.",
       "projetos": [
-        { "slug": "reserva-do-lago", "nome": "Reserva do Lago", "bairro": "Represa de Miranda", "status": "Em obras", "entrega": "", "endereco": "Represa de Miranda — a 22 km de Uberlândia", "preco": "", "descricao": "Condomínio fechado de lotes urbanos na Represa de Miranda, com 127 lotes. Une conforto, segurança e qualidade de vida, com acesso exclusivo à água e visão permanente da represa.", "tipologias": ["Lotes urbanos com escrituração individual"], "amenidades": ["Pier e Marina (guarda-barco)", "Quadra de Beach Tennis", "Academia", "Heliponto", "Espaço Gourmet", "Salão de Festas", "Lago ornamental", "Mirante", "Empório 24 horas", "Portaria 24h", "Monitoramento e controle de acesso"], "video": "", "capa": "https://casanovaudi.com.br/wp-content/uploads/2025/01/Reserva-do-LAGO-10-2048x1152.jpg", "galeria": ["https://casanovaudi.com.br/wp-content/uploads/2025/01/Reserva-do-LAGO-22-2048x1152.jpg", "https://casanovaudi.com.br/wp-content/uploads/2025/01/Reserva-do-LAGO-19-2048x1152.jpg", "https://casanovaudi.com.br/wp-content/uploads/2025/01/Reserva-do-LAGO-7-2048x1152.jpg"] }
-      ]
+        {
+          "slug": "reserva-do-lago",
+          "nome": "Reserva do Lago",
+          "bairro": "Represa de Miranda",
+          "status": "Em obras",
+          "entrega": "",
+          "endereco": "Represa de Miranda — a 22 km de Uberlândia",
+          "preco": "",
+          "descricao": "Condomínio fechado de lotes urbanos na Represa de Miranda, com 127 lotes. Une conforto, segurança e qualidade de vida, com acesso exclusivo à água e visão permanente da represa.",
+          "tipologias": [
+            "Lotes urbanos com escrituração individual"
+          ],
+          "amenidades": [
+            "Pier e Marina (guarda-barco)",
+            "Quadra de Beach Tennis",
+            "Academia",
+            "Heliponto",
+            "Espaço Gourmet",
+            "Salão de Festas",
+            "Lago ornamental",
+            "Mirante",
+            "Empório 24 horas",
+            "Portaria 24h",
+            "Monitoramento e controle de acesso"
+          ],
+          "video": "",
+          "capa": "https://casanovaudi.com.br/wp-content/uploads/2025/01/Reserva-do-LAGO-10-2048x1152.jpg",
+          "galeria": [
+            "https://casanovaudi.com.br/wp-content/uploads/2025/01/Reserva-do-LAGO-22-2048x1152.jpg",
+            "https://casanovaudi.com.br/wp-content/uploads/2025/01/Reserva-do-LAGO-19-2048x1152.jpg",
+            "https://casanovaudi.com.br/wp-content/uploads/2025/01/Reserva-do-LAGO-7-2048x1152.jpg"
+          ]
+        }
+      ],
+      "fundacao": "1987",
+      "entregas": "",
+      "certificacoes": [],
+      "atuacao": "Uberlândia, MG",
+      "diferenciais": [
+        "Projetos exclusivos",
+        "Qualidade e inovação",
+        "Sustentabilidade",
+        "Compromisso com prazos"
+      ],
+      "descricaoLonga": "O Grupo Casanova atua no mercado da construção civil desde 1987, com sede em Uberlândia-MG. A empresa é reconhecida pela dedicação à inovação e qualidade na construção e comercialização de empreendimentos, com valores que incluem projetos exclusivos e sustentabilidade.",
+      "instagram": "https://www.instagram.com/casanovaincorporadora_/"
     },
     {
       "slug": "mrv",
@@ -144,10 +1140,48 @@
       "segmento": "Residencial econômico (MCMV)",
       "descricao": "Uma das maiores construtoras do Brasil, com forte presença em Uberlândia e mais de 10 empreendimentos comercializados na cidade.",
       "projetos": [
-        { "slug": "parque-univita", "nome": "Parque Univitá", "bairro": "Jardim Holanda", "status": "Pronto", "entrega": "", "endereco": "Jardim Holanda, Uberlândia", "preco": "", "descricao": "Condomínio de apartamentos do segmento econômico no Jardim Holanda, em Uberlândia.", "tipologias": [], "amenidades": [], "video": "", "capa": "", "galeria": [] },
-        { "slug": "parque-unistella", "nome": "Parque Unistella", "bairro": "Tubalina", "status": "Pronto", "entrega": "", "endereco": "Tubalina, Uberlândia", "preco": "", "descricao": "Empreendimento residencial de apartamentos no bairro Tubalina, em Uberlândia.", "tipologias": [], "amenidades": [], "video": "", "capa": "", "galeria": [] },
-        { "slug": "parque-uniplace", "nome": "Parque Uniplace", "bairro": "Presidente Roosevelt", "status": "Pronto", "entrega": "", "endereco": "Presidente Roosevelt, Uberlândia", "preco": "", "descricao": "Condomínio de apartamentos no bairro Presidente Roosevelt, em Uberlândia.", "tipologias": [], "amenidades": [], "video": "", "capa": "", "galeria": [] }
-      ]
+        {
+          "slug": "parque-univita",
+          "nome": "Parque Univitá",
+          "bairro": "Jardim Holanda",
+          "status": "Pronto",
+          "entrega": "",
+          "endereco": "Jardim Holanda, Uberlândia",
+          "preco": "",
+          "descricao": "Condomínio de apartamentos do segmento econômico no Jardim Holanda, em Uberlândia.",
+          "tipologias": [],
+          "amenidades": [],
+          "video": "",
+          "capa": "",
+          "galeria": []
+        },
+        {
+          "slug": "parque-unistella",
+          "nome": "Parque Unistella",
+          "bairro": "Tubalina",
+          "status": "Pronto",
+          "entrega": "",
+          "endereco": "Tubalina, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento residencial de apartamentos no bairro Tubalina, em Uberlândia.",
+          "tipologias": [],
+          "amenidades": [],
+          "video": "https://www.youtube.com/watch?v=73wOz63ffXI",
+          "capa": "",
+          "galeria": []
+        }
+      ],
+      "fundacao": "1979",
+      "entregas": "mais de 400 mil unidades habitacionais lançadas",
+      "certificacoes": [],
+      "atuacao": "Atuação nacional, presente em 157 cidades de 22 estados e no Distrito Federal",
+      "diferenciais": [
+        "Maior construtora residencial da América Latina",
+        "Líder no segmento de imóveis econômicos",
+        "Foco no programa Minha Casa Minha Vida"
+      ],
+      "descricaoLonga": "A MRV Engenharia foi fundada em 1979, em Belo Horizonte (MG), e é a maior construtora residencial da América Latina. Líder nacional em imóveis econômicos e no programa Minha Casa Minha Vida, possui abrangência nacional, com mais de 400 mil unidades habitacionais lançadas ao longo de sua história.",
+      "instagram": "https://www.instagram.com/mrv"
     },
     {
       "slug": "pacaembu",
@@ -156,7 +1190,482 @@
       "segmento": "Econômico (MCMV) · bairros planejados",
       "descricao": "Construtora nacional de habitação econômica via Minha Casa Minha Vida, com bairro planejado em condomínio fechado em Uberlândia.",
       "projetos": [
-        { "slug": "moradas-do-horizonte", "nome": "Moradas do Horizonte — Condomínio Ouro Preto", "bairro": "Zona Sul (Saraiva)", "status": "Lançamento", "entrega": "", "endereco": "Av. Rondon Pacheco, 3927 — Saraiva, Uberlândia (Zona Sul)", "preco": "", "descricao": "Primeiro lançamento da Pacaembu em Uberlândia: bairro planejado em condomínio fechado, com infraestrutura completa na zona sul. Casas individuais com quintal amplo e muita iluminação natural, próximas ao Parque Uma Uberlândia.", "tipologias": ["Casas individuais · 2 dormitórios · 1 vaga (planta acessível PNE disponível)"], "amenidades": ["Condomínio fechado", "Portaria 24h", "Lazer tipo clube", "Proximidade ao Parque Uma Uberlândia"], "video": "", "capa": "https://cdnm.com.br/pacaembu/media/d5/e2/c0/2251/moradas-do-horizonte-condominio-ouro-preto-20260108101737000.jpg", "galeria": ["https://cdnm.com.br/pacaembu/media/63/54/40/2252/moradas-do-horizonte-condominio-ouro-preto-20260108101737000.jpg", "https://cdnm.com.br/pacaembu/media/ce/6c/92/2253/moradas-do-horizonte-condominio-ouro-preto-20260108101738000.jpg", "https://cdnm.com.br/pacaembu/media/38/65/1c/2254/moradas-do-horizonte-condominio-ouro-preto-20260108101738000.jpg"] }
+        {
+          "slug": "moradas-do-horizonte",
+          "nome": "Moradas do Horizonte — Condomínio Ouro Preto",
+          "bairro": "Zona Sul (Saraiva)",
+          "status": "Lançamento",
+          "entrega": "",
+          "endereco": "Av. Rondon Pacheco, 3927 — Saraiva, Uberlândia (Zona Sul)",
+          "preco": "",
+          "descricao": "Primeiro lançamento da Pacaembu em Uberlândia: bairro planejado em condomínio fechado, com infraestrutura completa na zona sul. Casas individuais com quintal amplo e muita iluminação natural, próximas ao Parque Uma Uberlândia.",
+          "tipologias": [
+            "Casas individuais · 2 dormitórios · 1 vaga (planta acessível PNE disponível)"
+          ],
+          "amenidades": [
+            "Condomínio fechado",
+            "Portaria 24h",
+            "Lazer tipo clube",
+            "Proximidade ao Parque Uma Uberlândia"
+          ],
+          "video": "",
+          "capa": "https://cdnm.com.br/pacaembu/media/d5/e2/c0/2251/moradas-do-horizonte-condominio-ouro-preto-20260108101737000.jpg",
+          "galeria": [
+            "https://cdnm.com.br/pacaembu/media/63/54/40/2252/moradas-do-horizonte-condominio-ouro-preto-20260108101737000.jpg",
+            "https://cdnm.com.br/pacaembu/media/ce/6c/92/2253/moradas-do-horizonte-condominio-ouro-preto-20260108101738000.jpg",
+            "https://cdnm.com.br/pacaembu/media/38/65/1c/2254/moradas-do-horizonte-condominio-ouro-preto-20260108101738000.jpg"
+          ]
+        }
+      ],
+      "fundacao": "1991",
+      "entregas": "mais de 95 mil famílias atendidas em mais de 200 empreendimentos",
+      "certificacoes": [
+        "Great Place to Work (GPTW)"
+      ],
+      "atuacao": "Mais de 55 cidades em diversos estados brasileiros",
+      "diferenciais": [
+        "Líder em área de projetos no Minha Casa Minha Vida (2025)",
+        "Método construtivo em alvenaria estrutural",
+        "Foco em moradia digna e acessível"
+      ],
+      "descricaoLonga": "A Pacaembu Construtora teve início em 1991, em Marília (SP), criada pelos irmãos Eduardo e Wilson Almeida com o propósito de levar moradia digna, de qualidade e acessível. Especializada em alvenaria estrutural e atuando fortemente no Minha Casa Minha Vida, já atendeu mais de 95 mil famílias em mais de 200 empreendimentos.",
+      "instagram": "https://www.instagram.com/pacaembuconstrutora"
+    },
+    {
+      "slug": "maxi",
+      "nome": "Maxi Construtora",
+      "site": "https://construtoramaxi.com.br",
+      "segmento": "Médio e alto padrão",
+      "descricao": "Construtora e incorporadora de Uberlândia que entrega edifícios verticais de médio e alto padrão na cidade desde 2010, com forte presença na Zona Sul.",
+      "fundacao": "2010",
+      "entregas": "Mais de 13 empreendimentos (entre entregues, em obras e lançamentos)",
+      "certificacoes": [],
+      "atuacao": "Uberlândia, MG",
+      "diferenciais": [
+        "Arquitetura contemporânea inspirada no novo urbanismo",
+        "Empreendimentos com áreas de lazer completas",
+        "Atuação nas regiões mais valorizadas de Uberlândia"
+      ],
+      "descricaoLonga": "A Maxi Construtora e Incorporadora atua em Uberlândia desde 2010, desenvolvendo edifícios residenciais verticais de médio e alto padrão. Tornou-se uma das marcas mais ativas da cidade, com diversos projetos entregues e um portfólio robusto de obras em andamento, combinando arquitetura contemporânea, plantas inteligentes e áreas de lazer amplas, com forte presença na Zona Sul.",
+      "instagram": "https://www.instagram.com/construtoramaxi/",
+      "projetos": [
+        {
+          "slug": "tramonto",
+          "nome": "Tramonto",
+          "bairro": "Parque Una",
+          "status": "Em obras",
+          "entrega": "jul/2028",
+          "endereco": "Rua Marlene Colesanti, 147 — Parque Una, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento de alto padrão na Zona Sul de Uberlândia, inspirado no novo urbanismo para ampliar o convívio entre moradores. Torre de 25 pavimentos em terreno de 2.355 m², com 15.213 m² de área construída e 1.171 m² de lazer. As tipologias variam de unidades tipo a gardens e penthouses.",
+          "tipologias": [
+            "2 a 3 suítes · 76–164 m² · 1 a 4 vagas",
+            "Garden · 139–190 m² · 3 suítes",
+            "Penthouse · 193–252 m² · 4 suítes"
+          ],
+          "amenidades": [
+            "Piscina",
+            "Academia",
+            "Fitness outdoor",
+            "Brinquedoteca",
+            "Pet place",
+            "Playground",
+            "Coworking",
+            "Studio de podcast",
+            "Salão de festas",
+            "Espaço gourmet",
+            "Sala de jogos",
+            "Terraza"
+          ],
+          "video": "",
+          "capa": "https://construtoramaxi.com.br/wp-content/uploads/2025/07/MAXI_TRAMONTO_FACHADA_01.jpg",
+          "galeria": [
+            "https://construtoramaxi.com.br/wp-content/uploads/2025/07/MAXI_TRAMONTO_PISCINA.jpg",
+            "https://construtoramaxi.com.br/wp-content/uploads/2025/07/MAXI_TRAMONTO_DECORADO_LIVING_01.jpg",
+            "https://construtoramaxi.com.br/wp-content/uploads/2025/07/MAXI_TRAMONTO_GOURMET.jpg",
+            "https://construtoramaxi.com.br/wp-content/uploads/2025/07/MAXI_TRAMONTO_SALAO_DE_FESTAS.jpg"
+          ]
+        },
+        {
+          "slug": "grecco",
+          "nome": "Grecco",
+          "bairro": "Jardim Finotti",
+          "status": "Em obras",
+          "entrega": "dez/2026",
+          "endereco": "Rua Izaú Rangel de Mendonça, esquina com Rua Saturnino Pedro dos Santos — Jardim Finotti, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento residencial cujo nome, concepção e arquitetura são inspirados na Grécia e suas paisagens. Localizado no valorizado Jardim Finotti, combina modernidade, conforto e contato com a natureza. As plantas vão de 80 m² a coberturas de 275 m².",
+          "tipologias": [
+            "2 suítes · 80 m²",
+            "3 quartos (1 suíte) · 85 m²",
+            "3 suítes · 112–139 m²",
+            "Cobertura · 163–275 m²"
+          ],
+          "amenidades": [
+            "Piscina em formato de lago",
+            "Spa",
+            "Academia",
+            "Sauna",
+            "Coworking",
+            "Quadra de squash",
+            "Pet place",
+            "Playground",
+            "Brinquedoteca",
+            "Salão de festas",
+            "Horta",
+            "Espaço gourmet"
+          ],
+          "video": "",
+          "capa": "https://construtoramaxi.com.br/wp-content/uploads/2025/07/RENDERS_MAXI_FACHADA_FRENTE.jpg",
+          "galeria": [
+            "https://construtoramaxi.com.br/wp-content/uploads/2025/07/PISCINA.jpg",
+            "https://construtoramaxi.com.br/wp-content/uploads/2025/07/ACADEMIA.jpg",
+            "https://construtoramaxi.com.br/wp-content/uploads/2025/07/SPA.jpg",
+            "https://construtoramaxi.com.br/wp-content/uploads/2025/07/ESPACO_GOURMET.jpg"
+          ]
+        },
+        {
+          "slug": "liwo",
+          "nome": "Liwo",
+          "bairro": "Jardim Karaíba",
+          "status": "Em obras",
+          "entrega": "dez/2028",
+          "endereco": "Rua João Severiano Rodrigues da Cunha, 1855 — Jardim Karaíba, Uberlândia",
+          "preco": "",
+          "descricao": "Primeiro empreendimento de uso misto da Maxi em Uberlândia, unindo moradia e trabalho no mesmo endereço, com fachada ativa e acessos independentes para as áreas residencial (Living) e comercial (Working). As unidades residenciais vão de 76 a 193 m² e as comerciais de 34 a 78 m².",
+          "tipologias": [
+            "2 suítes · 76–77 m²",
+            "3 quartos (1 suíte) · 91 m²",
+            "3 suítes · 102 m²",
+            "Garden · 97 m²",
+            "Cobertura · 170–193 m²",
+            "Salas comerciais · 34–78 m²"
+          ],
+          "amenidades": [
+            "Academia",
+            "Sauna",
+            "Piscina",
+            "Playground",
+            "Brinquedoteca",
+            "Bicicletário",
+            "Coworking",
+            "Quadra de pickleball",
+            "Salão gourmet",
+            "Lounge de jogos",
+            "Salão de eventos"
+          ],
+          "video": "",
+          "capa": "https://construtoramaxi.com.br/wp-content/uploads/2025/07/01_FACHADA_FRONTAL_-__RETRATO.jpg",
+          "galeria": [
+            "https://construtoramaxi.com.br/wp-content/uploads/2025/07/MAXI_LIWO_PISCINA.jpg",
+            "https://construtoramaxi.com.br/wp-content/uploads/2025/07/MAXI_LIWO_ACADEMIA.jpg",
+            "https://construtoramaxi.com.br/wp-content/uploads/2025/07/MAXI_LIWO_COWORKING.jpg",
+            "https://construtoramaxi.com.br/wp-content/uploads/2025/07/MAXI_LIWO_SUITE.jpg"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "persa",
+      "nome": "Persa Incorporações",
+      "site": "https://persaincorporacoes.com.br",
+      "segmento": "Médio e alto padrão",
+      "descricao": "Incorporadora de Uberlândia com mais de uma década de mercado, focada em criar um novo padrão de moradia nas regiões mais nobres da cidade.",
+      "fundacao": "",
+      "entregas": "Empreendimentos como Dolce Vita (entregue) e diversos em obras",
+      "certificacoes": [],
+      "atuacao": "Uberlândia, MG",
+      "diferenciais": [
+        "Integração de paisagismo e natureza à arquitetura",
+        "Imóveis inteligentes com automação",
+        "Localizações em bairros nobres e centrais"
+      ],
+      "descricaoLonga": "A Persa Incorporações atua há mais de uma década no mercado imobiliário de Uberlândia, com sede no bairro Tabajaras. Sua proposta é criar um novo padrão de moradia nas regiões mais nobres da cidade, mesclando modernidade, funcionalidade e conforto, com forte integração do paisagismo à construção e recursos de imóvel inteligente.",
+      "instagram": "https://www.instagram.com/persaincorporacoes/",
+      "projetos": [
+        {
+          "slug": "antilhas-residence",
+          "nome": "Antilhas Residence",
+          "bairro": "Tibery",
+          "status": "Em obras",
+          "entrega": "",
+          "endereco": "Rua Antilhas, 321 — Tibery, Uberlândia",
+          "preco": "",
+          "descricao": "Projeto residencial inteligente no bairro Tibery, com forte oferta de lazer e serviços e qualidade arquitetônica. Combina studios compactos, apartamentos de 2 quartos e coberturas amplas, todos com temática caribenha nos nomes das tipologias.",
+          "tipologias": [
+            "Studio · 27–39 m²",
+            "2 quartos (Guadalupe) · 73 m²",
+            "Cobertura Saint Martin · 134,82 m²",
+            "Cobertura Montserrat · 142,44 m²"
+          ],
+          "amenidades": [
+            "Piscina climatizada",
+            "Academia",
+            "Sauna",
+            "Espaço yoga",
+            "Pet place",
+            "Playground",
+            "Coworking",
+            "Pub",
+            "Salão de festas",
+            "Marketplace",
+            "Family space",
+            "Espaço zen"
+          ],
+          "video": "",
+          "capa": "https://persaincorporacoes.com.br/wp-content/uploads/2025/03/antilhas-site-1.webp",
+          "galeria": [
+            "https://persaincorporacoes.com.br/wp-content/uploads/2025/03/06-ANTILHAS_ACADEMIA-1.jpg",
+            "https://persaincorporacoes.com.br/wp-content/uploads/2025/03/09-ANTILHAS__SAUNA-1.jpg",
+            "https://persaincorporacoes.com.br/wp-content/uploads/2025/03/01-ANTILHAS_LOBBY-1.jpg",
+            "https://persaincorporacoes.com.br/wp-content/uploads/2025/03/APTO-GUADALUPE-SALA-1.jpg"
+          ]
+        },
+        {
+          "slug": "maua-living",
+          "nome": "Mauá Living",
+          "bairro": "Maracanã",
+          "status": "Em obras",
+          "entrega": "",
+          "endereco": "R. Virgílio Melo Franco, 580 — Maracanã, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento residencial de alto padrão no bairro Maracanã, apresentado como um convite a desacelerar e valorizar conforto, localização e bem-estar. Reúne arquitetura moderna e ampla estrutura de lazer com piscina aquecida e salão de festas para 140 pessoas. As unidades tipo têm cerca de 176–177 m² e a cobertura chega a 363 m².",
+          "tipologias": [
+            "3 suítes · 176–177 m² · 3 vagas",
+            "Cobertura · 363 m²"
+          ],
+          "amenidades": [
+            "Piscina aquecida",
+            "Academia",
+            "Espaço zen",
+            "Salão de jogos",
+            "Wine bar",
+            "Salão de festas (140 pessoas)",
+            "Espaço beauty",
+            "Sauna",
+            "Espaço gourmet",
+            "Lobby"
+          ],
+          "video": "",
+          "capa": "https://maua.persaincorporacoes.com.br/wp-content/uploads/2026/03/FACHADA-3-MAUA-LIVING-scaled-1.jpg",
+          "galeria": [
+            "https://maua.persaincorporacoes.com.br/wp-content/uploads/2026/03/PISCINA-MAUA-LIVING-scaled-1.webp",
+            "https://maua.persaincorporacoes.com.br/wp-content/uploads/2026/03/WINE-BAR-MAUA-LIVING-scaled-1.webp",
+            "https://maua.persaincorporacoes.com.br/wp-content/uploads/2026/03/SAUNA-MAUA-LIVING-scaled-1.webp"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "pacheco",
+      "nome": "Construtora Pacheco",
+      "site": "https://construtorapacheco.com",
+      "segmento": "Alto padrão / luxo",
+      "descricao": "Construtora de Uberlândia fundada em 2000, especializada em apartamentos e casas residenciais de luxo, reconhecida por ditar tendências no mercado local.",
+      "fundacao": "2000",
+      "entregas": "Diversos empreendimentos verticais e casas em condomínio em Uberlândia",
+      "certificacoes": [],
+      "atuacao": "Uberlândia, MG",
+      "diferenciais": [
+        "Materiais de altíssima qualidade e acabamento impecável",
+        "Projetos que ditam tendências em Uberlândia",
+        "Verticais de luxo e casas em condomínio"
+      ],
+      "descricaoLonga": "Fundada em 2000, com sede no bairro Santa Maria, a Construtora Pacheco é especializada em apartamentos e casas residenciais de luxo em Uberlândia. Tem como pilares a escolha de materiais de altíssima qualidade e o acabamento impecável, sendo reconhecida como uma empresa que dita tendências e define o padrão do mercado imobiliário da cidade.",
+      "instagram": "https://www.instagram.com/construtorapacheco/",
+      "projetos": [
+        {
+          "slug": "dhauss",
+          "nome": "DHauss",
+          "bairro": "Santa Mônica",
+          "status": "Lançamento",
+          "entrega": "",
+          "endereco": "Avenida Anselmo Alves, esquina com Rua Osvaldo Rodrigues Cunha — Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento inovador de studios compactos com gestão Housi Smart Living, voltado a moradia inteligente e renda por locação. Reúne ampla estrutura de áreas comuns e fachada ativa com espaços comerciais no térreo. As unidades são studios de 43 e 44 m².",
+          "tipologias": [
+            "Studio · 43 m²",
+            "Studio · 44 m²"
+          ],
+          "amenidades": [
+            "Fitness center",
+            "Cinema",
+            "Beauty center",
+            "Piscina",
+            "Área gourmet",
+            "Wine bar e jogos",
+            "Office bar",
+            "Sala de podcast",
+            "Auditório com copa",
+            "Três elevadores",
+            "Vaga para recarga de carro elétrico",
+            "Fachada ativa com espaços comerciais"
+          ],
+          "video": "",
+          "capa": "https://construtorapacheco.com/wp-content/uploads/2024/10/Fachada-Dhaus-00.jpg",
+          "galeria": [
+            "https://construtorapacheco.com/wp-content/uploads/2024/10/Piscina.jpg",
+            "https://construtorapacheco.com/wp-content/uploads/2024/10/Cinema.jpg",
+            "https://construtorapacheco.com/wp-content/uploads/2024/10/Fitness-Center.jpg",
+            "https://construtorapacheco.com/wp-content/uploads/2024/10/Area-Gourmet.jpg"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "v-pacheco",
+      "nome": "V. Pacheco Empreendimentos",
+      "site": "https://vpacheco.com.br",
+      "segmento": "Médio e alto padrão",
+      "descricao": "Incorporadora de Uberlândia liderada por Valéria Pacheco, de tradicional família de construtores da cidade, com empreendimentos residenciais verticais.",
+      "fundacao": "",
+      "entregas": "Empreendimentos residenciais em Uberlândia",
+      "certificacoes": [],
+      "atuacao": "Uberlândia, MG",
+      "diferenciais": [
+        "Tradição familiar no mercado de Uberlândia",
+        "Áreas de lazer completas",
+        "Projetos de baixa densidade e unidades exclusivas"
+      ],
+      "descricaoLonga": "A V. Pacheco Empreendimentos é uma incorporadora de Uberlândia liderada por Valéria Pacheco, proveniente de uma renomada família de construtores da cidade. Atua no desenvolvimento de empreendimentos residenciais verticais que equilibram modernidade e aconchego, com áreas de lazer completas e número reduzido de unidades por projeto.",
+      "instagram": "",
+      "projetos": [
+        {
+          "slug": "dallas-tower",
+          "nome": "Dallas Tower",
+          "bairro": "Novo Mundo",
+          "status": "Em obras",
+          "entrega": "ago/2026",
+          "endereco": "R. Dallas, 305 — Novo Mundo, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento residencial no bairro Novo Mundo com a proposta de equilibrar modernidade e aconchego. Possui apenas 50 unidades exclusivas, com apartamentos de 2 e 3 quartos, e área de lazer completa.",
+          "tipologias": [
+            "2 quartos · 64,02–69,77 m² · 2 vagas",
+            "3 quartos (1 suíte) · 81,02 m² · 2 vagas"
+          ],
+          "amenidades": [
+            "Academia",
+            "Bicicletário",
+            "Brinquedoteca",
+            "Coworking",
+            "Espaço gourmet",
+            "Espaço pet",
+            "Minimercado",
+            "Playground",
+            "Salão de festas",
+            "Varanda gourmet com duto para churrasqueira"
+          ],
+          "video": "",
+          "capa": "https://vpacheco.com.br/wp-content/uploads/2024/03/fachada-dallas-1.jpg",
+          "galeria": [
+            "https://vpacheco.com.br/wp-content/uploads/2024/03/1-Sala.jpg",
+            "https://vpacheco.com.br/wp-content/uploads/2024/03/4-Cozinha.jpg",
+            "https://vpacheco.com.br/wp-content/uploads/2024/03/7-Quarto-Suite.jpg",
+            "https://vpacheco.com.br/wp-content/uploads/2024/03/3-Varanda-Gourmet.jpg"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "resende",
+      "nome": "Resende Construtora",
+      "site": "https://www.resendeconstrutora.com.br",
+      "segmento": "Médio e alto padrão",
+      "descricao": "Construtora familiar de Uberlândia com mais de 15 anos de atuação, fundada por três irmãos, focada em residenciais de bom padrão.",
+      "fundacao": "2009",
+      "entregas": "Mais de 10 empreendimentos e 300+ unidades vendidas",
+      "certificacoes": [],
+      "atuacao": "Uberlândia, MG",
+      "diferenciais": [
+        "Empresa familiar com técnica e sensibilidade humana",
+        "Cumprimento de prazos de entrega",
+        "Pós-venda próximo ao cliente"
+      ],
+      "descricaoLonga": "A Resende Construtora é uma empresa familiar de Uberlândia com mais de 15 anos de atuação, fundada por três irmãos que unem técnica, gestão e sensibilidade humana. Com mais de 300 unidades vendidas, posiciona-se pela transparência, pelo padrão construtivo com materiais selecionados e pelo compromisso com prazos e atendimento pós-entrega.",
+      "instagram": "https://www.instagram.com/resendeconstrutora/",
+      "projetos": [
+        {
+          "slug": "lumina-finotti",
+          "nome": "Lumina Finotti",
+          "bairro": "Jardim Finotti",
+          "status": "Lançamento",
+          "entrega": "",
+          "endereco": "Avenida César Finotti, 930 — Jardim Finotti, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento de apartamentos modernos, funcionais e conectados no valorizado Jardim Finotti. Oferece plantas inteligentes de 36 a 98 m², com studios, unidades de 1 quarto e de 2 quartos com suíte, acabamentos contemporâneos e espaços bem iluminados.",
+          "tipologias": [
+            "Studio · 36 m²",
+            "1 quarto · 60–64 m² · 2 vagas",
+            "2 quartos (1 suíte) · 98 m² · 2 vagas"
+          ],
+          "amenidades": [
+            "Elevador",
+            "Salão de festas",
+            "Academia",
+            "Churrasqueira a carvão",
+            "Closet opcional na suíte"
+          ],
+          "video": "",
+          "capa": "https://ckvdwjczwrjxlznhuynh.supabase.co/storage/v1/object/public/imoveis/hero/1778875545301-unnamed.jpg",
+          "galeria": [
+            "https://ckvdwjczwrjxlznhuynh.supabase.co/storage/v1/object/public/imoveis/galeria/1778875504599-APTO-LIVING-02-jpg.jpeg",
+            "https://ckvdwjczwrjxlznhuynh.supabase.co/storage/v1/object/public/imoveis/galeria/1778875506795-APTO-LIVING-01-jpg.jpeg",
+            "https://ckvdwjczwrjxlznhuynh.supabase.co/storage/v1/object/public/imoveis/galeria/1778875508820-SAL-O-DE-FESTAS-04-04-jpg.jpeg",
+            "https://ckvdwjczwrjxlznhuynh.supabase.co/storage/v1/object/public/imoveis/galeria/1778875510617-APTO-LIVING-04-jpg.jpeg"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "senza",
+      "nome": "Senza Construtora",
+      "site": "https://senzaconstrutora.com.br",
+      "segmento": "Médio padrão",
+      "descricao": "Construtora de Uberlândia com sócios com mais de 15 anos de mercado, atuante na Zona Sul com apartamentos compactos e funcionais.",
+      "fundacao": "",
+      "entregas": "Empreendimentos como Bergamo Residence e Trento Residence",
+      "certificacoes": [],
+      "atuacao": "Uberlândia, MG",
+      "diferenciais": [
+        "Sócios com mais de 15 anos de experiência",
+        "Foco em qualidade, transparência e relacionamento",
+        "Apartamentos funcionais com lazer completo"
+      ],
+      "descricaoLonga": "A Senza Construtora atua em Uberlândia com sócios que somam mais de 15 anos de experiência no mercado. A empresa enfatiza qualidade, transparência e relacionamento próximo com o cliente, com empreendimentos verticais que oferecem apartamentos compactos e funcionais com lazer completo.",
+      "instagram": "https://www.instagram.com/senzaconstrutora/",
+      "projetos": [
+        {
+          "slug": "trento-residence",
+          "nome": "Trento Residence",
+          "bairro": "Zona Sul",
+          "status": "Em obras",
+          "entrega": "",
+          "endereco": "Próximo ao Praia Clube, Zona Sul, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento residencial na Zona Sul de Uberlândia, em região de expansão e valorização próxima ao Praia Clube. Oferece apartamentos de 59 a 77 m² com lazer completo e acabamentos de primeira linha, com preparação para ar-condicionado na sala e suíte.",
+          "tipologias": [
+            "Apartamentos · 59 a 77 m²"
+          ],
+          "amenidades": [
+            "Espaço gourmet",
+            "Grill",
+            "Cave",
+            "Piscina",
+            "Sala de jogos",
+            "Academia",
+            "Brinquedoteca",
+            "Coworking",
+            "Grab & Go"
+          ],
+          "video": "",
+          "capa": "https://senzaconstrutora.com.br/wp-content/uploads/2024/07/AREA-GOURMET_FINAL.jpg",
+          "galeria": [
+            "https://senzaconstrutora.com.br/wp-content/uploads/2023/04/21-PISCINA.jpg",
+            "https://senzaconstrutora.com.br/wp-content/uploads/2023/04/17-SALA-DE-JOGOS.jpg",
+            "https://senzaconstrutora.com.br/wp-content/uploads/2023/04/15-COWORKING.jpg",
+            "https://senzaconstrutora.com.br/wp-content/uploads/2023/04/5-SALA.jpg"
+          ]
+        }
       ]
     }
   ]

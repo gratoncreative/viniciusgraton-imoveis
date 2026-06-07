@@ -112,7 +112,7 @@ console.log(`✓ prerender-og: ${n} páginas de imóvel geradas em dist/imovel/{
 
 // páginas de bairro (SEO) — meta/canonical/JSON-LD por bairro
 const slugify = (s) => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
-const editoriais = ['Jardim Karaíba', 'Gávea', 'Santa Mônica', 'Morada da Colina', 'Tabajaras', 'Cidade Jardim', 'Tubalina', 'Granja Marileusa']
+const editoriais = ['Jardim Karaíba', 'Morada da Colina', 'Cidade Jardim', 'Gávea', 'Granja Marileusa', 'Vigilato Pereira', 'Santa Maria', 'Jardim Sul', 'Jardim Finotti', 'Parque Una', 'Patrimônio', 'Lídice', 'Santa Mônica', 'Tabajaras', 'Nova Uberlândia', 'Tubalina']
 const bairrosSeo = [...new Set([...editoriais, ...imoveis.map((im) => im.bairro)])]
   .filter(Boolean)
   .map((nome) => ({ nome, slug: slugify(nome) }))

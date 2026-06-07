@@ -129,7 +129,7 @@ export default function EmpreendimentoDetalhe() {
             <div className="construtora-projs">
               {outros.map((x) => (
                 <Link key={x.slug} className="empre-mini" to={`/construtoras/${c.slug}/${x.slug}`}>
-                  <div className="empre-mini-capa">{x.capa ? <img src={x.capa} alt={x.nome} loading="lazy" /> : <span className="proj-capa-vazia"><IconBuilding width={26} height={26} /></span>}</div>
+                  <div className="empre-mini-capa">{x.capa ? <img src={x.capa} alt={x.nome} loading="lazy" referrerPolicy="no-referrer" /> : <span className="proj-capa-vazia"><IconBuilding width={26} height={26} /></span>}</div>
                   <div className="empre-mini-txt"><b>{x.nome}</b><span>{x.bairro ? `${x.bairro} · ` : ''}{x.status}</span></div>
                 </Link>
               ))}

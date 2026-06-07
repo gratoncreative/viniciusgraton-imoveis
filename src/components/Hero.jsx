@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
 import Scene3D from './Scene3D'
+import HeroBusca from './HeroBusca'
 import { CONFIG, linkWhatsApp, WA } from '../data'
-import { IconWhats, IconArrow } from './icons'
+import { IconWhats } from './icons'
 
 export default function Hero() {
   const heroRef = useRef(null)
@@ -61,23 +61,17 @@ export default function Hero() {
           </h1>
 
           <p className="lead">
-            Eu te guio da primeira conversa à entrega das chaves. Casa, apartamento ou investimento,
-            com segurança e clareza em cada decisão.
+            Sou o <b>Vinícius Graton</b>, consultor imobiliário em Uberlândia. Faço uma <b>curadoria
+            criteriosa</b> dos imóveis pra te entregar só qualidade e excelência — e te acompanho da
+            primeira conversa à entrega das chaves.
           </p>
 
+          <HeroBusca />
+
           <div className="hero-actions">
-            <Link className="btn btn-gold" to="/imoveis">
-              Ver imóveis disponíveis <IconArrow />
-            </Link>
             <a className="btn btn-ghost" href={linkWhatsApp(WA.hero)} target="_blank" rel="noopener">
               <IconWhats /> Quero ajuda pra comprar
             </a>
-          </div>
-
-          <div className="hero-trust">
-            <div className="item"><b className="text-gold">Atendimento</b><span>direto comigo</span></div>
-            <div className="item"><b className="text-gold">Compra segura</b><span>sem pressa</span></div>
-            <div className="item"><b className="text-gold">Uberlândia</b><span>e região</span></div>
           </div>
         </div>
       </div>

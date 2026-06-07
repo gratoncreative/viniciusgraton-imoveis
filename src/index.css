@@ -252,8 +252,23 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 }
 .hero h1 em { font-family: var(--font-serif); font-style: italic; font-weight: 500; }
 .hero p.lead { color: var(--text-soft); font-size: clamp(1.04rem, 1.4vw, 1.18rem); line-height: 1.6; margin-top: 24px; max-width: 500px; }
-.hero-actions { display: flex; gap: 16px; margin-top: 34px; flex-wrap: wrap; }
+.hero-actions { display: flex; gap: 16px; margin-top: 22px; flex-wrap: wrap; }
 .hero-trust { display: flex; gap: 32px; margin-top: 40px; flex-wrap: wrap; }
+
+/* Caixa de busca em destaque na capa */
+.hero-busca { margin-top: 30px; padding: 18px; border-radius: 18px; background: rgba(14,18,27,0.62); border: 1px solid rgba(201,150,47,0.28); backdrop-filter: blur(14px); box-shadow: 0 24px 60px -30px rgba(0,0,0,0.8); max-width: 620px; }
+.hero-busca-tit { display: block; font-family: var(--font-head); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-1); margin-bottom: 12px; }
+.hero-busca-campos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.hero-busca-campo { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.hero-busca-campo > span { font-size: 0.72rem; color: var(--text-mute); font-weight: 600; padding-left: 2px; }
+.hero-busca-campo select { width: 100%; padding: 11px 12px; border-radius: 11px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.16); color: #fff; font-size: 0.92rem; font-family: var(--font-body); cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23c9962f' d='M6 8 0 0h12z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+.hero-busca-campo select:focus { outline: none; border-color: var(--gold-2); }
+.hero-busca-campo option { color: #11151d; }
+.hero-busca-btn { width: 100%; justify-content: center; margin-top: 14px; }
+@media (max-width: 600px) {
+  .hero-busca { padding: 15px; }
+  .hero-busca-campos { grid-template-columns: 1fr 1fr; }
+}
 .hero-trust .item { display: flex; flex-direction: column; }
 .hero-trust .item b { font-family: var(--font-head); font-size: 1.5rem; font-weight: 700; }
 .hero-trust .item span { font-size: 0.82rem; color: var(--text-mute); }
@@ -846,6 +861,20 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .construtora-seg { color: var(--gold-1); font-family: var(--font-head); font-weight: 600; margin-top: 10px; }
 .construtora-desc { color: var(--text-soft); max-width: 640px; margin: 14px 0 0; line-height: 1.6; }
 .construtora-hero-acoes { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+
+/* Bloco institucional da construtora */
+.construtora-sobre { padding-bottom: clamp(40px, 6vw, 70px); }
+.construtora-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 40px; }
+.construtora-stat { padding: 20px 22px; border-radius: 16px; background: #fff; border: 1px solid rgba(22,26,34,0.1); box-shadow: 0 14px 34px -28px rgba(22,26,34,0.5); }
+.construtora-stat-rot { display: block; font-family: var(--font-head); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--gold-3); margin-bottom: 8px; }
+.construtora-stat-val { font-size: 1rem; color: #2a2f3a; line-height: 1.45; font-weight: 600; }
+.construtora-bio { max-width: 760px; margin-bottom: 36px; }
+.construtora-bio p { color: #4a515e; line-height: 1.75; font-size: 1.02rem; }
+.construtora-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; }
+.construtora-col-tit { font-family: var(--font-head); font-weight: 700; font-size: 1.05rem; color: #1a1f29; margin-bottom: 16px; }
+.construtora-selos { display: flex; flex-wrap: wrap; gap: 10px; }
+.construtora-selo { display: inline-flex; align-items: center; font-family: var(--font-head); font-size: 0.82rem; font-weight: 600; color: #8a6a1e; background: rgba(184,134,47,0.13); border: 1px solid rgba(184,134,47,0.32); padding: 8px 15px; border-radius: 100px; }
+.proj-capa-video { position: absolute; bottom: 12px; left: 12px; font-family: var(--font-head); font-size: 0.72rem; font-weight: 700; color: #fff; background: rgba(184,134,47,0.85); padding: 5px 11px; border-radius: 100px; backdrop-filter: blur(6px); }
 
 .construtora-projs { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 10px; }
 .proj-card { display: flex; flex-direction: column; border-radius: 16px; overflow: hidden; background: #ffffff; border: 1px solid rgba(22,26,34,0.1); box-shadow: 0 14px 34px -24px rgba(22,26,34,0.5); text-decoration: none; color: inherit; transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease); }
