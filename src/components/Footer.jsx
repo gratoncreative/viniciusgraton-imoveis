@@ -6,6 +6,7 @@ const LINKS = [
   { to: '/imoveis', label: 'Imóveis' },
   { to: '/construtoras', label: 'Construtoras' },
   { to: '/como-funciona', label: 'Como eu te ajudo' },
+  { to: '/ferramentas', label: 'Ferramentas' },
   { to: '/sobre', label: 'Sobre mim' },
   { to: '/regioes', label: 'Uberlândia' },
   { to: '/contato', label: 'Contato' },
