@@ -5,14 +5,17 @@ import CondominioLead from '../components/CondominioLead'
 import { CONDOMINIOS } from '../data'
 import { useSEO } from '../useSEO'
 import { onImgError } from '../img'
-import { IconArrow, IconPin, IconBuilding, IconShield } from '../components/icons'
+import { IconArrow, IconPin, IconBuilding, IconShield, IconSearch } from '../components/icons'
 
-const zonaDe = (r = '') => /sul/i.test(r) ? 'Zona Sul' : (/leste|marileusa/i.test(r) ? 'Zona Leste' : (/represa|miranda/i.test(r) ? 'Represa de Miranda' : 'Outras regiões'))
+const norm = (s = '') => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim()
+const zonaDe = (r = '') => /sul/i.test(r) ? 'Zona Sul' : (/leste|marileusa/i.test(r) ? 'Zona Leste' : (/represa|miranda/i.test(r) ? 'Represa de Miranda' : (/oeste/i.test(r) ? 'Zona Oeste' : 'Outras regiões')))
 const ehTipo = (t = '', f) => f === 'Casas' ? /casas?/i.test(t) : f === 'Lotes' ? /lote/i.test(t) : f === 'Chácaras' ? /ch[áa]cara/i.test(t) : true
+const statusDe = (s = '') => /lan[çc]/i.test(s) ? 'Lançamento' : (/pronto|consolidad|implantad|opera/i.test(s) ? 'Pronto para morar' : 'Em comercialização')
 
-const ZONAS = ['Zona Sul', 'Zona Leste', 'Represa de Miranda']
+const ZONAS = ['Zona Sul', 'Zona Leste', 'Zona Oeste', 'Represa de Miranda']
 const TIPOS = ['Casas', 'Lotes', 'Chácaras']
 const SEGMENTOS = ['Alto padrão', 'Médio padrão']
+const STATUS = ['Lançamento', 'Em comercialização', 'Pronto para morar']
 
 function CardCondo({ c }) {
   return (
@@ -39,23 +42,31 @@ function CardCondo({ c }) {
 export default function Condominios() {
   useSEO({
     title: 'Condomínios fechados em Uberlândia — casas, lotes e alto padrão',
-    description: 'Conheça os condomínios fechados horizontais de Uberlândia: casas e lotes de alto padrão na Zona Sul, Granja Marileusa e Represa de Miranda. Filtre por região, tipo e padrão e fale com o Vinícius para uma curadoria sob medida.',
+    description: 'Conheça os condomínios fechados horizontais de Uberlândia: casas e lotes de alto padrão na Zona Sul, Granja Marileusa e Represa de Miranda. Busque pelo nome, filtre por região, tipo, padrão e situação, e fale com o Vinícius para uma curadoria sob medida.',
     path: '/condominios',
   })
 
+  const [busca, setBusca] = useState('')
   const [zona, setZona] = useState('')
   const [tipo, setTipo] = useState('')
   const [seg, setSeg] = useState('')
+  const [status, setStatus] = useState('')
 
-  const lista = useMemo(() => CONDOMINIOS.filter((c) =>
-    !c.grupo &&
-    (!zona || zonaDe(c.regiao) === zona) &&
-    (!tipo || ehTipo(c.tipo, tipo)) &&
-    (!seg || c.segmento === seg)
-  ), [zona, tipo, seg])
+  const base = useMemo(() => CONDOMINIOS.filter((c) => !c.grupo), [])
 
-  const limpar = () => { setZona(''); setTipo(''); setSeg('') }
-  const temFiltro = zona || tipo || seg
+  const lista = useMemo(() => {
+    const q = norm(busca)
+    return base.filter((c) =>
+      (!q || norm(`${c.nome} ${c.regiao}`).includes(q)) &&
+      (!zona || zonaDe(c.regiao) === zona) &&
+      (!tipo || ehTipo(c.tipo, tipo)) &&
+      (!seg || c.segmento === seg) &&
+      (!status || statusDe(c.status) === status)
+    ).sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
+  }, [base, busca, zona, tipo, seg, status])
+
+  const limpar = () => { setBusca(''); setZona(''); setTipo(''); setSeg(''); setStatus('') }
+  const temFiltro = busca || zona || tipo || seg || status
 
   return (
     <main className="pagina section--light det condos-pg">
@@ -66,10 +77,24 @@ export default function Condominios() {
             <span className="eyebrow" style={{ justifyContent: 'center' }}>Morar em condomínio fechado</span>
             <h2 className="section-title">Os condomínios fechados de <em>Uberlândia</em></h2>
             <p className="section-sub" style={{ marginTop: 14 }}>
-              Reuni os principais condomínios horizontais da cidade — casas e lotes. Escolha onde você sonha em morar; eu faço a curadoria e levanto os terrenos e imóveis disponíveis pra você.
+              Reuni os principais condomínios horizontais da cidade — casas, lotes e chácaras. Busque pelo nome, filtre pelo seu perfil e escolha onde você sonha em morar; eu faço a curadoria e levanto os terrenos e imóveis disponíveis pra você.
             </p>
           </div>
         </Reveal>
+
+        <div className="condo-busca-wrap">
+          <span className="condo-busca">
+            <IconSearch width={18} height={18} />
+            <input
+              type="search"
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+              placeholder="Buscar condomínio pelo nome (ex.: Alphaville, Jardins, Tamboré...)"
+              aria-label="Buscar condomínio pelo nome"
+            />
+            {busca && <button className="condo-busca-x" onClick={() => setBusca('')} aria-label="Limpar busca">✕</button>}
+          </span>
+        </div>
 
         <div className="condo-filtros">
           <div className="condo-filtro-grupo">
@@ -91,6 +116,13 @@ export default function Condominios() {
             <div className="condo-chips">
               <button className={`condo-chip ${!seg ? 'on' : ''}`} onClick={() => setSeg('')}>Todos</button>
               {SEGMENTOS.map((s) => <button key={s} className={`condo-chip ${seg === s ? 'on' : ''}`} onClick={() => setSeg(s)}>{s}</button>)}
+            </div>
+          </div>
+          <div className="condo-filtro-grupo">
+            <span className="condo-filtro-rot">Situação</span>
+            <div className="condo-chips">
+              <button className={`condo-chip ${!status ? 'on' : ''}`} onClick={() => setStatus('')}>Todas</button>
+              {STATUS.map((s) => <button key={s} className={`condo-chip ${status === s ? 'on' : ''}`} onClick={() => setStatus(s)}>{s}</button>)}
             </div>
           </div>
         </div>
