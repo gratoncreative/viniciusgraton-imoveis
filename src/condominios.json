@@ -582,6 +582,845 @@
       "capa": "",
       "galeria": [],
       "segmento": "Médio padrão"
+    },
+    {
+      "slug": "jardins-barcelona",
+      "nome": "Jardins Barcelona",
+      "tipo": "Casas em condomínio",
+      "regiao": "Setor dos Jardins",
+      "segmento": "Alto padrão",
+      "status": "Em comercialização",
+      "descricao": "Condomínio horizontal de alto padrão do Setor dos Jardins, com 347 lotes em 467.148 m² e mais de 199.000 m² de área verde às margens do Rio Uberabinha. Casas amplas de 210 a 408 m², com segurança e rondas 24h. Um dos endereços mais nobres da cidade.",
+      "amenidades": [
+        "Portaria 24h com rondas",
+        "3 quadras de tênis",
+        "Quadra poliesportiva",
+        "2 campos de futsal",
+        "2 estações fitness",
+        "4 playgrounds",
+        "Academia",
+        "Área verde às margens do Rio Uberabinha"
+      ],
+      "destaques": [
+        "347 lotes",
+        "467.148 m² de área total",
+        "Mais de 199.000 m² de área verde",
+        "Alto padrão"
+      ],
+      "capa": "/img/cond/jardins-barcelona.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/11/whatsapp-image-2024-01-19-at-150530.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/11/whatsapp-image-2024-01-19-at-150530-1.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/11/whatsapp-image-2024-01-19-at-150529.jpeg"
+      ]
+    },
+    {
+      "slug": "jardins-roma",
+      "nome": "Jardins Roma",
+      "tipo": "Casas em condomínio",
+      "regiao": "Setor dos Jardins",
+      "segmento": "Alto padrão",
+      "status": "Em comercialização",
+      "descricao": "Condomínio horizontal de alto padrão do Setor dos Jardins, com 397 lotes em 423.066 m² e mais de 129.000 m² de lazer e área verde, incluindo 60.000 m² de preservação do Rio Uberabinha. Lazer moderno com skatepark e praça de xadrez gigante.",
+      "amenidades": [
+        "Portaria 24h",
+        "Skatepark",
+        "Praça de xadrez gigante",
+        "Academia equipada",
+        "Quadras de tênis",
+        "Quadra de squash",
+        "Quadra poliesportiva",
+        "Área verde do Rio Uberabinha"
+      ],
+      "destaques": [
+        "397 lotes",
+        "423.066 m² de área total",
+        "129.000 m² de lazer e área verde",
+        "Skatepark"
+      ],
+      "capa": "/img/cond/jardins-roma.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/12/14.jpg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/12/10.jpg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/12/12.jpg"
+      ]
+    },
+    {
+      "slug": "jardins-genova",
+      "nome": "Jardins Gênova",
+      "tipo": "Casas em condomínio",
+      "regiao": "Setor dos Jardins",
+      "segmento": "Alto padrão",
+      "status": "Em comercialização",
+      "descricao": "Condomínio horizontal de alto padrão do Setor dos Jardins, com infraestrutura esportiva robusta. Mistura casas e lotes, com 3 quadras de tênis, 2 campos de futebol society e academia equipada. Segurança 24h com acesso restrito e rondas.",
+      "amenidades": [
+        "Portaria 24h com rondas",
+        "3 quadras de tênis",
+        "Quadra poliesportiva",
+        "2 campos de futebol society",
+        "Academia equipada",
+        "Piscina",
+        "Playgrounds",
+        "Estações fitness"
+      ],
+      "destaques": [
+        "Casas e lotes",
+        "3 quadras de tênis",
+        "2 campos de futebol society",
+        "Alto padrão"
+      ],
+      "capa": "/img/cond/jardins-genova.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/46/genova.jpg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/46/genova-2.jpg"
+      ]
+    },
+    {
+      "slug": "jardim-versailles",
+      "nome": "Jardim Versailles",
+      "tipo": "Casas em condomínio",
+      "regiao": "Setor dos Jardins",
+      "segmento": "Alto padrão",
+      "status": "Consolidado",
+      "descricao": "Condomínio fechado consolidado do Setor dos Jardins, com 243 unidades e mais de 54.000 m² de área de lazer. Conta com castelo infantil exclusivo (Petit Versailles), lago e arborização densa, com mercado interno 24h e segurança reforçada.",
+      "amenidades": [
+        "Portaria 24h",
+        "Petit Versailles (castelo infantil)",
+        "Quadra de tênis",
+        "Quadra de squash",
+        "Quadra de vôlei",
+        "Piscina semiaquecida",
+        "Academia",
+        "Playground",
+        "Pista de caminhada",
+        "Campo de futebol",
+        "Mercado interno 24h",
+        "Lago"
+      ],
+      "destaques": [
+        "243 unidades",
+        "Mais de 54.000 m² de lazer",
+        "Castelo infantil exclusivo",
+        "Mercado interno 24h"
+      ],
+      "capa": "/img/cond/jardim-versailles.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/9/whatsapp-image-2026-05-21-at-194640.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/9/whatsapp-image-2024-01-19-at-150523-1.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/9/whatsapp-image-2024-01-19-at-150522.jpeg"
+      ]
+    },
+    {
+      "slug": "bosque-karaiba",
+      "nome": "Bosque Karaíba",
+      "tipo": "Casas em condomínio",
+      "regiao": "Jardim Karaíba, Zona Sul",
+      "segmento": "Alto padrão",
+      "status": "Consolidado",
+      "descricao": "Condomínio fechado de casas de altíssimo padrão na região do Jardim Karaíba. Casas amplas de 290 a 458 m² com 3 a 4 suítes — um dos endereços mais valorizados da cidade, com lazer e segurança 24h completos.",
+      "amenidades": [
+        "Portaria 24h",
+        "Cerca elétrica",
+        "Academia",
+        "Piscina",
+        "Quadra poliesportiva",
+        "Quadra de tênis",
+        "Quadra de squash",
+        "Playground",
+        "Espaço gourmet",
+        "Home cinema",
+        "Jardins"
+      ],
+      "destaques": [
+        "Casas de 290 a 458 m²",
+        "Altíssimo padrão",
+        "Região do Jardim Karaíba",
+        "Portaria 24h"
+      ],
+      "capa": "/img/cond/bosque-karaiba.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/27/whatsapp-image-2025-07-09-at-152200.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/27/whatsapp-image-2025-07-09-at-152500.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/27/whatsapp-image-2025-07-09-at-152500-1.jpeg"
+      ]
+    },
+    {
+      "slug": "condominio-solares-da-gavea",
+      "nome": "Solares da Gávea",
+      "tipo": "Lotes em condomínio",
+      "regiao": "Gávea, Zona Sul",
+      "segmento": "Alto padrão",
+      "status": "Em comercialização",
+      "descricao": "Condomínio de lotes de alto padrão no setor da Gávea, com 108 lotes (alguns com até 1.748 m²). Áreas comuns ajardinadas com lagos e cascatas, voltado a residências de alto padrão com privacidade e segurança 24h.",
+      "amenidades": [
+        "Portaria 24h",
+        "Piscina",
+        "Campo de futebol",
+        "Quadra de tênis",
+        "Salão de festas",
+        "Espaço gourmet",
+        "Playground",
+        "Lagos e cascatas",
+        "Paisagismo"
+      ],
+      "destaques": [
+        "108 lotes",
+        "Lotes de até 1.748 m²",
+        "Alto padrão",
+        "Lagos e cascatas"
+      ],
+      "capa": "/img/cond/condominio-solares-da-gavea.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/30/whatsapp-image-2024-10-14-at-152341.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/30/whatsapp-image-2024-10-14-at-152342-2.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/30/whatsapp-image-2024-10-14-at-152343.jpeg"
+      ]
+    },
+    {
+      "slug": "morada-do-sol",
+      "nome": "Morada do Sol",
+      "tipo": "Casas em condomínio",
+      "regiao": "Bairro Morada do Sol",
+      "segmento": "Alto padrão",
+      "status": "Em comercialização",
+      "descricao": "Condomínio fechado consolidado de casas de alto padrão no bairro Morada do Sol. Mistura casas e lotes, com clube completo (piscina, sauna), casas amplas e arborização densa. Um dos mais tradicionais da cidade, com segurança 24h.",
+      "amenidades": [
+        "Portaria 24h",
+        "Controle eletrônico de acesso",
+        "Clube",
+        "Piscina",
+        "Sauna",
+        "Pista de caminhada",
+        "Campo de futebol",
+        "Academia",
+        "Quadra de tênis",
+        "Quadra de squash",
+        "Área verde"
+      ],
+      "destaques": [
+        "Casas e lotes",
+        "Clube com piscina e sauna",
+        "Tradicional / alto padrão",
+        "Portaria 24h"
+      ],
+      "capa": "/img/cond/morada-do-sol.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/15/1653336682741-c707d107d5332ac63027099d5acb1bec.jpg"
+      ]
+    },
+    {
+      "slug": "raros-alto-umuarama",
+      "nome": "Raros Alto Umuarama",
+      "tipo": "Casas em condomínio",
+      "regiao": "Alto Umuarama, Zona Leste",
+      "segmento": "Alto padrão",
+      "status": "Em comercialização",
+      "descricao": "Loteamento fechado de casas de alto padrão na região do Alto Umuarama, próximo ao Parque do Sabiá. Casas de até 231 m² com 3 a 4 quartos, em localização privilegiada com infraestrutura de lazer e segurança 24h.",
+      "amenidades": [
+        "Portaria 24h",
+        "Academia",
+        "Espaço gourmet",
+        "Piscina",
+        "Playground",
+        "Quadras esportivas",
+        "Paisagismo",
+        "Áreas verdes"
+      ],
+      "destaques": [
+        "Casas de até 231 m²",
+        "Próximo ao Parque do Sabiá",
+        "Alto padrão",
+        "Portaria 24h"
+      ],
+      "capa": "/img/cond/raros-alto-umuarama.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/44/15c61dbd91d62b00d6da9f79771ec325.jpg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/44/052832eed66f3dacd5beb9ff927ff704.jpg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/44/47826c7aefdbe406469bfe2a652f737d.jpg"
+      ]
+    },
+    {
+      "slug": "condominio-carmel",
+      "nome": "Condomínio Carmel",
+      "tipo": "Casas em condomínio",
+      "regiao": "Bairro Carajás",
+      "segmento": "Alto padrão",
+      "status": "Consolidado",
+      "descricao": "Condomínio fechado de casas de alto padrão no bairro Carajás. Casas amplas de cerca de 270 m² com 3 a 4 suítes, com segurança 24h e lazer completo, incluindo home cinema e quadras esportivas.",
+      "amenidades": [
+        "Segurança 24h",
+        "Cerca elétrica",
+        "Piscina",
+        "Quadra poliesportiva",
+        "Quadra de tênis",
+        "Quadra de squash",
+        "Playground",
+        "Churrasqueira",
+        "Home cinema",
+        "Academia"
+      ],
+      "destaques": [
+        "Casas de ~270 m²",
+        "3 a 4 suítes",
+        "Alto padrão",
+        "Segurança 24h"
+      ],
+      "capa": "/img/cond/condominio-carmel.jpg",
+      "galeria": []
+    },
+    {
+      "slug": "mirante-do-lago",
+      "nome": "Mirante do Lago",
+      "tipo": "Lotes em condomínio",
+      "regiao": "Portal do Vale",
+      "segmento": "Médio padrão",
+      "status": "Em comercialização",
+      "descricao": "Condomínio planejado de lotes com 408 lotes em 192.735 m², no bairro Portal do Vale. Conceito de moradia com lazer completo e espaços de coworking, com lotes de 264 m² e foco em qualidade de vida.",
+      "amenidades": [
+        "Portaria 24h",
+        "Piscina semiolímpica 25m e infantil",
+        "Quadra de beach tennis",
+        "Quadra de tênis",
+        "Quadra poliesportiva",
+        "Academia",
+        "Pista de caminhada",
+        "Playground",
+        "Espaço pet",
+        "Coworking",
+        "Quiosques"
+      ],
+      "destaques": [
+        "408 lotes",
+        "Lotes de 264 m²",
+        "192.735 m² de área total",
+        "Espaços de coworking"
+      ],
+      "capa": "/img/cond/mirante-do-lago.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/6/whatsapp-image-2025-12-16-at-100935.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/6/whatsapp-image-2025-12-16-at-100942-1.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/6/whatsapp-image-2025-12-16-at-100941.jpeg"
+      ]
+    },
+    {
+      "slug": "mirante-das-aguas",
+      "nome": "Mirante das Águas",
+      "tipo": "Lotes em condomínio",
+      "regiao": "Zona Sul",
+      "segmento": "Médio padrão",
+      "status": "Lançamento",
+      "descricao": "Lançamento de condomínio de lotes com 328 lotes e mais de 15 opções de lazer, com lotes a partir de 264 m². Conceito moderno com portaria com controle de acesso e segurança 24h, voltado a famílias.",
+      "amenidades": [
+        "Portaria 24h com controle de acesso",
+        "Piscina com borda infinita",
+        "Piscina infantil",
+        "Salão de festas",
+        "Espaço gourmet",
+        "Academia",
+        "Coworking",
+        "Quadra poliesportiva",
+        "Quadra de tênis",
+        "Beach tennis",
+        "Playground",
+        "Espaço pet"
+      ],
+      "destaques": [
+        "328 lotes",
+        "Lotes a partir de 264 m²",
+        "Mais de 15 opções de lazer",
+        "Lançamento"
+      ],
+      "capa": "/img/cond/mirante-das-aguas.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/85/whatsapp-image-2026-01-29-at-163747.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/85/whatsapp-image-2026-01-29-at-163748.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/85/whatsapp-image-2026-01-29-at-163749.jpeg"
+      ]
+    },
+    {
+      "slug": "reserva-do-parque",
+      "nome": "Reserva do Parque",
+      "tipo": "Lotes em condomínio",
+      "regiao": "Zona Sul",
+      "segmento": "Médio padrão",
+      "status": "Lançamento",
+      "descricao": "Condomínio de lotes com cerca de 420 lotes a partir de 275 m², voltado a esporte, lazer e bem-estar, com pomar, horta e espaços de convivência. Inclui coworking e áreas para todas as idades, com infraestrutura completa.",
+      "amenidades": [
+        "Quadra de tênis",
+        "Quadra poliesportiva",
+        "Beach tennis",
+        "Academia",
+        "Pista de caminhada",
+        "Playground",
+        "Espaço gourmet",
+        "Forno de pizza",
+        "Horta",
+        "Pomar",
+        "Espaço pet",
+        "Coworking"
+      ],
+      "destaques": [
+        "~420 lotes",
+        "Lotes a partir de 275 m²",
+        "Pomar e horta",
+        "Coworking"
+      ],
+      "capa": "/img/cond/reserva-do-parque.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/78/reserva-do-parque-previa-imagens-rev1-page-0001.jpg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/78/reserva-do-parque-previa-imagens-rev1-page-0002.jpg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/78/reserva-do-parque-previa-imagens-rev1-page-0007.jpg"
+      ]
+    },
+    {
+      "slug": "verde-bosque",
+      "nome": "Verde Bosque",
+      "tipo": "Lotes em condomínio",
+      "regiao": "Zona Oeste",
+      "segmento": "Médio padrão",
+      "status": "Em comercialização",
+      "descricao": "Primeiro loteamento fechado da Zona Oeste de Uberlândia, com lotes a partir de 250 m². Totalmente murado, com reconhecimento facial e monitoramento 24h, clube e áreas de lazer, além de áreas comerciais.",
+      "amenidades": [
+        "Portaria 24h com reconhecimento facial",
+        "Monitoramento",
+        "Clube",
+        "Academia",
+        "Piscinas",
+        "Quadras esportivas",
+        "Espaço pet",
+        "Áreas de lazer"
+      ],
+      "destaques": [
+        "1º loteamento fechado da Zona Oeste",
+        "Lotes a partir de 250 m²",
+        "Reconhecimento facial",
+        "Áreas comerciais"
+      ],
+      "capa": "/img/cond/verde-bosque.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/90/whatsapp-image-2026-04-28-at-162313-2.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/90/whatsapp-image-2026-04-28-at-162313-1.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/90/whatsapp-image-2026-04-28-at-162316-2.jpeg"
+      ]
+    },
+    {
+      "slug": "village-paradiso-1",
+      "nome": "Village Paradiso 1",
+      "tipo": "Casas em condomínio",
+      "regiao": "Granja Marileusa, Zona Leste",
+      "segmento": "Alto padrão",
+      "status": "Consolidado",
+      "descricao": "Condomínio fechado de sobrados na Granja Marileusa, com 95 unidades de 82 a 220 m² e 3 suítes. Conceito de bem-estar com spa, pilates e quiosque de meditação, segurança 24h por câmeras e internet por fibra óptica.",
+      "amenidades": [
+        "Segurança 24h com câmeras",
+        "Espaço gourmet",
+        "Salão de festas",
+        "Academia",
+        "Spa",
+        "Espaço pilates",
+        "Quiosque de meditação",
+        "Piscina",
+        "Quadras esportivas",
+        "Playground"
+      ],
+      "destaques": [
+        "95 sobrados",
+        "Casas de 82 a 220 m²",
+        "Spa e pilates",
+        "Granja Marileusa"
+      ],
+      "capa": "/img/cond/village-paradiso-1.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/17/village-paradiso-1-granja-marileusa-1.jpg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/17/village-paradiso-1-granja-marileusa-2.jpg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/17/1.jpg"
+      ]
+    },
+    {
+      "slug": "village-paradiso-2",
+      "nome": "Village Paradiso 2",
+      "tipo": "Casas em condomínio",
+      "regiao": "Granja Marileusa, Zona Leste",
+      "segmento": "Alto padrão",
+      "status": "Consolidado",
+      "descricao": "Segunda fase do Village Paradiso, na Granja Marileusa, com 105 sobrados de 142 a 220 m² e 3 a 4 suítes. Conceito de bem-estar com spa, áreas de meditação e espaço acústico para música, com segurança 24h por câmeras.",
+      "amenidades": [
+        "Segurança 24h com câmeras",
+        "Piscinas adulto e infantil",
+        "Academia",
+        "Spa",
+        "Áreas de meditação",
+        "Espaço acústico para música",
+        "Playground",
+        "Brinquedoteca"
+      ],
+      "destaques": [
+        "105 sobrados",
+        "Casas de 142 a 220 m²",
+        "3 a 4 suítes",
+        "Granja Marileusa"
+      ],
+      "capa": "/img/cond/village-paradiso-2.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/16/village-paradiso-2-granja-marileusa-3.jpg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/16/village-paradiso-2-granja-marileusa-2.jpg"
+      ]
+    },
+    {
+      "slug": "residencial-ingles",
+      "nome": "Residencial Inglês",
+      "tipo": "Casas em condomínio",
+      "regiao": "Setor Sul",
+      "segmento": "Médio padrão",
+      "status": "Consolidado",
+      "descricao": "Condomínio fechado de casas no setor sul de Uberlândia, com casas de 100 a 180 m² (2 a 3 quartos). Lazer completo com espaço gourmet e quadras, segurança 24h, voltado a famílias.",
+      "amenidades": [
+        "Portaria 24h",
+        "Quadra de esportes",
+        "Piscina",
+        "Espaço gourmet",
+        "Playground",
+        "Quadra de tênis",
+        "Quadra de squash",
+        "Academia",
+        "Home cinema"
+      ],
+      "destaques": [
+        "Casas de 100 a 180 m²",
+        "2 a 3 quartos",
+        "Portaria 24h",
+        "Setor sul"
+      ],
+      "capa": "/img/cond/residencial-ingles.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/26/277854.jpg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/26/277857.jpg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/26/277856.jpg"
+      ]
+    },
+    {
+      "slug": "quality-residence",
+      "nome": "Quality Residence",
+      "tipo": "Casas em condomínio",
+      "regiao": "Zona Sul",
+      "segmento": "Médio padrão",
+      "status": "Em comercialização",
+      "descricao": "Condomínio fechado de sobrados na Zona Sul, com 48 unidades de 112 a 125 m² (3 quartos). Conceito prático com lazer, deck gourmet e segurança 24h, voltado a famílias.",
+      "amenidades": [
+        "Portaria 24h",
+        "Piscina adulto e infantil",
+        "Salão de festas",
+        "Academia",
+        "Playground",
+        "Deck gourmet com churrasqueira",
+        "Quadra esportiva"
+      ],
+      "destaques": [
+        "48 sobrados",
+        "Unidades de 112 a 125 m²",
+        "Deck gourmet",
+        "Portaria 24h"
+      ],
+      "capa": "/img/cond/quality-residence.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/52/whatsapp-image-2025-02-27-at-122945.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/52/whatsapp-image-2022-10-14-at-114930.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/52/whatsapp-image-2025-02-27-at-122943.jpeg"
+      ]
+    },
+    {
+      "slug": "village-unique",
+      "nome": "Village Unique",
+      "tipo": "Casas em condomínio",
+      "regiao": "Tubalina",
+      "segmento": "Médio padrão",
+      "status": "Consolidado",
+      "descricao": "Condomínio fechado de casas no bairro Tubalina, com casas de 120 a 164 m² (3 a 4 quartos). Conceito de moradia segura com lazer essencial, portaria 24h e câmeras, voltado a famílias.",
+      "amenidades": [
+        "Portaria 24h",
+        "Câmeras de segurança",
+        "Piscina",
+        "Playground",
+        "Salão de festas",
+        "Quadra esportiva",
+        "Jardins"
+      ],
+      "destaques": [
+        "Casas de 120 a 164 m²",
+        "3 a 4 quartos",
+        "Bairro Tubalina",
+        "Portaria 24h"
+      ],
+      "capa": "/img/cond/village-unique.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/35/village-unique.jpg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/35/whatsapp-image-2025-03-21-at-123200-1.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/35/whatsapp-image-2025-03-21-at-123200.jpeg"
+      ]
+    },
+    {
+      "slug": "condominio-casas-alto-paradiso",
+      "nome": "Casas Alto Paradiso",
+      "tipo": "Casas em condomínio",
+      "regiao": "Bosque dos Buritis",
+      "segmento": "Médio padrão",
+      "status": "Em comercialização",
+      "descricao": "Condomínio fechado de sobrados no Bosque dos Buritis, com casas de ~81 m² e 3 suítes, área de serviço coberta e quintal. Conceito de moradia segura com lazer completo e horta orgânica, portaria 24h.",
+      "amenidades": [
+        "Portaria 24h",
+        "Piscinas",
+        "Quadra poliesportiva",
+        "Quadra de tênis",
+        "Quadra de squash",
+        "Academia",
+        "Playground",
+        "Horta orgânica",
+        "Paisagismo"
+      ],
+      "destaques": [
+        "Sobrados de 81 m² com 3 suítes",
+        "Quintal a partir de 41 m²",
+        "Horta orgânica",
+        "Portaria 24h"
+      ],
+      "capa": "/img/cond/condominio-casas-alto-paradiso.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/54/whatsapp-image-2024-05-09-at-174844.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/54/whatsapp-image-2024-05-09-at-175358.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/54/whatsapp-image-2024-01-09-at-172315.jpeg"
+      ]
+    },
+    {
+      "slug": "terra-nova-1",
+      "nome": "Terra Nova 1",
+      "tipo": "Casas em condomínio",
+      "regiao": "Terra Nova (próximo ao aeroporto)",
+      "segmento": "Médio padrão",
+      "status": "Consolidado",
+      "descricao": "Condomínio fechado de casas próximo ao aeroporto, com comércio nas redondezas. Casas de 68 a 150 m² (2 a 3 quartos), lazer completo com piscina e quadras, portaria 24h.",
+      "amenidades": [
+        "Portaria 24h",
+        "Salão de festas",
+        "Quadra esportiva",
+        "Piscina",
+        "Playground",
+        "Quadra de tênis",
+        "Academia",
+        "Churrasqueira",
+        "Home cinema"
+      ],
+      "destaques": [
+        "Casas de 68 a 150 m²",
+        "2 a 3 quartos",
+        "Próximo ao aeroporto",
+        "Portaria 24h"
+      ],
+      "capa": "/img/cond/terra-nova-1.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/31/terras-novas-3.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/31/terras-novas-2.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/31/terra-nova-011.jpg"
+      ]
+    },
+    {
+      "slug": "terra-nova-2",
+      "nome": "Terra Nova 2",
+      "tipo": "Casas em condomínio",
+      "regiao": "Terra Nova (próximo ao aeroporto)",
+      "segmento": "Médio padrão",
+      "status": "Consolidado",
+      "descricao": "Segunda fase do Terra Nova, condomínio fechado de casas próximo ao aeroporto. Casas de 50 a 145 m² (2 a 3 quartos), lazer completo com piscina e quadras, portaria 24h.",
+      "amenidades": [
+        "Portaria 24h",
+        "Piscina",
+        "Quadra esportiva",
+        "Playground",
+        "Academia",
+        "Churrasqueira",
+        "Home cinema",
+        "Quadra de tênis"
+      ],
+      "destaques": [
+        "Casas de 50 a 145 m²",
+        "2 a 3 quartos",
+        "Próximo ao aeroporto",
+        "Portaria 24h"
+      ],
+      "capa": "/img/cond/terra-nova-2.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/32/terras-novas-5.jpeg"
+      ]
+    },
+    {
+      "slug": "chacaras-eldorado",
+      "nome": "Chácaras Eldorado",
+      "tipo": "Chácaras em condomínio",
+      "regiao": "BR-497 (~15 min do centro)",
+      "segmento": "Médio padrão",
+      "status": "Em comercialização",
+      "descricao": "Condomínio fechado de chácaras a cerca de 15 minutos de Uberlândia, na BR-497. Ambiente tranquilo voltado a lazer e descanso, com lago e campo de futebol. Chácaras de 130 m² a 7.500 m², segurança 24h.",
+      "amenidades": [
+        "Portaria 24h",
+        "Lago",
+        "Piscina",
+        "Quadra de tênis",
+        "Quadra de squash",
+        "Quadra de basquete",
+        "Playground",
+        "Home cinema",
+        "Churrasqueira",
+        "Cerca elétrica"
+      ],
+      "destaques": [
+        "Chácaras de 130 m² a 7.500 m²",
+        "Lago e campo de futebol",
+        "~15 min do centro",
+        "Portaria 24h"
+      ],
+      "capa": "/img/cond/chacaras-eldorado.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/42/whatsapp-image-2022-08-17-at-222413.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/42/whatsapp-image-2022-08-17-at-222413-1.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/42/whatsapp-image-2022-08-17-at-222412.jpeg"
+      ]
+    },
+    {
+      "slug": "catucaba-condominio-campo",
+      "nome": "Catuçaba Condomínio Campo",
+      "tipo": "Chácaras em condomínio",
+      "regiao": "BR-452 (~14 km do centro)",
+      "segmento": "Alto padrão",
+      "status": "Em comercialização",
+      "descricao": "Condomínio de campo (chácaras) a cerca de 14 km do centro, na BR-452, com lotes a partir de 5.000 m². Conceito de vida no campo de alto padrão, com lago privativo, trilhas ecológicas e spa. Segurança armada 24h.",
+      "amenidades": [
+        "Segurança armada 24h",
+        "Lago privativo com caiaque e pedalinho",
+        "Hidromassagem com vista",
+        "Trilhas ecológicas",
+        "Quadra de tênis",
+        "Beach tennis",
+        "Campo de futebol society",
+        "Spa",
+        "Sauna",
+        "Playground"
+      ],
+      "destaques": [
+        "Lotes a partir de ~5.000 m²",
+        "Lago privativo",
+        "Trilhas ecológicas e spa",
+        "Infraestrutura concluída"
+      ],
+      "capa": "/img/cond/catucaba-condominio-campo.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/81/whatsapp-image-2025-06-13-at-160649-3.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/81/whatsapp-image-2025-06-13-at-160651-2.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/81/whatsapp-image-2025-06-13-at-160651.jpeg"
+      ]
+    },
+    {
+      "slug": "recanto-bela-vista",
+      "nome": "Recanto Bela Vista",
+      "tipo": "Chácaras em condomínio",
+      "regiao": "Represa de Miranda (BR-452, ~30 km)",
+      "segmento": "Alto padrão",
+      "status": "Em comercialização",
+      "descricao": "Condomínio fechado de chácaras na região da Represa de Miranda, na BR-452, a cerca de 30 km do centro. Voltado a casas de campo de alto padrão com acesso a balneário próximo. Lotes em torno de 1.000 m², totalmente murado.",
+      "amenidades": [
+        "Murado com portão automático",
+        "Iluminação perimetral",
+        "Acesso a balneário próximo",
+        "Sistema de água individual",
+        "Segurança"
+      ],
+      "destaques": [
+        "Chácaras de ~1.000 m²",
+        "Próximo à Represa de Miranda",
+        "Acesso a balneário",
+        "Alto padrão"
+      ],
+      "capa": "/img/cond/recanto-bela-vista.jpg",
+      "galeria": [
+        "https://cdn.imoview.com.br/objetiva/Condominios/5/whatsapp-image-2022-08-02-at-170834.jpeg",
+        "https://cdn.imoview.com.br/objetiva/Condominios/5/whatsapp-image-2022-08-02-at-170629.jpeg"
+      ]
+    },
+    {
+      "slug": "village-le-premier",
+      "nome": "Village Le Premier",
+      "tipo": "Casas em condomínio",
+      "regiao": "Parque Camaru",
+      "segmento": "Médio padrão",
+      "status": "Consolidado",
+      "descricao": "Condomínio fechado de casas no Parque Camaru, fundado em 2005, com 54 casas. Ambiente bastante arborizado, com monitoramento 24h, portaria com reconhecimento facial e muros com concertina. Casas de ~75 m² em lotes de ~125 m².",
+      "amenidades": [
+        "Monitoramento 24h",
+        "Portaria com reconhecimento facial",
+        "Salão de festas",
+        "Piscina",
+        "Espaço gourmet",
+        "Playground",
+        "Quadra esportiva",
+        "Paisagismo"
+      ],
+      "destaques": [
+        "54 casas",
+        "Casas de ~75 m²",
+        "Reconhecimento facial",
+        "Muito arborizado"
+      ],
+      "capa": "",
+      "galeria": []
+    },
+    {
+      "slug": "monterre",
+      "nome": "Condomínio Monterrê",
+      "tipo": "Casas em condomínio",
+      "regiao": "Eco Park / Shopping Park, Zona Sul",
+      "segmento": "Médio padrão",
+      "status": "Lançamento",
+      "descricao": "Lançamento de condomínio fechado de casas no bairro planejado Eco Park II, na Zona Sul. São 164 casas térreas de 72,42 m² em lotes de 112 m², com 3 quartos (1 suíte), pé-direito de 4 m e área gourmet. Lazer completo.",
+      "amenidades": [
+        "Portaria/segurança",
+        "3 playgrounds",
+        "Pet place",
+        "Academia",
+        "Salão de festas",
+        "Piscina",
+        "Quadra de areia",
+        "Quadra poliesportiva",
+        "Espaço gourmet"
+      ],
+      "destaques": [
+        "164 casas térreas",
+        "Casas de 72,42 m² em lotes de 112 m²",
+        "Pé-direito de 4 m",
+        "Bairro Eco Park II"
+      ],
+      "capa": "",
+      "galeria": []
+    },
+    {
+      "slug": "reserva-novo-mundo",
+      "nome": "Reserva Novo Mundo",
+      "tipo": "Lotes em condomínio",
+      "regiao": "Bairro Novo Mundo",
+      "segmento": "Médio padrão",
+      "status": "Em comercialização",
+      "descricao": "Condomínio de lotes da ITV Urbanismo no bairro Novo Mundo, com design urbano inovador focado em home office e qualidade de vida. Padrão médio com baixa taxa condominial, privacidade e localização privilegiada.",
+      "amenidades": [
+        "Portaria/segurança",
+        "Área de lazer adulto e infantil",
+        "Espaço pet",
+        "Áreas de convivência"
+      ],
+      "destaques": [
+        "Loteamento da ITV Urbanismo",
+        "Design urbano inovador",
+        "Baixa taxa de condomínio",
+        "Bairro Novo Mundo"
+      ],
+      "capa": "",
+      "galeria": []
     }
   ]
 }
