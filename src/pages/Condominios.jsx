@@ -24,7 +24,7 @@ function CardCondo({ c }) {
         {c.capa ? (
           <img src={c.capa} alt={`${c.nome} — condomínio fechado em Uberlândia`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
         ) : (
-          <span className="condo-capa-vazia"><IconBuilding width={32} height={32} /></span>
+          <span className="condo-capa-vazia"><IconBuilding width={30} height={30} /><small>Fotos sob consulta</small></span>
         )}
         <span className="condo-tipo">{c.tipo}</span>
         {c.segmento && <span className="condo-seg">{c.segmento}</span>}
