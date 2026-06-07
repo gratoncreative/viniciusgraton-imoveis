@@ -92,7 +92,7 @@ export default function Anunciar() {
       <main className="pagina section--light det">
         <div className="container" style={{ maxWidth: 640, textAlign: 'center' }}>
           <span className="aviseme-ico" style={{ margin: '0 auto 18px' }}><IconWhats width={28} height={28} /></span>
-          <h1 className="section-title">Recebido, {f.nome.trim().split(' ')[0]}! 🎉</h1>
+          <h1 className="section-title">Recebido, {f.nome.trim().split(' ')[0]}!</h1>
           <p className="section-sub" style={{ margin: '16px auto 28px' }}>
             Seu imóvel entrou para <b>avaliação</b>. Eu analiso as informações e as fotos com cuidado e, se for um imóvel
             com o padrão de qualidade que entrego aos meus clientes, faço a curadoria e cuido da divulgação. Já abri o

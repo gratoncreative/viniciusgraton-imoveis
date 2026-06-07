@@ -84,7 +84,7 @@ export default function Contato() {
               {enviado ? (
                 <div className="lead-form lead-ok">
                   <span className="lead-ok-ico"><IconWhats width={30} height={30} /></span>
-                  <h3>Recebido! 🎉</h3>
+                  <h3>Recebido!</h3>
                   <p>Seu contato foi registrado e eu já abri o WhatsApp pra gente conversar. Se não abriu, é só me chamar direto.</p>
                   <a className="btn btn-gold" href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener">
                     <IconWhats /> Falar no WhatsApp
