@@ -362,8 +362,12 @@
         "Clube de 10.586 m²",
         "Dentro da Granja Marileusa"
       ],
-      "capa": "",
-      "galeria": [],
+      "capa": "/img/cond/terras-alpha.jpg",
+      "galeria": [
+        "https://static.wixstatic.com/media/ecd27d_d517dab596614909ab01005ab2b03068~mv2.png"
+      ],
+      "fonteNome": "Terras Alpha Uberlândia (site oficial Grupo Alphaville)",
+      "fonteUrl": "https://www.terrasalphauberlandia.com.br/",
       "segmento": "Alto padrão"
     },
     {
@@ -1580,9 +1584,13 @@
         "Realiza Construtora",
         "Granja Marileusa"
       ],
-      "capa": "",
-      "galeria": [],
-      "fonteNome": "Realiza Construtora",
+      "capa": "/img/cond/bossa-home-design.jpg",
+      "galeria": [
+        "https://realizaconstrutora.com.br/cms/uploads/Piscina_e_Playground_Galeria_Area_Comum_Bossa_Site_Realiza_480f3fa499.jpg",
+        "https://realizaconstrutora.com.br/cms/uploads/Sala_Integrada_Galeria_Casa_Bossa_Site_Realiza_8f41b832c8.jpg",
+        "https://realizaconstrutora.com.br/cms/uploads/Cozinha_Galeria_Casa_Bossa_Site_Realiza_2e9eac57ba.jpg"
+      ],
+      "fonteNome": "Realiza Construtora (site oficial)",
       "fonteUrl": "https://realizaconstrutora.com.br/imovel/bossa-home-design"
     },
     {
@@ -1613,8 +1621,12 @@
         "Segurança 24h",
         "Bosque dos Buritis"
       ],
-      "capa": "",
-      "galeria": [],
+      "capa": "/img/cond/paradiso-ecologico.jpg",
+      "galeria": [
+        "https://static.wixstatic.com/media/fd24f4_e8c8a9f86fff4c1d9d7f5908b96033b8~mv2.jpeg",
+        "https://static.wixstatic.com/media/fd24f4_87ab372f61fa474f8037f6bceba9f31a~mv2.jpeg",
+        "https://static.wixstatic.com/media/6e0dd6_ad8d6e4892eb4d48a5a1b2e5b244015c~mv2.jpg"
+      ],
       "fonteNome": "Paradiso Ecológico (site oficial)",
       "fonteUrl": "https://www.paradisoecologico.com/"
     },
