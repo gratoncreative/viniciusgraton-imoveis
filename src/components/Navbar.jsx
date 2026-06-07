@@ -20,7 +20,13 @@ const LINKS = [
   { to: '/ferramentas', label: 'Ferramentas' },
   { to: '/blog', label: 'Blog' },
   { to: '/regioes', label: 'Uberlândia' },
-  { to: '/anunciar', label: 'Anunciar imóvel', destaque: true },
+]
+// links extras (só no menu mobile, p/ manter a barra desktop limpa)
+const LINKS_MOBILE = [
+  { to: '/anunciar', label: 'Anunciar meu imóvel' },
+  { to: '/avaliacao', label: 'Quanto vale meu imóvel' },
+  { to: '/sobre', label: 'Sobre o Vinícius' },
+  { to: '/contato', label: 'Contato' },
 ]
 
 function Brand() {
@@ -113,6 +119,9 @@ export default function Navbar() {
               <IconClose width={30} height={30} />
             </button>
             {LINKS.map((l) => (
+              <Link key={l.to} to={l.to} onClick={() => setOpen(false)}>{l.label}</Link>
+            ))}
+            {LINKS_MOBILE.map((l) => (
               <Link key={l.to} to={l.to} onClick={() => setOpen(false)}>{l.label}</Link>
             ))}
             <Link to="/conta" onClick={() => setOpen(false)}>{conta ? 'Minha área' : 'Entrar / criar conta'}</Link>

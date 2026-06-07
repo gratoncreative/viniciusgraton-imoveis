@@ -8,12 +8,19 @@ import { useSEO } from '../useSEO'
 import { IconArrow, IconHeart, IconShield, IconWhats } from '../components/icons'
 
 const BENEFICIOS = [
-  ['❤️', 'Favoritos salvos', 'Seus imóveis preferidos guardados e sincronizados.'],
-  ['🕑', 'Histórico inteligente', 'Tudo que você visitou, curtiu e compartilhou em um só lugar.'],
-  ['✨', 'Seleção exclusiva', 'Uma curadoria de imóveis que eu separo pensando no seu perfil.'],
-  ['🔔', 'Avisos personalizados', 'Eu te chamo primeiro quando entrar um imóvel com a sua cara.'],
-  ['⚡', 'Atendimento prioritário', 'Linha direta comigo, com o seu perfil já na mão.'],
-  ['📂', 'Material exclusivo', 'Guias de compra, financiamento e bairros de Uberlândia.'],
+  ['✨', 'Seleção VIP sob medida', 'Eu separo a dedo os imóveis com a sua cara e deixo prontos na sua área — você não perde tempo garimpando.'],
+  ['🔔', 'Avisos em primeira mão', 'Imóvel bom voa. Você é o primeiro a saber quando entrar um no seu perfil — antes do anúncio público.'],
+  ['❤️', 'Favoritos na nuvem', 'Salve quantos quiser e compare com calma, de qualquer celular ou computador.'],
+  ['🕑', 'Continue de onde parou', 'Seu histórico fica salvo e me ajuda a acertar cada vez mais nas indicações pra você.'],
+  ['⚡', 'Linha direta comigo', 'Atendimento prioritário, com o seu perfil já em mãos — sem precisar repetir tudo.'],
+  ['🎁', 'Guias e bônus exclusivos', 'Materiais de compra, financiamento e os melhores bairros de Uberlândia, só pra cadastrados.'],
+]
+
+const COMPARATIVO = [
+  ['Imóveis que você vê', 'Só os anúncios públicos', 'Seleção exclusiva sob medida'],
+  ['Seus favoritos', 'Somente neste aparelho', 'Salvos na nuvem, em qualquer lugar'],
+  ['Imóveis novos', 'Você descobre depois', 'Avisado em primeira mão'],
+  ['Atendimento', 'Comum', 'Prioritário, com seu perfil pronto'],
 ]
 
 function CadastroView({ onPronto }) {
@@ -29,19 +36,37 @@ function CadastroView({ onPronto }) {
   return (
     <div className="conta-cadastro">
       <div className="conta-pitch">
-        <span className="eyebrow">Área do cliente · grátis</span>
-        <h1 className="section-title">Crie sua conta e <em>desbloqueie vantagens</em></h1>
-        <p className="section-sub" style={{ margin: '14px 0 26px' }}>
-          Não é obrigatório — mas faz toda a diferença. Em 30 segundos você passa a ter uma experiência feita pra você.
+        <span className="eyebrow">Área exclusiva · 100% grátis</span>
+        <h1 className="section-title">Imóvel bom <em>some rápido</em>.<br />Seja o primeiro a saber.</h1>
+        <p className="section-sub" style={{ margin: '14px 0 18px' }}>
+          Crie sua conta gratuita e tenha uma experiência feita pra você: uma seleção que eu separo a dedo, favoritos salvos, alertas em primeira mão e atendimento prioritário. Leva 30 segundos.
         </p>
+        <div className="conta-trust-chips">
+          <span>✓ Grátis pra sempre</span><span>✓ Leva 30 segundos</span><span>✓ Sem spam</span>
+        </div>
+
         <ul className="conta-beneficios">
           {BENEFICIOS.map(([ico, t, d]) => (
             <li key={t}><span className="conta-bene-ico" aria-hidden="true">{ico}</span><div><b>{t}</b><span>{d}</span></div></li>
           ))}
         </ul>
+
+        <div className="conta-comp">
+          <div className="conta-comp-head">
+            <span></span><span className="conta-comp-sem">Sem conta</span><span className="conta-comp-com">Com conta ✦</span>
+          </div>
+          {COMPARATIVO.map(([rot, sem, com]) => (
+            <div className="conta-comp-row" key={rot}>
+              <span className="conta-comp-rot">{rot}</span>
+              <span className="conta-comp-sem">{sem}</span>
+              <span className="conta-comp-com">{com}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       <form className="lead-form conta-form" onSubmit={enviar}>
+        <span className="conta-form-selo">Grátis · 30 segundos</span>
         <h3>Criar minha conta</h3>
         <label><span>Nome completo *</span><input value={f.nome} onChange={set('nome')} required /></label>
         <label><span>E-mail *</span><input type="email" value={f.email} onChange={set('email')} required /></label>
