@@ -21,6 +21,7 @@ const Ferramentas = lazy(() => import('./pages/Ferramentas'))
 const Condominios = lazy(() => import('./pages/Condominios'))
 const Anunciar = lazy(() => import('./pages/Anunciar'))
 const Conta = lazy(() => import('./pages/Conta'))
+const Avaliacao = lazy(() => import('./pages/Avaliacao'))
 const Blog = lazy(() => import('./pages/Blog'))
 const BlogPost = lazy(() => import('./pages/BlogPost'))
 const CondominioDetalhe = lazy(() => import('./pages/CondominioDetalhe'))
@@ -114,6 +115,7 @@ export default function App() {
               <Route path="/condominios" element={<Condominios />} />
               <Route path="/condominios/:slug" element={<CondominioDetalhe />} />
               <Route path="/anunciar" element={<Anunciar />} />
+              <Route path="/avaliacao" element={<Avaliacao />} />
               <Route path="/conta" element={<Conta />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />

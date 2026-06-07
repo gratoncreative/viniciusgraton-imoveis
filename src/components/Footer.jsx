@@ -9,6 +9,7 @@ const LINKS = [
   { to: '/ferramentas', label: 'Ferramentas' },
   { to: '/blog', label: 'Blog' },
   { to: '/anunciar', label: 'Anuncie seu imóvel' },
+  { to: '/avaliacao', label: 'Quanto vale meu imóvel' },
   { to: '/como-funciona', label: 'Como eu te ajudo' },
   { to: '/sobre', label: 'Sobre mim' },
   { to: '/regioes', label: 'Uberlândia' },

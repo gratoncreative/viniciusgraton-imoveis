@@ -15,6 +15,7 @@ export default function VenderCta() {
               <p>Cadastre seu imóvel com fotos em poucos minutos. Eu avalio, faço a curadoria e cuido da divulgação e da negociação — você acompanha tudo de perto, sem dor de cabeça.</p>
               <div className="vender-cta-acoes">
                 <Link className="btn btn-gold" to="/anunciar">Anunciar meu imóvel <IconArrow /></Link>
+                <Link className="btn btn-ghost" to="/avaliacao">Quanto vale meu imóvel?</Link>
               </div>
               <p className="vender-cta-nota"><IconShield width={16} height={16} /> Cadastro grátis e sem compromisso. Seus dados e fotos vão direto pra minha avaliação.</p>
             </div>

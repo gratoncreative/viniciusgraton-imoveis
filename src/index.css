@@ -1050,7 +1050,7 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .vender-cta-txt h2 { font-family: var(--font-head); font-weight: 800; font-size: clamp(1.6rem, 3.4vw, 2.4rem); color: #fff; line-height: 1.15; margin: 10px 0 14px; }
 .vender-cta-txt h2 em { font-style: italic; background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .vender-cta-txt > p { color: var(--text-soft); line-height: 1.7; max-width: 40em; }
-.vender-cta-acoes { margin: 22px 0 12px; }
+.vender-cta-acoes { display: flex; flex-wrap: wrap; gap: 12px; margin: 22px 0 12px; }
 .vender-cta-nota { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-mute); }
 .vender-cta-nota svg { color: var(--gold-2); flex: none; }
 .vender-cta-num { display: flex; flex-direction: column; gap: 14px; }

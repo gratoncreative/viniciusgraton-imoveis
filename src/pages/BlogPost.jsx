@@ -1,14 +1,22 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { getPost, POSTS } from '../blog'
 import { CardPost } from './Blog'
 import { linkWhatsApp } from '../data'
+import { registrarView } from '../engajamento'
 import { useSEO } from '../useSEO'
 import { IconArrow, IconWhats } from '../components/icons'
 
 export default function BlogPost() {
   const { slug } = useParams()
   const p = getPost(slug)
+  const [views, setViews] = useState(0)
+
+  // registra a leitura (contador real no KV)
+  useEffect(() => {
+    if (!p) return
+    registrarView(p.slug).then((r) => { if (r && typeof r.views === 'number') setViews(r.views) })
+  }, [p?.slug])
 
   useSEO({
     title: p ? `${p.titulo} | Blog Vinícius Graton` : 'Post não encontrado',
@@ -56,7 +64,7 @@ export default function BlogPost() {
         <div className={`post-hero blog-cor-${p.cor}`}>
           <span className="post-cat">{p.categoria}</span>
           <h1>{p.titulo}</h1>
-          <p className="post-hero-meta">{dataFmt} · {p.leitura} de leitura · por Vinícius Graton</p>
+          <p className="post-hero-meta">{dataFmt} · {p.leitura} de leitura{views > 0 ? ` · ${views} ${views === 1 ? 'leitura' : 'leituras'}` : ''} · por Vinícius Graton</p>
         </div>
 
         <article className="post-artigo">

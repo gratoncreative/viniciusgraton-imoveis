@@ -66,3 +66,10 @@ export async function alternarCurtida(cod, ligado) {
 }
 export const registrarShare = (cod) => postEng({ cod: String(cod), tipo: 'share' })
 export const registrarLead = (lead) => postEng({ tipo: 'lead', ...lead })
+
+// blog: registra leitura e lê as contagens (todas de uma vez)
+export const registrarView = (slug) => postEng({ cod: String(slug), tipo: 'view' })
+export async function lerBlogViews() {
+  try { const r = await fetch(`${API}?blogviews=1`); if (r.ok) { const d = await r.json(); return d.views || {} } } catch {}
+  return {}
+}

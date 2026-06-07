@@ -203,6 +203,7 @@ const urls = [
   { loc: `${SITE}/ferramentas`, freq: 'monthly', pri: '0.6' },
   { loc: `${SITE}/condominios`, freq: 'weekly', pri: '0.7' },
   { loc: `${SITE}/anunciar`, freq: 'monthly', pri: '0.7' },
+  { loc: `${SITE}/avaliacao`, freq: 'monthly', pri: '0.7' },
   { loc: `${SITE}/blog`, freq: 'weekly', pri: '0.7' },
   ...blogSlugs.map((s) => ({ loc: `${SITE}/blog/${s}`, freq: 'monthly', pri: '0.6' })),
   ...condominios.map((c) => ({ loc: `${SITE}/condominios/${c.slug}`, freq: 'weekly', pri: '0.6' })),

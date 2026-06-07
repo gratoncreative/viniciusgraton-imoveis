@@ -37,6 +37,17 @@ async function getEng(env, cod) {
 
 export async function onRequestGet({ env, request }) {
   const url = new URL(request.url)
+  // leituras do blog (todas de uma vez): /api/eng?blogviews=1 -> { views: { slug: n } }
+  if (url.searchParams.get('blogviews')) {
+    if (!temKV(env)) return json({ views: {} })
+    const lista = await env.ENGAGEMENT.list({ prefix: 'bview:' })
+    const views = {}
+    for (const k of lista.keys) {
+      const n = parseInt(await env.ENGAGEMENT.get(k.name), 10)
+      if (n) views[k.name.slice(6)] = n
+    }
+    return json({ views })
+  }
   // listagem de leads (uso do Vinícius): /api/eng?leads=graton2026
   const chave = url.searchParams.get('leads')
   if (chave) {
@@ -56,6 +67,17 @@ export async function onRequestGet({ env, request }) {
 export async function onRequestPost({ env, request }) {
   const body = await request.json().catch(() => ({}))
   const { cod, tipo } = body
+
+  // leitura de post do blog: incrementa contador real
+  if (tipo === 'view') {
+    const slug = String(cod || '').slice(0, 80)
+    if (!slug) return json({ error: 'cod obrigatorio' }, 400)
+    if (!temKV(env)) return json({ views: 0 })
+    const key = 'bview:' + slug
+    const views = (parseInt(await env.ENGAGEMENT.get(key), 10) || 0) + 1
+    await env.ENGAGEMENT.put(key, String(views))
+    return json({ views })
+  }
 
   if (tipo === 'lead') {
     const nome = String(body.nome || '').slice(0, 80)
