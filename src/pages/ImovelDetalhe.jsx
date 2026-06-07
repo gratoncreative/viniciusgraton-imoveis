@@ -59,6 +59,9 @@ export default function ImovelDetalhe() {
     return () => { document.title = `${CONFIG.marca}` }
   }, [im])
 
+  // registra a visita no histórico do cliente (área do cliente / recomendações)
+  useEffect(() => { if (im) { import('../conta').then((m) => m.registrarVisita(im.codigo)) } }, [im])
+
   // Dados estruturados (SEO / rich results no Google)
   useEffect(() => {
     if (!im) return

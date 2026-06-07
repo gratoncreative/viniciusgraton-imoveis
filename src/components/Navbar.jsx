@@ -3,7 +3,14 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CONFIG, linkWhatsApp, WA } from '../data'
 import { favoritos } from '../engajamento'
+import { getConta } from '../conta'
 import { IconWhats, IconMenu, IconClose, IconHeart } from './icons'
+
+const IconUser = (p) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" {...p}>
+    <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" />
+  </svg>
+)
 
 // Páginas do menu principal
 const LINKS = [
@@ -32,7 +39,16 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const [favs, setFavs] = useState(0)
+  const [conta, setConta] = useState(null)
   const { pathname } = useLocation()
+
+  useEffect(() => {
+    const ler = () => setConta(getConta())
+    ler()
+    window.addEventListener('vg-conta', ler)
+    window.addEventListener('storage', ler)
+    return () => { window.removeEventListener('vg-conta', ler); window.removeEventListener('storage', ler) }
+  }, [pathname])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -73,6 +89,10 @@ export default function Navbar() {
               <IconHeart filled={favs > 0} width={20} height={20} />
               {favs > 0 && <span className="nav-fav-badge">{favs}</span>}
             </Link>
+            <Link to="/conta" className="nav-conta" aria-label={conta ? 'Minha área' : 'Entrar'}>
+              <IconUser width={19} height={19} />
+              <span>{conta ? (conta.nome || '').trim().split(' ')[0] || 'Minha área' : 'Entrar'}</span>
+            </Link>
             <a className="btn btn-gold" href={linkWhatsApp(WA.navbar)} target="_blank" rel="noopener">
               <IconWhats /> Falar agora
             </a>
@@ -95,6 +115,7 @@ export default function Navbar() {
             {LINKS.map((l) => (
               <Link key={l.to} to={l.to} onClick={() => setOpen(false)}>{l.label}</Link>
             ))}
+            <Link to="/conta" onClick={() => setOpen(false)}>{conta ? 'Minha área' : 'Entrar / criar conta'}</Link>
             <Link to="/favoritos" onClick={() => setOpen(false)}>Favoritos{favs > 0 ? ` (${favs})` : ''}</Link>
             <a className="btn btn-gold" href={linkWhatsApp(WA.navbar)} target="_blank" rel="noopener" onClick={() => setOpen(false)}>
               <IconWhats /> Falar no WhatsApp
