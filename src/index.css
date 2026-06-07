@@ -47,6 +47,18 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* refino: foco visível acessível (só no teclado) + seleção na cor da marca */
+:focus-visible { outline: 2px solid var(--gold-2); outline-offset: 3px; border-radius: 6px; }
+::selection { background: rgba(224, 181, 86, 0.28); color: #fff; }
+.section--light ::selection { color: #1a1f29; }
+/* imagens nunca distorcem e ganham leve suavização */
+img { image-rendering: auto; }
+/* botão voltar ao topo */
+.back-top { position: fixed; left: 22px; bottom: 22px; z-index: 90; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--gold-3); background: rgba(11,14,22,0.82); color: var(--gold-1); display: grid; place-items: center; cursor: pointer; backdrop-filter: blur(8px); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.6); opacity: 0; transform: translateY(12px) scale(0.9); pointer-events: none; transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), background 0.3s; }
+.back-top.on { opacity: 1; transform: none; pointer-events: auto; }
+.back-top:hover { background: var(--gold-grad); color: #20160a; border-color: transparent; }
+@media (max-width: 860px) { .back-top { left: 16px; bottom: 16px; width: 42px; height: 42px; } }
+
 /* fundo com brilho ambiente */
 body::before {
   content: '';
