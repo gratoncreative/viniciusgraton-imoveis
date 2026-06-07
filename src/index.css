@@ -1043,6 +1043,22 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .post-cta span { color: #5a6370; font-size: 0.92rem; }
 .blog-home { background: #efeae0; }
 
+/* CTA de venda (proprietário) na home */
+.vender-cta-sec { padding: clamp(40px, 7vw, 90px) 0; background: linear-gradient(135deg, #0d1119 0%, #11151d 100%); }
+.vender-cta { display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(28px, 5vw, 56px); align-items: center; }
+.vender-cta-txt .eyebrow { color: var(--gold-1); }
+.vender-cta-txt h2 { font-family: var(--font-head); font-weight: 800; font-size: clamp(1.6rem, 3.4vw, 2.4rem); color: #fff; line-height: 1.15; margin: 10px 0 14px; }
+.vender-cta-txt h2 em { font-style: italic; background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.vender-cta-txt > p { color: var(--text-soft); line-height: 1.7; max-width: 40em; }
+.vender-cta-acoes { margin: 22px 0 12px; }
+.vender-cta-nota { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-mute); }
+.vender-cta-nota svg { color: var(--gold-2); flex: none; }
+.vender-cta-num { display: flex; flex-direction: column; gap: 14px; }
+.vender-cta-num div { background: rgba(255,255,255,0.04); border: 1px solid rgba(184,134,47,0.28); border-radius: 16px; padding: 18px 22px; }
+.vender-cta-num b { display: block; font-family: var(--font-head); font-weight: 800; font-size: 1.5rem; background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.vender-cta-num span { color: var(--text-soft); font-size: 0.9rem; line-height: 1.45; }
+@media (max-width: 820px) { .vender-cta { grid-template-columns: 1fr; } }
+
 /* ===== Construtoras (índice rico) ===== */
 .cns-stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin: 30px 0 36px; }
 .cns-stat { background: #fff; border: 1px solid rgba(22,26,34,0.1); border-radius: 16px; padding: 16px 30px; text-align: center; box-shadow: 0 14px 34px -28px rgba(22,26,34,0.5); }

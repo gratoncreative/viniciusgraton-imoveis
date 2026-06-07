@@ -3,6 +3,7 @@ import Apresentacao from '../components/Apresentacao'
 import Destaque from '../components/Destaque'
 import Construtoras from '../components/Construtoras'
 import BlogHome from '../components/BlogHome'
+import VenderCta from '../components/VenderCta'
 import Contato from '../components/Contato'
 import { useSEO } from '../useSEO'
 
@@ -22,6 +23,7 @@ export default function Home() {
       <Apresentacao />
       <Destaque limite={9} />
       <Construtoras />
+      <VenderCta />
       <BlogHome />
       <Contato />
     </main>
