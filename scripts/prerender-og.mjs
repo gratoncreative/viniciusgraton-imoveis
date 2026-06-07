@@ -22,7 +22,9 @@ const construtoras = JSON.parse(readFileSync(resolve(ROOT, 'src/construtoras.jso
 const condominios = JSON.parse(readFileSync(resolve(ROOT, 'src/condominios.json'), 'utf8')).condominios || []
 // posts do blog (extrai os slugs do src/blog.js sem precisar de bundler)
 const blogSrc = readFileSync(resolve(ROOT, 'src/blog.js'), 'utf8')
-const blogSlugs = [...blogSrc.matchAll(/slug:\s*'([^']+)'/g)].map((m) => m[1])
+const blogSlugsBase = [...blogSrc.matchAll(/slug:\s*'([^']+)'/g)].map((m) => m[1])
+const blogExtra = JSON.parse(readFileSync(resolve(ROOT, 'src/blog-extra.json'), 'utf8'))
+const blogSlugs = [...new Set([...blogSlugsBase, ...blogExtra.map((p) => p.slug)])]
 const lastmod = (dados.geradoEm || '').slice(0, 10) || '2026-06-04'
 
 const formatPreco = (v) => {

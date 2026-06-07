@@ -73,6 +73,12 @@ export default function BlogPost() {
           {p.conteudo.map((b, i) => b.tipo === 'h'
             ? <h2 key={i}>{b.txt}</h2>
             : <p key={i}>{b.txt}</p>)}
+          {(p.fontes || []).length > 0 && (
+            <div className="post-fontes">
+              <b>Fontes:</b>
+              <ul>{p.fontes.map((f, i) => <li key={i}><a href={f.url} target="_blank" rel="noopener noreferrer">{f.nome}</a></li>)}</ul>
+            </div>
+          )}
         </article>
 
         <div className="post-cta">

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import CampoMoeda from '../components/CampoMoeda'
 import { IMOVEIS, BAIRROS_IMOVEL, linkWhatsApp } from '../data'
+import BAIRROS_M2 from '../bairros-m2.json'
 import { formatBRL } from '../extenso'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow } from '../components/icons'
@@ -107,12 +108,12 @@ function CalcInvestir() {
   const r = useMemo(() => { const yAl = valor > 0 ? (aluguel * 12 / valor) * 100 : 0; const aplic = valor * ((+taxa || 0) / 100); const aluguelAno = aluguel * 12; return { yAl, aplic, aluguelAno, dif: aluguelAno - aplic } }, [valor, aluguel, taxa])
   return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor do imóvel" valor={valor} onChange={setValor} /><CampoMoeda label="Aluguel mensal que renderia" valor={aluguel} onChange={setAluguel} /><Campo label="Rendimento da aplicação (a.a.)" sufixo="% a.a." valor={taxa} onChange={setTaxa} step="0.1" /></div><div><Resultado destaque={{ rotulo: r.dif >= 0 ? 'O aluguel rende mais por ano' : 'A aplicação rende mais por ano', valor: brl(Math.abs(r.dif)) }} itens={[{ rotulo: 'Aluguel em 12 meses', valor: brl(r.aluguelAno) }, { rotulo: `Aplicando ${formatBRL(valor)} a ${pct(+taxa || 0)} a.a.`, valor: brl(r.aplic) }, { rotulo: 'Rentabilidade do aluguel', valor: `${pct(r.yAl)} a.a.` }]} />{nota('Comparação simplificada (bruta). O imóvel ainda costuma VALORIZAR ao longo do tempo, o que não entra na conta da aplicação. CDI ~10–11% a.a.; poupança ~6–7% a.a. — confirme as taxas atuais.')}</div></div>)
 }
+const M2_ORDENADO = [...BAIRROS_M2].sort((a, b) => a.bairro.localeCompare(b.bairro, 'pt-BR'))
 function CalcValorM2() {
-  const dados = useMemo(() => { const m = {}; for (const im of IMOVEIS) { if (im.bairro && im.area > 0 && im.preco > 0) { (m[im.bairro] = m[im.bairro] || []).push(im.preco / im.area) } } const med = {}; for (const b in m) med[b] = m[b].reduce((a, x) => a + x, 0) / m[b].length; return med }, [])
-  const bairrosComDados = Object.keys(dados).sort()
-  const [bairro, setBairro] = useState(bairrosComDados[0] || ''); const [area, setArea] = useState('100')
-  const m2 = dados[bairro] || 0; const est = m2 * (+area || 0)
-  return (<div className="calc-grid"><div className="calc-form"><Select label="Bairro" valor={bairro} onChange={setBairro} opcoes={bairrosComDados.length ? bairrosComDados : ['—']} /><Campo label="Área (m²)" sufixo="m²" valor={area} onChange={setArea} /></div><div>{m2 > 0 ? <Resultado destaque={{ rotulo: `Estimativa para ${area} m² em ${bairro}`, valor: brl(est) }} itens={[{ rotulo: 'Preço médio do m² (minha carteira)', valor: brl(m2) }, { rotulo: 'Imóveis considerados', valor: `${bairro}` }]} /> : <p className="section-sub">Ainda não tenho imóveis com área cadastrada nesse bairro pra calcular a média. Me chama que eu faço a avaliação real pra você.</p>}{nota('Média calculada a partir dos imóveis reais da minha carteira (pode variar com padrão, estado e localização exata). Para um valor preciso, eu faço a avaliação do seu imóvel — é grátis.')}</div></div>)
+  const [bairro, setBairro] = useState(M2_ORDENADO[0]?.bairro || ''); const [area, setArea] = useState('100')
+  const d = M2_ORDENADO.find((x) => x.bairro === bairro)
+  const est = (d?.m2 || 0) * (+area || 0)
+  return (<div className="calc-grid"><div className="calc-form"><Select label="Bairro" valor={bairro} onChange={setBairro} opcoes={M2_ORDENADO.map((x) => x.bairro)} /><Campo label="Área (m²)" sufixo="m²" valor={area} onChange={setArea} /></div><div>{d ? <Resultado destaque={{ rotulo: `Estimativa para ${area} m² no ${bairro}`, valor: brl(est) }} itens={[{ rotulo: 'Preço médio do m² no bairro', valor: brl(d.m2) }, { rotulo: 'Fonte', valor: `${d.fonte} · ${d.ref}` }]} /> : <p className="section-sub">Me chama que eu faço a avaliação real desse bairro pra você.</p>}{nota('Valor médio de REFERÊNCIA por bairro (venda), de fontes públicas (Proprietário Direto/IPD e ZAP). O preço real varia com padrão, estado, andar e localização exata. Para um número preciso do SEU imóvel, eu faço a avaliação — é grátis.')}</div></div>)
 }
 function CalcScore() {
   const [renda, setRenda] = useState(8000); const [parcela, setParcela] = useState(2400); const [score, setScore] = useState('bom'); const [nome, setNome] = useState('limpo'); const [tipo, setTipo] = useState('clt')

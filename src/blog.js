@@ -1,6 +1,8 @@
 // Blog — conteúdo de autoridade (SEO + ajuda real ao cliente). Escrito pelo Vinícius.
 // cor: índice 0..4 para o gradiente da capa (sem imagens externas, nunca quebra).
-export const POSTS = [
+import POSTS_EXTRA from './blog-extra.json'
+
+const POSTS_BASE = [
   {
     slug: 'como-usar-fgts-para-comprar-imovel',
     titulo: 'Como usar o FGTS para comprar seu imóvel em 2026',
@@ -106,6 +108,8 @@ export const POSTS = [
     ],
   },
 ]
+
+export const POSTS = [...POSTS_BASE, ...POSTS_EXTRA]
 
 export const getPost = (slug) => POSTS.find((p) => p.slug === slug)
 export const postsDestaque = () => {

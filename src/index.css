@@ -1128,6 +1128,10 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .post-cta b { font-family: var(--font-head); font-size: 1.05rem; color: #1a1f29; }
 .post-cta span { color: #5a6370; font-size: 0.92rem; }
 .blog-home { background: #efeae0; }
+.post-fontes { margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 0.88rem; }
+.post-fontes b { font-family: var(--font-head); color: #2a2f3a; }
+.post-fontes ul { list-style: none; margin-top: 8px; display: flex; flex-direction: column; gap: 5px; }
+.post-fontes a { color: var(--gold-3); text-decoration: underline; text-underline-offset: 2px; }
 
 /* CTA de venda (proprietário) na home */
 .vender-cta-sec { padding: clamp(40px, 7vw, 90px) 0; background: linear-gradient(135deg, #0d1119 0%, #11151d 100%); }
