@@ -1,5 +1,6 @@
+import { Link } from 'react-router-dom'
 import Reveal from './Reveal'
-import { BAIRROS, linkWhatsApp } from '../data'
+import { BAIRROS, linkWhatsApp, slugify } from '../data'
 import { IconPin, IconArrow } from './icons'
 
 export default function Bairros() {
@@ -28,13 +29,13 @@ export default function Bairros() {
         <div className="bairros-grid">
           {BAIRROS.map((b, i) => (
             <Reveal key={i} delay={(i % 4) * 0.06}>
-              <div className="bairro-card">
+              <Link className="bairro-card" to={`/imoveis/uberlandia/${slugify(b.nome)}`}>
                 <span className="bairro-ico"><IconPin /></span>
                 <div>
                   <h4>{b.nome}</h4>
                   <p>{b.desc}</p>
                 </div>
-              </div>
+              </Link>
             </Reveal>
           ))}
         </div>

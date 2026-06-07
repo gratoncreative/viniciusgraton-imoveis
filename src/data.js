@@ -344,6 +344,20 @@ export const BAIRROS = [
   { nome: 'Granja Marileusa', desc: 'Bairro planejado e tecnológico, alto padrão.' },
 ]
 
+// Slug amigável p/ URLs (sem acento, minúsculo, com hífens)
+export const slugify = (s) =>
+  String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+
+// Bairros com página própria (SEO): editoriais + os que têm imóveis na carteira.
+const _descBairro = (n) =>
+  `Imóveis à venda em ${n}, Uberlândia. Veja as opções da minha carteira e fale comigo para uma curadoria sob medida na região.`
+const _editorial = Object.fromEntries(BAIRROS.map((b) => [b.nome.toLowerCase(), b.desc]))
+export const BAIRROS_SEO = [...new Set([...BAIRROS.map((b) => b.nome), ...BAIRROS_IMOVEL])]
+  .map((nome) => ({ nome, slug: slugify(nome), desc: _editorial[nome.toLowerCase()] || _descBairro(nome) }))
+  .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
+export const getBairroSeo = (slug) => BAIRROS_SEO.find((b) => b.slug === slug)
+export const imoveisDoBairro = (nome) => IMOVEIS.filter((i) => (i.bairro || '').toLowerCase() === String(nome).toLowerCase())
+
 // Perguntas frequentes (conteúdo de autoridade + schema FAQ)
 export const FAQ = [
   {

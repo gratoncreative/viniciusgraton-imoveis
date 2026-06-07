@@ -110,6 +110,46 @@ for (const im of imoveis) {
 }
 console.log(`✓ prerender-og: ${n} páginas de imóvel geradas em dist/imovel/{codigo}/index.html`)
 
+// páginas de bairro (SEO) — meta/canonical/JSON-LD por bairro
+const slugify = (s) => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+const editoriais = ['Jardim Karaíba', 'Gávea', 'Santa Mônica', 'Morada da Colina', 'Tabajaras', 'Cidade Jardim', 'Tubalina', 'Granja Marileusa']
+const bairrosSeo = [...new Set([...editoriais, ...imoveis.map((im) => im.bairro)])]
+  .filter(Boolean)
+  .map((nome) => ({ nome, slug: slugify(nome) }))
+
+function renderBairro(b) {
+  const titulo = `Imóveis à venda em ${b.nome}, Uberlândia`
+  const desc = `Casas e apartamentos à venda em ${b.nome}, Uberlândia, com Vinícius Graton — consultor credenciado da Rotina Imobiliária. Veja as opções e fale comigo.`
+  const url = `${SITE}/imoveis/uberlandia/${b.slug}`
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: titulo,
+    description: desc,
+    url,
+    about: { '@type': 'Place', name: `${b.nome}, Uberlândia, MG` },
+  }
+  return baseHtml
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)} | Vinícius Graton</title>`)
+    .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
+    .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${esc(url)}$2`)
+    .replace(/(<meta name="twitter:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
+    .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
+    .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
+}
+
+let nb = 0
+for (const b of bairrosSeo) {
+  const dir = resolve(DIST, 'imoveis', 'uberlandia', b.slug)
+  mkdirSync(dir, { recursive: true })
+  writeFileSync(resolve(dir, 'index.html'), renderBairro(b))
+  nb++
+}
+console.log(`✓ prerender bairros: ${nb} páginas em dist/imoveis/uberlandia/{bairro}/`)
+
 // sitemap.xml completo (home + catálogo + cada imóvel, com imagem p/ o Google Imagens)
 const urls = [
   { loc: `${SITE}/`, freq: 'weekly', pri: '1.0' },
@@ -120,6 +160,7 @@ const urls = [
   { loc: `${SITE}/construtoras`, freq: 'weekly', pri: '0.7' },
   ...construtoras.map((c) => ({ loc: `${SITE}/construtoras/${c.slug}`, freq: 'weekly', pri: '0.6' })),
   { loc: `${SITE}/contato`, freq: 'monthly', pri: '0.5' },
+  ...bairrosSeo.map((b) => ({ loc: `${SITE}/imoveis/uberlandia/${b.slug}`, freq: 'weekly', pri: '0.7' })),
   ...imoveis.map((im) => ({
     loc: `${SITE}/imovel/${im.codigo}`,
     freq: 'weekly',
