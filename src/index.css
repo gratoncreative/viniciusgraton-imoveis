@@ -782,7 +782,10 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 
 /* ---------- WhatsApp flutuante ---------- */
 .wa-float { position: fixed; right: 24px; bottom: 24px; z-index: 90; width: 60px; height: 60px; border-radius: 50%; background: #25d366; display: grid; place-items: center; box-shadow: 0 12px 32px -8px rgba(37,211,102,0.6); transition: transform 0.35s var(--ease); }
+.wa-float::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #25d366; z-index: -1; animation: waPulse 2.4s var(--ease) infinite; }
+@keyframes waPulse { 0% { transform: scale(1); opacity: 0.5; } 70%, 100% { transform: scale(1.7); opacity: 0; } }
 .wa-float:hover { transform: scale(1.08) translateY(-2px); }
+@media (prefers-reduced-motion: reduce) { .wa-float::before { animation: none; } }
 .wa-float svg { width: 30px; height: 30px; color: #fff; }
 
 /* ===== Barra fixa de contato (estilo incorporadora) ===== */
