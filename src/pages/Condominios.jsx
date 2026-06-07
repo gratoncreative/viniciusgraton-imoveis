@@ -17,6 +17,16 @@ const TIPOS = ['Casas', 'Lotes', 'Chácaras']
 const SEGMENTOS = ['Alto padrão', 'Médio padrão']
 const STATUS = ['Lançamento', 'Em comercialização', 'Pronto para morar']
 
+const blob = (c) => [c.nome, c.regiao, c.descricao, ...(c.amenidades || []), ...(c.destaques || [])].join(' ').toLowerCase()
+const DESTAQUES = [
+  ['Beira de represa/lago', /represa|lago|miranda|n[aá]utico|orla|p[ií]er/],
+  ['Com piscina', /piscina/],
+  ['Quadra de tênis', /t[eê]nis/],
+  ['Beach tennis', /beach tennis/],
+  ['Pet place', /\bpet\b/],
+  ['Campo de futebol', /futebol|society|futsal/],
+]
+
 function CardCondo({ c }) {
   return (
     <Link className="condo-card" to={`/condominios/${c.slug}`}>
@@ -51,22 +61,25 @@ export default function Condominios() {
   const [tipo, setTipo] = useState('')
   const [seg, setSeg] = useState('')
   const [status, setStatus] = useState('')
+  const [dest, setDest] = useState('')
 
   const base = useMemo(() => CONDOMINIOS.filter((c) => !c.grupo), [])
 
   const lista = useMemo(() => {
     const q = norm(busca)
+    const re = DESTAQUES.find((d) => d[0] === dest)?.[1]
     return base.filter((c) =>
       (!q || norm(`${c.nome} ${c.regiao}`).includes(q)) &&
       (!zona || zonaDe(c.regiao) === zona) &&
       (!tipo || ehTipo(c.tipo, tipo)) &&
       (!seg || c.segmento === seg) &&
-      (!status || statusDe(c.status) === status)
+      (!status || statusDe(c.status) === status) &&
+      (!re || re.test(blob(c)))
     ).sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
-  }, [base, busca, zona, tipo, seg, status])
+  }, [base, busca, zona, tipo, seg, status, dest])
 
-  const limpar = () => { setBusca(''); setZona(''); setTipo(''); setSeg(''); setStatus('') }
-  const temFiltro = busca || zona || tipo || seg || status
+  const limpar = () => { setBusca(''); setZona(''); setTipo(''); setSeg(''); setStatus(''); setDest('') }
+  const temFiltro = busca || zona || tipo || seg || status || dest
 
   return (
     <main className="pagina section--light det condos-pg">
@@ -123,6 +136,13 @@ export default function Condominios() {
             <div className="condo-chips">
               <button className={`condo-chip ${!status ? 'on' : ''}`} onClick={() => setStatus('')}>Todas</button>
               {STATUS.map((s) => <button key={s} className={`condo-chip ${status === s ? 'on' : ''}`} onClick={() => setStatus(s)}>{s}</button>)}
+            </div>
+          </div>
+          <div className="condo-filtro-grupo condo-filtro-grupo--full">
+            <span className="condo-filtro-rot">Destaques</span>
+            <div className="condo-chips">
+              <button className={`condo-chip ${!dest ? 'on' : ''}`} onClick={() => setDest('')}>Todos</button>
+              {DESTAQUES.map(([label]) => <button key={label} className={`condo-chip ${dest === label ? 'on' : ''}`} onClick={() => setDest(label)}>{label}</button>)}
             </div>
           </div>
         </div>
