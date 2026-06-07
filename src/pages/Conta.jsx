@@ -7,13 +7,28 @@ import { getConta, salvarConta, logout, getHistorico, estaLogado } from '../cont
 import { useSEO } from '../useSEO'
 import { IconArrow, IconHeart, IconShield, IconWhats } from '../components/icons'
 
+const BEN_ICN = {
+  star: 'M12 3l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.3 6.8 19l1-5.8L3.6 9.2l5.8-.9z',
+  bell: 'M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0',
+  heart: 'M20.8 5.1a5.4 5.4 0 0 0-7.7 0L12 6.2l-1.1-1.1a5.4 5.4 0 1 0-7.7 7.7L12 21.5l8.8-8.7a5.4 5.4 0 0 0 0-7.7z',
+  clock: 'M12 7v5l3 2',
+  bolt: 'M13 2 4 14h7l-1 8 9-12h-7z',
+  gift: 'M20 12v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8M2 8h20v4H2zM12 8v13M12 8S10.5 4 8 4a2 2 0 0 0 0 4M12 8s1.5-4 4-4a2 2 0 0 1 0 4',
+}
+const BenIcon = ({ name, size = 20 }) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    {name === 'clock' && <circle cx="12" cy="12" r="9" />}
+    <path d={BEN_ICN[name] || BEN_ICN.star} />
+  </svg>
+)
+
 const BENEFICIOS = [
-  ['✨', 'Seleção VIP sob medida', 'Eu separo a dedo os imóveis com a sua cara e deixo prontos na sua área — você não perde tempo garimpando.'],
-  ['🔔', 'Avisos em primeira mão', 'Imóvel bom voa. Você é o primeiro a saber quando entrar um no seu perfil — antes do anúncio público.'],
-  ['❤️', 'Favoritos na nuvem', 'Salve quantos quiser e compare com calma, de qualquer celular ou computador.'],
-  ['🕑', 'Continue de onde parou', 'Seu histórico fica salvo e me ajuda a acertar cada vez mais nas indicações pra você.'],
-  ['⚡', 'Linha direta comigo', 'Atendimento prioritário, com o seu perfil já em mãos — sem precisar repetir tudo.'],
-  ['🎁', 'Guias e bônus exclusivos', 'Materiais de compra, financiamento e os melhores bairros de Uberlândia, só pra cadastrados.'],
+  ['star', 'Seleção VIP sob medida', 'Eu separo a dedo os imóveis com a sua cara e deixo prontos na sua área — você não perde tempo garimpando.'],
+  ['bell', 'Avisos em primeira mão', 'Imóvel bom voa. Você é o primeiro a saber quando entrar um no seu perfil — antes do anúncio público.'],
+  ['heart', 'Favoritos na nuvem', 'Salve quantos quiser e compare com calma, de qualquer celular ou computador.'],
+  ['clock', 'Continue de onde parou', 'Seu histórico fica salvo e me ajuda a acertar cada vez mais nas indicações pra você.'],
+  ['bolt', 'Linha direta comigo', 'Atendimento prioritário, com o seu perfil já em mãos — sem precisar repetir tudo.'],
+  ['gift', 'Guias e bônus exclusivos', 'Materiais de compra, financiamento e os melhores bairros de Uberlândia, só pra cadastrados.'],
 ]
 
 const COMPARATIVO = [
@@ -47,7 +62,7 @@ function CadastroView({ onPronto }) {
 
         <ul className="conta-beneficios">
           {BENEFICIOS.map(([ico, t, d]) => (
-            <li key={t}><span className="conta-bene-ico" aria-hidden="true">{ico}</span><div><b>{t}</b><span>{d}</span></div></li>
+            <li key={t}><span className="conta-bene-ico"><BenIcon name={ico} /></span><div><b>{t}</b><span>{d}</span></div></li>
           ))}
         </ul>
 
@@ -128,7 +143,7 @@ function PainelView({ conta, onSair }) {
       <header className="conta-hero">
         <div>
           <span className="eyebrow">Minha área</span>
-          <h1 className="section-title">Olá, <em>{primeiro || 'cliente'}</em> 👋</h1>
+          <h1 className="section-title">Olá, <em>{primeiro || 'cliente'}</em></h1>
           <p className="section-sub" style={{ marginTop: 10 }}>
             Que bom te ver por aqui. Aqui ficam seus favoritos, seu histórico e a seleção que eu preparei pra você.
           </p>
@@ -139,9 +154,9 @@ function PainelView({ conta, onSair }) {
         </div>
       </header>
 
-      <Bloco titulo="✨ Seleção que separei pra você" lista={selecao} vazio="Em breve, opções sob medida." />
-      <Bloco titulo="❤️ Seus favoritos" lista={favs} vazio="Toque no coração dos imóveis que gostar para guardá-los aqui." />
-      <Bloco titulo="🕑 Você visitou recentemente" lista={hist} vazio="Os imóveis que você abrir aparecem aqui para retomar de onde parou." />
+      <Bloco titulo="Seleção que separei pra você" lista={selecao} vazio="Em breve, opções sob medida." />
+      <Bloco titulo="Seus favoritos" lista={favs} vazio="Toque no coração dos imóveis que gostar para guardá-los aqui." />
+      <Bloco titulo="Você visitou recentemente" lista={hist} vazio="Os imóveis que você abrir aparecem aqui para retomar de onde parou." />
 
       {!favs.length && (
         <div style={{ textAlign: 'center', marginTop: 10 }}>
