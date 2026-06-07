@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import Galeria from '../components/Galeria'
+import AgendarVisita from '../components/AgendarVisita'
 import CardImovel from '../components/CardImovel'
 import Engajamento from '../components/Engajamento'
 import {
@@ -186,14 +187,7 @@ export default function ImovelDetalhe() {
               <a className="btn btn-gold det-whats" href={linkWhatsApp(waImovel(im))} target="_blank" rel="noopener">
                 <IconWhats /> Tenho interesse neste imóvel
               </a>
-              <a
-                className="btn btn-ghost det-visita"
-                href={linkWhatsApp(`Olá Vinícius! Quero agendar uma visita ao imóvel cód. ${im.codigo} (${im.tipo} no ${im.bairro}).`)}
-                target="_blank"
-                rel="noopener"
-              >
-                Agendar uma visita
-              </a>
+              <AgendarVisita im={im} />
               <div className="det-engaj">
                 <Engajamento im={im} variante="detalhe" />
                 <span className="det-engaj-dica">Curta e compartilhe com quem vai amar este imóvel</span>

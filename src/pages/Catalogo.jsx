@@ -1,21 +1,47 @@
 import { useMemo } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import CardImovel from '../components/CardImovel'
 import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, FAIXAS_PRECO, linkWhatsApp, WA } from '../data'
+import { useSEO } from '../useSEO'
 import { IconWhats, IconClose } from '../components/icons'
+
+const AREAS = [60, 100, 150, 200, 300]
+const CARACS = ['Piscina', 'Churrasqueira', 'Varanda gourmet', 'Academia', 'Portaria 24h', 'Closet', 'Energia solar']
+
+// atalhos temáticos (buscas rápidas) → catálogo pré-filtrado
+const RAPIDAS = [
+  { label: 'Casas em condomínio', params: { tipo: 'Casa em condomínio' } },
+  { label: 'Apartamentos', params: { tipo: 'Apartamento' } },
+  { label: 'Alto padrão', params: { faixa: 4 } },
+  { label: 'Com piscina', params: { carac: 'Piscina' } },
+  { label: 'Até R$ 600 mil', params: { faixa: 1 } },
+  { label: '3+ suítes', params: { suites: 3 } },
+]
+
+const blobDe = (im) => {
+  const c = im.caracteristicas || {}
+  return [...(c.internas || []), ...(c.externas || []), ...(c.extras || []), im.descricao || ''].join(' ').toLowerCase()
+}
 
 export default function Catalogo() {
   const [params, setParams] = useSearchParams()
+  useSEO({
+    title: 'Imóveis à venda em Uberlândia',
+    description: 'Casas, apartamentos e imóveis de alto padrão à venda em Uberlândia. Filtre por bairro, preço, quartos, suítes e características e fale com o Vinícius.',
+    path: '/imoveis',
+  })
 
-  // a URL é a fonte da verdade dos filtros (busca compartilhável e botão voltar funciona)
   const f = {
     q: params.get('q') || '',
     tipo: params.get('tipo') || '',
     bairro: params.get('bairro') || '',
     faixa: params.has('faixa') ? parseInt(params.get('faixa'), 10) : -1,
     quartos: parseInt(params.get('quartos') || '0', 10),
+    suites: parseInt(params.get('suites') || '0', 10),
     vagas: parseInt(params.get('vagas') || '0', 10),
+    area: parseInt(params.get('area') || '0', 10),
+    carac: params.get('carac') || '',
     ordem: params.get('ordem') || 'recentes',
   }
 
@@ -27,12 +53,22 @@ export default function Catalogo() {
     setParams(p, { replace: true })
   }
 
+  // aplica um conjunto de filtros (buscas rápidas), limpando o resto
+  const aplicarRapida = (novos) => {
+    const p = new URLSearchParams()
+    Object.entries(novos).forEach(([k, v]) => p.set(k, v))
+    setParams(p, { replace: true })
+  }
+
   const lista = useMemo(() => {
     let r = IMOVEIS.filter((im) => {
       if (f.tipo && im.tipo !== f.tipo) return false
       if (f.bairro && im.bairro !== f.bairro) return false
       if (f.quartos && (im.quartos || 0) < f.quartos) return false
+      if (f.suites && (im.suites || 0) < f.suites) return false
       if (f.vagas && (im.vagas || 0) < f.vagas) return false
+      if (f.area && (im.area || 0) < f.area) return false
+      if (f.carac && !blobDe(im).includes(f.carac.toLowerCase())) return false
       if (f.faixa >= 0) {
         const faixa = FAIXAS_PRECO[f.faixa]
         if (im.preco < faixa.min || im.preco >= faixa.max) return false
@@ -46,18 +82,20 @@ export default function Catalogo() {
     if (f.ordem === 'menor') r = [...r].sort((a, b) => a.preco - b.preco)
     if (f.ordem === 'maior') r = [...r].sort((a, b) => b.preco - a.preco)
     return r
-  }, [f.tipo, f.bairro, f.quartos, f.vagas, f.faixa, f.q, f.ordem])
+  }, [f.tipo, f.bairro, f.quartos, f.suites, f.vagas, f.area, f.carac, f.faixa, f.q, f.ordem])
 
   const limpar = () => setParams({}, { replace: true })
 
-  // chips dos filtros ativos (cada um removível)
   const chips = [
     f.q && { k: 'q', label: `“${f.q}”`, reset: '' },
     f.tipo && { k: 'tipo', label: f.tipo, reset: '' },
     f.bairro && { k: 'bairro', label: f.bairro, reset: '' },
     f.faixa >= 0 && { k: 'faixa', label: FAIXAS_PRECO[f.faixa].label, reset: -1 },
     f.quartos > 0 && { k: 'quartos', label: `${f.quartos}+ quartos`, reset: 0 },
+    f.suites > 0 && { k: 'suites', label: `${f.suites}+ suítes`, reset: 0 },
     f.vagas > 0 && { k: 'vagas', label: `${f.vagas}+ vagas`, reset: 0 },
+    f.area > 0 && { k: 'area', label: `${f.area}+ m²`, reset: 0 },
+    f.carac && { k: 'carac', label: f.carac, reset: '' },
   ].filter(Boolean)
 
   return (
@@ -72,6 +110,13 @@ export default function Catalogo() {
             </p>
           </div>
         </Reveal>
+
+        {/* buscas rápidas */}
+        <div className="cat-rapidas">
+          {RAPIDAS.map((r) => (
+            <button key={r.label} className="cat-rapida" onClick={() => aplicarRapida(r.params)}>{r.label}</button>
+          ))}
+        </div>
 
         {/* Filtros */}
         <div className="cat-filtros">
@@ -98,9 +143,21 @@ export default function Catalogo() {
             <option value={0}>Quartos</option>
             {[1, 2, 3, 4].map((n) => <option key={n} value={n}>{n}+ quartos</option>)}
           </select>
+          <select value={f.suites} onChange={(e) => up('suites', parseInt(e.target.value, 10))}>
+            <option value={0}>Suítes</option>
+            {[1, 2, 3, 4].map((n) => <option key={n} value={n}>{n}+ suítes</option>)}
+          </select>
           <select value={f.vagas} onChange={(e) => up('vagas', parseInt(e.target.value, 10))}>
             <option value={0}>Vagas</option>
             {[1, 2, 3, 4].map((n) => <option key={n} value={n}>{n}+ vagas</option>)}
+          </select>
+          <select value={f.area} onChange={(e) => up('area', parseInt(e.target.value, 10))}>
+            <option value={0}>Área</option>
+            {AREAS.map((n) => <option key={n} value={n}>{n}+ m²</option>)}
+          </select>
+          <select value={f.carac} onChange={(e) => up('carac', e.target.value)}>
+            <option value="">Característica</option>
+            {CARACS.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
           <select value={f.ordem} onChange={(e) => up('ordem', e.target.value)}>
             <option value="recentes">Mais recentes</option>

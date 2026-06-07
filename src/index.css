@@ -349,6 +349,10 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 /* ===== Catálogo (/imoveis) ===== */
 .catalogo { padding: 120px 0 110px; min-height: 100vh; }
 .cat-head { max-width: 640px; margin-bottom: 32px; }
+.cat-rapidas { display: flex; flex-wrap: wrap; gap: 9px; margin: 22px 0 18px; }
+.cat-rapida { font-family: var(--font-head); font-weight: 600; font-size: 0.84rem; color: var(--text); background: rgba(184,134,47,0.1); border: 1px solid rgba(184,134,47,0.32); padding: 8px 15px; border-radius: 100px; cursor: pointer; transition: background 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.2s var(--ease); }
+.section--light .cat-rapida { color: #2b3038; }
+.cat-rapida:hover { background: var(--gold-grad); color: #20160a; border-color: transparent; transform: translateY(-1px); }
 .cat-filtros { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
 .cat-filtros input, .cat-filtros select {
   font-family: var(--font-body); font-size: 0.9rem; color: var(--text);
@@ -442,7 +446,17 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
   .det-dest span { font-size: 0.76rem; line-height: 1.35; }
 }
 .det-whats { width: 100%; justify-content: center; margin-bottom: 12px; }
-.det-visita { width: 100%; justify-content: center; }
+.agendar { display: block; }
+.det-visita { width: 100%; justify-content: center; gap: 8px; }
+.agendar-painel { margin-top: 12px; padding: 16px; border-radius: 14px; background: rgba(184,134,47,0.06); border: 1px solid rgba(184,134,47,0.22); display: flex; flex-direction: column; gap: 12px; }
+.agendar-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.agendar-campo { display: flex; flex-direction: column; gap: 5px; }
+.agendar-campo span { font-size: 0.78rem; color: var(--text-mute); font-weight: 600; }
+.agendar-campo input, .agendar-campo select { padding: 10px 12px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-family: inherit; font-size: 0.92rem; }
+.agendar-campo input:focus, .agendar-campo select:focus { outline: none; border-color: var(--gold-2); }
+.agendar-confirmar { width: 100%; justify-content: center; }
+.agendar-nota { font-size: 0.76rem; color: var(--text-mute); text-align: center; line-height: 1.45; }
+@media (max-width: 380px) { .agendar-row { grid-template-columns: 1fr; } }
 .det-aviso { font-size: 0.78rem; color: var(--text-mute); margin-top: 18px; line-height: 1.5; }
 .det-share { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; background: none; border: none; cursor: pointer; font-family: var(--font-head); font-weight: 600; font-size: 0.9rem; color: var(--gold-3); padding: 4px 0; transition: gap 0.25s var(--ease); }
 .det-share:hover { gap: 12px; text-decoration: underline; text-underline-offset: 3px; }
