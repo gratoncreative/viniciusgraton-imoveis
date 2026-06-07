@@ -913,6 +913,35 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .calc-cta span { font-family: var(--font-head); font-weight: 600; color: #2a2f3a; max-width: 460px; }
 @media (max-width: 760px) { .calc-grid { grid-template-columns: 1fr; gap: 22px; } }
 
+/* ===== Condomínios fechados ===== */
+.condo-strip-wrap { margin: 36px 0 8px; }
+.condo-strip { display: flex; gap: 20px; overflow-x: auto; padding: 6px 4px 22px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--gold-3) transparent; }
+.condo-strip::-webkit-scrollbar { height: 8px; }
+.condo-strip::-webkit-scrollbar-thumb { background: rgba(184,134,47,0.5); border-radius: 100px; }
+.condo-strip::-webkit-scrollbar-track { background: rgba(22,26,34,0.06); border-radius: 100px; }
+.condo-card { scroll-snap-align: start; flex: 0 0 300px; max-width: 300px; display: flex; flex-direction: column; border-radius: 16px; overflow: hidden; background: #fff; border: 1px solid rgba(22,26,34,0.1); box-shadow: 0 14px 34px -24px rgba(22,26,34,0.5); text-decoration: none; color: inherit; transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease); }
+.condo-card:hover { transform: translateY(-5px); box-shadow: 0 26px 50px -28px rgba(22,26,34,0.55); border-color: var(--gold-3); }
+.condo-capa { position: relative; display: block; width: 100%; aspect-ratio: 16 / 11; overflow: hidden; background: #11151d; }
+.condo-capa img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.55s var(--ease); }
+.condo-card:hover .condo-capa img { transform: scale(1.06); }
+.condo-capa-vazia { display: grid; place-items: center; width: 100%; height: 100%; color: #5a6172; background: linear-gradient(135deg, #161a22, #0b0e16); }
+.condo-tipo { position: absolute; top: 12px; left: 12px; font-family: var(--font-head); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--gold-1); background: rgba(7,10,17,0.62); border: 1px solid var(--gold-3); padding: 5px 11px; border-radius: 100px; backdrop-filter: blur(6px); }
+.condo-body { display: flex; flex-direction: column; gap: 7px; padding: 18px; }
+.condo-nome { font-family: var(--font-head); font-weight: 700; font-size: 1.15rem; color: #1a1f29; }
+.condo-regiao { display: flex; align-items: center; gap: 6px; color: #8a909c; font-size: 0.88rem; }
+.condo-regiao svg { color: var(--gold-3); flex: none; }
+.condo-destaque { color: #5a6370; font-size: 0.9rem; line-height: 1.5; flex: 1; }
+.condo-ver { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-head); font-weight: 600; font-size: 0.85rem; color: var(--gold-3); margin-top: 2px; }
+.condo-card:hover .condo-ver { gap: 10px; }
+.condo-destaques { list-style: none; display: flex; flex-direction: column; gap: 8px; margin: 18px 0 22px; }
+.condo-destaques li { display: flex; align-items: flex-start; gap: 9px; color: var(--text-soft); font-size: 0.95rem; }
+.condo-lead { margin-top: 28px; }
+.condo-lead-selects { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.condo-lead-selects select { width: 100%; padding: 13px 12px; border-radius: 11px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); color: #fff; font-size: 0.9rem; font-family: var(--font-body); cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23c9962f' d='M6 8 0 0h12z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
+.condo-lead-selects select:focus { outline: none; border-color: var(--gold-2); }
+.condo-lead-selects option { color: #11151d; }
+@media (max-width: 600px) { .condo-lead-selects { grid-template-columns: 1fr 1fr; } .condo-card { flex-basis: 260px; } }
+
 .construtora-projs { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 10px; }
 .proj-card { display: flex; flex-direction: column; border-radius: 16px; overflow: hidden; background: #ffffff; border: 1px solid rgba(22,26,34,0.1); box-shadow: 0 14px 34px -24px rgba(22,26,34,0.5); text-decoration: none; color: inherit; transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease); }
 .proj-card:hover { transform: translateY(-5px); box-shadow: 0 26px 50px -28px rgba(22,26,34,0.55); border-color: var(--gold-3); }

@@ -1667,6 +1667,177 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "castelo-real",
+      "nome": "Castelo Real Construtora",
+      "site": "https://www.castelorealconstrutora.com.br/",
+      "segmento": "Residencial · especialista no Santa Mônica",
+      "descricao": "Construtora e incorporadora de Uberlândia e Uberaba (MG), com forte atuação no bairro Santa Mônica, próximo à UFU.",
+      "fundacao": "2010",
+      "entregas": "",
+      "certificacoes": [
+        "PBQP-H"
+      ],
+      "atuacao": "Uberlândia e Uberaba, MG",
+      "diferenciais": [
+        "Concentração de obras no Santa Mônica, próximo à UFU",
+        "Plantas humanizadas e renders dos empreendimentos",
+        "Foco em qualidade dos materiais e durabilidade",
+        "Atuação no Minha Casa Minha Vida"
+      ],
+      "descricaoLonga": "A Castelo Real iniciou suas atividades por volta de 1998 e foi constituída formalmente em 2010, especializando-se em edifícios de pequeno e médio porte concentrados no bairro Santa Mônica, nas proximidades da UFU, em Uberlândia. Possui certificação PBQP-H e atua também em Uberaba.",
+      "instagram": "https://www.instagram.com/castelorealconstrutora/",
+      "projetos": [
+        {
+          "slug": "ed-goias",
+          "nome": "Edifício Goiás",
+          "bairro": "Santa Mônica",
+          "status": "Em obras",
+          "entrega": "mar/2027",
+          "endereco": "Rua Antônio Fortunato da Silva, 976 — Santa Mônica, Uberlândia",
+          "preco": "",
+          "descricao": "Edifício residencial no Santa Mônica, próximo à UFU. Apartamentos com sala, cozinha e área de serviço, dois quartos (uma suíte), banheiro social e elevador. Localização que favorece estudantes e investidores pela proximidade do polo universitário.",
+          "tipologias": [
+            "2 quartos (1 suíte)"
+          ],
+          "amenidades": [
+            "Elevador",
+            "Área de serviço"
+          ],
+          "video": "",
+          "capa": "https://www.castelorealconstrutora.com.br/wp-content/uploads/2026/05/FachadaGoias.jpg",
+          "galeria": [
+            "https://www.castelorealconstrutora.com.br/wp-content/uploads/2026/05/SalaGoias.jpg",
+            "https://www.castelorealconstrutora.com.br/wp-content/uploads/2026/05/SuiteGoias.jpg",
+            "https://www.castelorealconstrutora.com.br/wp-content/uploads/2026/05/QuartoGoias.jpg",
+            "https://www.castelorealconstrutora.com.br/wp-content/uploads/2026/05/BanhoGoias.jpg"
+          ]
+        },
+        {
+          "slug": "ed-budapeste",
+          "nome": "Edifício Budapeste",
+          "bairro": "Santa Mônica",
+          "status": "Em obras",
+          "entrega": "jul/2028",
+          "endereco": "Rua João Velasco de Andrade, 373 — Santa Mônica, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento de uso misto no Santa Mônica, com studios/lofts e lojas comerciais, e infraestrutura completa de lazer e serviços. As unidades studio têm layout conjugado com sala, cozinha, quarto, sacada e banheiro. Três níveis de garagem e elevador.",
+          "tipologias": [
+            "Studio/Loft",
+            "Lojas comerciais"
+          ],
+          "amenidades": [
+            "Piscina",
+            "Academia",
+            "Coworking",
+            "Brinquedoteca",
+            "Sala de jogos",
+            "Lavanderia",
+            "Loja de conveniência",
+            "Sala de reunião",
+            "Lobby",
+            "Garagem em 3 níveis",
+            "Elevador"
+          ],
+          "video": "",
+          "capa": "https://www.castelorealconstrutora.com.br/wp-content/uploads/2026/05/FachadaEdBudapeste.jpg",
+          "galeria": [
+            "https://www.castelorealconstrutora.com.br/wp-content/uploads/2026/05/PiscinaCasteloReal-Copia-1.jpg",
+            "https://www.castelorealconstrutora.com.br/wp-content/uploads/2026/05/AcademiaCasteloReal.jpg",
+            "https://www.castelorealconstrutora.com.br/wp-content/uploads/2026/05/CoworkingCasteloReal.jpg",
+            "https://www.castelorealconstrutora.com.br/wp-content/uploads/2026/05/LobbyCasteloReal.jpg"
+          ]
+        },
+        {
+          "slug": "ed-berilo",
+          "nome": "Edifício Berilo",
+          "bairro": "Santa Mônica",
+          "status": "Em obras",
+          "entrega": "jul/2027",
+          "endereco": "Rua Antônio Fortunato da Silva, 362 — Santa Mônica, Uberlândia",
+          "preco": "",
+          "descricao": "Edifício residencial no Santa Mônica, próximo à UFU. Unidades com dois quartos, sala, cozinha com área de serviço, banheiro social e elevador. Projeto voltado para moradia e investimento na região universitária.",
+          "tipologias": [
+            "2 quartos"
+          ],
+          "amenidades": [
+            "Elevador",
+            "Área de serviço"
+          ],
+          "video": "",
+          "capa": "https://www.castelorealconstrutora.com.br/wp-content/uploads/2026/01/WhatsApp-Image-2026-01-29-at-09.36.17-4.jpeg",
+          "galeria": [
+            "https://www.castelorealconstrutora.com.br/wp-content/uploads/2026/01/SalaBerilo-3-2.jpg"
+          ]
+        },
+        {
+          "slug": "ed-agata-imperial",
+          "nome": "Edifício Ágata Imperial",
+          "bairro": "Santa Mônica",
+          "status": "Em obras",
+          "entrega": "set/2026",
+          "endereco": "Avenida Salomão Abrahão, 243 — Santa Mônica, Uberlândia",
+          "preco": "",
+          "descricao": "Edifício residencial na Avenida Salomão Abrahão, no Santa Mônica. Unidades com sala, cozinha, área de serviço, dois quartos (uma suíte), banheiro social e elevador. Localização em avenida principal do bairro, próxima à UFU.",
+          "tipologias": [
+            "2 quartos (1 suíte)"
+          ],
+          "amenidades": [
+            "Elevador",
+            "Área de serviço",
+            "Subsolo de garagem"
+          ],
+          "video": "",
+          "capa": "https://www.castelorealconstrutora.com.br/wp-content/uploads/2024/12/FachadaSalomão-Copia.jpg",
+          "galeria": []
+        },
+        {
+          "slug": "ed-fortaleza",
+          "nome": "Edifício Fortaleza",
+          "bairro": "Santa Mônica",
+          "status": "Em obras",
+          "entrega": "ago/2026",
+          "endereco": "Rua Antônio Fortunato da Silva, 302 — Santa Mônica, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento residencial no Santa Mônica. Unidades com sala, cozinha e área de serviço, dois quartos (uma suíte), banheiro social e elevador, em rua tradicional de obras da construtora, próximo à UFU.",
+          "tipologias": [
+            "2 quartos (1 suíte)"
+          ],
+          "amenidades": [
+            "Elevador",
+            "Área de serviço"
+          ],
+          "video": "",
+          "capa": "https://www.castelorealconstrutora.com.br/wp-content/uploads/2024/09/FachadaFortaleza-1-1-e1726503582747.jpg",
+          "galeria": []
+        },
+        {
+          "slug": "ed-berlim",
+          "nome": "Edifício Berlim",
+          "bairro": "Santa Mônica",
+          "status": "Em obras",
+          "entrega": "dez/2026",
+          "endereco": "Rua João Pereira da Silva, 174 — Santa Mônica, Uberlândia",
+          "preco": "",
+          "descricao": "Empreendimento residencial no Santa Mônica. Unidades com sala e sacada gourmet, cozinha e área de serviço, dois quartos (uma suíte), banheiro social e elevador, com imagens do projeto totalmente renderizadas.",
+          "tipologias": [
+            "2 quartos (1 suíte) com sacada gourmet"
+          ],
+          "amenidades": [
+            "Elevador",
+            "Sacada gourmet",
+            "Área de serviço"
+          ],
+          "video": "",
+          "capa": "https://www.castelorealconstrutora.com.br/wp-content/uploads/2024/05/FachadaBerlim-renderizada-e1726504018742.jpg",
+          "galeria": [
+            "https://www.castelorealconstrutora.com.br/wp-content/uploads/2024/05/SalaBerlim-renderizada.jpg",
+            "https://www.castelorealconstrutora.com.br/wp-content/uploads/2024/05/CozinhaBerlim-renderizada.jpg",
+            "https://www.castelorealconstrutora.com.br/wp-content/uploads/2024/05/QuartoBerlim-renderizada.jpg"
+          ]
+        }
+      ]
     }
   ]
 }

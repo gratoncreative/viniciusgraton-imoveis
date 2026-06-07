@@ -18,6 +18,8 @@ const QuemSou = lazy(() => import('./pages/QuemSou'))
 const Regioes = lazy(() => import('./pages/Regioes'))
 const FaleComigo = lazy(() => import('./pages/FaleComigo'))
 const Ferramentas = lazy(() => import('./pages/Ferramentas'))
+const Condominios = lazy(() => import('./pages/Condominios'))
+const CondominioDetalhe = lazy(() => import('./pages/CondominioDetalhe'))
 const ConstrutorasPage = lazy(() => import('./pages/Construtoras'))
 const ConstrutoraDetalhe = lazy(() => import('./pages/ConstrutoraDetalhe'))
 const EmpreendimentoDetalhe = lazy(() => import('./pages/EmpreendimentoDetalhe'))
@@ -105,6 +107,8 @@ export default function App() {
               <Route path="/construtoras/:slug" element={<ConstrutoraDetalhe />} />
               <Route path="/construtoras/:slug/:projeto" element={<EmpreendimentoDetalhe />} />
               <Route path="/ferramentas" element={<Ferramentas />} />
+              <Route path="/condominios" element={<Condominios />} />
+              <Route path="/condominios/:slug" element={<CondominioDetalhe />} />
               <Route path="/contato" element={<FaleComigo />} />
               <Route path="/favoritos" element={<Favoritos />} />
               <Route path="/privacidade" element={<Privacidade />} />

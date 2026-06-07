@@ -38,6 +38,7 @@ export const WA = {
 // =============================================================
 import destaqueData from './imoveis-destaque.json'
 import construtorasData from './construtoras.json'
+import condominiosData from './condominios.json'
 
 export const IMOVEIS = destaqueData.imoveis || []
 export const IMOVEIS_INFO = { geradoEm: destaqueData.geradoEm, fonte: destaqueData.fonte }
@@ -53,6 +54,10 @@ export const getEmpreendimento = (cslug, pslug) => {
 }
 export const waConstrutora = (c, proj) =>
   `Olá Vinícius! Tenho interesse ${proj ? `no empreendimento ${proj.nome} (${c.nome})` : `nos empreendimentos da ${c.nome}`} em Uberlândia. Pode me passar mais informações e agendar uma visita?`
+
+// Condomínios fechados horizontais (casas, lotes, chácaras) de Uberlândia
+export const CONDOMINIOS = condominiosData.condominios || []
+export const getCondominio = (slug) => CONDOMINIOS.find((c) => c.slug === slug)
 
 // Formata preço em reais de forma curta e elegante (R$ 3,3 mi / R$ 530 mil)
 export const formatPreco = (v) => {
