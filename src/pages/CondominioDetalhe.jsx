@@ -69,7 +69,15 @@ export default function CondominioDetalhe() {
 
   const fotos = [c.capa, ...(c.galeria || [])].filter(Boolean)
   const mapsQuery = encodeURIComponent(`${c.nome}, ${c.regiao}, Uberlândia, MG`)
-  const outros = CONDOMINIOS.filter((x) => x.slug !== c.slug && !x.fases && !x.grupo).slice(0, 6)
+  const zonaDe = (r = '') => /sul/i.test(r) ? 'sul' : (/leste|marileusa/i.test(r) ? 'leste' : (/represa|miranda/i.test(r) ? 'represa' : (/oeste/i.test(r) ? 'oeste' : 'outras')))
+  const zc = zonaDe(c.regiao)
+  // "Veja também" relevante: prioriza mesma zona e mesmo padrão, com capa primeiro
+  const outros = CONDOMINIOS
+    .filter((x) => x.slug !== c.slug && !x.fases && !x.grupo)
+    .map((x) => ({ x, score: (zonaDe(x.regiao) === zc ? 2 : 0) + (x.segmento === c.segmento ? 1 : 0) + (x.capa ? 0.5 : 0) }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 6)
+    .map((o) => o.x)
 
   return (
     <main className="pagina section--light det condos-pg">
