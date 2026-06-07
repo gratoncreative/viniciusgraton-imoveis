@@ -12,7 +12,10 @@ export default function Apresentacao() {
         <Reveal className="apres-foto-col">
           <div className="apres-foto">
             <img src="/vinicius-graton.jpg" alt="Vinícius Graton, consultor de imóveis em Uberlândia" loading="lazy" onError={onImgError} />
-            <span className="apres-selo"><IconShield width={15} height={15} /> Rotina Imobiliária · Uberlândia</span>
+            <span className="apres-selo">
+              <img src="/rotina-logo.png" alt="Rotina Imobiliária" />
+              <span className="apres-selo-txt">Consultor credenciado</span>
+            </span>
           </div>
         </Reveal>
 

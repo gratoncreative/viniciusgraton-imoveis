@@ -49,6 +49,13 @@ export default function Hero() {
             <span className="dot" /> Consultoria imobiliária em Uberlândia e região
           </div>
 
+          <div className="hero-rotina">
+            <span className="hero-rotina-label">Consultor credenciado</span>
+            <span className="hero-rotina-logo">
+              <img src="/rotina-logo.png" alt="Rotina Imobiliária" />
+            </span>
+          </div>
+
           <h1>
             Compre seu imóvel <br /> sem <em>medo de errar</em>
           </h1>
