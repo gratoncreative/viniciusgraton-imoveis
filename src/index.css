@@ -909,7 +909,8 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .calc-tab-txt b { font-family: var(--font-head); font-size: 1rem; color: #1a1f29; }
 .calc-tab-txt i { font-style: normal; font-size: 0.85rem; color: #6a7280; line-height: 1.4; }
 .calc-painel { background: #fff; border: 1px solid rgba(22,26,34,0.1); border-radius: 20px; padding: clamp(20px, 4vw, 36px); box-shadow: 0 24px 60px -40px rgba(22,26,34,0.5); }
-.calc-painel-tit { font-family: var(--font-head); font-weight: 700; font-size: 1.3rem; color: #1a1f29; margin-bottom: 24px; }
+.calc-painel-tit { display: flex; align-items: center; font-family: var(--font-head); font-weight: 700; font-size: 1.3rem; color: #1a1f29; margin-bottom: 24px; }
+.ferr-card.on { border-color: var(--gold-3); box-shadow: 0 0 0 1.5px var(--gold-3); }
 .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
 .calc-form { display: flex; flex-direction: column; gap: 16px; }
 .calc-campo { display: flex; flex-direction: column; gap: 7px; }
@@ -938,7 +939,9 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .ferr-card { display: flex; align-items: center; gap: 13px; text-align: left; padding: 16px; border-radius: 15px; background: #fff; border: 1px solid rgba(22,26,34,0.1); cursor: pointer; transition: transform 0.22s var(--ease), box-shadow 0.22s var(--ease), border-color 0.22s var(--ease); }
 .ferr-card:hover { transform: translateY(-3px); box-shadow: 0 18px 38px -26px rgba(22,26,34,0.55); border-color: var(--gold-3); }
 .ferr-card.on { border-color: var(--gold-3); box-shadow: 0 0 0 2px var(--gold-3); }
-.ferr-ico { flex: none; width: 44px; height: 44px; display: grid; place-items: center; font-size: 1.4rem; border-radius: 12px; background: rgba(184,134,47,0.12); border: 1px solid rgba(184,134,47,0.26); }
+.ferr-ico { flex: none; width: 46px; height: 46px; display: grid; place-items: center; border-radius: 11px; background: #f4f1e8; border: 1px solid rgba(22,26,34,0.09); color: var(--gold-3); transition: background 0.22s var(--ease), color 0.22s var(--ease); }
+.ferr-card:hover .ferr-ico, .ferr-card.on .ferr-ico { background: #11151d; color: var(--gold-1); }
+.calc-tit-ico { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: #11151d; color: var(--gold-1); margin-right: 12px; }
 .ferr-txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .ferr-txt b { font-family: var(--font-head); font-size: 0.96rem; color: #1a1f29; line-height: 1.2; }
 .ferr-txt i { font-style: normal; font-size: 0.82rem; color: #6a7280; line-height: 1.35; }

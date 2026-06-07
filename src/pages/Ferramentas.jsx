@@ -12,23 +12,46 @@ const brl = (n) => (isFinite(n) ? n : 0).toLocaleString('pt-BR', { style: 'curre
 const brl2 = (n) => (isFinite(n) ? n : 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 })
 const pct = (n) => `${(isFinite(n) ? n : 0).toFixed(2).replace('.', ',')}%`
 
+// ícones de linha monocromáticos (sóbrios, institucionais) — sem emojis
+const ICN = {
+  bank: 'M3 21h18M4 21V10l8-5 8 5v11M9 21v-6h6v6M7 10h.01M17 10h.01',
+  chart: 'M4 20V4M4 20h16M8 20v-7M13 20V9M18 20v-4',
+  wallet: 'M3 7a2 2 0 0 1 2-2h12v3M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-3M3 7h17a1 1 0 0 1 1 1v3m0 0h-4a2 2 0 0 0 0 4h4',
+  calc: 'M6 3h12a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01',
+  receipt: 'M6 2v20l2-1.5L10 22l2-1.5L14 22l2-1.5L18 22V2l-2 1.5L14 2l-2 1.5L10 2 8 3.5 6 2zM9 7h6M9 11h6M9 15h4',
+  scale: 'M12 3v18M7 21h10M5 7h14l-3 7H8L5 7zM12 7l-7 0m7 0 7 0M5 7l-2 5h4l-2-5zm14 0-2 5h4l-2-5z',
+  trend: 'M3 17l6-6 4 4 8-8M15 7h6v6',
+  coins: 'M8 8m-5 0a5 3 0 1 0 10 0a5 3 0 1 0-10 0M3 8v5c0 1.66 2.24 3 5 3M13 12.5c0 1.66 2.24 3 5 3s5-1.34 5-3M16 13.5m-5 0a5 3 0 1 0 10 0a5 3 0 1 0-10 0M11 13.5v5c0 1.66 2.24 3 5 3s5-1.34 5-3v-5',
+  home: 'M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10',
+  gauge: 'M12 14l4-4M4 20a8 8 0 1 1 16 0M7.5 13.5h.01M16.5 13.5h.01M9 9.5h.01',
+  doc: 'M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM14 3v5h5M9 13l2 2 4-4',
+  compare: 'M5 4h5v16H5zM14 4h5v16h-5zM12 2v20',
+  map: 'M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14',
+  percent: 'M19 5 5 19M7.5 7.5h.01M16.5 16.5h.01M6 7.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0M15 16.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0',
+  edit: 'M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z',
+  bell: 'M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0',
+}
+const FerrIcon = ({ name, size = 22 }) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={ICN[name] || ICN.calc} /></svg>
+)
+
 const TOOLS = [
-  { id: 'financiamento', nome: 'Simulador de financiamento', desc: 'Parcela e total a pagar (SAC e Price).', icon: '🏦', cat: 'voce' },
-  { id: 'capacidade', nome: 'Quanto consigo financiar?', desc: 'O valor do imóvel que cabe na sua renda.', icon: '📊', cat: 'voce' },
-  { id: 'fgts', nome: 'Simulador de FGTS', desc: 'Quanto o seu saldo abate na entrada e na parcela.', icon: '💼', cat: 'voce' },
-  { id: 'amortizacao', nome: 'Amortização com FGTS', desc: 'Quanto o FGTS encurta o seu financiamento.', icon: '🧮', cat: 'voce' },
-  { id: 'custos', nome: 'Custos de compra (ITBI + cartório)', desc: 'Quanto reservar além do preço, em Uberlândia.', icon: '🧾', cat: 'voce' },
-  { id: 'aluguel', nome: 'Alugar ou financiar?', desc: 'Compare o aluguel com a parcela.', icon: '⚖️', cat: 'voce' },
-  { id: 'rentabilidade', nome: 'Rentabilidade do aluguel', desc: 'Quanto um imóvel rende de aluguel por ano.', icon: '📈', cat: 'voce' },
-  { id: 'investir', nome: 'Imóvel x CDI/poupança', desc: 'Vale mais comprar pra alugar ou aplicar?', icon: '💹', cat: 'voce' },
-  { id: 'valorm2', nome: 'Quanto vale o m² do bairro', desc: 'Preço médio por m² na minha carteira.', icon: '🏠', cat: 'voce' },
-  { id: 'score', nome: 'Chance de aprovação', desc: 'Estimativa da sua chance no banco.', icon: '✅', cat: 'voce' },
-  { id: 'checklist', nome: 'Checklist de documentos', desc: 'Tudo que você precisa, por etapa.', icon: '📋', cat: 'voce' },
-  { id: 'comparar', nome: 'Comparar imóveis', desc: 'Veja imóveis lado a lado.', icon: '⚖️', cat: 'voce', to: '/comparar' },
-  { id: 'mapa', nome: 'Buscar no mapa', desc: 'Explore os imóveis por região.', icon: '🗺️', cat: 'voce', to: '/mapa' },
-  { id: 'comissao', nome: 'Calculadora de comissão', desc: 'Comissão e repasse de uma venda.', icon: '💰', cat: 'corretor' },
-  { id: 'ficha', nome: 'Ficha de avaliação rápida', desc: 'Gera um resumo do imóvel pra enviar.', icon: '📝', cat: 'corretor' },
-  { id: 'painel', nome: 'Painel de leads', desc: 'Seus cadastros e leads (acesso restrito).', icon: '🔔', cat: 'corretor', to: '/painel' },
+  { id: 'financiamento', nome: 'Simulador de financiamento', desc: 'Parcela e total a pagar (SAC e Price).', icon: 'bank', cat: 'voce' },
+  { id: 'capacidade', nome: 'Quanto consigo financiar?', desc: 'O valor do imóvel que cabe na sua renda.', icon: 'chart', cat: 'voce' },
+  { id: 'fgts', nome: 'Simulador de FGTS', desc: 'Quanto o seu saldo abate na entrada e na parcela.', icon: 'wallet', cat: 'voce' },
+  { id: 'amortizacao', nome: 'Amortização com FGTS', desc: 'Quanto o FGTS encurta o seu financiamento.', icon: 'calc', cat: 'voce' },
+  { id: 'custos', nome: 'Custos de compra (ITBI + cartório)', desc: 'Quanto reservar além do preço, em Uberlândia.', icon: 'receipt', cat: 'voce' },
+  { id: 'aluguel', nome: 'Alugar ou financiar?', desc: 'Compare o aluguel com a parcela.', icon: 'scale', cat: 'voce' },
+  { id: 'rentabilidade', nome: 'Rentabilidade do aluguel', desc: 'Quanto um imóvel rende de aluguel por ano.', icon: 'trend', cat: 'voce' },
+  { id: 'investir', nome: 'Imóvel x CDI/poupança', desc: 'Vale mais comprar pra alugar ou aplicar?', icon: 'coins', cat: 'voce' },
+  { id: 'valorm2', nome: 'Quanto vale o m² do bairro', desc: 'Preço médio por m² por bairro de Uberlândia.', icon: 'home', cat: 'voce' },
+  { id: 'score', nome: 'Chance de aprovação', desc: 'Estimativa da sua chance no banco.', icon: 'gauge', cat: 'voce' },
+  { id: 'checklist', nome: 'Checklist de documentos', desc: 'Tudo que você precisa, por etapa.', icon: 'doc', cat: 'voce' },
+  { id: 'comparar', nome: 'Comparar imóveis', desc: 'Veja imóveis lado a lado.', icon: 'compare', cat: 'voce', to: '/comparar' },
+  { id: 'mapa', nome: 'Buscar no mapa', desc: 'Explore os imóveis por região.', icon: 'map', cat: 'voce', to: '/mapa' },
+  { id: 'comissao', nome: 'Calculadora de comissão', desc: 'Comissão e repasse de uma venda.', icon: 'percent', cat: 'corretor' },
+  { id: 'ficha', nome: 'Ficha de avaliação rápida', desc: 'Gera um resumo do imóvel pra enviar.', icon: 'edit', cat: 'corretor' },
+  { id: 'painel', nome: 'Painel de leads', desc: 'Seus cadastros e leads (acesso restrito).', icon: 'bell', cat: 'corretor', to: '/painel' },
 ]
 
 function Campo({ label, valor, onChange, sufixo, step = '1', min = '0' }) {
@@ -140,7 +163,7 @@ function CalcComissao() {
 function FichaAvaliacao() {
   const [f, setF] = useState({ tipo: 'Casa', bairro: '', area: '', quartos: '', suites: '', vagas: '', estado: 'Bem conservado', preco: 0, dif: '' })
   const set = (k) => (e) => setF((s) => ({ ...s, [k]: e.target.value }))
-  const texto = `🏠 ${f.tipo}${f.bairro ? ` no ${f.bairro}` : ''} — Uberlândia\n${[f.area && `📐 ${f.area} m²`, f.quartos && `🛏️ ${f.quartos} quartos`, f.suites && `${f.suites} suíte(s)`, f.vagas && `🚗 ${f.vagas} vagas`].filter(Boolean).join(' · ')}\nEstado: ${f.estado}${f.preco ? `\n💰 ${formatBRL(f.preco)}` : ''}${f.dif ? `\n✨ ${f.dif}` : ''}\n\nFale com o Vinícius Graton — Consultor de Imóveis em Uberlândia.`
+  const texto = `${f.tipo}${f.bairro ? ` no ${f.bairro}` : ''} — Uberlândia\n${[f.area && `${f.area} m²`, f.quartos && `${f.quartos} quartos`, f.suites && `${f.suites} suíte(s)`, f.vagas && `${f.vagas} vagas`].filter(Boolean).join(' · ')}\nEstado: ${f.estado}${f.preco ? `\nValor: ${formatBRL(f.preco)}` : ''}${f.dif ? `\nDiferenciais: ${f.dif}` : ''}\n\nFale com Vinícius Graton — Consultor de Imóveis em Uberlândia.`
   const copiar = () => { try { navigator.clipboard.writeText(texto) } catch {} }
   return (<div className="calc-grid"><div className="calc-form"><Select label="Tipo" valor={f.tipo} onChange={set('tipo')} opcoes={['Casa', 'Apartamento', 'Casa em condomínio', 'Terreno', 'Comercial']} /><label className="calc-campo"><span>Bairro</span><div className="calc-input"><input value={f.bairro} onChange={set('bairro')} list="bf" /><datalist id="bf">{BAIRROS_IMOVEL.map((b) => <option key={b} value={b} />)}</datalist></div></label><div className="calc-form" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}><Campo label="Área (m²)" valor={f.area} onChange={set('area')} /><Campo label="Quartos" valor={f.quartos} onChange={set('quartos')} /><Campo label="Suítes" valor={f.suites} onChange={set('suites')} /><Campo label="Vagas" valor={f.vagas} onChange={set('vagas')} /></div><CampoMoeda label="Preço pretendido" valor={f.preco} onChange={(v) => setF((s) => ({ ...s, preco: v }))} /><label className="calc-campo"><span>Diferenciais</span><div className="calc-input"><input value={f.dif} onChange={set('dif')} placeholder="Reforma, sol da manhã, andar alto..." /></div></label></div><div><div className="ficha-preview">{texto}</div><div style={{ display: 'flex', gap: 10, marginTop: 12, flexWrap: 'wrap' }}><button className="btn btn-gold" type="button" onClick={copiar}>Copiar resumo</button><a className="btn btn-ghost" href={`https://wa.me/?text=${encodeURIComponent(texto)}`} target="_blank" rel="noopener">Enviar no WhatsApp</a></div>{nota('Gera um resumo pronto pra divulgar o imóvel. Ferramenta de apoio ao corretor.')}</div></div>)
 }
@@ -156,8 +179,8 @@ export default function Ferramentas() {
   const escolher = (id) => { setAtiva(id); setTimeout(() => painelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60) }
   const grupo = (cat) => TOOLS.filter((t) => t.cat === cat)
   const Card = (t) => t.to
-    ? <Link key={t.id} className="ferr-card" to={t.to}><span className="ferr-ico">{t.icon}</span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></Link>
-    : <button key={t.id} className={`ferr-card ${ativa === t.id ? 'on' : ''}`} onClick={() => escolher(t.id)}><span className="ferr-ico">{t.icon}</span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></button>
+    ? <Link key={t.id} className="ferr-card" to={t.to}><span className="ferr-ico"><FerrIcon name={t.icon} /></span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></Link>
+    : <button key={t.id} className={`ferr-card ${ativa === t.id ? 'on' : ''}`} onClick={() => escolher(t.id)}><span className="ferr-ico"><FerrIcon name={t.icon} /></span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></button>
 
   return (
     <main className="pagina section--light det ferramentas-pg">
@@ -178,7 +201,7 @@ export default function Ferramentas() {
         <div className="ferr-grid">{grupo('corretor').map(Card)}</div>
 
         <div className="calc-painel" ref={painelRef} style={{ marginTop: 30 }}>
-          <h3 className="calc-painel-tit"><span style={{ marginRight: 8 }}>{atual.icon}</span>{atual.nome}</h3>
+          <h3 className="calc-painel-tit"><span className="calc-tit-ico"><FerrIcon name={atual.icon} size={20} /></span>{atual.nome}</h3>
           <Ativa />
           <div className="calc-cta">
             <span>Quer que eu faça essa conta com os números reais e te mostre as melhores opções?</span>
