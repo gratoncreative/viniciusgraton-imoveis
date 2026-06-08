@@ -1,6 +1,5 @@
 {
   "permissions": {
-    "defaultMode": "bypassPermissions",
     "allow": [
       "Edit",
       "Write",
@@ -93,7 +92,10 @@
       "Bash(node --input-type=module -e ' *)",
       "mcp__scheduled-tasks__list_scheduled_tasks",
       "mcp__Claude_in_Chrome__tabs_close_mcp",
-      "mcp__Claude_in_Chrome__resize_window"
-    ]
+      "mcp__Claude_in_Chrome__resize_window",
+      "Bash(rm -f test_out/*)",
+      "Bash(.venv/Scripts/python.exe -m iopaint run --model lama --device cpu --image test_in --mask test_mask --output test_out)"
+    ],
+    "defaultMode": "bypassPermissions"
   }
 }

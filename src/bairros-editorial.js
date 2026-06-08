@@ -2,26 +2,52 @@
 // de fontes como ITV Urbanismo/Diário de Uberlândia, Wikipédia, prefeitura e portais.
 // Usado nas páginas /imoveis/uberlandia/:bairro para "vender a ideia" do bairro.
 //
-// Foto: imagem ILUSTRATIVA da região (ambiência), servida pelo CDN do Unsplash.
-// A legenda sempre deixa claro que é ilustrativa — nunca afirmamos ser uma rua/ponto
-// específico, para manter a honestidade. IDs já validados em uso no site.
-const F = (id) => `https://images.unsplash.com/${id}?q=80&w=1500&auto=format&fit=crop`
-// paletas de ambiência por perfil de bairro
-const FOTO = {
-  luxo: F('photo-1600596542815-ffad4c1539a9'),
-  casaModerna: F('photo-1564013799919-ab600027ffc6'),
-  residencial: F('photo-1512917774080-9991f1c4c750'),
-  arborizado: F('photo-1580587771525-78b9dba3b914'),
-  aconchego: F('photo-1600607687939-ce8a6c25118c'),
-  condominio: F('photo-1543269865-cbf427effbad'),
-  cidade: F('photo-1480714378408-67cf0d13bc1b'),
-  classico: F('photo-1450101499163-c8848c66ca85'),
-  familia: F('photo-1497366754035-f200968a6e72'),
-  central: F('photo-1502672260266-1c1ef2d93688'),
-  vertical: F('photo-1613490493576-7fde63acd811'),
+// FOTOS REAIS de Uberlândia (fonte oficial/livre: Wikimedia Commons, CC BY-SA).
+// Onde existe foto do PRÓPRIO bairro, usamos ela; onde não existe, usamos uma foto
+// REAL da região/zona ou de um marco da cidade — e a legenda diz HONESTAMENTE o que
+// a imagem mostra (nunca afirmamos ser uma rua específica que não é). Crédito sempre visível.
+const CRED = (autor) => `Foto: ${autor} · Wikimedia Commons (CC BY-SA)`
+const FOTOS = {
+  'granja-marileusa': { src: '/img/bairros/granja-marileusa.jpg', local: 'Granja Marileusa, Uberlândia', cred: CRED('Will7') },
+  'jardim-finotti': { src: '/img/bairros/jardim-finotti.jpg', local: 'Jardim Finotti, Uberlândia', cred: CRED('Will7') },
+  'shopping-park': { src: '/img/bairros/shopping-park.jpg', local: 'Shopping Park, Uberlândia', cred: CRED('Will7') },
+  'santa-monica': { src: '/img/bairros/santa-monica.jpg', local: 'Santa Mônica, Uberlândia', cred: CRED('Will7') },
+  'santa-maria': { src: '/img/bairros/santa-maria.jpg', local: 'Santa Maria, Uberlândia', cred: CRED('Will7') },
+  'tubalina': { src: '/img/bairros/tubalina.jpg', local: 'Tubalina, Uberlândia', cred: CRED('Will7') },
+  'brasil': { src: '/img/bairros/brasil.jpg', local: 'Bairro Brasil, Uberlândia', cred: CRED('Will7') },
+  'rondon-pacheco': { src: '/img/bairros/rondon-pacheco.jpg', local: 'Avenida Rondon Pacheco, Uberlândia', cred: CRED('Will7') },
+  'zona-sul': { src: '/img/bairros/zona-sul.jpg', local: 'Zona Sul de Uberlândia', cred: CRED('Will7') },
+  'jardim-acacias': { src: '/img/bairros/jardim-acacias.jpg', local: 'Jardim das Acácias, Zona Sul, Uberlândia', cred: CRED('Will7') },
+  'centro-martins': { src: '/img/bairros/centro-martins.jpg', local: 'Centro (Martins), Uberlândia', cred: CRED('Will7') },
+  'center-shopping': { src: '/img/bairros/center-shopping.jpg', local: 'Região do Center Shopping, Zona Leste, Uberlândia', cred: CRED('Will7') },
+  'zona-oeste': { src: '/img/bairros/zona-oeste.jpg', local: 'Zona Oeste de Uberlândia', cred: CRED('Will7') },
+  'vista-uberlandia': { src: '/img/bairros/vista-uberlandia.jpg', local: 'Uberlândia, MG', cred: CRED('Will7') },
+  'parque-sabia': { src: '/img/bairros/parque-sabia.jpg', local: 'Parque do Sabiá, Uberlândia', cred: CRED('José R. V. Resende') },
 }
+// Qual foto real cada bairro usa (direta quando existe; senão, região/zona real coerente)
+const BAIRRO_FOTO = {
+  'jardim-karaiba': 'zona-sul', 'morada-da-colina': 'jardim-acacias', 'cidade-jardim': 'zona-sul',
+  'gavea': 'jardim-acacias', 'granja-marileusa': 'granja-marileusa', 'vigilato-pereira': 'rondon-pacheco',
+  'santa-maria': 'santa-maria', 'jardim-sul': 'zona-sul', 'jardim-finotti': 'jardim-finotti',
+  'parque-una': 'zona-sul', 'patrimonio': 'centro-martins', 'lidice': 'centro-martins',
+  'santa-monica': 'santa-monica', 'tabajaras': 'centro-martins', 'nova-uberlandia': 'rondon-pacheco',
+  'tubalina': 'tubalina', 'alphaville': 'zona-sul', 'alphaville-i': 'zona-sul', 'tambore': 'zona-sul',
+  'laranjeiras': 'center-shopping', 'shopping-park': 'shopping-park', 'jardim-ipanema': 'zona-oeste',
+  'jardim-versailles': 'zona-sul', 'brasil': 'brasil', 'bom-jesus': 'centro-martins',
+  'nossa-senhora-aparecida': 'centro-martins', 'chacaras-eldorado': 'vista-uberlandia', 'gsp-arts': 'zona-sul',
+}
+// keys de ambiência ainda referenciadas nas entradas abaixo -> apontam p/ fotos reais coerentes
+const FOTO = {
+  luxo: FOTOS['zona-sul'].src, casaModerna: FOTOS['jardim-acacias'].src, residencial: FOTOS['shopping-park'].src,
+  arborizado: FOTOS['parque-sabia'].src, aconchego: FOTOS['centro-martins'].src, condominio: FOTOS['zona-sul'].src,
+  cidade: FOTOS['vista-uberlandia'].src, classico: FOTOS['centro-martins'].src, familia: FOTOS['jardim-finotti'].src,
+  central: FOTOS['centro-martins'].src, vertical: FOTOS['zona-sul'].src,
+}
+const FOTO_PADRAO_INFO = FOTOS['vista-uberlandia']
 // foto padrão para qualquer bairro sem entrada editorial (garante "sempre uma foto")
-export const BAIRRO_FOTO_PADRAO = FOTO.cidade
+export const BAIRRO_FOTO_PADRAO = FOTO_PADRAO_INFO.src
+// info completa (src + local mostrado + crédito) para legenda honesta
+export const getBairroFotoInfo = (slug) => FOTOS[BAIRRO_FOTO[slug]] || FOTO_PADRAO_INFO
 
 export const BAIRROS_EDITORIAL = {
   'jardim-karaiba': {
@@ -365,5 +391,8 @@ export const BAIRROS_EDITORIAL = {
 }
 
 export const getBairroEditorial = (slug) => BAIRROS_EDITORIAL[slug] || null
-// foto sempre disponível: a do editorial ou a padrão (garante "sempre uma fotografia do bairro")
-export const getBairroFoto = (slug) => (BAIRROS_EDITORIAL[slug] && BAIRROS_EDITORIAL[slug].foto) || BAIRRO_FOTO_PADRAO
+// foto REAL sempre disponível: o mapeamento por bairro, depois a do editorial, depois a padrão
+export const getBairroFoto = (slug) =>
+  (BAIRRO_FOTO[slug] && FOTOS[BAIRRO_FOTO[slug]].src) ||
+  (BAIRROS_EDITORIAL[slug] && BAIRROS_EDITORIAL[slug].foto) ||
+  BAIRRO_FOTO_PADRAO

@@ -3,7 +3,7 @@ import Reveal from '../components/Reveal'
 import CardImovel from '../components/CardImovel'
 import AviseMe from '../components/AviseMe'
 import { getBairroSeo, imoveisDoBairro, BAIRROS_SEO, linkWhatsApp } from '../data'
-import { getBairroEditorial, getBairroFoto } from '../bairros-editorial'
+import { getBairroEditorial, getBairroFotoInfo } from '../bairros-editorial'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow, IconPin, IconShield } from '../components/icons'
 
@@ -34,7 +34,7 @@ export default function Bairro() {
 
   const lista = imoveisDoBairro(b.nome)
   const outros = BAIRROS_SEO.filter((x) => x.slug !== b.slug)
-  const foto = getBairroFoto(slug)
+  const fotoInfo = getBairroFotoInfo(slug)
 
   return (
     <main className="pagina bairro-pg">
@@ -56,8 +56,8 @@ export default function Bairro() {
       </header>
 
       <figure className="bairro-foto">
-        <img src={foto} alt={`Vista ilustrativa de ${b.nome}, Uberlândia`} loading="lazy" referrerPolicy="no-referrer" />
-        <figcaption><IconPin width={13} height={13} /> {b.nome}, Uberlândia · imagem ilustrativa da região</figcaption>
+        <img src={fotoInfo.src} alt={`Foto de ${fotoInfo.local}`} loading="lazy" referrerPolicy="no-referrer" />
+        <figcaption><IconPin width={13} height={13} /> {fotoInfo.local} · <span className="bairro-foto-cred">{fotoInfo.cred}</span></figcaption>
       </figure>
 
       {ed && (

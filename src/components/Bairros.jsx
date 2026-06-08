@@ -43,6 +43,7 @@ export default function Bairros() {
             )
           })}
         </div>
+        <p className="bairros-cred">Fotos reais de Uberlândia · Wikimedia Commons (CC BY-SA). Onde não há foto do próprio bairro, mostramos a região/zona correspondente.</p>
       </div>
     </section>
   )
