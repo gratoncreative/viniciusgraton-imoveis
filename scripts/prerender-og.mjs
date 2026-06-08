@@ -203,7 +203,7 @@ const PAGINAS_FIXAS = [
     rota: 'encontrar-imovel',
     titulo: 'Encontre seu imóvel em 1 minuto — Uberlândia',
     desc: 'Responda algumas perguntas rápidas e receba uma seleção de imóveis em Uberlândia feita sob medida pra você, com a curadoria do Vinícius Graton.',
-    image: `${SITE}/og/encontrar.jpg`, w: 1800, h: 600,
+    image: `${SITE}/og/encontrar.png`, w: 1280, h: 720,
   },
 ]
 function renderFixa(p) {
@@ -215,6 +215,7 @@ function renderFixa(p) {
     .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(p.desc)}$2`)
     .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${esc(url)}$2`)
     .replace(/(<meta property="og:image" content=")[^"]*(")/, `$1${esc(p.image)}$2`)
+    .replace(/(<meta property="og:image:type" content=")[^"]*(")/, `$1image/png$2`)
     .replace(/(<meta property="og:image:width" content=")[^"]*(")/, `$1${p.w}$2`)
     .replace(/(<meta property="og:image:height" content=")[^"]*(")/, `$1${p.h}$2`)
     .replace(/(<meta name="twitter:title" content=")[^"]*(")/, `$1${esc(p.titulo)}$2`)
