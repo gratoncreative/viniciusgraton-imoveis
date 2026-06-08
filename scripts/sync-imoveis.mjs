@@ -230,12 +230,18 @@ function publicar(codigosArg) {
     const extras = (galerias[rest.codigo] || []).filter((u) => u && !/avatar\.jpg/i.test(u) && u !== capaUrl)
     const fotos = [rest.img, ...extras]
     const descricao = limparDesc(descricoes[rest.codigo])
-    return { ...rest, descricao, fotos, novo: i < 2 } // os 2 mais recentes ganham selo "Novo"
+    // REGRA: imóvel importado entra como PENDENTE — só vai pro site após o Vinícius aprovar no /admin.
+    return { ...rest, descricao, fotos, novo: i < 2, pendente: true }
   })
+  // MESCLA com os já existentes (não sobrescreve imóveis adicionados/aprovados antes)
+  let existentes = []
+  try { existentes = JSON.parse(readFileSync(OUT_JSON, 'utf8')).imoveis || [] } catch {}
+  const codsNovos = new Set(limpos.map((n) => String(n.codigo)))
+  const mantidos = existentes.filter((im) => !codsNovos.has(String(im.codigo)))
   const out = {
     geradoEm: new Date().toISOString(),
     fonte: 'Imoview / Rotina Imobiliária — imóveis publicados na web',
-    imoveis: limpos,
+    imoveis: [...limpos, ...mantidos],
   }
   writeFileSync(OUT_JSON, JSON.stringify(out, null, 2) + '\n')
   console.log(`✓ ${limpos.length} imóveis publicados em src/imoveis-destaque.json`)

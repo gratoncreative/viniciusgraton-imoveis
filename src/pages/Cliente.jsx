@@ -75,9 +75,16 @@ export default function Cliente() {
               {crit.map((c, i) => <b key={i}>{c}</b>)}
             </div>
           )}
-          <div className="det-trust" style={{ marginTop: 18, maxWidth: 640 }}>
+          <div className="cliente-assina">
+            <img src="/vinicius-graton.jpg" alt="Vinícius Graton" loading="lazy" />
+            <div>
+              <b>Selecionado pessoalmente por Vinícius Graton</b>
+              <span>Consultor de imóveis em Uberlândia · Rotina Imobiliária. Te acompanho da primeira conversa à entrega das chaves.</span>
+            </div>
+          </div>
+          <div className="det-trust" style={{ marginTop: 16, maxWidth: 640 }}>
             <IconShield width={20} height={20} />
-            <p>Trabalho com a base completa da Rotina Imobiliária (mais de 30 anos em Uberlândia). Te acompanho da primeira visita à entrega das chaves, com segurança em cada etapa.</p>
+            <p>Trabalho com a base completa da Rotina Imobiliária (mais de 30 anos em Uberlândia), com segurança e cuidado em cada etapa. Aqui não tem lista aleatória — é o que faz sentido pra você.</p>
           </div>
         </div>
       </header>
@@ -108,7 +115,15 @@ export default function Cliente() {
             </>
           )}
 
-          <div className="post-cta" style={{ marginTop: 40 }}>
+          <div className="cliente-recado">
+            <img src="/vinicius-graton.jpg" alt="Vinícius Graton" loading="lazy" />
+            <div>
+              <p>{nome ? `${nome}, ` : ''}separei cada uma dessas opções pensando no seu momento — não é uma lista qualquer, é o que eu mesmo indicaria pra alguém da minha família. Qualquer dúvida, me chama que eu te respondo pessoalmente.</p>
+              <span className="cliente-recado-assina">Um abraço,<br /><b>Vinícius Graton</b></span>
+            </div>
+          </div>
+
+          <div className="post-cta" style={{ marginTop: 28 }}>
             <div>
               <b>Gostou de alguma? Bora ver de perto.</b>
               <span>Me diz quais te chamaram atenção que eu organizo as visitas num dia só, no horário que for melhor pra você.</span>

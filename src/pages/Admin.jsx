@@ -116,6 +116,8 @@ function ImoveisPub({ token, onSair }) {
   const [enviandoFotos, setEnviandoFotos] = useState(false)
   const [erroFoto, setErroFoto] = useState('')
   const [busca, setBusca] = useState('')
+  const [tipoF, setTipoF] = useState('')
+  const [faixaF, setFaixaF] = useState('')
   const base = sel ? IMOVEIS.find((i) => String(i.codigo) === String(sel)) : null
 
   const abrir = async (cod) => {
@@ -311,9 +313,21 @@ function ImoveisPub({ token, onSair }) {
   }
 
   const q = busca.trim().toLowerCase()
-  const lista = q
-    ? IMOVEIS.filter((i) => [i.codigo, i.bairro, i.tipo, i.endereco, i.edificio].some((c) => String(c || '').toLowerCase().includes(q)))
-    : IMOVEIS
+  const tipos = [...new Set(IMOVEIS.map((i) => i.tipo).filter(Boolean))].sort()
+  const naFaixa = (p) => {
+    p = p || 0
+    if (faixaF === 'a') return p < 300000
+    if (faixaF === 'b') return p >= 300000 && p < 500000
+    if (faixaF === 'c') return p >= 500000 && p < 1000000
+    if (faixaF === 'd') return p >= 1000000
+    return true
+  }
+  const lista = IMOVEIS.filter((i) => {
+    if (tipoF && i.tipo !== tipoF) return false
+    if (faixaF && !naFaixa(i.preco)) return false
+    if (q && ![i.codigo, i.bairro, i.tipo, i.endereco, i.edificio].some((c) => String(c || '').toLowerCase().includes(q))) return false
+    return true
+  })
 
   return (
     <section>
@@ -321,8 +335,19 @@ function ImoveisPub({ token, onSair }) {
       <p className="section-sub" style={{ marginBottom: 12 }}>Clique num imóvel para <b>editar os dados</b> e cadastrar o <b>proprietário</b> (confidencial). {IMOVEIS.length} imóveis publicados.</p>
       <div className="admin-busca">
         <input value={busca} onChange={(e) => setBusca(e.target.value)} placeholder="🔎 Buscar por código, bairro, tipo, endereço…" />
-        {busca && <button className="admin-btn" onClick={() => setBusca('')}>limpar</button>}
+        <select value={faixaF} onChange={(e) => setFaixaF(e.target.value)}>
+          <option value="">Qualquer preço</option>
+          <option value="a">Até R$ 300 mil</option>
+          <option value="b">R$ 300–500 mil</option>
+          <option value="c">R$ 500 mil – 1 mi</option>
+          <option value="d">Acima de R$ 1 mi</option>
+        </select>
+        {(busca || tipoF || faixaF) && <button className="admin-btn" onClick={() => { setBusca(''); setTipoF(''); setFaixaF('') }}>limpar</button>}
         <span className="painel-meta">{lista.length} {lista.length === 1 ? 'imóvel' : 'imóveis'}</span>
+      </div>
+      <div className="crm-chips" style={{ marginBottom: 14 }}>
+        <button type="button" className={`crm-chip ${!tipoF ? 'on' : ''}`} onClick={() => setTipoF('')}>Todos</button>
+        {tipos.map((t) => <button type="button" key={t} className={`crm-chip ${tipoF === t ? 'on' : ''}`} onClick={() => setTipoF(t)}>{t}</button>)}
       </div>
       <div className="admin-imoveis-grid">
         {lista.map((i) => (
