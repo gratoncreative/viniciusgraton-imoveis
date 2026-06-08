@@ -1787,6 +1787,9 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .cb-form { display: flex; gap: 10px; margin-top: 4px; }
 .cb-form input { flex: 1; padding: 13px 16px; border: 1.5px solid rgba(22,26,34,0.18); border-radius: 12px; font-size: 1rem; background: #fbf9f4; color: #1a1f29; }
 .cb-form input:focus { outline: none; border-color: var(--gold-2); }
+.cb-form--col { flex-direction: column; align-items: stretch; }
+.cb-textarea { width: 100%; padding: 13px 16px; border: 1.5px solid rgba(22,26,34,0.18); border-radius: 12px; font-size: 1rem; background: #fbf9f4; color: #1a1f29; font-family: inherit; line-height: 1.5; resize: vertical; min-height: 96px; }
+.cb-textarea:focus { outline: none; border-color: var(--gold-2); }
 .cb-erro { color: #c0392b; font-size: 0.88rem; margin-top: 10px; }
 .cb-lgpd { color: #8a909c; font-size: 0.78rem; margin-top: 10px; text-align: center; }
 /* chat em formato wizard (1 pergunta por vez, sem barra de rolagem) */

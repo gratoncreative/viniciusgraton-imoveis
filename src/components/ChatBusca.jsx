@@ -19,13 +19,14 @@ const STEPS = [
   { key: 'faixa', bot: 'Qual faixa de valor faz mais sentido pra você?', tipo: 'faixa' },
   { key: 'quartos', bot: 'Quantos quartos, no mínimo?', tipo: 'quartos' },
   { key: 'prazo', bot: 'E pra quando você pensa em resolver isso?', tipo: 'single', opcoes: ['Esse mês', 'Em 2 a 6 meses', 'Só pesquisando'] },
+  { key: 'descricao', bot: 'Quer me contar com suas palavras o que você procura? Capricha nos detalhes que isso me ajuda muito. (opcional)', tipo: 'textolivre' },
   { key: 'nome', bot: 'Quase lá! Como você gosta de ser chamado(a)?', tipo: 'texto' },
   { key: 'whatsapp', bot: 'Por último.. me passa seu WhatsApp que eu organizo sua seleção e te mando, combinado?', tipo: 'tel' },
 ]
 
 export default function ChatBusca() {
   const [step, setStep] = useState(0)
-  const [ans, setAns] = useState({ finalidade: '', tipos: [], bairros: [], faixa: null, quartosMin: 0, prazo: '', nome: '', whatsapp: '' })
+  const [ans, setAns] = useState({ finalidade: '', tipos: [], bairros: [], faixa: null, quartosMin: 0, prazo: '', descricao: '', nome: '', whatsapp: '' })
   const [enviando, setEnviando] = useState(false)
   const [enviado, setEnviado] = useState(null) // { token, nome }
   const [erro, setErro] = useState('')
@@ -57,7 +58,7 @@ export default function ChatBusca() {
         body: JSON.stringify({
           finalidade: ans.finalidade, tipos: ans.tipos, bairros: ans.bairros,
           precoMin: prefs.precoMin, precoMax: prefs.precoMax, quartosMin: prefs.quartosMin,
-          prazo: ans.prazo, nome: ans.nome, whatsapp: ans.whatsapp, sugeridos, site: '',
+          prazo: ans.prazo, descricao: ans.descricao, nome: ans.nome, whatsapp: ans.whatsapp, sugeridos, site: '',
         }),
       })
       const j = await r.json()
@@ -75,6 +76,7 @@ export default function ChatBusca() {
     if (k === 'bairros') return ans.bairros.length ? ans.bairros.join(', ') : 'Tanto faz o bairro'
     if (k === 'faixa') return ans.faixa ? ans.faixa.label : ''
     if (k === 'quartos') return ans.quartosMin ? `${ans.quartosMin}+ quartos` : 'Tanto faz'
+    if (k === 'descricao') return ans.descricao ? `"${ans.descricao.slice(0, 32)}${ans.descricao.length > 32 ? '…' : ''}"` : ''
     if (k === 'nome') return ans.nome || 'Prefiro não dizer'
     if (k === 'whatsapp') return ans.whatsapp
     return ans[k]
@@ -190,6 +192,16 @@ export default function ChatBusca() {
                 {[1, 2, 3, 4].map((n) => <button type="button" key={n} className={`cb-chip ${ans.quartosMin === n ? 'on' : ''}`} onClick={() => escolher('quartosMin', n)}>{n}+</button>)}
                 <button type="button" className={`cb-chip ${ans.quartosMin === 0 ? 'on' : ''}`} onClick={() => escolher('quartosMin', 0)}>Tanto faz</button>
               </div>
+            )}
+
+            {atual.tipo === 'textolivre' && (
+              <form className="cb-form cb-form--col" onSubmit={(e) => { e.preventDefault(); avancar() }}>
+                <textarea autoFocus rows={4} className="cb-textarea" value={ans.descricao} onChange={(e) => setAns((a) => ({ ...a, descricao: e.target.value }))} placeholder="Ex.: apê de 3 quartos com varanda gourmet, perto de escola, no Santa Mônica, até R$ 600 mil, pronto pra morar…" maxLength={600} />
+                <div className="cb-actions">
+                  <button type="button" className="cb-skip" onClick={avancar}>Pular</button>
+                  <button type="submit" className="btn btn-gold">Continuar</button>
+                </div>
+              </form>
             )}
 
             {atual.tipo === 'texto' && (
