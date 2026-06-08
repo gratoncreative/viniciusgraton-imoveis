@@ -35,11 +35,6 @@ export default function Apresentacao() {
             </p>
           </Reveal>
           <Reveal delay={0.12}>
-            <div className="apres-stats">
-              <div className="apres-stat"><b>+5.000</b><span>imóveis na base da Rotina</span></div>
-              <div className="apres-stat"><b>+30 anos</b><span>de mercado em Uberlândia</span></div>
-              <div className="apres-stat"><b>0 pressa</b><span>você decide no seu tempo</span></div>
-            </div>
             <ul className="apres-checks">
               <li><span>✓</span> Curadoria criteriosa — só o que combina com você</li>
               <li><span>✓</span> Pontos fortes <i>e</i> riscos de cada imóvel, na transparência</li>

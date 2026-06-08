@@ -2,19 +2,24 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Reveal from './Reveal'
 import { CardPost } from '../pages/Blog'
-import { POSTS, postsDestaque } from '../blog'
+import { POSTS } from '../blog'
 import { lerBlogViews } from '../engajamento'
 import { IconArrow } from './icons'
 
 export default function BlogHome() {
   const [views, setViews] = useState(null)
   useEffect(() => { lerBlogViews().then(setViews) }, [])
-  // 3 mais lidos (views reais); enquanto não há leituras, usa a curadoria
   const totalViews = views ? Object.values(views).reduce((a, b) => a + b, 0) : 0
-  const posts = views && totalViews > 0
-    ? [...POSTS].sort((a, b) => (views[b.slug] || 0) - (views[a.slug] || 0)).slice(0, 3)
-    : postsDestaque()
-  if (!posts.length) return null
+  // mais lidos (views reais) ou, sem leituras ainda, os mais recentes
+  const fonte = views && totalViews > 0
+    ? [...POSTS].sort((a, b) => (views[b.slug] || 0) - (views[a.slug] || 0))
+    : [...POSTS].sort((a, b) => String(b.data || '').localeCompare(String(a.data || '')))
+  const sel = fonte.slice(0, 7)
+  if (sel.length < 4) return null
+  const feat = sel[0]
+  const resto = sel.slice(1, 7)
+  const vw = (s) => (views && views[s]) || 0
+
   return (
     <section className="section--light blog-home">
       <div className="container">
@@ -22,14 +27,31 @@ export default function BlogHome() {
           <div className="cat-head" style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto 40px' }}>
             <span className="eyebrow" style={{ justifyContent: 'center' }}>Do meu blog</span>
             <h2 className="section-title">Conteúdo que <em>te ajuda a decidir</em></h2>
-            <p className="section-sub" style={{ marginTop: 12 }}>Os artigos mais lidos para você comprar com segurança.</p>
+            <p className="section-sub" style={{ marginTop: 12 }}>Guias práticos pra você comprar, vender e investir com segurança em Uberlândia.</p>
           </div>
         </Reveal>
-        <div className="post-grid">
-          {posts.map((p) => <CardPost key={p.slug} p={p} views={(views && views[p.slug]) || 0} />)}
+
+        <Reveal>
+          <Link className="blog-feat" to={`/blog/${feat.slug}`}>
+            <span className={`blog-feat-capa blog-cor-${feat.cor}`}>
+              {feat.capa && <img src={feat.capa} alt={feat.titulo} loading="lazy" />}
+              <span className="post-cat">{feat.categoria}</span>
+            </span>
+            <span className="blog-feat-body">
+              <span className="blog-feat-tag">★ Destaque do blog</span>
+              <b className="blog-feat-titulo">{feat.titulo}</b>
+              <span className="blog-feat-resumo">{feat.resumo}</span>
+              <span className="post-meta">{vw(feat.slug) > 0 ? `${vw(feat.slug)} leituras · ` : ''}{feat.leitura} de leitura <span className="post-ver">Ler artigo <IconArrow width={14} height={14} /></span></span>
+            </span>
+          </Link>
+        </Reveal>
+
+        <div className="post-grid" style={{ marginTop: 24 }}>
+          {resto.map((p) => <CardPost key={p.slug} p={p} views={vw(p.slug)} />)}
         </div>
-        <div style={{ textAlign: 'center', marginTop: 36 }}>
-          <Link className="btn btn-ghost" to="/blog">Ver todos os artigos <IconArrow /></Link>
+
+        <div style={{ textAlign: 'center', marginTop: 40 }}>
+          <Link className="btn btn-gold" to="/blog">Ver todos os {POSTS.length} artigos <IconArrow /></Link>
         </div>
       </div>
     </section>

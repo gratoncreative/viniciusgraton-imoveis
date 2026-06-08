@@ -70,7 +70,7 @@ export default function Hero() {
           <HeroBusca />
 
           <div className="hero-actions">
-            <Link className="btn btn-gold" to="/encontrar-imovel">Encontrar meu imóvel</Link>
+            <Link className="btn btn-gold" to="/encontrar-imovel">Comprar sem medo de errar</Link>
             <a className="btn btn-ghost" href={linkWhatsApp(WA.hero)} target="_blank" rel="noopener">
               <IconWhats /> Quero ajuda pra comprar
             </a>
