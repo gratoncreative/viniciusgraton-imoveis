@@ -109,7 +109,8 @@ const POSTS_BASE = [
   },
 ]
 
-export const POSTS = [...POSTS_BASE, ...POSTS_EXTRA]
+// REGRA OBRIGATÓRIA: post sem foto de capa NÃO é publicado (filtra fora).
+export const POSTS = [...POSTS_BASE, ...POSTS_EXTRA].filter((p) => p.capa)
 
 export const getPost = (slug) => POSTS.find((p) => p.slug === slug)
 export const postsDestaque = () => {
