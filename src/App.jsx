@@ -5,7 +5,6 @@ import ScrollProgress from './components/ScrollProgress'
 import ErrorBoundary from './components/ErrorBoundary'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import BarraContato from './components/BarraContato'
 import BackToTop from './components/BackToTop'
 import Home from './pages/Home'
 import { CONFIG, linkWhatsApp, WA, aplicarOverridesImoveis } from './data'
@@ -146,7 +145,6 @@ export default function App() {
         <IconWhats />
       </a>
 
-      <BarraContato />
       <BackToTop />
     </>
   )

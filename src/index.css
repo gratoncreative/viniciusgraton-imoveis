@@ -885,6 +885,14 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .apres-lead { font-size: 1.12rem; line-height: 1.65; color: #2b3038; margin-top: 6px; }
 .apres-txt p { color: #5a6370; margin-top: 14px; line-height: 1.7; }
 .apres-lead b, .apres-txt b { color: #1a1f29; }
+.apres-stats { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 22px; }
+.apres-stat { flex: 1; min-width: 120px; background: #fff; border: 1px solid rgba(184,134,47,0.28); border-radius: 14px; padding: 14px 16px; box-shadow: 0 12px 30px -26px rgba(22,26,34,0.5); }
+.apres-stat b { display: block; font-family: var(--font-head); font-size: 1.5rem; color: var(--gold-1); line-height: 1; }
+.apres-stat span { display: block; margin-top: 5px; font-size: 0.82rem; color: #5a6370; line-height: 1.35; }
+.apres-checks { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 11px; }
+.apres-checks li { display: flex; gap: 10px; align-items: flex-start; color: #3a4150; font-size: 0.98rem; line-height: 1.45; }
+.apres-checks li span { flex: none; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; background: rgba(46,140,87,0.14); color: #2e8c57; font-weight: 700; font-size: 0.8rem; margin-top: 1px; }
+.apres-checks li i { font-style: normal; color: var(--gold-1); font-weight: 600; }
 .apres-acoes { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
 @media (max-width: 860px) {
   .apres-grid { grid-template-columns: 1fr; gap: 30px; }
