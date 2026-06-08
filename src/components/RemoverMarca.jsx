@@ -16,11 +16,13 @@ export default function RemoverMarca() {
   const [brush, setBrush] = useState(34)
   const [proc, setProc] = useState(false)
   const [msg, setMsg] = useState('')
+  const [zoom, setZoom] = useState(1)
 
   const imgC = useRef(null)
   const paintC = useRef(null)
   const escala = useRef(1)
   const pintando = useRef(false)
+  const dim = useRef({ w: 0, h: 0 })
   const fotosRef = useRef(fotos)
   fotosRef.current = fotos
 
@@ -41,6 +43,9 @@ export default function RemoverMarca() {
     })()
     return () => { vivo = false }
   }, [])
+
+  // reaplica o zoom (tamanho exibido) sempre que muda
+  useEffect(() => { aplicarZoom(zoom) }, [zoom, atual])
 
   const subir = (e) => {
     const arr = [...(e.target.files || [])]
@@ -63,14 +68,28 @@ export default function RemoverMarca() {
     })
   }
 
+  // aplica o zoom só no TAMANHO EXIBIDO (CSS); a resolução interna do canvas não muda
+  const aplicarZoom = (z) => {
+    const { w, h } = dim.current
+    if (!w) return
+    for (const c of [imgC.current, paintC.current]) {
+      if (!c) continue
+      c.style.width = Math.round(w * z) + 'px'
+      c.style.height = Math.round(h * z) + 'px'
+    }
+  }
+
   const abrir = (i) => {
     const ft = fotosRef.current[i]; if (!ft) return
-    setAtual(i); setMsg('')
-    const maxW = Math.min(900, (paintC.current?.parentElement?.clientWidth || 800) - 8)
+    setAtual(i); setMsg(''); setZoom(1)
+    // preenche a área de edição (usa quase toda a largura disponível)
+    const palco = paintC.current?.closest('.marca-palco')
+    const maxW = Math.max(360, (palco?.clientWidth || 900) - 36)
     escala.current = Math.min(1, maxW / ft.img.naturalWidth)
     const w = Math.round(ft.img.naturalWidth * escala.current)
     const h = Math.round(ft.img.naturalHeight * escala.current)
-    for (const c of [imgC.current, paintC.current]) { c.width = w; c.height = h }
+    dim.current = { w, h }
+    for (const c of [imgC.current, paintC.current]) { c.width = w; c.height = h; c.style.width = w + 'px'; c.style.height = h + 'px' }
     imgC.current.getContext('2d').drawImage(ft.img, 0, 0, w, h)
     desenharOverlay(ft)
   }
@@ -86,7 +105,11 @@ export default function RemoverMarca() {
     if (!pintando.current || atual < 0) return
     const ft = fotosRef.current[atual]; if (!ft || ft.done) return
     const r = paintC.current.getBoundingClientRect()
-    const x = e.clientX - r.left, y = e.clientY - r.top, br = brush
+    // converte da tela para o pixel interno do canvas (funciona com qualquer zoom)
+    const ratio = paintC.current.width / r.width
+    const x = (e.clientX - r.left) * ratio
+    const y = (e.clientY - r.top) * ratio
+    const br = brush // raio em pixels do canvas (base)
     ft.strokes.push({ x: x / escala.current, y: y / escala.current, r: br / escala.current })
     const ctx = paintC.current.getContext('2d')
     ctx.fillStyle = 'rgba(216,80,60,0.45)'; ctx.beginPath(); ctx.arc(x, y, br, 0, 7); ctx.fill()
@@ -186,6 +209,13 @@ export default function RemoverMarca() {
           <div className="marca-editor">
             <div className="marca-barra">
               <label>Pincel <input type="range" min="8" max="90" value={brush} onChange={(e) => setBrush(+e.target.value)} /></label>
+              <div className="marca-zoom">
+                <span>Zoom</span>
+                <button className="admin-btn" title="Diminuir zoom" onClick={() => setZoom((z) => Math.max(1, +(z - 0.25).toFixed(2)))} disabled={atual < 0 || zoom <= 1}>−</button>
+                <b>{Math.round(zoom * 100)}%</b>
+                <button className="admin-btn" title="Aumentar zoom" onClick={() => setZoom((z) => Math.min(5, +(z + 0.25).toFixed(2)))} disabled={atual < 0 || zoom >= 5}>+</button>
+                {zoom !== 1 && <button className="admin-btn" title="Voltar ao tamanho normal" onClick={() => setZoom(1)}>Ajustar</button>}
+              </div>
               <button className="admin-btn" onClick={limpar} disabled={atual < 0}>Limpar seleção</button>
               <span style={{ flex: 1 }} />
               {atual >= 0 && fotos[atual]?.done && <button className="admin-btn" onClick={() => baixar(fotos[atual])}>Baixar esta</button>}
@@ -193,9 +223,12 @@ export default function RemoverMarca() {
             </div>
             <div className="marca-palco">
               {atual < 0 ? (
-                <p className="section-sub" style={{ maxWidth: 460, textAlign: 'center' }}>Clique em <b>+ Subir fotos</b>, escolha quantas quiser, depois clique numa foto e pinte por cima da marca.</p>
+                <p className="section-sub" style={{ maxWidth: 460, textAlign: 'center' }}>Clique em <b>+ Subir fotos</b>, escolha quantas quiser, depois clique numa foto e pinte por cima da marca. Use o <b>Zoom</b> para aproximar e pintar com precisão.</p>
               ) : (
-                <div className="marca-lienzo">
+                <div
+                  className="marca-lienzo"
+                  onWheel={(e) => { if (e.ctrlKey || e.metaKey) { e.preventDefault(); setZoom((z) => Math.min(5, Math.max(1, +(z - Math.sign(e.deltaY) * 0.25).toFixed(2)))) } }}
+                >
                   <canvas ref={imgC} />
                   <canvas
                     ref={paintC}
