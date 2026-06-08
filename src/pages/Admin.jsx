@@ -166,6 +166,65 @@ function ImoveisPub({ token, onSair }) {
     }
     setEnviandoFotos(false)
   }
+  // —— Download das fotos com e sem marca d'água ——
+  const carregarImagem = (src) => new Promise((resolve, reject) => {
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+    img.onload = () => resolve(img)
+    img.onerror = () => reject(new Error('load'))
+    img.src = src
+  })
+  // Aplica a marca d'água da Rotina (selo no canto + repetição diagonal sutil)
+  const desenharMarca = (ctx, w, h) => {
+    const txt = 'ROTINA IMOBILIÁRIA'
+    ctx.save()
+    ctx.globalAlpha = 0.14
+    ctx.fillStyle = '#ffffff'
+    ctx.strokeStyle = 'rgba(0,0,0,0.22)'
+    const fs = Math.max(16, Math.round(w / 22))
+    ctx.font = `700 ${fs}px Georgia, "Times New Roman", serif`
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+    ctx.translate(w / 2, h / 2); ctx.rotate(-Math.atan2(h, w))
+    const step = fs * 6
+    for (let y = -h; y < h; y += step) {
+      for (let x = -w; x < w; x += step * 1.5) {
+        ctx.lineWidth = Math.max(1, fs / 16)
+        ctx.strokeText(txt, x, y); ctx.fillText(txt, x, y)
+      }
+    }
+    ctx.restore()
+    ctx.save()
+    ctx.globalAlpha = 0.92
+    const fs2 = Math.max(13, Math.round(w / 32))
+    ctx.font = `700 ${fs2}px Georgia, "Times New Roman", serif`
+    ctx.textAlign = 'right'; ctx.textBaseline = 'bottom'
+    ctx.fillStyle = 'rgba(255,255,255,0.95)'
+    ctx.shadowColor = 'rgba(0,0,0,0.6)'; ctx.shadowBlur = fs2 / 2
+    ctx.fillText('Rotina Imobiliária · Vinícius Graton', w - fs2, h - fs2)
+    ctx.restore()
+  }
+  const baixarBlob = (blob, nome) => {
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a'); a.href = url; a.download = nome
+    document.body.appendChild(a); a.click(); a.remove()
+    setTimeout(() => URL.revokeObjectURL(url), 4000)
+  }
+  const baixarFoto = async (src, comMarca, idx) => {
+    setErroFoto('')
+    try {
+      const img = await carregarImagem(src)
+      const c = document.createElement('canvas'); c.width = img.naturalWidth; c.height = img.naturalHeight
+      const ctx = c.getContext('2d'); ctx.drawImage(img, 0, 0)
+      if (comMarca) desenharMarca(ctx, c.width, c.height)
+      c.toBlob((blob) => {
+        if (blob) baixarBlob(blob, `${sel}-foto-${idx + 1}${comMarca ? '-com-marca' : '-sem-marca'}.jpg`)
+        else setErroFoto('Não consegui gerar o arquivo dessa foto.')
+      }, 'image/jpeg', 0.92)
+    } catch {
+      setErroFoto('Essa foto vem de outro site e o navegador bloqueia editá-la aqui (abri o original numa aba pra você salvar). Pra ter as duas versões com/sem marca, envie a foto limpa em "+ Adicionar fotos".')
+      window.open(src, '_blank', 'noopener')
+    }
+  }
   const salvar = async () => {
     const { status } = await api({ action: 'imovel-save', token, codigo: String(sel), owner: reg.owner, campos: reg.campos })
     if (status === 401) return onSair()
@@ -204,6 +263,10 @@ function ImoveisPub({ token, onSair }) {
                   <div className="admin-foto-item" key={src + i}>
                     <img src={src} loading="lazy" alt={`Foto ${i + 1}`} />
                     {i === 0 && <span className="admin-foto-capa">capa</span>}
+                    <div className="admin-foto-baixar">
+                      <button type="button" title="Baixar COM marca d'água" onClick={() => baixarFoto(src, true, i)}>⤓ c/ marca</button>
+                      <button type="button" title="Baixar SEM marca d'água (foto limpa)" onClick={() => baixarFoto(src, false, i)}>⤓ limpa</button>
+                    </div>
                     <div className="admin-foto-acoes">
                       <button type="button" title="Mover para esquerda" onClick={() => moverFoto(i, -1)} disabled={i === 0}>←</button>
                       <button type="button" title="Mover para direita" onClick={() => moverFoto(i, 1)} disabled={i === (reg.campos.fotos.length - 1)}>→</button>
@@ -221,6 +284,7 @@ function ImoveisPub({ token, onSair }) {
                 {erroFoto && <span className="lead-erro">{erroFoto}</span>}
               </div>
               <p className="calc-nota">Adicione novas fotos (são reduzidas automaticamente). Excluir, reordenar, definir capa e as fotos novas só valem depois de clicar em <b>Salvar</b> — aí refletem no site.</p>
+              <p className="calc-nota"><b>Marca d'água:</b> em cada foto há <b>⤓ c/ marca</b> e <b>⤓ limpa</b>. A marca é aplicada na hora do download, então a versão "limpa" sai sem marca — desde que a foto tenha sido <b>enviada limpa</b> aqui. Fotos que já vieram marcadas de origem (ex.: Imoview) têm a marca "queimada" na imagem e não dá pra remover por software; nesse caso, envie a foto original limpa em "+ Adicionar fotos" e use os dois botões.</p>
             </div>
           </div>
           <div>

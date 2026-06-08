@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Reveal from './Reveal'
 import { BAIRROS, linkWhatsApp, slugify } from '../data'
+import { getBairroFoto } from '../bairros-editorial'
 import { IconPin, IconArrow } from './icons'
 
 export default function Bairros() {
@@ -27,17 +28,20 @@ export default function Bairros() {
         </div>
 
         <div className="bairros-grid">
-          {BAIRROS.map((b, i) => (
-            <Reveal key={i} delay={(i % 4) * 0.06}>
-              <Link className="bairro-card" to={`/imoveis/uberlandia/${slugify(b.nome)}`}>
-                <span className="bairro-ico"><IconPin /></span>
-                <div>
-                  <h4>{b.nome}</h4>
+          {BAIRROS.map((b, i) => {
+            const slug = slugify(b.nome)
+            return (
+              <Reveal key={i} delay={(i % 4) * 0.06}>
+                <Link className="bairro-card" to={`/imoveis/uberlandia/${slug}`}>
+                  <div className="bairro-card-foto">
+                    <img src={getBairroFoto(slug)} alt={`${b.nome}, Uberlândia`} loading="lazy" referrerPolicy="no-referrer" />
+                    <h4><span className="bairro-ico"><IconPin /></span> {b.nome}</h4>
+                  </div>
                   <p>{b.desc}</p>
-                </div>
-              </Link>
-            </Reveal>
-          ))}
+                </Link>
+              </Reveal>
+            )
+          })}
         </div>
       </div>
     </section>

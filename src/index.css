@@ -1174,8 +1174,12 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .admin-owner-tag { font-family: var(--font-head); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #8a6418; background: rgba(184,134,47,0.16); border: 1px solid rgba(184,134,47,0.35); padding: 2px 8px; border-radius: 100px; }
 @media (max-width: 720px) { .admin-edit-grid { grid-template-columns: 1fr; } }
 .admin-fotos-edit { margin-top: 16px; }
-.admin-fotos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; }
+.admin-fotos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
 .admin-foto-item { position: relative; border-radius: 10px; overflow: hidden; border: 1px solid rgba(22,26,34,0.14); aspect-ratio: 4 / 3; background: #11151d; }
+@media (max-width: 600px) { .admin-fotos-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); } }
+.admin-foto-baixar { position: absolute; top: 6px; right: 6px; display: flex; gap: 4px; z-index: 2; }
+.admin-foto-baixar button { font-family: var(--font-head); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.01em; border: none; border-radius: 7px; padding: 4px 7px; background: rgba(7,10,17,0.74); color: #fff; cursor: pointer; backdrop-filter: blur(4px); transition: background 0.18s var(--ease); }
+.admin-foto-baixar button:hover { background: var(--gold-3); color: #20160a; }
 .admin-foto-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .admin-foto-capa { position: absolute; top: 6px; left: 6px; font-family: var(--font-head); font-size: 0.56rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #20160a; background: var(--gold-grad); padding: 2px 7px; border-radius: 100px; }
 .admin-foto-acoes { position: absolute; bottom: 0; left: 0; right: 0; display: flex; gap: 4px; justify-content: center; padding: 6px; background: linear-gradient(transparent, rgba(7,10,17,0.82)); }
@@ -1465,8 +1469,16 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 
 /* ---------- Bairros ---------- */
 .bairros-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
-.bairro-card { display: flex; gap: 14px; align-items: flex-start; padding: 20px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); transition: transform 0.4s var(--ease), border-color 0.4s; height: 100%; text-decoration: none; color: inherit; }
-.bairro-card:hover { border-color: var(--gold-3); transform: translateY(-4px); }
+.bairro-card { display: flex; flex-direction: column; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); overflow: hidden; transition: transform 0.4s var(--ease), border-color 0.4s, box-shadow 0.4s; height: 100%; text-decoration: none; color: inherit; }
+.bairro-card:hover { border-color: var(--gold-3); transform: translateY(-4px); box-shadow: 0 22px 44px -30px rgba(22,26,34,0.55); }
+.bairro-card-foto { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #11151d; }
+.bairro-card-foto img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s var(--ease); }
+.bairro-card:hover .bairro-card-foto img { transform: scale(1.06); }
+.bairro-card-foto::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,13,20,0) 40%, rgba(10,13,20,0.72) 100%); }
+.bairro-card-foto h4 { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; display: flex; align-items: center; gap: 8px; padding: 12px 14px; font-family: var(--font-head); font-weight: 600; font-size: 1.04rem; color: #fff; }
+.bairro-card-foto .bairro-ico { flex: none; width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,0.16); backdrop-filter: blur(4px); color: #f4d58a; }
+.bairro-card-foto .bairro-ico svg { width: 15px; height: 15px; }
+.bairro-card > p { color: var(--text-mute); font-size: 0.86rem; line-height: 1.5; padding: 14px 16px 18px; margin: 0; }
 /* cross-links de bairros (SEO interno) na página de bairro */
 .bairros-links { display: flex; flex-wrap: wrap; gap: 10px; }
 .bairro-link { font-family: var(--font-head); font-weight: 600; font-size: 0.88rem; color: #2b3038; background: #fff; border: 1px solid rgba(22,26,34,0.1); padding: 9px 15px; border-radius: 100px; text-decoration: none; transition: background 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease); }
@@ -1474,8 +1486,7 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .bairros-grid > * { height: 100%; }
 .bairro-ico { flex: none; width: 40px; height: 40px; border-radius: 11px; background: var(--surface-2); display: grid; place-items: center; color: var(--gold-1); }
 .bairro-ico svg { width: 19px; height: 19px; }
-.bairro-card h4 { font-family: var(--font-head); font-weight: 600; font-size: 1rem; }
-.bairro-card p { color: var(--text-mute); font-size: 0.86rem; margin-top: 4px; line-height: 1.45; }
+/* (estilos de h4/p do card de bairro agora ficam em .bairro-card-foto h4 e .bairro-card > p) */
 
 /* ---------- FAQ ---------- */
 .faq-wrap { max-width: 820px; }
