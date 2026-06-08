@@ -1118,6 +1118,7 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 /* ===== Área do cliente ===== */
 .conta-cadastro { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(28px, 5vw, 60px); align-items: start; }
 .conta-pitch .section-title { margin-top: 6px; }
+.conta-pitch-tit { font-size: clamp(2rem, 3.4vw, 3.05rem); line-height: 1.1; letter-spacing: -0.02em; text-wrap: balance; }
 .conta-trust-chips { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 26px; }
 .conta-trust-chips span { font-size: 0.8rem; font-weight: 600; color: #6a5418; background: rgba(184,134,47,0.12); border: 1px solid rgba(184,134,47,0.28); padding: 6px 13px; border-radius: 100px; }
 .conta-beneficios { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 16px 22px; margin-top: 4px; }

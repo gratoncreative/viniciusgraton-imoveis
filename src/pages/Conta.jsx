@@ -52,7 +52,7 @@ function CadastroView({ onPronto }) {
     <div className="conta-cadastro">
       <div className="conta-pitch">
         <span className="eyebrow">Área exclusiva · 100% grátis</span>
-        <h1 className="section-title">Imóvel bom <em>some rápido</em>.<br />Seja o primeiro a saber.</h1>
+        <h1 className="section-title conta-pitch-tit">Imóvel bom <em>some rápido</em>. Seja o primeiro a saber.</h1>
         <p className="section-sub" style={{ margin: '14px 0 18px' }}>
           Crie sua conta gratuita e tenha uma experiência feita pra você: uma seleção que eu separo a dedo, favoritos salvos, alertas em primeira mão e atendimento prioritário. Leva 30 segundos.
         </p>
