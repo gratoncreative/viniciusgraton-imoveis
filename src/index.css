@@ -1139,6 +1139,22 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 /* Checkbox dentro das calculadoras (ex.: IR na venda) */
 .calc-check { display: flex; align-items: flex-start; gap: 10px; font-size: 0.92rem; color: #3a4150; line-height: 1.4; cursor: pointer; padding: 4px 0; }
 .calc-check input { width: 18px; height: 18px; flex: 0 0 auto; margin-top: 1px; accent-color: var(--gold-3); cursor: pointer; }
+/* Editor de imóveis publicados (admin) */
+.admin-imovel-card { text-align: left; cursor: pointer; position: relative; }
+.admin-imovel-card:hover { border-color: var(--gold-3); }
+.admin-imovel-preco { font-family: var(--font-head); font-weight: 700; color: var(--gold-3); }
+.admin-editar { font-family: var(--font-head); font-size: 0.82rem; font-weight: 600; color: #5a616e; margin-top: 4px; }
+.admin-edit-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 26px; align-items: start; }
+.admin-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.admin-field { display: flex; flex-direction: column; gap: 5px; }
+.admin-field--full { grid-column: 1 / -1; }
+.admin-field span { font-family: var(--font-head); font-size: 0.78rem; font-weight: 600; color: #5a616e; }
+.admin-field input, .admin-field textarea { width: 100%; border: 1px solid rgba(22,26,34,0.16); border-radius: 9px; padding: 10px 12px; font-family: inherit; font-size: 0.95rem; color: #20252e; background: #fff; resize: vertical; }
+.admin-field input:focus, .admin-field textarea:focus { outline: none; border-color: var(--gold-3); box-shadow: 0 0 0 3px rgba(176,141,87,0.14); }
+.admin-owner { background: #fbf7ee; border: 1px solid rgba(184,134,47,0.32); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
+.admin-owner .admin-field input { background: #fff; }
+.admin-owner-tag { font-family: var(--font-head); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #8a6418; background: rgba(184,134,47,0.16); border: 1px solid rgba(184,134,47,0.35); padding: 2px 8px; border-radius: 100px; }
+@media (max-width: 720px) { .admin-edit-grid { grid-template-columns: 1fr; } }
 .conta-trust-chips { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 26px; }
 .conta-trust-chips span { font-size: 0.8rem; font-weight: 600; color: #6a5418; background: rgba(184,134,47,0.12); border: 1px solid rgba(184,134,47,0.28); padding: 6px 13px; border-radius: 100px; }
 .conta-beneficios { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 16px 22px; margin-top: 4px; }

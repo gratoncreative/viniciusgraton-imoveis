@@ -137,5 +137,26 @@ export async function onRequestPost({ env, request }) {
     return json({ ok: true })
   }
 
+  // Edição de imóvel publicado + dados do PROPRIETÁRIO (confidenciais, só admin)
+  if (action === 'imovel-get') {
+    const codigo = String(b.codigo || '').slice(0, 12)
+    if (!codigo) return json({ error: 'codigo' }, 400)
+    const v = await env.ENGAGEMENT.get('imovel:' + codigo, 'json')
+    return json({ ok: true, registro: v || null })
+  }
+  if (action === 'imovel-save') {
+    const codigo = String(b.codigo || '').slice(0, 12)
+    if (!codigo) return json({ error: 'codigo' }, 400)
+    const o = b.owner && typeof b.owner === 'object' ? b.owner : {}
+    const owner = { nome: String(o.nome || '').slice(0, 120), email: String(o.email || '').slice(0, 160), fone: String(o.fone || '').slice(0, 40) }
+    const c = b.campos && typeof b.campos === 'object' ? b.campos : {}
+    const campos = {}
+    for (const k of ['preco', 'quartos', 'suites', 'banheiros', 'vagas', 'area']) if (k in c) campos[k] = Number(c[k]) || 0
+    for (const k of ['tipo', 'bairro', 'descricao']) if (k in c) campos[k] = String(c[k] || '').slice(0, 3000)
+    for (const k of ['destaque', 'oculto']) if (k in c) campos[k] = !!c[k]
+    await env.ENGAGEMENT.put('imovel:' + codigo, JSON.stringify({ owner, campos, atualizadoEm: Date.now() }))
+    return json({ ok: true })
+  }
+
   return json({ error: 'acao desconhecida' }, 400)
 }

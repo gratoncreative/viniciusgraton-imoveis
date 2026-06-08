@@ -104,6 +104,94 @@ function LeadCard({ lead, token, onSair, onMudou }) {
   )
 }
 
+function ImoveisPub({ token, onSair }) {
+  const [sel, setSel] = useState(null)
+  const [reg, setReg] = useState(null)
+  const [carregando, setCarregando] = useState(false)
+  const [salvo, setSalvo] = useState(false)
+  const base = sel ? IMOVEIS.find((i) => String(i.codigo) === String(sel)) : null
+
+  const abrir = async (cod) => {
+    setSel(cod); setReg(null); setCarregando(true); setSalvo(false)
+    const b = IMOVEIS.find((i) => String(i.codigo) === String(cod)) || {}
+    const { status, j } = await api({ action: 'imovel-get', token, codigo: String(cod) })
+    if (status === 401) return onSair()
+    const kv = j.registro || {}
+    setReg({
+      owner: { nome: '', email: '', fone: '', ...(kv.owner || {}) },
+      campos: { preco: b.preco || 0, tipo: b.tipo || '', bairro: b.bairro || '', quartos: b.quartos || 0, suites: b.suites || 0, banheiros: b.banheiros || 0, vagas: b.vagas || 0, area: b.area || 0, descricao: b.descricao || '', destaque: false, oculto: false, ...(kv.campos || {}) },
+    })
+    setCarregando(false)
+  }
+  const setC = (k, v) => setReg((r) => ({ ...r, campos: { ...r.campos, [k]: v } }))
+  const setO = (k, v) => setReg((r) => ({ ...r, owner: { ...r.owner, [k]: v } }))
+  const salvar = async () => {
+    const { status } = await api({ action: 'imovel-save', token, codigo: String(sel), owner: reg.owner, campos: reg.campos })
+    if (status === 401) return onSair()
+    setSalvo(true); setTimeout(() => setSalvo(false), 1800)
+  }
+  const moeda = (n) => (n || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })
+
+  if (sel && reg) {
+    return (
+      <section>
+        <div className="admin-barra">
+          <button className="admin-btn" onClick={() => { setSel(null); setReg(null) }}>← Voltar à lista</button>
+          <span className="painel-meta">Editando cód. {sel} · {base?.tipo} · {base?.bairro}</span>
+        </div>
+        <div className="admin-edit-grid">
+          <div>
+            <h3 className="det-rel-titulo">Dados do imóvel <span className="painel-meta">(aparecem no site)</span></h3>
+            <div className="admin-fields">
+              <label className="admin-field"><span>Tipo</span><input value={reg.campos.tipo} onChange={(e) => setC('tipo', e.target.value)} /></label>
+              <label className="admin-field"><span>Bairro</span><input value={reg.campos.bairro} onChange={(e) => setC('bairro', e.target.value)} /></label>
+              <label className="admin-field"><span>Preço (R$)</span><input type="number" value={reg.campos.preco} onChange={(e) => setC('preco', e.target.value)} /></label>
+              <label className="admin-field"><span>Área (m²)</span><input type="number" value={reg.campos.area} onChange={(e) => setC('area', e.target.value)} /></label>
+              <label className="admin-field"><span>Quartos</span><input type="number" value={reg.campos.quartos} onChange={(e) => setC('quartos', e.target.value)} /></label>
+              <label className="admin-field"><span>Suítes</span><input type="number" value={reg.campos.suites} onChange={(e) => setC('suites', e.target.value)} /></label>
+              <label className="admin-field"><span>Banheiros</span><input type="number" value={reg.campos.banheiros} onChange={(e) => setC('banheiros', e.target.value)} /></label>
+              <label className="admin-field"><span>Vagas</span><input type="number" value={reg.campos.vagas} onChange={(e) => setC('vagas', e.target.value)} /></label>
+              <label className="admin-field admin-field--full"><span>Descrição</span><textarea rows="5" value={reg.campos.descricao} onChange={(e) => setC('descricao', e.target.value)} /></label>
+            </div>
+            <label className="calc-check"><input type="checkbox" checked={!!reg.campos.destaque} onChange={(e) => setC('destaque', e.target.checked)} /><span>Destacar este imóvel na home</span></label>
+            <label className="calc-check"><input type="checkbox" checked={!!reg.campos.oculto} onChange={(e) => setC('oculto', e.target.checked)} /><span>Ocultar do site (despublicar)</span></label>
+          </div>
+          <div>
+            <div className="admin-owner">
+              <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>🔒 Proprietário <span className="admin-owner-tag">confidencial · só você vê</span></h3>
+              <label className="admin-field"><span>Nome</span><input value={reg.owner.nome} onChange={(e) => setO('nome', e.target.value)} /></label>
+              <label className="admin-field"><span>E-mail</span><input value={reg.owner.email} onChange={(e) => setO('email', e.target.value)} /></label>
+              <label className="admin-field"><span>Telefone</span><input value={reg.owner.fone} onChange={(e) => setO('fone', e.target.value)} /></label>
+              <p className="calc-nota">Guardado só no seu painel (servidor, com login). Nunca aparece no site, nem no código, nem para o cliente.</p>
+            </div>
+            <div style={{ display: 'flex', gap: 10, marginTop: 14, alignItems: 'center' }}>
+              <button className="btn btn-gold" onClick={salvar}>Salvar alterações</button>
+              {salvo && <span className="lead-salvo">✓ salvo</span>}
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  return (
+    <section>
+      {carregando && <p className="section-sub">Carregando…</p>}
+      <p className="section-sub" style={{ marginBottom: 14 }}>Clique num imóvel para <b>editar os dados</b> e cadastrar o <b>proprietário</b> (confidencial). {IMOVEIS.length} imóveis publicados.</p>
+      <div className="painel-lista">
+        {IMOVEIS.map((i) => (
+          <button className="painel-card admin-imovel-card" key={i.codigo} onClick={() => abrir(i.codigo)}>
+            <b>{i.tipo} · {i.bairro}</b>
+            <span className="painel-meta">cód. {i.codigo} · {i.quartos || 0}q · {i.area || 0} m²</span>
+            <span className="admin-imovel-preco">{moeda(i.preco)}</span>
+            <span className="admin-editar">Editar →</span>
+          </button>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 export default function Admin() {
   useSEO({ title: 'Painel administrativo', description: 'Área restrita do Vinícius Graton.', path: '/admin' })
   const [token, setToken] = useState(() => { try { return localStorage.getItem(LSK) || '' } catch { return '' } })
@@ -272,15 +360,7 @@ export default function Admin() {
           </section>
         )}
 
-        {aba === 'imoveis' && (
-          <section>
-            <div className="det-trust" style={{ marginBottom: 16 }}>
-              <IconShield width={20} height={20} />
-              <p><b>Gestão de imóveis ao vivo — em construção (próxima onda).</b> Em breve você poderá <b>adicionar, editar, despublicar e subir fotos</b> de imóveis aqui no painel, sem depender de mim. Por ora, o site mostra {IMOVEIS.length} imóveis em destaque da sua carteira.</p>
-            </div>
-            <p className="section-sub">Para inserir um imóvel agora, me mande os dados + fotos (ou use o formulário <b>/anunciar</b>) que eu publico.</p>
-          </section>
-        )}
+        {aba === 'imoveis' && <ImoveisPub token={token} onSair={sair} />}
 
         <p className="calc-nota" style={{ marginTop: 22 }}>Painel seguro · sessão de 12h · WhatsApp do site: {CONFIG.telefone || ''}.</p>
       </div>
