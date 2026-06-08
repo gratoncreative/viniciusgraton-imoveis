@@ -24,3 +24,6 @@ Graton-Acessos/
 # Ferramenta local de remocao de marca d'agua (pesada: venv, modelos, amostras)
 
 ferramentas-imagem/
+
+# Bot de WhatsApp local (nao vai pro site)
+ferramentas-whatsapp/

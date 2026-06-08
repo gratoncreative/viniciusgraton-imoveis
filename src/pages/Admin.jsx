@@ -334,6 +334,7 @@ export default function Admin() {
   const [blogViews, setBlogViews] = useState(null)
   const [aba, setAba] = useState('geral')
   const [erro, setErro] = useState('')
+  const [aprovadosLocais, setAprovadosLocais] = useState([]) // esconde na hora (KV tem atraso de leitura)
   const [carregando, setCarregando] = useState(false)
 
   const salvarToken = (t) => { try { localStorage.setItem(LSK, t) } catch {}; setToken(t) }
@@ -375,18 +376,21 @@ export default function Admin() {
   const leadsNovos = leads.filter((l) => (l.ts || 0) > seteDias).length
   const pendentes = anuncios.filter((a) => !a.aprovado).length
   const aprovados = dados?.aprovados || []
-  const importadosPendentes = IMOVEIS_PENDENTES.filter((im) => !aprovados.includes(String(im.codigo)))
+  const importadosPendentes = IMOVEIS_PENDENTES.filter((im) => !aprovados.includes(String(im.codigo)) && !aprovadosLocais.includes(String(im.codigo)))
   const aAvaliar = importadosPendentes.length + pendentes
   const totalViews = blogViews ? Object.values(blogViews).reduce((s, n) => s + (n || 0), 0) : 0
 
   const aprovarImovel = async (codigo, aprovado) => {
+    if (aprovado !== false) setAprovadosLocais((a) => [...new Set([...a, String(codigo)])]) // some na hora
     const { status } = await api({ action: 'imovel-aprovar', token, codigo, aprovado })
     if (status === 401) return sair()
     carregar()
   }
   const aprovarTodos = async () => {
     if (!window.confirm(`Aprovar e publicar os ${importadosPendentes.length} imóveis importados?`)) return
-    for (const im of importadosPendentes) await api({ action: 'imovel-aprovar', token, codigo: im.codigo, aprovado: true })
+    const cods = importadosPendentes.map((im) => String(im.codigo))
+    setAprovadosLocais((a) => [...new Set([...a, ...cods])]) // somem na hora
+    for (const c of cods) await api({ action: 'imovel-aprovar', token, codigo: c, aprovado: true })
     carregar()
   }
   const conferirTodosImoview = () => {
@@ -455,10 +459,9 @@ export default function Admin() {
           <section>
             <div className="admin-aprovar-head">
               <h3 className="det-rel-titulo" style={{ margin: 0 }}>Importados aguardando sua aprovação ({importadosPendentes.length})</h3>
-              {importadosPendentes.length > 0 && (
+              {importadosPendentes.length > 1 && (
                 <div className="admin-aprovar-head-btns">
-                  <button className="admin-btn admin-btn--imoview" onClick={conferirTodosImoview}>↗ Conferir todos no Imoview</button>
-                  {importadosPendentes.length > 1 && <button className="btn btn-gold" onClick={aprovarTodos}>✓ Aprovar todos ({importadosPendentes.length})</button>}
+                  <button className="btn btn-gold" onClick={aprovarTodos}>✓ Aprovar todos ({importadosPendentes.length})</button>
                 </div>
               )}
             </div>
