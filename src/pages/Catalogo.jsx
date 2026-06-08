@@ -82,6 +82,8 @@ export default function Catalogo() {
     })
     if (f.ordem === 'menor') r = [...r].sort((a, b) => a.preco - b.preco)
     if (f.ordem === 'maior') r = [...r].sort((a, b) => b.preco - a.preco)
+    if (f.ordem === 'area-maior') r = [...r].sort((a, b) => (b.area || 0) - (a.area || 0))
+    if (f.ordem === 'area-menor') r = [...r].sort((a, b) => (a.area || 0) - (b.area || 0))
     return r
   }, [f.tipo, f.bairro, f.quartos, f.suites, f.vagas, f.area, f.carac, f.faixa, f.q, f.ordem])
 
@@ -164,6 +166,8 @@ export default function Catalogo() {
             <option value="recentes">Mais recentes</option>
             <option value="menor">Menor preço</option>
             <option value="maior">Maior preço</option>
+            <option value="area-maior">Maior área</option>
+            <option value="area-menor">Menor área</option>
           </select>
         </div>
 
