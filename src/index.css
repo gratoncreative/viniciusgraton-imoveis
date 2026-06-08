@@ -1795,6 +1795,10 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 /* selo "novo do site" no CRM */
 .crm-card--novo { border-color: var(--gold-2); box-shadow: 0 0 0 2px rgba(224,181,86,0.18); }
 .crm-novo-tag { font-size: 0.7rem; font-weight: 700; color: #20160a; background: var(--gold-grad); padding: 3px 9px; border-radius: 100px; }
+.admin-subabas { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+.admin-subaba { font-family: var(--font-head); font-weight: 600; font-size: 0.9rem; color: #5a6270; background: #fff; border: 1px solid rgba(22,26,34,0.14); padding: 9px 18px; border-radius: 100px; cursor: pointer; transition: all 0.16s var(--ease); }
+.admin-subaba:hover { border-color: var(--gold-2); }
+.admin-subaba.on { background: #161a22; color: #fff; border-color: transparent; }
 .crm-cadastros { margin-top: 36px; padding-top: 22px; border-top: 1px dashed rgba(22,26,34,0.18); }
 .crm-cadastros .calc-nota { margin: 4px 0 16px; }
 .admin-btn--mini { padding: 7px 13px; font-size: 0.82rem; }

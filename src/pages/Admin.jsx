@@ -374,6 +374,7 @@ export default function Admin() {
   const [dados, setDados] = useState(null)
   const [blogViews, setBlogViews] = useState(null)
   const [aba, setAba] = useState('geral')
+  const [subImovel, setSubImovel] = useState('avaliar') // sub-aba do hub de Imóveis
   const [erro, setErro] = useState('')
   const [aprovadosLocais, setAprovadosLocais] = useState([]) // esconde na hora (KV tem atraso de leitura)
   const [carregando, setCarregando] = useState(false)
@@ -453,9 +454,8 @@ export default function Admin() {
 
   const ABAS = [
     ['geral', 'Visão geral'],
-    ['moderacao', `Imóveis a avaliar (${aAvaliar})`],
+    ['imoveis', `Imóveis${aAvaliar ? ` (${aAvaliar} a avaliar)` : ''}`],
     ['leads', `Leads (${leads.length})`],
-    ['imoveis', 'Imóveis publicados'],
     ['crm', `Clientes${crmNovos ? ` (${crmNovos} novos)` : ''}`],
     ['marca', "Remover marca d'água"],
   ]
@@ -483,10 +483,10 @@ export default function Admin() {
         {aba === 'geral' && (
           <section>
             <div className="admin-stats">
-              <StatCard rotulo="Imóveis a avaliar" valor={aAvaliar} sub={`${importadosPendentes.length} importados · ${pendentes} enviados`} onClick={() => setAba('moderacao')} />
+              <StatCard rotulo="Imóveis a avaliar" valor={aAvaliar} sub={`${importadosPendentes.length} importados · ${pendentes} enviados`} onClick={() => { setAba('imoveis'); setSubImovel('avaliar') }} />
               <StatCard rotulo="Leads (7 dias)" valor={leadsNovos} sub={`${leads.length} no total`} onClick={() => setAba('leads')} />
               <StatCard rotulo="Clientes" valor={crmTotal} sub={`${crmNovos ? crmNovos + ' novos · ' : ''}${clientes.length} cadastros do site`} onClick={() => setAba('crm')} />
-              <StatCard rotulo="Imóveis publicados" valor={IMOVEIS.length} sub="em destaque no site" onClick={() => setAba('imoveis')} />
+              <StatCard rotulo="Imóveis publicados" valor={IMOVEIS.length} sub="em destaque no site" onClick={() => { setAba('imoveis'); setSubImovel('publicados') }} />
               <StatCard rotulo="Leituras no blog" valor={totalViews} sub={blogViews ? `${Object.keys(blogViews).length} posts` : '—'} onClick={() => window.open('/blog', '_blank')} />
             </div>
             <div className="det-trust" style={{ marginTop: 18 }}>
@@ -496,7 +496,14 @@ export default function Admin() {
           </section>
         )}
 
-        {aba === 'moderacao' && (
+        {aba === 'imoveis' && (
+          <div className="admin-subabas">
+            <button className={`admin-subaba ${subImovel === 'avaliar' ? 'on' : ''}`} onClick={() => setSubImovel('avaliar')}>A avaliar ({aAvaliar})</button>
+            <button className={`admin-subaba ${subImovel === 'publicados' ? 'on' : ''}`} onClick={() => setSubImovel('publicados')}>Publicados ({IMOVEIS.length})</button>
+          </div>
+        )}
+
+        {aba === 'imoveis' && subImovel === 'avaliar' && (
           <section>
             <div className="admin-aprovar-head">
               <h3 className="det-rel-titulo" style={{ margin: 0 }}>Importados aguardando sua aprovação ({importadosPendentes.length})</h3>
@@ -541,7 +548,7 @@ export default function Admin() {
                       <button className="btn btn-gold" onClick={() => aprovarImovel(im.codigo, true)}>✓ Aprovar e publicar</button>
                       <a className="admin-btn" href={`/imovel/${im.codigo}`} target="_blank" rel="noopener">Pré-visualizar</a>
                       <a className="admin-btn admin-btn--imoview" href={`https://app.imoview.com.br/Imovel/Detalhes/${im.codigo}`} target="_blank" rel="noopener">↗ Conferir no Imoview</a>
-                      <button className="admin-btn" onClick={() => { setAba('imoveis'); }}>🔒 Proprietário / editar</button>
+                      <button className="admin-btn" onClick={() => { setAba('imoveis'); setSubImovel('publicados') }}>🔒 Proprietário / editar</button>
                     </div>
                   </div>
                 </article>
@@ -598,7 +605,7 @@ export default function Admin() {
           </section>
         )}
 
-        {aba === 'imoveis' && <ImoveisPub token={token} onSair={sair} />}
+        {aba === 'imoveis' && subImovel === 'publicados' && <ImoveisPub token={token} onSair={sair} />}
 
         {aba === 'crm' && <AdminCRM token={token} onSair={sair} cadastros={clientes} onExcluirCadastro={(c) => excluir(c._key, `o cadastro de ${c.nome || 'cliente'}`)} />}
 
