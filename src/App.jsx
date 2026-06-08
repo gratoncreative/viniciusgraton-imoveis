@@ -26,6 +26,7 @@ const Avaliacao = lazy(() => import('./pages/Avaliacao'))
 const Comparar = lazy(() => import('./pages/Comparar'))
 const Mapa = lazy(() => import('./pages/Mapa'))
 const Painel = lazy(() => import('./pages/Painel'))
+const Admin = lazy(() => import('./pages/Admin'))
 const Blog = lazy(() => import('./pages/Blog'))
 const BlogPost = lazy(() => import('./pages/BlogPost'))
 const CondominioDetalhe = lazy(() => import('./pages/CondominioDetalhe'))
@@ -123,6 +124,7 @@ export default function App() {
               <Route path="/comparar" element={<Comparar />} />
               <Route path="/mapa" element={<Mapa />} />
               <Route path="/painel" element={<Painel />} />
+              <Route path="/admin" element={<Admin />} />
               <Route path="/conta" element={<Conta />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
