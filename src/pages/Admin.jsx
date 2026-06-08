@@ -176,7 +176,7 @@ function ImoveisPub({ token, onSair }) {
   })
   // Aplica a marca d'água da Rotina (selo no canto + repetição diagonal sutil)
   const desenharMarca = (ctx, w, h) => {
-    const txt = 'ROTINA IMOBILIÁRIA'
+    const txt = 'VINÍCIUS GRATON'
     ctx.save()
     ctx.globalAlpha = 0.14
     ctx.fillStyle = '#ffffff'
@@ -200,7 +200,7 @@ function ImoveisPub({ token, onSair }) {
     ctx.textAlign = 'right'; ctx.textBaseline = 'bottom'
     ctx.fillStyle = 'rgba(255,255,255,0.95)'
     ctx.shadowColor = 'rgba(0,0,0,0.6)'; ctx.shadowBlur = fs2 / 2
-    ctx.fillText('Rotina Imobiliária · Vinícius Graton', w - fs2, h - fs2)
+    ctx.fillText('Vinícius Graton', w - fs2, h - fs2)
     ctx.restore()
   }
   const baixarBlob = (blob, nome) => {
