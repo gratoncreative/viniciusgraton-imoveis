@@ -525,6 +525,7 @@ export default function Admin() {
                       </div>
                       <span className="aprovar-banner-preco">{formatPreco(im.preco)}</span>
                     </div>
+                    {im.conferido && <span className="aprovar-conf">✓ Conferido pelo sistema no Imoview ({new Date(im.conferido + 'T12:00:00').toLocaleDateString('pt-BR')}) — dados batem</span>}
                     <div className="aprovar-banner-specs">
                       {im.quartos > 0 && <span>{im.quartos} quartos</span>}
                       {im.suites > 0 && <span>{im.suites} suíte{im.suites > 1 ? 's' : ''}</span>}

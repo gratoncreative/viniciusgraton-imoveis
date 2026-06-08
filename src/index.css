@@ -1251,7 +1251,8 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .aprovar-banner-top b { font-family: var(--font-head); font-size: 1.15rem; color: #1a1f29; display: block; }
 .aprovar-banner-end { color: var(--text-mute); font-size: .84rem; }
 .aprovar-banner-preco { font-family: var(--font-head); font-weight: 700; font-size: 1.2rem; color: var(--gold-1); white-space: nowrap; }
-.aprovar-banner-specs { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.aprovar-conf { display: inline-block; font-size: .76rem; font-weight: 700; color: #1d6b41; background: rgba(46,140,87,0.12); border: 1px solid rgba(46,140,87,0.35); border-radius: 100px; padding: 3px 11px; margin: 10px 0 2px; }
+.aprovar-banner-specs { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
 .aprovar-banner-specs span { font-size: .8rem; font-weight: 600; color: #3a4150; background: rgba(22,26,34,0.05); border-radius: 100px; padding: 5px 12px; }
 .aprovar-banner-desc { color: #4a5160; font-size: .9rem; line-height: 1.55; margin: 0 0 14px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .aprovar-banner-acoes { display: flex; gap: 10px; flex-wrap: wrap; margin-top: auto; }
