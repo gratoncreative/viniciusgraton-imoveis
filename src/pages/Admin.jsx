@@ -326,16 +326,14 @@ function ImoveisPub({ token, onSair }) {
       </div>
       <div className="admin-imoveis-grid">
         {lista.map((i) => (
-          <button className="admin-im-card" key={i.codigo} onClick={() => abrir(i.codigo)}>
+          <button className="admin-im-card" key={i.codigo} onClick={() => abrir(i.codigo)} title={`Editar ${i.tipo} · ${i.bairro} · cód ${i.codigo}`}>
             <div className="admin-im-foto">
               <img src={i.img} alt="" loading="lazy" referrerPolicy="no-referrer" />
-              <span className="admin-im-cod">cód. {i.codigo}</span>
             </div>
             <div className="admin-im-info">
               <b className="admin-im-bairro">{i.bairro}</b>
-              <span className="painel-meta">{i.tipo} · {i.quartos || 0}q{i.suites ? ` · ${i.suites} st` : ''} · {i.area || 0} m²</span>
+              <span className="painel-meta">{i.tipo} · {i.quartos || 0}q{i.suites ? ` · ${i.suites} st` : ''} · {i.area || 0} m² · cód {i.codigo}</span>
               <span className="admin-im-preco">{formatPreco(i.preco)}</span>
-              <span className="admin-editar">Editar →</span>
             </div>
           </button>
         ))}
