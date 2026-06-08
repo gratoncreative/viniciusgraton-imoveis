@@ -14,6 +14,7 @@ const IconUser = (p) => (
 
 // Páginas do menu principal
 const LINKS = [
+  { to: '/encontrar-imovel', label: 'Encontrar imóvel', destaque: true },
   { to: '/imoveis', label: 'Imóveis' },
   { to: '/construtoras', label: 'Construtoras' },
   { to: '/condominios', label: 'Condomínios' },
@@ -42,6 +43,7 @@ const MMIcon = ({ name }) => (
   <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={MM_ICN[name]} /></svg>
 )
 const MENU_CARDS = [
+  { to: '/encontrar-imovel', label: 'Encontrar imóvel', sub: 'Busca guiada em 1 min', icon: 'pin' },
   { to: '/imoveis', label: 'Imóveis', sub: 'À venda em Uberlândia', icon: 'home' },
   { to: '/condominios', label: 'Condomínios', sub: 'Fechados e lançamentos', icon: 'building' },
   { to: '/construtoras', label: 'Construtoras', sub: 'Empreendimentos', icon: 'store' },

@@ -194,10 +194,13 @@ export default function Catalogo() {
           </div>
         ) : (
           <div className="cat-vazio">
-            <p>Não encontrei imóveis com esses filtros.</p>
-            <a className="btn btn-gold" href={linkWhatsApp(WA.imoveis)} target="_blank" rel="noopener">
-              <IconWhats /> Me conta o que você procura
-            </a>
+            <p>Não encontrei imóveis com esses filtros. Deixa eu achar pra você?</p>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
+              <Link className="btn btn-gold" to="/encontrar-imovel">Encontrar meu imóvel</Link>
+              <a className="btn btn-ghost" href={linkWhatsApp(WA.imoveis)} target="_blank" rel="noopener">
+                <IconWhats /> Me chamar no WhatsApp
+              </a>
+            </div>
           </div>
         )}
 

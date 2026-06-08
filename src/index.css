@@ -1749,3 +1749,49 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
   * { animation: none !important; transition: none !important; }
   html { scroll-behavior: auto; }
 }
+
+/* ===== Chat "Encontre seu imóvel" ===== */
+.encontrar-hero { padding: clamp(108px, 13vh, 160px) 0 clamp(20px, 3vw, 36px); text-align: center; background: radial-gradient(120% 120% at 50% 0%, #151a26 0%, var(--bg) 70%); border-bottom: 1px solid var(--border); }
+.encontrar-hero .eyebrow { justify-content: center; }
+.chat-busca { max-width: 680px; margin: 0 auto; background: #fff; border: 1px solid rgba(184,134,47,0.28); border-radius: 20px; padding: 22px clamp(16px, 3vw, 26px) 24px; box-shadow: 0 26px 60px -40px rgba(22,26,34,0.6); }
+.cb-transcript { display: flex; flex-direction: column; gap: 12px; max-height: 46vh; overflow-y: auto; padding-right: 4px; margin-bottom: 8px; }
+.cb-transcript > div { display: flex; flex-direction: column; gap: 12px; }
+.cb-msg { display: flex; gap: 10px; align-items: flex-end; }
+.cb-msg.user { justify-content: flex-end; }
+.cb-avatar { flex: none; width: 34px; height: 34px; border-radius: 50%; overflow: hidden; border: 1.5px solid var(--gold-3); }
+.cb-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.cb-bubble { max-width: 80%; padding: 11px 15px; border-radius: 16px; font-size: 0.96rem; line-height: 1.5; }
+.cb-msg.bot .cb-bubble { background: #f4f1e8; color: #2a2f3a; border-bottom-left-radius: 5px; }
+.cb-msg.user .cb-bubble { background: var(--gold-grad); color: #20160a; font-weight: 600; border-bottom-right-radius: 5px; }
+.cb-count { text-align: center; font-size: 0.86rem; color: #5a6370; margin: 10px 0; }
+.cb-count b { color: var(--gold-1); font-family: var(--font-head); font-size: 1.05rem; }
+.cb-input-area { position: relative; border-top: 1px solid rgba(22,26,34,0.08); padding-top: 16px; margin-top: 6px; }
+.cb-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.cb-chips--scroll { max-height: 168px; overflow-y: auto; padding: 2px; }
+.cb-chip { font-family: var(--font-head); font-weight: 600; font-size: 0.9rem; color: #3a4150; background: #fbf9f4; border: 1.5px solid rgba(22,26,34,0.14); padding: 10px 16px; border-radius: 100px; cursor: pointer; transition: all 0.16s var(--ease); }
+.cb-chip:hover { border-color: var(--gold-2); transform: translateY(-1px); }
+.cb-chip.on { background: var(--gold-grad); color: #20160a; border-color: transparent; }
+.cb-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px; align-items: center; }
+.cb-skip { background: none; border: none; color: #6a7280; font-size: 0.9rem; cursor: pointer; text-decoration: underline; }
+.cb-form { display: flex; gap: 10px; margin-top: 4px; }
+.cb-form input { flex: 1; padding: 13px 16px; border: 1.5px solid rgba(22,26,34,0.18); border-radius: 12px; font-size: 1rem; background: #fbf9f4; color: #1a1f29; }
+.cb-form input:focus { outline: none; border-color: var(--gold-2); }
+.cb-erro { color: #c0392b; font-size: 0.88rem; margin-top: 10px; }
+.cb-lgpd { color: #8a909c; font-size: 0.78rem; margin-top: 10px; text-align: center; }
+
+.cb-sucesso { max-width: 920px; margin: 0 auto; }
+.cb-sucesso-topo { text-align: center; margin-bottom: 20px; }
+.cb-sucesso-ok { display: inline-grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: rgba(46,140,87,0.14); color: #2e8c57; font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; }
+.cb-sucesso-topo h2 { font-family: var(--font-head); font-size: clamp(1.5rem, 4vw, 2rem); color: #1a1f29; }
+.cb-sucesso-topo p { color: #4a5160; line-height: 1.6; max-width: 560px; margin: 8px auto 0; }
+.cb-sucesso-link-aviso { font-size: 0.92rem; }
+.cb-link-box { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; max-width: 600px; margin: 0 auto 26px; background: #fff; border: 1px solid rgba(184,134,47,0.3); border-radius: 14px; padding: 10px; }
+.cb-link-box input { flex: 1 1 240px; min-width: 0; padding: 10px 12px; border: 1px solid rgba(22,26,34,0.14); border-radius: 9px; font-size: 0.86rem; color: #41484f; background: #fbf9f4; }
+.cb-sucesso-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; margin-bottom: 28px; }
+.cb-sucesso-wa { text-align: center; background: #fff; border: 1px solid rgba(184,134,47,0.3); border-radius: 16px; padding: 22px; box-shadow: 0 16px 40px -32px rgba(22,26,34,0.5); }
+.cb-sucesso-wa p { color: #41484f; margin-bottom: 14px; }
+@media (max-width: 540px) { .cb-bubble { max-width: 86%; } .cb-form { flex-direction: column; } .cb-form .btn { width: 100%; justify-content: center; } }
+
+/* selo "novo do site" no CRM */
+.crm-card--novo { border-color: var(--gold-2); box-shadow: 0 0 0 2px rgba(224,181,86,0.18); }
+.crm-novo-tag { font-size: 0.7rem; font-weight: 700; color: #20160a; background: var(--gold-grad); padding: 3px 9px; border-radius: 100px; }

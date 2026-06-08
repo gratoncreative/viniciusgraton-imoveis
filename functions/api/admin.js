@@ -217,6 +217,10 @@ export async function onRequestPost({ env, request }) {
       // preserva o que o PRÓPRIO cliente refinou na página dele (nunca sobrescrever no save do admin)
       feedback: reg.feedback && typeof reg.feedback === 'object' ? reg.feedback : {},
       refinadoEm: reg.refinadoEm || 0,
+      // origem/prazo vêm do chat de busca; ao salvar, deixa de ser "novo"
+      origem: reg.origem || lim(c.origem, 20) || '',
+      prazo: lim(c.prazo, 40) || reg.prazo || '',
+      novo: false,
     }
     await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(novo))
     return json({ ok: true, cliente: novo })

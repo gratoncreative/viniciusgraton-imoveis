@@ -158,17 +158,18 @@ export default function AdminCRM({ token, onSair }) {
     <section>
       <div className="admin-barra">
         <button className="btn btn-gold" onClick={() => { setSel({ ...VAZIO }); setErro('') }}>+ Novo cliente</button>
-        <span className="painel-meta">{clientes ? `${clientes.length} cliente(s)` : 'Carregando…'}</span>
+        <span className="painel-meta">{clientes ? `${clientes.length} cliente(s)${clientes.filter((c) => c.novo).length ? ` · ${clientes.filter((c) => c.novo).length} novo(s) do site` : ''}` : 'Carregando…'}</span>
       </div>
       {clientes && clientes.length === 0 && <p className="section-sub">Nenhum cliente cadastrado ainda. Clique em <b>+ Novo cliente</b> para começar.</p>}
       <div className="crm-lista">
         {(clientes || []).map((c) => (
-          <div className="crm-card" key={c.id}>
+          <div className={`crm-card ${c.novo ? 'crm-card--novo' : ''}`} key={c.id}>
             <div className="crm-card-top">
               <b>{c.nome || 'Sem nome'}</b>
+              {c.novo && <span className="crm-novo-tag">✨ Novo · do site</span>}
               <span className="painel-meta">{c.whatsapp}</span>
             </div>
-            <p className="crm-card-crit">{[c.finalidade, (c.tipos || []).join('/'), (c.bairros || []).slice(0, 2).join(', '), c.precoMax ? 'até ' + formatPreco(c.precoMax) : ''].filter(Boolean).join(' · ')}</p>
+            <p className="crm-card-crit">{[c.finalidade, (c.tipos || []).join('/'), (c.bairros || []).slice(0, 2).join(', '), c.precoMax ? 'até ' + formatPreco(c.precoMax) : '', c.prazo ? '⏱ ' + c.prazo : ''].filter(Boolean).join(' · ')}</p>
             <p className="painel-meta">{(c.sugeridos || []).length} imóvel(is) na página</p>
             <div className="crm-card-acoes">
               <button className="admin-btn" onClick={() => setSel({ ...VAZIO, ...c })}>Abrir / editar</button>

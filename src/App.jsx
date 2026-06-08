@@ -36,6 +36,7 @@ const EmpreendimentoDetalhe = lazy(() => import('./pages/EmpreendimentoDetalhe')
 const Bairro = lazy(() => import('./pages/Bairro'))
 const Favoritos = lazy(() => import('./pages/Favoritos'))
 const Cliente = lazy(() => import('./pages/Cliente'))
+const EncontrarImovel = lazy(() => import('./pages/EncontrarImovel'))
 const Privacidade = lazy(() => import('./pages/Privacidade'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
@@ -132,6 +133,7 @@ export default function App() {
               <Route path="/contato" element={<FaleComigo />} />
               <Route path="/favoritos" element={<Favoritos />} />
               <Route path="/cliente/:token" element={<Cliente />} />
+              <Route path="/encontrar-imovel" element={<EncontrarImovel />} />
               <Route path="/privacidade" element={<Privacidade />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

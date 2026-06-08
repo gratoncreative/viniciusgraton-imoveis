@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import Scene3D from './Scene3D'
 import HeroBusca from './HeroBusca'
 import { CONFIG, linkWhatsApp, WA } from '../data'
@@ -69,6 +70,7 @@ export default function Hero() {
           <HeroBusca />
 
           <div className="hero-actions">
+            <Link className="btn btn-gold" to="/encontrar-imovel">Encontrar meu imóvel</Link>
             <a className="btn btn-ghost" href={linkWhatsApp(WA.hero)} target="_blank" rel="noopener">
               <IconWhats /> Quero ajuda pra comprar
             </a>

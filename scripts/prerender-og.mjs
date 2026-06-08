@@ -201,6 +201,7 @@ console.log(`✓ prerender empreendimentos: ${nemp} páginas em dist/construtora
 const urls = [
   { loc: `${SITE}/`, freq: 'weekly', pri: '1.0' },
   { loc: `${SITE}/imoveis`, freq: 'daily', pri: '0.9' },
+  { loc: `${SITE}/encontrar-imovel`, freq: 'monthly', pri: '0.8' },
   { loc: `${SITE}/como-funciona`, freq: 'monthly', pri: '0.6' },
   { loc: `${SITE}/ferramentas`, freq: 'monthly', pri: '0.6' },
   { loc: `${SITE}/condominios`, freq: 'weekly', pri: '0.7' },
