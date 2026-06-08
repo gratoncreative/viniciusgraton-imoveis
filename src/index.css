@@ -1217,6 +1217,7 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .crm-chips { display: flex; flex-wrap: wrap; gap: 7px; }
 .crm-chip { font-size: .8rem; font-weight: 600; padding: 6px 12px; border-radius: 100px; border: 1px solid rgba(22,26,34,0.16); background: #fff; color: #3a4150; cursor: pointer; }
 .crm-chip.on { background: var(--gold-grad); color: #20160a; border-color: transparent; }
+.crm-chips--bairros { max-height: 168px; overflow: auto; padding: 8px; border: 1px solid rgba(22,26,34,0.12); border-radius: 10px; background: #faf9f6; }
 .crm-match-list { display: flex; flex-direction: column; gap: 8px; max-height: 420px; overflow: auto; }
 .crm-match { display: flex; align-items: center; gap: 10px; padding: 6px; border: 1px solid rgba(22,26,34,0.12); border-radius: 10px; cursor: pointer; background: #fff; }
 .crm-match.on { border-color: var(--gold-3); background: rgba(184,134,47,0.06); }

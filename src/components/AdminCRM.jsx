@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, filtrarParaCliente, formatPreco } from '../data'
+import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_TODOS, filtrarParaCliente, formatPreco } from '../data'
 import InputMoeda from './InputMoeda'
 
 const api = (payload) => fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) }).then((r) => r.json().then((j) => ({ status: r.status, j })))
@@ -79,9 +79,9 @@ export default function AdminCRM({ token, onSair }) {
             <div className="crm-chips">
               {TIPOS_IMOVEL.map((t) => <button type="button" key={t} className={`crm-chip ${(sel.tipos || []).includes(t) ? 'on' : ''}`} onClick={() => toggleArr('tipos', t)}>{t}</button>)}
             </div>
-            <p className="admin-mini-label">Bairros de interesse</p>
-            <div className="crm-chips">
-              {BAIRROS_IMOVEL.map((b) => <button type="button" key={b} className={`crm-chip ${(sel.bairros || []).includes(b) ? 'on' : ''}`} onClick={() => toggleArr('bairros', b)}>{b}</button>)}
+            <p className="admin-mini-label">Bairros de interesse <span className="painel-meta">(todos os bairros de Uberlândia · {(sel.bairros || []).length} selecionado{(sel.bairros || []).length === 1 ? '' : 's'})</span></p>
+            <div className="crm-chips crm-chips--bairros">
+              {BAIRROS_TODOS.map((b) => <button type="button" key={b} className={`crm-chip ${(sel.bairros || []).includes(b) ? 'on' : ''}`} onClick={() => toggleArr('bairros', b)}>{b}</button>)}
             </div>
             <label className="admin-field admin-field--full" style={{ marginTop: 12 }}><span>Observações (o que o cliente quer, detalhes)</span><textarea rows="4" value={sel.obs} onChange={(e) => setF('obs', e.target.value)} /></label>
 

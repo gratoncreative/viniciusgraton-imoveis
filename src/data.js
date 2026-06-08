@@ -39,6 +39,7 @@ export const WA = {
 import destaqueData from './imoveis-destaque.json'
 import construtorasData from './construtoras.json'
 import condominiosData from './condominios.json'
+import bairrosM2 from './bairros-m2.json'
 
 const TODOS_IMOVEIS = destaqueData.imoveis || []
 // Imóveis importados entram como `pendente` e ficam FORA do site até o Vinícius aprovar.
@@ -442,6 +443,14 @@ export const BAIRROS_SEO = [...new Set([...BAIRROS.map((b) => b.nome), ...BAIRRO
   .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
 export const getBairroSeo = (slug) => BAIRROS_SEO.find((b) => b.slug === slug)
 export const imoveisDoBairro = (nome) => IMOVEIS.filter((i) => (i.bairro || '').toLowerCase() === String(nome).toLowerCase())
+
+// TODOS os bairros de Uberlândia (lista completa p/ seleção no CRM) — une a base
+// oficial de m² (77 bairros) + principais + os que têm imóvel na carteira.
+export const BAIRROS_TODOS = [...new Set([
+  ...bairrosM2.map((b) => b.bairro),
+  ...BAIRROS.map((b) => b.nome),
+  ...BAIRROS_IMOVEL,
+])].filter(Boolean).sort((a, b) => a.localeCompare(b, 'pt-BR'))
 
 // Perguntas frequentes (conteúdo de autoridade + schema FAQ)
 export const FAQ = [
