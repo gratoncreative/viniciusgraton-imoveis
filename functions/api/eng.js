@@ -23,13 +23,24 @@ function hashCod(cod) {
 }
 const seedDe = (cod) => ({ likes: 50 + (hashCod(cod) % 41), shares: 50 + ((hashCod(cod) >>> 5) % 31) })
 const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
+const diaHoje = () => new Date().toISOString().slice(0, 10) // YYYY-MM-DD
 
 async function getEng(env, cod) {
   if (!temKV(env)) return seedDe(cod) // degrada gracioso: sem KV, devolve o seed (read-only)
   const key = 'eng:' + cod
   let data = await env.ENGAGEMENT.get(key, 'json')
+  const hoje = diaHoje()
   if (!data || typeof data.likes !== 'number') {
-    data = { likes: rand(50, 90), shares: rand(50, 80) } // prova social inicial
+    data = { likes: rand(50, 90), shares: rand(50, 80), dia: hoje } // prova social inicial
+    await env.ENGAGEMENT.put(key, JSON.stringify(data))
+    return data
+  }
+  // Aumento diário automático: curtidas e compartilhamentos sobem um número de
+  // dois dígitos por dia (1x ao dia por imóvel, mesmo sem ninguém clicar).
+  if (data.dia !== hoje) {
+    data.likes += rand(10, 27)
+    data.shares += rand(10, 18)
+    data.dia = hoje
     await env.ENGAGEMENT.put(key, JSON.stringify(data))
   }
   return data
@@ -47,6 +58,22 @@ export async function onRequestGet({ env, request }) {
       if (n) views[k.name.slice(6)] = n
     }
     return json({ views })
+  }
+  // Aumento diário de TODOS os imóveis (rotina diária): /api/eng?bumpall=1
+  // Idempotente por dia (cada imóvel sobe no máximo 1x/dia, controlado por data).
+  if (url.searchParams.get('bumpall')) {
+    if (!temKV(env)) return json({ ok: false, aviso: 'KV nao configurado' })
+    const hoje = diaHoje()
+    const lista = await env.ENGAGEMENT.list({ prefix: 'eng:' })
+    let n = 0
+    for (const k of lista.keys) {
+      const d = await env.ENGAGEMENT.get(k.name, 'json')
+      if (d && typeof d.likes === 'number' && d.dia !== hoje) {
+        d.likes += rand(10, 27); d.shares += rand(10, 18); d.dia = hoje
+        await env.ENGAGEMENT.put(k.name, JSON.stringify(d)); n++
+      }
+    }
+    return json({ ok: true, atualizados: n, dia: hoje })
   }
   const cod = url.searchParams.get('cod')
   if (!cod) return json({ error: 'cod obrigatorio' }, 400)
