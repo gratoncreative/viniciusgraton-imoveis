@@ -38,18 +38,22 @@ const FerrIcon = ({ name, size = 22 }) => (
 const TOOLS = [
   { id: 'financiamento', nome: 'Simulador de financiamento', desc: 'Parcela e total a pagar (SAC e Price).', icon: 'bank', cat: 'voce' },
   { id: 'capacidade', nome: 'Quanto consigo financiar?', desc: 'O valor do imóvel que cabe na sua renda.', icon: 'chart', cat: 'voce' },
+  { id: 'renda', nome: 'Renda necessária pra financiar', desc: 'Qual renda o banco exige pro imóvel que você quer.', icon: 'wallet', cat: 'voce' },
   { id: 'fgts', nome: 'Simulador de FGTS', desc: 'Quanto o seu saldo abate na entrada e na parcela.', icon: 'wallet', cat: 'voce' },
   { id: 'amortizacao', nome: 'Amortização com FGTS', desc: 'Quanto o FGTS encurta o seu financiamento.', icon: 'calc', cat: 'voce' },
   { id: 'custos', nome: 'Custos de compra (ITBI + cartório)', desc: 'Quanto reservar além do preço, em Uberlândia.', icon: 'receipt', cat: 'voce' },
   { id: 'aluguel', nome: 'Alugar ou financiar?', desc: 'Compare o aluguel com a parcela.', icon: 'scale', cat: 'voce' },
   { id: 'rentabilidade', nome: 'Rentabilidade do aluguel', desc: 'Quanto um imóvel rende de aluguel por ano.', icon: 'trend', cat: 'voce' },
   { id: 'investir', nome: 'Imóvel x CDI/poupança', desc: 'Vale mais comprar pra alugar ou aplicar?', icon: 'coins', cat: 'voce' },
+  { id: 'entrada', nome: 'Quanto juntar pra entrada', desc: 'Quanto guardar por mês pra dar a entrada.', icon: 'coins', cat: 'voce' },
+  { id: 'ganho', nome: 'IR na venda do imóvel', desc: 'Imposto sobre o lucro (ganho de capital) e isenções.', icon: 'receipt', cat: 'voce' },
   { id: 'valorm2', nome: 'Quanto vale o m² do bairro', desc: 'Preço médio por m² por bairro de Uberlândia.', icon: 'home', cat: 'voce' },
   { id: 'score', nome: 'Chance de aprovação', desc: 'Estimativa da sua chance no banco.', icon: 'gauge', cat: 'voce' },
   { id: 'checklist', nome: 'Checklist de documentos', desc: 'Tudo que você precisa, por etapa.', icon: 'doc', cat: 'voce' },
   { id: 'comparar', nome: 'Comparar imóveis', desc: 'Veja imóveis lado a lado.', icon: 'compare', cat: 'voce', to: '/comparar' },
   { id: 'mapa', nome: 'Buscar no mapa', desc: 'Explore os imóveis por região.', icon: 'map', cat: 'voce', to: '/mapa' },
   { id: 'comissao', nome: 'Calculadora de comissão', desc: 'Comissão e repasse de uma venda.', icon: 'percent', cat: 'corretor' },
+  { id: 'acm', nome: 'Análise de mercado (ACM)', desc: 'Sugere o preço do imóvel pelo m² do bairro.', icon: 'chart', cat: 'corretor' },
   { id: 'ficha', nome: 'Ficha de avaliação rápida', desc: 'Gera um resumo do imóvel pra enviar.', icon: 'edit', cat: 'corretor' },
   { id: 'painel', nome: 'Painel de leads', desc: 'Seus cadastros e leads (acesso restrito).', icon: 'bell', cat: 'corretor', to: '/painel' },
 ]
@@ -168,7 +172,47 @@ function FichaAvaliacao() {
   return (<div className="calc-grid"><div className="calc-form"><Select label="Tipo" valor={f.tipo} onChange={set('tipo')} opcoes={['Casa', 'Apartamento', 'Casa em condomínio', 'Terreno', 'Comercial']} /><label className="calc-campo"><span>Bairro</span><div className="calc-input"><input value={f.bairro} onChange={set('bairro')} list="bf" /><datalist id="bf">{BAIRROS_IMOVEL.map((b) => <option key={b} value={b} />)}</datalist></div></label><div className="calc-form" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}><Campo label="Área (m²)" valor={f.area} onChange={set('area')} /><Campo label="Quartos" valor={f.quartos} onChange={set('quartos')} /><Campo label="Suítes" valor={f.suites} onChange={set('suites')} /><Campo label="Vagas" valor={f.vagas} onChange={set('vagas')} /></div><CampoMoeda label="Preço pretendido" valor={f.preco} onChange={(v) => setF((s) => ({ ...s, preco: v }))} /><label className="calc-campo"><span>Diferenciais</span><div className="calc-input"><input value={f.dif} onChange={set('dif')} placeholder="Reforma, sol da manhã, andar alto..." /></div></label></div><div><div className="ficha-preview">{texto}</div><div style={{ display: 'flex', gap: 10, marginTop: 12, flexWrap: 'wrap' }}><button className="btn btn-gold" type="button" onClick={copiar}>Copiar resumo</button><a className="btn btn-ghost" href={`https://wa.me/?text=${encodeURIComponent(texto)}`} target="_blank" rel="noopener">Enviar no WhatsApp</a></div>{nota('Gera um resumo pronto pra divulgar o imóvel. Ferramenta de apoio ao corretor.')}</div></div>)
 }
 
-const RENDER = { financiamento: CalcFinanciamento, capacidade: CalcCapacidade, fgts: CalcFGTS, amortizacao: CalcAmortizacao, custos: CalcCustos, aluguel: CalcAluguel, rentabilidade: CalcRentabilidade, investir: CalcInvestir, valorm2: CalcValorM2, score: CalcScore, checklist: Checklist, comissao: CalcComissao, ficha: FichaAvaliacao }
+function CalcRenda() {
+  const [valor, setValor] = useState(500000); const [entrada, setEntrada] = useState(100000); const [prazo, setPrazo] = useState('30'); const [juros, setJuros] = useState('10.5'); const [comp, setComp] = useState('30')
+  const r = useMemo(() => {
+    const fin = Math.max(0, valor - entrada); const i = (+juros / 100) / 12; const n = (+prazo || 0) * 12
+    const parcela = i > 0 ? fin * i / (1 - Math.pow(1 + i, -n)) : (n > 0 ? fin / n : 0)
+    const renda = (+comp > 0) ? parcela / (+comp / 100) : 0
+    return { fin, parcela, renda }
+  }, [valor, entrada, prazo, juros, comp])
+  return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor do imóvel" valor={valor} onChange={setValor} /><CampoMoeda label="Entrada" valor={entrada} onChange={setEntrada} /><Campo label="Prazo" sufixo="anos" valor={prazo} onChange={setPrazo} /><Campo label="Juros (a.a.)" sufixo="%" valor={juros} onChange={setJuros} step="0.1" /><Campo label="Comprometimento de renda" sufixo="%" valor={comp} onChange={setComp} step="5" /></div><div><Resultado destaque={{ rotulo: 'Renda necessária', valor: brl(r.renda) }} itens={[{ rotulo: 'Valor financiado', valor: brl(r.fin) }, { rotulo: '1ª parcela (Price)', valor: brl2(r.parcela) }]} />{nota('Os bancos costumam limitar a parcela a ~30% da renda familiar bruta. A taxa e o limite variam por banco e perfil — vale simular a aprovação antes de fechar.')}</div></div>)
+}
+function CalcEntrada() {
+  const [valor, setValor] = useState(500000); const [perc, setPerc] = useState('20'); const [meses, setMeses] = useState('24'); const [rend, setRend] = useState('0.6')
+  const r = useMemo(() => {
+    const meta = valor * (+perc / 100); const i = (+rend / 100); const n = +meses || 0
+    const pmt = i > 0 ? meta * i / (Math.pow(1 + i, n) - 1) : (n > 0 ? meta / n : 0)
+    const aportado = pmt * n; const rendimento = Math.max(0, meta - aportado)
+    return { meta, pmt, aportado, rendimento }
+  }, [valor, perc, meses, rend])
+  return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor do imóvel" valor={valor} onChange={setValor} /><Campo label="Entrada desejada" sufixo="%" valor={perc} onChange={setPerc} step="5" /><Campo label="Prazo pra juntar" sufixo="meses" valor={meses} onChange={setMeses} /><Campo label="Rendimento (a.m.)" sufixo="%" valor={rend} onChange={setRend} step="0.1" /></div><div><Resultado destaque={{ rotulo: 'Guardar por mês', valor: brl2(r.pmt) }} itens={[{ rotulo: 'Meta de entrada', valor: brl(r.meta) }, { rotulo: 'Total que você aporta', valor: brl(r.aportado) }, { rotulo: 'Rendimento no período', valor: brl(r.rendimento) }]} />{nota('Estimativa por juros compostos. ~0,6% a.m. é uma referência conservadora de aplicação de baixo risco — o rendimento real varia. Não considera inflação nem mudança no preço do imóvel.')}</div></div>)
+}
+function CalcGanho() {
+  const [venda, setVenda] = useState(600000); const [compra, setCompra] = useState(400000); const [unico, setUnico] = useState(false); const [reinveste, setReinveste] = useState(false)
+  const r = useMemo(() => {
+    const lucro = Math.max(0, venda - compra); const isentoUnico = unico && venda <= 440000; const isento = isentoUnico || reinveste
+    const ir = isento ? 0 : lucro * 0.15
+    return { lucro, ir, liquido: venda - ir, isento, isentoUnico }
+  }, [venda, compra, unico, reinveste])
+  return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor de venda" valor={venda} onChange={setVenda} /><CampoMoeda label="Valor de compra (custo)" valor={compra} onChange={setCompra} /><label className="calc-check"><input type="checkbox" checked={unico} onChange={(e) => setUnico(e.target.checked)} /><span>É meu único imóvel e a venda é de até R$ 440 mil</span></label><label className="calc-check"><input type="checkbox" checked={reinveste} onChange={(e) => setReinveste(e.target.checked)} /><span>Vou comprar outro imóvel residencial em até 180 dias</span></label></div><div><Resultado destaque={{ rotulo: r.isento ? 'Imposto (isento)' : 'Imposto estimado (IR)', valor: brl(r.ir) }} itens={[{ rotulo: 'Lucro (ganho de capital)', valor: brl(r.lucro) }, { rotulo: 'Você recebe (líquido)', valor: brl(r.liquido) }, { rotulo: 'Situação', valor: r.isento ? (r.isentoUnico ? 'Isento · único ≤ 440 mil' : 'Isento · reinvestimento') : 'Tributável · 15%' }]} />{nota('Regra geral: 15% sobre o lucro na venda. Isenções em lei: único imóvel vendido por até R$ 440 mil (1x a cada 5 anos) e reinvestimento em residencial em 180 dias. Existem fatores de redução por tempo de posse — confirme com um contador antes de declarar.')}</div></div>)
+}
+function CalcACM() {
+  const ord = useMemo(() => [...BAIRROS_M2].sort((a, b) => a.bairro.localeCompare(b.bairro, 'pt-BR')), [])
+  const [bairro, setBairro] = useState(ord[0]?.bairro || ''); const [area, setArea] = useState('120'); const [estado, setEstado] = useState('0')
+  const r = useMemo(() => {
+    const reg = BAIRROS_M2.find((x) => x.bairro === bairro); const m2 = reg?.m2 || 0
+    const central = m2 * (+area || 0) * (1 + (+estado / 100))
+    return { m2, central, min: central * 0.93, max: central * 1.07, fonte: reg?.fonte, ref: reg?.ref }
+  }, [bairro, area, estado])
+  return (<div className="calc-grid"><div className="calc-form"><Select label="Bairro" valor={bairro} onChange={setBairro} opcoes={ord.map((x) => x.bairro)} /><Campo label="Área privativa" sufixo="m²" valor={area} onChange={setArea} /><Select label="Estado do imóvel" valor={estado} onChange={setEstado} opcoes={[{ v: '8', t: 'Novo / lançamento' }, { v: '4', t: 'Reformado' }, { v: '0', t: 'Bem conservado' }, { v: '-10', t: 'Precisa de reforma' }]} /></div><div><Resultado destaque={{ rotulo: 'Preço sugerido', valor: brl(r.central) }} itens={[{ rotulo: 'Faixa de mercado', valor: `${brl(r.min)} a ${brl(r.max)}` }, { rotulo: `m² médio em ${bairro}`, valor: brl(r.m2) }, { rotulo: 'Fonte do m²', valor: `${r.fonte || '—'}${r.ref ? ` (${r.ref})` : ''}` }]} />{nota('Estimativa pela mediana de venda do bairro × área, ajustada pelo estado. É um ponto de partida — posição, andar, vista e acabamento ajustam o valor final. A avaliação presencial é o que fecha o preço.')}</div></div>)
+}
+
+const RENDER = { financiamento: CalcFinanciamento, capacidade: CalcCapacidade, renda: CalcRenda, fgts: CalcFGTS, amortizacao: CalcAmortizacao, custos: CalcCustos, aluguel: CalcAluguel, rentabilidade: CalcRentabilidade, investir: CalcInvestir, entrada: CalcEntrada, ganho: CalcGanho, valorm2: CalcValorM2, score: CalcScore, checklist: Checklist, comissao: CalcComissao, acm: CalcACM, ficha: FichaAvaliacao }
 
 export default function Ferramentas() {
   const [ativa, setAtiva] = useState('financiamento')

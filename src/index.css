@@ -1136,6 +1136,9 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 @keyframes erroSpin { to { transform: rotate(360deg); } }
 .erro-acoes { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 @media (prefers-reduced-motion: reduce) { .erro-casa, .erro-gancho, .erro-spin { animation: none; } }
+/* Checkbox dentro das calculadoras (ex.: IR na venda) */
+.calc-check { display: flex; align-items: flex-start; gap: 10px; font-size: 0.92rem; color: #3a4150; line-height: 1.4; cursor: pointer; padding: 4px 0; }
+.calc-check input { width: 18px; height: 18px; flex: 0 0 auto; margin-top: 1px; accent-color: var(--gold-3); cursor: pointer; }
 .conta-trust-chips { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 26px; }
 .conta-trust-chips span { font-size: 0.8rem; font-weight: 600; color: #6a5418; background: rgba(184,134,47,0.12); border: 1px solid rgba(184,134,47,0.28); padding: 6px 13px; border-radius: 100px; }
 .conta-beneficios { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 16px 22px; margin-top: 4px; }
