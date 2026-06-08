@@ -3,6 +3,7 @@ import { useSEO } from '../useSEO'
 import { CONFIG, IMOVEIS } from '../data'
 import { IconShield, IconArrow } from '../components/icons'
 import RemoverMarca from '../components/RemoverMarca'
+import AdminCRM from '../components/AdminCRM'
 
 const LSK = 'vg_admin_token'
 const waLink = (fone) => `https://wa.me/55${String(fone || '').replace(/\D/g, '')}`
@@ -389,6 +390,7 @@ export default function Admin() {
     ['leads', `Leads (${leads.length})`],
     ['clientes', `Cadastros (${clientes.length})`],
     ['imoveis', 'Imóveis publicados'],
+    ['crm', 'Meus clientes'],
     ['marca', "Remover marca d'água"],
   ]
 
@@ -495,6 +497,8 @@ export default function Admin() {
         )}
 
         {aba === 'imoveis' && <ImoveisPub token={token} onSair={sair} />}
+
+        {aba === 'crm' && <AdminCRM token={token} onSair={sair} />}
 
         {aba === 'marca' && <RemoverMarca />}
 

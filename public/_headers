@@ -15,6 +15,10 @@
   X-Robots-Tag: noindex, nofollow
   Cache-Control: no-store
 
+# Páginas personalizadas de cliente: privadas, nunca indexar
+/cliente/*
+  X-Robots-Tag: noindex, nofollow
+
 # Cache das imagens de imóveis: 1h no navegador, depois revalida (pega versão nova rápido).
 # Evita que uma foto trocada fique "presa" desfocada no cache do visitante.
 /imoveis/*

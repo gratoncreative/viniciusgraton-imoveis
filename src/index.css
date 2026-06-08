@@ -1211,6 +1211,38 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .marca-zoom { display: flex; align-items: center; gap: 7px; font-size: .82rem; color: #4a5160; }
 .marca-zoom b { min-width: 42px; text-align: center; color: #2a3038; }
 .marca-zoom .admin-btn { padding: 5px 11px; font-weight: 700; }
+
+/* CRM "Meus clientes" (admin) */
+.admin-mini-label { font-family: var(--font-head); font-weight: 700; font-size: .82rem; color: #2a3038; margin: 16px 0 8px; }
+.crm-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.crm-chip { font-size: .8rem; font-weight: 600; padding: 6px 12px; border-radius: 100px; border: 1px solid rgba(22,26,34,0.16); background: #fff; color: #3a4150; cursor: pointer; }
+.crm-chip.on { background: var(--gold-grad); color: #20160a; border-color: transparent; }
+.crm-match-list { display: flex; flex-direction: column; gap: 8px; max-height: 420px; overflow: auto; }
+.crm-match { display: flex; align-items: center; gap: 10px; padding: 6px; border: 1px solid rgba(22,26,34,0.12); border-radius: 10px; cursor: pointer; background: #fff; }
+.crm-match.on { border-color: var(--gold-3); background: rgba(184,134,47,0.06); }
+.crm-match img { width: 64px; height: 48px; object-fit: cover; border-radius: 6px; flex: none; }
+.crm-match-info { display: flex; flex-direction: column; font-size: .82rem; color: #2a3038; }
+.crm-match-info i { color: var(--text-mute); font-style: normal; font-size: .76rem; }
+.crm-lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.crm-card { border: 1px solid rgba(22,26,34,0.12); border-radius: 14px; padding: 16px; background: #fff; }
+.crm-card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.crm-card-top b { font-family: var(--font-head); font-size: 1.02rem; }
+.crm-card-crit { color: #4a5160; font-size: .85rem; margin: 6px 0; line-height: 1.45; }
+.crm-card-acoes { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+
+/* Página personalizada do cliente */
+.cliente-hero { padding: clamp(112px, 14vh, 170px) 0 clamp(28px, 4vw, 48px); background: radial-gradient(125% 120% at 50% 0%, #151a26 0%, var(--bg) 72%); border-bottom: 1px solid var(--border); }
+.cliente-intro { color: var(--text-mute); font-size: 1.06rem; line-height: 1.7; max-width: 660px; margin-top: 12px; text-wrap: pretty; }
+.cliente-criterios { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 18px; }
+.cliente-criterios > span { color: var(--text-mute); font-size: .85rem; }
+.cliente-criterios b { font-size: .82rem; font-weight: 600; padding: 6px 13px; border-radius: 100px; background: rgba(184,134,47,0.14); color: var(--gold-1); border: 1px solid rgba(184,134,47,0.3); }
+.cliente-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; margin-top: 12px; }
+.cliente-item { display: flex; flex-direction: column; }
+.cliente-motivos { margin-top: 10px; background: #fff; border: 1px solid rgba(184,134,47,0.28); border-radius: 12px; padding: 12px 14px; box-shadow: 0 12px 30px -26px rgba(22,26,34,0.5); }
+.cliente-motivos b { font-family: var(--font-head); font-size: .88rem; color: #1a1f29; display: block; margin-bottom: 6px; }
+.cliente-motivos ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.cliente-motivos li { display: flex; gap: 8px; align-items: flex-start; color: #41484f; font-size: .86rem; line-height: 1.4; }
+.cliente-motivos li span { color: #2e8c57; font-weight: 700; flex: none; }
 @media (max-width: 720px) { .marca-grid { grid-template-columns: 1fr; } }
 /* Placa VENDE-SE no formulário Anunciar */
 .placa-bloco { background: #fff; border: 1px solid rgba(184,134,47,0.3); border-radius: 16px; padding: 20px; margin: 6px 0 4px; box-shadow: 0 14px 34px -28px rgba(22,26,34,0.5); }

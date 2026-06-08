@@ -98,6 +98,47 @@ export const waImovel = (im) =>
 export const getImovel = (codigo) =>
   IMOVEIS.find((i) => String(i.codigo) === String(codigo))
 
+// ————— CRM: casa as preferências do cliente com os imóveis do site —————
+const _semAcento = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+// pontua o quanto um imóvel combina com as preferências (e por quê)
+export const avaliarMatch = (im, p) => {
+  if (!im || !p) return { ok: false, score: 0, motivos: [] }
+  const motivos = []
+  let score = 0
+  // tipo (filtro forte)
+  if (Array.isArray(p.tipos) && p.tipos.length) {
+    const t = _semAcento(im.tipo)
+    const bate = p.tipos.some((x) => t.includes(_semAcento(x)) || _semAcento(x).includes(t))
+    if (!bate) return { ok: false, score: 0, motivos: [] }
+    motivos.push(`É ${(im.tipo || '').toLowerCase()}, exatamente o tipo que você procura`)
+    score += 30
+  }
+  // preço (filtro forte com leve tolerância)
+  if (p.precoMax > 0) {
+    if (im.preco > p.precoMax * 1.08) return { ok: false, score: 0, motivos: [] }
+    if (im.preco <= p.precoMax) { motivos.push('Dentro do seu orçamento'); score += 25 }
+  }
+  if (p.precoMin > 0 && im.preco < p.precoMin * 0.9) return { ok: false, score: 0, motivos: [] }
+  // quartos / suítes / vagas / área (mínimos)
+  if (p.quartosMin > 0) { if ((im.quartos || 0) < p.quartosMin) return { ok: false, score: 0, motivos: [] }; motivos.push(`${im.quartos} quartos — atende o que você precisa`); score += 12 }
+  if (p.suitesMin > 0) { if ((im.suites || 0) < p.suitesMin) return { ok: false, score: 0, motivos: [] }; motivos.push(`${im.suites} suíte${im.suites > 1 ? 's' : ''}`); score += 8 }
+  if (p.vagasMin > 0) { if ((im.vagas || 0) < p.vagasMin) return { ok: false, score: 0, motivos: [] }; motivos.push(`${im.vagas} vaga${im.vagas > 1 ? 's' : ''} de garagem`); score += 8 }
+  if (p.areaMin > 0 && (im.area || 0) >= p.areaMin) { motivos.push(`${im.area} m² — bom espaço`); score += 8 }
+  // bairro preferido (impulso, não exclui)
+  if (Array.isArray(p.bairros) && p.bairros.length) {
+    const b = _semAcento(im.bairro)
+    if (p.bairros.some((x) => _semAcento(x) === b || b.includes(_semAcento(x)))) { motivos.push(`No ${im.bairro}, um dos bairros que você curtiu`); score += 20 }
+  }
+  return { ok: true, score, motivos }
+}
+// retorna os imóveis que fazem sentido p/ o cliente, ranqueados (melhor primeiro)
+export const filtrarParaCliente = (p, lista = IMOVEIS) =>
+  lista
+    .filter((im) => !im.oculto)
+    .map((im) => ({ im, m: avaliarMatch(im, p) }))
+    .filter((x) => x.m.ok)
+    .sort((a, b) => b.m.score - a.m.score)
+
 // Galeria de fotos (usa fotos[] se houver; senão a capa)
 export const fotosDe = (im) =>
   im && im.fotos && im.fotos.length ? im.fotos : im && im.img ? [im.img] : []

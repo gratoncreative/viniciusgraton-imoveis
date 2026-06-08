@@ -16,8 +16,9 @@ function setMeta(attr, key, content) {
 
 // Atualiza título, descrição, canonical e OG por página (SPA) — bom para SEO
 // e para o compartilhamento refletir a página atual ao navegar pelo menu.
-export function useSEO({ title, description, path }) {
+export function useSEO({ title, description, path, noindex }) {
   useEffect(() => {
+    setMeta('name', 'robots', noindex ? 'noindex, nofollow' : 'index, follow')
     const fullTitle = title ? `${title} | ${CONFIG.nome}` : CONFIG.marca
     document.title = fullTitle
     setMeta('name', 'description', description)
@@ -32,5 +33,5 @@ export function useSEO({ title, description, path }) {
       document.head.appendChild(can)
     }
     can.setAttribute('href', url)
-  }, [title, description, path])
+  }, [title, description, path, noindex])
 }

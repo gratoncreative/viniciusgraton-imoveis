@@ -175,5 +175,42 @@ export async function onRequestPost({ env, request }) {
     return json({ ok: true, url: `/api/img?id=${id}` })
   }
 
+  // ————— CRM "Meus clientes" (preferências + sugestões + página personalizada) —————
+  if (action === 'crm-list') {
+    const out = []
+    const lista = await env.ENGAGEMENT.list({ prefix: 'crm:' })
+    for (const k of lista.keys) { const v = await env.ENGAGEMENT.get(k.name, 'json'); if (v) out.push(v) }
+    out.sort((a, b) => (b.atualizadoEm || 0) - (a.atualizadoEm || 0))
+    return json({ ok: true, clientes: out })
+  }
+  if (action === 'crm-save') {
+    const c = b.cliente && typeof b.cliente === 'object' ? b.cliente : {}
+    const wa = String(c.whatsapp || '').replace(/\D/g, '').slice(0, 15)
+    if (wa.length < 10) return json({ error: 'whatsapp', msg: 'Informe o WhatsApp com DDD (obrigatório).' }, 400)
+    let id = String(c.id || '').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)
+    let reg = {}
+    if (id) reg = (await env.ENGAGEMENT.get('crm:' + id, 'json')) || {}
+    else id = crypto.randomUUID()
+    const lim = (s, n) => String(s == null ? '' : s).slice(0, n)
+    const arrStr = (a, max, n) => (Array.isArray(a) ? a.filter((x) => typeof x === 'string').slice(0, max).map((x) => lim(x, n)) : [])
+    const novo = {
+      id, criadoEm: reg.criadoEm || Date.now(), atualizadoEm: Date.now(),
+      nome: lim(c.nome, 80), whatsapp: wa, finalidade: lim(c.finalidade, 20),
+      tipos: arrStr(c.tipos, 8, 30), bairros: arrStr(c.bairros, 20, 40),
+      precoMin: Number(c.precoMin) || 0, precoMax: Number(c.precoMax) || 0,
+      quartosMin: Number(c.quartosMin) || 0, suitesMin: Number(c.suitesMin) || 0,
+      vagasMin: Number(c.vagasMin) || 0, areaMin: Number(c.areaMin) || 0,
+      obs: lim(c.obs, 1500), sugeridos: arrStr(c.sugeridos, 40, 12),
+      nota: lim(c.nota, 1000), status: lim(c.status, 24),
+    }
+    await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(novo))
+    return json({ ok: true, cliente: novo })
+  }
+  if (action === 'crm-del') {
+    const id = String(b.id || '').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)
+    if (id) await env.ENGAGEMENT.delete('crm:' + id)
+    return json({ ok: true })
+  }
+
   return json({ error: 'acao desconhecida' }, 400)
 }
