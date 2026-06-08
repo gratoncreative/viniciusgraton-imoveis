@@ -1798,6 +1798,12 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .crm-card--mexeu { border-color: #c0392b; box-shadow: 0 0 0 2px rgba(192,57,43,0.14); }
 .crm-mexeu-tag { font-size: 0.7rem; font-weight: 700; color: #fff; background: #c0392b; padding: 3px 9px; border-radius: 100px; }
 .crm-oportunidade { color: #2e8c57; }
+/* bloco "sua página de seleção" na área do cliente */
+.conta-selo-link { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; background: linear-gradient(120% 120% at 0% 0%, #161a22 0%, #20262f 100%); border: 1px solid rgba(184,134,47,0.4); border-radius: 16px; padding: 20px 22px; margin: 28px 0 8px; }
+.conta-selo-link b { display: block; font-family: var(--font-head); color: #fff; font-size: 1.05rem; margin-bottom: 4px; }
+.conta-selo-link span { color: #c3c9d4; font-size: 0.9rem; line-height: 1.5; max-width: 520px; display: block; }
+.conta-selo-acoes { display: flex; gap: 10px; flex-wrap: wrap; }
+@media (max-width: 560px) { .conta-selo-acoes { width: 100%; } .conta-selo-acoes .btn { flex: 1; justify-content: center; } }
 .admin-subabas { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
 .admin-subaba { font-family: var(--font-head); font-weight: 600; font-size: 0.9rem; color: #5a6270; background: #fff; border: 1px solid rgba(22,26,34,0.14); padding: 9px 18px; border-radius: 100px; cursor: pointer; transition: all 0.16s var(--ease); }
 .admin-subaba:hover { border-color: var(--gold-2); }

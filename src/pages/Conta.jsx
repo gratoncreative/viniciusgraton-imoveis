@@ -121,6 +121,15 @@ function CadastroView({ onPronto }) {
 function PainelView({ conta, onSair }) {
   const favs = favoritos().map(getImovel).filter(Boolean)
   const hist = getHistorico().map(getImovel).filter(Boolean)
+  const [selToken, setSelToken] = useState('')
+  const [copiado, setCopiado] = useState(false)
+  // garante uma página /cliente salva com a seleção do visitante (favoritos), que ele pode compartilhar
+  useEffect(() => {
+    if (!conta?.token || !conta?.fone) return
+    fetch('/api/minha-selecao', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ token: conta.token, favoritos: favoritos() }) })
+      .then((r) => r.json()).then((j) => { if (j && j.token) setSelToken(j.token) }).catch(() => {})
+  }, [conta?.token, favs.length])
+  const linkSel = selToken ? `${window.location.origin}/cliente/${selToken}` : ''
   // seleção do perfil: tenta casar pela faixa/bairro; cai pros mais premium
   const perfil = IMOVEIS.filter((i) => {
     if (conta.bairros && i.bairro && conta.bairros.toLowerCase().includes(i.bairro.toLowerCase())) return true
@@ -153,6 +162,19 @@ function PainelView({ conta, onSair }) {
           <button className="btn btn-ghost" onClick={onSair}>Sair</button>
         </div>
       </header>
+
+      {linkSel && (
+        <div className="conta-selo-link">
+          <div>
+            <b>🔗 Sua página de seleção</b>
+            <span>Seus favoritos viram uma página só sua, com link salvo. Compartilhe com quem quiser — e o que você curtir aqui me ajuda a acertar ainda mais.</span>
+          </div>
+          <div className="conta-selo-acoes">
+            <a className="btn btn-gold" href={linkSel}>Ver minha seleção <IconArrow /></a>
+            <button type="button" className="btn btn-ghost" onClick={() => { navigator.clipboard?.writeText(linkSel); setCopiado(true); setTimeout(() => setCopiado(false), 1500) }}>{copiado ? '✓ link copiado' : 'Copiar link'}</button>
+          </div>
+        </div>
+      )}
 
       <Bloco titulo="Seleção que separei pra você" lista={selecao} vazio="Em breve, opções sob medida." />
       <Bloco titulo="Seus favoritos" lista={favs} vazio="Toque no coração dos imóveis que gostar para guardá-los aqui." />
