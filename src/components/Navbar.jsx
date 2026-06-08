@@ -75,6 +75,15 @@ export default function Navbar() {
     }
   }, [pathname])
 
+  // trava o scroll do fundo enquanto o menu mobile está aberto
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [open])
+
+  // fecha o menu ao trocar de página
+  useEffect(() => { setOpen(false) }, [pathname])
+
   // fora da home a navbar já entra sólida (legível sobre seções claras)
   const solido = scrolled || pathname !== '/'
 

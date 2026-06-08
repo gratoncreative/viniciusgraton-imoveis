@@ -810,8 +810,11 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 @media (max-width: 860px) { .barra-contato { display: none; } }
 
 /* ---------- mobile menu ---------- */
-.mobile-menu { position: fixed; inset: 0; z-index: 99; background: rgba(7,10,17,0.97); backdrop-filter: blur(16px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; }
-.mobile-menu a { font-family: var(--font-head); font-size: 1.6rem; font-weight: 600; }
+.mobile-menu { position: fixed; inset: 0; z-index: 200; background: rgba(7,10,17,0.985); backdrop-filter: blur(18px); display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 16px; padding: 84px 24px 40px; overflow-y: auto; overscroll-behavior: contain; }
+.mobile-menu a { font-family: var(--font-head); font-size: 1.35rem; font-weight: 600; color: #fff; }
+.mobile-menu a:active { color: var(--gold-1); }
+.mobile-menu .btn-gold { margin-top: 10px; }
+.mobile-menu .nav-toggle { display: block; color: #fff; z-index: 2; }
 
 /* ---------- barra de progresso de rolagem ---------- */
 .scroll-progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; background: var(--gold-grad); transform-origin: 0 50%; z-index: 200; opacity: 0.85; }
