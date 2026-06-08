@@ -13,6 +13,13 @@ import { IconWhats, IconArrow, IconPin, IconShield, ICONS } from './../component
 
 const plural = (n, s, p) => (n > 1 ? p : s)
 
+// condomínio pode vir como número (ex.: 325) ou texto (ex.: "Cond. R$ 325,00") — trata os dois
+const condominioTxt = (c) => {
+  if (c == null || c === '' || c === 0) return ''
+  if (typeof c === 'number') return 'Condomínio ' + formatPreco(c)
+  return String(c).replace(/^Cond\.\s*/i, 'Condomínio ')
+}
+
 // quebra a descrição em parágrafos legíveis (~3 frases cada)
 function agruparFrases(texto) {
   const limpo = texto.trim()
@@ -144,7 +151,7 @@ export default function ImovelDetalhe() {
   if (im.condominio)
     prox.push({
       icon: 'shield',
-      text: im.condominio.replace(/^Cond\.\s*/i, 'Condomínio '),
+      text: condominioTxt(im.condominio),
       sub: 'Estrutura, segurança e áreas de lazer do condomínio agregam conforto, comodidade e valor de revenda ao imóvel.',
     })
   prox.push({
@@ -252,7 +259,7 @@ export default function ImovelDetalhe() {
           <div className="det-carac">
             <h2 className="det-rel-titulo">Características e comodidades</h2>
             {im.condominio && (
-              <p className="det-carac-cond"><IconShield width={16} height={16} /> {im.condominio.replace(/^Cond\.\s*/i, 'Condomínio ')}</p>
+              <p className="det-carac-cond"><IconShield width={16} height={16} /> {condominioTxt(im.condominio)}</p>
             )}
             <div className="det-carac-grupos">
               {grupos.map((g, gi) => (
