@@ -1,43 +1,148 @@
 [
   {
     "slug": "documentos-necessarios-comprar-imovel-uberlandia",
-    "titulo": "Documentos para comprar um imóvel: a lista completa antes de fechar",
-    "resumo": "Saiba quais documentos do comprador, do vendedor e do imóvel você precisa reunir antes de assinar a compra e evitar dor de cabeça.",
+    "titulo": "Documentos para comprar imóvel em Uberlândia: a lista completa antes de assinar",
+    "resumo": "Medo de errar na maior compra da vida? Veja a lista completa de documentos do comprador, do vendedor e do imóvel em Uberlândia e feche com segurança.",
     "categoria": "Documentação",
     "leitura": "6 min",
     "cor": 0,
+    "capa": "/img/blog/documentos-necessarios-comprar-imovel-uberlandia.jpg",
+    "keyword": "documentos para comprar imóvel em Uberlândia",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
     "conteudo": [
       {
         "tipo": "p",
-        "txt": "Comprar imóvel envolve mais papel do que muita gente imagina. Reunir a documentação certa antes de assinar protege você de surpresas e acelera o financiamento. Vamos organizar isso em três blocos."
+        "txt": "Você juntou dinheiro por anos, encontrou o imóvel certo e agora trava com medo de assinar algo que não entende. Esse receio é legítimo: comprar imóvel é, para a maioria das famílias, a maior compra da vida, e um documento faltando pode virar processo, perda de sinal ou até a perda do bem."
       },
       {
-        "tipo": "h",
+        "tipo": "p",
+        "txt": "A boa notícia é que esse medo some quando você organiza a papelada antes de qualquer assinatura. Quem reúne os documentos certos na ordem certa fecha negócio mais rápido e dorme tranquilo."
+      },
+      {
+        "tipo": "h2",
+        "txt": "Por que tanta gente erra na documentação para comprar imóvel em Uberlândia"
+      },
+      {
+        "tipo": "p",
+        "txt": "O erro mais comum é confiar só na palavra do vendedor ou na pressa do corretor. A pessoa assina o contrato animada e só depois descobre que o imóvel tem **penhora**, dívida de condomínio ou está em nome de quem não pode vender sozinho."
+      },
+      {
+        "tipo": "p",
+        "txt": "Outro tropeço frequente é deixar a documentação pessoal para a última hora. Aí o banco pede um papel, falta uma certidão, e o financiamento atrasa semanas justamente quando o vendedor quer agilidade."
+      },
+      {
+        "tipo": "h2",
         "txt": "Documentos do comprador"
       },
       {
         "tipo": "p",
-        "txt": "Em geral você precisa de RG e CPF, comprovante de estado civil (e do cônjuge, quando houver), comprovante de residência e comprovantes de renda. Se for financiar, o banco também pede extrato do FGTS e declaração de Imposto de Renda."
+        "txt": "São os papéis que comprovam quem você é e que você tem condição de pagar. Tenha tudo digitalizado e atualizado antes de procurar o banco."
       },
       {
-        "tipo": "h",
+        "tipo": "lista",
+        "itens": [
+          "RG e CPF (seu e do cônjuge, se houver)",
+          "Certidão de nascimento ou de casamento (com pacto, se houver regime de bens diferente do comum)",
+          "Comprovante de residência recente (até 90 dias)",
+          "Comprovantes de renda: holerites, extratos ou declaração de IR",
+          "Extrato do FGTS, caso vá usar o saldo na entrada",
+          "Carteira de trabalho ou contrato social, se for autônomo ou empresário"
+        ]
+      },
+      {
+        "tipo": "h2",
         "txt": "Documentos do vendedor e do imóvel"
       },
       {
         "tipo": "p",
-        "txt": "Peça a matrícula atualizada do imóvel (emitida nos últimos 30 dias), certidões negativas do vendedor e o IPTU quitado. A matrícula é o documento de identidade do imóvel: nela constam dono atual, dívidas, penhoras e ônus."
+        "txt": "Aqui mora a maior parte dos riscos. A **matrícula atualizada** do imóvel, emitida nos últimos 30 dias no Cartório de Registro de Imóveis, é o documento de identidade do bem: nela aparecem o dono atual, hipotecas, penhoras e qualquer ônus."
       },
       {
-        "tipo": "h",
-        "txt": "Por que a matrícula é tão importante"
+        "tipo": "lista",
+        "itens": [
+          "Matrícula atualizada do imóvel (até 30 dias)",
+          "Certidões negativas do vendedor (cíveis, trabalhistas e fiscais)",
+          "Certidão negativa de débitos de IPTU e do condomínio",
+          "Documento pessoal do vendedor e do cônjuge",
+          "Comprovante de quitação de eventual financiamento anterior"
+        ]
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Documento",
+          "Para que serve",
+          "Onde conseguir"
+        ],
+        "linhas": [
+          [
+            "Matrícula atualizada",
+            "Confirmar dono e ônus do imóvel",
+            "Cartório de Registro de Imóveis"
+          ],
+          [
+            "Certidões negativas",
+            "Verificar dívidas do vendedor",
+            "Cartórios e tribunais"
+          ],
+          [
+            "IPTU quitado",
+            "Evitar herdar dívida de imposto",
+            "Prefeitura de Uberlândia"
+          ],
+          [
+            "Extrato do FGTS",
+            "Usar saldo na entrada",
+            "App ou site da Caixa"
+          ]
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Sem registro na matrícula, você não é dono de verdade, mesmo com contrato assinado e dinheiro pago."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Quero comprar um imóvel em Uberlândia e preciso de ajuda para organizar toda a documentação antes de assinar. Pode me orientar?",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "Como organizar tudo sem se perder"
       },
       {
         "tipo": "p",
-        "txt": "É na matrícula, no Cartório de Registro de Imóveis, que a compra se torna oficial. Sem registro, você não é dono de verdade, mesmo com contrato assinado. Por isso a conferência prévia evita comprar um imóvel com penhora ou em nome de quem não pode vender."
+        "txt": "O caminho seguro é checar a matrícula e as certidões antes de pagar qualquer sinal. Um consultor experiente confere esses pontos com você e cruza com a sua simulação de crédito. Use nossas [ferramentas de simulação](/ferramentas) para já chegar ao banco com os números na mão e veja os [imóveis disponíveis](/imoveis) com a documentação verificada."
       },
       {
         "tipo": "p",
-        "txt": "Se quiser uma lista personalizada para o seu caso em Uberlândia, fale com Vinícius Graton, consultor de imóveis na cidade. Ele organiza a documentação com você antes de qualquer assinatura, reduzindo riscos e retrabalho."
+        "txt": "Quem acompanha de perto a rotina imobiliária de Uberlândia sabe onde estão as armadilhas. Vinícius Graton organiza a papelada lado a lado com você, reduzindo risco e retrabalho. Para conferir a Caixa, consulte o canal oficial de [habitação da Caixa](https://www.caixa.gov.br)."
+      },
+      {
+        "tipo": "p",
+        "txt": "Quer uma lista personalizada para o seu caso? Fale com a gente pela página de [contato](/contato) e comece a comprar com segurança."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "Preciso da matrícula mesmo comprando à vista?",
+            "a": "Sim. A matrícula atualizada confirma quem é o dono e se há dívidas, independentemente da forma de pagamento."
+          },
+          {
+            "q": "Quanto tempo demora para reunir tudo?",
+            "a": "Com organização, de 5 a 15 dias úteis. Certidões e matrícula saem rápido, e os documentos pessoais já costumam estar com você."
+          },
+          {
+            "q": "Quem paga as certidões?",
+            "a": "Em geral o comprador arca com as custas, mas isso pode ser negociado no contrato."
+          },
+          {
+            "q": "Comprovante de residência precisa estar no meu nome?",
+            "a": "Não obrigatoriamente. Se estiver em nome de familiar, basta uma declaração simples explicando o vínculo."
+          }
+        ]
       }
     ],
     "fontes": [
@@ -49,1022 +154,2578 @@
         "nome": "Prefeitura de Uberlândia - ITBI",
         "url": "https://www.uberlandia.mg.gov.br/prefeitura/secretarias/financas/itbi/"
       }
-    ],
-    "capa": "/img/blog/documentos-necessarios-comprar-imovel-uberlandia.jpg"
+    ]
   },
   {
     "slug": "score-credito-aprovacao-financiamento-imovel",
-    "titulo": "Score e aprovação: como aumentar suas chances no financiamento",
-    "resumo": "Entenda o que o banco analisa além do score e o que você pode fazer hoje para ter o financiamento do imóvel aprovado.",
+    "titulo": "Score de crédito e aprovação no financiamento: como aumentar suas chances",
+    "resumo": "Tem medo de ter o financiamento negado? Entenda o que o banco analisa além do score e o que fazer hoje para aprovar o crédito do seu imóvel.",
     "categoria": "Financiamento",
-    "leitura": "5 min",
+    "leitura": "6 min",
     "cor": 1,
+    "capa": "/img/blog/score-credito-aprovacao-financiamento-imovel.jpg",
+    "keyword": "score de crédito para financiamento de imóvel",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
     "conteudo": [
       {
         "tipo": "p",
-        "txt": "Muita gente acha que o banco só olha o score. Ele importa, mas a aprovação do crédito imobiliário depende de um conjunto maior: renda comprovada, comprometimento de renda, tempo de relacionamento e histórico de pagamentos."
-      },
-      {
-        "tipo": "h",
-        "txt": "A regra dos 30% da renda"
+        "txt": "Poucas coisas frustram mais do que encontrar o imóvel dos sonhos e ouvir do banco que o crédito foi negado. Você se sente julgado por um número que mal entende e não sabe o que fez de errado."
       },
       {
         "tipo": "p",
-        "txt": "Como referência, os bancos costumam exigir que a parcela não ultrapasse cerca de 30% da renda mensal bruta da família. Some a renda de quem vai compor o financiamento para chegar mais perto do imóvel que você quer."
+        "txt": "A verdade é que o **score** é só uma parte da análise. Saber o que o banco realmente avalia tira o poder do medo e coloca você no controle da aprovação."
       },
       {
-        "tipo": "h",
-        "txt": "O que melhora seu perfil"
-      },
-      {
-        "tipo": "p",
-        "txt": "Mantenha o nome limpo, evite atrasos, reduza dívidas de cartão e cheque especial e tenha uma entrada maior. Quanto maior a entrada, menor o risco para o banco e melhor a taxa que você consegue."
-      },
-      {
-        "tipo": "h",
-        "txt": "Consulte seu cadastro antes"
+        "tipo": "h2",
+        "txt": "O que o score de crédito para financiamento de imóvel realmente mede"
       },
       {
         "tipo": "p",
-        "txt": "Você pode consultar seu score e seu cadastro de graça pelos canais oficiais (Serasa e Registrato do Banco Central). Corrija pendências antes de pedir a simulação para não levar um não desnecessário."
+        "txt": "O score é uma nota de 0 a 1000 que estima a chance de você pagar suas contas em dia. Ele olha seu histórico de pagamentos, dívidas ativas e a forma como você usa o crédito."
       },
       {
         "tipo": "p",
-        "txt": "Antes de bater na porta do banco, vale conversar com Vinícius Graton, consultor de imóveis em Uberlândia. Ele ajuda a montar a estratégia de entrada e renda para você chegar com o perfil mais forte possível."
+        "txt": "Mas o banco não decide só pela nota. Ele cruza o score com renda, tempo de emprego, valor da entrada e o tamanho da parcela em relação ao seu salário."
+      },
+      {
+        "tipo": "h2",
+        "txt": "O que o banco analisa além do número"
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "Comprometimento de renda: a parcela não deve passar de cerca de 30% da renda familiar",
+          "Estabilidade: tempo de emprego e regularidade dos comprovantes",
+          "Entrada: quanto maior, menor o risco para o banco",
+          "Restrições no CPF: protestos e dívidas em aberto pesam muito",
+          "Relacionamento com o banco onde você já é cliente"
+        ]
+      },
+      {
+        "tipo": "h2",
+        "txt": "Como melhorar suas chances antes de pedir o crédito"
+      },
+      {
+        "tipo": "p",
+        "txt": "A boa notícia: dá para preparar o terreno em poucos meses. Pequenas mudanças no comportamento financeiro mudam bastante a leitura do banco."
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Ação",
+          "Efeito esperado"
+        ],
+        "linhas": [
+          [
+            "Quitar dívidas pequenas em atraso",
+            "Tira restrições e melhora o score"
+          ],
+          [
+            "Pagar contas em dia por alguns meses",
+            "Constrói histórico positivo"
+          ],
+          [
+            "Aumentar o valor da entrada",
+            "Reduz o risco e a parcela"
+          ],
+          [
+            "Atualizar o cadastro no banco",
+            "Mostra renda e estabilidade reais"
+          ]
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Score baixo não é sentença. Muitas aprovações vêm de uma entrada maior e de um comprovante de renda bem organizado."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Quero financiar um imóvel mas tenho receio da aprovação. Pode me ajudar a preparar minha situação antes de procurar o banco?",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "O papel da simulação antes de tudo"
+      },
+      {
+        "tipo": "p",
+        "txt": "Antes de bater na porta do banco, simule. Saber a parcela e a renda exigida evita pedidos negados que, em excesso, ainda derrubam seu score. Use as [ferramentas de financiamento](/ferramentas) e já chegue com os números prontos, depois escolha entre os [imóveis disponíveis](/imoveis)."
+      },
+      {
+        "tipo": "p",
+        "txt": "Em Uberlândia, Vinícius Graton acompanha esse preparo com cada cliente, indicando o momento certo de pedir o crédito. Vale também checar seu score gratuitamente no [Serasa](https://www.serasa.com.br) antes de começar."
+      },
+      {
+        "tipo": "p",
+        "txt": "Quer entender em que pé está sua aprovação? Chame a gente pela página de [contato](/contato) e monte um plano sob medida."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "Qual score mínimo para financiar imóvel?",
+            "a": "Não existe número fixo, mas acima de 600 as chances melhoram bastante. Renda e entrada pesam tanto quanto o score."
+          },
+          {
+            "q": "Consigo financiar com nome negativado?",
+            "a": "Em regra não. É preciso regularizar restrições no CPF antes de o banco aprovar o crédito."
+          },
+          {
+            "q": "Consultar meu próprio score baixa a nota?",
+            "a": "Não. Consultar o próprio score é gratuito e não afeta a pontuação."
+          },
+          {
+            "q": "Em quanto tempo o score melhora?",
+            "a": "Pagando contas em dia, melhoras aparecem em poucos meses, mas o histórico consistente conta mais que a velocidade."
+          }
+        ]
       }
     ],
     "fontes": [
       {
-        "nome": "Banco Central - Registrato",
-        "url": "https://www.bcb.gov.br/cidadaniafinanceira/registrato"
+        "nome": "Serasa - Score",
+        "url": "https://www.serasa.com.br/score/"
       },
       {
-        "nome": "CAIXA - Financiamento Habitacional",
+        "nome": "CAIXA - Habitação",
         "url": "https://www.caixa.gov.br/voce/habitacao/Paginas/default.aspx"
       }
-    ],
-    "capa": "/img/blog/score-credito-aprovacao-financiamento-imovel.jpg"
+    ]
   },
   {
     "slug": "minha-casa-minha-vida-faixas-2026",
-    "titulo": "Minha Casa Minha Vida 2026: faixas de renda e teto do imóvel",
-    "resumo": "Veja as faixas de renda do MCMV em 2026, incluindo a nova faixa da classe média, e até quanto vale o imóvel financiável.",
+    "titulo": "Minha Casa Minha Vida 2026: faixas de renda, teto e como se enquadrar",
+    "resumo": "Acha que a casa própria está fora do seu alcance? Veja as faixas do Minha Casa Minha Vida 2026, os tetos de renda e como se enquadrar em Uberlândia.",
     "categoria": "Financiamento",
     "leitura": "6 min",
     "cor": 2,
+    "capa": "/img/blog/minha-casa-minha-vida-faixas-2026.jpg",
+    "keyword": "Minha Casa Minha Vida 2026 faixas de renda",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
     "conteudo": [
       {
         "tipo": "p",
-        "txt": "O Minha Casa Minha Vida passou por mudanças importantes aprovadas pelo Conselho Curador do FGTS, com aumento dos limites de renda e do teto dos imóveis. Veja como ficou."
-      },
-      {
-        "tipo": "h",
-        "txt": "As faixas de renda"
+        "txt": "Você paga aluguel há anos com a sensação de jogar dinheiro fora, mas acha que a casa própria é coisa de quem ganha muito. Esse pensamento trava milhares de famílias que, na verdade, já se encaixam em um programa com juros baixos e subsídio."
       },
       {
         "tipo": "p",
-        "txt": "A Faixa 1 atende famílias com renda de até cerca de R$ 3.200; a Faixa 2 vai até em torno de R$ 5.000; a Faixa 3 cobre rendas entre aproximadamente R$ 5.000 e R$ 9.600; e a nova faixa para a classe média atende rendas de cerca de R$ 9.600 até R$ 12.000."
+        "txt": "O **Minha Casa Minha Vida** existe justamente para quem tem renda mais apertada conseguir financiar com condições melhores que as do mercado. O segredo está em entender em qual faixa você se enquadra."
       },
       {
-        "tipo": "h",
-        "txt": "Até quanto vale o imóvel"
-      },
-      {
-        "tipo": "p",
-        "txt": "Nas Faixas 1 e 2, o teto varia geralmente entre R$ 210 mil e R$ 275 mil conforme o município. Na Faixa 3, o limite de imóveis subiu para cerca de R$ 400 mil. Na faixa Classe Média, é possível financiar imóveis de até cerca de R$ 600 mil."
-      },
-      {
-        "tipo": "h",
-        "txt": "As vantagens do programa"
+        "tipo": "h2",
+        "txt": "Como funcionam as faixas de renda do Minha Casa Minha Vida 2026"
       },
       {
         "tipo": "p",
-        "txt": "As taxas de juros do MCMV são bem menores que as do mercado, partindo de cerca de 4% ao ano nas faixas de menor renda. Como os valores são revisados periodicamente, confirme sempre a faixa atual na Caixa antes de simular."
+        "txt": "O programa divide as famílias por renda mensal bruta. Quanto menor a renda, maior o subsídio e menor o juro. A faixa define quanto você recebe de ajuda do governo e qual taxa paga."
       },
       {
         "tipo": "p",
-        "txt": "Em Uberlândia há muitos empreendimentos enquadrados no programa. Vinícius Graton, consultor de imóveis local, ajuda você a identificar sua faixa e os imóveis que cabem no seu orçamento."
+        "txt": "As faixas são reajustadas periodicamente, então confirme sempre os valores vigentes antes de simular. O importante é a lógica: o programa premia quem mais precisa."
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Faixa",
+          "Perfil",
+          "Benefício principal"
+        ],
+        "linhas": [
+          [
+            "Faixa 1",
+            "Menor renda familiar",
+            "Maior subsídio e menor juro"
+          ],
+          [
+            "Faixa 2",
+            "Renda intermediária",
+            "Subsídio parcial e juro reduzido"
+          ],
+          [
+            "Faixa 3",
+            "Renda mais alta dentro do programa",
+            "Juro melhor que o mercado, sem subsídio direto"
+          ],
+          [
+            "Faixa Urbana 4",
+            "Classe média",
+            "Condições facilitadas com FGTS"
+          ]
+        ]
+      },
+      {
+        "tipo": "h2",
+        "txt": "Quem pode participar"
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "Não ter imóvel próprio em seu nome",
+          "Não ter recebido subsídio habitacional antes",
+          "Estar dentro do teto de renda da faixa",
+          "Ter o CPF sem restrições graves",
+          "Comprovar renda compatível com a parcela"
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Em muitos casos a parcela do financiamento pelo programa fica próxima do valor que a família já paga de aluguel."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Pago aluguel e quero saber se me enquadro no Minha Casa Minha Vida em Uberlândia. Pode me ajudar a simular?",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "Como descobrir sua faixa em Uberlândia"
+      },
+      {
+        "tipo": "p",
+        "txt": "O primeiro passo é somar a renda bruta da família e comparar com os tetos atuais. Depois, simule a parcela e veja quanto de FGTS pode entrar na entrada. Use as [ferramentas de simulação](/ferramentas) e explore os [imóveis que entram no programa](/imoveis) em Uberlândia."
+      },
+      {
+        "tipo": "p",
+        "txt": "Vinícius Graton acompanha lançamentos e empreendimentos elegíveis na cidade e ajuda a família a chegar com tudo certo no banco. Os valores oficiais e atualizados estão no portal do [Ministério das Cidades](https://www.gov.br/cidades)."
+      },
+      {
+        "tipo": "p",
+        "txt": "Se você sente que o aluguel não acaba nunca, fale com a gente pela página de [contato](/contato) e descubra em qual faixa você se encaixa."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "Posso usar o FGTS no Minha Casa Minha Vida?",
+            "a": "Sim. O FGTS pode compor a entrada e até abater parte do saldo, conforme as regras da faixa."
+          },
+          {
+            "q": "Quem já teve imóvel pode participar?",
+            "a": "Em geral não, pois o programa é voltado a quem não possui imóvel próprio nem recebeu subsídio antes."
+          },
+          {
+            "q": "O subsídio precisa ser devolvido?",
+            "a": "Não. O subsídio é um desconto no valor do imóvel, não um empréstimo a ser pago de volta."
+          },
+          {
+            "q": "As faixas mudam todo ano?",
+            "a": "Os tetos são reajustados periodicamente. Sempre confirme os valores vigentes antes de fechar negócio."
+          }
+        ]
       }
     ],
     "fontes": [
       {
         "nome": "Ministério das Cidades",
-        "url": "https://www.gov.br/cidades/pt-br/assuntos/noticias-1/noticia-mcid-n-2111"
+        "url": "https://www.gov.br/cidades/pt-br"
       },
       {
         "nome": "CAIXA - Minha Casa Minha Vida",
-        "url": "https://www.caixa.gov.br/voce/habitacao/minha-casa-minha-vida/urbana/Paginas/default.aspx"
+        "url": "https://www.caixa.gov.br/voce/habitacao/minha-casa-minha-vida/Paginas/default.aspx"
       }
-    ],
-    "capa": "/img/blog/minha-casa-minha-vida-faixas-2026.jpg"
+    ]
   },
   {
     "slug": "sfh-sbpe-diferencas-financiamento",
-    "titulo": "SFH x SBPE: qual sistema de financiamento é o seu?",
-    "resumo": "Entenda a diferença entre SFH e SBPE, os limites de valor do imóvel e quando você pode usar o FGTS no financiamento.",
+    "titulo": "SFH x SBPE: as diferenças entre os dois sistemas de financiamento imobiliário",
+    "resumo": "Perdido entre siglas na hora de financiar? Entenda SFH e SBPE, limites, uso do FGTS e qual sistema cabe no seu bolso em Uberlândia.",
     "categoria": "Financiamento",
     "leitura": "6 min",
     "cor": 3,
+    "capa": "/img/blog/sfh-sbpe-diferencas-financiamento.jpg",
+    "keyword": "diferença entre SFH e SBPE",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
     "conteudo": [
       {
         "tipo": "p",
-        "txt": "Ao financiar um imóvel você vai esbarrar nas siglas SFH e SBPE. Saber em qual sistema você se encaixa muda regras importantes, como o uso do FGTS e o teto do imóvel."
+        "txt": "Você abre a proposta do banco e bate de frente com siglas como SFH e SBPE, juros, teto e índice. Dá um nó na cabeça e o medo de assinar algo que não entende paralisa a maior decisão financeira da sua vida."
       },
       {
-        "tipo": "h",
+        "tipo": "p",
+        "txt": "Calma: por trás das siglas existem só dois caminhos para financiar um imóvel. Entender a **diferença entre SFH e SBPE** ajuda você a escolher o que pesa menos no bolso."
+      },
+      {
+        "tipo": "h2",
         "txt": "O que é o SFH"
       },
       {
         "tipo": "p",
-        "txt": "O Sistema Financeiro da Habitação usa recursos do FGTS e da poupança e tem condições mais favoráveis. Com a atualização de 2026, o teto do imóvel no SFH passou para até cerca de R$ 2,25 milhões, e é nesse sistema que você pode usar o FGTS."
+        "txt": "O **SFH** (Sistema Financeiro de Habitação) é voltado a imóveis de valor mais baixo e oferece condições protegidas por lei. Sua grande vantagem é permitir o uso do **FGTS** e ter um teto de juros."
       },
       {
-        "tipo": "h",
+        "tipo": "p",
+        "txt": "Por ser regulado, costuma ter taxas menores. Em troca, há limites de valor do imóvel e exigência de que ele seja residencial e usado para moradia."
+      },
+      {
+        "tipo": "h2",
         "txt": "O que é o SBPE"
       },
       {
         "tipo": "p",
-        "txt": "O Sistema Brasileiro de Poupança e Empréstimo é usado pelos bancos para financiar imóveis em geral, inclusive acima do teto do SFH. As taxas de balcão costumam partir de cerca de 11% ao ano mais TR."
-      },
-      {
-        "tipo": "h",
-        "txt": "Entrada e cota de financiamento"
+        "txt": "O **SBPE** (Sistema Brasileiro de Poupança e Empréstimo) atende imóveis de valor mais alto, acima do teto do SFH. Ele dá mais flexibilidade, mas geralmente não permite usar o FGTS e tem juros livres."
       },
       {
         "tipo": "p",
-        "txt": "Em regra, você precisa de uma entrada de pelo menos 20% (cota de financiamento de até 80% no sistema SAC). Essa entrada pode ser composta com FGTS, desde que respeitadas as regras do fundo."
+        "txt": "É a opção de quem compra um imóvel mais caro ou um segundo imóvel, situações que não cabem nas regras do SFH."
+      },
+      {
+        "tipo": "h2",
+        "txt": "Diferença entre SFH e SBPE na prática"
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Item",
+          "SFH",
+          "SBPE"
+        ],
+        "linhas": [
+          [
+            "Uso do FGTS",
+            "Permitido",
+            "Em geral não permitido"
+          ],
+          [
+            "Teto de juros",
+            "Limitado por lei",
+            "Livre"
+          ],
+          [
+            "Valor do imóvel",
+            "Até o teto do sistema",
+            "Acima do teto do SFH"
+          ],
+          [
+            "Finalidade",
+            "Moradia, imóvel residencial",
+            "Mais flexível, inclui imóveis de maior valor"
+          ]
+        ]
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "Vai usar FGTS? O SFH costuma ser o caminho",
+          "Imóvel acima do teto? Provavelmente cai no SBPE",
+          "Busca menor juro e o imóvel se enquadra? SFH tende a compensar",
+          "Quer mais flexibilidade de valor e uso? SBPE atende"
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "A escolha não é só preferência: ela depende do valor do imóvel e de você poder, ou não, usar o FGTS."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Não sei se meu financiamento entra no SFH ou no SBPE. Pode me ajudar a entender qual cabe melhor no meu caso?",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "Como decidir sem se perder"
       },
       {
         "tipo": "p",
-        "txt": "As taxas mudam com frequência, então confirme na simulação oficial. Para entender qual sistema rende mais para o seu bolso, Vinícius Graton, consultor de imóveis em Uberlândia, faz a conta com você."
+        "txt": "O ponto de partida é o valor do imóvel e se você tem FGTS para usar. A partir daí, a simulação mostra a parcela em cada sistema. Use as [ferramentas de simulação](/ferramentas) e veja os [imóveis disponíveis](/imoveis) que se encaixam no seu orçamento."
+      },
+      {
+        "tipo": "p",
+        "txt": "Em Uberlândia, Vinícius Graton ajuda a enquadrar cada cliente no sistema mais vantajoso antes de fechar com o banco. Os tetos e regras vigentes ficam no canal de [habitação da Caixa](https://www.caixa.gov.br)."
+      },
+      {
+        "tipo": "p",
+        "txt": "Ficou em dúvida sobre qual sistema é o seu? Fale com a gente pela página de [contato](/contato)."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "Posso usar FGTS no SBPE?",
+            "a": "Em regra não. O uso do FGTS é uma das principais vantagens do SFH."
+          },
+          {
+            "q": "Qual sistema tem juro menor?",
+            "a": "Costuma ser o SFH, por ter teto de juros definido por lei, mas depende da negociação com o banco."
+          },
+          {
+            "q": "O imóvel comercial entra no SFH?",
+            "a": "Não. O SFH é voltado a imóveis residenciais para moradia."
+          },
+          {
+            "q": "Quem define em qual sistema vou financiar?",
+            "a": "O valor do imóvel e suas condições determinam o enquadramento, que o banco confirma na análise."
+          }
+        ]
       }
     ],
     "fontes": [
       {
-        "nome": "CAIXA - Crédito Imobiliário",
+        "nome": "CAIXA - Habitação",
         "url": "https://www.caixa.gov.br/voce/habitacao/Paginas/default.aspx"
       },
       {
-        "nome": "Banco Central - Crédito Imobiliário",
-        "url": "https://www.bcb.gov.br/estabilidadefinanceira/creditoimobiliario"
+        "nome": "Banco Central do Brasil",
+        "url": "https://www.bcb.gov.br"
       }
-    ],
-    "capa": "/img/blog/sfh-sbpe-diferencas-financiamento.jpg"
+    ]
   },
   {
     "slug": "consorcio-ou-financiamento-imovel",
-    "titulo": "Consórcio ou financiamento: qual vale mais a pena?",
-    "resumo": "Compare consórcio e financiamento de imóvel: juros, taxa de administração, prazo e para qual perfil cada um faz sentido.",
+    "titulo": "Consórcio ou financiamento de imóvel: qual vale mais a pena para você",
+    "resumo": "Na dúvida entre consórcio e financiamento? Compare juros, taxas, prazo e pressa de morar para decidir o melhor caminho para o seu imóvel.",
     "categoria": "Financiamento",
     "leitura": "6 min",
     "cor": 4,
+    "capa": "/img/blog/consorcio-ou-financiamento-imovel.jpg",
+    "keyword": "consórcio ou financiamento de imóvel",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
     "conteudo": [
       {
         "tipo": "p",
-        "txt": "Consórcio e financiamento levam você ao mesmo lugar — a casa própria —, mas por caminhos bem diferentes. A escolha depende muito da sua pressa e do seu bolso."
-      },
-      {
-        "tipo": "h",
-        "txt": "Como funciona cada um"
+        "txt": "Você quer a casa própria, mas trava na mesma pergunta: consórcio ou financiamento? O medo de escolher errado e pagar caro demais por anos faz muita gente adiar a decisão e continuar no aluguel."
       },
       {
         "tipo": "p",
-        "txt": "No financiamento, o banco libera o dinheiro na hora, você compra o imóvel imediatamente e paga com juros ao longo do tempo. No consórcio, você entra em um grupo, paga parcelas sem juros e é contemplado por sorteio ou lance — ou seja, pode demorar para usar a carta."
+        "txt": "Não existe resposta única. A melhor opção entre **consórcio ou financiamento de imóvel** depende da sua pressa de morar, do seu caixa e da sua tolerância à incerteza."
       },
       {
-        "tipo": "h",
-        "txt": "Onde está o custo"
-      },
-      {
-        "tipo": "p",
-        "txt": "O financiamento tem juros, que ao longo de décadas podem somar bastante. O consórcio não tem juros, mas cobra taxa de administração. Compare sempre o Custo Efetivo Total, não só a parcela."
-      },
-      {
-        "tipo": "h",
-        "txt": "Para quem indica cada um"
+        "tipo": "h2",
+        "txt": "Como funciona o financiamento"
       },
       {
         "tipo": "p",
-        "txt": "O financiamento é melhor para quem precisa do imóvel agora e pode usar FGTS na entrada. O consórcio combina com quem tem tempo, disciplina e quer fugir dos juros. O sistema de consórcios é fiscalizado pelo Banco Central — confirme se a administradora é autorizada."
+        "txt": "No financiamento, o banco paga o imóvel à vista e você devolve em parcelas com **juros**. A vantagem é a posse imediata: você já mora no imóvel enquanto paga."
       },
       {
         "tipo": "p",
-        "txt": "Cada perfil pede uma estratégia. Vinícius Graton, consultor de imóveis em Uberlândia, ajuda você a simular os dois cenários antes de decidir."
+        "txt": "A desvantagem é o custo. Ao longo de 20 ou 30 anos, os juros somam um valor relevante sobre o preço original do imóvel."
+      },
+      {
+        "tipo": "h2",
+        "txt": "Como funciona o consórcio"
+      },
+      {
+        "tipo": "p",
+        "txt": "No consórcio você entra em um grupo e paga parcelas mensais sem juros, só com **taxa de administração**. A contemplação vem por sorteio ou lance, então pode demorar."
+      },
+      {
+        "tipo": "p",
+        "txt": "É mais barato no total, mas exige paciência: você pode não ser contemplado tão cedo, o que não serve para quem precisa morar já."
+      },
+      {
+        "tipo": "h2",
+        "txt": "Consórcio ou financiamento de imóvel: comparação direta"
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Critério",
+          "Financiamento",
+          "Consórcio"
+        ],
+        "linhas": [
+          [
+            "Custo extra",
+            "Juros + taxas",
+            "Taxa de administração, sem juros"
+          ],
+          [
+            "Posse do imóvel",
+            "Imediata",
+            "Após a contemplação"
+          ],
+          [
+            "Uso do FGTS",
+            "Permitido",
+            "Permitido em lances e quitação"
+          ],
+          [
+            "Ideal para quem",
+            "Precisa morar já",
+            "Pode esperar e quer pagar menos"
+          ]
+        ]
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "Precisa do imóvel agora? Financiamento leva vantagem",
+          "Pode esperar e quer custo menor? Consórcio tende a compensar",
+          "Tem FGTS? Ele ajuda nos dois caminhos",
+          "Quer parcela previsível sem juros? Consórcio entra na conta"
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Regra simples: pressa de morar pesa para o financiamento; paciência e economia pesam para o consórcio."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Estou em dúvida entre consórcio e financiamento para comprar em Uberlândia. Pode comparar os números do meu caso comigo?",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "Como decidir com clareza"
+      },
+      {
+        "tipo": "p",
+        "txt": "O melhor jeito é colocar os números lado a lado: parcela, prazo e custo total de cada opção. Use as [ferramentas de simulação](/ferramentas) e veja os [imóveis disponíveis](/imoveis) para entender o valor real envolvido."
+      },
+      {
+        "tipo": "p",
+        "txt": "Vinícius Graton ajuda famílias de Uberlândia a comparar as duas rotas sem viés de venda, olhando o que cabe na sua realidade. Para entender as regras de consórcio, consulte o [Banco Central](https://www.bcb.gov.br)."
+      },
+      {
+        "tipo": "p",
+        "txt": "Quer ver os números do seu caso? Fale com a gente pela página de [contato](/contato)."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "Consórcio é sempre mais barato?",
+            "a": "No total costuma ser, por não ter juros, mas a demora na contemplação pode não compensar para quem precisa morar já."
+          },
+          {
+            "q": "Posso usar FGTS no consórcio?",
+            "a": "Sim, o FGTS pode ser usado para dar lance ou quitar parte do imóvel, dentro das regras."
+          },
+          {
+            "q": "Dá para sair de um consórcio?",
+            "a": "Sim, mas há regras e prazos para receber o valor pago de volta, o que pode levar tempo."
+          },
+          {
+            "q": "Posso transformar consórcio em financiamento?",
+            "a": "Não diretamente, mas você pode complementar a contemplação com um financiamento se faltar valor."
+          }
+        ]
       }
     ],
     "fontes": [
       {
-        "nome": "Banco Central - Consórcios",
+        "nome": "Banco Central do Brasil - Consórcios",
         "url": "https://www.bcb.gov.br/estabilidadefinanceira/consorcio"
       },
       {
-        "nome": "ABAC - Como funciona o consórcio",
-        "url": "https://blog.abac.org.br/consorcio-de-a-a-z/como-funciona-o-consorcio-o-bc-te-explica"
+        "nome": "CAIXA - Habitação",
+        "url": "https://www.caixa.gov.br/voce/habitacao/Paginas/default.aspx"
       }
-    ],
-    "capa": "/img/blog/consorcio-ou-financiamento-imovel.jpg"
+    ]
   },
   {
     "slug": "portabilidade-financiamento-imobiliario",
-    "titulo": "Portabilidade de financiamento: como pagar menos juros trocando de banco",
-    "resumo": "Veja como funciona a portabilidade do financiamento imobiliário, o que pode e não pode ser cobrado e quando vale a pena.",
+    "titulo": "Portabilidade de financiamento imobiliário: como pagar menos juros mudando de banco",
+    "resumo": "Pagando juros altos no financiamento? Entenda a portabilidade, quando vale a pena trocar de banco e como reduzir a parcela do seu imóvel.",
     "categoria": "Financiamento",
-    "leitura": "5 min",
+    "leitura": "6 min",
     "cor": 0,
+    "capa": "/img/blog/portabilidade-financiamento-imobiliario.jpg",
+    "keyword": "portabilidade de financiamento imobiliário",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
     "conteudo": [
       {
         "tipo": "p",
-        "txt": "Se você financiou o imóvel há alguns anos com uma taxa alta, talvez consiga pagar menos hoje sem trocar de casa: basta levar a dívida para outro banco. Isso é a portabilidade de crédito."
-      },
-      {
-        "tipo": "h",
-        "txt": "O que é portabilidade"
+        "txt": "Você fechou o financiamento anos atrás, comemorou a casa própria e agora descobre que o vizinho paga juros bem menores no mesmo tipo de crédito. Bate aquela sensação de estar preso a um contrato caro e sem saída."
       },
       {
         "tipo": "p",
-        "txt": "É a transferência do saldo devedor do seu financiamento de um banco para outro, mantendo o valor restante e o prazo. O que se negocia é a taxa de juros. O objetivo é aumentar a concorrência e reduzir seu custo."
+        "txt": "Mas saída existe e é um direito seu. A **portabilidade de financiamento imobiliário** permite levar sua dívida para outro banco com juros menores, sem precisar quitar e refazer tudo do zero."
       },
       {
-        "tipo": "h",
-        "txt": "O que não pode ser cobrado"
-      },
-      {
-        "tipo": "p",
-        "txt": "Pela regra do Banco Central, não pode haver cobrança pela simples mudança de banco. Pode haver custos de nova avaliação do imóvel e de cartório. O banco original tem direito de fazer uma contraproposta para tentar segurar você."
-      },
-      {
-        "tipo": "h",
-        "txt": "Passo a passo"
+        "tipo": "h2",
+        "txt": "O que é a portabilidade de financiamento imobiliário"
       },
       {
         "tipo": "p",
-        "txt": "Peça ao seu banco o saldo devedor, o número do contrato, o CET e a taxa atual. Com esses dados, busque propostas em outros bancos e leve a melhor de volta."
+        "txt": "Portabilidade é transferir o saldo devedor do seu financiamento para outra instituição que ofereça condições melhores. O novo banco quita sua dívida no banco antigo e você passa a pagar a ele."
       },
       {
         "tipo": "p",
-        "txt": "Se você tem financiamento em Uberlândia e quer entender se a portabilidade compensa, Vinícius Graton, consultor de imóveis, pode orientar os primeiros passos."
+        "txt": "O imóvel continua sendo seu e a garantia apenas migra de um banco para o outro. Você não vende, não recompra, só troca quem cobra o juro."
+      },
+      {
+        "tipo": "h2",
+        "txt": "Quando vale a pena trocar de banco"
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "A diferença de juros entre o seu contrato e a oferta nova é relevante",
+          "Ainda falta um bom número de parcelas para quitar",
+          "Os custos da operação (cartório e avaliação) compensam a economia",
+          "Seu banco atual não cobre a proposta após a tentativa de renegociação"
+        ]
+      },
+      {
+        "tipo": "p",
+        "txt": "Antes de portar, vale usar a proposta concorrente para renegociar no seu próprio banco. Muitas vezes ele iguala ou melhora a taxa para não perder o cliente."
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Situação",
+          "Melhor caminho"
+        ],
+        "linhas": [
+          [
+            "Juro muito acima do mercado e muitas parcelas restantes",
+            "Portabilidade tende a compensar"
+          ],
+          [
+            "Faltam poucas parcelas",
+            "Geralmente não compensa os custos"
+          ],
+          [
+            "Banco atual iguala a taxa",
+            "Renegociar e ficar"
+          ],
+          [
+            "Quer reduzir parcela com novo prazo",
+            "Avaliar portabilidade com simulação"
+          ]
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Portabilidade é um direito do consumidor. Nenhum banco pode impedir você de levar seu financiamento para outra instituição."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Acho que pago juros altos no meu financiamento e quero saber se vale a pena fazer portabilidade. Pode me orientar?",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "Como começar com segurança"
+      },
+      {
+        "tipo": "p",
+        "txt": "O primeiro passo é pegar o saldo devedor e a taxa atual no seu banco e levar a outras instituições para comparar. Use as [ferramentas de simulação](/ferramentas) para estimar a nova parcela e a economia ao longo do contrato."
+      },
+      {
+        "tipo": "p",
+        "txt": "Vinícius Graton orienta clientes de Uberlândia nesse comparativo, evitando trocas que parecem boas mas não compensam os custos. As regras de portabilidade estão definidas pelo [Banco Central](https://www.bcb.gov.br)."
+      },
+      {
+        "tipo": "p",
+        "txt": "Quer saber se a troca compensa no seu caso? Fale com a gente pela página de [contato](/contato) e leve seu extrato de financiamento."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "A portabilidade tem custo?",
+            "a": "Pode haver custos de avaliação do imóvel e cartório. Por isso é preciso comparar a economia com essas despesas."
+          },
+          {
+            "q": "Posso portar mais de uma vez?",
+            "a": "Sim, não há limite legal, desde que a nova proposta seja vantajosa frente aos custos."
+          },
+          {
+            "q": "Meu banco pode recusar a portabilidade?",
+            "a": "Não pode impedir a saída, mas pode oferecer uma contraproposta para você ficar."
+          },
+          {
+            "q": "A portabilidade muda o valor da minha dívida?",
+            "a": "O saldo devedor é o mesmo. O que muda é a taxa de juros e, com ela, o total que você vai pagar."
+          }
+        ]
       }
     ],
     "fontes": [
       {
-        "nome": "Banco Central - Portabilidade de crédito",
-        "url": "https://www.bcb.gov.br/meubc/faqs/p/portabilidade-de-credito"
+        "nome": "Banco Central do Brasil",
+        "url": "https://www.bcb.gov.br"
       },
       {
-        "nome": "CAIXA - Portabilidade",
-        "url": "https://www.caixa.gov.br/voce/habitacao/portabilidade-credito-imobiliario/Paginas/default.aspx"
+        "nome": "CAIXA - Habitação",
+        "url": "https://www.caixa.gov.br/voce/habitacao/Paginas/default.aspx"
       }
-    ],
-    "capa": "/img/blog/portabilidade-financiamento-imobiliario.jpg"
+    ]
   },
   {
     "slug": "escritura-e-registro-imovel-passo-a-passo",
-    "titulo": "Escritura e registro: o que muda entre comprar à vista e financiado",
-    "resumo": "Entenda a diferença entre escritura e registro, por que o registro é o que importa e como os custos mudam no financiamento.",
+    "titulo": "Escritura e registro de imóvel: o passo a passo para você virar dono de verdade",
+    "resumo": "Assinou o contrato mas ainda não se sente dono? Veja o passo a passo da escritura e do registro do imóvel e garanta a sua segurança jurídica.",
     "categoria": "Documentação",
     "leitura": "6 min",
     "cor": 1,
+    "capa": "/img/blog/escritura-e-registro-imovel-passo-a-passo.jpg",
+    "keyword": "escritura e registro de imóvel passo a passo",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
     "conteudo": [
       {
         "tipo": "p",
-        "txt": "Assinou o contrato e pagou? Ainda falta o passo mais importante: registrar. Sem registro na matrícula, você não é o dono legal do imóvel. Vamos separar escritura de registro, que são coisas diferentes."
-      },
-      {
-        "tipo": "h",
-        "txt": "Compra à vista"
+        "txt": "Você pagou pelo imóvel, recebeu as chaves e assinou um contrato, mas sente um frio na barriga: e se aparecer outro dono? Esse medo é real para quem não concluiu a escritura e o registro."
       },
       {
         "tipo": "p",
-        "txt": "Sem financiamento, você faz a escritura pública no Cartório de Notas e depois leva esse documento ao Cartório de Registro de Imóveis para registrar na matrícula. São dois atos pagos: a escritura e o registro."
+        "txt": "No Brasil, só vira dono de verdade quem registra. Entender o **passo a passo da escritura e do registro do imóvel** é o que transforma a sua posse em propriedade legal e blindada."
       },
       {
-        "tipo": "h",
-        "txt": "Compra financiada"
-      },
-      {
-        "tipo": "p",
-        "txt": "No financiamento, o contrato do banco vale como escritura pública, então você não precisa fazer escritura no Cartório de Notas. No registro de imóveis acontecem dois atos: o registro da compra e venda e o da alienação fiduciária a favor do banco."
-      },
-      {
-        "tipo": "h",
-        "txt": "Quanto custa"
+        "tipo": "h2",
+        "txt": "A diferença entre contrato, escritura e registro"
       },
       {
         "tipo": "p",
-        "txt": "Escritura e registro seguem tabelas estaduais e variam conforme o valor do imóvel — em geral algo em torno de 1% para a escritura, com percentual menor em imóveis de maior valor. Confirme sempre na tabela do seu estado."
+        "txt": "O contrato de compra e venda é o acordo entre as partes. A **escritura pública**, feita no Cartório de Notas, é o documento oficial que formaliza a transferência."
       },
       {
         "tipo": "p",
-        "txt": "Para não pular nenhuma etapa nem pagar a mais, conte com Vinícius Graton, consultor de imóveis em Uberlândia, que acompanha o processo até o registro na matrícula."
+        "txt": "Já o **registro**, feito no Cartório de Registro de Imóveis, é o ato que coloca o imóvel na matrícula em seu nome. Sem ele, juridicamente você ainda não é o proprietário."
+      },
+      {
+        "tipo": "h2",
+        "txt": "Escritura e registro de imóvel passo a passo"
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "Reúna documentos seus, do vendedor e a matrícula atualizada do imóvel",
+          "Pague o ITBI na Prefeitura de Uberlândia (cerca de 2% do valor)",
+          "Lavre a escritura pública no Cartório de Notas",
+          "Leve a escritura ao Cartório de Registro de Imóveis",
+          "Registre a transferência na matrícula e receba a certidão atualizada"
+        ]
+      },
+      {
+        "tipo": "p",
+        "txt": "Em financiamentos, o contrato do banco costuma valer como título e vai direto a registro, dispensando a escritura em cartório de notas. Mesmo assim, o registro na matrícula continua obrigatório."
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Etapa",
+          "Onde",
+          "Função"
+        ],
+        "linhas": [
+          [
+            "ITBI",
+            "Prefeitura de Uberlândia",
+            "Imposto de transferência (~2%)"
+          ],
+          [
+            "Escritura",
+            "Cartório de Notas",
+            "Formaliza o negócio"
+          ],
+          [
+            "Registro",
+            "Cartório de Registro de Imóveis",
+            "Transfere a propriedade na matrícula"
+          ]
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Quem não registra paga e não é dono. A frase dos cartórios resume tudo: só é dono quem registra."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Comprei um imóvel em Uberlândia e quero entender o passo a passo da escritura e do registro. Pode me orientar?",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "Quanto custa e quanto tempo leva"
+      },
+      {
+        "tipo": "p",
+        "txt": "Some o ITBI (cerca de 2% em Uberlândia) e as taxas de cartório, que variam pelo valor do imóvel. O processo costuma levar de 15 a 30 dias após o pagamento dos custos. Use as [ferramentas de cálculo](/ferramentas) para estimar essas despesas antes de fechar."
+      },
+      {
+        "tipo": "p",
+        "txt": "Vinícius Graton acompanha cada etapa com os clientes, do contrato ao registro final, para que ninguém pague e fique sem ser dono. Confira o valor e a guia do ITBI no portal da [Prefeitura de Uberlândia](https://www.uberlandia.mg.gov.br) e veja os [imóveis disponíveis](/imoveis)."
+      },
+      {
+        "tipo": "p",
+        "txt": "Quer fazer tudo certo do começo ao fim? Fale com a gente pela página de [contato](/contato)."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "Contrato assinado já me torna dono?",
+            "a": "Não. Só o registro na matrícula do Cartório de Registro de Imóveis transfere a propriedade legalmente."
+          },
+          {
+            "q": "Preciso de escritura se financiei pela Caixa?",
+            "a": "Em financiamentos o contrato do banco costuma substituir a escritura, mas o registro segue obrigatório."
+          },
+          {
+            "q": "Quanto custa o ITBI em Uberlândia?",
+            "a": "Em torno de 2% do valor do imóvel, pago à Prefeitura antes do registro."
+          },
+          {
+            "q": "Posso registrar sem pagar o ITBI?",
+            "a": "Não. O comprovante de pagamento do ITBI é exigido para lavrar a escritura e registrar o imóvel."
+          }
+        ]
       }
     ],
     "fontes": [
       {
-        "nome": "Registro de Imóveis do Brasil",
-        "url": "https://www.registrodeimoveis.org.br/"
+        "nome": "Prefeitura de Uberlândia - ITBI",
+        "url": "https://www.uberlandia.mg.gov.br/prefeitura/secretarias/financas/itbi/"
       },
       {
         "nome": "CAIXA - Habitação",
         "url": "https://www.caixa.gov.br/voce/habitacao/Paginas/default.aspx"
       }
-    ],
-    "capa": "/img/blog/escritura-e-registro-imovel-passo-a-passo.jpg"
+    ]
   },
   {
     "slug": "alienacao-fiduciaria-o-que-e",
-    "titulo": "Alienação fiduciária: o que é e por que o imóvel fica no nome do banco",
-    "resumo": "Entenda a alienação fiduciária, a garantia mais usada no financiamento de imóveis, e o que acontece se você atrasar parcelas.",
+    "titulo": "Alienação fiduciária: o que é e por que o banco fica como dono até você quitar",
+    "resumo": "Estranha o banco virar dono do seu imóvel financiado? Entenda a alienação fiduciária, seus riscos e como ela protege você e o financiamento.",
     "categoria": "Documentação",
-    "leitura": "5 min",
+    "leitura": "6 min",
     "cor": 2,
+    "capa": "/img/blog/alienacao-fiduciaria-o-que-e.jpg",
+    "keyword": "alienação fiduciária o que é",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
     "conteudo": [
       {
         "tipo": "p",
-        "txt": "Ao financiar, você vai ouvir que o imóvel fica alienado ao banco. Isso assusta, mas é o mecanismo que viabiliza o crédito barato e de longo prazo. Vamos explicar com calma."
-      },
-      {
-        "tipo": "h",
-        "txt": "Como funciona a garantia"
+        "txt": "Você lê o contrato do financiamento e leva um susto: o banco aparece como proprietário do imóvel que você está comprando. Bate o medo de pagar por anos e, no fim, descobrir que a casa nunca foi sua."
       },
       {
         "tipo": "p",
-        "txt": "Na alienação fiduciária, a propriedade do imóvel fica com o banco como garantia até você quitar a dívida, mas a posse é sua — você mora, reforma e usa normalmente. Pago o financiamento, a propriedade plena passa a ser sua."
+        "txt": "Respire. Isso tem nome, **alienação fiduciária**, e é a regra de quase todo financiamento imobiliário no Brasil. Entender como funciona desfaz o medo e mostra que você está mais protegido do que imagina."
       },
       {
-        "tipo": "h",
-        "txt": "Por que isso é bom para você"
-      },
-      {
-        "tipo": "p",
-        "txt": "Como o banco tem uma garantia forte, ele empresta com juros menores e prazos mais longos do que em outras modalidades de crédito. É um dos motivos de o financiamento imobiliário ser tão acessível."
-      },
-      {
-        "tipo": "h",
-        "txt": "E se atrasar?"
+        "tipo": "h2",
+        "txt": "Alienação fiduciária: o que é na prática"
       },
       {
         "tipo": "p",
-        "txt": "O atraso pode levar à execução da garantia e à perda do imóvel, por isso planeje a parcela com folga. A boa notícia é que a lei permite quitar a dívida antes do leilão."
+        "txt": "Na alienação fiduciária, você transfere a **propriedade do imóvel ao banco como garantia** enquanto paga o financiamento. Você usa, mora e cuida do imóvel, mas a titularidade fica com o banco até a quitação."
       },
       {
         "tipo": "p",
-        "txt": "Quer entender o contrato antes de assinar? Vinícius Graton, consultor de imóveis em Uberlândia, ajuda você a ler as cláusulas com tranquilidade."
+        "txt": "Quando você paga a última parcela, a propriedade volta automaticamente para o seu nome. É uma garantia, não uma perda: o imóvel é seu na prática desde o primeiro dia."
+      },
+      {
+        "tipo": "h2",
+        "txt": "Por que esse modelo existe"
+      },
+      {
+        "tipo": "p",
+        "txt": "A alienação fiduciária deu segurança ao banco e, com isso, barateou o crédito imobiliário. Como o risco de calote diminuiu, as taxas de financiamento ficaram mais acessíveis para todo mundo."
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "Você tem a posse e o uso do imóvel desde o início",
+          "O banco mantém a propriedade só como garantia",
+          "Quitou tudo, a propriedade volta automaticamente a você",
+          "O modelo reduziu juros por dar mais segurança ao crédito",
+          "Inadimplência prolongada pode levar à perda do imóvel"
+        ]
+      },
+      {
+        "tipo": "h2",
+        "txt": "Alienação fiduciária x hipoteca"
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Item",
+          "Alienação fiduciária",
+          "Hipoteca"
+        ],
+        "linhas": [
+          [
+            "Propriedade durante o pagamento",
+            "Do banco (garantia)",
+            "Do comprador"
+          ],
+          [
+            "Recuperação em caso de calote",
+            "Mais rápida",
+            "Mais lenta, via Justiça"
+          ],
+          [
+            "Efeito nos juros",
+            "Tende a reduzir",
+            "Tende a ser maior"
+          ],
+          [
+            "Uso atual",
+            "Padrão no mercado",
+            "Cada vez mais raro"
+          ]
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Pagando as parcelas em dia, o imóvel é seu para todos os fins. A propriedade do banco é apenas uma garantia temporária."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Vou financiar e fiquei com dúvida sobre a alienação fiduciária no contrato. Pode me explicar como isso me afeta?",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "O que você precisa cuidar"
+      },
+      {
+        "tipo": "p",
+        "txt": "O principal cuidado é manter as parcelas em dia, pois a inadimplência prolongada pode levar à retomada do imóvel. Se apertar, procure o banco para renegociar antes de atrasar. Use as [ferramentas de simulação](/ferramentas) para garantir uma parcela que caiba no seu orçamento."
+      },
+      {
+        "tipo": "p",
+        "txt": "Vinícius Graton explica cada cláusula do contrato aos clientes de Uberlândia antes da assinatura, para que ninguém assine com medo do que não entende. As regras estão na lei do crédito imobiliário, com orientação no [Banco Central](https://www.bcb.gov.br)."
+      },
+      {
+        "tipo": "p",
+        "txt": "Quer entender seu contrato linha a linha? Fale com a gente pela página de [contato](/contato) e veja também os [imóveis disponíveis](/imoveis)."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "Posso morar no imóvel durante o financiamento?",
+            "a": "Sim. Você tem a posse e o uso desde o início; o banco fica só com a propriedade como garantia."
+          },
+          {
+            "q": "Quando o imóvel passa para o meu nome?",
+            "a": "Ao quitar a última parcela, a propriedade volta automaticamente para você e é averbada na matrícula."
+          },
+          {
+            "q": "Posso perder o imóvel?",
+            "a": "Apenas em caso de inadimplência prolongada. Por isso, renegocie com o banco antes de acumular atrasos."
+          },
+          {
+            "q": "Posso vender um imóvel em alienação fiduciária?",
+            "a": "Sim, mas é preciso quitar ou transferir a dívida ao comprador, com a concordância do banco."
+          }
+        ]
       }
     ],
     "fontes": [
       {
-        "nome": "Planalto - Lei 9.514/1997",
-        "url": "https://www.planalto.gov.br/ccivil_03/leis/l9514.htm"
+        "nome": "Banco Central do Brasil",
+        "url": "https://www.bcb.gov.br"
       },
       {
         "nome": "CAIXA - Habitação",
         "url": "https://www.caixa.gov.br/voce/habitacao/Paginas/default.aspx"
       }
-    ],
-    "capa": "/img/blog/alienacao-fiduciaria-o-que-e.jpg"
+    ]
   },
   {
     "slug": "fgts-para-amortizar-financiamento",
-    "titulo": "FGTS para amortizar o financiamento: como reduzir a dívida da casa",
-    "resumo": "Saiba como usar o FGTS para abater o saldo devedor ou as parcelas do seu financiamento e quando você pode fazer isso.",
+    "titulo": "FGTS para amortizar o financiamento: como reduzir parcela ou prazo do imóvel",
+    "resumo": "Sente que a parcela do imóvel não cai nunca? Veja como usar o FGTS para amortizar o financiamento, as regras e quando vale a pena em Uberlândia.",
     "categoria": "Financiamento",
-    "leitura": "5 min",
-    "cor": 3,
-    "conteudo": [
-      {
-        "tipo": "p",
-        "txt": "O FGTS não serve só para a entrada. Quem já tem financiamento pode usar o saldo para reduzir a dívida e respirar melhor no orçamento. Veja as duas formas principais."
-      },
-      {
-        "tipo": "h",
-        "txt": "Amortizar o saldo devedor"
-      },
-      {
-        "tipo": "p",
-        "txt": "Você usa o FGTS para abater uma parte do total que ainda deve. Com isso, pode optar por reduzir o valor das parcelas ou encurtar o prazo do financiamento. É uma das formas mais eficientes de economizar juros."
-      },
-      {
-        "tipo": "h",
-        "txt": "Pagar parte das prestações"
-      },
-      {
-        "tipo": "p",
-        "txt": "Também é possível usar o FGTS para quitar parte do valor de prestações em atraso ou a vencer, dentro dos limites permitidos. Isso ajuda quem passou por um aperto temporário."
-      },
-      {
-        "tipo": "h",
-        "txt": "Atenção às regras"
-      },
-      {
-        "tipo": "p",
-        "txt": "Há requisitos como o contrato estar no SFH e regras de intervalo entre saques. As condições são revisadas periodicamente pela Caixa, então confirme o que vale hoje antes de planejar o uso."
-      },
-      {
-        "tipo": "p",
-        "txt": "Se você comprou em Uberlândia e quer planejar quando usar o FGTS para economizar, Vinícius Graton, consultor de imóveis, pode apontar o melhor momento."
-      }
-    ],
-    "fontes": [
-      {
-        "nome": "CAIXA - Utilização do FGTS",
-        "url": "https://www.caixa.gov.br/voce/habitacao/Paginas/utilizacao-fgts.aspx"
-      },
-      {
-        "nome": "CAIXA - Manual da Moradia Própria",
-        "url": "https://www.caixa.gov.br/Downloads/fgts-moradia/MANUAL_DA_MORADIA_PROPRIA_02_12_2025_V_035.pdf"
-      }
-    ],
-    "capa": "/img/blog/fgts-para-amortizar-financiamento.jpg"
-  },
-  {
-    "slug": "iptu-uberlandia-como-funciona",
-    "titulo": "IPTU em Uberlândia: como funciona e como pagar com desconto",
-    "resumo": "Entenda o que é o IPTU, como a prefeitura de Uberlândia calcula o imposto e como conseguir desconto pagando à vista.",
-    "categoria": "Documentação",
-    "leitura": "5 min",
-    "cor": 4,
-    "conteudo": [
-      {
-        "tipo": "p",
-        "txt": "O IPTU é um custo anual de quem tem imóvel, e entender como ele funciona ajuda a planejar o orçamento e até a escolher onde comprar em Uberlândia."
-      },
-      {
-        "tipo": "h",
-        "txt": "O que é o IPTU"
-      },
-      {
-        "tipo": "p",
-        "txt": "É o Imposto Predial e Territorial Urbano, cobrado pela prefeitura sobre imóveis na área urbana. O cálculo parte do valor venal do imóvel, definido pelo município, aplicado a uma alíquota que varia conforme o tipo e a localização."
-      },
-      {
-        "tipo": "h",
-        "txt": "Cota única x parcelamento"
-      },
-      {
-        "tipo": "p",
-        "txt": "Em geral, a prefeitura oferece desconto para quem paga em cota única e a opção de parcelar ao longo do ano. Fique de olho no calendário e no carnê para garantir o abatimento."
-      },
-      {
-        "tipo": "h",
-        "txt": "Confira sempre no portal oficial"
-      },
-      {
-        "tipo": "p",
-        "txt": "Valores, alíquotas e prazos mudam a cada exercício. Consulte o portal da Prefeitura de Uberlândia para ver o IPTU do imóvel que você pretende comprar — uma dívida de IPTU acompanha o bem."
-      },
-      {
-        "tipo": "p",
-        "txt": "Antes de fechar negócio, vale checar o IPTU em dia. Vinícius Graton, consultor de imóveis em Uberlândia, inclui essa verificação na análise do imóvel."
-      }
-    ],
-    "fontes": [
-      {
-        "nome": "Prefeitura de Uberlândia - Finanças",
-        "url": "https://www.uberlandia.mg.gov.br/prefeitura/secretarias/financas/"
-      },
-      {
-        "nome": "Prefeitura de Uberlândia",
-        "url": "https://www.uberlandia.mg.gov.br/"
-      }
-    ],
-    "capa": "/img/blog/iptu-uberlandia-como-funciona.jpg"
-  },
-  {
-    "slug": "valorizacao-imoveis-uberlandia-2026",
-    "titulo": "Valorização de imóveis em Uberlândia: por que a cidade atrai investidores",
-    "resumo": "Veja por que o metro quadrado em Uberlândia vem subindo e o que faz da cidade um dos polos de investimento do interior.",
-    "categoria": "Mercado",
-    "leitura": "6 min",
-    "cor": 0,
-    "conteudo": [
-      {
-        "tipo": "p",
-        "txt": "Uberlândia é um dos principais polos imobiliários do interior do Brasil. Para quem pensa em comprar ou investir, entender essa dinâmica ajuda a tomar decisões melhores."
-      },
-      {
-        "tipo": "h",
-        "txt": "O metro quadrado em alta"
-      },
-      {
-        "tipo": "p",
-        "txt": "O preço médio do metro quadrado privativo na cidade chegou a algo em torno de R$ 8,7 mil no fim de 2025, com alta consistente desde 2022. O crescimento acompanha a demanda por imóveis residenciais e o avanço dos empreendimentos verticais."
-      },
-      {
-        "tipo": "h",
-        "txt": "Qualidade de vida que atrai"
-      },
-      {
-        "tipo": "p",
-        "txt": "Uberlândia aparece bem em rankings de qualidade de vida entre municípios de grande porte fora das capitais. Economia diversificada, universidades e logística forte sustentam a procura por imóveis."
-      },
-      {
-        "tipo": "h",
-        "txt": "Onde a valorização tem sido maior"
-      },
-      {
-        "tipo": "p",
-        "txt": "A Zona Sul vem se destacando, com bairros planejados e infraestrutura consolidada liderando a preferência no médio e alto padrão. Mas a melhor escolha depende do seu objetivo: moradia ou renda."
-      },
-      {
-        "tipo": "p",
-        "txt": "Para mapear os bairros com melhor relação entre preço e potencial, fale com Vinícius Graton, consultor de imóveis em Uberlândia, que acompanha o mercado de perto."
-      }
-    ],
-    "fontes": [
-      {
-        "nome": "IBGE - Cidades (Uberlândia)",
-        "url": "https://cidades.ibge.gov.br/brasil/mg/uberlandia/panorama"
-      },
-      {
-        "nome": "FipeZAP",
-        "url": "https://www.fipe.org.br/pt-br/indices/fipezap/"
-      }
-    ],
-    "capa": "/img/blog/valorizacao-imoveis-uberlandia-2026.jpg"
-  },
-  {
-    "slug": "comprar-imovel-para-investir-renda-aluguel",
-    "titulo": "Comprar para investir: como escolher um imóvel que rende aluguel",
-    "resumo": "Aprenda a calcular a rentabilidade do aluguel, avaliar localização e escolher um imóvel para investir com segurança.",
-    "categoria": "Investir",
-    "leitura": "6 min",
-    "cor": 1,
-    "conteudo": [
-      {
-        "tipo": "p",
-        "txt": "Investir em imóvel para alugar combina renda mensal com potencial de valorização. Mas nem todo imóvel é bom investimento. O segredo está na conta e na localização."
-      },
-      {
-        "tipo": "h",
-        "txt": "Calcule a rentabilidade"
-      },
-      {
-        "tipo": "p",
-        "txt": "Uma referência simples é a rentabilidade anual: aluguel anual dividido pelo preço do imóvel. No Brasil, o aluguel residencial costuma render em torno de 0,4% a 0,6% ao mês do valor do imóvel. Compare com outras aplicações antes de decidir."
-      },
-      {
-        "tipo": "h",
-        "txt": "Localização manda no aluguel"
-      },
-      {
-        "tipo": "p",
-        "txt": "Imóveis perto de universidades, hospitais, comércio e transporte alugam mais rápido e ficam menos vazios. Vacância é o maior inimigo do investidor: mês parado é prejuízo."
-      },
-      {
-        "tipo": "h",
-        "txt": "Não esqueça os custos"
-      },
-      {
-        "tipo": "p",
-        "txt": "Inclua IPTU, condomínio em meses vagos, manutenção e Imposto de Renda sobre o aluguel na conta. A rentabilidade real é o que sobra depois de tudo isso."
-      },
-      {
-        "tipo": "p",
-        "txt": "Em Uberlândia, há bairros com perfil claro de locação. Vinícius Graton, consultor de imóveis na cidade, ajuda a escolher um imóvel pensando em renda, não só em preço."
-      }
-    ],
-    "fontes": [
-      {
-        "nome": "FipeZAP",
-        "url": "https://www.fipe.org.br/pt-br/indices/fipezap/"
-      },
-      {
-        "nome": "Receita Federal",
-        "url": "https://www.gov.br/receitafederal/pt-br"
-      }
-    ],
-    "capa": "/img/blog/comprar-imovel-para-investir-renda-aluguel.jpg"
-  },
-  {
-    "slug": "imovel-para-estudante-perto-ufu-uberlandia",
-    "titulo": "Imóvel para estudante perto da UFU: vale a pena comprar?",
-    "resumo": "Veja as vantagens de comprar um imóvel próximo à UFU em Uberlândia para o filho estudar ou para gerar renda de aluguel.",
-    "categoria": "Bairros de Uberlândia",
-    "leitura": "5 min",
-    "cor": 2,
-    "conteudo": [
-      {
-        "tipo": "p",
-        "txt": "Uberlândia é uma cidade universitária, e a UFU atrai estudantes de toda a região. Isso cria uma demanda constante por moradia perto dos campus — uma oportunidade tanto para famílias quanto para investidores."
-      },
-      {
-        "tipo": "h",
-        "txt": "Comprar em vez de pagar aluguel"
-      },
-      {
-        "tipo": "p",
-        "txt": "Se o seu filho vai estudar por vários anos, comprar um imóvel pode ser mais econômico do que pagar aluguel durante toda a graduação. E, ao fim do curso, o imóvel fica como patrimônio ou fonte de renda."
-      },
-      {
-        "tipo": "h",
-        "txt": "Bairros próximos aos campus"
-      },
-      {
-        "tipo": "p",
-        "txt": "Regiões no entorno dos campus Santa Mônica e Umuarama costumam ter forte procura de aluguel estudantil. Apartamentos compactos e quitinetes têm boa liquidez e baixa vacância."
-      },
-      {
-        "tipo": "h",
-        "txt": "Pense na revenda e na locação"
-      },
-      {
-        "tipo": "p",
-        "txt": "Imóveis bem localizados perto da universidade tendem a manter valor e a alugar rápido. Verifique condomínio, segurança e proximidade do transporte antes de decidir."
-      },
-      {
-        "tipo": "p",
-        "txt": "Para encontrar o imóvel certo perto da UFU, conte com Vinícius Graton, consultor de imóveis em Uberlândia, que conhece a demanda estudantil da cidade."
-      }
-    ],
-    "fontes": [
-      {
-        "nome": "UFU",
-        "url": "https://www.ufu.br/"
-      },
-      {
-        "nome": "IBGE - Cidades (Uberlândia)",
-        "url": "https://cidades.ibge.gov.br/brasil/mg/uberlandia/panorama"
-      }
-    ],
-    "capa": "/img/blog/imovel-para-estudante-perto-ufu-uberlandia.jpg"
-  },
-  {
-    "slug": "condominio-fechado-x-bairro-aberto",
-    "titulo": "Condomínio fechado x bairro aberto: qual combina com você?",
-    "resumo": "Compare condomínio fechado e bairro aberto em segurança, custo, liberdade e valorização para escolher melhor em Uberlândia.",
-    "categoria": "Guia de compra",
     "leitura": "6 min",
     "cor": 3,
+    "capa": "/img/blog/fgts-para-amortizar-financiamento.jpg",
+    "keyword": "FGTS para amortizar financiamento",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
     "conteudo": [
       {
         "tipo": "p",
-        "txt": "Na hora de comprar casa em Uberlândia, muita gente se divide entre o condomínio fechado e o bairro aberto tradicional. Não existe certo ou errado — existe o que combina com a sua vida."
-      },
-      {
-        "tipo": "h",
-        "txt": "Condomínio fechado"
+        "txt": "Você olha o saldo devedor do financiamento e sente que ele nunca diminui, enquanto um dinheiro seu fica parado no FGTS rendendo pouco. Essa sensação de pagar caro tendo recurso disponível incomoda qualquer um."
       },
       {
         "tipo": "p",
-        "txt": "Oferece segurança com portaria, lazer compartilhado e regras de convivência. Em troca, você paga taxa de condomínio mensal e tem menos liberdade para reformas externas. Costuma atrair famílias com crianças."
+        "txt": "A boa notícia: dá para usar o **FGTS para amortizar o financiamento** e reduzir a parcela ou o prazo do seu imóvel. É um direito de quem cumpre algumas regras simples."
       },
       {
-        "tipo": "h",
-        "txt": "Bairro aberto"
-      },
-      {
-        "tipo": "p",
-        "txt": "Dá mais autonomia, normalmente sem taxa de condomínio, e fica mais perto de comércio e serviços do dia a dia. A segurança fica por sua conta e os custos de manutenção do lote também."
-      },
-      {
-        "tipo": "h",
-        "txt": "E a valorização?"
+        "tipo": "h2",
+        "txt": "Como usar o FGTS para amortizar o financiamento"
       },
       {
         "tipo": "p",
-        "txt": "Ambos podem valorizar bem dependendo da região e da infraestrutura. Em Uberlândia, bairros planejados e condomínios da Zona Sul têm tido forte procura, mas confirme o histórico de preços antes de decidir."
+        "txt": "Amortizar é usar o saldo do FGTS para abater parte da dívida. Você pode pedir isso ao banco a cada 2 anos, dentro das condições do fundo."
       },
       {
         "tipo": "p",
-        "txt": "Para pesar custo, segurança e potencial de valorização no seu caso, fale com Vinícius Graton, consultor de imóveis em Uberlândia."
+        "txt": "Ao amortizar, você escolhe entre **reduzir o valor da parcela** mantendo o prazo, ou **reduzir o prazo** mantendo a parcela. As duas opções diminuem o total de juros pago."
+      },
+      {
+        "tipo": "h2",
+        "txt": "Regras principais para usar o FGTS"
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "Ter pelo menos 3 anos de trabalho sob o regime do FGTS, somando os períodos",
+          "O financiamento deve ser dentro do SFH",
+          "O imóvel precisa ser residencial e usado para moradia",
+          "Não ter outro financiamento ativo no SFH no país",
+          "Respeitar o intervalo de 2 anos entre amortizações"
+        ]
+      },
+      {
+        "tipo": "h2",
+        "txt": "Reduzir parcela ou prazo: qual escolher"
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Objetivo",
+          "Escolha",
+          "Efeito"
+        ],
+        "linhas": [
+          [
+            "Aliviar o orçamento mensal",
+            "Reduzir parcela",
+            "Parcela menor, mesmo prazo"
+          ],
+          [
+            "Quitar mais rápido",
+            "Reduzir prazo",
+            "Mesma parcela, contrato mais curto"
+          ],
+          [
+            "Economizar mais juros no total",
+            "Reduzir prazo",
+            "Maior economia ao final"
+          ]
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Usar o FGTS na amortização costuma render mais que deixá-lo parado na conta do fundo, que tem rendimento baixo."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Tenho saldo de FGTS e quero usar para amortizar meu financiamento em Uberlândia. Pode me explicar como funciona?",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "Quando vale a pena de verdade"
+      },
+      {
+        "tipo": "p",
+        "txt": "Em geral compensa quando você quer aliviar o orçamento ou economizar juros e seu financiamento está no SFH. Reduzir o prazo costuma gerar a maior economia total. Use as [ferramentas de simulação](/ferramentas) para comparar os dois cenários antes de decidir."
+      },
+      {
+        "tipo": "p",
+        "txt": "Vinícius Graton orienta clientes de Uberlândia a usar o FGTS no momento certo, alinhando à estratégia de cada família. As regras de uso do FGTS estão detalhadas no canal da [Caixa](https://www.caixa.gov.br)."
+      },
+      {
+        "tipo": "p",
+        "txt": "Quer saber quanto sua parcela pode cair? Fale com a gente pela página de [contato](/contato) e veja também os [imóveis disponíveis](/imoveis)."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "De quanto em quanto tempo posso usar o FGTS para amortizar?",
+            "a": "A cada 2 anos, desde que cumpra as demais regras do fundo e do financiamento."
+          },
+          {
+            "q": "Posso usar o FGTS se o financiamento for SBPE?",
+            "a": "Não. O uso do FGTS na amortização é restrito a financiamentos dentro do SFH."
+          },
+          {
+            "q": "Reduzir parcela ou prazo economiza mais?",
+            "a": "Reduzir o prazo costuma gerar maior economia de juros no total, mas reduzir a parcela alivia mais o mês a mês."
+          },
+          {
+            "q": "Preciso estar empregado para usar o FGTS?",
+            "a": "Não é obrigatório estar empregado, basta ter saldo e cumprir o tempo mínimo de trabalho sob o regime do FGTS."
+          }
+        ]
       }
     ],
     "fontes": [
       {
-        "nome": "IBGE - Cidades (Uberlândia)",
-        "url": "https://cidades.ibge.gov.br/brasil/mg/uberlandia/panorama"
+        "nome": "CAIXA - FGTS",
+        "url": "https://www.caixa.gov.br/beneficios-trabalhador/fgts/Paginas/default.aspx"
       },
-      {
-        "nome": "Diário de Uberlândia",
-        "url": "https://diariodeuberlandia.com.br/"
-      }
-    ],
-    "capa": "/img/blog/condominio-fechado-x-bairro-aberto.jpg"
-  },
-  {
-    "slug": "primeiro-imovel-guia-iniciante",
-    "titulo": "Primeiro imóvel: guia para sair do aluguel sem se enrolar",
-    "resumo": "Passo a passo para comprar seu primeiro imóvel: organizar a entrada, usar o FGTS, escolher o financiamento e evitar erros.",
-    "categoria": "Guia de compra",
-    "leitura": "6 min",
-    "cor": 4,
-    "conteudo": [
-      {
-        "tipo": "p",
-        "txt": "Comprar o primeiro imóvel é um grande passo e gera muitas dúvidas. Com organização, dá para sair do aluguel sem sustos. Veja o caminho em etapas."
-      },
-      {
-        "tipo": "h",
-        "txt": "1. Monte a entrada"
-      },
-      {
-        "tipo": "p",
-        "txt": "Os bancos costumam financiar até cerca de 80% do imóvel, então você precisa de uma entrada de em torno de 20%. Se você tem pelo menos 3 anos de trabalho com carteira assinada, pode usar o FGTS para compor essa entrada."
-      },
-      {
-        "tipo": "h",
-        "txt": "2. Descubra sua faixa"
-      },
-      {
-        "tipo": "p",
-        "txt": "Se a renda familiar se enquadra no Minha Casa Minha Vida, você acessa juros bem menores. Vale simular o programa antes de partir para o financiamento de mercado."
-      },
-      {
-        "tipo": "h",
-        "txt": "3. Some os custos extras"
-      },
-      {
-        "tipo": "p",
-        "txt": "Além do imóvel, reserve dinheiro para ITBI (em torno de 2% em Uberlândia), escritura e registro. Esses custos somados podem passar de 3% a 5% do valor — não deixe para a última hora."
-      },
-      {
-        "tipo": "h",
-        "txt": "4. Visite com calma"
-      },
-      {
-        "tipo": "p",
-        "txt": "Veja o imóvel em horários diferentes, confira a vizinhança e a documentação. Pressa é o erro mais comum de quem compra o primeiro imóvel."
-      },
-      {
-        "tipo": "p",
-        "txt": "Para conduzir tudo com segurança, conte com Vinícius Graton, consultor de imóveis em Uberlândia, especialista em ajudar quem compra pela primeira vez."
-      }
-    ],
-    "fontes": [
       {
         "nome": "CAIXA - Habitação",
         "url": "https://www.caixa.gov.br/voce/habitacao/Paginas/default.aspx"
+      }
+    ]
+  },
+  {
+    "slug": "iptu-uberlandia-como-funciona",
+    "titulo": "IPTU em Uberlândia: como funciona, cálculo, descontos e o que conferir antes de comprar",
+    "resumo": "Receia herdar dívida de IPTU ao comprar imóvel? Entenda como o IPTU em Uberlândia é calculado, os descontos e o que checar antes de fechar.",
+    "categoria": "Documentação",
+    "leitura": "6 min",
+    "cor": 4,
+    "capa": "/img/blog/iptu-uberlandia-como-funciona.jpg",
+    "keyword": "IPTU em Uberlândia como funciona",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
+    "conteudo": [
+      {
+        "tipo": "p",
+        "txt": "Você encontrou um bom imóvel, mas teme uma surpresa depois de fechar: descobrir uma dívida de IPTU acumulada que vira sua. Esse receio faz sentido, porque o débito de IPTU acompanha o imóvel, não o antigo dono."
+      },
+      {
+        "tipo": "p",
+        "txt": "Entender **como funciona o IPTU em Uberlândia** protege seu bolso e evita herdar dívidas. Saber calcular e conferir o imposto é parte de uma compra segura."
+      },
+      {
+        "tipo": "h2",
+        "txt": "Como funciona o IPTU em Uberlândia"
+      },
+      {
+        "tipo": "p",
+        "txt": "O **IPTU** é o imposto anual sobre a propriedade de imóveis urbanos, cobrado pela Prefeitura. Ele incide sobre o **valor venal** do imóvel, que é a estimativa oficial usada pela cidade."
+      },
+      {
+        "tipo": "p",
+        "txt": "Sobre esse valor venal aplica-se uma alíquota, que varia conforme o tipo e o uso do imóvel. O resultado é o valor que você paga no ano, geralmente parcelado."
+      },
+      {
+        "tipo": "h2",
+        "txt": "Cálculo e formas de pagamento"
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "Valor venal: base de cálculo definida pela Prefeitura",
+          "Alíquota: percentual que varia por tipo e uso do imóvel",
+          "Pagamento à vista: costuma ter desconto",
+          "Parcelamento: dividido em várias cotas ao longo do ano",
+          "Carnê: enviado e disponível nos canais oficiais da Prefeitura"
+        ]
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Elemento",
+          "O que é"
+        ],
+        "linhas": [
+          [
+            "Valor venal",
+            "Estimativa oficial do valor do imóvel"
+          ],
+          [
+            "Alíquota",
+            "Percentual aplicado sobre o valor venal"
+          ],
+          [
+            "Desconto à vista",
+            "Redução para quem paga em cota única"
+          ],
+          [
+            "Débito em aberto",
+            "Dívida que acompanha o imóvel, não o dono"
+          ]
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Dívida de IPTU é um ônus do imóvel: ao comprar, você pode herdar débitos antigos se não conferir antes."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Quero comprar um imóvel em Uberlândia e preciso conferir o IPTU e possíveis dívidas antes de fechar. Pode me ajudar?",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "O que conferir antes de comprar"
+      },
+      {
+        "tipo": "p",
+        "txt": "Antes de assinar, peça a certidão negativa de débitos de IPTU do imóvel e confira o carnê do ano. Assim você garante que não está comprando uma dívida junto com a casa. Para estimar custos totais da compra, use as [ferramentas de cálculo](/ferramentas)."
+      },
+      {
+        "tipo": "p",
+        "txt": "Lembre que, além do IPTU anual, a compra envolve o **ITBI** de cerca de 2% sobre o valor do imóvel, pago à Prefeitura no momento da transferência. Vinícius Graton ajuda clientes de Uberlândia a conferir todos esses pontos. Consulte valores e segunda via no portal da [Prefeitura de Uberlândia](https://www.uberlandia.mg.gov.br)."
+      },
+      {
+        "tipo": "p",
+        "txt": "Quer comprar sem sustos com impostos? Fale com a gente pela página de [contato](/contato) e veja os [imóveis disponíveis](/imoveis) com a documentação conferida."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "A dívida de IPTU passa para o comprador?",
+            "a": "Sim. O débito acompanha o imóvel, por isso é essencial conferir a certidão negativa antes de comprar."
+          },
+          {
+            "q": "Qual a diferença entre IPTU e ITBI?",
+            "a": "O IPTU é o imposto anual sobre a propriedade; o ITBI (cerca de 2% em Uberlândia) é pago uma vez, na transferência do imóvel."
+          },
+          {
+            "q": "Tem desconto para pagar o IPTU à vista?",
+            "a": "Sim. A Prefeitura costuma oferecer desconto na cota única, melhor que parcelar."
+          },
+          {
+            "q": "Como saber o valor do IPTU de um imóvel?",
+            "a": "Pelo carnê do ano ou pelos canais oficiais da Prefeitura de Uberlândia, informando a inscrição do imóvel."
+          }
+        ]
+      }
+    ],
+    "fontes": [
+      {
+        "nome": "Prefeitura de Uberlândia - IPTU",
+        "url": "https://www.uberlandia.mg.gov.br/prefeitura/secretarias/financas/"
       },
       {
         "nome": "Prefeitura de Uberlândia - ITBI",
         "url": "https://www.uberlandia.mg.gov.br/prefeitura/secretarias/financas/itbi/"
       }
-    ],
-    "capa": "/img/blog/primeiro-imovel-guia-iniciante.jpg"
+    ]
   },
   {
-    "slug": "comprar-imovel-na-aposentadoria",
-    "titulo": "Comprar imóvel na aposentadoria: o que muda no financiamento",
-    "resumo": "Veja como aposentados podem financiar imóvel, o impacto da idade no prazo e por que o seguro do financiamento importa.",
-    "categoria": "Financiamento",
-    "leitura": "5 min",
+    "slug": "valorizacao-imoveis-uberlandia-2026",
+    "titulo": "Valorização de imóveis em Uberlândia: como saber se vale a pena comprar agora",
+    "resumo": "Tem medo de comprar e o imóvel não valorizar? Entenda o que move os preços em Uberlândia e como avaliar antes de decidir.",
+    "categoria": "Mercado",
+    "leitura": "6 min",
     "cor": 0,
+    "capa": "/img/blog/valorizacao-imoveis-uberlandia-2026.jpg",
+    "keyword": "valorização de imóveis em Uberlândia",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
     "conteudo": [
       {
         "tipo": "p",
-        "txt": "Quem se aposenta muitas vezes quer trocar de imóvel ou comprar um cantinho mais tranquilo. É possível financiar na aposentadoria, mas alguns pontos pedem atenção."
-      },
-      {
-        "tipo": "h",
-        "txt": "Renda da aposentadoria conta"
+        "txt": "Você junta dinheiro a vida toda, finalmente decide comprar e bate aquele medo: e se eu pagar caro e o imóvel não valorizar? Esse receio é normal e mostra que você está levando a decisão a sério."
       },
       {
         "tipo": "p",
-        "txt": "O benefício do INSS e outras rendas comprovadas entram na análise de crédito. Como em qualquer financiamento, a parcela costuma ficar limitada a cerca de 30% da renda mensal."
+        "txt": "A boa notícia é que valorização não é loteria. Existem sinais concretos que indicam se uma região tende a subir de preço. Vamos olhar para eles com calma."
       },
       {
-        "tipo": "h",
-        "txt": "A idade afeta o prazo"
-      },
-      {
-        "tipo": "p",
-        "txt": "Os bancos têm um limite para a soma da sua idade com o prazo do financiamento. Quanto mais velho, menor o prazo máximo — o que pode aumentar a parcela. Por isso, dar uma entrada maior ajuda bastante."
-      },
-      {
-        "tipo": "h",
-        "txt": "O seguro do financiamento"
+        "tipo": "h2",
+        "txt": "O que realmente puxa a valorização de imóveis em Uberlândia"
       },
       {
         "tipo": "p",
-        "txt": "Todo financiamento imobiliário tem seguro embutido (MIP e DFI). Para idades mais altas, o custo do seguro tende a subir. Considere isso ao comparar propostas — ele entra no Custo Efetivo Total."
+        "txt": "Uberlândia é o maior polo econômico do Triângulo Mineiro, com forte presença de logística, agronegócio e ensino superior. Cidade que cresce gera demanda por moradia, e demanda sustentada é o que faz o preço subir ao longo do tempo."
       },
       {
         "tipo": "p",
-        "txt": "Se você está nessa fase e quer escolher bem em Uberlândia, Vinícius Graton, consultor de imóveis, ajuda a equilibrar prazo, parcela e qualidade de vida."
+        "txt": "Mas o número da cidade inteira engana. O que importa para o seu bolso é o **micromercado**: a rua, o bairro e o entorno do imóvel que você quer."
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "**Infraestrutura nova**: pavimentação, saneamento, comércio chegando e linhas de ônibus.",
+          "**Equipamentos públicos** por perto: escolas, UPA, parques e supermercados.",
+          "**Obras estruturais** anunciadas, como avenidas, viadutos e novos acessos.",
+          "**Perfil de quem está chegando** ao bairro: famílias, estudantes ou investidores.",
+          "**Oferta x procura**: poucos imóveis à venda e muita gente querendo morar ali."
+        ]
+      },
+      {
+        "tipo": "h2",
+        "txt": "Tentativas frustradas: por que muita gente erra"
+      },
+      {
+        "tipo": "p",
+        "txt": "O erro mais comum é comprar no auge da euforia, olhando só a foto bonita e o discurso do vendedor. Outro é confiar no \"achismo do vizinho\" sobre quanto a região vai render."
+      },
+      {
+        "tipo": "p",
+        "txt": "Sem comparar preços de imóveis semelhantes vendidos de verdade na mesma área, você não tem parâmetro. Aí o medo vira paralisia ou compra impulsiva."
+      },
+      {
+        "tipo": "h3",
+        "txt": "Valorização real x expectativa"
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Fator",
+          "Sinal de boa valorização",
+          "Sinal de alerta"
+        ],
+        "linhas": [
+          [
+            "Localização",
+            "Bairro consolidado ou em expansão planejada",
+            "Loteamento isolado, sem comércio nem transporte"
+          ],
+          [
+            "Liquidez",
+            "Imóveis vendem rápido na região",
+            "Anúncios parados há meses"
+          ],
+          [
+            "Infraestrutura",
+            "Obras públicas confirmadas",
+            "Promessas sem prazo nem projeto"
+          ],
+          [
+            "Preço atual",
+            "Em linha com imóveis comparáveis",
+            "Bem acima da média do bairro"
+          ]
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Valorização que vale é a que se sustenta no tempo, não o pico de um lançamento bem divulgado. Compare sempre com vendas reais da mesma região."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Quero entender se o imóvel que estou de olho em Uberlândia tem bom potencial de valorização.",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "Como avaliar antes de comprar"
+      },
+      {
+        "tipo": "p",
+        "txt": "Antes de assinar qualquer coisa, vale fazer uma simulação fria com números na mão. Em [nossas ferramentas](/ferramentas) você consegue comparar cenários de financiamento e custo total sem pressão de vendedor."
+      },
+      {
+        "tipo": "p",
+        "txt": "Depois, olhe os [imóveis disponíveis](/imoveis) na faixa e na região que te interessam para ter um parâmetro honesto de preço. Esse trabalho de campo é o que separa a compra segura da aposta no escuro."
+      },
+      {
+        "tipo": "p",
+        "txt": "Como consultor em Uberlândia, o Vinícius Graton ajuda a ler esses sinais bairro a bairro, com base em dados de mercado e não em palpite."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "Imóvel sempre valoriza com o tempo?",
+            "a": "Não. A valorização depende de localização, infraestrutura e demanda. Imóveis em regiões estagnadas podem ficar anos sem subir de preço real."
+          },
+          {
+            "q": "Comprar na planta valoriza mais?",
+            "a": "Pode valorizar até a entrega, mas envolve mais risco. O ganho depende da entrega no prazo e da consolidação do entorno."
+          },
+          {
+            "q": "Como sei o preço justo de um imóvel?",
+            "a": "Comparando com vendas recentes de imóveis semelhantes na mesma região, não com o valor pedido em anúncios."
+          },
+          {
+            "q": "Vale comprar imóvel em bairro novo de Uberlândia?",
+            "a": "Pode valer se houver projeto de infraestrutura confirmado. Sem isso, o risco de demora na valorização é maior."
+          }
+        ]
       }
     ],
     "fontes": [
       {
-        "nome": "CAIXA - Crédito Imobiliário",
+        "nome": "IBGE - Cidades (Uberlândia)",
+        "url": "https://cidades.ibge.gov.br/brasil/mg/uberlandia/panorama"
+      },
+      {
+        "nome": "Câmara Brasileira da Indústria da Construção (CBIC)",
+        "url": "https://www.cbic.org.br/"
+      }
+    ]
+  },
+  {
+    "slug": "comprar-imovel-para-investir-renda-aluguel",
+    "titulo": "Comprar imóvel para investir: como ter renda de aluguel sem dor de cabeça",
+    "resumo": "Quer renda de aluguel mas tem medo de comprar errado e ficar no prejuízo? Veja como avaliar rentabilidade e escolher o imóvel certo.",
+    "categoria": "Investir",
+    "leitura": "6 min",
+    "cor": 1,
+    "capa": "/img/blog/comprar-imovel-para-investir-renda-aluguel.jpg",
+    "keyword": "comprar imóvel para investir",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
+    "conteudo": [
+      {
+        "tipo": "p",
+        "txt": "Você quer parar de ver o dinheiro parado, mas trava no medo de comprar um imóvel que fica vazio, dá despesa e não rende nada. É um receio legítimo: investir em imóvel errado custa caro."
+      },
+      {
+        "tipo": "p",
+        "txt": "A diferença entre um bom investimento e uma dor de cabeça quase sempre está na conta feita antes da compra, não depois."
+      },
+      {
+        "tipo": "h2",
+        "txt": "Comprar imóvel para investir começa pela conta certa"
+      },
+      {
+        "tipo": "p",
+        "txt": "O indicador mais usado é a **rentabilidade do aluguel**: quanto o aluguel anual representa sobre o valor do imóvel. No Brasil, costuma girar em torno de 0,4% a 0,6% ao mês, mas varia muito por região e tipo de imóvel."
+      },
+      {
+        "tipo": "p",
+        "txt": "O erro clássico é olhar só esse número e esquecer os custos que comem a renda."
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "**Condomínio e IPTU** nos meses de vacância (quando ninguém aluga).",
+          "**Manutenção e reformas** entre um inquilino e outro.",
+          "**Comissão e administração** se você terceirizar a locação.",
+          "**Imposto de renda** sobre o aluguel recebido.",
+          "**Vacância**: todo imóvel passa alguns meses sem inquilino ao longo dos anos."
+        ]
+      },
+      {
+        "tipo": "h2",
+        "txt": "Tentativas frustradas que viram prejuízo"
+      },
+      {
+        "tipo": "p",
+        "txt": "Muita gente compra o imóvel mais barato achando que é o melhor negócio. Mas imóvel barato em local ruim aluga mal e desvaloriza. Outros compram grande demais, e quanto maior o imóvel, mais difícil alugar rápido."
+      },
+      {
+        "tipo": "h3",
+        "txt": "O que aluga rápido em Uberlândia"
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Perfil do imóvel",
+          "Público-alvo",
+          "Liquidez de locação"
+        ],
+        "linhas": [
+          [
+            "Apartamento de 1 ou 2 quartos",
+            "Estudantes, casais, solteiros",
+            "Alta"
+          ],
+          [
+            "Casa em bairro consolidado",
+            "Famílias",
+            "Média"
+          ],
+          [
+            "Imóvel comercial em via movimentada",
+            "Comércio e serviços",
+            "Média a alta"
+          ],
+          [
+            "Imóvel grande de alto padrão",
+            "Público restrito",
+            "Baixa"
+          ]
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Localização e liquidez valem mais que metro quadrado barato. Um imóvel que aluga rápido perto da UFU ou de polos de trabalho rende melhor que um \"achado\" longe de tudo."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Quero comprar um imóvel em Uberlândia para investir e ter renda de aluguel. Pode me orientar?",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "Caminho seguro para investir"
+      },
+      {
+        "tipo": "p",
+        "txt": "Antes de fechar, simule o financiamento e o retorno em [nossas ferramentas](/ferramentas) para enxergar o cenário real, com custos incluídos. Depois, compare opções entre os [imóveis disponíveis](/imoveis) na faixa de preço que cabe no seu plano."
+      },
+      {
+        "tipo": "p",
+        "txt": "O Vinícius Graton atua em Uberlândia ajudando investidores a escolher imóveis com boa liquidez de locação, do tipo que aluga rápido e dá menos trabalho. Vale conversar antes de bater o martelo."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "Qual a rentabilidade boa de aluguel?",
+            "a": "Acima de 0,5% do valor do imóvel por mês já costuma ser considerado bom, mas avalie também a valorização e a vacância."
+          },
+          {
+            "q": "Vale financiar para alugar?",
+            "a": "Pode valer se o aluguel cobrir boa parte da parcela e você tiver reserva para a vacância. Faça a conta com folga."
+          },
+          {
+            "q": "Imóvel pequeno ou grande rende mais?",
+            "a": "Imóveis menores costumam alugar mais rápido e ter melhor rentabilidade proporcional, porque atingem público maior."
+          },
+          {
+            "q": "Preciso declarar o aluguel no imposto de renda?",
+            "a": "Sim. A renda de aluguel é tributável e deve ser declarada, geralmente pelo carnê-leão mensal."
+          }
+        ]
+      }
+    ],
+    "fontes": [
+      {
+        "nome": "Receita Federal - Carnê-Leão",
+        "url": "https://www.gov.br/receitafederal/pt-br"
+      },
+      {
+        "nome": "Secovi - Mercado imobiliário",
+        "url": "https://www.secovi.com.br/"
+      }
+    ]
+  },
+  {
+    "slug": "imovel-para-estudante-perto-ufu-uberlandia",
+    "titulo": "Imóvel para estudante perto da UFU: como escolher sem cair em cilada",
+    "resumo": "Filho entrando na UFU e você com medo de alugar errado? Veja como escolher imóvel seguro e bem localizado perto da universidade.",
+    "categoria": "Bairros de Uberlândia",
+    "leitura": "6 min",
+    "cor": 2,
+    "capa": "/img/blog/imovel-para-estudante-perto-ufu-uberlandia.jpg",
+    "keyword": "imóvel para estudante perto da UFU",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
+    "conteudo": [
+      {
+        "tipo": "p",
+        "txt": "Seu filho passou na UFU e, junto com a alegria, vem a preocupação: como escolher um imóvel seguro, perto da faculdade e dentro do orçamento, sem cair em anúncio falso ou local perigoso?"
+      },
+      {
+        "tipo": "p",
+        "txt": "Essa ansiedade é comum em toda família que vai morar longe pela primeira vez. Com os critérios certos, a escolha fica bem mais tranquila."
+      },
+      {
+        "tipo": "h2",
+        "txt": "Onde fica a UFU e quais bairros fazem sentido"
+      },
+      {
+        "tipo": "p",
+        "txt": "A UFU tem campi principais no Santa Mônica e no Umuarama. Por isso, os bairros mais procurados por estudantes ficam no entorno desses campi, com fácil acesso a pé, de bicicleta ou de ônibus."
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "**Santa Mônica**: colado no campus, muita oferta de kitnets e apartamentos pequenos.",
+          "**Umuarama**: próximo ao campus da saúde, bom para cursos da área.",
+          "**Tibery e Segismundo Pereira**: opções mais econômicas com boa linha de ônibus.",
+          "**Centro**: mais infraestrutura e transporte, distância média até os campi."
+        ]
+      },
+      {
+        "tipo": "h2",
+        "txt": "Comprar ou alugar imóvel para estudante?"
+      },
+      {
+        "tipo": "p",
+        "txt": "Muita família aluga por insegurança, mas se o curso é longo, comprar um imóvel pequeno pode sair mais barato que pagar aluguel por anos, além de virar investimento depois da formatura."
+      },
+      {
+        "tipo": "h3",
+        "txt": "Comparando as opções"
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Critério",
+          "Alugar",
+          "Comprar"
+        ],
+        "linhas": [
+          [
+            "Custo mensal",
+            "Aluguel + encargos",
+            "Parcela (se financiar) ou sem custo se à vista"
+          ],
+          [
+            "Flexibilidade",
+            "Alta, sai quando quiser",
+            "Menor, precisa vender ou alugar depois"
+          ],
+          [
+            "Patrimônio",
+            "Não gera patrimônio",
+            "Vira patrimônio da família"
+          ],
+          [
+            "Ideal para",
+            "Curso curto ou indefinição",
+            "Curso longo e visão de investimento"
+          ]
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Antes de qualquer visita, desconfie de aluguel barato demais pedido por adiantamento via Pix sem contrato. Golpe com estudante recém-chegado é frequente. Sempre exija contrato e confira a matrícula do imóvel."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Meu filho vai estudar na UFU e quero ajuda para escolher um imóvel seguro perto do campus.",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "Checklist de segurança da escolha"
+      },
+      {
+        "tipo": "p",
+        "txt": "Visite no horário de pico e à noite, observe iluminação, movimento e acesso ao transporte. Confira distância real até o campus pelo mapa, não só pelo anúncio. Veja os [imóveis disponíveis](/imoveis) na região e compare preços antes de decidir."
+      },
+      {
+        "tipo": "p",
+        "txt": "Quer entender quanto custaria financiar um imóvel pequeno em vez de pagar aluguel? Faça a conta em [nossas ferramentas](/ferramentas). O Vinícius Graton conhece bem os bairros próximos à UFU e pode indicar opções seguras para a sua família."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "Qual o melhor bairro para morar perto da UFU?",
+            "a": "Santa Mônica e Umuarama são os mais próximos dos campi. Tibery e Segismundo Pereira são alternativas mais econômicas com bom transporte."
+          },
+          {
+            "q": "Vale a pena comprar imóvel para o filho estudar?",
+            "a": "Em cursos longos costuma valer, pois evita anos de aluguel e o imóvel vira patrimônio que pode ser alugado ou vendido depois."
+          },
+          {
+            "q": "Como evitar golpe de aluguel para estudante?",
+            "a": "Nunca pague adiantamento sem contrato, visite o imóvel pessoalmente e confira a matrícula e a identidade do proprietário."
+          },
+          {
+            "q": "Kitnet ou apartamento de 2 quartos?",
+            "a": "Kitnet é mais barata para um estudante; o de 2 quartos vale se houver divisão de aluguel ou planos de longo prazo."
+          }
+        ]
+      }
+    ],
+    "fontes": [
+      {
+        "nome": "Universidade Federal de Uberlândia (UFU)",
+        "url": "https://www.ufu.br/"
+      },
+      {
+        "nome": "Prefeitura de Uberlândia",
+        "url": "https://www.uberlandia.mg.gov.br/"
+      }
+    ]
+  },
+  {
+    "slug": "condominio-fechado-x-bairro-aberto",
+    "titulo": "Condomínio fechado x bairro aberto: qual vale mais a pena para você",
+    "resumo": "Na dúvida entre condomínio fechado e bairro aberto? Compare segurança, custos e estilo de vida antes de decidir onde morar.",
+    "categoria": "Guia de compra",
+    "leitura": "6 min",
+    "cor": 3,
+    "capa": "/img/blog/condominio-fechado-x-bairro-aberto.jpg",
+    "keyword": "condomínio fechado x bairro aberto",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
+    "conteudo": [
+      {
+        "tipo": "p",
+        "txt": "Você sonha com mais segurança e tranquilidade para a família, mas tem medo de se prender a uma taxa de condomínio alta para o resto da vida. É a dúvida que trava muita gente na hora de escolher onde morar."
+      },
+      {
+        "tipo": "p",
+        "txt": "Não existe resposta única. Existe o que faz sentido para a sua rotina, seu orçamento e seus planos. Vamos comparar com honestidade."
+      },
+      {
+        "tipo": "h2",
+        "txt": "Condomínio fechado x bairro aberto: o que muda no dia a dia"
+      },
+      {
+        "tipo": "p",
+        "txt": "O **condomínio fechado** oferece controle de acesso, área de lazer e ambiente mais previsível para crianças brincarem. Em troca, você paga uma taxa mensal e segue regras coletivas."
+      },
+      {
+        "tipo": "p",
+        "txt": "O **bairro aberto** dá mais liberdade, costuma ter imóveis com preço de entrada menor e comércio na porta, mas a segurança fica por sua conta e o entorno é menos previsível."
+      },
+      {
+        "tipo": "h3",
+        "txt": "Comparativo direto"
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Critério",
+          "Condomínio fechado",
+          "Bairro aberto"
+        ],
+        "linhas": [
+          [
+            "Segurança",
+            "Controle de acesso e portaria",
+            "Depende da rua e de medidas próprias"
+          ],
+          [
+            "Custo mensal fixo",
+            "Taxa de condomínio (pode ser alta)",
+            "Sem taxa, apenas IPTU e serviços"
+          ],
+          [
+            "Lazer",
+            "Piscina, quadra, playground inclusos",
+            "Uso de parques e clubes públicos"
+          ],
+          [
+            "Liberdade de reforma",
+            "Sujeita a regras do condomínio",
+            "Maior autonomia"
+          ],
+          [
+            "Conveniência",
+            "Comércio às vezes distante",
+            "Comércio e serviços por perto"
+          ]
+        ]
+      },
+      {
+        "tipo": "h2",
+        "txt": "Erros comuns na escolha"
+      },
+      {
+        "tipo": "p",
+        "txt": "Tem quem entre no condomínio encantado com a área de lazer e descubra depois que a taxa pesa no orçamento. E quem fuja do condomínio só pelo custo, mas gaste igual ou mais com segurança particular no bairro aberto."
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "**Ignorar o valor da taxa** de condomínio e o fundo de reserva antes de comprar.",
+          "**Não ler o regulamento interno**, que pode limitar pets, reformas e festas.",
+          "**Esquecer a distância** até trabalho, escola e comércio.",
+          "**Não conversar com moradores** atuais sobre a real convivência."
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Some a taxa de condomínio à parcela do financiamento antes de decidir. Um imóvel \"mais barato\" dentro de um condomínio caro pode pesar mais no mês do que um bairro aberto bem escolhido."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Estou na dúvida entre condomínio fechado e bairro aberto em Uberlândia. Pode me ajudar a comparar?",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "Como decidir com clareza"
+      },
+      {
+        "tipo": "p",
+        "txt": "Liste o que é inegociável para você: segurança, lazer, liberdade ou preço. Depois, conheça as opções de [condomínios](/condominios) em Uberlândia e compare com imóveis em bairros abertos olhando o custo total no mês."
+      },
+      {
+        "tipo": "p",
+        "txt": "Use [nossas ferramentas](/ferramentas) para somar parcela, taxa e despesas e ver o impacto real no orçamento. O Vinícius Graton conhece os dois cenários na cidade e ajuda você a escolher sem se arrepender depois."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "Condomínio fechado valoriza mais?",
+            "a": "Costuma ter boa valorização pela segurança e lazer, mas depende da região e da gestão do condomínio."
+          },
+          {
+            "q": "A taxa de condomínio pode aumentar muito?",
+            "a": "Sim, principalmente com obras ou aumento de funcionários. Verifique o histórico e o fundo de reserva antes de comprar."
+          },
+          {
+            "q": "Bairro aberto é sempre mais inseguro?",
+            "a": "Não necessariamente. Bairros consolidados e bem iluminados podem ser seguros; avalie rua a rua."
+          },
+          {
+            "q": "Posso financiar imóvel em condomínio fechado?",
+            "a": "Sim, o financiamento funciona normalmente. Só lembre de incluir a taxa de condomínio no seu planejamento mensal."
+          }
+        ]
+      }
+    ],
+    "fontes": [
+      {
+        "nome": "Secovi - Mercado imobiliário",
+        "url": "https://www.secovi.com.br/"
+      },
+      {
+        "nome": "Código Civil - Condomínio edilício",
+        "url": "https://www.planalto.gov.br/ccivil_03/leis/2002/l10406compilada.htm"
+      }
+    ]
+  },
+  {
+    "slug": "primeiro-imovel-guia-iniciante",
+    "titulo": "Primeiro imóvel: guia do iniciante para comprar sem medo de errar",
+    "resumo": "Vai comprar o primeiro imóvel e tem medo de errar? Este guia simples mostra o passo a passo, do planejamento à escritura.",
+    "categoria": "Guia de compra",
+    "leitura": "6 min",
+    "cor": 4,
+    "capa": "/img/blog/primeiro-imovel-guia-iniciante.jpg",
+    "keyword": "primeiro imóvel",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
+    "conteudo": [
+      {
+        "tipo": "p",
+        "txt": "Comprar o primeiro imóvel é empolgante e assustador ao mesmo tempo. Bate o medo de assinar um financiamento longo, de não dar conta das parcelas ou de descobrir custos escondidos só depois. Respira: dá para fazer isso com segurança."
+      },
+      {
+        "tipo": "p",
+        "txt": "O segredo é seguir uma ordem clara, sem pular etapas pela ansiedade de fechar logo."
+      },
+      {
+        "tipo": "h2",
+        "txt": "Primeiro imóvel: o passo a passo que evita arrependimento"
+      },
+      {
+        "tipo": "p",
+        "txt": "Antes de olhar anúncios, organize o financeiro. Saber quanto cabe no orçamento é o que impede você de se apaixonar por algo fora da realidade."
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "**Defina o orçamento real**: parcela não deve passar de cerca de 30% da renda.",
+          "**Junte a entrada** e separe uma reserva para custos extras.",
+          "**Inclua ITBI e cartório**, que somam algo em torno de 4% a 6% do valor.",
+          "**Faça a simulação** de financiamento antes de escolher o imóvel.",
+          "**Verifique seu FGTS**, que pode entrar na entrada do primeiro imóvel.",
+          "**Confira a documentação** do imóvel e do vendedor antes de assinar."
+        ]
+      },
+      {
+        "tipo": "h2",
+        "txt": "Os custos que pegam o iniciante de surpresa"
+      },
+      {
+        "tipo": "p",
+        "txt": "Muita gente calcula só o valor do imóvel e esquece o resto. Esses custos existem e precisam estar na conta desde o início."
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Custo",
+          "O que é",
+          "Referência aproximada"
+        ],
+        "linhas": [
+          [
+            "ITBI",
+            "Imposto de transmissão pago à prefeitura",
+            "Cerca de 2% a 3% do valor"
+          ],
+          [
+            "Registro em cartório",
+            "Oficializa você como dono",
+            "Tabela do cartório de registro"
+          ],
+          [
+            "Avaliação do banco",
+            "Vistoria exigida no financiamento",
+            "Cobrada no financiamento"
+          ],
+          [
+            "Reserva de mudança",
+            "Reformas, móveis e imprevistos",
+            "Defina uma folga no orçamento"
+          ]
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Comprar imóvel não é só pagar a parcela. É pagar parcela + custos de cartório + ITBI + manutenção. Quem entende isso desde o começo não se assusta no caminho."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Vou comprar meu primeiro imóvel em Uberlândia e quero ajuda para não errar nos primeiros passos.",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "Use o FGTS e simule antes"
+      },
+      {
+        "tipo": "p",
+        "txt": "Se for seu primeiro imóvel e você tem três anos de carteira assinada (somados), pode usar o FGTS na entrada ou para abater a dívida. Antes de escolher, simule cenários em [nossas ferramentas](/ferramentas) para enxergar a parcela real."
+      },
+      {
+        "tipo": "p",
+        "txt": "Depois, navegue pelos [imóveis disponíveis](/imoveis) dentro do seu orçamento, sem se apaixonar pelo que não cabe. O Vinícius Graton acompanha compradores de primeira viagem em Uberlândia do planejamento até a entrega das chaves."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "Quanto preciso de entrada para o primeiro imóvel?",
+            "a": "Costuma ser a partir de 20% do valor, mas há linhas com entrada menor. Quanto maior a entrada, menor a parcela e os juros totais."
+          },
+          {
+            "q": "Posso usar o FGTS na compra?",
+            "a": "Sim, no primeiro imóvel residencial, urbano e dentro das regras do programa, com três anos de FGTS somados."
+          },
+          {
+            "q": "Qual o limite saudável de parcela?",
+            "a": "Em geral até 30% da renda mensal, para sobrar fôlego no orçamento e cobrir imprevistos."
+          },
+          {
+            "q": "Vale mais financiar ou esperar juntar tudo?",
+            "a": "Depende. Financiar permite morar antes e parar de pagar aluguel; juntar reduz juros. Faça a conta dos dois cenários."
+          }
+        ]
+      }
+    ],
+    "fontes": [
+      {
+        "nome": "CAIXA - Habitação",
         "url": "https://www.caixa.gov.br/voce/habitacao/Paginas/default.aspx"
       },
       {
-        "nome": "Banco Central - Crédito Imobiliário",
-        "url": "https://www.bcb.gov.br/estabilidadefinanceira/creditoimobiliario"
+        "nome": "FGTS - Caixa Econômica Federal",
+        "url": "https://www.caixa.gov.br/beneficios-trabalhador/fgts/Paginas/default.aspx"
+      }
+    ]
+  },
+  {
+    "slug": "comprar-imovel-na-aposentadoria",
+    "titulo": "Comprar imóvel na aposentadoria: dá para financiar depois dos 60?",
+    "resumo": "Tem medo de que a idade impeça seu financiamento? Veja como aposentados podem comprar imóvel com segurança e prazos viáveis.",
+    "categoria": "Financiamento",
+    "leitura": "6 min",
+    "cor": 0,
+    "capa": "/img/blog/comprar-imovel-na-aposentadoria.jpg",
+    "keyword": "comprar imóvel na aposentadoria",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
+    "conteudo": [
+      {
+        "tipo": "p",
+        "txt": "Você trabalhou a vida toda e agora, aposentado, quer realizar o sonho do imóvel próprio ou de um lugar mais tranquilo. Mas bate o medo: \"será que o banco financia na minha idade?\". É uma preocupação real e tem resposta clara."
+      },
+      {
+        "tipo": "p",
+        "txt": "A boa notícia: idade não impede o financiamento. Ela apenas influencia o prazo. Dá para comprar com segurança seguindo alguns cuidados."
+      },
+      {
+        "tipo": "h2",
+        "txt": "Comprar imóvel na aposentadoria: como o prazo funciona"
+      },
+      {
+        "tipo": "p",
+        "txt": "Os bancos somam sua idade atual ao prazo do financiamento e esse total costuma ter um limite, em geral próximo de 80 anos e meio. Ou seja, quanto mais idade, menor o prazo possível, e maior a parcela."
+      },
+      {
+        "tipo": "p",
+        "txt": "Exemplo simples: aos 65 anos, o prazo máximo costuma ficar em torno de 15 anos. A renda da aposentadoria é aceita como comprovação, o que ajuda bastante."
+      },
+      {
+        "tipo": "h3",
+        "txt": "Idade x prazo aproximado"
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Idade na contratação",
+          "Prazo aproximado possível",
+          "Efeito na parcela"
+        ],
+        "linhas": [
+          [
+            "60 anos",
+            "Até cerca de 20 anos",
+            "Parcela mais diluída"
+          ],
+          [
+            "65 anos",
+            "Até cerca de 15 anos",
+            "Parcela intermediária"
+          ],
+          [
+            "70 anos",
+            "Até cerca de 10 anos",
+            "Parcela mais alta"
+          ]
+        ]
+      },
+      {
+        "tipo": "h2",
+        "txt": "Cuidados e alternativas para o aposentado"
+      },
+      {
+        "tipo": "p",
+        "txt": "Como o prazo é menor, a parcela tende a ser mais alta. Por isso, vale considerar uma entrada maior para reduzir o valor financiado, ou avaliar a compra à vista quando há uma reserva."
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "**Entrada maior** para encurtar a dívida e diminuir os juros totais.",
+          "**Composição de renda** com cônjuge ou filho mais novo para alongar o prazo.",
+          "**Atenção ao seguro** (MIP), cujo custo sobe com a idade.",
+          "**Compra à vista**, quando possível, evitando juros e seguros.",
+          "**Reserva de emergência** preservada, sem comprometer todo o patrimônio."
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Na aposentadoria, o objetivo não é só comprar, é comprar sem apertar o orçamento. Parcela tranquila vale mais que prazo longo no papel."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Sou aposentado e quero comprar um imóvel em Uberlândia. Pode me explicar minhas opções de financiamento?",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "Simule antes de decidir"
+      },
+      {
+        "tipo": "p",
+        "txt": "Antes de escolher o imóvel, simule cenários de prazo e entrada em [nossas ferramentas](/ferramentas) para ver qual parcela cabe no seu orçamento de aposentado. Depois, explore os [imóveis disponíveis](/imoveis) que combinam com esse valor."
+      },
+      {
+        "tipo": "p",
+        "txt": "O Vinícius Graton orienta compradores na aposentadoria em Uberlândia a montar a estratégia certa de entrada e prazo, para realizar o sonho sem comprometer a tranquilidade financeira."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "Banco financia imóvel para aposentado?",
+            "a": "Sim. A renda da aposentadoria é aceita; a idade só reduz o prazo máximo do financiamento."
+          },
+          {
+            "q": "Qual a idade limite para financiar?",
+            "a": "Não há corte fixo, mas a soma da idade com o prazo costuma respeitar um teto próximo de 80 anos e meio."
+          },
+          {
+            "q": "Vale a pena financiar ou comprar à vista na aposentadoria?",
+            "a": "À vista evita juros e seguros, mas preserve sua reserva. Financiar pode fazer sentido se a parcela couber com folga."
+          },
+          {
+            "q": "O seguro do financiamento é mais caro para idosos?",
+            "a": "Sim, o seguro por morte e invalidez tende a custar mais com o avanço da idade, o que eleva a parcela."
+          }
+        ]
       }
     ],
-    "capa": "/img/blog/comprar-imovel-na-aposentadoria.jpg"
+    "fontes": [
+      {
+        "nome": "CAIXA - Habitação",
+        "url": "https://www.caixa.gov.br/voce/habitacao/Paginas/default.aspx"
+      },
+      {
+        "nome": "Banco Central - Financiamento imobiliário",
+        "url": "https://www.bcb.gov.br/"
+      }
+    ]
   },
   {
     "slug": "vicios-ocultos-na-compra-de-imovel",
-    "titulo": "Vícios ocultos: o que fazer ao descobrir um defeito depois da compra",
-    "resumo": "Saiba o que são vícios ocultos em imóveis, quais são seus direitos e como se proteger antes e depois de comprar.",
+    "titulo": "Vícios ocultos na compra de imóvel: como se proteger antes de assinar",
+    "resumo": "Medo de comprar e descobrir defeitos escondidos depois? Entenda o que são vícios ocultos e como se proteger antes de fechar.",
     "categoria": "Documentação",
-    "leitura": "5 min",
+    "leitura": "6 min",
     "cor": 1,
+    "capa": "/img/blog/vicios-ocultos-na-compra-de-imovel.jpg",
+    "keyword": "vícios ocultos na compra de imóvel",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
     "conteudo": [
       {
         "tipo": "p",
-        "txt": "Comprou o imóvel, mudou e descobriu infiltração, problema elétrico ou estrutural que não dava para ver? Isso pode ser um vício oculto — e você tem direitos."
-      },
-      {
-        "tipo": "h",
-        "txt": "O que é vício oculto"
+        "txt": "Poucas coisas assustam mais que comprar um imóvel, mudar com a família e, semanas depois, descobrir infiltração na parede, rachadura escondida ou um vazamento que ninguém avisou. O medo de herdar um problema caro é totalmente justificado."
       },
       {
         "tipo": "p",
-        "txt": "É um defeito que já existia na compra, mas não era perceptível em uma vistoria normal, e que torna o imóvel impróprio ou diminui seu valor. Diferente de um defeito aparente, que você poderia ter visto."
+        "txt": "A lei protege quem compra, mas a melhor proteção é a prevenção antes de assinar. Vamos ao que importa."
       },
       {
-        "tipo": "h",
-        "txt": "Seus direitos pelo Código Civil"
-      },
-      {
-        "tipo": "p",
-        "txt": "A lei prevê prazos para reclamar e permite, conforme o caso, exigir abatimento no preço ou desfazer o negócio. Os prazos são curtos, então aja assim que descobrir o problema e guarde provas (fotos, laudos)."
-      },
-      {
-        "tipo": "h",
-        "txt": "Como se proteger antes"
+        "tipo": "h2",
+        "txt": "O que são vícios ocultos na compra de imóvel"
       },
       {
         "tipo": "p",
-        "txt": "Faça uma vistoria criteriosa, de preferência com um profissional, e registre o estado do imóvel no contrato. Em imóveis novos, há também garantias específicas da construtora."
+        "txt": "**Vício oculto** é o defeito que existe na hora da compra, mas não é perceptível numa visita comum, e que reduz o valor ou o uso do imóvel. Diferente do vício aparente, que você consegue ver de cara."
       },
       {
         "tipo": "p",
-        "txt": "Uma boa assessoria reduz muito esse risco. Vinícius Graton, consultor de imóveis em Uberlândia, orienta a vistoria e as cláusulas de garantia antes da assinatura."
+        "txt": "Pelo Código de Defesa do Consumidor e pelo Código Civil, o vendedor pode ser responsabilizado por esses defeitos dentro de prazos definidos em lei."
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "**Infiltração e umidade** escondidas atrás de móveis ou pintura recente.",
+          "**Problemas estruturais**, como rachaduras disfarçadas.",
+          "**Instalação elétrica ou hidráulica** com defeito não aparente.",
+          "**Pragas** como cupim em estruturas de madeira.",
+          "**Vazamentos** em encanamentos embutidos."
+        ]
+      },
+      {
+        "tipo": "h2",
+        "txt": "Aparente x oculto: o que muda na prática"
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Tipo de vício",
+          "Exemplo",
+          "Quem costuma responder"
+        ],
+        "linhas": [
+          [
+            "Aparente",
+            "Piso quebrado visível na visita",
+            "Comprador assume ao aceitar"
+          ],
+          [
+            "Oculto",
+            "Infiltração atrás de armário",
+            "Vendedor pode ser responsabilizado"
+          ],
+          [
+            "Informado",
+            "Defeito declarado no contrato",
+            "Comprador ciente assume"
+          ]
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Pintura nova e cheirosa em apenas uma parede pode ser charme, mas também pode esconder mofo. Desconfie do que parece recente demais e fora de contexto."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Quero comprar um imóvel em Uberlândia com segurança e evitar vícios ocultos. Pode me orientar na vistoria?",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "Como se proteger antes de fechar"
+      },
+      {
+        "tipo": "p",
+        "txt": "Faça uma vistoria detalhada, de preferência com um profissional, em dia de chuva ou logo após, quando infiltrações aparecem. Registre tudo com fotos e descreva no contrato o estado do imóvel."
+      },
+      {
+        "tipo": "p",
+        "txt": "Antes de chegar nessa etapa, organize a documentação certa, como mostramos no guia de [documentos para comprar imóvel](/contato), e compare com calma os [imóveis disponíveis](/imoveis). O Vinícius Graton acompanha vistorias em Uberlândia e orienta cláusulas que protegem o comprador."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "Qual o prazo para reclamar de vício oculto?",
+            "a": "Em geral, é de até um ano a contar de quando o defeito se torna conhecido, mas o prazo pode variar conforme o caso e a legislação aplicável."
+          },
+          {
+            "q": "O vendedor sempre paga pelo conserto?",
+            "a": "Nem sempre. Ele responde se o defeito for oculto e anterior à venda. Defeitos informados ou aparentes costumam ser do comprador."
+          },
+          {
+            "q": "Comprar imóvel \"no estado\" tira meu direito?",
+            "a": "A cláusula limita defeitos aparentes, mas não autoriza o vendedor a esconder vícios ocultos de má-fé."
+          },
+          {
+            "q": "Vale contratar vistoria profissional?",
+            "a": "Sim. Uma vistoria técnica custa bem menos que um conserto estrutural e dá segurança antes da assinatura."
+          }
+        ]
       }
     ],
     "fontes": [
       {
-        "nome": "Planalto - Código Civil",
-        "url": "https://www.planalto.gov.br/ccivil_03/leis/2002/l10406compilada.htm"
+        "nome": "Código de Defesa do Consumidor",
+        "url": "https://www.planalto.gov.br/ccivil_03/leis/l8078compilado.htm"
       },
       {
-        "nome": "Ministério da Justiça - Consumidor",
-        "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor"
+        "nome": "Código Civil",
+        "url": "https://www.planalto.gov.br/ccivil_03/leis/2002/l10406compilada.htm"
       }
-    ],
-    "capa": "/img/blog/vicios-ocultos-na-compra-de-imovel.jpg"
+    ]
   },
   {
     "slug": "certidoes-antes-de-comprar-due-diligence",
-    "titulo": "Certidões antes de comprar: a verificação que evita prejuízo",
-    "resumo": "Veja quais certidões tirar antes de comprar um imóvel para não herdar dívidas, penhoras ou ações judiciais do vendedor.",
+    "titulo": "Certidões antes de comprar imóvel: a due diligence que evita prejuízo",
+    "resumo": "Medo de comprar um imóvel com dívida ou penhora escondida? Veja as certidões essenciais da due diligence antes de assinar.",
     "categoria": "Documentação",
     "leitura": "6 min",
     "cor": 2,
+    "capa": "/img/blog/certidoes-antes-de-comprar-due-diligence.jpg",
+    "keyword": "certidões antes de comprar imóvel",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
     "conteudo": [
       {
         "tipo": "p",
-        "txt": "Antes de assinar, vale investir em uma verificação completa. Ela revela se o imóvel ou o vendedor têm pendências que podem cair no seu colo depois."
-      },
-      {
-        "tipo": "h",
-        "txt": "Certidões do imóvel"
+        "txt": "Imagine pagar por um imóvel e descobrir, depois, que ele tem penhora, dívida de IPTU ou que o vendedor responde a uma ação que pode anular a venda. Esse pesadelo é evitável e o que evita é a checagem de certidões antes de assinar."
       },
       {
         "tipo": "p",
-        "txt": "Comece pela matrícula atualizada, que mostra dono, ônus e penhoras. Tire também a certidão negativa de débitos do IPTU e, em condomínio, a declaração de quitação das taxas condominiais."
+        "txt": "Essa investigação tem nome: **due diligence imobiliária**. Parece complicado, mas é uma lista organizada de documentos a conferir."
       },
       {
-        "tipo": "h",
-        "txt": "Certidões do vendedor"
-      },
-      {
-        "tipo": "p",
-        "txt": "Verifique certidões de ações cíveis, trabalhistas e fiscais. Uma venda feita por quem está com dívidas pode ser anulada por fraude contra credores, e você corre o risco de perder o imóvel."
-      },
-      {
-        "tipo": "h",
-        "txt": "Onde obter"
+        "tipo": "h2",
+        "txt": "Certidões antes de comprar imóvel: a lista essencial"
       },
       {
         "tipo": "p",
-        "txt": "Muitas certidões saem online em portais oficiais dos tribunais, da Receita e dos cartórios. Algumas são gratuitas; outras têm custo pequeno perto do risco que evitam."
+        "txt": "O objetivo é confirmar duas coisas: que o imóvel está limpo de dívidas e ônus, e que o vendedor pode vender sem riscos de fraude contra credores."
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "**Matrícula atualizada** do imóvel, emitida nos últimos 30 dias, no Cartório de Registro de Imóveis.",
+          "**Certidão negativa de débitos de IPTU** na prefeitura de Uberlândia.",
+          "**Certidões de ações** cíveis, fiscais e trabalhistas do vendedor.",
+          "**Certidão negativa de débitos condominiais**, se for apartamento.",
+          "**Certidão de protesto** em nome do vendedor.",
+          "**Quitação de financiamento anterior**, se o imóvel já foi financiado."
+        ]
+      },
+      {
+        "tipo": "h2",
+        "txt": "Por que cada certidão importa"
       },
       {
         "tipo": "p",
-        "txt": "Para montar o pacote certo de certidões no seu caso, conte com Vinícius Graton, consultor de imóveis em Uberlândia, que organiza essa checagem antes de qualquer pagamento."
+        "txt": "A matrícula é a identidade do imóvel: nela constam dono, hipotecas, penhoras e usufrutos. As certidões do vendedor mostram se ele tem dívidas que poderiam, no futuro, atingir o bem vendido."
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Documento",
+          "O que revela",
+          "Onde obter"
+        ],
+        "linhas": [
+          [
+            "Matrícula atualizada",
+            "Dono real, ônus e penhoras",
+            "Cartório de Registro de Imóveis"
+          ],
+          [
+            "Certidão de IPTU",
+            "Dívida de imposto municipal",
+            "Prefeitura de Uberlândia"
+          ],
+          [
+            "Certidões do vendedor",
+            "Ações que podem anular a venda",
+            "Tribunais e Justiça do Trabalho"
+          ],
+          [
+            "Certidão condominial",
+            "Atraso em taxas de condomínio",
+            "Administradora do condomínio"
+          ]
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Contrato assinado não te faz dono: só o registro na matrícula transfere a propriedade. Por isso a checagem da matrícula é o passo mais importante de toda a due diligence."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Quero fazer a checagem de certidões antes de comprar um imóvel em Uberlândia. Pode me ajudar com a due diligence?",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "Como organizar sua due diligence"
+      },
+      {
+        "tipo": "p",
+        "txt": "Reúna as certidões antes de pagar qualquer sinal e, em casos de valor alto, conte com apoio jurídico. Para o passo a passo da documentação completa, [fale com o Vinícius](/contato) e veja os [imóveis disponíveis](/imoveis) já avaliados."
+      },
+      {
+        "tipo": "p",
+        "txt": "Em Uberlândia, o Vinícius Graton conduz essa verificação junto com o comprador, garantindo que a compra só avance depois que tudo estiver limpo e registrado."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "O que é due diligence imobiliária?",
+            "a": "É a investigação dos documentos do imóvel e do vendedor antes da compra, para confirmar que não há dívidas, ônus ou riscos jurídicos."
+          },
+          {
+            "q": "Quanto tempo vale uma certidão?",
+            "a": "Costuma valer 30 dias. Por isso, emita as certidões perto da data da assinatura para refletir a situação atual."
+          },
+          {
+            "q": "Posso pular essa etapa para fechar mais rápido?",
+            "a": "Não é recomendável. Pular a checagem é o que mais gera prejuízo, como comprar imóvel com penhora ou dívida escondida."
+          },
+          {
+            "q": "Quem paga pelas certidões?",
+            "a": "Geralmente o comprador, por ser quem tem mais interesse na segurança da compra, mas isso pode ser negociado."
+          }
+        ]
       }
     ],
     "fontes": [
       {
-        "nome": "Registro de Imóveis do Brasil",
-        "url": "https://www.registrodeimoveis.org.br/"
+        "nome": "Prefeitura de Uberlândia",
+        "url": "https://www.uberlandia.mg.gov.br/"
       },
       {
-        "nome": "Conselho Nacional de Justiça",
+        "nome": "CNJ - Registro de Imóveis",
         "url": "https://www.cnj.jus.br/"
       }
-    ],
-    "capa": "/img/blog/certidoes-antes-de-comprar-due-diligence.jpg"
+    ]
   },
   {
     "slug": "leilao-de-imovel-como-funciona-riscos",
-    "titulo": "Leilão de imóvel: como funciona e quais os riscos reais",
-    "resumo": "Entenda como comprar imóvel em leilão, as oportunidades de desconto e os cuidados para não levar um problema para casa.",
+    "titulo": "Leilão de imóvel: como funciona, vantagens e riscos antes de dar o lance",
+    "resumo": "Atraído pelo preço baixo mas com medo do leilão de imóvel? Entenda como funciona, os riscos e como participar com segurança.",
     "categoria": "Investir",
     "leitura": "6 min",
     "cor": 3,
+    "capa": "/img/blog/leilao-de-imovel-como-funciona-riscos.jpg",
+    "keyword": "leilão de imóvel",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
     "conteudo": [
       {
         "tipo": "p",
-        "txt": "Imóveis em leilão podem sair bem abaixo do valor de mercado, o que atrai investidores. Mas é uma compra que exige preparo: o desconto vem acompanhado de riscos que você precisa conhecer."
-      },
-      {
-        "tipo": "h",
-        "txt": "Por que existem leilões"
+        "txt": "Os preços de leilão são tentadores: imóveis até 50% abaixo do mercado. Mas junto vem o medo de cair numa armadilha, comprar algo ocupado, com dívidas ou sem conseguir tomar posse. Esse receio é saudável e evita prejuízo."
       },
       {
         "tipo": "p",
-        "txt": "Muitos leilões vêm de financiamentos não pagos, em que o banco retoma o imóvel pela alienação fiduciária. Também há leilões judiciais, ligados a processos. A Caixa, por exemplo, divulga seus imóveis em canais oficiais."
+        "txt": "Leilão pode ser ótimo negócio para quem se prepara. O problema é entrar sem entender as regras."
       },
       {
-        "tipo": "h",
-        "txt": "Os principais riscos"
-      },
-      {
-        "tipo": "p",
-        "txt": "O imóvel pode estar ocupado (e a desocupação cabe a você), ter dívidas de IPTU e condomínio, ou precisar de reforma. Leia o edital com muita atenção: ele define o que você assume."
-      },
-      {
-        "tipo": "h",
-        "txt": "Como reduzir o risco"
+        "tipo": "h2",
+        "txt": "Leilão de imóvel: como funciona na prática"
       },
       {
         "tipo": "p",
-        "txt": "Estude o edital, visite o imóvel quando possível, levante todas as dívidas e tenha reserva para custos extras. O preço baixo só compensa se você somar tudo na ponta do lápis."
+        "txt": "Imóveis vão a leilão por dívidas, como financiamento não pago (extrajudicial) ou por decisão da Justiça (judicial). O interessado se cadastra, analisa o edital e dá lances; quem oferece mais arremata."
       },
       {
         "tipo": "p",
-        "txt": "Leilão não é para amadores. Vinícius Graton, consultor de imóveis em Uberlândia, pode ajudar a analisar o edital e os custos antes de você dar o lance."
+        "txt": "O **edital** é o documento mais importante: ele descreve o imóvel, as dívidas, se está ocupado e as condições de pagamento. Ler o edital inteiro não é opcional."
+      },
+      {
+        "tipo": "h3",
+        "txt": "Judicial x extrajudicial"
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Tipo",
+          "Origem",
+          "Ponto de atenção"
+        ],
+        "linhas": [
+          [
+            "Extrajudicial",
+            "Banco retoma por financiamento não pago",
+            "Imóvel pode estar ocupado pelo antigo dono"
+          ],
+          [
+            "Judicial",
+            "Determinado por processo na Justiça",
+            "Pode haver recursos que atrasam a posse"
+          ],
+          [
+            "Da Receita/órgãos",
+            "Bens de execuções fiscais",
+            "Conferir dívidas que acompanham o bem"
+          ]
+        ]
+      },
+      {
+        "tipo": "h2",
+        "txt": "Os riscos que ninguém te conta no anúncio"
+      },
+      {
+        "tipo": "p",
+        "txt": "O preço baixo costuma ter contrapartida. Antes de se animar com o desconto, pese estes riscos."
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "**Imóvel ocupado**: pode ser preciso ação de desocupação, que leva tempo.",
+          "**Dívidas que acompanham o bem**, como IPTU e taxas de condomínio atrasadas.",
+          "**Estado desconhecido**: nem sempre é possível visitar por dentro antes.",
+          "**Pagamento à vista** ou prazos curtos exigidos pelo edital.",
+          "**Disputa de lances** que pode elevar o preço além do planejado."
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Desconto de leilão só é vantagem real depois de somar dívidas pendentes, custos de desocupação e eventual reforma. Faça essa conta antes de dar qualquer lance."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Penso em comprar um imóvel de leilão em Uberlândia, mas tenho dúvidas sobre os riscos. Pode me orientar?",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "Como participar com mais segurança"
+      },
+      {
+        "tipo": "p",
+        "txt": "Leia o edital por inteiro, levante a matrícula e as dívidas do imóvel e, em caso de dúvida, busque apoio jurídico. Use [nossas ferramentas](/ferramentas) para calcular o custo total real, somando lance, dívidas e reforma."
+      },
+      {
+        "tipo": "p",
+        "txt": "Se preferir o caminho tradicional, compare com os [imóveis disponíveis](/imoveis) sem surpresas. O Vinícius Graton ajuda compradores em Uberlândia a avaliar se o leilão compensa diante de uma compra convencional."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "Imóvel de leilão pode estar ocupado?",
+            "a": "Sim, principalmente nos extrajudiciais. Pode ser necessário entrar com ação de desocupação após arrematar."
+          },
+          {
+            "q": "Assumo as dívidas do imóvel arrematado?",
+            "a": "Depende do edital. Algumas dívidas, como IPTU e condomínio, podem acompanhar o bem; leia tudo antes."
+          },
+          {
+            "q": "Dá para financiar imóvel de leilão?",
+            "a": "Alguns leilões permitem financiamento ou parcelamento; outros exigem pagamento à vista. O edital define."
+          },
+          {
+            "q": "Vale a pena comprar em leilão?",
+            "a": "Pode valer pelo desconto, desde que você entenda os riscos, leia o edital e calcule o custo total real."
+          }
+        ]
       }
     ],
     "fontes": [
       {
         "nome": "CAIXA - Imóveis (venda e leilão)",
-        "url": "https://venda-imoveis.caixa.gov.br/sistema/busca-imovel.asp"
+        "url": "https://venda-imoveis.caixa.gov.br/"
       },
       {
-        "nome": "Conselho Nacional de Justiça",
+        "nome": "CNJ - Leilões judiciais",
         "url": "https://www.cnj.jus.br/"
       }
-    ],
-    "capa": "/img/blog/leilao-de-imovel-como-funciona-riscos.jpg"
+    ]
   },
   {
     "slug": "reforma-que-valoriza-imovel-vender-mais-rapido",
-    "titulo": "Reformas que valorizam o imóvel e ajudam a vender mais rápido",
-    "resumo": "Descubra quais reformas dão retorno na venda, o que é home staging e como preparar o imóvel para fechar negócio mais rápido.",
+    "titulo": "Reformas que valorizam o imóvel: onde investir para vender mais rápido",
+    "resumo": "Cansado do imóvel encalhado? Veja quais reformas valorizam de verdade e ajudam a vender mais rápido sem jogar dinheiro fora.",
     "categoria": "Mercado",
     "leitura": "6 min",
     "cor": 4,
+    "capa": "/img/blog/reforma-que-valoriza-imovel-vender-mais-rapido.jpg",
+    "keyword": "reformas que valorizam o imóvel",
+    "data": "2026-06-08",
+    "atualizado": "2026-06-08",
     "conteudo": [
       {
         "tipo": "p",
-        "txt": "Nem toda reforma se paga na venda. Algumas melhorias atraem comprador e aumentam o preço; outras só gastam dinheiro. Saber onde investir faz diferença no valor final."
-      },
-      {
-        "tipo": "h",
-        "txt": "Reformas com bom retorno"
+        "txt": "Seu imóvel está há meses anunciado e não vende. Bate aquela dúvida angustiante: \"será que vale gastar com reforma ou vou jogar dinheiro fora?\". O medo de investir e não recuperar é o que mais trava o vendedor."
       },
       {
         "tipo": "p",
-        "txt": "Pintura nova, iluminação, reparos hidráulicos e elétricos e atualização de cozinha e banheiro costumam dar o melhor retorno. São melhorias que o comprador percebe de imediato e que passam sensação de imóvel cuidado."
+        "txt": "A verdade é que algumas reformas se pagam na venda, e outras quase não mudam o preço. O segredo é saber onde colocar cada real."
       },
       {
-        "tipo": "h",
-        "txt": "O poder do home staging"
-      },
-      {
-        "tipo": "p",
-        "txt": "Home staging é preparar o imóvel para vender: despersonalizar, organizar, iluminar e destacar os espaços. Um imóvel limpo, arejado e neutro ajuda o comprador a se imaginar morando ali e tende a vender mais rápido."
-      },
-      {
-        "tipo": "h",
-        "txt": "Cuidado com excessos"
+        "tipo": "h2",
+        "txt": "Reformas que valorizam o imóvel de verdade"
       },
       {
         "tipo": "p",
-        "txt": "Reformas muito personalizadas ou caras demais para o padrão do bairro raramente voltam no preço. O ideal é deixar o imóvel impecável, não luxuoso além do que a região comporta."
+        "txt": "O que mais pesa na decisão de compra é a **primeira impressão**. Comprador decide com emoção nos primeiros minutos da visita, e ambientes limpos, claros e bem cuidados vendem mais rápido."
+      },
+      {
+        "tipo": "lista",
+        "itens": [
+          "**Pintura nova** em cores neutras: o melhor custo-benefício de todos.",
+          "**Cozinha e banheiros** em bom estado, com torneiras e rejunte renovados.",
+          "**Iluminação** ampliada e lâmpadas brancas para sensação de amplitude.",
+          "**Pequenos reparos**: portas, fechaduras, vazamentos e tomadas soltas.",
+          "**Limpeza pesada e organização** antes das fotos e das visitas."
+        ]
+      },
+      {
+        "tipo": "h2",
+        "txt": "Onde NÃO vale exagerar"
       },
       {
         "tipo": "p",
-        "txt": "Para saber o que vale a pena reformar antes de anunciar em Uberlândia, fale com Vinícius Graton, consultor de imóveis, que conhece o que cada bairro valoriza."
+        "txt": "Reforma personalizada demais raramente volta no preço. O comprador quer projetar o gosto dele, não pagar pelo seu."
+      },
+      {
+        "tipo": "tabela",
+        "cols": [
+          "Investimento",
+          "Retorno na venda",
+          "Vale a pena?"
+        ],
+        "linhas": [
+          [
+            "Pintura e reparos",
+            "Alto, melhora a impressão imediata",
+            "Sim"
+          ],
+          [
+            "Atualizar cozinha/banheiro",
+            "Bom, são ambientes decisivos",
+            "Geralmente sim"
+          ],
+          [
+            "Piscina ou área de luxo",
+            "Baixo na maioria dos casos",
+            "Avalie com cuidado"
+          ],
+          [
+            "Acabamento muito personalizado",
+            "Baixo, afasta parte dos compradores",
+            "Evite"
+          ]
+        ]
+      },
+      {
+        "tipo": "destaque",
+        "txt": "Antes de uma grande obra, lembre: na maioria dos casos, o que faz vender mais rápido é o imóvel limpo, pintado e sem defeitos visíveis, não o luxo caro."
+      },
+      {
+        "tipo": "cta",
+        "txt": "Olá Vinícius! Quero vender meu imóvel em Uberlândia e saber quais reformas valem a pena para vender mais rápido.",
+        "label": "Falar com o Vinícius"
+      },
+      {
+        "tipo": "h2",
+        "txt": "Estratégia para vender mais rápido"
+      },
+      {
+        "tipo": "p",
+        "txt": "Defina um orçamento de reforma proporcional ao valor do imóvel e priorize o que dá retorno: pintura, reparos e limpeza. Depois, capriche nas fotos, porque a maioria dos compradores filtra pelo anúncio antes de visitar."
+      },
+      {
+        "tipo": "p",
+        "txt": "Para precificar certo, compare com os [imóveis disponíveis](/imoveis) semelhantes na sua região e [fale com o Vinícius](/contato) para uma avaliação realista. Em Uberlândia, o Vinícius Graton orienta vendedores sobre o que reformar (e o que não tocar) para vender no melhor prazo e preço."
+      },
+      {
+        "tipo": "faq",
+        "perguntas": [
+          {
+            "q": "Reforma sempre aumenta o valor do imóvel?",
+            "a": "Não. Pintura e reparos costumam compensar, mas reformas de luxo ou muito personalizadas raramente voltam no preço de venda."
+          },
+          {
+            "q": "Vale pintar antes de vender?",
+            "a": "Sim. Pintura em cores neutras é o investimento de melhor custo-benefício para causar boa impressão e vender mais rápido."
+          },
+          {
+            "q": "Devo reformar ou vender no estado e dar desconto?",
+            "a": "Depende do imóvel. Pequenos reparos baratos valem; obras grandes muitas vezes compensam mais como desconto no preço."
+          },
+          {
+            "q": "Fotos boas fazem diferença na venda?",
+            "a": "Muita. A maioria dos compradores decide visitar pelo anúncio, então fotos com boa luz e organização aceleram a venda."
+          }
+        ]
       }
     ],
     "fontes": [
       {
-        "nome": "FipeZAP",
-        "url": "https://www.fipe.org.br/pt-br/indices/fipezap/"
+        "nome": "Secovi - Mercado imobiliário",
+        "url": "https://www.secovi.com.br/"
       },
       {
-        "nome": "Sebrae",
-        "url": "https://sebrae.com.br/"
+        "nome": "Sebrae - Reforma e valorização",
+        "url": "https://www.sebrae.com.br/"
       }
-    ],
-    "capa": "/img/blog/reforma-que-valoriza-imovel-vender-mais-rapido.jpg"
+    ]
   }
 ]

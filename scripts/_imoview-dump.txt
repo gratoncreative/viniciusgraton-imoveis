@@ -1,254 +1,380 @@
-Ações
-Exibindo 1 até 20 de 3199 linhas
+=== PÁGINA 1 (Exibindo 1 até 20 de 3226) ===
 
-Cód. 96587 | Venda | Apartamento | / Brasil
-Rua dos Pereiras, 338, Apto 602, CEP 38400-612
-Ed.: EDIF.BILOTA BERNARDES
+Cód. 91216 | Venda | Terreno | / Laranjeiras / São Jorge
+Avenida Seme Simão, 1805, CEP 38410-327
 Uberlândia - MG
-R$ 270.000,00
-Vago/Disponível
-Quartos
-2
-Suítes
-0
-Banheiros
-2
-Vagas
-0
-Elevadores
-2
-Área interna: 73,97 m²
+R$ 585.000,00
+Quartos 0 | Suítes 0 | Banheiros 0 | Vagas 0 | Elevadores 0
+Área interna: 127 m² | Área do lote/terreno: 270 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 08/06/2026 09:57
 
-Cód. 93801 | Venda | Casa | / Laranjeiras / GSP Life I
-Rua do Adolescente, 583, Casa 02, CEP 38410-302
+Cód. 70433 | Venda | Casa | / Maravilha
+Rua João Evangelista, 246, Casa, CEP 38401-452
 Uberlândia - MG
-R$ 500.000,00
-Vago/Disponível
-Quartos
-3
-Suítes
-1
-Banheiros
-3
-Vagas
-2
-Elevadores
-0
-Área interna: 94 m²
+R$ 570.000,00
+Quartos 3 | Suítes 1 | Banheiros 3 | Vagas 3 | Elevadores 0
+Área interna: 203,54 m² | Área do lote/terreno: 300 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 08/06/2026 09:57
 
-Cód. 86237 | Venda | Casa Condomínio Fechado | / Cond. Jardim Versailles / Nova Uberlândia
-Rua Argemiro Costa, 1770, CEP 38412-643
+Cód. 93073 | Venda | Casa | / Portal do Vale II / Portal do Vale
+Rua Evacir Parreira de Lima, 285, CEP 38436-080
 Uberlândia - MG
-R$ 3.300.000,00
-Vago/Disponível
-Quartos
-5
-Suítes
-5
-Banheiros
-7
-Vagas
-4
-Elevadores
-0
-Área interna: 253,7 m²
+R$ 980.000,00
+Quartos 3 | Suítes 2 | Banheiros 3 | Vagas 2 | Elevadores 0
+Área interna: 143,51 m² | Área do lote/terreno: 250 m²
+Unidade: ROTINA ZONA SUL
+Data última alteração: 08/06/2026 09:56
 
-Cód. 96076 | Venda | Apartamento | / Patrimônio - Edifício Torres Do Praia
-Rua Glória, 100, Apto 102 - Bloco 02, CEP 38411-100
+Cód. 90767 | Venda | Casa | / Pampulha
+Rua Bernardo de Vasconcelos, 714, Casa, CEP 38408-646
 Uberlândia - MG
-R$ 530.000,00
-Vago/Disponível
-Quartos
-2
-Suítes
-1
-Banheiros
-2
-Vagas
-2
-Elevadores
-2
-Área interna: 70,62 m²
+R$ 750.000,00
+Quartos 5 | Suítes 2 | Banheiros 5 | Vagas 3 | Elevadores 0
+Área interna: 250 m² | Área do lote/terreno: 300 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 08/06/2026 09:55
 
-Cód. 99496 | Venda | Casa Condomínio Fechado | / Cond. Alphaville I / Granja Marileusa
-Rua Lapa do Lobo, 1250, CEP 38406-644
+Cód. 99095 | Venda | Casa | / Pacaembu
+Rua da Cereja, 41, Casa B, CEP 38401-520
 Uberlândia - MG
-R$ 2.800.000,00
-Vago/Disponível
-Quartos
-4
-Suítes
-4
-Banheiros
-5
-Vagas
-4
-Elevadores
-0
-Área interna: 231,73 m²
+R$ 580.000,00
+Quartos 3 | Suítes 1 | Banheiros 3 | Vagas 3 | Elevadores 0
+Área interna: 194,45 m² | Área do lote/terreno: 250 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 08/06/2026 09:55
 
-Cód. 88345 | Venda | Terreno Condomínio Fechado | / Cond. Tamboré / Morada da Colina
-Avenida das Copaibas, 20, CEP 38411-877
+Cód. 98516 | Venda | Apartamento | / Granada
+Rua Cachoeira Dourada, 115, Apto 102 - Bloco 04, CEP 38410-540
+Ed.: RESIDENCIAL JARDINS GRAVATAS
 Uberlândia - MG
-R$ 740.000,00
-Vago/Disponível
-Quartos
-0
-Suítes
-0
-Banheiros
-0
-Vagas
-0
-Elevadores
-0
-Área interna: 0 m²
+R$ 185.000,00
+Quartos 2 | Suítes 0 | Banheiros 1 | Vagas 1 | Elevadores 0
+Cond.: R$ 320,00
+Área interna: 50 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 08/06/2026 09:55
 
-Cód. 90195 | Venda | Casa Condomínio Fechado | / Cond. Tamboré / Morada da Colina
-Avenida das Copaibas, 20, CEP 38411-877
+Cód. 98534 | Venda | Casa | / Planalto
+Rua do Jardineiro, 403, CEP 38413-219
 Uberlândia - MG
-R$ 2.500.000,00
-Vago/Disponível
-Quartos
-3
-Suítes
-3
-Banheiros
-4
-Vagas
-2
-Elevadores
-0
-Área interna: 210 m²
+R$ 440.000,00
+Quartos 3 | Suítes 1 | Banheiros 4 | Vagas 5 | Elevadores 0
+Área interna: 203,71 m² | Área do lote/terreno: 240 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 08/06/2026 09:52
 
-Cód. 74455 | Venda | Chacara | / Chacaras Eldorado
-Rodovia BR497, Alameda Flamboyant, 33, CEP 38413-537
+Cód. 79104 | Venda | Terreno | / Aclimação
+Avenida José Cardoso da Silva, CEP 38406-118
 Uberlândia - MG
-R$ 1.970.000,00
-Vago/Disponível
-Quartos
-3
-Suítes
-1
-Banheiros
-4
-Vagas
-4
-Elevadores
-0
-Área interna: 350 m²
+R$ 195.000,00
+Quartos 0 | Suítes 0 | Banheiros 0 | Vagas 0 | Elevadores 0
+Área do lote/terreno: 300 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 08/06/2026 09:50
 
-Cód. 71360 | Venda | Casa | / Bom Jesus
-Avenida Mauá, 610, Casa e fundos, CEP 38400-754
+Cód. 99662 | Venda | Casa | / Residencial Nosso Lar / Luizote de Freitas
+Rua Ademar Vieira Tavares, 262, CEP 38414-402
 Uberlândia - MG
-R$ 269.000,00
-Vago/Disponível
-Quartos
-2
-Suítes
-0
-Banheiros
-1
-Vagas
-1
-Elevadores
-0
-Área interna: 174 m²
+R$ 380.000,00
+Quartos 3 | Suítes 0 | Banheiros 2 | Vagas 1 | Elevadores 0
+Área interna: 138,87 m² | Área do lote/terreno: 250 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 08/06/2026 09:42
 
-Cód. 73018 | Venda | Terreno | / Planalto
-Rua da Costureira, 972, CEP 38413-192
+Cód. 99661 | Venda | Apartamento | / Brasil - Condomínio Leandro Silva
+Rua Paraná, 1540, Apto 201 - Bloco B, CEP 38400-654
+Uberlândia - MG
+R$ 649.000,00
+Quartos 3 | Suítes 1 | Banheiros 2 | Vagas 2 | Elevadores 2
+Cond.: R$ 530,00
+Área interna: 97 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 08/06/2026 09:31
+
+Cód. 99358 | Venda | Apartamento | / Saraiva
+Praça Virgilato Orozimbo Pereira, 35, Apto 902, CEP 38408-030
+Ed.: Astúrias
+Uberlândia - MG
+R$ 720.000,00
+Quartos 3 | Suítes 1 | Banheiros 2 | Vagas 2 | Elevadores 2
+Cond.: R$ 470,00
+Área interna: 92 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 08/06/2026 09:19
+
+Soul Studios - 99408 / Santa Mônica  [LANÇAMENTO]
+Avenida Segismundo Pereira, 349, CEP 38408-170
+Uberlândia - MG
+R$ 399.457,00
+Quartos 1 | Vagas 1 | Elevadores 2
+Área interna: 28,93 m²
+Unidade: ROTINA ZONA SUL
+Data última alteração: 08/06/2026 09:13
+
+Cód. 99353 | Venda | Terreno | / Santa Mônica
+Avenida Ortízio Borges, 2267, CEP 38408-263
 Uberlândia - MG
 R$ 650.000,00
-Quartos
-0
-Suítes
-0
-Banheiros
-0
-Vagas
-0
-Elevadores
-0
-Área interna: 0 m²
+Área do lote/terreno: 360 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 08/06/2026 09:11
 
-Cód. 97886 | Venda | Casa | / Nossa Senhora Aparecida
-Rua Buriti Alegre, 830, CEP 38400-619
+Miraggio Residence - 99431 / Nossa Senhora Aparecida  [LANÇAMENTO]
+Avenida Mato Grosso, 1538, CEP 38400-724
 Uberlândia - MG
-R$ 850.000,00
-Vago/Disponível
-Quartos
-6
-Suítes
-1
-Banheiros
-4
-Vagas
-2
-Elevadores
-0
-Área interna: 225,05 m²
+R$ 640.000,00
+Quartos 3 | Vagas 2 | Elevadores 2
+Área interna: 91,99 m²
+Unidade: ROTINA ZONA SUL
+Data última alteração: 08/06/2026 09:11
 
-Cód. 91188 | Venda | Apartamento | / Brasil
-Avenida Amazonas, 79, Apto 203, CEP 38400-734
+Isaac 321 - 99566 / Santa Mônica  [LANÇAMENTO]
+Rua Isaac de Oliveira, 321, CEP 38408-106
 Uberlândia - MG
-R$ 280.000,00
-Vago/Disponível
-Quartos
-2
-Suítes
-1
-Banheiros
-1
-Vagas
-1
-Elevadores
-0
-Área interna: 50 m²
+R$ 663.000,00 até R$ 1.947.000,00
+Quartos 3 até 4 | Vagas 2 até 4 | Elevadores 2
+Área interna: 82,43 m² até 183,4 m²
+Unidade: ROTINA ZONA SUL
+Data última alteração: 08/06/2026 09:07
 
-Cód. 64693 | Venda | Cobertura | / Morada da Colina
-Rua Maria da Conceição de Andrade, 10, Apto 701, CEP 38411-336
+VIVANT RESIDENCE - 99573 / Santa Mônica  [LANÇAMENTO]
+Praça Abib Attuch, 50, CEP 38408-182
 Uberlândia - MG
-R$ 1.800.000,00
-Vago/Disponível
-Quartos
-4
-Suítes
-2
-Banheiros
-3
-Vagas
-4
-Elevadores
-0
-Área interna: 270 m²
+R$ 519.500,00
+Quartos 2 | Vagas 2 | Elevadores 2
+Área interna: 67,76 m²
+Unidade: ROTINA ZONA SUL
+Data última alteração: 08/06/2026 09:04
 
-Cód. 90804 | Venda | Terreno | / Loteamento Portal do Vale II
-Rua Maria Dias do Amaral, CEP 38436-072
+Beaumont Santa Mônica - 99579 / Santa Mônica  [LANÇAMENTO]
+Rua Péricles Vieira da Mota, 937, CEP 38408-220
 Uberlândia - MG
-R$ 250.000,00
-Quartos
-0
-Suítes
-0
-Banheiros
-0
-Vagas
-0
-Área interna: 0 m²
+R$ 848.400,00
+Quartos 3 | Vagas 1 | Elevadores 2
+Área interna: 107,76 m²
+Unidade: ROTINA ZONA SUL
+Data última alteração: 08/06/2026 09:00
 
-Cód. 69377 | Venda | Casa | / Cidade Jardim
-Rua Beija Flor, 57, Casa, CEP 38412-164
+Lottus Residence - 99574 / Segismundo Pereira  [LANÇAMENTO]
+Rua Antônio Zeferino de Paula, 2301, CEP 38408-270
 Uberlândia - MG
-R$ 1.200.000,00
-Vago/Disponível
-Quartos
-3
-Suítes
-1
-Banheiros
-4
-Vagas
-4
-Elevadores
-0
-Área interna: 373,8 m²
+R$ 396.000,00
+Quartos 2 | Vagas 2 | Elevadores 1
+Área interna: 51,17 m²
+Unidade: ROTINA ZONA SUL
+Data última alteração: 08/06/2026 08:59
+
+Cód. 99679 | Venda | Apartamento | / Santa Mônica
+Rua Hildebrando Oliva, 1446, Apto 202, CEP 38408-212
+Uberlândia - MG
+R$ 425.000,00
+Quartos 2 | Suítes 1 | Banheiros 1 | Vagas 1 | Elevadores 1
+Cond.: R$ 220,00
+Área interna: 63,31 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 08/06/2026 08:56
+
+Cód. 99680 | Venda | Apartamento | / Santa Mônica
+Rua Hildebrando Oliva, 1446, Apto 203, CEP 38408-212
+Uberlândia - MG
+R$ 430.000,00
+Quartos 2 | Suítes 1 | Banheiros 1 | Vagas 1 | Elevadores 1
+Cond.: R$ 220,00
+Área interna: 65,22 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 08/06/2026 08:56
+
+=== PÁGINA 2 (Exibindo 21 até 40 de 3226) ===
+
+Cód. 99681 | Venda | Apartamento | / Santa Mônica
+Rua Hildebrando Oliva, 1446, Apto 302, CEP 38408-212
+Uberlândia - MG
+R$ 428.000,00
+Quartos 2 | Suítes 1 | Banheiros 1 | Vagas 1 | Elevadores 1
+Cond.: R$ 220,00
+Área interna: 63,31 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 08/06/2026 08:56
+
+Cód. 99682 | Venda | Apartamento | / Santa Mônica
+Rua Hildebrando Oliva, 1446, Apto 303, CEP 38408-212
+Uberlândia - MG
+R$ 435.000,00
+Quartos 2 | Suítes 1 | Banheiros 1 | Vagas 1 | Elevadores 1
+Cond.: R$ 220,00
+Área interna: 65,22 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 08/06/2026 08:56
+
+Cód. 99678 | Venda | Apartamento | / Santa Mônica
+Rua Hildebrando Oliva, 1446, Apto 103, CEP 38408-212
+Uberlândia - MG
+R$ 480.000,00
+Quartos 2 | Suítes 1 | Banheiros 1 | Vagas 1 | Elevadores 1
+Cond.: R$ 220,00
+Área interna: 78,42 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 08/06/2026 08:56
+
+Cód. 25521 - Aux. 107429 | Venda | Apartamento | / Jardim Holanda
+Rua Esmeralda, 381, Apto 404 - Bloco A, CEP 38412-836
+Ed.: Residencial Felipe I
+Uberlândia - MG
+R$ 245.000,00
+Quartos 3 | Suítes 1 | Banheiros 2 | Vagas 1 | Elevadores 0
+Cond.: R$ 173,00
+Área interna: 58,64 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 08/06/2026 08:18
+
+Cód. 99169 | Venda | Casa | / Novo Mundo / Vida Nova
+Rua Dinarte José Pereira, 442, Casa 5, CEP 38409-035
+Uberlândia - MG
+R$ 540.000,00
+Quartos 3 | Suítes 1 | Banheiros 3 | Vagas 2 | Elevadores 0
+Área interna: 99,42 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 07/06/2026 17:41
+
+Cód. 89570 | Venda | Apartamento | / Jardim Karaíba
+Rua José Elias, 150, Apto 1002, CEP 38411-201
+Ed.: Duo Residence
+Uberlândia - MG
+R$ 2.100.000,00
+Quartos 4 | Suítes 4 | Banheiros 5 | Vagas 3 | Elevadores 2
+Área interna: 185,14 m²
+Unidade: ROTINA ZONA SUL
+Data última alteração: 07/06/2026 15:15
+
+Cód. 93927 | Venda | Casa | / Morada da Colina
+Avenida Concórdia, 725, Casa, CEP 38411-122
+Uberlândia - MG
+R$ 2.800.000,00
+Quartos 5 | Suítes 4 | Banheiros 6 | Vagas 5 | Elevadores 0
+Área interna: 435,53 m² | Área do lote/terreno: 702 m²
+Unidade: ROTINA ZONA SUL
+Data última alteração: 07/06/2026 11:42
+
+Cód. 96857 | Venda | Apartamento | / Brasil
+Rua dos Pereiras, 338, Apto 502, CEP 38400-612
+Ed.: Bilota Bernardes
+Uberlândia - MG
+R$ 265.000,00
+Quartos 2 | Suítes 0 | Banheiros 2 | Vagas 0 | Elevadores 2
+Cond.: R$ 379,69
+Área interna: 73,97 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 07/06/2026 11:27
+
+Cód. 98165 | Venda | Casa Comercial / Casa | / Osvaldo Rezende / Martins
+Avenida Fernando Vilela, 947, CEP 38400-458
+Uberlândia - MG
+R$ 600.000,00
+Quartos 3 | Suítes 1 | Banheiros 1 | Vagas 1 | Elevadores 0
+Área interna: 148,86 m² | Área do lote/terreno: 168,75 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 06/06/2026 16:11
+
+Cód. 97645 | Venda | Apartamento | / Santa Mônica
+Rua Jornalista João de Oliveira, 815, Apto 301, CEP 38408-248
+Uberlândia - MG
+R$ 400.000,00
+Quartos 3 | Suítes 1 | Banheiros 2 | Vagas 2 | Elevadores 0
+Cond.: R$ 240,00
+Área interna: 81 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 06/06/2026 15:47
+
+Cód. 99671 | Venda | Apartamento | / Granada
+Rua Promissão, 85, Apto 304 - Bloco 10, CEP 38410-543
+Ed.: Recanto dos Gravatás
+Uberlândia - MG
+R$ 178.000,00
+Quartos 2 | Suítes 0 | Banheiros 1 | Vagas 0 | Elevadores 0
+Cond.: R$ 350,00
+Área interna: 54 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 06/06/2026 15:01
+
+Cód. 97257 | Venda | Apartamento | / Jardim Sul
+Alameda Pastor Pompeo Zanatta, 57, Apto 801, CEP 38411-837
+Uberlândia - MG
+R$ 780.000,00
+Quartos 3 | Suítes 1 | Banheiros 2 | Vagas 2 | Elevadores 3
+Área interna: 89,41 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 06/06/2026 10:48
+
+Cód. 98468 | Venda | Terreno | / Jardim Karaíba
+Rua Cyro Avelino Franco, 149, CEP 38411-174
+Uberlândia - MG
+R$ 500.000,00
+Área do lote/terreno: 375 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 06/06/2026 10:45
+
+Residencial Brisas - 96759 / Santa Mônica  [LANÇAMENTO]
+Avenida Ortízio Borges, 788, CEP 38408-263
+Uberlândia - MG
+R$ 351.000,00 até R$ 379.000,00
+Área interna: 53 m² até 68 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 06/06/2026 10:41
+
+Cód. 99208 | Venda | Casa | / Luizote de Freitas
+Rua Paulo Margonari, 620, CEP 38414-317
+Uberlândia - MG
+R$ 450.000,00
+Quartos 5 | Suítes 1 | Banheiros 2 | Vagas 4 | Elevadores 0
+Área interna: 225 m² | Área do lote/terreno: 250 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 06/06/2026 09:16
+
+Cód. 94790 | Venda | Apartamento | / Saraiva
+Rua Vitalino Rezende do Carmo, 214, Apto 201, CEP 38408-028
+Ed.: Emília de Mello Pereira
+Uberlândia - MG
+R$ 600.000,00
+Quartos 3 | Suítes 1 | Banheiros 3 | Vagas 2 | Elevadores 0
+Cond.: R$ 295,00
+Área interna: 126 m²
+Unidade: ROTINA VENDAS
+Data última alteração: 06/06/2026 08:47
+
+Soleil Résidence - 99572 / Gávea / Solares da Gávea  [LANÇAMENTO]
+Rua GS, 755, CEP 38411-860
+Uberlândia - MG
+R$ 820.196,00 até R$ 2.296.714,00
+Quartos 1 até 3 | Vagas 1 | Elevadores 4
+Área interna: 77,42 m² até 142,92 m²
+Unidade: ROTINA ZONA SUL
+Data última alteração: 05/06/2026 22:01
+
+Orbit - 99425 / Centro  [LANÇAMENTO]
+Rua Tenente Virmondes, 313, CEP 38400-110
+Uberlândia - MG
+R$ 326.304,00
+Quartos 1 | Vagas 0 | Elevadores 3
+Área interna: 27,55 m²
+Unidade: ROTINA ZONA SUL
+Data última alteração: 05/06/2026 22:01
+
+Titanium - 99414 / Tibery  [LANÇAMENTO]
+Rua Natal, 1937, CEP 38405-029
+Uberlândia - MG
+R$ 523.021,00
+Quartos 2 | Vagas 2 | Elevadores 2
+Área interna: 57,42 m²
+Unidade: ROTINA ZONA SUL
+Data última alteração: 05/06/2026 22:01
+
+Ecopark I - 99402 / Shopping Park  [LANÇAMENTO - LOTEAMENTO]
+Rua Sebastião Irias de Matos, 1084, CEP 38425-627
+Uberlândia - MG
+R$ 192.693,00
+Quartos 0 | Vagas 0 | Elevadores 0
+Área interna: 250 m²
+Unidade: ROTINA ZONA SUL
+Data última alteração: 05/06/2026 22:01
