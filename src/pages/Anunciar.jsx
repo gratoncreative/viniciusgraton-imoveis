@@ -34,6 +34,48 @@ const comprimir = (file) => new Promise((resolve) => {
   reader.readAsDataURL(file)
 })
 
+const FONE_PLACA = '(34) 99157-0494'
+const PLACA_MODELOS = [
+  { id: 'classica', nome: 'Clássica', desc: 'Branca, leitura fácil de longe.' },
+  { id: 'premium', nome: 'Premium dourada', desc: 'Sofisticada, ar de alto padrão.' },
+  { id: 'minimal', nome: 'Minimalista', desc: 'Clean e moderna.' },
+]
+const PLACA_TAMANHOS = [
+  { id: 'p', nome: 'Pequena', dim: '40 × 30 cm' },
+  { id: 'media', nome: 'Média', dim: '60 × 40 cm' },
+  { id: 'g', nome: 'Grande', dim: '80 × 60 cm' },
+]
+const PlacaPreview = ({ modelo }) => {
+  if (modelo === 'premium') return (
+    <svg viewBox="0 0 200 130" className="placa-svg" aria-hidden="true">
+      <rect x="3" y="3" width="194" height="124" rx="8" fill="#11151d" stroke="#b8862f" strokeWidth="2" />
+      <rect x="13" y="13" width="174" height="104" rx="5" fill="none" stroke="#3a3322" />
+      <text x="100" y="50" textAnchor="middle" fontFamily="Arial" fontSize="30" fontWeight="800" fill="#e0b556" letterSpacing="1">VENDE-SE</text>
+      <line x1="55" y1="64" x2="145" y2="64" stroke="#b8862f" strokeWidth="1.5" />
+      <text x="100" y="86" textAnchor="middle" fontFamily="Georgia, serif" fontStyle="italic" fontSize="15" fill="#f4f1e8">Vinícius Graton</text>
+      <text x="100" y="106" textAnchor="middle" fontFamily="Arial" fontSize="12" fill="#aab2c0">WhatsApp {FONE_PLACA}</text>
+    </svg>
+  )
+  if (modelo === 'minimal') return (
+    <svg viewBox="0 0 200 130" className="placa-svg" aria-hidden="true">
+      <rect x="3" y="3" width="194" height="124" rx="8" fill="#f4f1e8" stroke="#d9c9a0" strokeWidth="2" />
+      <text x="100" y="60" textAnchor="middle" fontFamily="Arial" fontSize="33" fontWeight="800" fill="#11151d" letterSpacing="1">VENDE-SE</text>
+      <line x1="70" y1="72" x2="130" y2="72" stroke="#b8862f" strokeWidth="3" />
+      <text x="100" y="99" textAnchor="middle" fontFamily="Arial" fontSize="12" fill="#3a4150">Vinícius Graton · {FONE_PLACA}</text>
+    </svg>
+  )
+  return (
+    <svg viewBox="0 0 200 130" className="placa-svg" aria-hidden="true">
+      <rect x="3" y="3" width="194" height="124" rx="8" fill="#fff" stroke="#b8862f" strokeWidth="2" />
+      <path d="M3 11a8 8 0 0 1 8-8h178a8 8 0 0 1 8 8v26H3z" fill="#b8862f" />
+      <text x="100" y="28" textAnchor="middle" fontFamily="Arial" fontSize="22" fontWeight="800" fill="#fff" letterSpacing="1">VENDE-SE</text>
+      <text x="100" y="68" textAnchor="middle" fontFamily="Georgia, serif" fontStyle="italic" fontSize="16" fill="#11151d">Vinícius Graton</text>
+      <text x="100" y="86" textAnchor="middle" fontFamily="Arial" fontSize="10" fill="#5a616e" letterSpacing="1">CONSULTOR DE IMÓVEIS · UBERLÂNDIA</text>
+      <text x="100" y="110" textAnchor="middle" fontFamily="Arial" fontSize="14" fontWeight="700" fill="#b8862f">WhatsApp {FONE_PLACA}</text>
+    </svg>
+  )
+}
+
 export default function Anunciar() {
   useSEO({
     title: 'Anuncie seu imóvel em Uberlândia — cadastre com o Vinícius Graton',
@@ -46,7 +88,11 @@ export default function Anunciar() {
     preco: 0, quartos: '', suites: '', vagas: '', area: '', condominio: 0, iptu: '', descricao: '',
   })
   const [fotos, setFotos] = useState([])
+  const [placa, setPlaca] = useState({ quer: true, modelo: 'premium', tamanho: 'media' })
   const [consent, setConsent] = useState(false)
+  const placaTxt = placa.quer
+    ? `Sim — modelo ${PLACA_MODELOS.find((m) => m.id === placa.modelo)?.nome}, tamanho ${PLACA_TAMANHOS.find((t) => t.id === placa.tamanho)?.nome} (${PLACA_TAMANHOS.find((t) => t.id === placa.tamanho)?.dim})`
+    : 'Não, por enquanto'
   const [estado, setEstado] = useState('idle') // idle | enviando | ok | erro
   const set = (k) => (e) => setF((s) => ({ ...s, [k]: e.target.value }))
   const setNum = (k) => (v) => setF((s) => ({ ...s, [k]: v }))
@@ -73,6 +119,7 @@ export default function Anunciar() {
       preco: f.preco ? formatBRL(f.preco) : '',
       condominio: f.condominio ? formatBRL(f.condominio) : '',
       fotos,
+      placa: placaTxt,
     }
     try {
       const r = await fetch('/api/anuncio', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) })
@@ -80,7 +127,7 @@ export default function Anunciar() {
       if (!r.ok || !j.ok) throw new Error('falha')
       setEstado('ok')
       const resumo = `${f.tipo} para ${f.finalidade.toLowerCase()} em ${f.bairro || 'Uberlândia'}${f.preco ? ` — ${formatBRL(f.preco)}` : ''}`
-      const msg = `Olá Vinícius! Acabei de cadastrar meu imóvel no site para avaliação: ${resumo}. Enviei ${fotos.length} foto(s) e os detalhes completos. Meu nome é ${f.nome.trim()}, WhatsApp ${f.fone.trim()}.`
+      const msg = `Olá Vinícius! Acabei de cadastrar meu imóvel no site para avaliação: ${resumo}. Enviei ${fotos.length} foto(s) e os detalhes completos. Placa VENDE-SE: ${placaTxt}. Meu nome é ${f.nome.trim()}, WhatsApp ${f.fone.trim()}.`
       window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener')
     } catch {
       setEstado('erro')
@@ -153,6 +200,36 @@ export default function Anunciar() {
                 </label>
               )}
             </div>
+          </div>
+
+          <div className="placa-bloco">
+            <span className="anunciar-fotos-tit">Placa “VENDE-SE” no seu imóvel <i>(grátis e opcional)</i></span>
+            <p className="placa-pitch">
+              Placa <b>vende</b>. Quem passa na rua, o vizinho, o porteiro — muita gente compra (ou indica alguém) ao ver uma placa profissional no imóvel. Ela transmite <b>credibilidade</b> e <b>autoridade</b>, mostra que o imóvel está <b>seriamente à venda</b> com um consultor de confiança e gera contatos diretos, somando à divulgação online. <b>A colocação é por minha conta — sem nenhum custo pra você.</b>
+            </p>
+            <div className="placa-opt">
+              <button type="button" className={`placa-toggle ${placa.quer ? 'on' : ''}`} onClick={() => setPlaca((s) => ({ ...s, quer: true }))}>Quero a placa (grátis)</button>
+              <button type="button" className={`placa-toggle ${!placa.quer ? 'on' : ''}`} onClick={() => setPlaca((s) => ({ ...s, quer: false }))}>Agora não</button>
+            </div>
+            {placa.quer && (
+              <>
+                <span className="placa-label">Escolha o modelo</span>
+                <div className="placa-modelos">
+                  {PLACA_MODELOS.map((m) => (
+                    <button type="button" key={m.id} className={`placa-card ${placa.modelo === m.id ? 'on' : ''}`} onClick={() => setPlaca((s) => ({ ...s, modelo: m.id }))}>
+                      <PlacaPreview modelo={m.id} />
+                      <b>{m.nome}</b><i>{m.desc}</i>
+                    </button>
+                  ))}
+                </div>
+                <span className="placa-label">Tamanho</span>
+                <div className="condo-chips">
+                  {PLACA_TAMANHOS.map((t) => (
+                    <button type="button" key={t.id} className={`condo-chip ${placa.tamanho === t.id ? 'on' : ''}`} onClick={() => setPlaca((s) => ({ ...s, tamanho: t.id }))}>{t.nome} · {t.dim}</button>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
 
           <label className="lead-consent">

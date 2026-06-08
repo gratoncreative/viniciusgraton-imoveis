@@ -316,6 +316,7 @@ export default function Admin() {
                   {a.quartos ? ` · ${a.quartos} quartos` : ''}{a.suites ? ` · ${a.suites} suítes` : ''}{a.vagas ? ` · ${a.vagas} vagas` : ''}{a.area ? ` · ${a.area} m²` : ''}{a.condominio ? ` · cond. ${a.condominio}` : ''}{a.iptu ? ` · IPTU ${a.iptu}` : ''}
                 </p>
                 {a.endereco && <p className="admin-card-end">📍 {a.endereco}</p>}
+                {a.placa && <p className="admin-card-end">🪧 Placa VENDE-SE: <b>{a.placa}</b></p>}
                 {a.descricao && <p className="admin-card-desc">{a.descricao}</p>}
                 {(a.fotos || []).length > 0 && (
                   <div className="admin-fotos">

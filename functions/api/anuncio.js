@@ -26,7 +26,7 @@ export async function onRequestPost({ env, request }) {
     bairro: str(body.bairro, 80), endereco: str(body.endereco, 180), preco: str(body.preco, 40),
     quartos: str(body.quartos, 10), suites: str(body.suites, 10), vagas: str(body.vagas, 10),
     area: str(body.area, 20), condominio: str(body.condominio, 40), iptu: str(body.iptu, 40),
-    descricao: str(body.descricao, 2000), fotos,
+    descricao: str(body.descricao, 2000), placa: str(body.placa, 140), fotos,
   }
   const id = ts + '-' + Math.random().toString(36).slice(2, 8)
   if (temKV(env)) await env.ENGAGEMENT.put('anuncio:' + id, JSON.stringify(sub))

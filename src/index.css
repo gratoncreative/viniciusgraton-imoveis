@@ -1158,6 +1158,21 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .admin-owner .admin-field input { background: #fff; }
 .admin-owner-tag { font-family: var(--font-head); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #8a6418; background: rgba(184,134,47,0.16); border: 1px solid rgba(184,134,47,0.35); padding: 2px 8px; border-radius: 100px; }
 @media (max-width: 720px) { .admin-edit-grid { grid-template-columns: 1fr; } }
+/* Placa VENDE-SE no formulário Anunciar */
+.placa-bloco { background: #fff; border: 1px solid rgba(184,134,47,0.3); border-radius: 16px; padding: 20px; margin: 6px 0 4px; box-shadow: 0 14px 34px -28px rgba(22,26,34,0.5); }
+.placa-pitch { color: #4a5160; font-size: 0.95rem; line-height: 1.6; margin: 8px 0 14px; }
+.placa-opt { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+.placa-toggle { font-family: var(--font-head); font-weight: 600; font-size: 0.92rem; color: #3a4150; background: rgba(22,26,34,0.05); border: 1px solid rgba(22,26,34,0.16); padding: 11px 18px; border-radius: 100px; cursor: pointer; transition: all 0.18s var(--ease); }
+.placa-toggle.on { background: var(--gold-grad); color: #20160a; border-color: transparent; }
+.placa-label { display: block; font-family: var(--font-head); font-size: 0.74rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-3); margin: 16px 0 9px; }
+.placa-modelos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.placa-card { display: flex; flex-direction: column; gap: 4px; padding: 10px; background: #fbf9f4; border: 2px solid rgba(22,26,34,0.1); border-radius: 12px; cursor: pointer; text-align: center; transition: border-color 0.18s var(--ease), transform 0.18s var(--ease); }
+.placa-card:hover { transform: translateY(-2px); }
+.placa-card.on { border-color: var(--gold-2); box-shadow: 0 0 0 3px rgba(224,181,86,0.18); }
+.placa-card b { font-family: var(--font-head); font-size: 0.9rem; color: #1a1f29; margin-top: 4px; }
+.placa-card i { font-style: normal; font-size: 0.78rem; color: #6a7280; }
+.placa-svg { width: 100%; height: auto; border-radius: 7px; display: block; }
+@media (max-width: 560px) { .placa-modelos { grid-template-columns: 1fr; } }
 .conta-trust-chips { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 26px; }
 .conta-trust-chips span { font-size: 0.8rem; font-weight: 600; color: #6a5418; background: rgba(184,134,47,0.12); border: 1px solid rgba(184,134,47,0.28); padding: 6px 13px; border-radius: 100px; }
 .conta-beneficios { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 16px 22px; margin-top: 4px; }
