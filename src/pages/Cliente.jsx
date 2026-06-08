@@ -48,22 +48,22 @@ export default function Cliente() {
     return () => { vivo = false }
   }, [token])
 
-  // salva (com pequeno atraso) as escolhas do cliente no perfil dele
+  // salva (com pequeno atraso) o ESTADO COMPLETO das escolhas do cliente no
+  // perfil dele — sempre o mapa inteiro, nunca um delta, pra nada se perder.
   const agendarSalvar = (novosPrefs, novoFb) => {
     clearTimeout(timer.current)
     timer.current = setTimeout(() => {
       fetch('/api/cliente-refina', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ t: token, prefs: novosPrefs, feedback: novoFb }) })
         .then(() => { setSalvo(true); setTimeout(() => setSalvo(false), 1500) }).catch(() => {})
-    }, 800)
+    }, 700)
   }
-  const mudarPref = (patch) => { const np = { ...prefs, ...patch }; setPrefs(np); setMexeu(true); agendarSalvar(np, {}) }
+  const mudarPref = (patch) => { const np = { ...prefs, ...patch }; setPrefs(np); setMexeu(true); agendarSalvar(np, feedback) }
   const toggleArr = (k, val) => { const a = new Set(prefs[k] || []); a.has(val) ? a.delete(val) : a.add(val); mudarPref({ [k]: [...a] }) }
   const setFb = (cod, val) => {
-    const atual = feedback[cod]
     const novo = { ...feedback }
-    if (atual === val) delete novo[cod]; else novo[cod] = val
+    if (novo[cod] === val) delete novo[cod]; else novo[cod] = val
     setFeedback(novo); setMexeu(true)
-    agendarSalvar(prefs, { [cod]: atual === val ? 'remove' : val })
+    agendarSalvar(prefs, novo)
   }
 
   if (estado === 'carregando') return <main className="pagina section--light det-vazio"><div className="container" style={{ textAlign: 'center' }}><p className="section-sub">Carregando sua seleção…</p></div></main>

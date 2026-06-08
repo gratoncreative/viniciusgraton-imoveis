@@ -25,14 +25,15 @@ export async function onRequestPost({ env, request }) {
     if ('suitesMin' in p) reg.suitesMin = num(p.suitesMin)
     if ('vagasMin' in p) reg.vagasMin = num(p.vagasMin)
   }
+  // O cliente envia o ESTADO COMPLETO do feedback (mapa inteiro), então
+  // substituímos por ele: o que estiver no mapa fica, o que sumiu foi removido.
   if (b.feedback && typeof b.feedback === 'object') {
-    const fb = reg.feedback && typeof reg.feedback === 'object' ? reg.feedback : {}
+    const fb = {}
     for (const [cod, v] of Object.entries(b.feedback)) {
       const c = String(cod).replace(/[^a-zA-Z0-9]/g, '').slice(0, 12)
       if (!c) continue
-      if (v === null || v === 'remove') delete fb[c]
-      else if (v === 'like' || v === 'dislike') fb[c] = v
-      if (Object.keys(fb).length > 200) break
+      if (v === 'like' || v === 'dislike') fb[c] = v
+      if (Object.keys(fb).length >= 200) break
     }
     reg.feedback = fb
   }
