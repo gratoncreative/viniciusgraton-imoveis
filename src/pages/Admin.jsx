@@ -4,6 +4,7 @@ import { CONFIG, IMOVEIS, IMOVEIS_PENDENTES, formatPreco } from '../data'
 import { IconShield, IconArrow } from '../components/icons'
 import RemoverMarca from '../components/RemoverMarca'
 import AdminCRM from '../components/AdminCRM'
+import InputMoeda from '../components/InputMoeda'
 
 const LSK = 'vg_admin_token'
 const waLink = (fone) => `https://wa.me/55${String(fone || '').replace(/\D/g, '')}`
@@ -48,12 +49,13 @@ function Login({ onOk }) {
   )
 }
 
-function StatCard({ rotulo, valor, sub }) {
+function StatCard({ rotulo, valor, sub, onClick }) {
   return (
-    <div className="admin-stat">
+    <div className={`admin-stat${onClick ? ' admin-stat--clk' : ''}`} onClick={onClick} role={onClick ? 'button' : undefined} tabIndex={onClick ? 0 : undefined} onKeyDown={onClick ? (e) => { if (e.key === 'Enter') onClick() } : undefined}>
       <span className="admin-stat-num">{valor}</span>
       <span className="admin-stat-rot">{rotulo}</span>
       {sub && <span className="admin-stat-sub">{sub}</span>}
+      {onClick && <span className="admin-stat-go">abrir →</span>}
     </div>
   )
 }
@@ -247,7 +249,7 @@ function ImoveisPub({ token, onSair }) {
             <div className="admin-fields">
               <label className="admin-field"><span>Tipo</span><input value={reg.campos.tipo} onChange={(e) => setC('tipo', e.target.value)} /></label>
               <label className="admin-field"><span>Bairro</span><input value={reg.campos.bairro} onChange={(e) => setC('bairro', e.target.value)} /></label>
-              <label className="admin-field"><span>Preço (R$)</span><input type="number" value={reg.campos.preco} onChange={(e) => setC('preco', e.target.value)} /></label>
+              <label className="admin-field"><span>Preço</span><InputMoeda value={reg.campos.preco} onChange={(v) => setC('preco', v)} /></label>
               <label className="admin-field"><span>Área (m²)</span><input type="number" value={reg.campos.area} onChange={(e) => setC('area', e.target.value)} /></label>
               <label className="admin-field"><span>Quartos</span><input type="number" value={reg.campos.quartos} onChange={(e) => setC('quartos', e.target.value)} /></label>
               <label className="admin-field"><span>Suítes</span><input type="number" value={reg.campos.suites} onChange={(e) => setC('suites', e.target.value)} /></label>
@@ -382,6 +384,11 @@ export default function Admin() {
     if (status === 401) return sair()
     carregar()
   }
+  const aprovarTodos = async () => {
+    if (!window.confirm(`Aprovar e publicar os ${importadosPendentes.length} imóveis importados?`)) return
+    for (const im of importadosPendentes) await api({ action: 'imovel-aprovar', token, codigo: im.codigo, aprovado: true })
+    carregar()
+  }
 
   const exportarCSV = () => {
     const linhas = [['Nome', 'Telefone', 'Origem', 'Status', 'Anotação', 'Data']]
@@ -426,11 +433,12 @@ export default function Admin() {
         {aba === 'geral' && (
           <section>
             <div className="admin-stats">
-              <StatCard rotulo="Imóveis a avaliar" valor={aAvaliar} sub={`${importadosPendentes.length} importados · ${pendentes} de proprietários`} />
-              <StatCard rotulo="Leads (7 dias)" valor={leadsNovos} sub={`${leads.length} no total`} />
-              <StatCard rotulo="Cadastros de clientes" valor={clientes.length} sub="área do cliente" />
-              <StatCard rotulo="Imóveis publicados" valor={IMOVEIS.length} sub="em destaque no site" />
-              <StatCard rotulo="Leituras no blog" valor={totalViews} sub={blogViews ? `${Object.keys(blogViews).length} posts` : '—'} />
+              <StatCard rotulo="Imóveis a avaliar" valor={aAvaliar} sub={`${importadosPendentes.length} importados · ${pendentes} enviados`} onClick={() => setAba('moderacao')} />
+              <StatCard rotulo="Leads (7 dias)" valor={leadsNovos} sub={`${leads.length} no total`} onClick={() => setAba('leads')} />
+              <StatCard rotulo="Cadastros de clientes" valor={clientes.length} sub="área do cliente" onClick={() => setAba('clientes')} />
+              <StatCard rotulo="Imóveis publicados" valor={IMOVEIS.length} sub="em destaque no site" onClick={() => setAba('imoveis')} />
+              <StatCard rotulo="Meus clientes (CRM)" valor={'→'} sub="cadastros + páginas" onClick={() => setAba('crm')} />
+              <StatCard rotulo="Leituras no blog" valor={totalViews} sub={blogViews ? `${Object.keys(blogViews).length} posts` : '—'} onClick={() => window.open('/blog', '_blank')} />
             </div>
             <div className="det-trust" style={{ marginTop: 18 }}>
               <IconShield width={20} height={20} />
@@ -441,22 +449,47 @@ export default function Admin() {
 
         {aba === 'moderacao' && (
           <section>
-            <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Importados aguardando sua aprovação ({importadosPendentes.length})</h3>
+            <div className="admin-aprovar-head">
+              <h3 className="det-rel-titulo" style={{ margin: 0 }}>Importados aguardando sua aprovação ({importadosPendentes.length})</h3>
+              {importadosPendentes.length > 1 && <button className="btn btn-gold" onClick={aprovarTodos}>✓ Aprovar todos ({importadosPendentes.length})</button>}
+            </div>
             {importadosPendentes.length === 0 && <p className="section-sub">Nenhum imóvel importado aguardando aprovação. Tudo que eu importar do Imoview entra aqui primeiro — só vai pro site depois que você aprovar.</p>}
-            <div className="admin-aprovar-grid">
+            <div className="admin-aprovar-lista">
               {importadosPendentes.map((im) => (
-                <div className="admin-aprovar-card" key={im.codigo}>
-                  <img src={im.img} alt="" loading="lazy" />
-                  <div className="admin-aprovar-info">
-                    <b>{im.tipo} · {im.bairro}</b>
-                    <span className="painel-meta">{formatPreco(im.preco)} · {im.quartos}q · {im.suites || 0} suíte · cód {im.codigo}</span>
-                    <span className="painel-meta">{(im.fotos || []).length} fotos</span>
+                <article className="aprovar-banner" key={im.codigo}>
+                  <div className="aprovar-banner-fotos">
+                    <img className="aprovar-banner-capa" src={im.img} alt="" loading="lazy" />
+                    <div className="aprovar-banner-thumbs">
+                      {(im.fotos || []).slice(1, 5).map((f, i) => <img key={i} src={f} alt="" loading="lazy" />)}
+                      {(im.fotos || []).length > 5 && <span className="aprovar-banner-mais">+{im.fotos.length - 5}</span>}
+                    </div>
                   </div>
-                  <div className="admin-card-acoes">
-                    <a className="admin-btn" href={`/imovel/${im.codigo}`} target="_blank" rel="noopener">Pré-visualizar</a>
-                    <button className="admin-btn admin-btn--ok" onClick={() => aprovarImovel(im.codigo, true)}>Aprovar e publicar</button>
+                  <div className="aprovar-banner-info">
+                    <div className="aprovar-banner-top">
+                      <div>
+                        <b>{im.tipo} · {im.bairro}</b>
+                        <span className="aprovar-banner-end">{im.endereco || `${im.cidade} — ${im.uf}`}{im.edificio ? ` · Ed. ${im.edificio}` : ''}</span>
+                      </div>
+                      <span className="aprovar-banner-preco">{formatPreco(im.preco)}</span>
+                    </div>
+                    <div className="aprovar-banner-specs">
+                      {im.quartos > 0 && <span>{im.quartos} quartos</span>}
+                      {im.suites > 0 && <span>{im.suites} suíte{im.suites > 1 ? 's' : ''}</span>}
+                      {im.banheiros > 0 && <span>{im.banheiros} banheiros</span>}
+                      {im.vagas > 0 && <span>{im.vagas} vaga{im.vagas > 1 ? 's' : ''}</span>}
+                      {im.area > 0 && <span>{im.area} m²</span>}
+                      {im.condominio > 0 && <span>Cond. {formatPreco(im.condominio)}</span>}
+                      <span>cód. {im.codigo}</span>
+                      <span>{(im.fotos || []).length} fotos</span>
+                    </div>
+                    {im.descricao && <p className="aprovar-banner-desc">{im.descricao}</p>}
+                    <div className="aprovar-banner-acoes">
+                      <button className="btn btn-gold" onClick={() => aprovarImovel(im.codigo, true)}>✓ Aprovar e publicar</button>
+                      <a className="admin-btn" href={`/imovel/${im.codigo}`} target="_blank" rel="noopener">Pré-visualizar</a>
+                      <button className="admin-btn" onClick={() => { setAba('imoveis'); }}>🔒 Dados do proprietário</button>
+                    </div>
                   </div>
-                </div>
+                </article>
               ))}
             </div>
 

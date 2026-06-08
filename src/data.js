@@ -87,14 +87,10 @@ export const waConstrutora = (c, proj) =>
 export const CONDOMINIOS = condominiosData.condominios || []
 export const getCondominio = (slug) => CONDOMINIOS.find((c) => c.slug === slug)
 
-// Formata preço em reais de forma curta e elegante (R$ 3,3 mi / R$ 530 mil)
+// Formata preço em reais por extenso, padrão brasileiro: R$ 550.000,00
 export const formatPreco = (v) => {
   if (!v || v <= 0) return 'Sob consulta'
-  if (v >= 1000000) {
-    const mi = v / 1000000
-    return `R$ ${mi.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 1 })} mi`
-  }
-  return `R$ ${Math.round(v / 1000)} mil`
+  return `R$ ${Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
 }
 
 export const formatArea = (a) =>

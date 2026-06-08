@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, filtrarParaCliente, formatPreco } from '../data'
+import InputMoeda from './InputMoeda'
 
 const api = (payload) => fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) }).then((r) => r.json().then((j) => ({ status: r.status, j })))
 
@@ -66,8 +67,8 @@ export default function AdminCRM({ token, onSair }) {
               <label className="admin-field"><span>Finalidade</span>
                 <select value={sel.finalidade} onChange={(e) => setF('finalidade', e.target.value)}><option>Comprar</option><option>Alugar</option><option>Investir</option></select>
               </label>
-              <label className="admin-field"><span>Preço mín. (R$)</span><input type="number" value={sel.precoMin} onChange={(e) => setF('precoMin', e.target.value)} /></label>
-              <label className="admin-field"><span>Preço máx. (R$)</span><input type="number" value={sel.precoMax} onChange={(e) => setF('precoMax', e.target.value)} /></label>
+              <label className="admin-field"><span>Preço mín.</span><InputMoeda value={sel.precoMin} onChange={(v) => setF('precoMin', v)} /></label>
+              <label className="admin-field"><span>Preço máx.</span><InputMoeda value={sel.precoMax} onChange={(v) => setF('precoMax', v)} /></label>
               <label className="admin-field"><span>Quartos (mín.)</span><input type="number" value={sel.quartosMin} onChange={(e) => setF('quartosMin', e.target.value)} /></label>
               <label className="admin-field"><span>Suítes (mín.)</span><input type="number" value={sel.suitesMin} onChange={(e) => setF('suitesMin', e.target.value)} /></label>
               <label className="admin-field"><span>Vagas (mín.)</span><input type="number" value={sel.vagasMin} onChange={(e) => setF('vagasMin', e.target.value)} /></label>
@@ -148,6 +149,7 @@ export default function AdminCRM({ token, onSair }) {
             <div className="crm-card-acoes">
               <button className="admin-btn" onClick={() => setSel({ ...VAZIO, ...c })}>Abrir / editar</button>
               <a className="admin-btn" href={`${window.location.origin}/cliente/${c.id}`} target="_blank" rel="noopener">Página</a>
+              <a className="admin-btn admin-btn--ok" href={waLink(c.whatsapp, `Olá${c.nome ? ' ' + c.nome.split(' ')[0] : ''}! Aqui é o Vinícius. Separei uma seleção de imóveis pensando no que você procura: ${window.location.origin}/cliente/${c.id}`)} target="_blank" rel="noopener">WhatsApp</a>
               <button className="admin-btn admin-btn--del" onClick={() => excluir(c.id)}>Excluir</button>
             </div>
           </div>
