@@ -1191,6 +1191,23 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .admin-btn--upload:hover { border-color: var(--gold-3); color: var(--gold-3); background: rgba(184,134,47,0.07); }
 .admin-btn--upload input:disabled { cursor: progress; }
 .lead-erro { font-size: 0.84rem; color: #c0392b; font-weight: 600; }
+/* Ferramenta de remover marca d'água (área restrita) */
+.marca-grid { display: grid; grid-template-columns: 200px 1fr; gap: 16px; align-items: start; }
+.marca-lista { border: 1px solid rgba(22,26,34,0.12); border-radius: 12px; padding: 12px; background: #fff; }
+.marca-thumbs { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; max-height: 460px; overflow: auto; }
+.marca-thumb { position: relative; border: 2px solid transparent; border-radius: 9px; overflow: hidden; cursor: pointer; background: #0c0f15; }
+.marca-thumb.on { border-color: var(--gold-3); }
+.marca-thumb img { width: 100%; height: 72px; object-fit: cover; display: block; opacity: .92; }
+.marca-st { position: absolute; top: 5px; left: 5px; width: 18px; height: 18px; border-radius: 100px; background: #000a; color: #fff; font-size: .7rem; display: grid; place-items: center; }
+.marca-st.ok { background: #1d7a45; }
+.marca-editor { min-width: 0; }
+.marca-barra { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.marca-barra label { font-size: .82rem; color: #4a5160; display: flex; align-items: center; gap: 8px; }
+.marca-palco { display: grid; place-items: center; background: #11151d; border-radius: 12px; min-height: 320px; padding: 16px; }
+.marca-lienzo { position: relative; line-height: 0; box-shadow: 0 18px 50px -22px #000; }
+.marca-lienzo canvas { display: block; max-width: 100%; border-radius: 4px; }
+.marca-lienzo canvas:last-child { position: absolute; inset: 0; cursor: crosshair; touch-action: none; }
+@media (max-width: 720px) { .marca-grid { grid-template-columns: 1fr; } }
 /* Placa VENDE-SE no formulário Anunciar */
 .placa-bloco { background: #fff; border: 1px solid rgba(184,134,47,0.3); border-radius: 16px; padding: 20px; margin: 6px 0 4px; box-shadow: 0 14px 34px -28px rgba(22,26,34,0.5); }
 .placa-pitch { color: #4a5160; font-size: 0.95rem; line-height: 1.6; margin: 8px 0 14px; }

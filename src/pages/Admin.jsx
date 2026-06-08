@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useSEO } from '../useSEO'
 import { CONFIG, IMOVEIS } from '../data'
 import { IconShield, IconArrow } from '../components/icons'
+import RemoverMarca from '../components/RemoverMarca'
 
 const LSK = 'vg_admin_token'
 const waLink = (fone) => `https://wa.me/55${String(fone || '').replace(/\D/g, '')}`
@@ -388,6 +389,7 @@ export default function Admin() {
     ['leads', `Leads (${leads.length})`],
     ['clientes', `Cadastros (${clientes.length})`],
     ['imoveis', 'Imóveis publicados'],
+    ['marca', "Remover marca d'água"],
   ]
 
   return (
@@ -493,6 +495,8 @@ export default function Admin() {
         )}
 
         {aba === 'imoveis' && <ImoveisPub token={token} onSair={sair} />}
+
+        {aba === 'marca' && <RemoverMarca />}
 
         <p className="calc-nota" style={{ marginTop: 22 }}>Painel seguro · sessão de 12h · WhatsApp do site: {CONFIG.telefone || ''}.</p>
       </div>
