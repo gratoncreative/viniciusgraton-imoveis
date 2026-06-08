@@ -4,7 +4,7 @@ import Galeria from '../components/Galeria'
 import CondominioLead from '../components/CondominioLead'
 import { getCondominio, CONDOMINIOS, CONFIG } from '../data'
 import { useSEO } from '../useSEO'
-import { onImgError } from '../img'
+import { onCondImgError, CAPA_COND_PADRAO } from '../img'
 import { IconArrow, IconPin, IconBuilding } from '../components/icons'
 
 export default function CondominioDetalhe() {
@@ -73,7 +73,7 @@ export default function CondominioDetalhe() {
             {fases.map((f) => (
               <Link className="condo-card" to={`/condominios/${f.slug}`} key={f.slug}>
                 <span className="condo-capa">
-                  {f.capa ? <img src={f.capa} alt={`${f.nome} — Uberlândia`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} /> : <span className="condo-capa-vazia"><IconBuilding width={32} height={32} /></span>}
+                  <img src={f.capa || CAPA_COND_PADRAO} alt={`${f.nome} — Uberlândia`} loading="lazy" referrerPolicy="no-referrer" onError={onCondImgError} />
                   <span className="condo-tipo">{f.tipo}</span>
                 </span>
                 <span className="condo-body">
@@ -92,7 +92,8 @@ export default function CondominioDetalhe() {
     )
   }
 
-  const fotos = [c.capa, ...(c.galeria || [])].filter(Boolean)
+  const fotosReais = [c.capa, ...(c.galeria || [])].filter(Boolean)
+  const fotos = fotosReais.length ? fotosReais : [CAPA_COND_PADRAO]
   const mapsQuery = encodeURIComponent(`${c.nome}, ${c.regiao}, Uberlândia, MG`)
   const zonaDe = (r = '') => /sul/i.test(r) ? 'sul' : (/leste|marileusa/i.test(r) ? 'leste' : (/represa|miranda/i.test(r) ? 'represa' : (/oeste/i.test(r) ? 'oeste' : 'outras')))
   const zc = zonaDe(c.regiao)
@@ -170,7 +171,7 @@ export default function CondominioDetalhe() {
             <div className="construtora-projs">
               {outros.map((x) => (
                 <Link key={x.slug} className="empre-mini" to={`/condominios/${x.slug}`}>
-                  <div className="empre-mini-capa">{x.capa ? <img src={x.capa} alt={x.nome} loading="lazy" referrerPolicy="no-referrer" /> : <span className="proj-capa-vazia"><IconBuilding width={26} height={26} /></span>}</div>
+                  <div className="empre-mini-capa"><img src={x.capa || CAPA_COND_PADRAO} alt={x.nome} loading="lazy" referrerPolicy="no-referrer" onError={onCondImgError} /></div>
                   <div className="empre-mini-txt"><b>{x.nome}</b><span>{x.regiao}</span></div>
                 </Link>
               ))}

@@ -16,3 +16,14 @@ export function onImgError(e) {
   img.dataset.fb = '1'
   img.src = FALLBACK
 }
+
+// Capa-padrão de marca para CONDOMÍNIOS sem foto oficial (gerada em scripts/gen-cond-placeholder.mjs).
+// Usada como capa quando não há imagem e como fallback se uma URL oficial falhar.
+export const CAPA_COND_PADRAO = '/img/cond/_sem-foto.jpg'
+
+export function onCondImgError(e) {
+  const img = e.currentTarget
+  if (img.dataset.fb) return
+  img.dataset.fb = '1'
+  img.src = CAPA_COND_PADRAO
+}

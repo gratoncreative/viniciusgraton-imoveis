@@ -4,8 +4,8 @@ import Reveal from '../components/Reveal'
 import CondominioLead from '../components/CondominioLead'
 import { CONDOMINIOS } from '../data'
 import { useSEO } from '../useSEO'
-import { onImgError } from '../img'
-import { IconArrow, IconPin, IconBuilding, IconShield, IconSearch } from '../components/icons'
+import { onCondImgError, CAPA_COND_PADRAO } from '../img'
+import { IconArrow, IconPin, IconShield, IconSearch } from '../components/icons'
 
 const norm = (s = '') => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim()
 const zonaDe = (r = '') => /sul/i.test(r) ? 'Zona Sul' : (/leste|marileusa/i.test(r) ? 'Zona Leste' : (/represa|miranda/i.test(r) ? 'Represa de Miranda' : (/oeste/i.test(r) ? 'Zona Oeste' : 'Outras regiões')))
@@ -31,11 +31,7 @@ function CardCondo({ c }) {
   return (
     <Link className="condo-card" to={`/condominios/${c.slug}`}>
       <span className="condo-capa">
-        {c.capa ? (
-          <img src={c.capa} alt={`${c.nome} — condomínio fechado em Uberlândia`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
-        ) : (
-          <span className="condo-capa-vazia"><IconBuilding width={30} height={30} /><small>Fotos sob consulta</small></span>
-        )}
+        <img src={c.capa || CAPA_COND_PADRAO} alt={`${c.nome} — condomínio fechado em Uberlândia`} loading="lazy" referrerPolicy="no-referrer" onError={onCondImgError} />
         <span className="condo-tipo">{c.tipo}</span>
         {c.segmento && <span className="condo-seg">{c.segmento}</span>}
       </span>
