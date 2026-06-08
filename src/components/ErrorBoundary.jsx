@@ -27,21 +27,14 @@ function CasaObra() {
 }
 
 function ErroFallback() {
-  const jaRecarregou = (() => { try { return sessionStorage.getItem('eb_reload') === '1' } catch { return false } })()
   const [seg, setSeg] = useState(30)
 
+  // SEMPRE: contagem regressiva de 30s e recarrega a página automaticamente ao zerar.
   useEffect(() => {
-    if (jaRecarregou || seg <= 0) return
+    if (seg <= 0) { window.location.reload(); return }
     const t = setTimeout(() => setSeg((s) => s - 1), 1000)
     return () => clearTimeout(t)
-  }, [seg, jaRecarregou])
-
-  useEffect(() => {
-    if (!jaRecarregou && seg === 0) {
-      try { sessionStorage.setItem('eb_reload', '1') } catch {}
-      window.location.reload()
-    }
-  }, [seg, jaRecarregou])
+  }, [seg])
 
   const mmss = `0:${String(Math.max(0, seg)).padStart(2, '0')}`
 
@@ -51,23 +44,14 @@ function ErroFallback() {
         <CasaObra />
         <span className="eyebrow" style={{ justifyContent: 'center' }}>Voltando ao ar</span>
         <h1 className="section-title">Opa! Estamos atualizando o site</h1>
-        {jaRecarregou ? (
-          <p className="section-sub" style={{ margin: '14px auto 26px', maxWidth: 500 }}>
-            Ainda estou dando os retoques finais por aqui. Atualize de novo em instantes — ou me chame no
-            WhatsApp que eu te mostro os imóveis agora mesmo.
-          </p>
-        ) : (
-          <>
-            <p className="section-sub" style={{ margin: '14px auto 18px', maxWidth: 520 }}>
-              Acabaram de chegar <b>novos imóveis</b> e estou colocando tudo no ar pra você. Em uns
-              30 segundinhos já volta — pode atualizar a página que está quase pronto.
-            </p>
-            <div className="erro-contador" role="status" aria-live="polite">
-              <span className="erro-spin" aria-hidden="true" />
-              Voltando ao ar em <b>{mmss}</b>
-            </div>
-          </>
-        )}
+        <p className="section-sub" style={{ margin: '14px auto 18px', maxWidth: 520 }}>
+          Acabaram de chegar <b>novos imóveis</b> e estou colocando tudo no ar pra você. A página
+          atualiza sozinha em alguns segundos — ou toque em atualizar.
+        </p>
+        <div className="erro-contador" role="status" aria-live="polite">
+          <span className="erro-spin" aria-hidden="true" />
+          Atualizando automaticamente em <b>{mmss}</b>
+        </div>
         <div className="erro-acoes">
           <button className="btn btn-gold" onClick={() => window.location.reload()}>Atualizar agora</button>
           <a className="btn btn-ghost" href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener">
