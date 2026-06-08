@@ -197,6 +197,38 @@ for (const c of construtoras) {
 }
 console.log(`✓ prerender empreendimentos: ${nemp} páginas em dist/construtoras/{construtora}/{empreendimento}/`)
 
+// páginas fixas com capa/OG própria (não a foto do Vinícius)
+const PAGINAS_FIXAS = [
+  {
+    rota: 'encontrar-imovel',
+    titulo: 'Encontre seu imóvel em 1 minuto — Uberlândia',
+    desc: 'Responda algumas perguntas rápidas e receba uma seleção de imóveis em Uberlândia feita sob medida pra você, com a curadoria do Vinícius Graton.',
+    image: `${SITE}/og/encontrar.jpg`, w: 1800, h: 600,
+  },
+]
+function renderFixa(p) {
+  const url = `${SITE}/${p.rota}`
+  return baseHtml
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(p.titulo)} | Vinícius Graton</title>`)
+    .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(p.desc)}$2`)
+    .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(p.titulo)}$2`)
+    .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(p.desc)}$2`)
+    .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${esc(url)}$2`)
+    .replace(/(<meta property="og:image" content=")[^"]*(")/, `$1${esc(p.image)}$2`)
+    .replace(/(<meta property="og:image:width" content=")[^"]*(")/, `$1${p.w}$2`)
+    .replace(/(<meta property="og:image:height" content=")[^"]*(")/, `$1${p.h}$2`)
+    .replace(/(<meta name="twitter:title" content=")[^"]*(")/, `$1${esc(p.titulo)}$2`)
+    .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${esc(p.desc)}$2`)
+    .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${esc(p.image)}$2`)
+    .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
+}
+for (const p of PAGINAS_FIXAS) {
+  const dir = resolve(DIST, p.rota)
+  mkdirSync(dir, { recursive: true })
+  writeFileSync(resolve(dir, 'index.html'), renderFixa(p))
+}
+console.log(`✓ prerender páginas fixas: ${PAGINAS_FIXAS.length} (com capa própria)`)
+
 // sitemap.xml completo (home + catálogo + cada imóvel, com imagem p/ o Google Imagens)
 const urls = [
   { loc: `${SITE}/`, freq: 'weekly', pri: '1.0' },

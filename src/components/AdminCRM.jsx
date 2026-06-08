@@ -7,7 +7,9 @@ const api = (payload) => fetch('/api/admin', { method: 'POST', headers: { 'conte
 const VAZIO = { id: '', nome: '', whatsapp: '', finalidade: 'Comprar', tipos: [], bairros: [], precoMin: '', precoMax: '', quartosMin: '', suitesMin: '', vagasMin: '', areaMin: '', obs: '', sugeridos: [] }
 const waLink = (wa, msg) => { const d = String(wa || '').replace(/\D/g, ''); const full = d.length <= 11 ? '55' + d : d; return `https://wa.me/${full}?text=${encodeURIComponent(msg)}` }
 
-export default function AdminCRM({ token, onSair }) {
+const objToFinal = (o) => { const s = (o || '').toLowerCase(); if (s.includes('alug')) return 'Alugar'; if (s.includes('invest')) return 'Investir'; return 'Comprar' }
+
+export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadastro }) {
   const [clientes, setClientes] = useState(null)
   const [sel, setSel] = useState(null) // null = lista; objeto = editando
   const [salvo, setSalvo] = useState(false)
@@ -55,6 +57,20 @@ export default function AdminCRM({ token, onSair }) {
   }
 
   const linkCliente = (c) => `${window.location.origin}/cliente/${c.id}`
+
+  // transforma um cadastro da "área do cliente" (conta) num cliente do CRM, já pré-preenchido
+  const adicionarAoCRM = (c) => {
+    setSel({
+      ...VAZIO,
+      nome: c.nome || '', whatsapp: c.fone || '',
+      finalidade: objToFinal(c.objetivo),
+      bairros: String(c.bairros || '').split(/[,;/]+/).map((s) => s.trim()).filter(Boolean).slice(0, 20),
+      sugeridos: (c.favoritos || []).map((x) => String(x)),
+      obs: [c.email && ('Email: ' + c.email), c.faixa && ('Faixa informada: ' + c.faixa), c.idade && (c.idade + ' anos'), c.sexo, 'Origem: área do cliente do site'].filter(Boolean).join(' · '),
+      origem: 'area-cliente',
+    })
+    setErro(''); window.scrollTo(0, 0)
+  }
 
   // ——— EDITOR ———
   if (sel) {
@@ -180,6 +196,30 @@ export default function AdminCRM({ token, onSair }) {
           </div>
         ))}
       </div>
+
+      {cadastros && cadastros.length > 0 && (
+        <div className="crm-cadastros">
+          <h3 className="det-rel-titulo">Cadastros do site (área do cliente) <span className="painel-meta">({cadastros.length})</span></h3>
+          <p className="calc-nota">São visitantes que criaram conta no site (com favoritos). Clique em <b>Adicionar ao CRM</b> pra virar cliente — eu já trago nome, WhatsApp, bairros e os imóveis que ele favoritou como seleção inicial.</p>
+          <div className="crm-lista">
+            {cadastros.map((c) => (
+              <div className="crm-card" key={c._key || c.token}>
+                <div className="crm-card-top">
+                  <b>{c.nome || 'Sem nome'}</b>
+                  <span className="painel-meta">{c.fone}</span>
+                </div>
+                <p className="crm-card-crit">{[c.objetivo, c.bairros, c.faixa || 'faixa livre', c.email].filter(Boolean).join(' · ')}</p>
+                <p className="painel-meta">❤️ {(c.favoritos || []).length} favoritos · 👁 {(c.historico || []).length} visitados · {new Date(c.atualizadoEm || 0).toLocaleDateString('pt-BR')}</p>
+                <div className="crm-card-acoes">
+                  <button className="btn btn-gold admin-btn--mini" onClick={() => adicionarAoCRM(c)}>+ Adicionar ao CRM</button>
+                  <a className="admin-btn" href={waLink(c.fone, `Olá${c.nome ? ' ' + c.nome.split(' ')[0] : ''}! Aqui é o Vinícius. Vi que você criou conta no meu site, posso te ajudar na busca?`)} target="_blank" rel="noopener">WhatsApp</a>
+                  {onExcluirCadastro && <button className="admin-btn admin-btn--del" onClick={() => onExcluirCadastro(c)}>Excluir</button>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   )
 }

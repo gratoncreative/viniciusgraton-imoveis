@@ -106,6 +106,11 @@ export async function onRequestPost({ env, request }) {
     out.aprovados = []
     const apr = await env.ENGAGEMENT.list({ prefix: 'aprovado:' })
     for (const k of apr.keys) out.aprovados.push(k.name.slice('aprovado:'.length))
+    // resumo do CRM (contagem) p/ a Visão geral — a lista completa é carregada na aba
+    out.crmTotal = 0; out.crmNovos = 0
+    const crm = await env.ENGAGEMENT.list({ prefix: 'crm:' })
+    out.crmTotal = crm.keys.length
+    for (const k of crm.keys) { const v = await env.ENGAGEMENT.get(k.name, 'json'); if (v && v.novo) out.crmNovos++ }
     return json(out)
   }
 

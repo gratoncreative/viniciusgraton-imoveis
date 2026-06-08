@@ -420,6 +420,8 @@ export default function Admin() {
   const importadosPendentes = IMOVEIS_PENDENTES.filter((im) => !aprovados.includes(String(im.codigo)) && !aprovadosLocais.includes(String(im.codigo)))
   const aAvaliar = importadosPendentes.length + pendentes
   const totalViews = blogViews ? Object.values(blogViews).reduce((s, n) => s + (n || 0), 0) : 0
+  const crmTotal = dados?.crmTotal || 0
+  const crmNovos = dados?.crmNovos || 0
 
   const aprovarImovel = async (codigo, aprovado) => {
     if (aprovado !== false) setAprovadosLocais((a) => [...new Set([...a, String(codigo)])]) // some na hora
@@ -453,9 +455,8 @@ export default function Admin() {
     ['geral', 'Visão geral'],
     ['moderacao', `Imóveis a avaliar (${aAvaliar})`],
     ['leads', `Leads (${leads.length})`],
-    ['clientes', `Cadastros (${clientes.length})`],
     ['imoveis', 'Imóveis publicados'],
-    ['crm', 'Meus clientes'],
+    ['crm', `Clientes${crmNovos ? ` (${crmNovos} novos)` : ''}`],
     ['marca', "Remover marca d'água"],
   ]
 
@@ -484,9 +485,8 @@ export default function Admin() {
             <div className="admin-stats">
               <StatCard rotulo="Imóveis a avaliar" valor={aAvaliar} sub={`${importadosPendentes.length} importados · ${pendentes} enviados`} onClick={() => setAba('moderacao')} />
               <StatCard rotulo="Leads (7 dias)" valor={leadsNovos} sub={`${leads.length} no total`} onClick={() => setAba('leads')} />
-              <StatCard rotulo="Cadastros de clientes" valor={clientes.length} sub="área do cliente" onClick={() => setAba('clientes')} />
+              <StatCard rotulo="Clientes" valor={crmTotal} sub={`${crmNovos ? crmNovos + ' novos · ' : ''}${clientes.length} cadastros do site`} onClick={() => setAba('crm')} />
               <StatCard rotulo="Imóveis publicados" valor={IMOVEIS.length} sub="em destaque no site" onClick={() => setAba('imoveis')} />
-              <StatCard rotulo="Meus clientes (CRM)" valor={'→'} sub="cadastros + páginas" onClick={() => setAba('crm')} />
               <StatCard rotulo="Leituras no blog" valor={totalViews} sub={blogViews ? `${Object.keys(blogViews).length} posts` : '—'} onClick={() => window.open('/blog', '_blank')} />
             </div>
             <div className="det-trust" style={{ marginTop: 18 }}>
@@ -598,24 +598,9 @@ export default function Admin() {
           </section>
         )}
 
-        {aba === 'clientes' && (
-          <section className="painel-lista">
-            {clientes.length === 0 && <p className="section-sub">Nenhum cadastro na área do cliente ainda.</p>}
-            {clientes.map((c) => (
-              <div className="painel-card" key={c._key || c.token}>
-                <b>{c.nome || 'Sem nome'}</b>
-                <span>{c.email} · <a href={waLink(c.fone)} target="_blank" rel="noopener">{c.fone}</a></span>
-                <span className="painel-meta">{c.objetivo} · {c.bairros || 'sem bairro'} · {c.faixa || 'faixa livre'}{c.idade ? ` · ${c.idade} anos` : ''}{c.sexo ? ` · ${c.sexo}` : ''}</span>
-                <span className="painel-meta">favoritos: {(c.favoritos || []).length} · visitados: {(c.historico || []).length} · {new Date(c.atualizadoEm || 0).toLocaleDateString('pt-BR')}</span>
-                <button className="admin-btn admin-btn--del admin-btn--mini" onClick={() => excluir(c._key, `o cadastro de ${c.nome || 'cliente'}`)}>Excluir</button>
-              </div>
-            ))}
-          </section>
-        )}
-
         {aba === 'imoveis' && <ImoveisPub token={token} onSair={sair} />}
 
-        {aba === 'crm' && <AdminCRM token={token} onSair={sair} />}
+        {aba === 'crm' && <AdminCRM token={token} onSair={sair} cadastros={clientes} onExcluirCadastro={(c) => excluir(c._key, `o cadastro de ${c.nome || 'cliente'}`)} />}
 
         {aba === 'marca' && <RemoverMarca />}
 

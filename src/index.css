@@ -1795,3 +1795,6 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 /* selo "novo do site" no CRM */
 .crm-card--novo { border-color: var(--gold-2); box-shadow: 0 0 0 2px rgba(224,181,86,0.18); }
 .crm-novo-tag { font-size: 0.7rem; font-weight: 700; color: #20160a; background: var(--gold-grad); padding: 3px 9px; border-radius: 100px; }
+.crm-cadastros { margin-top: 36px; padding-top: 22px; border-top: 1px dashed rgba(22,26,34,0.18); }
+.crm-cadastros .calc-nota { margin: 4px 0 16px; }
+.admin-btn--mini { padding: 7px 13px; font-size: 0.82rem; }
