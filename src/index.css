@@ -1300,6 +1300,39 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .cliente-motivos ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
 .cliente-motivos li { display: flex; gap: 8px; align-items: flex-start; color: #41484f; font-size: .86rem; line-height: 1.4; }
 .cliente-motivos li span { color: #2e8c57; font-weight: 700; flex: none; }
+
+/* Cliente refina o próprio perfil */
+.cliente-salvo { display: inline-block; margin-left: 8px; color: #2e8c57; font-weight: 700; font-size: .82rem; animation: fadeIn .25s var(--ease); }
+.cliente-refino { background: #fff; border: 1px solid rgba(184,134,47,0.3); border-radius: 16px; padding: 18px 20px; margin-bottom: 26px; box-shadow: 0 14px 36px -30px rgba(22,26,34,0.5); }
+.cliente-refino-tit { display: block; font-family: var(--font-head); font-size: 1rem; color: #1a1f29; margin-bottom: 12px; }
+.cliente-refino-grupo { display: flex; align-items: flex-start; gap: 12px; padding: 9px 0; border-top: 1px solid rgba(22,26,34,0.07); }
+.cliente-refino-grupo:first-of-type { border-top: 0; }
+.cliente-refino-grupo > span { flex: none; width: 64px; padding-top: 7px; font-family: var(--font-head); font-size: .82rem; font-weight: 700; color: var(--gold-1); }
+.cliente-refino-grupo select { flex: 1; max-width: 280px; padding: 9px 12px; border: 1px solid rgba(22,26,34,0.18); border-radius: 10px; font-size: .92rem; background: #fbf9f4; color: #1a1f29; }
+.cliente-refino-grupo .crm-chips { flex: 1; }
+
+.cliente-item { position: relative; }
+.cliente-item.curtido { }
+.cliente-badge-like { position: absolute; top: 10px; left: 10px; z-index: 3; background: #fff; color: #c0392b; font-weight: 700; font-size: .76rem; padding: 5px 11px; border-radius: 100px; box-shadow: 0 6px 16px -8px rgba(22,26,34,0.6); border: 1px solid rgba(192,57,43,0.25); }
+.cliente-fb { display: flex; gap: 8px; margin-top: 10px; }
+.cliente-fb-btn { flex: 1; font-family: var(--font-head); font-weight: 600; font-size: .85rem; padding: 9px 10px; border-radius: 10px; cursor: pointer; background: #fff; border: 1px solid rgba(22,26,34,0.16); color: #3a4150; transition: all .18s var(--ease); }
+.cliente-fb-btn:hover { border-color: var(--gold-2); }
+.cliente-fb-btn.on-like { background: #fdecea; border-color: #e0857c; color: #c0392b; }
+.cliente-fb-btn.on-dislike { background: rgba(22,26,34,0.06); border-color: rgba(22,26,34,0.3); color: #3a4150; }
+
+.cliente-descartados { margin-top: 26px; background: #fff; border: 1px solid rgba(22,26,34,0.12); border-radius: 12px; padding: 4px 16px; }
+.cliente-descartados summary { cursor: pointer; padding: 12px 0; font-size: .9rem; color: #5a6270; font-weight: 600; }
+.cliente-desc-lista { display: flex; flex-direction: column; gap: 8px; padding: 6px 0 14px; }
+.cliente-desc-item { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: .88rem; color: #41484f; }
+
+/* Feedback do cliente no CRM */
+.crm-feedback .crm-fb-tit { font-family: var(--font-head); font-size: .9rem; margin: 8px 0 4px; }
+.crm-fb-tit--like { color: #c0392b; }
+.crm-fb-tit--dis { color: #5a6270; }
+.crm-fb-lista { list-style: none; margin: 0 0 6px; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+.crm-fb-lista li { font-size: .85rem; color: #41484f; line-height: 1.4; }
+
+@media (max-width: 600px) { .cliente-refino-grupo { flex-direction: column; gap: 6px; } .cliente-refino-grupo > span { width: auto; padding-top: 0; } }
 @media (max-width: 720px) { .marca-grid { grid-template-columns: 1fr; } }
 /* Placa VENDE-SE no formulário Anunciar */
 .placa-bloco { background: #fff; border: 1px solid rgba(184,134,47,0.3); border-radius: 16px; padding: 20px; margin: 6px 0 4px; box-shadow: 0 14px 34px -28px rgba(22,26,34,0.5); }

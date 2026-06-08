@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_TODOS, filtrarParaCliente, formatPreco } from '../data'
+import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_TODOS, filtrarParaCliente, formatPreco, getImovel } from '../data'
 import InputMoeda from './InputMoeda'
 
 const api = (payload) => fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) }).then((r) => r.json().then((j) => ({ status: r.status, j })))
@@ -119,6 +119,22 @@ export default function AdminCRM({ token, onSair }) {
                 })}
               </div>
             </div>
+
+            {sel.id && (() => {
+              const fb = sel.feedback && typeof sel.feedback === 'object' ? sel.feedback : {}
+              const likes = Object.keys(fb).filter((k) => fb[k] === 'like')
+              const dislikes = Object.keys(fb).filter((k) => fb[k] === 'dislike')
+              if (!sel.refinadoEm && likes.length === 0 && dislikes.length === 0) return null
+              const linha = (cod) => { const im = getImovel(cod); return im ? `${im.tipo} · ${im.bairro} · ${formatPreco(im.preco)} (cód ${cod})` : `cód ${cod}` }
+              return (
+                <div className="admin-owner crm-feedback" style={{ marginTop: 14 }}>
+                  <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>O que o cliente sinalizou <span className="painel-meta">{sel.refinadoEm ? '· refinou em ' + new Date(sel.refinadoEm).toLocaleString('pt-BR') : ''}</span></h3>
+                  {likes.length > 0 && (<><p className="crm-fb-tit crm-fb-tit--like">❤️ Curtiu ({likes.length})</p><ul className="crm-fb-lista">{likes.map((c) => <li key={c}>{linha(c)}</li>)}</ul></>)}
+                  {dislikes.length > 0 && (<><p className="crm-fb-tit crm-fb-tit--dis">👎 Descartou ({dislikes.length})</p><ul className="crm-fb-lista">{dislikes.map((c) => <li key={c}>{linha(c)}</li>)}</ul></>)}
+                  {likes.length === 0 && dislikes.length === 0 && <p className="painel-meta">Ajustou os filtros, mas ainda não curtiu/descartou imóveis.</p>}
+                </div>
+              )
+            })()}
 
             {sel.id && (
               <div className="admin-owner" style={{ marginTop: 14 }}>

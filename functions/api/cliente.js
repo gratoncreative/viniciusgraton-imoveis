@@ -26,6 +26,7 @@ export async function onRequestGet({ env, request }) {
       vagasMin: v.vagasMin || 0,
       areaMin: v.areaMin || 0,
       sugeridos: v.sugeridos || [],
+      feedback: v.feedback || {},
     },
   })
 }
