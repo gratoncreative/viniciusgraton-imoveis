@@ -92,5 +92,19 @@ export async function onRequestPost({ env, request }) {
     return json({ ok: true, aprovado: v.aprovado })
   }
 
+  // Atualiza campos de GESTÃO (CRM) num registro: status e nota (leads/anúncios/contas)
+  if (action === 'patch') {
+    const key = String(b.key || '')
+    if (!/^(anuncio|lead|conta):/.test(key)) return json({ error: 'key invalida' }, 400)
+    const v = await env.ENGAGEMENT.get(key, 'json')
+    if (!v) return json({ error: 'nao encontrado' }, 404)
+    const patch = b.patch && typeof b.patch === 'object' ? b.patch : {}
+    if ('status' in patch) v.status = String(patch.status || '').slice(0, 24)
+    if ('nota' in patch) v.nota = String(patch.nota || '').slice(0, 1200)
+    if ('aprovado' in patch) v.aprovado = patch.aprovado !== false
+    await env.ENGAGEMENT.put(key, JSON.stringify(v))
+    return json({ ok: true })
+  }
+
   return json({ error: 'acao desconhecida' }, 400)
 }

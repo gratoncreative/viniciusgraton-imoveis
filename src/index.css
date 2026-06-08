@@ -1000,6 +1000,29 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .admin-foto { display: block; width: 132px; height: 132px; border-radius: 10px; overflow: hidden; border: 1px solid rgba(22,26,34,0.14); }
 .admin-foto img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s var(--ease); }
 .admin-foto:hover img { transform: scale(1.08); }
+/* Dashboard / visão geral */
+.admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+.admin-stat { background: #fff; border: 1px solid rgba(22,26,34,0.1); border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 3px; box-shadow: 0 12px 30px -26px rgba(22,26,34,0.5); }
+.admin-stat-num { font-family: var(--font-head); font-size: 2rem; font-weight: 800; color: var(--gold-3); line-height: 1; }
+.admin-stat-rot { font-family: var(--font-head); font-weight: 600; color: #1a1f29; margin-top: 6px; }
+.admin-stat-sub { font-size: 0.8rem; color: #8a909b; }
+/* CRM leads */
+.admin-barra { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.lead-badge { font-family: var(--font-head); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 8px; border-radius: 100px; margin-left: 6px; vertical-align: middle; }
+.lead-badge--novo { background: rgba(184,134,47,0.16); color: #8a6418; }
+.lead-badge--andamento { background: rgba(46,108,164,0.14); color: #245a8c; }
+.lead-badge--ok { background: rgba(46,140,87,0.16); color: #1d6b41; }
+.lead-badge--off { background: rgba(22,26,34,0.08); color: #6a7280; }
+.lead-status { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0 4px; }
+.lead-status-b { font-family: var(--font-head); font-size: 0.72rem; font-weight: 600; color: #5a616e; background: rgba(22,26,34,0.05); border: 1px solid rgba(22,26,34,0.12); padding: 4px 9px; border-radius: 100px; cursor: pointer; transition: all 0.15s var(--ease); }
+.lead-status-b:hover { border-color: var(--gold-3); }
+.lead-status-b.on { background: #11151d; color: var(--gold-1); border-color: transparent; }
+.lead-nota { font-size: 0.85rem; color: #4a5160; cursor: pointer; margin: 4px 0; }
+.lead-nota:hover { color: var(--gold-3); }
+.lead-nota-edit { display: flex; flex-direction: column; gap: 6px; margin: 4px 0; }
+.lead-nota-edit textarea { width: 100%; border: 1px solid rgba(22,26,34,0.16); border-radius: 8px; padding: 8px; font-family: inherit; font-size: 0.85rem; resize: vertical; }
+.lead-acoes { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+.lead-salvo { color: #1d6b41; font-size: 0.8rem; font-weight: 600; }
 /* mapa */
 .mapa-bairros { display: flex; flex-wrap: wrap; gap: 9px; margin: 26px 0 18px; }
 .mapa-bairros .condo-chip i { font-style: normal; opacity: 0.7; }

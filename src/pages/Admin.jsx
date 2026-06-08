@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useSEO } from '../useSEO'
-import { CONFIG } from '../data'
+import { CONFIG, IMOVEIS } from '../data'
 import { IconShield, IconArrow } from '../components/icons'
 
 const LSK = 'vg_admin_token'
 const waLink = (fone) => `https://wa.me/55${String(fone || '').replace(/\D/g, '')}`
 const api = (payload) => fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) }).then((r) => r.json().then((j) => ({ status: r.status, j })))
+const STATUS_LEAD = ['Novo', 'Em conversa', 'Visita marcada', 'Fechado', 'Descartado']
 
 function Login({ onOk }) {
   const [email, setEmail] = useState('')
@@ -45,11 +46,70 @@ function Login({ onOk }) {
   )
 }
 
+function StatCard({ rotulo, valor, sub }) {
+  return (
+    <div className="admin-stat">
+      <span className="admin-stat-num">{valor}</span>
+      <span className="admin-stat-rot">{rotulo}</span>
+      {sub && <span className="admin-stat-sub">{sub}</span>}
+    </div>
+  )
+}
+
+function LeadCard({ lead, token, onSair, onMudou }) {
+  const [status, setStatus] = useState(lead.status || 'Novo')
+  const [nota, setNota] = useState(lead.nota || '')
+  const [salvo, setSalvo] = useState(false)
+  const [editandoNota, setEditandoNota] = useState(false)
+
+  const patch = async (campos) => {
+    const { status: st } = await api({ action: 'patch', token, key: lead._key, patch: campos })
+    if (st === 401) return onSair()
+    setSalvo(true); setTimeout(() => setSalvo(false), 1400)
+    onMudou && onMudou()
+  }
+  const mudarStatus = (s) => { setStatus(s); patch({ status: s }) }
+  const salvarNota = () => { patch({ nota }); setEditandoNota(false) }
+  const excluir = async () => {
+    if (!window.confirm(`Excluir o lead de ${lead.nome}?`)) return
+    const { status: st } = await api({ action: 'del', token, key: lead._key })
+    if (st === 401) return onSair()
+    onMudou && onMudou()
+  }
+  const cor = status === 'Fechado' ? 'ok' : status === 'Descartado' ? 'off' : status === 'Novo' ? 'novo' : 'andamento'
+
+  return (
+    <div className="painel-card">
+      <b>{lead.nome} <span className={`lead-badge lead-badge--${cor}`}>{status}</span></b>
+      <span><a href={waLink(lead.fone)} target="_blank" rel="noopener">{lead.fone}</a></span>
+      <span className="painel-meta">{lead.bairro || lead.cod} · {lead.data ? new Date(lead.data).toLocaleDateString('pt-BR') : ''}</span>
+      <div className="lead-status">
+        {STATUS_LEAD.map((s) => (
+          <button key={s} className={`lead-status-b ${status === s ? 'on' : ''}`} onClick={() => mudarStatus(s)}>{s}</button>
+        ))}
+      </div>
+      {editandoNota ? (
+        <div className="lead-nota-edit">
+          <textarea rows="2" value={nota} onChange={(e) => setNota(e.target.value)} placeholder="Anotações sobre este lead..." />
+          <button className="admin-btn admin-btn--ok admin-btn--mini" onClick={salvarNota}>Salvar nota</button>
+        </div>
+      ) : (
+        <p className="lead-nota" onClick={() => setEditandoNota(true)}>{nota ? `📝 ${nota}` : '+ adicionar anotação'}</p>
+      )}
+      <div className="lead-acoes">
+        {salvo && <span className="lead-salvo">✓ salvo</span>}
+        <button className="admin-btn admin-btn--del admin-btn--mini" onClick={excluir}>Excluir</button>
+      </div>
+    </div>
+  )
+}
+
 export default function Admin() {
   useSEO({ title: 'Painel administrativo', description: 'Área restrita do Vinícius Graton.', path: '/admin' })
   const [token, setToken] = useState(() => { try { return localStorage.getItem(LSK) || '' } catch { return '' } })
   const [dados, setDados] = useState(null)
-  const [aba, setAba] = useState('moderacao')
+  const [blogViews, setBlogViews] = useState(null)
+  const [aba, setAba] = useState('geral')
   const [erro, setErro] = useState('')
   const [carregando, setCarregando] = useState(false)
 
@@ -66,6 +126,7 @@ export default function Admin() {
       else setDados(j)
     } catch { setErro('Falha de conexão.') }
     finally { setCarregando(false) }
+    fetch('/api/eng?blogviews=1').then((r) => r.json()).then((d) => setBlogViews(d.views || {})).catch(() => {})
   }, [token, sair])
 
   useEffect(() => { carregar() }, [carregar])
@@ -87,7 +148,23 @@ export default function Admin() {
   const anuncios = dados?.anuncios || []
   const leads = dados?.leads || []
   const clientes = dados?.clientes || []
+  const seteDias = Date.now() - 7 * 24 * 60 * 60 * 1000
+  const leadsNovos = leads.filter((l) => (l.ts || 0) > seteDias).length
+  const pendentes = anuncios.filter((a) => !a.aprovado).length
+  const totalViews = blogViews ? Object.values(blogViews).reduce((s, n) => s + (n || 0), 0) : 0
+
+  const exportarCSV = () => {
+    const linhas = [['Nome', 'Telefone', 'Origem', 'Status', 'Anotação', 'Data']]
+    leads.forEach((l) => linhas.push([l.nome, l.fone, l.bairro || l.cod || '', l.status || 'Novo', (l.nota || '').replace(/[\r\n]+/g, ' '), l.data ? new Date(l.data).toLocaleString('pt-BR') : '']))
+    const csv = linhas.map((r) => r.map((c) => `"${String(c == null ? '' : c).replace(/"/g, '""')}"`).join(';')).join('\r\n')
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob); a.download = 'leads-vinicius-graton.csv'; a.click()
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000)
+  }
+
   const ABAS = [
+    ['geral', 'Visão geral'],
     ['moderacao', `Imóveis enviados (${anuncios.length})`],
     ['leads', `Leads (${leads.length})`],
     ['clientes', `Cadastros (${clientes.length})`],
@@ -113,6 +190,22 @@ export default function Admin() {
 
         {erro && <p className="anunciar-erro">{erro}</p>}
         {carregando && !dados && <p className="section-sub">Carregando…</p>}
+
+        {aba === 'geral' && (
+          <section>
+            <div className="admin-stats">
+              <StatCard rotulo="Imóveis a avaliar" valor={pendentes} sub={`${anuncios.length} no total`} />
+              <StatCard rotulo="Leads (7 dias)" valor={leadsNovos} sub={`${leads.length} no total`} />
+              <StatCard rotulo="Cadastros de clientes" valor={clientes.length} sub="área do cliente" />
+              <StatCard rotulo="Imóveis publicados" valor={IMOVEIS.length} sub="em destaque no site" />
+              <StatCard rotulo="Leituras no blog" valor={totalViews} sub={blogViews ? `${Object.keys(blogViews).length} posts` : '—'} />
+            </div>
+            <div className="det-trust" style={{ marginTop: 18 }}>
+              <IconShield width={20} height={20} />
+              <p><b>Visão geral do seu negócio.</b> Aqui ficam os números em tempo real. Use as abas acima para gerenciar os imóveis enviados pelos proprietários, seus leads (com status e anotações) e os cadastros da área do cliente.</p>
+            </div>
+          </section>
+        )}
 
         {aba === 'moderacao' && (
           <section>
@@ -152,16 +245,15 @@ export default function Admin() {
         )}
 
         {aba === 'leads' && (
-          <section className="painel-lista">
-            {leads.length === 0 && <p className="section-sub">Nenhum lead ainda.</p>}
-            {leads.map((l) => (
-              <div className="painel-card" key={l._key || l.ts}>
-                <b>{l.nome}</b>
-                <span><a href={waLink(l.fone)} target="_blank" rel="noopener">{l.fone}</a></span>
-                <span className="painel-meta">{l.bairro || l.cod} · {l.data ? new Date(l.data).toLocaleDateString('pt-BR') : ''}</span>
-                <button className="admin-btn admin-btn--del admin-btn--mini" onClick={() => excluir(l._key, `o lead de ${l.nome}`)}>Excluir</button>
-              </div>
-            ))}
+          <section>
+            <div className="admin-barra">
+              <span className="painel-meta">{leads.length} lead(s) · {leadsNovos} nos últimos 7 dias</span>
+              {leads.length > 0 && <button className="admin-btn" onClick={exportarCSV}>⬇ Exportar CSV</button>}
+            </div>
+            {leads.length === 0 && <p className="section-sub">Nenhum lead ainda. Pedidos de “avise-me”, condomínios e avaliação aparecem aqui.</p>}
+            <div className="painel-lista">
+              {leads.map((l) => <LeadCard key={l._key || l.ts} lead={l} token={token} onSair={sair} onMudou={carregar} />)}
+            </div>
           </section>
         )}
 
@@ -184,9 +276,9 @@ export default function Admin() {
           <section>
             <div className="det-trust" style={{ marginBottom: 16 }}>
               <IconShield width={20} height={20} />
-              <p><b>Gestão dos imóveis publicados — próxima etapa.</b> Hoje os imóveis em destaque do site vêm da sua carteira (coleta automática do Imoview + curadoria). O próximo passo é permitir <b>adicionar, editar e despublicar imóveis aqui no painel</b>, ao vivo. Me dê o sinal verde que eu construo essa parte.</p>
+              <p><b>Gestão de imóveis ao vivo — em construção (próxima onda).</b> Em breve você poderá <b>adicionar, editar, despublicar e subir fotos</b> de imóveis aqui no painel, sem depender de mim. Por ora, o site mostra {IMOVEIS.length} imóveis em destaque da sua carteira.</p>
             </div>
-            <p className="section-sub">Por enquanto, para inserir um imóvel novo manualmente, me mande os dados + fotos (ou use o formulário <b>/anunciar</b>) que eu publico. Em breve isso fica self-service aqui.</p>
+            <p className="section-sub">Para inserir um imóvel agora, me mande os dados + fotos (ou use o formulário <b>/anunciar</b>) que eu publico.</p>
           </section>
         )}
 
