@@ -14,8 +14,17 @@ function hashCod(cod) {
   for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0
   return h
 }
-export const seedLikes = (cod) => 50 + (hashCod(cod) % 41) // 50..90
-export const seedShares = (cod) => 50 + ((hashCod(cod) >>> 5) % 31) // 50..80
+// prova social: 20..90, MAIS para imóveis melhor posicionados (preço maior),
+// determinístico por código (estável, sem flicker). MESMA fórmula no back (eng.js).
+function seedDe(cod, preco) {
+  const h = hashCod(cod)
+  const p = Math.max(0, Math.min(1, ((Number(preco) || 0) - 200000) / 1300000)) // 0..1 entre 200k e 1,5M
+  const likes = Math.max(20, Math.min(90, Math.round(30 + p * 52 + (h % 11))))
+  const shares = Math.max(20, Math.min(90, Math.round(22 + p * 46 + ((h >>> 5) % 9))))
+  return { likes, shares }
+}
+export const seedLikes = (cod, preco) => seedDe(cod, preco).likes
+export const seedShares = (cod, preco) => seedDe(cod, preco).shares
 
 // ---- estado local do visitante (o que ELE já curtiu) ----
 const LSK = 'vg_curtidos'
@@ -38,9 +47,9 @@ const marcar = (cod, on) => {
 }
 
 // ---- chamadas à API (sempre tolerantes a falha) ----
-export async function lerEngajamento(cod) {
+export async function lerEngajamento(cod, preco) {
   try {
-    const r = await fetch(`${API}?cod=${encodeURIComponent(cod)}`)
+    const r = await fetch(`${API}?cod=${encodeURIComponent(cod)}${preco ? `&p=${encodeURIComponent(preco)}` : ''}`)
     if (!r.ok) return null
     const d = await r.json()
     if (typeof d.likes === 'number') return d
@@ -60,11 +69,11 @@ async function postEng(body) {
   } catch { return null }
 }
 
-export async function alternarCurtida(cod, ligado) {
+export async function alternarCurtida(cod, ligado, preco) {
   marcar(cod, ligado)
-  return postEng({ cod: String(cod), tipo: ligado ? 'like' : 'unlike' })
+  return postEng({ cod: String(cod), tipo: ligado ? 'like' : 'unlike', p: preco })
 }
-export const registrarShare = (cod) => postEng({ cod: String(cod), tipo: 'share' })
+export const registrarShare = (cod, preco) => postEng({ cod: String(cod), tipo: 'share', p: preco })
 export const registrarLead = (lead) => postEng({ tipo: 'lead', ...lead })
 
 // blog: registra leitura e lê as contagens (todas de uma vez)

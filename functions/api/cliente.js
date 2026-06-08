@@ -27,6 +27,7 @@ export async function onRequestGet({ env, request }) {
       areaMin: v.areaMin || 0,
       sugeridos: v.sugeridos || [],
       feedback: v.feedback || {},
+      foto: v.foto || '',
     },
   })
 }

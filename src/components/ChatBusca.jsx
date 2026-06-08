@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import CardImovel from './CardImovel'
 import { filtrarParaCliente, TIPOS_IMOVEL, BAIRROS_IMOVEL, linkWhatsApp, formatPreco } from '../data'
@@ -30,7 +30,7 @@ export default function ChatBusca() {
   const [enviado, setEnviado] = useState(null) // { token, nome }
   const [erro, setErro] = useState('')
   const [copiado, setCopiado] = useState(false)
-  const fimRef = useRef(null)
+  const [buscaBairro, setBuscaBairro] = useState('')
 
   const prefs = useMemo(() => ({
     tipos: ans.tipos, bairros: ans.bairros,
@@ -41,9 +41,8 @@ export default function ChatBusca() {
   const matches = useMemo(() => filtrarParaCliente(prefs), [prefs])
   const mostraContador = step >= 1 && !enviado
 
-  useEffect(() => { fimRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }) }, [step, enviado])
-
   const avancar = () => setStep((s) => Math.min(s + 1, STEPS.length - 1))
+  const voltar = () => setStep((s) => Math.max(s - 1, 0))
   const escolher = (key, val) => { setAns((a) => ({ ...a, [key]: val })); setTimeout(avancar, 160) }
   const toggle = (key, val) => setAns((a) => { const set = new Set(a[key] || []); set.has(val) ? set.delete(val) : set.add(val); return { ...a, [key]: [...set] } })
 
@@ -80,15 +79,7 @@ export default function ChatBusca() {
     if (k === 'whatsapp') return ans.whatsapp
     return ans[k]
   }
-  const respondido = (i) => {
-    const k = STEPS[i].key
-    if (k === 'finalidade' || k === 'prazo') return !!ans[k]
-    if (k === 'tipos' || k === 'bairros') return i < step // multi: só conta como respondido depois de avançar
-    if (k === 'faixa') return !!ans.faixa
-    if (k === 'quartos') return i < step
-    if (k === 'nome') return i < step
-    return false
-  }
+  const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
 
   // ——— TELA DE SUCESSO ———
   if (enviado) {
@@ -126,90 +117,105 @@ export default function ChatBusca() {
     )
   }
 
-  // ——— CHAT ———
+  // ——— CHAT (uma pergunta por vez, sem transcript que cresce nem barra de rolagem) ———
   const atual = STEPS[step]
+  const trilha = STEPS.slice(0, step).map((s) => ({ k: s.key, v: resumo(s.key) })).filter((x) => x.v)
+  const bairrosVisiveis = atual.tipo === 'bairros'
+    ? BAIRROS_IMOVEL.filter((b) => ans.bairros.includes(b) || !buscaBairro || norm(b).includes(norm(buscaBairro)))
+    : []
+
   return (
-    <div className="chat-busca">
-      <div className="cb-transcript">
-        {STEPS.slice(0, step + 1).map((s, i) => (
-          <div key={s.key}>
-            <div className="cb-msg bot">
-              <span className="cb-avatar"><img src="/vinicius-graton.jpg" alt="Vinícius" /></span>
-              <div className="cb-bubble">{s.bot}</div>
-            </div>
-            {respondido(i) && <div className="cb-msg user"><div className="cb-bubble">{resumo(s.key)}</div></div>}
-          </div>
-        ))}
-        <div ref={fimRef} />
+    <div className="chat-busca chat-busca--wizard">
+      {/* progresso em bolinhas */}
+      <div className="cb-progresso">
+        {STEPS.map((s, i) => <span key={s.key} className={`cb-dot ${i === step ? 'on' : ''} ${i < step ? 'feito' : ''}`} />)}
       </div>
 
-      {mostraContador && (
-        <div className="cb-count"><b>✨ {matches.length}</b> {matches.length === 1 ? 'imóvel combina' : 'imóveis combinam'} com o que você marcou</div>
+      {/* trilha das respostas já dadas (clicar volta pra ajustar) */}
+      {trilha.length > 0 && (
+        <div className="cb-trilha">
+          {trilha.map((t, i) => <button type="button" key={t.k} className="cb-trilha-chip" onClick={() => setStep(i)} title="Voltar pra ajustar">{t.v}</button>)}
+        </div>
       )}
 
+      {/* pergunta atual */}
       <AnimatePresence mode="wait">
-        <motion.div key={atual.key} className="cb-input-area" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-          {/* campo-isca anti-spam (invisível) */}
-          <input type="text" name="site" tabIndex={-1} autoComplete="off" style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0 }} aria-hidden="true" />
+        <motion.div key={atual.key} initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -18 }} transition={{ duration: 0.22 }}>
+          <div className="cb-pergunta">
+            <span className="cb-avatar"><img src="/vinicius-graton.jpg" alt="Vinícius" /></span>
+            <div className="cb-bubble">{atual.bot}</div>
+          </div>
 
-          {atual.tipo === 'single' && (
-            <div className="cb-chips">
-              {atual.opcoes.map((o) => <button type="button" key={o} className="cb-chip" onClick={() => escolher(atual.key, o)}>{o}</button>)}
-            </div>
-          )}
+          <div className="cb-input-area">
+            {/* campo-isca anti-spam (invisível) */}
+            <input type="text" name="site" tabIndex={-1} autoComplete="off" style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0 }} aria-hidden="true" />
 
-          {atual.tipo === 'multi' && (
-            <>
+            {atual.tipo === 'single' && (
               <div className="cb-chips">
-                {atual.opcoes.map((o) => <button type="button" key={o} className={`cb-chip ${ans.tipos.includes(o) ? 'on' : ''}`} onClick={() => toggle('tipos', o)}>{o}</button>)}
+                {atual.opcoes.map((o) => <button type="button" key={o} className={`cb-chip ${ans[atual.key === 'finalidade' ? 'finalidade' : 'prazo'] === o ? 'on' : ''}`} onClick={() => escolher(atual.key, o)}>{o}</button>)}
               </div>
-              <div className="cb-actions"><button type="button" className="btn btn-gold" onClick={avancar}>Continuar</button></div>
-            </>
-          )}
+            )}
 
-          {atual.tipo === 'bairros' && (
-            <>
-              <div className="cb-chips cb-chips--scroll">
-                {atual.opcoes.map((o) => <button type="button" key={o} className={`cb-chip ${ans.bairros.includes(o) ? 'on' : ''}`} onClick={() => toggle('bairros', o)}>{o}</button>)}
+            {atual.tipo === 'multi' && (
+              <>
+                <div className="cb-chips">
+                  {atual.opcoes.map((o) => <button type="button" key={o} className={`cb-chip ${ans.tipos.includes(o) ? 'on' : ''}`} onClick={() => toggle('tipos', o)}>{o}</button>)}
+                </div>
+                <div className="cb-actions"><button type="button" className="btn btn-gold" onClick={avancar}>Continuar</button></div>
+              </>
+            )}
+
+            {atual.tipo === 'bairros' && (
+              <>
+                <input className="cb-busca" value={buscaBairro} onChange={(e) => setBuscaBairro(e.target.value)} placeholder="🔎 Digite o bairro (ou escolha abaixo)" />
+                <div className="cb-chips cb-chips--wrap">
+                  {bairrosVisiveis.map((o) => <button type="button" key={o} className={`cb-chip ${ans.bairros.includes(o) ? 'on' : ''}`} onClick={() => toggle('bairros', o)}>{o}</button>)}
+                  {bairrosVisiveis.length === 0 && <span className="cb-nada">Nenhum bairro com esse nome — tente outro.</span>}
+                </div>
+                <div className="cb-actions">
+                  <button type="button" className="cb-skip" onClick={() => { setAns((a) => ({ ...a, bairros: [] })); avancar() }}>Tanto faz</button>
+                  <button type="button" className="btn btn-gold" onClick={avancar}>Continuar{ans.bairros.length ? ` (${ans.bairros.length})` : ''}</button>
+                </div>
+              </>
+            )}
+
+            {atual.tipo === 'faixa' && (
+              <div className="cb-chips">
+                {FAIXAS.map((f) => <button type="button" key={f.label} className={`cb-chip ${ans.faixa && ans.faixa.label === f.label ? 'on' : ''}`} onClick={() => escolher('faixa', f)}>{f.label}</button>)}
               </div>
-              <div className="cb-actions">
-                <button type="button" className="cb-skip" onClick={() => { setAns((a) => ({ ...a, bairros: [] })); avancar() }}>Tanto faz</button>
-                <button type="button" className="btn btn-gold" onClick={avancar}>Continuar</button>
+            )}
+
+            {atual.tipo === 'quartos' && (
+              <div className="cb-chips">
+                {[1, 2, 3, 4].map((n) => <button type="button" key={n} className={`cb-chip ${ans.quartosMin === n ? 'on' : ''}`} onClick={() => escolher('quartosMin', n)}>{n}+</button>)}
+                <button type="button" className={`cb-chip ${ans.quartosMin === 0 ? 'on' : ''}`} onClick={() => escolher('quartosMin', 0)}>Tanto faz</button>
               </div>
-            </>
-          )}
+            )}
 
-          {atual.tipo === 'faixa' && (
-            <div className="cb-chips">
-              {FAIXAS.map((f) => <button type="button" key={f.label} className="cb-chip" onClick={() => escolher('faixa', f)}>{f.label}</button>)}
-            </div>
-          )}
+            {atual.tipo === 'texto' && (
+              <form className="cb-form" onSubmit={(e) => { e.preventDefault(); avancar() }}>
+                <input autoFocus value={ans.nome} onChange={(e) => setAns((a) => ({ ...a, nome: e.target.value }))} placeholder="Seu nome (opcional)" maxLength={60} />
+                <button type="submit" className="btn btn-gold">Continuar</button>
+              </form>
+            )}
 
-          {atual.tipo === 'quartos' && (
-            <div className="cb-chips">
-              {[1, 2, 3, 4].map((n) => <button type="button" key={n} className="cb-chip" onClick={() => escolher('quartosMin', n)}>{n}+</button>)}
-              <button type="button" className="cb-chip" onClick={() => escolher('quartosMin', 0)}>Tanto faz</button>
-            </div>
-          )}
+            {atual.tipo === 'tel' && (
+              <form className="cb-form" onSubmit={(e) => { e.preventDefault(); enviar() }}>
+                <input autoFocus type="tel" inputMode="tel" value={ans.whatsapp} onChange={(e) => setAns((a) => ({ ...a, whatsapp: e.target.value }))} placeholder="34 99999-9999" maxLength={20} />
+                <button type="submit" className="btn btn-gold" disabled={enviando}>{enviando ? 'Enviando…' : 'Ver minha seleção'}</button>
+              </form>
+            )}
 
-          {atual.tipo === 'texto' && (
-            <form className="cb-form" onSubmit={(e) => { e.preventDefault(); avancar() }}>
-              <input autoFocus value={ans.nome} onChange={(e) => setAns((a) => ({ ...a, nome: e.target.value }))} placeholder="Seu nome (opcional)" maxLength={60} />
-              <button type="submit" className="btn btn-gold">Continuar</button>
-            </form>
-          )}
-
-          {atual.tipo === 'tel' && (
-            <form className="cb-form" onSubmit={(e) => { e.preventDefault(); enviar() }}>
-              <input autoFocus type="tel" inputMode="tel" value={ans.whatsapp} onChange={(e) => setAns((a) => ({ ...a, whatsapp: e.target.value }))} placeholder="34 99999-9999" maxLength={20} />
-              <button type="submit" className="btn btn-gold" disabled={enviando}>{enviando ? 'Enviando…' : 'Ver minha seleção'}</button>
-            </form>
-          )}
-
-          {erro && <p className="cb-erro">{erro}</p>}
-          {atual.tipo === 'tel' && <p className="cb-lgpd">Seu contato é usado só pra te atender. Nada de spam — palavra do Vinícius.</p>}
+            {erro && <p className="cb-erro">{erro}</p>}
+            {atual.tipo === 'tel' && <p className="cb-lgpd">Seu contato é usado só pra te atender. Nada de spam — palavra do Vinícius.</p>}
+          </div>
         </motion.div>
       </AnimatePresence>
+
+      <div className="cb-rodape">
+        {step > 0 && <button type="button" className="cb-voltar" onClick={voltar}>← Voltar</button>}
+        {mostraContador && <span className="cb-count"><b>✨ {matches.length}</b> {matches.length === 1 ? 'imóvel combina' : 'imóveis combinam'}</span>}
+      </div>
     </div>
   )
 }

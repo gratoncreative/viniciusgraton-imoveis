@@ -1279,6 +1279,17 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 /* Página personalizada do cliente */
 .cliente-hero { padding: clamp(112px, 14vh, 170px) 0 clamp(28px, 4vw, 48px); background: radial-gradient(125% 120% at 50% 0%, #151a26 0%, var(--bg) 72%); border-bottom: 1px solid var(--border); }
 .cliente-intro { color: var(--text-mute); font-size: 1.06rem; line-height: 1.7; max-width: 660px; margin-top: 12px; text-wrap: pretty; }
+/* foto do cliente na hero (preenche a área escura à direita) */
+.cliente-hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
+.cliente-hero-foto { position: relative; flex: none; }
+.cliente-hero-foto img { width: clamp(160px, 22vw, 260px); height: clamp(160px, 22vw, 260px); object-fit: cover; border-radius: 22px; border: 1px solid rgba(184,134,47,0.4); box-shadow: 0 30px 60px -30px rgba(0,0,0,0.7); }
+.cliente-hero-foto-nome { position: absolute; left: 14px; bottom: 14px; background: rgba(10,14,22,0.7); backdrop-filter: blur(6px); color: #fff; font-family: var(--font-head); font-weight: 600; font-size: 0.92rem; padding: 5px 12px; border-radius: 100px; }
+@media (max-width: 760px) { .cliente-hero-grid { grid-template-columns: 1fr; } .cliente-hero-foto { display: none; } }
+/* campo de foto do cliente no CRM */
+.crm-foto-campo { display: flex; gap: 14px; align-items: center; margin-bottom: 16px; }
+.crm-foto-prev { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold-3); flex: none; }
+.crm-foto-vazia { width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; background: #f4f1e8; border: 1px dashed rgba(22,26,34,0.25); font-size: 1.6rem; flex: none; }
+.crm-foto-acoes { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .cliente-criterios { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 18px; }
 .cliente-criterios > span { color: var(--text-mute); font-size: .85rem; }
 .cliente-criterios b { font-size: .82rem; font-weight: 600; padding: 6px 13px; border-radius: 100px; background: rgba(184,134,47,0.14); color: var(--gold-1); border: 1px solid rgba(184,134,47,0.3); }
@@ -1778,6 +1789,25 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .cb-form input:focus { outline: none; border-color: var(--gold-2); }
 .cb-erro { color: #c0392b; font-size: 0.88rem; margin-top: 10px; }
 .cb-lgpd { color: #8a909c; font-size: 0.78rem; margin-top: 10px; text-align: center; }
+/* chat em formato wizard (1 pergunta por vez, sem barra de rolagem) */
+.chat-busca--wizard { min-height: 340px; display: flex; flex-direction: column; }
+.cb-progresso { display: flex; gap: 6px; justify-content: center; margin-bottom: 16px; }
+.cb-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(22,26,34,0.14); transition: all 0.2s var(--ease); }
+.cb-dot.feito { background: var(--gold-2); }
+.cb-dot.on { background: var(--gold-1); transform: scale(1.5); }
+.cb-trilha { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 16px; }
+.cb-trilha-chip { font-size: 0.78rem; color: #6a7280; background: #f4f1e8; border: 1px solid rgba(22,26,34,0.1); padding: 4px 11px; border-radius: 100px; cursor: pointer; transition: all 0.16s var(--ease); }
+.cb-trilha-chip:hover { border-color: var(--gold-2); color: #3a4150; }
+.cb-pergunta { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 18px; }
+.cb-pergunta .cb-bubble { background: #f4f1e8; color: #1a1f29; border-bottom-left-radius: 5px; font-size: 1.06rem; font-weight: 500; line-height: 1.5; }
+.cb-busca { width: 100%; padding: 11px 15px; border: 1.5px solid rgba(22,26,34,0.18); border-radius: 12px; font-size: 0.98rem; background: #fbf9f4; color: #1a1f29; margin-bottom: 12px; }
+.cb-busca:focus { outline: none; border-color: var(--gold-2); }
+.cb-chips--wrap { max-height: none; }
+.cb-nada { color: #8a909c; font-size: 0.88rem; }
+.cb-rodape { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 18px; min-height: 24px; }
+.cb-voltar { background: none; border: none; color: #6a7280; font-size: 0.88rem; cursor: pointer; }
+.cb-voltar:hover { color: var(--gold-1); }
+.cb-rodape .cb-count { margin: 0; }
 
 .cb-sucesso { max-width: 920px; margin: 0 auto; }
 .cb-sucesso-topo { text-align: center; margin-bottom: 20px; }

@@ -25,6 +25,23 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
 
   const setF = (k, v) => setSel((s) => ({ ...s, [k]: v }))
   const toggleArr = (k, val) => setSel((s) => { const a = new Set(s[k] || []); a.has(val) ? a.delete(val) : a.add(val); return { ...s, [k]: [...a] } })
+  // foto do cliente: redimensiona no navegador (máx 480px, JPEG) e guarda como dataURL
+  const lerFoto = (file) => {
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (ev) => {
+      const img = new Image()
+      img.onload = () => {
+        const max = 480; let w = img.width; let h = img.height
+        if (w > h && w > max) { h = Math.round((h * max) / w); w = max } else if (h > max) { w = Math.round((w * max) / h); h = max }
+        const cv = document.createElement('canvas'); cv.width = w; cv.height = h
+        cv.getContext('2d').drawImage(img, 0, 0, w, h)
+        setF('foto', cv.toDataURL('image/jpeg', 0.82))
+      }
+      img.src = ev.target.result
+    }
+    reader.readAsDataURL(file)
+  }
 
   // imóveis que casam com os critérios atuais (para sugerir/escolher)
   const matches = sel ? filtrarParaCliente({
@@ -93,6 +110,14 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
         <div className="admin-edit-grid">
           <div>
             <h3 className="det-rel-titulo">Dados e preferências do cliente</h3>
+            <div className="crm-foto-campo">
+              {sel.foto ? <img className="crm-foto-prev" src={sel.foto} alt="Foto do cliente" /> : <span className="crm-foto-vazia">👤</span>}
+              <div className="crm-foto-acoes">
+                <label className="admin-btn">{sel.foto ? 'Trocar foto' : '📷 Adicionar foto do cliente'}<input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => lerFoto(e.target.files && e.target.files[0])} /></label>
+                {sel.foto && <button type="button" className="admin-btn admin-btn--del admin-btn--mini" onClick={() => setF('foto', '')}>Remover</button>}
+                <span className="painel-meta">Aparece na página de seleção do cliente.</span>
+              </div>
+            </div>
             <div className="admin-fields">
               <label className="admin-field"><span>WhatsApp (obrigatório)</span><input value={sel.whatsapp} onChange={(e) => setF('whatsapp', e.target.value)} placeholder="34 99999-9999" /></label>
               <label className="admin-field"><span>Nome (opcional)</span><input value={sel.nome} onChange={(e) => setF('nome', e.target.value)} /></label>

@@ -219,6 +219,7 @@ export async function onRequestPost({ env, request }) {
       vagasMin: Number(c.vagasMin) || 0, areaMin: Number(c.areaMin) || 0,
       obs: lim(c.obs, 1500), sugeridos: arrStr(c.sugeridos, 40, 12),
       nota: lim(c.nota, 1000), status: lim(c.status, 24),
+      foto: lim(c.foto, 700000), // dataURL da foto do cliente (JPEG ~480px)
       // preserva o que o PRÓPRIO cliente refinou na página dele (nunca sobrescrever no save do admin)
       feedback: reg.feedback && typeof reg.feedback === 'object' ? reg.feedback : {},
       refinadoEm: reg.refinadoEm || 0,

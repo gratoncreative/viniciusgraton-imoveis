@@ -21,26 +21,29 @@ function hashCod(cod) {
   for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0
   return h
 }
-const seedDe = (cod) => ({ likes: 50 + (hashCod(cod) % 41), shares: 50 + ((hashCod(cod) >>> 5) % 31) })
+// prova social: 20..90, MAIS para imóveis melhor posicionados (preço maior).
+// MESMA fórmula do frontend (src/engajamento.js) p/ os números baterem sem flicker.
+const SEED_V = 2
+const seedDe = (cod, preco) => {
+  const h = hashCod(cod)
+  const p = Math.max(0, Math.min(1, ((Number(preco) || 0) - 200000) / 1300000))
+  const likes = Math.max(20, Math.min(90, Math.round(30 + p * 52 + (h % 11))))
+  const shares = Math.max(20, Math.min(90, Math.round(22 + p * 46 + ((h >>> 5) % 9))))
+  return { likes, shares }
+}
 const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
 const diaHoje = () => new Date().toISOString().slice(0, 10) // YYYY-MM-DD
 
-async function getEng(env, cod) {
-  if (!temKV(env)) return seedDe(cod) // degrada gracioso: sem KV, devolve o seed (read-only)
+async function getEng(env, cod, preco) {
+  if (!temKV(env)) return seedDe(cod, preco) // degrada gracioso: sem KV, devolve o seed (read-only)
   const key = 'eng:' + cod
   let data = await env.ENGAGEMENT.get(key, 'json')
-  const hoje = diaHoje()
-  if (!data || typeof data.likes !== 'number') {
-    data = { likes: rand(50, 90), shares: rand(50, 80), dia: hoje } // prova social inicial
-    await env.ENGAGEMENT.put(key, JSON.stringify(data))
-    return data
-  }
-  // Aumento diário automático: curtidas e compartilhamentos sobem um número de
-  // dois dígitos por dia (1x ao dia por imóvel, mesmo sem ninguém clicar).
-  if (data.dia !== hoje) {
-    data.likes += rand(10, 27)
-    data.shares += rand(10, 18)
-    data.dia = hoje
+  // (re)semeia se nunca existiu ou se está num esquema antigo (migra p/ a faixa 20-90)
+  if (!data || typeof data.likes !== 'number' || data.v !== SEED_V) {
+    const extraL = data && data.v !== SEED_V && typeof data.likesReais === 'number' ? data.likesReais : 0
+    const extraS = data && data.v !== SEED_V && typeof data.sharesReais === 'number' ? data.sharesReais : 0
+    const s = seedDe(cod, preco)
+    data = { likes: s.likes + extraL, shares: s.shares + extraS, v: SEED_V, dia: diaHoje() }
     await env.ENGAGEMENT.put(key, JSON.stringify(data))
   }
   return data
@@ -59,25 +62,14 @@ export async function onRequestGet({ env, request }) {
     }
     return json({ views })
   }
-  // Aumento diário de TODOS os imóveis (rotina diária): /api/eng?bumpall=1
-  // Idempotente por dia (cada imóvel sobe no máximo 1x/dia, controlado por data).
+  // crescimento diário DESATIVADO: os números agora ficam fixos na faixa 20-90
+  // (ponderados por preço). Mantido só p/ não quebrar a rotina que chama a URL.
   if (url.searchParams.get('bumpall')) {
-    if (!temKV(env)) return json({ ok: false, aviso: 'KV nao configurado' })
-    const hoje = diaHoje()
-    const lista = await env.ENGAGEMENT.list({ prefix: 'eng:' })
-    let n = 0
-    for (const k of lista.keys) {
-      const d = await env.ENGAGEMENT.get(k.name, 'json')
-      if (d && typeof d.likes === 'number' && d.dia !== hoje) {
-        d.likes += rand(10, 27); d.shares += rand(10, 18); d.dia = hoje
-        await env.ENGAGEMENT.put(k.name, JSON.stringify(d)); n++
-      }
-    }
-    return json({ ok: true, atualizados: n, dia: hoje })
+    return json({ ok: true, atualizados: 0, aviso: 'crescimento desativado p/ manter a faixa 20-90' })
   }
   const cod = url.searchParams.get('cod')
   if (!cod) return json({ error: 'cod obrigatorio' }, 400)
-  return json(await getEng(env, cod))
+  return json(await getEng(env, cod, url.searchParams.get('p')))
 }
 
 export async function onRequestPost({ env, request }) {
@@ -107,7 +99,7 @@ export async function onRequestPost({ env, request }) {
   }
 
   if (!cod || !['like', 'unlike', 'share'].includes(tipo)) return json({ error: 'requisicao invalida' }, 400)
-  const data = await getEng(env, cod)
+  const data = await getEng(env, cod, body.p)
   if (tipo === 'like') data.likes += 1
   else if (tipo === 'unlike') data.likes = Math.max(0, data.likes - 1)
   else if (tipo === 'share') data.shares += 1

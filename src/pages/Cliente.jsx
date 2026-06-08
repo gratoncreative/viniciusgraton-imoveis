@@ -92,17 +92,25 @@ export default function Cliente() {
   return (
     <main className="pagina cliente-pg">
       <header className="cliente-hero">
-        <div className="container">
-          <span className="eyebrow">Seleção exclusiva{nome ? ` · ${nome}` : ''}</span>
-          <h1 className="section-title">{nome ? `${nome}, ` : ''}essas opções são <em>pensando em você</em></h1>
-          <p className="cliente-intro">Selecionei a dedo o que combina com o que você procura. E você pode <b>refinar aqui mesmo</b> — curta o que gostou, descarte o que não é bem isso, e ajuste o que importa. Tudo isso me ajuda a achar o imóvel certo pra você. {salvo && <span className="cliente-salvo">✓ salvo</span>}</p>
-          <div className="cliente-assina">
-            <img src="/vinicius-graton.jpg" alt="Vinícius Graton" loading="lazy" />
-            <div>
-              <b>Selecionado pessoalmente por Vinícius Graton</b>
-              <span>Consultor de imóveis em Uberlândia · Rotina Imobiliária.</span>
+        <div className={`container ${cli.foto ? 'cliente-hero-grid' : ''}`}>
+          <div className="cliente-hero-texto">
+            <span className="eyebrow">Seleção exclusiva{nome ? ` · ${nome}` : ''}</span>
+            <h1 className="section-title">{nome ? `${nome}, ` : ''}essas opções são <em>pensando em você</em></h1>
+            <p className="cliente-intro">Selecionei a dedo o que combina com o que você procura. E você pode <b>refinar aqui mesmo</b> — curta o que gostou, descarte o que não é bem isso, e ajuste o que importa. Tudo isso me ajuda a achar o imóvel certo pra você. {salvo && <span className="cliente-salvo">✓ salvo</span>}</p>
+            <div className="cliente-assina">
+              <img src="/vinicius-graton.jpg" alt="Vinícius Graton" loading="lazy" />
+              <div>
+                <b>Selecionado pessoalmente por Vinícius Graton</b>
+                <span>Consultor de imóveis em Uberlândia · Rotina Imobiliária.</span>
+              </div>
             </div>
           </div>
+          {cli.foto && (
+            <div className="cliente-hero-foto">
+              <img src={cli.foto} alt={nome || 'Cliente'} loading="lazy" />
+              {nome && <span className="cliente-hero-foto-nome">{nome}</span>}
+            </div>
+          )}
         </div>
       </header>
 
