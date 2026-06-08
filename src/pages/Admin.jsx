@@ -115,6 +115,7 @@ function ImoveisPub({ token, onSair }) {
   const [salvo, setSalvo] = useState(false)
   const [enviandoFotos, setEnviandoFotos] = useState(false)
   const [erroFoto, setErroFoto] = useState('')
+  const [busca, setBusca] = useState('')
   const base = sel ? IMOVEIS.find((i) => String(i.codigo) === String(sel)) : null
 
   const abrir = async (cod) => {
@@ -309,19 +310,36 @@ function ImoveisPub({ token, onSair }) {
     )
   }
 
+  const q = busca.trim().toLowerCase()
+  const lista = q
+    ? IMOVEIS.filter((i) => [i.codigo, i.bairro, i.tipo, i.endereco, i.edificio].some((c) => String(c || '').toLowerCase().includes(q)))
+    : IMOVEIS
+
   return (
     <section>
       {carregando && <p className="section-sub">Carregando…</p>}
-      <p className="section-sub" style={{ marginBottom: 14 }}>Clique num imóvel para <b>editar os dados</b> e cadastrar o <b>proprietário</b> (confidencial). {IMOVEIS.length} imóveis publicados.</p>
-      <div className="painel-lista">
-        {IMOVEIS.map((i) => (
-          <button className="painel-card admin-imovel-card" key={i.codigo} onClick={() => abrir(i.codigo)}>
-            <b>{i.tipo} · {i.bairro}</b>
-            <span className="painel-meta">cód. {i.codigo} · {i.quartos || 0}q · {i.area || 0} m²</span>
-            <span className="admin-imovel-preco">{moeda(i.preco)}</span>
-            <span className="admin-editar">Editar →</span>
+      <p className="section-sub" style={{ marginBottom: 12 }}>Clique num imóvel para <b>editar os dados</b> e cadastrar o <b>proprietário</b> (confidencial). {IMOVEIS.length} imóveis publicados.</p>
+      <div className="admin-busca">
+        <input value={busca} onChange={(e) => setBusca(e.target.value)} placeholder="🔎 Buscar por código, bairro, tipo, endereço…" />
+        {busca && <button className="admin-btn" onClick={() => setBusca('')}>limpar</button>}
+        <span className="painel-meta">{lista.length} {lista.length === 1 ? 'imóvel' : 'imóveis'}</span>
+      </div>
+      <div className="admin-imoveis-grid">
+        {lista.map((i) => (
+          <button className="admin-im-card" key={i.codigo} onClick={() => abrir(i.codigo)}>
+            <div className="admin-im-foto">
+              <img src={i.img} alt="" loading="lazy" referrerPolicy="no-referrer" />
+              <span className="admin-im-cod">cód. {i.codigo}</span>
+            </div>
+            <div className="admin-im-info">
+              <b className="admin-im-bairro">{i.bairro}</b>
+              <span className="painel-meta">{i.tipo} · {i.quartos || 0}q{i.suites ? ` · ${i.suites} st` : ''} · {i.area || 0} m²</span>
+              <span className="admin-im-preco">{formatPreco(i.preco)}</span>
+              <span className="admin-editar">Editar →</span>
+            </div>
           </button>
         ))}
+        {lista.length === 0 && <p className="painel-meta">Nenhum imóvel encontrado para "{busca}".</p>}
       </div>
     </section>
   )
