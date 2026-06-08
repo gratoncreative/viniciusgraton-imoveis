@@ -36,6 +36,9 @@ html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: hidd
 /* Garantias de responsividade: nada ultrapassa a largura da tela em nenhum aparelho */
 img, svg, video, canvas, iframe { max-width: 100%; }
 h1, h2, h3, h4, p, a, span, li, .section-title { overflow-wrap: break-word; word-break: normal; }
+/* Quebras de linha harmônicas em todo o site: títulos balanceados, parágrafos sem palavra órfã */
+h1, h2, h3, h4, .section-title, .det-titulo, .eyebrow, .hero-title, .det-rel-titulo, .calc-painel-tit { text-wrap: balance; }
+p, .section-sub, .det-sobre-texto p, .post-corpo p, li { text-wrap: pretty; }
 
 body {
   font-family: var(--font-body);
