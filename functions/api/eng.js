@@ -5,10 +5,10 @@
  *   GET  /api/eng?cod=86237          -> { likes, shares }   (cria seed na 1ª vez)
  *   POST /api/eng  { cod, tipo }     tipo: 'like' | 'unlike' | 'share'  -> { likes, shares }
  *   POST /api/eng  { tipo:'lead', cod, nome, fone }  -> grava o lead    -> { ok:true }
- *   GET  /api/eng?leads=CHAVE        -> lista os leads (acesso do Vinícius)
+ *
+ * A LEITURA dos leads é feita SOMENTE pelo painel seguro /admin
+ * (functions/api/admin.js). Não há mais listagem por chave fixa.
  */
-const SEGREDO_LEADS = 'graton2026' // chave simples p/ o Vinícius ver os leads
-
 const rand = (min, max) => min + Math.floor(Math.random() * (max - min + 1))
 const json = (obj, status = 200) =>
   new Response(JSON.stringify(obj), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } })
@@ -47,17 +47,6 @@ export async function onRequestGet({ env, request }) {
       if (n) views[k.name.slice(6)] = n
     }
     return json({ views })
-  }
-  // listagem de leads (uso do Vinícius): /api/eng?leads=graton2026
-  const chave = url.searchParams.get('leads')
-  if (chave) {
-    if (chave !== SEGREDO_LEADS) return json({ error: 'nao autorizado' }, 403)
-    if (!temKV(env)) return json({ total: 0, leads: [], aviso: 'KV nao configurado' })
-    const lista = await env.ENGAGEMENT.list({ prefix: 'lead:' })
-    const leads = []
-    for (const k of lista.keys) { const v = await env.ENGAGEMENT.get(k.name, 'json'); if (v) leads.push(v) }
-    leads.sort((a, b) => (b.ts || 0) - (a.ts || 0))
-    return json({ total: leads.length, leads })
   }
   const cod = url.searchParams.get('cod')
   if (!cod) return json({ error: 'cod obrigatorio' }, 400)

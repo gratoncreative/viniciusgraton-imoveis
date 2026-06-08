@@ -5,9 +5,10 @@
  *
  *   POST /api/conta { token, nome, email, fone, ... }  -> { ok }
  *   GET  /api/conta?token=XXXX        -> perfil (restaurar em outro aparelho)
- *   GET  /api/conta?clientes=graton2026 -> lista de clientes (uso do Vinícius)
+ *
+ * A lista de clientes (uso do Vinícius) é vista SOMENTE no painel seguro /admin
+ * (functions/api/admin.js). Não há mais listagem por chave fixa.
  */
-const SEGREDO = 'graton2026'
 const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
 const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } })
 const str = (v, n) => String(v == null ? '' : v).slice(0, n)
@@ -30,16 +31,6 @@ export async function onRequestPost({ env, request }) {
 
 export async function onRequestGet({ env, request }) {
   const url = new URL(request.url)
-  const chave = url.searchParams.get('clientes')
-  if (chave) {
-    if (chave !== SEGREDO) return json({ error: 'nao autorizado' }, 403)
-    if (!temKV(env)) return json({ total: 0, clientes: [] })
-    const lista = await env.ENGAGEMENT.list({ prefix: 'conta:' })
-    const clientes = []
-    for (const k of lista.keys) { const v = await env.ENGAGEMENT.get(k.name, 'json'); if (v) clientes.push(v) }
-    clientes.sort((a, b) => (b.atualizadoEm || 0) - (a.atualizadoEm || 0))
-    return json({ total: clientes.length, clientes })
-  }
   const token = url.searchParams.get('token')
   if (!token) return json({ error: 'token obrigatorio' }, 400)
   if (!temKV(env)) return json(null)

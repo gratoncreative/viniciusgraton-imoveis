@@ -3,6 +3,12 @@
 
 User-agent: *
 Allow: /
+# Áreas privadas / administrativas — fora dos buscadores
+Disallow: /admin
+Disallow: /painel
+Disallow: /api/
+Disallow: /conta
+Disallow: /favoritos
 
 # Assistentes / crawlers de IA (descoberta em ChatGPT, Gemini, Claude, Perplexity, etc.)
 User-agent: GPTBot
