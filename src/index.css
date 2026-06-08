@@ -1255,6 +1255,31 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .post-fontes b { font-family: var(--font-head); color: #2a2f3a; }
 .post-fontes ul { list-style: none; margin-top: 8px; display: flex; flex-direction: column; gap: 5px; }
 .post-fontes a { color: var(--gold-3); text-decoration: underline; text-underline-offset: 2px; }
+/* Blocos ricos do post (matriz de conteúdo/SEO) */
+.post-artigo h3 { font-family: var(--font-head); font-weight: 700; font-size: 1.08rem; color: #1a1f29; margin: 22px 0 8px; }
+.post-artigo strong { color: #1a1f29; font-weight: 700; }
+.post-lista { margin: 6px 0 18px; padding-left: 4px; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.post-lista li { position: relative; padding-left: 26px; color: #414854; line-height: 1.6; font-size: 1.02rem; }
+.post-lista li::before { content: '✓'; position: absolute; left: 0; top: 0; color: var(--gold-3); font-weight: 700; }
+.post-tabela-wrap { overflow-x: auto; margin: 14px 0 20px; border-radius: 12px; border: 1px solid var(--border); }
+.post-tabela { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.post-tabela th { background: #f4f1e8; text-align: left; padding: 11px 13px; font-family: var(--font-head); font-weight: 700; color: #2a2f3a; }
+.post-tabela td { padding: 10px 13px; border-top: 1px solid var(--border); color: #414854; }
+.post-tabela tr:nth-child(even) td { background: #faf8f3; }
+.post-destaque { margin: 16px 0 20px; padding: 15px 18px; border-radius: 12px; background: rgba(184,134,47,0.1); border-left: 4px solid var(--gold-3); color: #3a4150; line-height: 1.65; font-size: 1rem; }
+.post-cta-inline { margin: 18px 0 22px; text-align: center; }
+.post-fig { margin: 16px 0 22px; }
+.post-fig img { width: 100%; border-radius: 14px; display: block; }
+.post-fig figcaption { font-size: 0.82rem; color: #6a7280; text-align: center; margin-top: 7px; }
+.post-faq { margin: 28px 0 10px; }
+.post-faq h2 { margin-bottom: 8px; }
+.post-faq-item { padding: 14px 0; border-bottom: 1px solid var(--border); }
+.post-faq-item b { display: block; font-family: var(--font-head); color: #1a1f29; font-size: 1.02rem; margin-bottom: 5px; }
+.post-faq-item p { margin: 0; }
+.post-autor { display: flex; gap: 14px; align-items: center; margin-top: 30px; padding: 16px 18px; border-radius: 14px; background: #fff; border: 1px solid var(--border); }
+.post-autor img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; flex: none; border: 2px solid var(--gold-2); }
+.post-autor b { font-family: var(--font-head); color: #1a1f29; display: block; margin-bottom: 2px; }
+.post-autor span { font-size: 0.88rem; color: #5a6370; line-height: 1.55; }
 
 /* CTA de venda (proprietário) na home */
 .vender-cta-sec { padding: clamp(40px, 7vw, 90px) 0; background: linear-gradient(135deg, #0d1119 0%, #11151d 100%); }

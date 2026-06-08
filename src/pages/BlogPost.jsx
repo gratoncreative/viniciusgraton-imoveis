@@ -7,6 +7,19 @@ import { registrarView } from '../engajamento'
 import { useSEO } from '../useSEO'
 import { IconArrow, IconWhats } from '../components/icons'
 
+// negrito estratégico **termo** e links [texto](url) (internos e externos)
+const richText = (t) => String(t || '').split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g).map((s, i) => {
+  if (s.startsWith('**') && s.endsWith('**')) return <strong key={i}>{s.slice(2, -2)}</strong>
+  const m = s.match(/^\[([^\]]+)\]\(([^)]+)\)$/)
+  if (m) {
+    const ext = /^https?:/.test(m[2])
+    return ext
+      ? <a key={i} href={m[2]} target="_blank" rel="noopener noreferrer">{m[1]}</a>
+      : <Link key={i} to={m[2]}>{m[1]}</Link>
+  }
+  return s
+})
+
 export default function BlogPost() {
   const { slug } = useParams()
   const p = getPost(slug)
@@ -29,13 +42,20 @@ export default function BlogPost() {
     const el = document.createElement('script')
     el.type = 'application/ld+json'
     el.id = 'post-jsonld'
-    el.textContent = JSON.stringify({
-      '@context': 'https://schema.org', '@type': 'Article',
-      headline: p.titulo, description: p.resumo, datePublished: p.data, articleSection: p.categoria,
-      author: { '@type': 'Person', name: 'Vinícius Graton' },
+    const url = `https://viniciusgraton.com.br/blog/${p.slug}`
+    const faqBloco = (p.conteudo || []).find((b) => b.tipo === 'faq')
+    const grafo = [{
+      '@type': 'Article',
+      headline: p.titulo, description: p.resumo, datePublished: p.data, dateModified: p.atualizado || p.data, articleSection: p.categoria,
+      ...(p.capa ? { image: `https://viniciusgraton.com.br${p.capa}` } : {}),
+      author: { '@type': 'Person', name: 'Vinícius Graton', jobTitle: 'Consultor de Imóveis', worksFor: 'Rotina Imobiliária' },
       publisher: { '@type': 'Organization', name: 'Vinícius Graton Imóveis' },
-      mainEntityOfPage: `https://viniciusgraton.com.br/blog/${p.slug}`,
-    })
+      mainEntityOfPage: url,
+    }]
+    if (faqBloco && (faqBloco.perguntas || []).length) {
+      grafo.push({ '@type': 'FAQPage', mainEntity: faqBloco.perguntas.map((q) => ({ '@type': 'Question', name: q.q, acceptedAnswer: { '@type': 'Answer', text: q.a } })) })
+    }
+    el.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': grafo })
     document.head.appendChild(el)
     return () => { document.getElementById('post-jsonld')?.remove() }
   }, [p])
@@ -70,15 +90,44 @@ export default function BlogPost() {
 
         <article className="post-artigo">
           <p className="post-lead">{p.resumo}</p>
-          {p.conteudo.map((b, i) => b.tipo === 'h'
-            ? <h2 key={i}>{b.txt}</h2>
-            : <p key={i}>{b.txt}</p>)}
+          {p.conteudo.map((b, i) => {
+            switch (b.tipo) {
+              case 'h2': case 'h': return <h2 key={i}>{b.txt}</h2>
+              case 'h3': return <h3 key={i}>{b.txt}</h3>
+              case 'lista': return <ul className="post-lista" key={i}>{(b.itens || []).map((it, j) => <li key={j}>{richText(it)}</li>)}</ul>
+              case 'tabela': return (
+                <div className="post-tabela-wrap" key={i}>
+                  <table className="post-tabela">
+                    {b.cols && <thead><tr>{b.cols.map((c, j) => <th key={j}>{c}</th>)}</tr></thead>}
+                    <tbody>{(b.linhas || []).map((ln, j) => <tr key={j}>{ln.map((cel, k) => <td key={k}>{richText(cel)}</td>)}</tr>)}</tbody>
+                  </table>
+                </div>
+              )
+              case 'destaque': return <div className="post-destaque" key={i}>{richText(b.txt)}</div>
+              case 'img': case 'imagem': return <figure className="post-fig" key={i}><img src={b.src} alt={b.alt || ''} loading="lazy" referrerPolicy="no-referrer" />{b.legenda && <figcaption>{b.legenda}</figcaption>}</figure>
+              case 'cta': return <div className="post-cta-inline" key={i}><a className="btn btn-gold" href={linkWhatsApp(b.txt || 'Olá Vinícius! Quero falar sobre meu imóvel em Uberlândia.')} target="_blank" rel="noopener"><IconWhats /> {b.label || 'Falar com o Vinícius'}</a></div>
+              case 'faq': return (
+                <div className="post-faq" key={i}>
+                  <h2>Perguntas frequentes</h2>
+                  {(b.perguntas || []).map((q, j) => <div className="post-faq-item" key={j}><b>{q.q}</b><p>{richText(q.a)}</p></div>)}
+                </div>
+              )
+              default: return <p key={i}>{richText(b.txt)}</p>
+            }
+          })}
           {(p.fontes || []).length > 0 && (
             <div className="post-fontes">
-              <b>Fontes:</b>
+              <b>Fontes e referências:</b>
               <ul>{p.fontes.map((f, i) => <li key={i}><a href={f.url} target="_blank" rel="noopener noreferrer">{f.nome}</a></li>)}</ul>
             </div>
           )}
+          <div className="post-autor">
+            <img src="/vinicius-graton.jpg" alt="Vinícius Graton, consultor de imóveis em Uberlândia" loading="lazy" />
+            <div>
+              <b>Vinícius Graton</b>
+              <span>Consultor de imóveis em Uberlândia pela Rotina Imobiliária. Atende compra, venda e locação com curadoria criteriosa e acompanhamento da primeira conversa à entrega das chaves.{p.atualizado ? ` Atualizado em ${new Date(p.atualizado + 'T12:00:00').toLocaleDateString('pt-BR')}.` : ''}</span>
+            </div>
+          </div>
         </article>
 
         <div className="post-cta">
