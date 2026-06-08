@@ -107,10 +107,10 @@ export async function onRequestPost({ env, request }) {
     const apr = await env.ENGAGEMENT.list({ prefix: 'aprovado:' })
     for (const k of apr.keys) out.aprovados.push(k.name.slice('aprovado:'.length))
     // resumo do CRM (contagem) p/ a Visão geral — a lista completa é carregada na aba
-    out.crmTotal = 0; out.crmNovos = 0
+    out.crmTotal = 0; out.crmNovos = 0; out.crmNovidades = 0
     const crm = await env.ENGAGEMENT.list({ prefix: 'crm:' })
     out.crmTotal = crm.keys.length
-    for (const k of crm.keys) { const v = await env.ENGAGEMENT.get(k.name, 'json'); if (v && v.novo) out.crmNovos++ }
+    for (const k of crm.keys) { const v = await env.ENGAGEMENT.get(k.name, 'json'); if (v && v.novo) out.crmNovos++; if (v && v.temNovidade) out.crmNovidades++ }
     return json(out)
   }
 
@@ -226,9 +226,16 @@ export async function onRequestPost({ env, request }) {
       origem: reg.origem || lim(c.origem, 20) || '',
       prazo: lim(c.prazo, 40) || reg.prazo || '',
       novo: false,
+      ultimaAcaoEm: reg.ultimaAcaoEm || 0,
+      temNovidade: false, // ao salvar, o Vinícius já viu
     }
     await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(novo))
     return json({ ok: true, cliente: novo })
+  }
+  if (action === 'crm-visto') {
+    const id = String(b.id || '').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)
+    if (id) { const r = await env.ENGAGEMENT.get('crm:' + id, 'json'); if (r && r.temNovidade) { r.temNovidade = false; await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(r)) } }
+    return json({ ok: true })
   }
   if (action === 'crm-del') {
     const id = String(b.id || '').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)

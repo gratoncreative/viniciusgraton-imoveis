@@ -39,6 +39,8 @@ export async function onRequestPost({ env, request }) {
   }
   reg.refinadoEm = Date.now()
   reg.atualizadoEm = Date.now()
+  reg.ultimaAcaoEm = Date.now()
+  reg.temNovidade = true // o Vinícius vê um aviso no painel de que o cliente mexeu
   await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(reg))
   return json({ ok: true })
 }

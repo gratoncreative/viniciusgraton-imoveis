@@ -55,6 +55,14 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
     if (!confirm('Excluir este cliente do CRM?')) return
     await api({ action: 'crm-del', token, id }); setSel(null); carregar()
   }
+  // limpa o aviso de novidade ao abrir o cliente
+  const abrir = (c) => {
+    if (c.temNovidade) { api({ action: 'crm-visto', token, id: c.id }); setClientes((cs) => (cs || []).map((x) => (x.id === c.id ? { ...x, temNovidade: false } : x))) }
+    setSel({ ...VAZIO, ...c })
+  }
+  // imóveis que combinam com o cliente e que ele ainda NÃO tem na página (oportunidade de envio)
+  const prefsDe = (c) => ({ tipos: c.tipos, bairros: c.bairros, precoMin: +c.precoMin || 0, precoMax: +c.precoMax || 0, quartosMin: +c.quartosMin || 0, suitesMin: +c.suitesMin || 0, vagasMin: +c.vagasMin || 0, areaMin: +c.areaMin || 0 })
+  const novosMatch = (c) => { try { return filtrarParaCliente(prefsDe(c)).filter((x) => !(c.sugeridos || []).includes(String(x.im.codigo))).length } catch { return 0 } }
 
   const linkCliente = (c) => `${window.location.origin}/cliente/${c.id}`
 
@@ -178,23 +186,26 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
       </div>
       {clientes && clientes.length === 0 && <p className="section-sub">Nenhum cliente cadastrado ainda. Clique em <b>+ Novo cliente</b> para começar.</p>}
       <div className="crm-lista">
-        {(clientes || []).map((c) => (
-          <div className={`crm-card ${c.novo ? 'crm-card--novo' : ''}`} key={c.id}>
+        {[...(clientes || [])].sort((a, b) => (b.temNovidade ? 1 : 0) - (a.temNovidade ? 1 : 0)).map((c) => {
+          const nm = novosMatch(c)
+          return (
+          <div className={`crm-card ${c.novo ? 'crm-card--novo' : ''} ${c.temNovidade ? 'crm-card--mexeu' : ''}`} key={c.id}>
             <div className="crm-card-top">
               <b>{c.nome || 'Sem nome'}</b>
+              {c.temNovidade && <span className="crm-mexeu-tag">🔔 Mexeu na página</span>}
               {c.novo && <span className="crm-novo-tag">✨ Novo · do site</span>}
               <span className="painel-meta">{c.whatsapp}</span>
             </div>
             <p className="crm-card-crit">{[c.finalidade, (c.tipos || []).join('/'), (c.bairros || []).slice(0, 2).join(', '), c.precoMax ? 'até ' + formatPreco(c.precoMax) : '', c.prazo ? '⏱ ' + c.prazo : ''].filter(Boolean).join(' · ')}</p>
-            <p className="painel-meta">{(c.sugeridos || []).length} imóvel(is) na página</p>
+            <p className="painel-meta">{(c.sugeridos || []).length} imóvel(is) na página{nm > 0 && <> · <b className="crm-oportunidade">🎯 {nm} novo{nm > 1 ? 's' : ''} combina{nm > 1 ? 'm' : ''}</b></>}</p>
             <div className="crm-card-acoes">
-              <button className="admin-btn" onClick={() => setSel({ ...VAZIO, ...c })}>Abrir / editar</button>
+              <button className="admin-btn" onClick={() => abrir(c)}>Abrir / editar</button>
               <a className="admin-btn" href={`${window.location.origin}/cliente/${c.id}`} target="_blank" rel="noopener">Página</a>
               <a className="admin-btn admin-btn--ok" href={waLink(c.whatsapp, `Olá${c.nome ? ' ' + c.nome.split(' ')[0] : ''}! Aqui é o Vinícius. Separei uma seleção de imóveis pensando no que você procura: ${window.location.origin}/cliente/${c.id}`)} target="_blank" rel="noopener">WhatsApp</a>
               <button className="admin-btn admin-btn--del" onClick={() => excluir(c.id)}>Excluir</button>
             </div>
           </div>
-        ))}
+        )})}
       </div>
 
       {cadastros && cadastros.length > 0 && (

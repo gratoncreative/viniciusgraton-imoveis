@@ -423,6 +423,7 @@ export default function Admin() {
   const totalViews = blogViews ? Object.values(blogViews).reduce((s, n) => s + (n || 0), 0) : 0
   const crmTotal = dados?.crmTotal || 0
   const crmNovos = dados?.crmNovos || 0
+  const crmNovidades = dados?.crmNovidades || 0
 
   const aprovarImovel = async (codigo, aprovado) => {
     if (aprovado !== false) setAprovadosLocais((a) => [...new Set([...a, String(codigo)])]) // some na hora
@@ -456,7 +457,7 @@ export default function Admin() {
     ['geral', 'Visão geral'],
     ['imoveis', `Imóveis${aAvaliar ? ` (${aAvaliar} a avaliar)` : ''}`],
     ['leads', `Leads (${leads.length})`],
-    ['crm', `Clientes${crmNovos ? ` (${crmNovos} novos)` : ''}`],
+    ['crm', `Clientes${crmNovidades ? ` 🔔${crmNovidades}` : crmNovos ? ` (${crmNovos} novos)` : ''}`],
     ['marca', "Remover marca d'água"],
   ]
 
@@ -485,7 +486,7 @@ export default function Admin() {
             <div className="admin-stats">
               <StatCard rotulo="Imóveis a avaliar" valor={aAvaliar} sub={`${importadosPendentes.length} importados · ${pendentes} enviados`} onClick={() => { setAba('imoveis'); setSubImovel('avaliar') }} />
               <StatCard rotulo="Leads (7 dias)" valor={leadsNovos} sub={`${leads.length} no total`} onClick={() => setAba('leads')} />
-              <StatCard rotulo="Clientes" valor={crmTotal} sub={`${crmNovos ? crmNovos + ' novos · ' : ''}${clientes.length} cadastros do site`} onClick={() => setAba('crm')} />
+              <StatCard rotulo="Clientes" valor={crmTotal} sub={`${crmNovidades ? '🔔 ' + crmNovidades + ' mexeram · ' : ''}${crmNovos ? crmNovos + ' novos · ' : ''}${clientes.length} cadastros`} onClick={() => setAba('crm')} />
               <StatCard rotulo="Imóveis publicados" valor={IMOVEIS.length} sub="em destaque no site" onClick={() => { setAba('imoveis'); setSubImovel('publicados') }} />
               <StatCard rotulo="Leituras no blog" valor={totalViews} sub={blogViews ? `${Object.keys(blogViews).length} posts` : '—'} onClick={() => window.open('/blog', '_blank')} />
             </div>
