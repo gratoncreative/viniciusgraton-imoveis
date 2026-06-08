@@ -1809,6 +1809,30 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .cb-voltar:hover { color: var(--gold-1); }
 .cb-rodape .cb-count { margin: 0; }
 
+/* Launcher flutuante + popup do chat (tipo WhatsApp) */
+.cb-launcher { position: fixed; right: 24px; bottom: 92px; z-index: 96; display: inline-flex; align-items: center; gap: 9px; padding: 13px 20px 13px 17px; border-radius: 100px; background: var(--gold-grad); color: #20160a; font-family: var(--font-head); font-weight: 700; font-size: 0.95rem; border: none; cursor: pointer; box-shadow: 0 16px 36px -10px rgba(224,181,86,0.6); transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease); }
+.cb-launcher:hover { transform: translateY(-2px) scale(1.03); }
+.cb-launcher.is-open { background: #161a22; color: #fff; padding: 14px; }
+.cb-launcher svg { flex: none; }
+@media (max-width: 600px) { .cb-launcher span { display: none; } .cb-launcher { padding: 15px; bottom: 90px; right: 18px; } }
+
+.cb-widget-overlay { position: fixed; inset: 0; background: rgba(8,10,16,0.45); z-index: 95; backdrop-filter: blur(2px); animation: cbfade 0.2s var(--ease); }
+@keyframes cbfade { from { opacity: 0 } to { opacity: 1 } }
+.cb-widget-panel { position: fixed; right: 24px; bottom: 158px; z-index: 97; width: min(420px, 92vw); max-height: min(660px, 76vh); display: flex; flex-direction: column; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 34px 80px -24px rgba(0,0,0,0.65); border: 1px solid rgba(184,134,47,0.35); animation: cbpop 0.26s var(--ease); }
+@keyframes cbpop { from { opacity: 0; transform: translateY(16px) scale(0.98) } to { opacity: 1; transform: none } }
+.cb-widget-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; background: linear-gradient(120deg, #161a22 0%, #20262f 100%); color: #fff; flex: none; }
+.cb-widget-head-info { display: flex; align-items: center; gap: 10px; }
+.cb-widget-head-info img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--gold-3); }
+.cb-widget-head-info b { font-family: var(--font-head); font-size: 0.98rem; display: block; line-height: 1.2; }
+.cb-widget-head-info i { font-style: normal; font-size: 0.76rem; color: #c3c9d4; }
+.cb-widget-close { background: rgba(255,255,255,0.14); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; flex: none; }
+.cb-widget-close:hover { background: rgba(255,255,255,0.25); }
+.cb-widget-body { padding: 18px; overflow-y: auto; }
+.cb-widget-body .chat-busca { box-shadow: none; border: none; padding: 0; max-width: none; min-height: auto; }
+.cb-widget-body .cb-sucesso, .cb-widget-body .cb-sucesso-grid, .cb-widget-body .cb-link-box { max-width: none; }
+.cb-widget-body .cb-sucesso-grid { grid-template-columns: 1fr; }
+@media (max-width: 600px) { .cb-widget-panel { right: 0; left: 0; bottom: 0; width: 100%; max-height: 88vh; border-radius: 20px 20px 0 0; } }
+
 .cb-sucesso { max-width: 920px; margin: 0 auto; }
 .cb-sucesso-topo { text-align: center; margin-bottom: 20px; }
 .cb-sucesso-ok { display: inline-grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: rgba(46,140,87,0.14); color: #2e8c57; font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; }

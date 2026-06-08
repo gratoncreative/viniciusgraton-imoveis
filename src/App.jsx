@@ -7,6 +7,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import BarraContato from './components/BarraContato'
 import BackToTop from './components/BackToTop'
+import ChatBuscaWidget from './components/ChatBuscaWidget'
 import Home from './pages/Home'
 import { CONFIG, linkWhatsApp, WA, aplicarOverridesImoveis } from './data'
 import { IconWhats } from './components/icons'
@@ -146,6 +147,7 @@ export default function App() {
         <IconWhats />
       </a>
 
+      <ChatBuscaWidget />
       <BarraContato />
       <BackToTop />
     </>
