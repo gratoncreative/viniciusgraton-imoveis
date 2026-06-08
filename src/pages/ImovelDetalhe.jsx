@@ -154,6 +154,14 @@ export default function ImovelDetalhe() {
       ? bairroInfo.desc
       : `Região consolidada de ${im.cidade}, com boa infraestrutura, comércio por perto e liquidez para uma compra segura.`,
   })
+  // Vantagens que sempre valorizam o imóvel (garantimos no mínimo 6 no total)
+  prox.push(
+    { icon: 'pin', text: 'Comércio e serviços por perto', sub: 'Mercados, farmácias, padarias e comércio do dia a dia no entorno — praticidade para a rotina da família.' },
+    { icon: 'home', text: 'Escolas e saúde na região', sub: 'Opções de ensino e atendimento de saúde acessíveis a poucos minutos do imóvel.' },
+    { icon: 'pin', text: 'Boas vias de acesso', sub: `Deslocamento facilitado ao centro e às principais avenidas de ${im.cidade}, com transporte público por perto.` },
+    { icon: 'shield', text: 'Financiável e com uso do FGTS', sub: 'Imóvel residencial que facilita o financiamento bancário e o uso do FGTS — amplia o público comprador e a velocidade de venda.' },
+    { icon: 'home', text: 'Liquidez e valorização', sub: 'Região de boa procura e tendência de valorização — mais segurança na compra hoje e na revenda amanhã.' },
+  )
 
   // "Veja também" por SIMILARIDADE de filtros (mesmo tipo, bairro, faixa de preço,
   // quartos/suítes) — entregamos o mesmo perfil que o lead está olhando.

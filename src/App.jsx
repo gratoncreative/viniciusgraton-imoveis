@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from 'react'
+import { useEffect, useState, lazy, Suspense } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
 import ScrollProgress from './components/ScrollProgress'
@@ -8,7 +8,7 @@ import Footer from './components/Footer'
 import BarraContato from './components/BarraContato'
 import BackToTop from './components/BackToTop'
 import Home from './pages/Home'
-import { CONFIG, linkWhatsApp, WA } from './data'
+import { CONFIG, linkWhatsApp, WA, aplicarOverridesImoveis } from './data'
 import { IconWhats } from './components/icons'
 
 // páginas internas carregadas sob demanda (home fica mais leve e rápida)
@@ -40,6 +40,18 @@ const NotFound = lazy(() => import('./pages/NotFound'))
 
 export default function App() {
   const { pathname } = useLocation()
+  const [ovKey, setOvKey] = useState('base')
+
+  // Busca os overrides do painel (edições / ocultar) e aplica nos imóveis publicados.
+  // Só campos do anúncio — dados do proprietário nunca trafegam aqui.
+  useEffect(() => {
+    let vivo = true
+    fetch('/api/imoveis-pub')
+      .then((r) => r.json())
+      .then((mapa) => { if (!vivo) return; aplicarOverridesImoveis(mapa); setOvKey('ov') })
+      .catch(() => { if (vivo) setOvKey('ov') })
+    return () => { vivo = false }
+  }, [])
 
   // Google Analytics 4 (só ativa se CONFIG.gaId estiver preenchido)
   useEffect(() => {
@@ -102,7 +114,7 @@ export default function App() {
       <a href="#conteudo" className="skip-link">Pular para o conteúdo</a>
       <ScrollProgress />
       <Navbar />
-      <div id="conteudo" tabIndex={-1}>
+      <div id="conteudo" tabIndex={-1} key={ovKey}>
         <ErrorBoundary>
           <Suspense fallback={<div className="rota-load" aria-busy="true"><span className="rota-spinner" /></div>}>
             <Routes>

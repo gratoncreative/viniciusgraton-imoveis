@@ -43,6 +43,21 @@ import condominiosData from './condominios.json'
 export const IMOVEIS = destaqueData.imoveis || []
 export const IMOVEIS_INFO = { geradoEm: destaqueData.geradoEm, fonte: destaqueData.fonte }
 
+// Aplica os overrides do painel (campos editados / ocultar) vindos de /api/imoveis-pub.
+// Só campos PÚBLICOS do anúncio — dados do proprietário NUNCA chegam aqui.
+const CAMPOS_OVERRIDE = ['preco', 'tipo', 'bairro', 'quartos', 'suites', 'banheiros', 'vagas', 'area', 'descricao']
+export function aplicarOverridesImoveis(mapa) {
+  if (!mapa || typeof mapa !== 'object') return
+  for (const im of IMOVEIS) {
+    const o = mapa[String(im.codigo)]
+    if (o && !o.oculto) for (const f of CAMPOS_OVERRIDE) if (f in o && o[f] !== '' && o[f] != null) im[f] = o[f]
+  }
+  for (let i = IMOVEIS.length - 1; i >= 0; i--) {
+    const o = mapa[String(IMOVEIS[i].codigo)]
+    if (o && o.oculto) IMOVEIS.splice(i, 1)
+  }
+}
+
 // Construtoras de Uberlândia (vitrine + página por construtora)
 export const CONSTRUTORAS = construtorasData.construtoras || []
 export const getConstrutora = (slug) => CONSTRUTORAS.find((c) => c.slug === slug)
