@@ -159,5 +159,21 @@ export async function onRequestPost({ env, request }) {
     return json({ ok: true })
   }
 
+  // Upload de foto nova do imóvel: recebe data URL (já redimensionada no navegador),
+  // guarda a imagem no KV do próprio dono e devolve a URL pública servida por /api/img.
+  if (action === 'img-upload') {
+    const codigo = String(b.codigo || '').replace(/[^a-zA-Z0-9]/g, '').slice(0, 12)
+    if (!codigo) return json({ error: 'codigo' }, 400)
+    const dataUrl = String(b.dataUrl || '')
+    const m = dataUrl.match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/)
+    if (!m) return json({ error: 'imagem', msg: 'Formato de imagem inválido (use JPG, PNG ou WEBP).' }, 400)
+    const ct = m[1]
+    const b64 = m[2]
+    if (b64.length > 2200000) return json({ error: 'grande', msg: 'Imagem muito grande. Tente uma com menos resolução.' }, 413)
+    const id = `imgupload:${codigo}:${crypto.randomUUID()}`
+    await env.ENGAGEMENT.put(id, JSON.stringify({ ct, b64, codigo, ts: Date.now() }))
+    return json({ ok: true, url: `/api/img?id=${id}` })
+  }
+
   return json({ error: 'acao desconhecida' }, 400)
 }

@@ -1182,6 +1182,11 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .admin-foto-acoes button { width: 27px; height: 27px; border-radius: 7px; border: none; background: rgba(255,255,255,0.94); color: #20252e; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: grid; place-items: center; }
 .admin-foto-acoes button:disabled { opacity: 0.35; cursor: default; }
 .admin-foto-acoes .admin-foto-del { background: #c0392b; color: #fff; }
+.admin-foto-upload { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+.admin-btn--upload { display: inline-flex; align-items: center; gap: 6px; }
+.admin-btn--upload:hover { border-color: var(--gold-3); color: var(--gold-3); background: rgba(184,134,47,0.07); }
+.admin-btn--upload input:disabled { cursor: progress; }
+.lead-erro { font-size: 0.84rem; color: #c0392b; font-weight: 600; }
 /* Placa VENDE-SE no formulário Anunciar */
 .placa-bloco { background: #fff; border: 1px solid rgba(184,134,47,0.3); border-radius: 16px; padding: 20px; margin: 6px 0 4px; box-shadow: 0 14px 34px -28px rgba(22,26,34,0.5); }
 .placa-pitch { color: #4a5160; font-size: 0.95rem; line-height: 1.6; margin: 8px 0 14px; }

@@ -109,6 +109,8 @@ function ImoveisPub({ token, onSair }) {
   const [reg, setReg] = useState(null)
   const [carregando, setCarregando] = useState(false)
   const [salvo, setSalvo] = useState(false)
+  const [enviandoFotos, setEnviandoFotos] = useState(false)
+  const [erroFoto, setErroFoto] = useState('')
   const base = sel ? IMOVEIS.find((i) => String(i.codigo) === String(sel)) : null
 
   const abrir = async (cod) => {
@@ -128,6 +130,42 @@ function ImoveisPub({ token, onSair }) {
   const moverFoto = (i, dir) => setReg((r) => { const a = [...(r.campos.fotos || [])]; const j = i + dir; if (j < 0 || j >= a.length) return r; [a[i], a[j]] = [a[j], a[i]]; return { ...r, campos: { ...r.campos, fotos: a } } })
   const removerFoto = (i) => setReg((r) => ({ ...r, campos: { ...r.campos, fotos: (r.campos.fotos || []).filter((_, n) => n !== i) } }))
   const capaFoto = (i) => setReg((r) => { const a = [...(r.campos.fotos || [])]; const [x] = a.splice(i, 1); a.unshift(x); return { ...r, campos: { ...r.campos, fotos: a } } })
+  // Redimensiona a imagem no próprio navegador (máx. 1280px, JPEG) antes de enviar — leve e rápido
+  const redimensionar = (file) => new Promise((resolve, reject) => {
+    const fr = new FileReader()
+    fr.onerror = () => reject(new Error('leitura'))
+    fr.onload = () => {
+      const img = new Image()
+      img.onerror = () => reject(new Error('imagem'))
+      img.onload = () => {
+        const max = 1280
+        let w = img.naturalWidth, h = img.naturalHeight
+        if (w > max || h > max) { const r = Math.min(max / w, max / h); w = Math.round(w * r); h = Math.round(h * r) }
+        const c = document.createElement('canvas'); c.width = w; c.height = h
+        c.getContext('2d').drawImage(img, 0, 0, w, h)
+        resolve(c.toDataURL('image/jpeg', 0.82))
+      }
+      img.src = fr.result
+    }
+    fr.readAsDataURL(file)
+  })
+  const enviarFotos = async (e) => {
+    const files = [...(e.target.files || [])]
+    e.target.value = ''
+    if (!files.length) return
+    setErroFoto(''); setEnviandoFotos(true)
+    for (const file of files) {
+      try {
+        if (!/^image\//.test(file.type)) continue
+        const dataUrl = await redimensionar(file)
+        const { status, j } = await api({ action: 'img-upload', token, codigo: String(sel), dataUrl })
+        if (status === 401) { setEnviandoFotos(false); return onSair() }
+        if (j && j.url) setReg((r) => ({ ...r, campos: { ...r.campos, fotos: [...(r.campos.fotos || []), j.url] } }))
+        else setErroFoto((j && j.msg) || 'Não consegui enviar uma das fotos.')
+      } catch { setErroFoto('Não consegui processar uma das imagens.') }
+    }
+    setEnviandoFotos(false)
+  }
   const salvar = async () => {
     const { status } = await api({ action: 'imovel-save', token, codigo: String(sel), owner: reg.owner, campos: reg.campos })
     if (status === 401) return onSair()
@@ -175,7 +213,14 @@ function ImoveisPub({ token, onSair }) {
                   </div>
                 ))}
               </div>
-              <p className="calc-nota">Excluir, reordenar e definir a capa valem ao clicar em <b>Salvar</b> e refletem no site. (Enviar fotos novas: em breve.)</p>
+              <div className="admin-foto-upload">
+                <label className="admin-btn admin-btn--upload">
+                  {enviandoFotos ? 'Enviando…' : '+ Adicionar fotos'}
+                  <input type="file" accept="image/*" multiple hidden disabled={enviandoFotos} onChange={enviarFotos} />
+                </label>
+                {erroFoto && <span className="lead-erro">{erroFoto}</span>}
+              </div>
+              <p className="calc-nota">Adicione novas fotos (são reduzidas automaticamente). Excluir, reordenar, definir capa e as fotos novas só valem depois de clicar em <b>Salvar</b> — aí refletem no site.</p>
             </div>
           </div>
           <div>
