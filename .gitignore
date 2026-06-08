@@ -20,3 +20,7 @@ scripts/_candidatos.json
 *.pdf
 Acessos-*
 Graton-Acessos/
+
+# Ferramenta local de remocao de marca d'agua (pesada: venv, modelos, amostras)
+
+ferramentas-imagem/
