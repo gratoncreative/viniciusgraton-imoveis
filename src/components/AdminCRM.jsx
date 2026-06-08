@@ -37,9 +37,17 @@ export default function AdminCRM({ token, onSair }) {
   const salvar = async () => {
     setErro('')
     const { status, j } = await api({ action: 'crm-save', token, cliente: sel })
-    if (status === 401) return onSair()
-    if (!j.ok) { setErro(j.msg || 'Não consegui salvar.'); return }
+    if (status === 401) { onSair(); return null }
+    if (!j.ok) { setErro(j.msg || 'Não consegui salvar.'); return null }
     setSel(j.cliente); setSalvo(true); setTimeout(() => setSalvo(false), 1800); carregar()
+    return j.cliente
+  }
+  // Salva ANTES de abrir/enviar — garante que a página do cliente reflita as alterações
+  const comSalvar = async (acao) => {
+    const c = await salvar()
+    if (!c || !c.id) return
+    await new Promise((r) => setTimeout(r, 700)) // pequena espera p/ o banco propagar
+    acao(c)
   }
   const excluir = async (id) => {
     if (!confirm('Excluir este cliente do CRM?')) return
@@ -115,11 +123,11 @@ export default function AdminCRM({ token, onSair }) {
             {sel.id && (
               <div className="admin-owner" style={{ marginTop: 14 }}>
                 <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Página do cliente</h3>
-                <p className="calc-nota">Link exclusivo (privado, não indexado). Salve antes de enviar.</p>
+                <p className="calc-nota">Link exclusivo (privado, não indexado). Os botões abaixo <b>salvam suas alterações automaticamente</b> antes de abrir/enviar.</p>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                  <a className="admin-btn" href={linkCliente(sel)} target="_blank" rel="noopener">Abrir página</a>
-                  <button className="admin-btn" onClick={() => { navigator.clipboard?.writeText(linkCliente(sel)); setLinkCopiado(true); setTimeout(() => setLinkCopiado(false), 1500) }}>{linkCopiado ? '✓ copiado' : 'Copiar link'}</button>
-                  <a className="btn btn-gold" href={waLink(sel.whatsapp, msg)} target="_blank" rel="noopener">Enviar no WhatsApp do cliente</a>
+                  <button className="admin-btn" onClick={() => comSalvar((c) => window.open(linkCliente(c), '_blank', 'noopener'))}>Salvar e abrir página</button>
+                  <button className="admin-btn" onClick={() => comSalvar((c) => { navigator.clipboard?.writeText(linkCliente(c)); setLinkCopiado(true); setTimeout(() => setLinkCopiado(false), 1500) })}>{linkCopiado ? '✓ copiado' : 'Salvar e copiar link'}</button>
+                  <button className="btn btn-gold" onClick={() => comSalvar((c) => window.open(waLink(c.whatsapp, `Olá${c.nome ? ' ' + c.nome.split(' ')[0] : ''}! Aqui é o Vinícius. Separei alguns imóveis pensando no que você procura. Dá uma olhada na sua seleção: ${linkCliente(c)}`), '_blank', 'noopener'))}>Salvar e enviar no WhatsApp</button>
                 </div>
               </div>
             )}
