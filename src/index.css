@@ -1254,6 +1254,8 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .aprovar-banner-specs span { font-size: .8rem; font-weight: 600; color: #3a4150; background: rgba(22,26,34,0.05); border-radius: 100px; padding: 5px 12px; }
 .aprovar-banner-desc { color: #4a5160; font-size: .9rem; line-height: 1.55; margin: 0 0 14px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .aprovar-banner-acoes { display: flex; gap: 10px; flex-wrap: wrap; margin-top: auto; }
+.admin-btn--imoview { border-color: #5b7fb9; color: #3a5a93; }
+.admin-btn--imoview:hover { background: #5b7fb9; color: #fff; border-color: #5b7fb9; }
 @media (max-width: 680px) { .aprovar-banner { grid-template-columns: 1fr; } }
 
 /* Página personalizada do cliente */

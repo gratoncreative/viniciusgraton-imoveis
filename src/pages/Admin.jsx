@@ -486,7 +486,8 @@ export default function Admin() {
                     <div className="aprovar-banner-acoes">
                       <button className="btn btn-gold" onClick={() => aprovarImovel(im.codigo, true)}>✓ Aprovar e publicar</button>
                       <a className="admin-btn" href={`/imovel/${im.codigo}`} target="_blank" rel="noopener">Pré-visualizar</a>
-                      <button className="admin-btn" onClick={() => { setAba('imoveis'); }}>🔒 Dados do proprietário</button>
+                      <a className="admin-btn admin-btn--imoview" href={`https://app.imoview.com.br/Imovel/Detalhes/${im.codigo}`} target="_blank" rel="noopener">↗ Conferir no Imoview</a>
+                      <button className="admin-btn" onClick={() => { setAba('imoveis'); }}>🔒 Proprietário / editar</button>
                     </div>
                   </div>
                 </article>
