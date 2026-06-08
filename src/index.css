@@ -1158,6 +1158,15 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .admin-owner .admin-field input { background: #fff; }
 .admin-owner-tag { font-family: var(--font-head); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #8a6418; background: rgba(184,134,47,0.16); border: 1px solid rgba(184,134,47,0.35); padding: 2px 8px; border-radius: 100px; }
 @media (max-width: 720px) { .admin-edit-grid { grid-template-columns: 1fr; } }
+.admin-fotos-edit { margin-top: 16px; }
+.admin-fotos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; }
+.admin-foto-item { position: relative; border-radius: 10px; overflow: hidden; border: 1px solid rgba(22,26,34,0.14); aspect-ratio: 4 / 3; background: #11151d; }
+.admin-foto-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.admin-foto-capa { position: absolute; top: 6px; left: 6px; font-family: var(--font-head); font-size: 0.56rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #20160a; background: var(--gold-grad); padding: 2px 7px; border-radius: 100px; }
+.admin-foto-acoes { position: absolute; bottom: 0; left: 0; right: 0; display: flex; gap: 4px; justify-content: center; padding: 6px; background: linear-gradient(transparent, rgba(7,10,17,0.82)); }
+.admin-foto-acoes button { width: 27px; height: 27px; border-radius: 7px; border: none; background: rgba(255,255,255,0.94); color: #20252e; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: grid; place-items: center; }
+.admin-foto-acoes button:disabled { opacity: 0.35; cursor: default; }
+.admin-foto-acoes .admin-foto-del { background: #c0392b; color: #fff; }
 /* Placa VENDE-SE no formulário Anunciar */
 .placa-bloco { background: #fff; border: 1px solid rgba(184,134,47,0.3); border-radius: 16px; padding: 20px; margin: 6px 0 4px; box-shadow: 0 14px 34px -28px rgba(22,26,34,0.5); }
 .placa-pitch { color: #4a5160; font-size: 0.95rem; line-height: 1.6; margin: 8px 0 14px; }
@@ -1512,7 +1521,9 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
   .catalogo { padding-top: 100px; }
   .cat-busca { flex: 1 1 100%; }
   .cat-filtros select { flex: 1 1 calc(50% - 5px); }
-  .det-specs { grid-template-columns: 1fr; }
+  .det-specs { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .det-spec-ico { width: 38px; height: 38px; }
+  .det-spec b { font-size: 0.98rem; }
   .passos { grid-template-columns: 1fr; }
   .bairros-grid { grid-template-columns: 1fr; }
   .dif-grid { grid-template-columns: 1fr; }

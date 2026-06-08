@@ -50,7 +50,10 @@ export function aplicarOverridesImoveis(mapa) {
   if (!mapa || typeof mapa !== 'object') return
   for (const im of IMOVEIS) {
     const o = mapa[String(im.codigo)]
-    if (o && !o.oculto) for (const f of CAMPOS_OVERRIDE) if (f in o && o[f] !== '' && o[f] != null) im[f] = o[f]
+    if (o && !o.oculto) {
+      for (const f of CAMPOS_OVERRIDE) if (f in o && o[f] !== '' && o[f] != null) im[f] = o[f]
+      if (Array.isArray(o.fotos) && o.fotos.length) { im.fotos = o.fotos; im.img = o.fotos[0] }
+    }
   }
   for (let i = IMOVEIS.length - 1; i >= 0; i--) {
     const o = mapa[String(IMOVEIS[i].codigo)]

@@ -119,12 +119,15 @@ function ImoveisPub({ token, onSair }) {
     const kv = j.registro || {}
     setReg({
       owner: { nome: '', email: '', fone: '', ...(kv.owner || {}) },
-      campos: { preco: b.preco || 0, tipo: b.tipo || '', bairro: b.bairro || '', quartos: b.quartos || 0, suites: b.suites || 0, banheiros: b.banheiros || 0, vagas: b.vagas || 0, area: b.area || 0, descricao: b.descricao || '', destaque: false, oculto: false, ...(kv.campos || {}) },
+      campos: { preco: b.preco || 0, tipo: b.tipo || '', bairro: b.bairro || '', quartos: b.quartos || 0, suites: b.suites || 0, banheiros: b.banheiros || 0, vagas: b.vagas || 0, area: b.area || 0, descricao: b.descricao || '', fotos: b.fotos || [], destaque: false, oculto: false, ...(kv.campos || {}) },
     })
     setCarregando(false)
   }
   const setC = (k, v) => setReg((r) => ({ ...r, campos: { ...r.campos, [k]: v } }))
   const setO = (k, v) => setReg((r) => ({ ...r, owner: { ...r.owner, [k]: v } }))
+  const moverFoto = (i, dir) => setReg((r) => { const a = [...(r.campos.fotos || [])]; const j = i + dir; if (j < 0 || j >= a.length) return r; [a[i], a[j]] = [a[j], a[i]]; return { ...r, campos: { ...r.campos, fotos: a } } })
+  const removerFoto = (i) => setReg((r) => ({ ...r, campos: { ...r.campos, fotos: (r.campos.fotos || []).filter((_, n) => n !== i) } }))
+  const capaFoto = (i) => setReg((r) => { const a = [...(r.campos.fotos || [])]; const [x] = a.splice(i, 1); a.unshift(x); return { ...r, campos: { ...r.campos, fotos: a } } })
   const salvar = async () => {
     const { status } = await api({ action: 'imovel-save', token, codigo: String(sel), owner: reg.owner, campos: reg.campos })
     if (status === 401) return onSair()
@@ -155,6 +158,25 @@ function ImoveisPub({ token, onSair }) {
             </div>
             <label className="calc-check"><input type="checkbox" checked={!!reg.campos.destaque} onChange={(e) => setC('destaque', e.target.checked)} /><span>Destacar este imóvel na home</span></label>
             <label className="calc-check"><input type="checkbox" checked={!!reg.campos.oculto} onChange={(e) => setC('oculto', e.target.checked)} /><span>Ocultar do site (despublicar)</span></label>
+            <div className="admin-fotos-edit">
+              <h3 className="det-rel-titulo">Fotos publicadas <span className="painel-meta">({(reg.campos.fotos || []).length}) — a 1ª é a capa</span></h3>
+              {(reg.campos.fotos || []).length === 0 && <p className="painel-meta">Este imóvel ainda não tem fotos.</p>}
+              <div className="admin-fotos-grid">
+                {(reg.campos.fotos || []).map((src, i) => (
+                  <div className="admin-foto-item" key={src + i}>
+                    <img src={src} loading="lazy" alt={`Foto ${i + 1}`} />
+                    {i === 0 && <span className="admin-foto-capa">capa</span>}
+                    <div className="admin-foto-acoes">
+                      <button type="button" title="Mover para esquerda" onClick={() => moverFoto(i, -1)} disabled={i === 0}>←</button>
+                      <button type="button" title="Mover para direita" onClick={() => moverFoto(i, 1)} disabled={i === (reg.campos.fotos.length - 1)}>→</button>
+                      {i !== 0 && <button type="button" title="Tornar capa" onClick={() => capaFoto(i)}>★</button>}
+                      <button type="button" className="admin-foto-del" title="Excluir foto" onClick={() => removerFoto(i)}>✕</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="calc-nota">Excluir, reordenar e definir a capa valem ao clicar em <b>Salvar</b> e refletem no site. (Enviar fotos novas: em breve.)</p>
+            </div>
           </div>
           <div>
             <div className="admin-owner">
