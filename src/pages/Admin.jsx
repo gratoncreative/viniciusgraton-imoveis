@@ -389,6 +389,10 @@ export default function Admin() {
     for (const im of importadosPendentes) await api({ action: 'imovel-aprovar', token, codigo: im.codigo, aprovado: true })
     carregar()
   }
+  const conferirTodosImoview = () => {
+    if (!window.confirm(`Abrir as ${importadosPendentes.length} fichas no Imoview em abas novas? (se o navegador bloquear pop-ups, libere para este site)`)) return
+    importadosPendentes.forEach((im) => window.open(`https://app.imoview.com.br/Imovel/Detalhes/${im.codigo}`, '_blank', 'noopener'))
+  }
 
   const exportarCSV = () => {
     const linhas = [['Nome', 'Telefone', 'Origem', 'Status', 'Anotação', 'Data']]
@@ -451,7 +455,12 @@ export default function Admin() {
           <section>
             <div className="admin-aprovar-head">
               <h3 className="det-rel-titulo" style={{ margin: 0 }}>Importados aguardando sua aprovação ({importadosPendentes.length})</h3>
-              {importadosPendentes.length > 1 && <button className="btn btn-gold" onClick={aprovarTodos}>✓ Aprovar todos ({importadosPendentes.length})</button>}
+              {importadosPendentes.length > 0 && (
+                <div className="admin-aprovar-head-btns">
+                  <button className="admin-btn admin-btn--imoview" onClick={conferirTodosImoview}>↗ Conferir todos no Imoview</button>
+                  {importadosPendentes.length > 1 && <button className="btn btn-gold" onClick={aprovarTodos}>✓ Aprovar todos ({importadosPendentes.length})</button>}
+                </div>
+              )}
             </div>
             {importadosPendentes.length === 0 && <p className="section-sub">Nenhum imóvel importado aguardando aprovação. Tudo que eu importar do Imoview entra aqui primeiro — só vai pro site depois que você aprovar.</p>}
             <div className="admin-aprovar-lista">
