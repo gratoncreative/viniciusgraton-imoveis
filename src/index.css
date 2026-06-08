@@ -1358,6 +1358,13 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .cmp-ver { padding: 7px 14px; font-size: 0.8rem; }
 
 /* ===== Editorial do bairro ===== */
+/* Banner ilustrativo do bairro (sempre presente) */
+.bairro-foto { position: relative; margin: 0; }
+.bairro-foto img { display: block; width: 100%; height: clamp(220px, 34vw, 420px); object-fit: cover; }
+.bairro-foto::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,13,20,0) 55%, rgba(10,13,20,0.6) 100%); pointer-events: none; }
+.bairro-foto figcaption { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; display: flex; align-items: center; gap: 7px; padding: 12px clamp(16px, 5vw, 48px); color: rgba(255,255,255,0.92); font-size: 0.82rem; letter-spacing: 0.01em; }
+.bairro-foto figcaption svg { flex: none; opacity: 0.85; }
+
 .bairro-editorial { padding-bottom: clamp(30px, 5vw, 56px); }
 .bairro-ed-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(28px, 5vw, 56px); align-items: start; }
 .bairro-ed-texto { color: #41484f; line-height: 1.8; font-size: 1.04rem; }
