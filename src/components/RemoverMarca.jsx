@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 // IA: MI-GAN (ONNX) via onnxruntime-web. O modelo é servido por /api/modelo-marca.
 // Entrada do modelo: image [1,3,H,W] uint8 (RGB) + mask [1,1,H,W] uint8 (255=manter, 0=remover).
 
-const WASM_CDN = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.26.0/dist/'
+const WASM_CDN = '/ort/' // servido pelo nosso domínio (functions/ort) — same-origin, CSP 'self'
 const MAX_LADO = 2048 // limita o lado maior p/ memória/velocidade (a IA recorta na máscara mesmo assim)
 
 export default function RemoverMarca() {
@@ -31,6 +31,7 @@ export default function RemoverMarca() {
       try {
         const ortMod = await import('onnxruntime-web')
         ortMod.env.wasm.wasmPaths = WASM_CDN
+        ortMod.env.wasm.numThreads = 1 // single-thread: sem worker/SharedArrayBuffer (não exige COOP/COEP)
         const s = await ortMod.InferenceSession.create('/api/modelo-marca', { executionProviders: ['wasm'] })
         if (!vivo) return
         setOrt(ortMod); setSessao(s); setEstado('pronto')
