@@ -1,16 +1,20 @@
 /**
  * Cloudflare Pages Function — Painel ADMIN do Vinícius (seguro).
  *
- * Autenticação NO SERVIDOR: a senha NUNCA fica no código/GitHub. Ela é lida da
- * variável de ambiente ADMIN_PASS (configurada criptografada no painel da Cloudflare).
- * O e-mail (público) é ADMIN_EMAIL ou o padrão abaixo.
+ * AUTENTICAÇÃO:
+ *  - Se existir `admin:auth` no KV (definido pelo painel), a senha é verificada
+ *    por HASH PBKDF2 (salt + 100k iterações) e o token é assinado com uma chave
+ *    secreta aleatória (tokenKey) guardada só no KV — impossível de forjar.
+ *  - Senão (bootstrap), cai para a variável de ambiente ADMIN_PASS.
+ *  - Trocar a senha pelo painel (action 'set-password') grava o hash no KV e
+ *    passa a IGNORAR a ADMIN_PASS antiga (rotação real, sem mexer na Cloudflare).
  *
- *   POST /api/admin { action:'login', email, senha }      -> { ok, token }   (token assinado HMAC, 12h)
- *   POST /api/admin { action:'data',  token }              -> { anuncios, leads, clientes }
- *   POST /api/admin { action:'del',   token, key }         -> { ok }          (exclui anuncio:/lead:/conta:)
- *   POST /api/admin { action:'aprovar', token, key, aprovado } -> { ok, aprovado }
- *
- * Sem ADMIN_PASS definido, o login falha fechado (ninguém entra).
+ *   POST /api/admin { action:'login', email, senha }            -> { ok, token }
+ *   POST /api/admin { action:'data', token }                    -> { anuncios, leads, clientes }
+ *   POST /api/admin { action:'del', token, key }                -> { ok }
+ *   POST /api/admin { action:'aprovar', token, key, aprovado }  -> { ok }
+ *   POST /api/admin { action:'patch', token, key, patch }       -> { ok }
+ *   POST /api/admin { action:'set-password', token, novaSenha } -> { ok }
  */
 const ADMIN_EMAIL_DEFAULT = 'contato@viniciusgraton.com.br'
 const TTL_MS = 12 * 60 * 60 * 1000
@@ -18,46 +22,73 @@ const TTL_MS = 12 * 60 * 60 * 1000
 const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } })
 const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
 const enc = new TextEncoder()
+const toHex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('')
+const fromHex = (h) => new Uint8Array((h.match(/.{2}/g) || []).map((x) => parseInt(x, 16)))
+const eqStr = (a, b) => {
+  if (typeof a !== 'string' || typeof b !== 'string' || a.length !== b.length) return false
+  let d = 0
+  for (let i = 0; i < a.length; i++) d |= a.charCodeAt(i) ^ b.charCodeAt(i)
+  return d === 0
+}
 
+async function pbkdf2(password, saltHex, iter) {
+  const key = await crypto.subtle.importKey('raw', enc.encode(password), { name: 'PBKDF2' }, false, ['deriveBits'])
+  const bits = await crypto.subtle.deriveBits({ name: 'PBKDF2', salt: fromHex(saltHex), iterations: iter, hash: 'SHA-256' }, key, 256)
+  return toHex(bits)
+}
 async function hmacHex(key, msg) {
   const k = await crypto.subtle.importKey('raw', enc.encode(key), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
   const sig = await crypto.subtle.sign('HMAC', k, enc.encode(msg))
-  return [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, '0')).join('')
+  return toHex(sig)
 }
-async function makeToken(pass) {
+async function makeToken(signKey) {
   const exp = Date.now() + TTL_MS
-  return `${exp}.${await hmacHex(pass, String(exp))}`
+  return `${exp}.${await hmacHex(signKey, String(exp))}`
 }
-async function validToken(pass, token) {
-  if (!pass || !token || typeof token !== 'string' || token.indexOf('.') < 0) return false
+async function validToken(signKey, token) {
+  if (!signKey || !token || typeof token !== 'string' || token.indexOf('.') < 0) return false
   const [exp, sig] = token.split('.')
   if (!exp || !sig || Date.now() > Number(exp)) return false
-  const good = await hmacHex(pass, exp)
-  if (good.length !== sig.length) return false
-  let diff = 0
-  for (let i = 0; i < good.length; i++) diff |= good.charCodeAt(i) ^ sig.charCodeAt(i)
-  return diff === 0
+  return eqStr(await hmacHex(signKey, exp), sig)
+}
+async function getAuth(env) {
+  if (!temKV(env)) return null
+  try { return await env.ENGAGEMENT.get('admin:auth', 'json') } catch { return null }
 }
 
 export async function onRequestPost({ env, request }) {
-  const pass = env.ADMIN_PASS
   const email = String(env.ADMIN_EMAIL || ADMIN_EMAIL_DEFAULT).trim().toLowerCase()
   const b = await request.json().catch(() => ({}))
   const action = b.action
+  const auth = await getAuth(env)
+  const signKey = (auth && auth.tokenKey) || env.ADMIN_PASS || null
 
   if (action === 'login') {
-    if (!pass) return json({ error: 'config', msg: 'Defina a variável de ambiente ADMIN_PASS no painel da Cloudflare para ativar o login.' }, 503)
+    if (!auth && !env.ADMIN_PASS) return json({ error: 'config', msg: 'Defina a variável ADMIN_PASS na Cloudflare (ou troque a senha pelo painel) para ativar o login.' }, 503)
     const okEmail = String(b.email || '').trim().toLowerCase() === email
-    const okPass = String(b.senha || '') === String(pass)
+    let okPass = false
+    if (auth) okPass = eqStr(await pbkdf2(String(b.senha || ''), auth.salt, auth.iter), auth.hash)
+    else okPass = eqStr(String(b.senha || ''), String(env.ADMIN_PASS))
     if (!okEmail || !okPass) return json({ error: 'credenciais', msg: 'E-mail ou senha incorretos.' }, 401)
-    return json({ ok: true, token: await makeToken(pass) })
+    return json({ ok: true, token: await makeToken(signKey) })
   }
 
   // Demais ações exigem token válido
-  if (!pass) return json({ error: 'config' }, 503)
+  if (!signKey) return json({ error: 'config' }, 503)
   const token = b.token || (request.headers.get('authorization') || '').replace(/^Bearer\s+/i, '')
-  if (!(await validToken(pass, token))) return json({ error: 'sessao', msg: 'Sessão expirada. Faça login de novo.' }, 401)
+  if (!(await validToken(signKey, token))) return json({ error: 'sessao', msg: 'Sessão expirada. Faça login de novo.' }, 401)
   if (!temKV(env)) return json({ error: 'kv', msg: 'Banco (KV) não configurado neste ambiente.' }, 200)
+
+  if (action === 'set-password') {
+    const nova = String(b.novaSenha || '')
+    if (nova.length < 8) return json({ error: 'curta', msg: 'A nova senha precisa ter pelo menos 8 caracteres.' }, 400)
+    const salt = toHex(crypto.getRandomValues(new Uint8Array(16)))
+    const iter = 100000
+    const hash = await pbkdf2(nova, salt, iter)
+    const tokenKey = toHex(crypto.getRandomValues(new Uint8Array(32)))
+    await env.ENGAGEMENT.put('admin:auth', JSON.stringify({ salt, hash, iter, tokenKey, atualizadoEm: Date.now() }))
+    return json({ ok: true, novoToken: await makeToken(tokenKey) })
+  }
 
   if (action === 'data') {
     const out = { anuncios: [], leads: [], clientes: [] }
