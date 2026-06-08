@@ -103,6 +103,9 @@ export async function onRequestPost({ env, request }) {
     out.anuncios.sort((a, b) => (b.ts || 0) - (a.ts || 0))
     out.leads.sort((a, b) => (b.ts || 0) - (a.ts || 0))
     out.clientes.sort((a, b) => (b.atualizadoEm || 0) - (a.atualizadoEm || 0))
+    out.aprovados = []
+    const apr = await env.ENGAGEMENT.list({ prefix: 'aprovado:' })
+    for (const k of apr.keys) out.aprovados.push(k.name.slice('aprovado:'.length))
     return json(out)
   }
 
@@ -173,6 +176,15 @@ export async function onRequestPost({ env, request }) {
     const id = `imgupload:${codigo}:${crypto.randomUUID()}`
     await env.ENGAGEMENT.put(id, JSON.stringify({ ct, b64, codigo, ts: Date.now() }))
     return json({ ok: true, url: `/api/img?id=${id}` })
+  }
+
+  // Aprovar (publicar) ou recusar um imóvel IMPORTADO que está pendente.
+  if (action === 'imovel-aprovar') {
+    const codigo = String(b.codigo || '').replace(/[^a-zA-Z0-9]/g, '').slice(0, 12)
+    if (!codigo) return json({ error: 'codigo' }, 400)
+    if (b.aprovado === false) await env.ENGAGEMENT.delete('aprovado:' + codigo)
+    else await env.ENGAGEMENT.put('aprovado:' + codigo, JSON.stringify({ ts: Date.now() }))
+    return json({ ok: true, aprovado: b.aprovado !== false })
   }
 
   // ————— CRM "Meus clientes" (preferências + sugestões + página personalizada) —————

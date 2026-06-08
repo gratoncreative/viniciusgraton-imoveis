@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useSEO } from '../useSEO'
-import { CONFIG, IMOVEIS } from '../data'
+import { CONFIG, IMOVEIS, IMOVEIS_PENDENTES, formatPreco } from '../data'
 import { IconShield, IconArrow } from '../components/icons'
 import RemoverMarca from '../components/RemoverMarca'
 import AdminCRM from '../components/AdminCRM'
@@ -372,7 +372,16 @@ export default function Admin() {
   const seteDias = Date.now() - 7 * 24 * 60 * 60 * 1000
   const leadsNovos = leads.filter((l) => (l.ts || 0) > seteDias).length
   const pendentes = anuncios.filter((a) => !a.aprovado).length
+  const aprovados = dados?.aprovados || []
+  const importadosPendentes = IMOVEIS_PENDENTES.filter((im) => !aprovados.includes(String(im.codigo)))
+  const aAvaliar = importadosPendentes.length + pendentes
   const totalViews = blogViews ? Object.values(blogViews).reduce((s, n) => s + (n || 0), 0) : 0
+
+  const aprovarImovel = async (codigo, aprovado) => {
+    const { status } = await api({ action: 'imovel-aprovar', token, codigo, aprovado })
+    if (status === 401) return sair()
+    carregar()
+  }
 
   const exportarCSV = () => {
     const linhas = [['Nome', 'Telefone', 'Origem', 'Status', 'Anotação', 'Data']]
@@ -386,7 +395,7 @@ export default function Admin() {
 
   const ABAS = [
     ['geral', 'Visão geral'],
-    ['moderacao', `Imóveis enviados (${anuncios.length})`],
+    ['moderacao', `Imóveis a avaliar (${aAvaliar})`],
     ['leads', `Leads (${leads.length})`],
     ['clientes', `Cadastros (${clientes.length})`],
     ['imoveis', 'Imóveis publicados'],
@@ -417,7 +426,7 @@ export default function Admin() {
         {aba === 'geral' && (
           <section>
             <div className="admin-stats">
-              <StatCard rotulo="Imóveis a avaliar" valor={pendentes} sub={`${anuncios.length} no total`} />
+              <StatCard rotulo="Imóveis a avaliar" valor={aAvaliar} sub={`${importadosPendentes.length} importados · ${pendentes} de proprietários`} />
               <StatCard rotulo="Leads (7 dias)" valor={leadsNovos} sub={`${leads.length} no total`} />
               <StatCard rotulo="Cadastros de clientes" valor={clientes.length} sub="área do cliente" />
               <StatCard rotulo="Imóveis publicados" valor={IMOVEIS.length} sub="em destaque no site" />
@@ -432,6 +441,26 @@ export default function Admin() {
 
         {aba === 'moderacao' && (
           <section>
+            <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Importados aguardando sua aprovação ({importadosPendentes.length})</h3>
+            {importadosPendentes.length === 0 && <p className="section-sub">Nenhum imóvel importado aguardando aprovação. Tudo que eu importar do Imoview entra aqui primeiro — só vai pro site depois que você aprovar.</p>}
+            <div className="admin-aprovar-grid">
+              {importadosPendentes.map((im) => (
+                <div className="admin-aprovar-card" key={im.codigo}>
+                  <img src={im.img} alt="" loading="lazy" />
+                  <div className="admin-aprovar-info">
+                    <b>{im.tipo} · {im.bairro}</b>
+                    <span className="painel-meta">{formatPreco(im.preco)} · {im.quartos}q · {im.suites || 0} suíte · cód {im.codigo}</span>
+                    <span className="painel-meta">{(im.fotos || []).length} fotos</span>
+                  </div>
+                  <div className="admin-card-acoes">
+                    <a className="admin-btn" href={`/imovel/${im.codigo}`} target="_blank" rel="noopener">Pré-visualizar</a>
+                    <button className="admin-btn admin-btn--ok" onClick={() => aprovarImovel(im.codigo, true)}>Aprovar e publicar</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <h3 className="det-rel-titulo" style={{ marginTop: 28 }}>Enviados pelos proprietários ({anuncios.length})</h3>
             {anuncios.length === 0 && <p className="section-sub">Nenhum imóvel enviado pelos proprietários ainda. Os envios do formulário <b>/anunciar</b> aparecem aqui com as fotos.</p>}
             {anuncios.map((a) => (
               <div className={`admin-card ${a.aprovado ? 'admin-card--ok' : ''}`} key={a._key}>

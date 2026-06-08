@@ -11,16 +11,20 @@ const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'f
 const CAMPOS = ['preco', 'tipo', 'bairro', 'quartos', 'suites', 'banheiros', 'vagas', 'area', 'descricao', 'destaque', 'oculto', 'fotos']
 
 export async function onRequestGet({ env }) {
-  if (!temKV(env)) return json({})
+  if (!temKV(env)) return json({ ov: {}, ap: [] })
   const lista = await env.ENGAGEMENT.list({ prefix: 'imovel:' })
-  const out = {}
+  const ov = {}
   for (const k of lista.keys) {
     const v = await env.ENGAGEMENT.get(k.name, 'json')
     if (v && v.campos) {
       const c = {}
       for (const f of CAMPOS) if (f in v.campos) c[f] = v.campos[f]   // só campos do anúncio — owner JAMAIS entra aqui
-      out[k.name.slice('imovel:'.length)] = c
+      ov[k.name.slice('imovel:'.length)] = c
     }
   }
-  return json(out)
+  // imóveis importados que o Vinícius já aprovou (vão pro ar)
+  const ap = []
+  const apr = await env.ENGAGEMENT.list({ prefix: 'aprovado:' })
+  for (const k of apr.keys) ap.push(k.name.slice('aprovado:'.length))
+  return json({ ov, ap })
 }

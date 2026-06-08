@@ -49,24 +49,12 @@ export default function App() {
     let vivo = true
     fetch('/api/imoveis-pub')
       .then((r) => r.json())
-      .then((mapa) => { if (!vivo) return; aplicarOverridesImoveis(mapa); setOvKey('ov') })
+      .then((d) => { if (!vivo) return; const ov = d && d.ov ? d.ov : d; aplicarOverridesImoveis(ov, d && d.ap); setOvKey('ov') })
       .catch(() => { if (vivo) setOvKey('ov') })
     return () => { vivo = false }
   }, [])
 
-  // Google Analytics 4 (só ativa se CONFIG.gaId estiver preenchido)
-  useEffect(() => {
-    if (!CONFIG.gaId || window.gtagLoaded) return
-    window.gtagLoaded = true
-    const s = document.createElement('script')
-    s.async = true
-    s.src = `https://www.googletagmanager.com/gtag/js?id=${CONFIG.gaId}`
-    document.head.appendChild(s)
-    window.dataLayer = window.dataLayer || []
-    window.gtag = function () { window.dataLayer.push(arguments) }
-    window.gtag('js', new Date())
-    window.gtag('config', CONFIG.gaId, { send_page_view: false })
-  }, [])
+  // (Google Analytics é carregado em src/analytics.js — com filtro do dono e anonimização)
 
   // sobe ao topo e registra a visualização de página
   useEffect(() => {

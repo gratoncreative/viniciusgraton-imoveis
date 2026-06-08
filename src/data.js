@@ -40,13 +40,23 @@ import destaqueData from './imoveis-destaque.json'
 import construtorasData from './construtoras.json'
 import condominiosData from './condominios.json'
 
-export const IMOVEIS = destaqueData.imoveis || []
+const TODOS_IMOVEIS = destaqueData.imoveis || []
+// Imóveis importados entram como `pendente` e ficam FORA do site até o Vinícius aprovar.
+export const IMOVEIS = TODOS_IMOVEIS.filter((i) => !i.pendente)
+export const IMOVEIS_PENDENTES = TODOS_IMOVEIS.filter((i) => i.pendente)
 export const IMOVEIS_INFO = { geradoEm: destaqueData.geradoEm, fonte: destaqueData.fonte }
 
 // Aplica os overrides do painel (campos editados / ocultar) vindos de /api/imoveis-pub.
 // Só campos PÚBLICOS do anúncio — dados do proprietário NUNCA chegam aqui.
 const CAMPOS_OVERRIDE = ['preco', 'tipo', 'bairro', 'quartos', 'suites', 'banheiros', 'vagas', 'area', 'descricao']
-export function aplicarOverridesImoveis(mapa) {
+export function aplicarOverridesImoveis(mapa, aprovados) {
+  // Reinsere no site os imóveis pendentes que o Vinícius já aprovou (lista vinda do KV).
+  const apSet = new Set((aprovados || []).map(String))
+  for (const im of IMOVEIS_PENDENTES) {
+    if (apSet.has(String(im.codigo)) && !IMOVEIS.some((x) => String(x.codigo) === String(im.codigo))) {
+      IMOVEIS.push(im)
+    }
+  }
   if (!mapa || typeof mapa !== 'object') return
   for (const im of IMOVEIS) {
     const o = mapa[String(im.codigo)]
@@ -96,7 +106,8 @@ export const waImovel = (im) =>
 
 // Busca um imóvel pelo código
 export const getImovel = (codigo) =>
-  IMOVEIS.find((i) => String(i.codigo) === String(codigo))
+  IMOVEIS.find((i) => String(i.codigo) === String(codigo)) ||
+  IMOVEIS_PENDENTES.find((i) => String(i.codigo) === String(codigo))
 
 // ————— CRM: casa as preferências do cliente com os imóveis do site —————
 const _semAcento = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')

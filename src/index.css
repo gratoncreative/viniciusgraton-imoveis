@@ -1230,6 +1230,14 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .crm-card-crit { color: #4a5160; font-size: .85rem; margin: 6px 0; line-height: 1.45; }
 .crm-card-acoes { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
 
+/* Fila de aprovação de imóveis importados */
+.admin-aprovar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; margin-top: 10px; }
+.admin-aprovar-card { display: flex; gap: 12px; align-items: center; border: 1px solid rgba(184,134,47,0.3); background: rgba(184,134,47,0.05); border-radius: 12px; padding: 10px; }
+.admin-aprovar-card img { width: 92px; height: 70px; object-fit: cover; border-radius: 8px; flex: none; }
+.admin-aprovar-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.admin-aprovar-info b { font-family: var(--font-head); font-size: .95rem; }
+.admin-aprovar-card .admin-card-acoes { flex-direction: column; }
+
 /* Página personalizada do cliente */
 .cliente-hero { padding: clamp(112px, 14vh, 170px) 0 clamp(28px, 4vw, 48px); background: radial-gradient(125% 120% at 50% 0%, #151a26 0%, var(--bg) 72%); border-bottom: 1px solid var(--border); }
 .cliente-intro { color: var(--text-mute); font-size: 1.06rem; line-height: 1.7; max-width: 660px; margin-top: 12px; text-wrap: pretty; }

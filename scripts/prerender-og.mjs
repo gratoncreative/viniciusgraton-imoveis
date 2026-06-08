@@ -17,7 +17,7 @@ const SITE = 'https://viniciusgraton.com.br'
 
 const baseHtml = readFileSync(resolve(DIST, 'index.html'), 'utf8')
 const dados = JSON.parse(readFileSync(resolve(ROOT, 'src/imoveis-destaque.json'), 'utf8'))
-const imoveis = dados.imoveis
+const imoveis = (dados.imoveis || []).filter((im) => !im.pendente) // pendentes só entram após aprovação
 const construtoras = JSON.parse(readFileSync(resolve(ROOT, 'src/construtoras.json'), 'utf8')).construtoras || []
 const condominios = JSON.parse(readFileSync(resolve(ROOT, 'src/condominios.json'), 'utf8')).condominios || []
 // posts do blog (extrai os slugs do src/blog.js sem precisar de bundler)
