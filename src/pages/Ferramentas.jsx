@@ -189,7 +189,7 @@ export default function Ferramentas() {
           <div style={{ textAlign: 'center', maxWidth: 720, margin: '0 auto 8px' }}>
             <h1 className="sr-only">Ferramentas e calculadoras de imóveis em Uberlândia</h1>
             <span className="eyebrow" style={{ justifyContent: 'center' }}>Ferramentas grátis</span>
-            <h2 className="section-title">Tudo que você precisa <em>calcular e decidir</em></h2>
+            <h2 className="section-title">Tudo que você precisa <br className="quebra-tit" /><em>calcular e decidir</em></h2>
             <p className="section-sub" style={{ marginTop: 14 }}>Escolha uma ferramenta, informe os dados e veja o resultado na hora — sem cadastro.</p>
           </div>
         </Reveal>
