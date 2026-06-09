@@ -102,7 +102,7 @@ export default function Catalogo() {
   ].filter(Boolean)
 
   return (
-    <main className="catalogo catalogo--dark">
+    <main className="section--light catalogo">
       <div className="container">
         <Reveal>
           <div className="cat-head">

@@ -190,7 +190,7 @@ export default function ImovelDetalhe() {
     .map((x) => x.i)
 
   return (
-    <main className="det det--dark">
+    <main className="section--light det">
       <div className="container">
         <nav className="det-bread">
           <Link to="/">Início</Link> <span>/</span> <Link to="/imoveis">Imóveis</Link> <span>/</span> <b>{im.bairro}</b>
