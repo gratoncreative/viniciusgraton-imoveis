@@ -1,24 +1,14 @@
 import { Link } from 'react-router-dom'
 import Reveal from './Reveal'
 import { linkWhatsApp, WA } from '../data'
-import { IconWhats, IconArrow, IconShield } from './icons'
-import { onImgError } from '../img'
+import { IconWhats, IconArrow } from './icons'
 
-// Apresentação breve do Vinícius logo no início do site (consultor da Rotina Imobiliária).
+// "Quem te atende" — banner do Vinícius ao fundo (escurecido) com o texto sobreposto.
 export default function Apresentacao() {
   return (
-    <section id="apresentacao" className="apres apres--dark">
-      <div className="container apres-grid">
-        <Reveal className="apres-foto-col">
-          <div className="apres-foto">
-            <img src="/vinicius-graton.jpg" alt="Vinícius Graton, consultor de imóveis em Uberlândia" loading="eager" decoding="async" onError={onImgError} />
-            <span className="apres-selo">
-              <img src="/rotina-logo.png" alt="Rotina Imobiliária" />
-              <span className="apres-selo-txt">Consultor credenciado</span>
-            </span>
-          </div>
-        </Reveal>
-
+    <section id="apresentacao" className="apres apres--banner" style={{ backgroundImage: 'url(/sobre-banner-8x.jpg)' }}>
+      <div className="apres-scrim" aria-hidden="true" />
+      <div className="container apres-banner-inner">
         <div className="apres-txt">
           <Reveal>
             <span className="eyebrow">Quem te atende</span>
@@ -51,6 +41,10 @@ export default function Apresentacao() {
               <Link className="btn btn-ghost" to="/sobre">
                 Conhecer minha história <IconArrow />
               </Link>
+            </div>
+            <div className="apres-rotina">
+              <img src="/rotina-logo.png" alt="Rotina Imobiliária" />
+              <span>Consultor credenciado · Rotina Imobiliária</span>
             </div>
           </Reveal>
         </div>
