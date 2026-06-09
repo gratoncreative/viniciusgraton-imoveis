@@ -943,7 +943,7 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .apres { position: relative; overflow: hidden; background: radial-gradient(680px 460px at 88% 4%, rgba(224,181,86,0.16), transparent 66%), radial-gradient(540px 420px at 2% 98%, rgba(184,134,47,0.10), transparent 70%), linear-gradient(160deg, #10141d 0%, #0a0e16 100%); border-top: 1px solid rgba(184,134,47,0.18); border-bottom: 1px solid rgba(184,134,47,0.18); }
 .apres .section-title { color: #fff; }
 /* banner do Vinícius ao fundo (escurecido) com texto sobreposto */
-.apres--banner { background-size: cover; background-position: center; }
+.apres--banner { background-size: cover; background-position: 75% center; padding-top: clamp(26px, 3.2vw, 44px); padding-bottom: clamp(26px, 3.2vw, 44px); }
 .apres-scrim { position: absolute; inset: 0; z-index: 0; background: linear-gradient(100deg, rgba(8,11,18,0.95) 0%, rgba(8,11,18,0.85) 40%, rgba(8,11,18,0.52) 70%, rgba(10,14,22,0.62) 100%); }
 .apres-banner-inner { position: relative; z-index: 1; }
 .apres-banner-inner .apres-txt { max-width: 680px; }

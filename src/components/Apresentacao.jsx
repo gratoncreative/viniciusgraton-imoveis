@@ -16,20 +16,15 @@ export default function Apresentacao() {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="apres-lead">
-              Sou <b>consultor de imóveis em Uberlândia</b>, da <b>Rotina Imobiliária</b>. Ajudo você a comprar
-              casa, apartamento ou investir com clareza e segurança — da primeira conversa à entrega das chaves.
-            </p>
-            <p>
-              Faço curadoria de verdade: seleciono só o que faz sentido pra você, aponto os pontos fortes e os
-              riscos de cada imóvel, confiro toda a documentação e negocio a seu favor. Você nunca decide sozinho.
+              <b>Consultor de imóveis em Uberlândia</b>, da <b>Rotina Imobiliária</b>. Te ajudo a comprar, vender ou investir com segurança — da primeira conversa à chave.
             </p>
           </Reveal>
           <Reveal delay={0.12}>
             <ul className="apres-checks">
-              <li><span>✓</span> Curadoria criteriosa — só o que combina com você</li>
-              <li><span>✓</span> Pontos fortes <i>e</i> riscos de cada imóvel, na transparência</li>
-              <li><span>✓</span> Documentação conferida antes de você assinar</li>
-              <li><span>✓</span> Negociação a seu favor e acompanhamento até a chave</li>
+              <li><span>✓</span> Curadoria criteriosa</li>
+              <li><span>✓</span> Pontos fortes e riscos, na transparência</li>
+              <li><span>✓</span> Documentação conferida</li>
+              <li><span>✓</span> Negociação a seu favor</li>
             </ul>
           </Reveal>
           <Reveal delay={0.15}>
