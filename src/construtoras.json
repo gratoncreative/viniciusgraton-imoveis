@@ -1690,6 +1690,78 @@
       "instagram": "https://www.instagram.com/castelorealconstrutora/",
       "projetos": [
         {
+          "slug": "ed-brasil",
+          "nome": "Edifício Brasil",
+          "bairro": "Santa Mônica",
+          "status": "Pronto para morar",
+          "entrega": "Pronto · documentação ok",
+          "endereco": "Rua Maria das Dores Dias (antiga Rua 5), 509 — Santa Mônica, Uberlândia",
+          "preco": "A partir de R$ 452.000 (ref. jun/2026)",
+          "descricao": "Edifício residencial PRONTO PARA MORAR no coração do Santa Mônica, a poucos passos da UFU. São 40 apartamentos em 8 pavimentos (5 por andar), com plantas de 2 quartos (sendo 1 suíte), sala em dois ambientes, cozinha, lavanderia, sacada gourmet com churrasqueira, elevador, gás canalizado e energia e hidrômetro individuais. Áreas a partir de cerca de 58 m², com opções maiores (até ~145 m²). Localização privilegiada: perto do Center Shopping, Parque do Sabiá, supermercados, hospitais e das principais avenidas comerciais do maior bairro da Zona Leste. Documentação pronta e financiável em até 80% pela Caixa — ótimo para morar ou investir (locação para o público universitário da UFU).",
+          "tipologias": [
+            "2 quartos (1 suíte) · ~58 a 70 m²",
+            "Unidades especiais maiores (até ~145 m²)"
+          ],
+          "amenidades": [
+            "Sacada gourmet com churrasqueira",
+            "Elevador",
+            "Gás canalizado",
+            "Energia e hidrômetro individuais",
+            "Pronto para morar",
+            "Financiável em até 80% (Caixa)"
+          ],
+          "video": "",
+          "capa": "/img/emp/castelo-real__ed-brasil.jpg",
+          "galeria": [
+            "/img/emp/castelo-real__ed-brasil-sala.jpg",
+            "/img/emp/castelo-real__ed-brasil-suite.jpg",
+            "/img/emp/castelo-real__ed-brasil-sacada.jpg",
+            "/img/emp/castelo-real__ed-brasil-planta.jpg"
+          ]
+        },
+        {
+          "slug": "ed-ceara",
+          "nome": "Edifício Ceará",
+          "bairro": "Santa Mônica",
+          "status": "Pronto para morar",
+          "entrega": "Pronto",
+          "endereco": "Avenida Salomão Abraão, 1747 — Santa Mônica, Uberlândia",
+          "preco": "",
+          "descricao": "Edifício residencial pronto no Santa Mônica, próximo à UFU. Apartamentos com sala, cozinha, 2 quartos (sendo 1 suíte), banheiro social e sacada. Ótima opção para morar ou investir perto do polo universitário, com toda a infraestrutura de comércio e serviços do bairro.",
+          "tipologias": [
+            "2 quartos (1 suíte)"
+          ],
+          "amenidades": [
+            "Sacada",
+            "Elevador",
+            "Pronto para morar"
+          ],
+          "video": "",
+          "capa": "",
+          "galeria": []
+        },
+        {
+          "slug": "ed-pedra-do-sol",
+          "nome": "Edifício Pedra do Sol",
+          "bairro": "Santa Mônica",
+          "status": "Pronto para morar",
+          "entrega": "Pronto",
+          "endereco": "Avenida Ana Godoy de Souza, 1020 — Santa Mônica, Uberlândia",
+          "preco": "",
+          "descricao": "Edifício residencial pronto no Santa Mônica. Apartamentos mais amplos, com sala, cozinha, 3 quartos (sendo 1 suíte), banheiro social e sacada — ideal para famílias que querem espaço perto da UFU e de toda a estrutura do bairro.",
+          "tipologias": [
+            "3 quartos (1 suíte)"
+          ],
+          "amenidades": [
+            "Sacada",
+            "Elevador",
+            "Pronto para morar"
+          ],
+          "video": "",
+          "capa": "",
+          "galeria": []
+        },
+        {
           "slug": "ed-goias",
           "nome": "Edifício Goiás",
           "bairro": "Santa Mônica",
