@@ -119,7 +119,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 .text-gold { background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
-section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
+section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 
 /* ---------- seções com fundo claro (leveza, cores invertidas) ---------- */
 .section--light {
@@ -323,7 +323,7 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .stat--pilar .pilar-sub { font-size: 0.88rem; color: var(--text-mute); margin-top: 7px; display: block; }
 
 /* ---------- IMÓVEIS ---------- */
-.sec-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; margin-bottom: 76px; flex-wrap: wrap; }
+.sec-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; margin-bottom: 40px; flex-wrap: wrap; }
 .imoveis-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; align-items: stretch; }
 .imoveis-grid > * { height: 100%; }
 .card-imovel {
