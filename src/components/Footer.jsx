@@ -49,8 +49,10 @@ export default function Footer() {
             <div className="footer-col">
               <h5>Contato</h5>
               <a href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener">WhatsApp</a>
+              <a href="tel:+5534991570494">(34) 99157-0494</a>
               <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
               <a href={CONFIG.instagram} target="_blank" rel="noopener">@viniciusgraton.imoveis</a>
+              <span className="footer-end">Av. Afonso Pena, 1535 — Aparecida<br />Uberlândia/MG · Rotina Imobiliária</span>
             </div>
             <div className="footer-col">
               <h5>Institucional</h5>
