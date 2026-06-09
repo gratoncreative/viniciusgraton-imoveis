@@ -242,7 +242,8 @@ function ImoveisPub({ token, onSair }) {
   if (sel && reg) {
     const owFone = String(reg.owner.fone || '').replace(/\D/g, '')
     const owNome1 = (reg.owner.nome || '').trim().split(/\s+/)[0]
-    const msgProp = `Olá${owNome1 ? ' ' + owNome1 : ''}! Aqui é o Vinícius Graton, corretor da Rotina Imobiliária. Estou com um cliente com forte interesse de compra no seu ${base?.tipo || 'imóvel'}${base?.bairro ? ' no ' + base.bairro : ''} (cód. ${sel}) e gostaria de agendar uma visita. Você pode me dizer onde ficam as chaves — estão com você, com alguém, ou o imóvel está ocupado/vago no momento? É um cliente com real potencial de compra; fico no aguardo pra combinarmos o melhor horário. Obrigado!`
+    const linkImovel = `${typeof window !== 'undefined' ? window.location.origin : 'https://viniciusgraton.com.br'}/imovel/${sel}`
+    const msgProp = `Olá${owNome1 ? ' ' + owNome1 : ''}! Aqui é o Vinícius Graton, corretor da Rotina Imobiliária. Estou com um cliente com forte interesse de compra no seu ${base?.tipo || 'imóvel'}${base?.bairro ? ' no ' + base.bairro : ''} (cód. ${sel}). Pra você ver qual é, segue o anúncio: ${linkImovel} — gostaria de agendar uma visita. Você pode me dizer onde ficam as chaves: estão com você, com alguém, ou o imóvel está ocupado/vago no momento? É um cliente com real potencial de compra; fico no aguardo pra combinarmos o melhor horário. Obrigado!`
     const linkProp = owFone ? `https://wa.me/55${owFone}?text=${encodeURIComponent(msgProp)}` : ''
     return (
       <section>
