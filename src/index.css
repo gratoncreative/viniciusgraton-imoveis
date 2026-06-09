@@ -1890,6 +1890,18 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .exit-acoes .btn { flex: 1; justify-content: center; }
 .exit-close { position: absolute; top: 14px; right: 14px; width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.1); border: none; color: #fff; cursor: pointer; display: grid; place-items: center; }
 .exit-close:hover { background: rgba(255,255,255,0.2); }
+
+/* Newsletter (rodapé) */
+.news-band { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; padding: 24px 0 30px; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.news-txt b { display: block; font-family: var(--font-head); font-weight: 700; font-size: 1.12rem; color: #fff; margin-bottom: 4px; }
+.news-txt span { color: var(--text-mute); font-size: 0.9rem; line-height: 1.5; max-width: 460px; display: block; }
+.news-form { display: flex; gap: 10px; flex: 1; min-width: 280px; max-width: 460px; position: relative; }
+.news-form input[type="email"] { flex: 1; padding: 13px 16px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.06); color: #fff; font-size: 0.95rem; }
+.news-form input[type="email"]::placeholder { color: rgba(255,255,255,0.5); }
+.news-form input[type="email"]:focus { outline: none; border-color: var(--gold-3); }
+.news-ok { color: #5fd08a; font-weight: 600; }
+.news-erro { color: #e88; font-size: 0.86rem; width: 100%; }
+@media (max-width: 620px) { .news-form { flex-direction: column; } .news-form .btn { justify-content: center; } }
 /* bloco "sua página de seleção" na área do cliente */
 .conta-selo-link { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; background: linear-gradient(120% 120% at 0% 0%, #161a22 0%, #20262f 100%); border: 1px solid rgba(184,134,47,0.4); border-radius: 16px; padding: 20px 22px; margin: 28px 0 8px; }
 .conta-selo-link b { display: block; font-family: var(--font-head); color: #fff; font-size: 1.05rem; margin-bottom: 4px; }

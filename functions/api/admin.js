@@ -91,8 +91,8 @@ export async function onRequestPost({ env, request }) {
   }
 
   if (action === 'data') {
-    const out = { anuncios: [], leads: [], clientes: [] }
-    const fontes = [['anuncio:', 'anuncios'], ['lead:', 'leads'], ['conta:', 'clientes']]
+    const out = { anuncios: [], leads: [], clientes: [], news: [] }
+    const fontes = [['anuncio:', 'anuncios'], ['lead:', 'leads'], ['conta:', 'clientes'], ['news:', 'news']]
     for (const [prefix, arr] of fontes) {
       const lista = await env.ENGAGEMENT.list({ prefix })
       for (const k of lista.keys) {
@@ -103,6 +103,7 @@ export async function onRequestPost({ env, request }) {
     out.anuncios.sort((a, b) => (b.ts || 0) - (a.ts || 0))
     out.leads.sort((a, b) => (b.ts || 0) - (a.ts || 0))
     out.clientes.sort((a, b) => (b.atualizadoEm || 0) - (a.atualizadoEm || 0))
+    out.news.sort((a, b) => (b.ts || 0) - (a.ts || 0))
     out.aprovados = []
     const apr = await env.ENGAGEMENT.list({ prefix: 'aprovado:' })
     for (const k of apr.keys) out.aprovados.push(k.name.slice('aprovado:'.length))
@@ -116,7 +117,7 @@ export async function onRequestPost({ env, request }) {
 
   if (action === 'del') {
     const key = String(b.key || '')
-    if (!/^(anuncio|lead|conta):/.test(key)) return json({ error: 'key invalida' }, 400)
+    if (!/^(anuncio|lead|conta|news):/.test(key)) return json({ error: 'key invalida' }, 400)
     await env.ENGAGEMENT.delete(key)
     return json({ ok: true })
   }
@@ -134,7 +135,7 @@ export async function onRequestPost({ env, request }) {
   // Atualiza campos de GESTÃO (CRM) num registro: status e nota (leads/anúncios/contas)
   if (action === 'patch') {
     const key = String(b.key || '')
-    if (!/^(anuncio|lead|conta):/.test(key)) return json({ error: 'key invalida' }, 400)
+    if (!/^(anuncio|lead|conta|news):/.test(key)) return json({ error: 'key invalida' }, 400)
     const v = await env.ENGAGEMENT.get(key, 'json')
     if (!v) return json({ error: 'nao encontrado' }, 404)
     const patch = b.patch && typeof b.patch === 'object' ? b.patch : {}

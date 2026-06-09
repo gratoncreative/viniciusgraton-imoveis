@@ -429,7 +429,7 @@ export default function Admin() {
   const baixarBackup = async () => {
     const { status, j } = await api({ action: 'crm-list', token })
     if (status === 401) return sair()
-    const dump = { geradoEm: new Date().toISOString(), anuncios: anuncios, leads: leads, contas: clientes, crm: (j && j.clientes) || [] }
+    const dump = { geradoEm: new Date().toISOString(), anuncios: anuncios, leads: leads, contas: clientes, newsletter: dados?.news || [], crm: (j && j.clientes) || [] }
     const blob = new Blob([JSON.stringify(dump, null, 2)], { type: 'application/json' })
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob); a.download = `backup-vinicius-graton-${new Date().toISOString().slice(0, 10)}.json`; a.click()
@@ -501,6 +501,7 @@ export default function Admin() {
               <StatCard rotulo="Clientes" valor={crmTotal} sub={`${crmNovidades ? '🔔 ' + crmNovidades + ' mexeram · ' : ''}${crmNovos ? crmNovos + ' novos · ' : ''}${clientes.length} cadastros`} onClick={() => setAba('crm')} />
               <StatCard rotulo="Imóveis publicados" valor={IMOVEIS.length} sub="em destaque no site" onClick={() => { setAba('imoveis'); setSubImovel('publicados') }} />
               <StatCard rotulo="Leituras no blog" valor={totalViews} sub={blogViews ? `${Object.keys(blogViews).length} posts` : '—'} onClick={() => window.open('/blog', '_blank')} />
+              <StatCard rotulo="Newsletter" valor={(dados?.news || []).length} sub="inscritos por e-mail" onClick={baixarBackup} />
             </div>
             <div className="det-trust" style={{ marginTop: 18 }}>
               <IconShield width={20} height={20} />

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { CONFIG, linkWhatsApp, WA } from '../data'
 import { IconInsta, IconWhats } from './icons'
+import Newsletter from './Newsletter'
 
 const LINKS = [
   { to: '/imoveis', label: 'Imóveis' },
@@ -22,6 +23,7 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="container">
+        <Newsletter />
         <div className="footer-top">
           <div className="footer-brand">
             <Link to="/" className="brand">
