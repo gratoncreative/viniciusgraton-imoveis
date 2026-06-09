@@ -6,7 +6,7 @@ import { CONSTRUTORAS } from '../data'
 const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
 import { useSEO } from '../useSEO'
 import { onImgError } from '../img'
-import { IconArrow, IconBuilding, IconShield } from '../components/icons'
+import { IconArrow, IconBuilding, IconShield, IconSearch } from '../components/icons'
 
 function CardConstrutora({ c }) {
   const projetos = c.projetos || []
@@ -70,12 +70,13 @@ export default function ConstrutorasPage() {
         </div>
 
         <div className="cns-busca-wrap">
+          <IconSearch className="cns-busca-ico" width={19} height={19} />
           <input
             className="cns-busca"
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="🔎 Buscar por construtora ou empreendimento (ex.: Perplan, Chronos Tower)…"
+            placeholder="Buscar por construtora ou empreendimento (ex.: Perplan, Chronos Tower)"
             aria-label="Buscar construtora ou empreendimento"
           />
           {termo && <span className="cns-busca-res">{filtrada.length} {filtrada.length === 1 ? 'resultado' : 'resultados'}</span>}

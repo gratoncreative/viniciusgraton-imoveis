@@ -169,7 +169,7 @@ export default function ChatBusca() {
 
             {atual.tipo === 'bairros' && (
               <>
-                <input className="cb-busca" value={buscaBairro} onChange={(e) => setBuscaBairro(e.target.value)} placeholder="🔎 Digite o bairro (ou escolha abaixo)" />
+                <input className="cb-busca" value={buscaBairro} onChange={(e) => setBuscaBairro(e.target.value)} placeholder="Digite o bairro (ou escolha abaixo)" />
                 <div className="cb-chips cb-chips--wrap">
                   {bairrosVisiveis.map((o) => <button type="button" key={o} className={`cb-chip ${ans.bairros.includes(o) ? 'on' : ''}`} onClick={() => toggle('bairros', o)}>{o}</button>)}
                   {bairrosVisiveis.length === 0 && <span className="cb-nada">Nenhum bairro com esse nome — tente outro.</span>}

@@ -1593,11 +1593,12 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .cns-stat { background: #fff; border: 1px solid rgba(22,26,34,0.1); border-radius: 16px; padding: 16px 30px; text-align: center; box-shadow: 0 14px 34px -28px rgba(22,26,34,0.5); }
 .cns-stat b { display: block; font-family: var(--font-head); font-weight: 800; font-size: 1.7rem; background: linear-gradient(135deg, #c9962f, #9a6c1c); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .cns-stat span { font-size: 0.82rem; color: #6a7280; }
-.cns-busca-wrap { position: relative; max-width: 600px; margin: 0 auto 30px; }
-.cns-busca { width: 100%; padding: 15px 18px; border-radius: 100px; border: 1px solid rgba(22,26,34,0.16); background: #fff; color: #1a1f29; font-size: 1rem; box-shadow: 0 14px 36px -30px rgba(22,26,34,0.5); transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease); }
-.cns-busca::placeholder { color: #8a909c; }
-.cns-busca:focus { outline: none; border-color: var(--gold-2); box-shadow: 0 14px 36px -26px rgba(184,134,47,0.5); }
-.cns-busca-res { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); font-size: 0.82rem; color: var(--gold-1); font-weight: 600; pointer-events: none; background: #fff; padding-left: 8px; }
+.cns-busca-wrap { position: relative; max-width: 620px; margin: 0 auto 30px; }
+.cns-busca-ico { position: absolute; left: 17px; top: 50%; transform: translateY(-50%); color: var(--gold-1); pointer-events: none; }
+.cns-busca { width: 100%; padding: 14px 18px 14px 46px; border-radius: 13px; border: 1px solid rgba(22,26,34,0.18); background: #fff; color: #1a1f29; font-size: 0.98rem; box-shadow: 0 12px 32px -28px rgba(22,26,34,0.5); transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease); }
+.cns-busca::placeholder { color: #99a0ac; }
+.cns-busca:focus { outline: none; border-color: var(--gold-2); box-shadow: 0 0 0 3px rgba(184,134,47,0.12); }
+.cns-busca-res { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 0.8rem; color: var(--gold-1); font-weight: 600; pointer-events: none; background: #fff; padding-left: 8px; }
 .cns-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
 .cns-card { display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: #fff; border: 1px solid rgba(22,26,34,0.1); box-shadow: 0 14px 34px -24px rgba(22,26,34,0.5); text-decoration: none; color: inherit; transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease); }
 .cns-card:hover { transform: translateY(-6px); box-shadow: 0 30px 54px -28px rgba(22,26,34,0.6); border-color: var(--gold-3); }

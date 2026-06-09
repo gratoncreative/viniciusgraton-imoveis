@@ -129,7 +129,7 @@ export default function Catalogo() {
           <input
             className="cat-busca"
             type="search"
-            placeholder="🔎 Buscar por código ou bairro…"
+            placeholder="Buscar por código ou bairro"
             value={f.q}
             onChange={(e) => up('q', e.target.value)}
           />
