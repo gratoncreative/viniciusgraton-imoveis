@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import { CONSTRUTORAS } from '../data'
+
+const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
 import { useSEO } from '../useSEO'
 import { onImgError } from '../img'
 import { IconArrow, IconBuilding, IconShield } from '../components/icons'
@@ -38,9 +41,14 @@ export default function ConstrutorasPage() {
     path: '/construtoras',
   })
 
+  const [q, setQ] = useState('')
   const totalEmp = CONSTRUTORAS.reduce((n, c) => n + (c.projetos || []).length, 0)
   // ordena por quantidade de empreendimentos (vitrine mais cheia primeiro)
   const lista = [...CONSTRUTORAS].sort((a, b) => (b.projetos || []).length - (a.projetos || []).length)
+  // busca por nome da construtora, segmento OU nome de empreendimento
+  const termo = norm(q.trim())
+  const filtrada = !termo ? lista : lista.filter((c) =>
+    norm(c.nome).includes(termo) || norm(c.segmento).includes(termo) || (c.projetos || []).some((p) => norm(p.nome).includes(termo)))
 
   return (
     <main className="pagina section--light det construtoras-index">
@@ -61,9 +69,27 @@ export default function ConstrutorasPage() {
           <div className="cns-stat"><b>100%</b><span>com curadoria</span></div>
         </div>
 
-        <div className="cns-grid">
-          {lista.map((c) => <CardConstrutora key={c.slug} c={c} />)}
+        <div className="cns-busca-wrap">
+          <input
+            className="cns-busca"
+            type="search"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="🔎 Buscar por construtora ou empreendimento (ex.: Perplan, Chronos Tower)…"
+            aria-label="Buscar construtora ou empreendimento"
+          />
+          {termo && <span className="cns-busca-res">{filtrada.length} {filtrada.length === 1 ? 'resultado' : 'resultados'}</span>}
         </div>
+
+        {filtrada.length > 0 ? (
+          <div className="cns-grid">
+            {filtrada.map((c) => <CardConstrutora key={c.slug} c={c} />)}
+          </div>
+        ) : (
+          <p className="section-sub" style={{ textAlign: 'center', margin: '10px auto 0' }}>
+            Não achei "<b>{q}</b>". Tenta outro nome — ou me chama no WhatsApp que eu localizo pra você.
+          </p>
+        )}
 
         <div className="det-trust" style={{ marginTop: 34, maxWidth: 900 }}>
           <IconShield width={20} height={20} />
