@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useSEO } from '../useSEO'
 import { CONFIG, IMOVEIS, IMOVEIS_PENDENTES, formatPreco } from '../data'
-import { IconShield, IconArrow } from '../components/icons'
+import { IconShield, IconArrow, IconWhats } from '../components/icons'
 import RemoverMarca from '../components/RemoverMarca'
 import AdminCRM from '../components/AdminCRM'
 import InputMoeda from '../components/InputMoeda'
@@ -240,6 +240,10 @@ function ImoveisPub({ token, onSair }) {
   const moeda = (n) => (n || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })
 
   if (sel && reg) {
+    const owFone = String(reg.owner.fone || '').replace(/\D/g, '')
+    const owNome1 = (reg.owner.nome || '').trim().split(/\s+/)[0]
+    const msgProp = `Olá${owNome1 ? ' ' + owNome1 : ''}! Aqui é o Vinícius Graton, corretor da Rotina Imobiliária. Estou com um cliente com forte interesse de compra no seu ${base?.tipo || 'imóvel'}${base?.bairro ? ' no ' + base.bairro : ''} (cód. ${sel}) e gostaria de agendar uma visita. Você pode me dizer onde ficam as chaves — estão com você, com alguém, ou o imóvel está ocupado/vago no momento? É um cliente com real potencial de compra; fico no aguardo pra combinarmos o melhor horário. Obrigado!`
+    const linkProp = owFone ? `https://wa.me/55${owFone}?text=${encodeURIComponent(msgProp)}` : ''
     return (
       <section>
         <div className="admin-barra">
@@ -301,6 +305,13 @@ function ImoveisPub({ token, onSair }) {
               <label className="admin-field"><span>E-mail</span><input value={reg.owner.email} onChange={(e) => setO('email', e.target.value)} /></label>
               <label className="admin-field"><span>Telefone</span><input value={reg.owner.fone} onChange={(e) => setO('fone', e.target.value)} /></label>
               <p className="calc-nota">Guardado só no seu painel (servidor, com login). Nunca aparece no site, nem no código, nem para o cliente.</p>
+              <div className="admin-owner-acoes">
+                {linkProp
+                  ? <a className="btn btn-gold" href={linkProp} target="_blank" rel="noopener"><IconWhats width={17} height={17} /> Chamar o proprietário</a>
+                  : <span className="painel-meta">Preencha o telefone acima pra liberar o WhatsApp.</span>}
+                <a className="admin-btn" href={`/imovel/${sel}`} target="_blank" rel="noopener">Ver perfil público do imóvel <IconArrow width={14} height={14} /></a>
+              </div>
+              <p className="calc-nota">A mensagem já vai pronta: me apresento como corretor da Rotina, digo que tenho cliente com interesse de compra e pergunto sobre as chaves (com quem estão, se está ocupado/vago) pra agendar a visita.</p>
             </div>
             <div style={{ display: 'flex', gap: 10, marginTop: 14, alignItems: 'center' }}>
               <button className="btn btn-gold" onClick={salvar}>Salvar alterações</button>

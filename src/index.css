@@ -1269,6 +1269,8 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .admin-owner { background: #fbf7ee; border: 1px solid rgba(184,134,47,0.32); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
 .admin-owner .admin-field input { background: #fff; }
 .admin-owner-tag { font-family: var(--font-head); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #8a6418; background: rgba(184,134,47,0.16); border: 1px solid rgba(184,134,47,0.35); padding: 2px 8px; border-radius: 100px; }
+.admin-owner-acoes { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; padding-top: 4px; border-top: 1px solid rgba(184,134,47,0.2); margin-top: 2px; }
+.admin-owner-acoes .btn { padding: 11px 18px; }
 @media (max-width: 720px) { .admin-edit-grid { grid-template-columns: 1fr; } }
 .admin-fotos-edit { margin-top: 16px; }
 .admin-fotos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
