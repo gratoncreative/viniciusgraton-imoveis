@@ -428,6 +428,7 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .cat-rail .cat-painel { margin-bottom: 14px; }
 .cat-rail .cat-filtros { flex-direction: column; gap: 10px; }
 .cat-rail .cat-filtros select, .cat-rail .cat-busca { width: 100%; }
+.cat-rail .cat-busca { flex: 0 0 auto; min-width: 0; }
 .cat-main { min-width: 0; }
 .cat-lista { display: flex; flex-direction: column; gap: 18px; }
 @media (max-width: 880px) {
