@@ -425,6 +425,17 @@ export default function Admin() {
   const crmNovos = dados?.crmNovos || 0
   const crmNovidades = dados?.crmNovidades || 0
 
+  // backup: baixa todos os dados operacionais (leads, anúncios, contas, CRM) em JSON
+  const baixarBackup = async () => {
+    const { status, j } = await api({ action: 'crm-list', token })
+    if (status === 401) return sair()
+    const dump = { geradoEm: new Date().toISOString(), anuncios: anuncios, leads: leads, contas: clientes, crm: (j && j.clientes) || [] }
+    const blob = new Blob([JSON.stringify(dump, null, 2)], { type: 'application/json' })
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob); a.download = `backup-vinicius-graton-${new Date().toISOString().slice(0, 10)}.json`; a.click()
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000)
+  }
+
   const aprovarImovel = async (codigo, aprovado) => {
     if (aprovado !== false) setAprovadosLocais((a) => [...new Set([...a, String(codigo)])]) // some na hora
     const { status } = await api({ action: 'imovel-aprovar', token, codigo, aprovado })
@@ -468,6 +479,7 @@ export default function Admin() {
           <div><span className="eyebrow">Painel administrativo</span><h1 className="section-title">Central do <em>Vinícius</em></h1></div>
           <div className="conta-hero-acoes">
             <button className="btn btn-ghost" onClick={carregar} disabled={carregando}>{carregando ? 'Atualizando…' : 'Atualizar'}</button>
+            <button className="btn btn-ghost" onClick={baixarBackup}>⬇ Backup</button>
             <button className="btn btn-ghost" onClick={sair}>Sair</button>
           </div>
         </div>

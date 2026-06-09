@@ -9,6 +9,11 @@ const waLink = (wa, msg) => { const d = String(wa || '').replace(/\D/g, ''); con
 
 const objToFinal = (o) => { const s = (o || '').toLowerCase(); if (s.includes('alug')) return 'Alugar'; if (s.includes('invest')) return 'Investir'; return 'Comprar' }
 
+// funil de atendimento
+const STATUS = ['A revisar', 'Novo', 'Em atendimento', 'Visita marcada', 'Proposta', 'Fechado', 'Perdido']
+const STATUS_COR = { 'A revisar': '#8a909c', Novo: '#b8862f', 'Em atendimento': '#2f6fb8', 'Visita marcada': '#7a4fce', Proposta: '#c98a1a', Fechado: '#2e8c57', Perdido: '#b04a4a' }
+const diasParado = (c) => { const t = c.ultimaAcaoEm || c.atualizadoEm || c.criadoEm || 0; if (!t) return 0; return Math.floor((Date.now() - t) / 86400000) }
+
 export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadastro }) {
   const [clientes, setClientes] = useState(null)
   const [sel, setSel] = useState(null) // null = lista; objeto = editando
@@ -77,6 +82,11 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
     if (c.temNovidade) { api({ action: 'crm-visto', token, id: c.id }); setClientes((cs) => (cs || []).map((x) => (x.id === c.id ? { ...x, temNovidade: false } : x))) }
     setSel({ ...VAZIO, ...c })
   }
+  // mudança rápida de status no funil (a partir da lista)
+  const mudarStatus = async (c, status) => {
+    setClientes((cs) => (cs || []).map((x) => (x.id === c.id ? { ...x, status } : x)))
+    await api({ action: 'crm-save', token, cliente: { ...c, status } })
+  }
   // imóveis que combinam com o cliente e que ele ainda NÃO tem na página (oportunidade de envio)
   const prefsDe = (c) => ({ tipos: c.tipos, bairros: c.bairros, precoMin: +c.precoMin || 0, precoMax: +c.precoMax || 0, quartosMin: +c.quartosMin || 0, suitesMin: +c.suitesMin || 0, vagasMin: +c.vagasMin || 0, areaMin: +c.areaMin || 0 })
   const novosMatch = (c) => { try { return filtrarParaCliente(prefsDe(c)).filter((x) => !(c.sugeridos || []).includes(String(x.im.codigo))).length } catch { return 0 } }
@@ -123,6 +133,9 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
               <label className="admin-field"><span>Nome (opcional)</span><input value={sel.nome} onChange={(e) => setF('nome', e.target.value)} /></label>
               <label className="admin-field"><span>Finalidade</span>
                 <select value={sel.finalidade} onChange={(e) => setF('finalidade', e.target.value)}><option>Comprar</option><option>Alugar</option><option>Investir</option></select>
+              </label>
+              <label className="admin-field"><span>Status (funil)</span>
+                <select value={sel.status || ''} onChange={(e) => setF('status', e.target.value)}><option value="">—</option>{STATUS.map((s) => <option key={s}>{s}</option>)}</select>
               </label>
               <label className="admin-field"><span>Preço mín.</span><InputMoeda value={sel.precoMin} onChange={(v) => setF('precoMin', v)} /></label>
               <label className="admin-field"><span>Preço máx.</span><InputMoeda value={sel.precoMax} onChange={(v) => setF('precoMax', v)} /></label>
@@ -217,13 +230,19 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
           <div className={`crm-card ${c.novo ? 'crm-card--novo' : ''} ${c.temNovidade ? 'crm-card--mexeu' : ''}`} key={c.id}>
             <div className="crm-card-top">
               <b>{c.nome || 'Sem nome'}</b>
+              {c.status && <span className="crm-status-chip" style={{ background: STATUS_COR[c.status] || '#8a909c' }}>{c.status}</span>}
               {c.temNovidade && <span className="crm-mexeu-tag">🔔 Mexeu na página</span>}
               {c.novo && <span className="crm-novo-tag">✨ Novo · do site</span>}
               <span className="painel-meta">{c.whatsapp}</span>
             </div>
             <p className="crm-card-crit">{[c.finalidade, (c.tipos || []).join('/'), (c.bairros || []).slice(0, 2).join(', '), c.precoMax ? 'até ' + formatPreco(c.precoMax) : '', c.prazo ? '⏱ ' + c.prazo : ''].filter(Boolean).join(' · ')}</p>
             <p className="painel-meta">{(c.sugeridos || []).length} imóvel(is) na página{nm > 0 && <> · <b className="crm-oportunidade">🎯 {nm} novo{nm > 1 ? 's' : ''} combina{nm > 1 ? 'm' : ''}</b></>}</p>
+            {diasParado(c) >= 3 && !['Fechado', 'Perdido'].includes(c.status) && <p className="crm-parado">⏰ parado há {diasParado(c)} dias — vale reaquecer</p>}
             <div className="crm-card-acoes">
+              <select className="crm-status-sel" value={c.status || ''} onChange={(e) => mudarStatus(c, e.target.value)} title="Mudar status no funil">
+                <option value="">Status…</option>
+                {STATUS.map((s) => <option key={s} value={s}>{s}</option>)}
+              </select>
               <button className="admin-btn" onClick={() => abrir(c)}>Abrir / editar</button>
               <a className="admin-btn" href={`${window.location.origin}/cliente/${c.id}`} target="_blank" rel="noopener">Página</a>
               <a className="admin-btn admin-btn--ok" href={waLink(c.whatsapp, `Olá${c.nome ? ' ' + c.nome.split(' ')[0] : ''}! Aqui é o Vinícius. Separei uma seleção de imóveis pensando no que você procura: ${window.location.origin}/cliente/${c.id}`)} target="_blank" rel="noopener">WhatsApp</a>
