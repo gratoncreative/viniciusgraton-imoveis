@@ -11,7 +11,8 @@
   "lang": "pt-BR",
   "categories": ["business", "lifestyle", "shopping"],
   "icons": [
-    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" },
-    { "src": "/vinicius-graton.jpg", "sizes": "1600x1600", "type": "image/jpeg" }
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
   ]
 }
