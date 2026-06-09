@@ -1,5 +1,4 @@
 import Hero from '../components/Hero'
-import Apresentacao from '../components/Apresentacao'
 import Destaque from '../components/Destaque'
 import BlogHome from '../components/BlogHome'
 import VenderCta from '../components/VenderCta'
@@ -19,7 +18,6 @@ export default function Home() {
   return (
     <main>
       <Hero />
-      <Apresentacao />
       <Destaque limite={9} />
       <VenderCta />
       <BlogHome />

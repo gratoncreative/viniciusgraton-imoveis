@@ -1,12 +1,15 @@
 import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import Scene3D from './Scene3D'
 import HeroBusca from './HeroBusca'
-import { CONFIG } from '../data'
+import { CONFIG, linkWhatsApp, WA } from '../data'
+import { IconWhats, IconArrow } from './icons'
 
+// Capa unificada: bio do Vinícius (esquerda) + card de busca (direita),
+// sobre a foto do imóvel da capa, com escurecimento e parallax.
 export default function Hero() {
   const heroRef = useRef(null)
 
-  // parallax 3D suave conforme o mouse
   useEffect(() => {
     const el = heroRef.current
     if (!el) return
@@ -33,14 +36,30 @@ export default function Hero() {
       <div className="hero-bg-tint" />
       <Scene3D />
 
-      <div className="container hero-grid">
+      <div className="container hero-grid2">
+        <div className="hero-bio hero-in">
+          <span className="eyebrow">Quem te atende</span>
+          <h2 className="hero-nome">Vinícius Graton</h2>
+          <p className="apres-lead">
+            Sou <b>consultor de imóveis em Uberlândia</b>, da <b>Rotina Imobiliária</b>. Te ajudo a comprar, vender ou investir com segurança — da primeira conversa à entrega das chaves.
+          </p>
+          <ul className="apres-checks">
+            <li><span>✓</span> Curadoria criteriosa</li>
+            <li><span>✓</span> Pontos fortes e riscos, na transparência</li>
+            <li><span>✓</span> Documentação conferida</li>
+            <li><span>✓</span> Negociação a seu favor</li>
+          </ul>
+          <div className="hero-bio-acoes">
+            <a className="btn btn-gold" href={linkWhatsApp(WA.hero)} target="_blank" rel="noopener"><IconWhats /> Falar comigo agora</a>
+            <Link className="btn btn-ghost" to="/sobre">Conhecer minha história <IconArrow /></Link>
+          </div>
+        </div>
+
         <div className="hero-card hero-in">
           <span className="eyebrow">Imóveis em Uberlândia</span>
           <h1>Compre seu imóvel <em>sem medo de errar</em></h1>
           <p className="hero-card-sub">Curadoria criteriosa e acompanhamento da primeira conversa à entrega das chaves.</p>
-
           <HeroBusca />
-
           <div className="hero-card-rodape">
             <img src="/rotina-logo.png" alt="Rotina Imobiliária" />
             <span>Consultor credenciado · Rotina Imobiliária</span>
