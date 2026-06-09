@@ -203,7 +203,7 @@ function renderPost(post) {
   const url = `${SITE}/blog/${post.slug}`
   const titulo = `${post.titulo} | Vinícius Graton`
   const desc = trunc(post.resumo || '', 160)
-  const image = post.capa ? abs(post.capa) : `${SITE}/vinicius-graton.jpg`
+  const image = post.capa ? abs(post.capa) : `${SITE}/og/blog.png`
   const faq = (post.conteudo || []).find((b) => b.tipo === 'faq')
   const grafo = [{
     '@type': 'BlogPosting', '@id': `${url}#post`,
