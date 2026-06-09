@@ -226,7 +226,7 @@ export default function ChatBusca() {
 
       <div className="cb-rodape">
         {step > 0 && <button type="button" className="cb-voltar" onClick={voltar}>← Voltar</button>}
-        {mostraContador && <span className="cb-count"><b>✨ {matches.length}</b> {matches.length === 1 ? 'imóvel combina' : 'imóveis combinam'}</span>}
+        {mostraContador && <span className="cb-count"><b>{matches.length}</b> {matches.length === 1 ? 'imóvel combina' : 'imóveis combinam'}</span>}
       </div>
     </div>
   )

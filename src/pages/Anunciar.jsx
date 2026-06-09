@@ -166,12 +166,12 @@ export default function Anunciar() {
 
         <Reveal delay={0.08}>
           <ul className="anunciar-beneficios">
-            <li><span>💰</span><div><b>Avaliação justa e grátis</b><i>Preço de mercado de verdade, sem chute — pra vender no tempo certo.</i></div></li>
-            <li><span>🎯</span><div><b>Curadoria + fotos que vendem</b><i>Seu imóvel apresentado do jeito que valoriza e atrai comprador.</i></div></li>
-            <li><span>📣</span><div><b>Divulgação ativa</b><i>No site, nas redes e direto pra clientes que já procuram algo assim.</i></div></li>
-            <li><span>🛡️</span><div><b>Segurança em cada etapa</b><i>Documentação conferida e negociação com a estrutura da Rotina.</i></div></li>
-            <li><span>🪧</span><div><b>Placa "VENDE-SE" grátis</b><i>Se quiser, uma placa profissional no seu imóvel, sem custo.</i></div></li>
-            <li><span>🤝</span><div><b>Você no controle</b><i>Acompanha tudo de perto, sem enrolação. Cadastrar não tem compromisso.</i></div></li>
+            <li><span>✓</span><div><b>Avaliação justa e grátis</b><i>Preço de mercado de verdade, sem chute — pra vender no tempo certo.</i></div></li>
+            <li><span>✓</span><div><b>Curadoria + fotos que vendem</b><i>Seu imóvel apresentado do jeito que valoriza e atrai comprador.</i></div></li>
+            <li><span>✓</span><div><b>Divulgação ativa</b><i>No site, nas redes e direto pra clientes que já procuram algo assim.</i></div></li>
+            <li><span>✓</span><div><b>Segurança em cada etapa</b><i>Documentação conferida e negociação com a estrutura da Rotina.</i></div></li>
+            <li><span>✓</span><div><b>Placa "VENDE-SE" grátis</b><i>Se quiser, uma placa profissional no seu imóvel, sem custo.</i></div></li>
+            <li><span>✓</span><div><b>Você no controle</b><i>Acompanha tudo de perto, sem enrolação. Cadastrar não tem compromisso.</i></div></li>
           </ul>
         </Reveal>
 

@@ -68,7 +68,7 @@ function CadastroView({ onPronto }) {
 
         <div className="conta-comp">
           <div className="conta-comp-head">
-            <span></span><span className="conta-comp-sem">Sem conta</span><span className="conta-comp-com">Com conta ✦</span>
+            <span></span><span className="conta-comp-sem">Sem conta</span><span className="conta-comp-com">Com conta</span>
           </div>
           {COMPARATIVO.map(([rot, sem, com]) => (
             <div className="conta-comp-row" key={rot}>
@@ -166,7 +166,7 @@ function PainelView({ conta, onSair }) {
       {linkSel && (
         <div className="conta-selo-link">
           <div>
-            <b>🔗 Sua página de seleção</b>
+            <b>Sua página de seleção</b>
             <span>Seus favoritos viram uma página só sua, com link salvo. Compartilhe com quem quiser — e o que você curtir aqui me ajuda a acertar ainda mais.</span>
           </div>
           <div className="conta-selo-acoes">

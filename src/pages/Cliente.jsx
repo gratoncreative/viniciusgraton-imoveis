@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import CardImovel from '../components/CardImovel'
 import { getImovel, filtrarParaCliente, avaliarMatch, formatPreco, linkWhatsApp, TIPOS_IMOVEL, BAIRROS_IMOVEL } from '../data'
 import { useSEO } from '../useSEO'
-import { IconWhats } from '../components/icons'
+import { IconWhats, IconHeart, IconClose } from '../components/icons'
 
 const primeiroNome = (n) => (n || '').trim().split(/\s+/)[0] || ''
 const FAIXAS = [
@@ -159,11 +159,11 @@ export default function Cliente() {
                   const m = avaliarMatch(im, prefs)
                   return (
                     <div className={`cliente-item ${fb === 'like' ? 'curtido' : ''}`} key={im.codigo}>
-                      {fb === 'like' && <span className="cliente-badge-like">❤️ Você curtiu</span>}
+                      {fb === 'like' && <span className="cliente-badge-like"><IconHeart filled width={13} height={13} /> Você curtiu</span>}
                       <CardImovel im={im} />
                       <div className="cliente-fb">
-                        <button type="button" className={`cliente-fb-btn ${fb === 'like' ? 'on-like' : ''}`} onClick={() => setFb(String(im.codigo), 'like')}>❤️ Gostei</button>
-                        <button type="button" className={`cliente-fb-btn ${fb === 'dislike' ? 'on-dislike' : ''}`} onClick={() => setFb(String(im.codigo), 'dislike')}>👎 Não é bem isso</button>
+                        <button type="button" className={`cliente-fb-btn ${fb === 'like' ? 'on-like' : ''}`} onClick={() => setFb(String(im.codigo), 'like')}><IconHeart filled={fb === 'like'} width={16} height={16} /> Gostei</button>
+                        <button type="button" className={`cliente-fb-btn ${fb === 'dislike' ? 'on-dislike' : ''}`} onClick={() => setFb(String(im.codigo), 'dislike')}><IconClose width={15} height={15} /> Não é bem isso</button>
                       </div>
                       {m && m.motivos && m.motivos.length > 0 && (
                         <div className="cliente-motivos">
