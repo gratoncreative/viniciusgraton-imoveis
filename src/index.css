@@ -419,6 +419,12 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .anunciar-beneficios li b { display: block; font-family: var(--font-head); color: #1a1f29; font-size: 0.98rem; margin-bottom: 3px; }
 .anunciar-beneficios li i { font-style: normal; color: #5a6370; font-size: 0.86rem; line-height: 1.45; }
 .cat-painel { background: #fff; border: 1px solid rgba(22,26,34,0.1); border-radius: 18px; padding: clamp(16px, 2.5vw, 24px); margin-bottom: 24px; box-shadow: 0 18px 44px -34px rgba(22,26,34,0.5); }
+/* catálogo em fundo escuro luxuoso */
+.catalogo--dark { background: radial-gradient(760px 480px at 86% 1%, rgba(224,181,86,0.12), transparent 64%), radial-gradient(560px 440px at 3% 99%, rgba(184,134,47,0.07), transparent 70%), linear-gradient(180deg, #0b0f17 0%, #080b12 100%); }
+.catalogo--dark .cat-painel { background: rgba(255,255,255,0.035); border: 1px solid rgba(224,181,86,0.22); box-shadow: 0 20px 50px -36px rgba(0,0,0,0.7); }
+.catalogo--dark .im-linha { background: rgba(255,255,255,0.03); border: 1px solid rgba(224,181,86,0.18); box-shadow: 0 18px 44px -32px rgba(0,0,0,0.7); }
+.catalogo--dark .im-linha:hover { border-color: rgba(224,181,86,0.5); box-shadow: 0 28px 60px -32px rgba(0,0,0,0.8); }
+.catalogo--dark .im-linha-media { background: #1a1f29; }
 .cat-painel .cat-rapidas { margin-bottom: 14px; }
 .cat-painel .cat-filtros { margin-bottom: 0; }
 
