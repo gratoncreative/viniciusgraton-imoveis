@@ -197,6 +197,51 @@ for (const c of construtoras) {
 }
 console.log(`✓ prerender empreendimentos: ${nemp} páginas em dist/construtoras/{construtora}/{empreendimento}/`)
 
+// ===== posts do blog (blog-extra.json) — HTML estático com OG + JSON-LD (Article + FAQ) =====
+const blogExtraPosts = JSON.parse(readFileSync(resolve(ROOT, 'src/blog-extra.json'), 'utf8'))
+function renderPost(post) {
+  const url = `${SITE}/blog/${post.slug}`
+  const titulo = `${post.titulo} | Vinícius Graton`
+  const desc = trunc(post.resumo || '', 160)
+  const image = post.capa ? abs(post.capa) : `${SITE}/vinicius-graton.jpg`
+  const faq = (post.conteudo || []).find((b) => b.tipo === 'faq')
+  const grafo = [{
+    '@type': 'BlogPosting', '@id': `${url}#post`,
+    headline: post.titulo, description: post.resumo, image: [image],
+    datePublished: post.data, dateModified: post.atualizado || post.data,
+    inLanguage: 'pt-BR', mainEntityOfPage: url,
+    author: { '@type': 'Person', name: 'Vinícius Graton', url: SITE },
+    publisher: { '@type': 'RealEstateAgent', name: 'Vinícius Graton Imóveis', areaServed: 'Uberlândia - MG' },
+    ...(post.keyword ? { keywords: post.keyword } : {}),
+  }]
+  if (faq && (faq.perguntas || []).length) {
+    grafo.push({ '@type': 'FAQPage', mainEntity: faq.perguntas.map((q) => ({ '@type': 'Question', name: q.q, acceptedAnswer: { '@type': 'Answer', text: q.a } })) })
+  }
+  const ld = { '@context': 'https://schema.org', '@graph': grafo }
+  return baseHtml
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)}</title>`)
+    .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(post.titulo)}$2`)
+    .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${esc(url)}$2`)
+    .replace(/(<meta property="og:image" content=")[^"]*(")/, `$1${esc(image)}$2`)
+    .replace(/(<meta property="og:type" content=")[^"]*(")/, `$1article$2`)
+    .replace(/(<meta name="twitter:title" content=")[^"]*(")/, `$1${esc(post.titulo)}$2`)
+    .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${esc(image)}$2`)
+    .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
+    .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
+}
+let np2 = 0
+for (const post of blogExtraPosts) {
+  if (!post || !post.slug) continue
+  const dir = resolve(DIST, 'blog', post.slug)
+  mkdirSync(dir, { recursive: true })
+  writeFileSync(resolve(dir, 'index.html'), renderPost(post))
+  np2++
+}
+console.log(`✓ prerender blog: ${np2} posts em dist/blog/{slug}/index.html`)
+
 // páginas fixas com capa/OG própria (não a foto do Vinícius)
 const PAGINAS_FIXAS = [
   {
