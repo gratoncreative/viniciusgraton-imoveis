@@ -114,6 +114,7 @@ export default function Catalogo() {
           </div>
         </Reveal>
 
+        <div className="cat-painel">
         {/* buscas rápidas */}
         <div className="cat-rapidas">
           {RAPIDAS.map((r) => (
@@ -169,6 +170,7 @@ export default function Catalogo() {
             <option value="area-maior">Maior área</option>
             <option value="area-menor">Menor área</option>
           </select>
+        </div>
         </div>
 
         {chips.length > 0 && (
