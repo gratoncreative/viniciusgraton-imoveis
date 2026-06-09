@@ -220,9 +220,9 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .hero-bg { position: absolute; inset: -7%; z-index: 0; background-position: center; background-size: cover; transform: translate3d(calc(var(--px) * -22px), calc(var(--py) * -16px), 0) scale(1.12); transition: transform 0.5s cubic-bezier(0.22,1,0.36,1); filter: saturate(1.06) contrast(1.03); will-change: transform; }
 /* camada 2: tonalização escura premium + brilho dourado (legibilidade do texto) */
 .hero-bg-tint { position: absolute; inset: 0; z-index: 1; background:
-  linear-gradient(95deg, rgba(6,9,14,0.96) 0%, rgba(6,9,14,0.82) 32%, rgba(6,9,14,0.32) 62%, rgba(6,9,14,0.6) 100%),
+  linear-gradient(95deg, rgba(6,9,14,0.6) 0%, rgba(6,9,14,0.34) 34%, rgba(6,9,14,0.82) 70%, rgba(6,9,14,0.96) 100%),
   linear-gradient(0deg, rgba(6,9,14,0.92) 0%, rgba(6,9,14,0.1) 42%, transparent 70%),
-  radial-gradient(760px 540px at 88% 6%, rgba(224,181,86,0.13), transparent 64%); }
+  radial-gradient(760px 540px at 12% 6%, rgba(224,181,86,0.13), transparent 64%); }
 /* camada 3: poeira dourada leve (CSS) */
 .dust { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
 .dust-p { position: absolute; bottom: -12px; border-radius: 50%; background: radial-gradient(circle, #f4d98a 0%, rgba(244,217,138,0) 70%); animation-name: dustfloat; animation-timing-function: linear; animation-iteration-count: infinite; will-change: transform, opacity; }
@@ -313,7 +313,7 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 @media (max-width: 560px) { .hero-card { max-width: 100%; } }
 
 /* ===== Hero unificado: bio (esquerda) + card de busca (direita) ===== */
-.hero-grid2 { position: relative; z-index: 4; display: grid; grid-template-columns: 1.05fr clamp(380px, 34vw, 480px); gap: clamp(28px, 4vw, 60px); align-items: center; width: 100%; }
+.hero-grid2 { position: relative; z-index: 4; display: grid; grid-template-columns: clamp(380px, 34vw, 480px) 1.05fr; gap: clamp(28px, 4vw, 60px); align-items: center; width: 100%; }
 .hero-bio { max-width: 640px; }
 .hero-nome { font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: clamp(2.6rem, 5.5vw, 4.4rem); line-height: 1.02; margin: 6px 0 16px; background: linear-gradient(135deg, #ecd07c 0%, #b8862f 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .hero-bio .apres-lead { max-width: 560px; }

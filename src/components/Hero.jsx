@@ -37,6 +37,17 @@ export default function Hero() {
       <Scene3D />
 
       <div className="container hero-grid2">
+        <div className="hero-card hero-in">
+          <span className="eyebrow">Imóveis em Uberlândia</span>
+          <h1>Compre seu imóvel <em>sem medo de errar</em></h1>
+          <p className="hero-card-sub">Curadoria criteriosa e acompanhamento da primeira conversa à entrega das chaves.</p>
+          <HeroBusca />
+          <div className="hero-card-rodape">
+            <img src="/rotina-logo.png" alt="Rotina Imobiliária" />
+            <span>Consultor credenciado · Rotina Imobiliária</span>
+          </div>
+        </div>
+
         <div className="hero-bio hero-in">
           <span className="eyebrow">Quem te atende</span>
           <h2 className="hero-nome">Vinícius Graton</h2>
@@ -52,17 +63,6 @@ export default function Hero() {
           <div className="hero-bio-acoes">
             <a className="btn btn-gold" href={linkWhatsApp(WA.hero)} target="_blank" rel="noopener"><IconWhats /> Falar comigo agora</a>
             <Link className="btn btn-ghost" to="/sobre">Conhecer minha história <IconArrow /></Link>
-          </div>
-        </div>
-
-        <div className="hero-card hero-in">
-          <span className="eyebrow">Imóveis em Uberlândia</span>
-          <h1>Compre seu imóvel <em>sem medo de errar</em></h1>
-          <p className="hero-card-sub">Curadoria criteriosa e acompanhamento da primeira conversa à entrega das chaves.</p>
-          <HeroBusca />
-          <div className="hero-card-rodape">
-            <img src="/rotina-logo.png" alt="Rotina Imobiliária" />
-            <span>Consultor credenciado · Rotina Imobiliária</span>
           </div>
         </div>
       </div>
