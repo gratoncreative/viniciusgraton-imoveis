@@ -1,0 +1,17 @@
+{
+  "name": "Vinícius Graton — Imóveis em Uberlândia",
+  "short_name": "VG Imóveis",
+  "description": "Consultoria imobiliária em Uberlândia: compre, venda ou invista com curadoria e segurança, com Vinícius Graton.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#070a11",
+  "theme_color": "#070a11",
+  "lang": "pt-BR",
+  "categories": ["business", "lifestyle", "shopping"],
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "/vinicius-graton.jpg", "sizes": "1600x1600", "type": "image/jpeg" }
+  ]
+}
