@@ -531,7 +531,50 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .det-info { position: sticky; top: 100px; }
 .det-local { color: var(--text-soft); font-size: 0.85rem; }
 .det-titulo { font-family: var(--font-head); font-weight: 700; font-size: 1.9rem; line-height: 1.15; margin: 6px 0 10px; }
-.det-preco { font-family: var(--font-head); font-weight: 800; font-size: 2.1rem; margin-bottom: 22px; background: linear-gradient(135deg, #c9962f, #9a6c1c); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.det-preco { display: block; font-family: var(--font-head); font-weight: 800; font-size: 2.1rem; margin-bottom: 22px; background: linear-gradient(135deg, #c9962f, #9a6c1c); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* ===== Preço bloqueado até o cadastro (gatilho de captação) ===== */
+.preco-gate { font: inherit; background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: inherit; text-align: left; display: inline-flex; flex-direction: column; gap: 5px; }
+.preco-gate .pg-num { filter: blur(8px); opacity: 0.78; user-select: none; pointer-events: none; white-space: nowrap; }
+.preco-gate .pg-cta { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-head); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.01em; transition: transform 0.18s var(--ease), filter 0.18s; }
+.preco-gate:hover .pg-cta { filter: brightness(1.06); transform: translateY(-1px); }
+.preco-gate svg { flex: none; }
+
+.preco-gate--card { position: absolute; bottom: 14px; left: 18px; right: 18px; z-index: 2; transform: translateZ(56px); }
+.preco-gate--card .pg-num { font-family: var(--font-head); font-weight: 700; font-size: 1.5rem; color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,0.55); }
+.preco-gate--card .pg-cta { align-self: flex-start; color: #20160a; background: var(--gold-grad); padding: 6px 13px; border-radius: 999px; box-shadow: 0 6px 18px rgba(0,0,0,0.32); }
+
+.preco-gate--linha .pg-num { font-family: var(--font-head); font-weight: 800; font-size: 1.5rem; color: var(--gold-3); }
+.preco-gate--linha .pg-cta { color: var(--gold-3); }
+
+.preco-gate--detalhe { display: block; margin-bottom: 22px; }
+.preco-gate--detalhe .pg-num { font-family: var(--font-head); font-weight: 800; font-size: 2.1rem; color: var(--gold-3); }
+.preco-gate--detalhe .pg-cta { margin-top: 8px; font-size: 0.92rem; color: #20160a; background: var(--gold-grad); padding: 9px 16px; border-radius: 999px; box-shadow: 0 6px 18px rgba(184,134,47,0.32); }
+
+/* ===== Modal de cadastro que libera os preços ===== */
+.cg-overlay { position: fixed; inset: 0; z-index: 2000; background: rgba(12,9,5,0.66); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; padding: 20px; animation: cgFade 0.2s ease; }
+@keyframes cgFade { from { opacity: 0; } to { opacity: 1; } }
+.cg-modal { position: relative; width: 100%; max-width: 430px; background: #faf6ee; border-radius: 22px; padding: 36px 32px 26px; box-shadow: 0 32px 90px rgba(0,0,0,0.45); border: 1px solid rgba(184,134,47,0.28); animation: cgUp 0.26s ease; }
+@keyframes cgUp { from { transform: translateY(16px); opacity: 0.4; } to { transform: none; opacity: 1; } }
+.cg-x { position: absolute; top: 12px; right: 15px; border: none; background: none; font-size: 1.9rem; line-height: 1; color: #a99c84; cursor: pointer; padding: 4px; }
+.cg-x:hover { color: #6c6253; }
+.cg-tag { display: inline-block; font-family: var(--font-head); font-weight: 700; font-size: 0.66rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--gold-3); background: rgba(184,134,47,0.13); padding: 5px 12px; border-radius: 999px; }
+.cg-titulo { font-family: var(--font-head); font-weight: 800; font-size: 1.5rem; line-height: 1.16; margin: 15px 0 8px; color: #2a2118; }
+.cg-sub { font-size: 0.92rem; color: #6c6253; line-height: 1.5; margin-bottom: 20px; }
+.cg-form { display: flex; flex-direction: column; gap: 13px; }
+.cg-campo { display: flex; flex-direction: column; gap: 5px; }
+.cg-campo > span { font-family: var(--font-head); font-weight: 600; font-size: 0.8rem; color: #4a4234; }
+.cg-campo em { font-style: normal; font-weight: 400; color: #a99c84; }
+.cg-campo input { font: inherit; font-size: 1rem; padding: 12px 14px; border-radius: 12px; border: 1.5px solid rgba(0,0,0,0.13); background: #fff; color: #2a2118; }
+.cg-campo input:focus { outline: none; border-color: var(--gold-3); box-shadow: 0 0 0 3px rgba(184,134,47,0.16); }
+.cg-erro { color: #b4452f; font-size: 0.85rem; margin: -3px 0 0; }
+.cg-btn { margin-top: 5px; font-family: var(--font-head); font-weight: 700; font-size: 1.02rem; padding: 14px; border-radius: 12px; border: none; cursor: pointer; color: #2a2014; background: var(--gold-grad); box-shadow: 0 10px 24px rgba(184,134,47,0.36); transition: filter 0.18s, transform 0.18s var(--ease); }
+.cg-btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
+.cg-nota { font-size: 0.76rem; color: #a99c84; text-align: center; line-height: 1.45; margin: 6px 0 0; }
+.cg-ok { text-align: center; padding: 16px 6px 10px; }
+.cg-ok-ico { width: 66px; height: 66px; margin: 0 auto 16px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #3fae7a, #2c8c5f); box-shadow: 0 12px 30px rgba(44,140,95,0.35); }
+.cg-ok h3 { font-family: var(--font-head); font-weight: 800; font-size: 1.4rem; margin-bottom: 7px; color: #2a2118; }
+.cg-ok p { color: #6c6253; font-size: 0.92rem; line-height: 1.5; }
 .det-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 20px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .det-spec { display: flex; align-items: center; gap: 12px; }
 .det-spec-ico { width: 42px; height: 42px; border-radius: 11px; background: rgba(224,181,86,0.1); border: 1px solid var(--gold-3); display: grid; place-items: center; color: var(--gold-1); flex: none; }

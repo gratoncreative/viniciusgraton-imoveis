@@ -1,7 +1,20 @@
 import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { linkWhatsApp, WA, formatPreco } from '../data'
+import { estaLogado } from '../conta'
 import { IconWhats, IconArrow } from './icons'
+
+// Mostra o preço só para quem já se cadastrou; senão "Ver preço" (o clique leva ao imóvel, onde libera).
+function BandPreco({ valor }) {
+  const [ok, setOk] = useState(() => estaLogado())
+  useEffect(() => {
+    const l = () => setOk(estaLogado())
+    window.addEventListener('vg-conta', l); window.addEventListener('storage', l)
+    return () => { window.removeEventListener('vg-conta', l); window.removeEventListener('storage', l) }
+  }, [])
+  return <>{ok ? formatPreco(valor) : 'Ver preço'} <IconArrow width={14} height={14} /></>
+}
 
 export default function ParallaxBand({ img, eyebrow, frase, cta, wa, imovel, light }) {
   // variante CLARA: seção creme com texto + banner amplo de imóvel (ilustrativo)
@@ -37,7 +50,7 @@ export default function ParallaxBand({ img, eyebrow, frase, cta, wa, imovel, lig
               <Link className="band-credito" to={`/imovel/${imovel.codigo}`}>
                 <span className="band-credito-top">{imovel.selo || 'Imóvel da foto'}</span>
                 <span className="band-credito-nome">{imovel.tipo} · {imovel.bairro}</span>
-                <span className="band-credito-preco">{formatPreco(imovel.preco)} <IconArrow width={14} height={14} /></span>
+                <span className="band-credito-preco"><BandPreco valor={imovel.preco} /></span>
               </Link>
             ) : (
               <figcaption className="band-light-cap">Imagem ilustrativa</figcaption>
@@ -76,7 +89,7 @@ export default function ParallaxBand({ img, eyebrow, frase, cta, wa, imovel, lig
         <Link className="band-credito" to={`/imovel/${imovel.codigo}`}>
           <span className="band-credito-top">Imóvel da foto</span>
           <span className="band-credito-nome">{imovel.tipo} · {imovel.bairro}</span>
-          <span className="band-credito-preco">{formatPreco(imovel.preco)} <IconArrow width={14} height={14} /></span>
+          <span className="band-credito-preco"><BandPreco valor={imovel.preco} /></span>
         </Link>
       )}
     </section>

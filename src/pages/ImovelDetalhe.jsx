@@ -5,6 +5,7 @@ import Galeria from '../components/Galeria'
 import AgendarVisita from '../components/AgendarVisita'
 import CardImovel from '../components/CardImovel'
 import Engajamento from '../components/Engajamento'
+import PrecoGate from '../components/PrecoGate'
 import {
   getImovel, fotosDe, formatPreco, formatArea, resumoImovel, subtituloImovel,
   destaquesImovel, ehCondominio, IMOVEIS, linkWhatsApp, waImovel, CONFIG, BAIRROS,
@@ -214,7 +215,7 @@ export default function ImovelDetalhe() {
               <p className="det-local"><IconPin width={15} height={15} /> {im.cidade} — {im.uf} · Cód. {im.codigo}</p>
               <h1 className="det-titulo">{im.tipo} no {im.bairro}</h1>
               <p className="det-subtitulo">{subtituloImovel(im)}</p>
-              <p className="det-preco">{formatPreco(im.preco)}</p>
+              <PrecoGate valor={im.preco} className="det-preco" tipo="detalhe" />
 
               <div className="det-specs">
                 {specs.map((s, i) => <Spec key={i} {...s} />)}

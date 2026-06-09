@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { formatPreco, formatArea, resumoImovel, truncar, linkWhatsApp, waImovel } from '../data'
+import PrecoGate from './PrecoGate'
 import { IconWhats, ICONS } from './icons'
 import Engajamento from './Engajamento'
 import { onImgError } from '../img'
@@ -81,7 +82,7 @@ export default function CardImovel({ im, variante }) {
             {specs.map((s, i) => <Spec key={i} {...s} />)}
           </div>
           <div className="im-linha-rodape">
-            <span className="im-linha-preco">{formatPreco(im.preco)}</span>
+            <PrecoGate valor={im.preco} className="im-linha-preco" tipo="linha" />
             <div className="im-actions">
               <Link className="im-ver" to={`/imovel/${im.codigo}`} onClick={(e) => e.stopPropagation()}>Ver detalhes</Link>
               <a className="im-cta" href={linkWhatsApp(waImovel(im))} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()}>
@@ -107,7 +108,7 @@ export default function CardImovel({ im, variante }) {
         <span className="im-tag">{im.tipo}</span>
         {im.novo && <span className="im-novo">Novo</span>}
         <Engajamento im={im} variante="card" />
-        <span className="im-preco">{formatPreco(im.preco)}</span>
+        <PrecoGate valor={im.preco} className="im-preco" tipo="card" />
       </div>
       <div className="card-body im-body">
         <h3 className="im-bairro">{im.bairro}</h3>
