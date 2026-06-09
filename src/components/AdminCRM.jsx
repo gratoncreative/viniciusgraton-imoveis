@@ -13,6 +13,24 @@ const objToFinal = (o) => { const s = (o || '').toLowerCase(); if (s.includes('a
 const STATUS = ['A revisar', 'Novo', 'Em atendimento', 'Visita marcada', 'Proposta', 'Fechado', 'Perdido']
 const STATUS_COR = { 'A revisar': '#8a909c', Novo: '#b8862f', 'Em atendimento': '#2f6fb8', 'Visita marcada': '#7a4fce', Proposta: '#c98a1a', Fechado: '#2e8c57', Perdido: '#b04a4a' }
 const diasParado = (c) => { const t = c.ultimaAcaoEm || c.atualizadoEm || c.criadoEm || 0; if (!t) return 0; return Math.floor((Date.now() - t) / 86400000) }
+// prioriza quem chamar hoje: mexeu na página > novo do site > prazo curto > parado há dias
+const scoreFollowUp = (c, d) => {
+  if (['Fechado', 'Perdido'].includes(c.status)) return 0
+  let s = 0
+  if (c.temNovidade) s += 100
+  if (c.novo) s += 30
+  if (c.prazo === 'Esse mês') s += 50; else if (String(c.prazo || '').includes('2 a 6')) s += 20
+  if (d >= 3) s += Math.min(d, 30)
+  return s
+}
+const motivoFollowUp = (c, d) => {
+  const r = []
+  if (c.temNovidade) r.push('🔔 mexeu na página dele')
+  if (c.novo) r.push('✨ novo do site, revisar')
+  if (c.prazo === 'Esse mês') r.push('🔥 quer resolver esse mês')
+  if (d >= 3) r.push(`⏰ parado há ${d} dias`)
+  return r.slice(0, 2).join(' · ') || 'vale um alô'
+}
 
 export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadastro }) {
   const [clientes, setClientes] = useState(null)
@@ -223,6 +241,28 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
         <span className="painel-meta">{clientes ? `${clientes.length} cliente(s)${clientes.filter((c) => c.novo).length ? ` · ${clientes.filter((c) => c.novo).length} novo(s) do site` : ''}` : 'Carregando…'}</span>
       </div>
       {clientes && clientes.length === 0 && <p className="section-sub">Nenhum cliente cadastrado ainda. Clique em <b>+ Novo cliente</b> para começar.</p>}
+
+      {(() => {
+        const fu = [...(clientes || [])].map((c) => ({ c, d: diasParado(c) })).map((x) => ({ ...x, s: scoreFollowUp(x.c, x.d) })).filter((x) => x.s > 0).sort((a, b) => b.s - a.s).slice(0, 6)
+        if (!fu.length) return null
+        return (
+          <div className="crm-followup">
+            <b className="crm-fu-tit">⏰ Seu follow-up de hoje · {fu.length} {fu.length === 1 ? 'pessoa' : 'pessoas'} pra chamar</b>
+            <div className="crm-fu-lista">
+              {fu.map(({ c, d }) => (
+                <div className="crm-fu-item" key={c.id}>
+                  <span className="crm-fu-info"><b>{c.nome || 'Sem nome'}</b><i>{motivoFollowUp(c, d)}</i></span>
+                  <span className="crm-fu-acoes">
+                    <a className="admin-btn admin-btn--ok admin-btn--mini" href={waLink(c.whatsapp, `Olá${c.nome ? ' ' + c.nome.split(' ')[0] : ''}! Aqui é o Vinícius. Passando pra saber como está sua busca — separei novidades que podem te interessar.`)} target="_blank" rel="noopener">WhatsApp</a>
+                    <button className="admin-btn admin-btn--mini" onClick={() => abrir(c)}>Abrir</button>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )
+      })()}
+
       <div className="crm-lista">
         {[...(clientes || [])].sort((a, b) => (b.temNovidade ? 1 : 0) - (a.temNovidade ? 1 : 0)).map((c) => {
           const nm = novosMatch(c)

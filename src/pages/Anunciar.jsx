@@ -155,14 +155,24 @@ export default function Anunciar() {
     <main className="pagina section--light det anunciar-pg">
       <div className="container" style={{ maxWidth: 920 }}>
         <Reveal>
-          <div style={{ textAlign: 'center', maxWidth: 700, margin: '0 auto 10px' }}>
+          <div style={{ textAlign: 'center', maxWidth: 720, margin: '0 auto 10px' }}>
             <span className="eyebrow" style={{ justifyContent: 'center' }}>Quero vender / alugar</span>
-            <h1 className="section-title">Anuncie seu <em>imóvel</em></h1>
+            <h1 className="section-title">Venda seu imóvel <em>sem dor de cabeça</em></h1>
             <p className="section-sub" style={{ marginTop: 14 }}>
-              Preencha os dados, suba as fotos e envie. Eu recebo tudo, avalio com calma e, se for um imóvel de qualidade,
-              faço a curadoria e cuido da divulgação e da venda com segurança. Sem custo para cadastrar.
+              Eu cuido de tudo: avalio pelo valor justo, faço a curadoria e as fotos, divulgo pra minha base de clientes e conduzo a negociação com segurança — você acompanha de perto, do anúncio à entrega das chaves. <b>Cadastrar é grátis e sem compromisso.</b>
             </p>
           </div>
+        </Reveal>
+
+        <Reveal delay={0.08}>
+          <ul className="anunciar-beneficios">
+            <li><span>💰</span><div><b>Avaliação justa e grátis</b><i>Preço de mercado de verdade, sem chute — pra vender no tempo certo.</i></div></li>
+            <li><span>🎯</span><div><b>Curadoria + fotos que vendem</b><i>Seu imóvel apresentado do jeito que valoriza e atrai comprador.</i></div></li>
+            <li><span>📣</span><div><b>Divulgação ativa</b><i>No site, nas redes e direto pra clientes que já procuram algo assim.</i></div></li>
+            <li><span>🛡️</span><div><b>Segurança em cada etapa</b><i>Documentação conferida e negociação com a estrutura da Rotina.</i></div></li>
+            <li><span>🪧</span><div><b>Placa "VENDE-SE" grátis</b><i>Se quiser, uma placa profissional no seu imóvel, sem custo.</i></div></li>
+            <li><span>🤝</span><div><b>Você no controle</b><i>Acompanha tudo de perto, sem enrolação. Cadastrar não tem compromisso.</i></div></li>
+          </ul>
         </Reveal>
 
         <form className="lead-form anunciar-form" onSubmit={enviar}>
