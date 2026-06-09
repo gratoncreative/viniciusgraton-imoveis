@@ -16,6 +16,12 @@ export const IconCar = (p) => (
 export const IconArea = (p) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M3 3h18v18H3zM3 9h18M9 21V9"/></svg>
 )
+export const IconElevator = (p) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M12 3v18"/><path d="M7.6 9.6 9 7.6l1.4 2"/><path d="M7.6 14.4 9 16.4l1.4-2"/></svg>
+)
+export const IconFloor = (p) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 7h.01M13 7h.01M9 11h.01M13 11h.01M9 15h.01M13 15h.01M10 21v-3h4v3"/></svg>
+)
 export const IconPin = (p) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
 )
@@ -97,4 +103,6 @@ export const ICONS = {
   bath: IconBath,
   car: IconCar,
   area: IconArea,
+  elevator: IconElevator,
+  floor: IconFloor,
 }

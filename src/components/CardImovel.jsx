@@ -44,12 +44,17 @@ export default function CardImovel({ im, variante }) {
     el.style.setProperty('--act', '0')
   }
 
+  const ehApto = /apart|kit|studio|stúdio|loft|flat|cobertura/i.test(im.tipo || '')
+  const temAndar = im.andar !== undefined && im.andar !== null && im.andar !== ''
+  const terreo = im.andar === 0 || im.andar === '0' || /t[eé]rreo/i.test(String(im.andar))
   const specs = [
     im.quartos > 0 && { icon: 'bed', valor: im.quartos, label: plural(im.quartos, 'quarto', 'quartos') },
     im.suites > 0 && { icon: 'sparkle', valor: im.suites, label: plural(im.suites, 'suíte', 'suítes') },
     im.banheiros > 0 && { icon: 'bath', valor: im.banheiros, label: plural(im.banheiros, 'banheiro', 'banheiros') },
     im.vagas > 0 && { icon: 'car', valor: im.vagas, label: plural(im.vagas, 'vaga', 'vagas') },
     im.area > 0 && { icon: 'area', valor: formatArea(im.area), label: '' },
+    ehApto && temAndar && { icon: 'floor', valor: terreo ? 'Térreo' : `${im.andar}º`, label: terreo ? '' : 'andar' },
+    ehApto && typeof im.elevador === 'boolean' && { icon: 'elevator', valor: im.elevador ? 'Com' : 'Sem', label: 'elevador' },
   ].filter(Boolean)
 
   const irParaImovel = () => navigate(`/imovel/${im.codigo}`)

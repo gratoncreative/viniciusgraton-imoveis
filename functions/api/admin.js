@@ -163,6 +163,9 @@ export async function onRequestPost({ env, request }) {
     for (const k of ['preco', 'quartos', 'suites', 'banheiros', 'vagas', 'area']) if (k in c) campos[k] = Number(c[k]) || 0
     for (const k of ['tipo', 'bairro', 'descricao']) if (k in c) campos[k] = String(c[k] || '').slice(0, 3000)
     for (const k of ['destaque', 'oculto']) if (k in c) campos[k] = !!c[k]
+    // apartamento: andar (0 = térreo) e elevador (true/false). Só grava se informado.
+    if (c.andar !== '' && c.andar !== null && c.andar !== undefined) campos.andar = Number(c.andar) || 0
+    if (typeof c.elevador === 'boolean') campos.elevador = c.elevador
     if (Array.isArray(c.fotos)) campos.fotos = c.fotos.filter((s) => typeof s === 'string').slice(0, 40).map((s) => s.slice(0, 300))
     await env.ENGAGEMENT.put('imovel:' + codigo, JSON.stringify({ owner, campos, atualizadoEm: Date.now() }))
     return json({ ok: true })

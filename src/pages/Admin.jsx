@@ -262,6 +262,14 @@ function ImoveisPub({ token, onSair }) {
               <label className="admin-field"><span>Suítes</span><input type="number" value={reg.campos.suites} onChange={(e) => setC('suites', e.target.value)} /></label>
               <label className="admin-field"><span>Banheiros</span><input type="number" value={reg.campos.banheiros} onChange={(e) => setC('banheiros', e.target.value)} /></label>
               <label className="admin-field"><span>Vagas</span><input type="number" value={reg.campos.vagas} onChange={(e) => setC('vagas', e.target.value)} /></label>
+              <label className="admin-field"><span>Andar (apto · 0 = térreo)</span><input type="number" value={reg.campos.andar ?? ''} onChange={(e) => setC('andar', e.target.value)} placeholder="ex.: 3" /></label>
+              <label className="admin-field"><span>Elevador (apto)</span>
+                <select value={reg.campos.elevador === true ? 'sim' : reg.campos.elevador === false ? 'nao' : ''} onChange={(e) => setC('elevador', e.target.value === 'sim' ? true : e.target.value === 'nao' ? false : '')}>
+                  <option value="">— não informado</option>
+                  <option value="sim">Com elevador</option>
+                  <option value="nao">Sem elevador</option>
+                </select>
+              </label>
               <label className="admin-field admin-field--full"><span>Descrição</span><textarea rows="5" value={reg.campos.descricao} onChange={(e) => setC('descricao', e.target.value)} /></label>
             </div>
             <label className="calc-check"><input type="checkbox" checked={!!reg.campos.destaque} onChange={(e) => setC('destaque', e.target.checked)} /><span>Destacar este imóvel na home</span></label>
