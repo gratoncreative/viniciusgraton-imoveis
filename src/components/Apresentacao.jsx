@@ -43,6 +43,7 @@ export default function Apresentacao() {
             </ul>
           </Reveal>
           <Reveal delay={0.15}>
+            <div className="apres-divisor" aria-hidden="true" />
             <div className="apres-acoes">
               <a className="btn btn-gold" href={linkWhatsApp(WA.hero)} target="_blank" rel="noopener">
                 <IconWhats /> Falar comigo agora
