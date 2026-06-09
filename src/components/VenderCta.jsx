@@ -20,6 +20,10 @@ export default function VenderCta() {
               <p className="vender-cta-nota"><IconShield width={16} height={16} /> Cadastro grátis e sem compromisso. Seus dados e fotos vão direto pra minha avaliação.</p>
             </div>
             <div className="vender-cta-num">
+              <div className="vender-cta-foto">
+                <img src="/casa-conceito.jpg" alt="Imóvel à venda em Uberlândia com a curadoria do Vinícius Graton" loading="lazy" />
+                <span className="vender-cta-foto-tag">🔑 Do anúncio à entrega das chaves</span>
+              </div>
               <div><b>Grátis</b><span>cadastrar e anunciar seu imóvel não tem nenhum custo</span></div>
               <div><b>Curadoria</b><span>seleciono e divulgo com cuidado, do anúncio à entrega das chaves</span></div>
             </div>

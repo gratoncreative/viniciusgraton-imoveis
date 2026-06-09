@@ -1491,6 +1491,9 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .vender-cta-nota { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-mute); }
 .vender-cta-nota svg { color: var(--gold-2); flex: none; }
 .vender-cta-num { display: flex; flex-direction: column; gap: 14px; }
+.vender-cta-foto { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid rgba(184,134,47,0.32); box-shadow: 0 24px 50px -30px rgba(0,0,0,0.6); }
+.vender-cta-foto img { display: block; width: 100%; height: 180px; object-fit: cover; }
+.vender-cta-foto-tag { position: absolute; left: 12px; bottom: 12px; background: rgba(10,14,22,0.78); backdrop-filter: blur(6px); color: #fff; font-family: var(--font-head); font-weight: 600; font-size: 0.8rem; padding: 6px 12px; border-radius: 100px; border: 1px solid rgba(184,134,47,0.4); }
 .vender-cta-num div { background: rgba(255,255,255,0.04); border: 1px solid rgba(184,134,47,0.28); border-radius: 16px; padding: 18px 22px; }
 .vender-cta-num b { display: block; font-family: var(--font-head); font-weight: 800; font-size: 1.5rem; background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .vender-cta-num span { color: var(--text-soft); font-size: 0.9rem; line-height: 1.45; }
