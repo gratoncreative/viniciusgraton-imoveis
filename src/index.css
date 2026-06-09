@@ -425,6 +425,9 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .catalogo--dark .im-linha { background: rgba(255,255,255,0.03); border: 1px solid rgba(224,181,86,0.18); box-shadow: 0 18px 44px -32px rgba(0,0,0,0.7); }
 .catalogo--dark .im-linha:hover { border-color: rgba(224,181,86,0.5); box-shadow: 0 28px 60px -32px rgba(0,0,0,0.8); }
 .catalogo--dark .im-linha-media { background: #1a1f29; }
+/* página do imóvel em fundo escuro luxuoso */
+.det--dark { background: radial-gradient(820px 520px at 84% 0%, rgba(224,181,86,0.12), transparent 62%), radial-gradient(620px 480px at 4% 100%, rgba(184,134,47,0.07), transparent 70%), linear-gradient(180deg, #0b0f17 0%, #080b12 100%); }
+.det--dark .det-trust { background: rgba(224,181,86,0.07); border-color: rgba(224,181,86,0.22); }
 .cat-painel .cat-rapidas { margin-bottom: 14px; }
 .cat-painel .cat-filtros { margin-bottom: 0; }
 
