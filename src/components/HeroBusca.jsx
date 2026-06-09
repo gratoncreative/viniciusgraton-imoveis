@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { TIPOS_IMOVEL, BAIRROS_IMOVEL, FAIXAS_PRECO } from '../data'
-import { IconArrow } from './icons'
+import { IconSearch } from './icons'
 
-// Caixa de busca em destaque na capa: cliente seleciona e já vê os resultados no catálogo.
+// Card de busca da capa (estilo portal): campos empilhados + botão grande.
 export default function HeroBusca() {
   const navigate = useNavigate()
-  const [f, setF] = useState({ tipo: '', bairro: '', faixa: '-1', quartos: '0' })
+  const [f, setF] = useState({ tipo: '', bairro: '', faixa: '-1' })
   const set = (k) => (e) => setF((s) => ({ ...s, [k]: e.target.value }))
 
   const buscar = (e) => {
@@ -15,49 +15,35 @@ export default function HeroBusca() {
     if (f.tipo) p.set('tipo', f.tipo)
     if (f.bairro) p.set('bairro', f.bairro)
     if (f.faixa !== '-1') p.set('faixa', f.faixa)
-    if (f.quartos !== '0') p.set('quartos', f.quartos)
     const qs = p.toString()
     navigate(qs ? `/imoveis?${qs}` : '/imoveis')
   }
 
   return (
-    <form className="hero-busca hero-in" onSubmit={buscar} aria-label="Buscar imóveis">
-      <span className="hero-busca-tit">Encontre seu imóvel</span>
-      <div className="hero-busca-campos">
-        <label className="hero-busca-campo">
-          <span>Tipo</span>
-          <select value={f.tipo} onChange={set('tipo')}>
-            <option value="">Todos</option>
-            {TIPOS_IMOVEL.map((t) => <option key={t} value={t}>{t}</option>)}
-          </select>
-        </label>
-        <label className="hero-busca-campo">
-          <span>Bairro</span>
-          <select value={f.bairro} onChange={set('bairro')}>
-            <option value="">Todos</option>
-            {BAIRROS_IMOVEL.map((b) => <option key={b} value={b}>{b}</option>)}
-          </select>
-        </label>
-        <label className="hero-busca-campo">
-          <span>Valor</span>
-          <select value={f.faixa} onChange={set('faixa')}>
-            <option value="-1">Qualquer</option>
-            {FAIXAS_PRECO.map((p, i) => <option key={i} value={i}>{p.label}</option>)}
-          </select>
-        </label>
-        <label className="hero-busca-campo">
-          <span>Quartos</span>
-          <select value={f.quartos} onChange={set('quartos')}>
-            <option value="0">Qualquer</option>
-            <option value="1">1+</option>
-            <option value="2">2+</option>
-            <option value="3">3+</option>
-            <option value="4">4+</option>
-          </select>
-        </label>
+    <form className="hero-busca" onSubmit={buscar} aria-label="Buscar imóveis">
+      <div className="hb-campo">
+        <span>O que você procura?</span>
+        <select value={f.tipo} onChange={set('tipo')}>
+          <option value="">Todos os tipos</option>
+          {TIPOS_IMOVEL.map((t) => <option key={t} value={t}>{t}</option>)}
+        </select>
       </div>
-      <button type="submit" className="btn btn-gold hero-busca-btn">
-        Ver imóveis <IconArrow />
+      <div className="hb-campo">
+        <span>Bairro ou região</span>
+        <select value={f.bairro} onChange={set('bairro')}>
+          <option value="">Toda Uberlândia</option>
+          {BAIRROS_IMOVEL.map((b) => <option key={b} value={b}>{b}</option>)}
+        </select>
+      </div>
+      <div className="hb-campo">
+        <span>Faixa de valor</span>
+        <select value={f.faixa} onChange={set('faixa')}>
+          <option value="-1">Qualquer valor</option>
+          {FAIXAS_PRECO.map((p, i) => <option key={i} value={i}>{p.label}</option>)}
+        </select>
+      </div>
+      <button type="submit" className="btn btn-gold hb-btn">
+        <IconSearch width={18} height={18} /> Buscar imóveis
       </button>
     </form>
   )
