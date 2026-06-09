@@ -7,7 +7,7 @@ import { onImgError } from '../img'
 // Apresentação breve do Vinícius logo no início do site (consultor da Rotina Imobiliária).
 export default function Apresentacao() {
   return (
-    <section id="apresentacao" className="apres section--light">
+    <section id="apresentacao" className="apres apres--dark">
       <div className="container apres-grid">
         <Reveal className="apres-foto-col">
           <div className="apres-foto">
