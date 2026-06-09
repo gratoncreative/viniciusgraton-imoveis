@@ -7,6 +7,7 @@ import BAIRROS_M2 from '../bairros-m2.json'
 import { formatBRL } from '../extenso'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow } from '../components/icons'
+import FerramentaRotina from '../components/FerramentaRotina'
 
 const brl = (n) => (isFinite(n) ? n : 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })
 const brl2 = (n) => (isFinite(n) ? n : 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 })
@@ -30,6 +31,7 @@ const ICN = {
   percent: 'M19 5 5 19M7.5 7.5h.01M16.5 16.5h.01M6 7.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0M15 16.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0',
   edit: 'M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z',
   bell: 'M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0',
+  chat: 'M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2zM8 9h8M8 13h5',
 }
 const FerrIcon = ({ name, size = 22 }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={ICN[name] || ICN.calc} /></svg>
@@ -55,6 +57,7 @@ const TOOLS = [
   { id: 'comissao', nome: 'Calculadora de comissão', desc: 'Comissão e repasse de uma venda.', icon: 'percent', cat: 'corretor' },
   { id: 'acm', nome: 'Análise de mercado (ACM)', desc: 'Sugere o preço do imóvel pelo m² do bairro.', icon: 'chart', cat: 'corretor' },
   { id: 'ficha', nome: 'Ficha de avaliação rápida', desc: 'Gera um resumo do imóvel pra enviar.', icon: 'edit', cat: 'corretor' },
+  { id: 'rotina', nome: 'Rotina — abordagem por código', desc: 'Cole o código do imóvel da Rotina e gere a mensagem de 1º contato com gatilhos + benefícios da região (raio de 1km).', icon: 'chat', cat: 'corretor' },
   { id: 'painel', nome: 'Painel de leads', desc: 'Seus cadastros e leads (acesso restrito).', icon: 'bell', cat: 'corretor', to: '/painel' },
 ]
 
@@ -212,7 +215,7 @@ function CalcACM() {
   return (<div className="calc-grid"><div className="calc-form"><Select label="Bairro" valor={bairro} onChange={setBairro} opcoes={ord.map((x) => x.bairro)} /><Campo label="Área privativa" sufixo="m²" valor={area} onChange={setArea} /><Select label="Estado do imóvel" valor={estado} onChange={setEstado} opcoes={[{ v: '8', t: 'Novo / lançamento' }, { v: '4', t: 'Reformado' }, { v: '0', t: 'Bem conservado' }, { v: '-10', t: 'Precisa de reforma' }]} /></div><div>{r.m2 ? <Resultado destaque={{ rotulo: 'Preço sugerido', valor: brl(r.central) }} itens={[{ rotulo: 'Faixa de mercado', valor: `${brl(r.min)} a ${brl(r.max)}` }, { rotulo: `m² médio em ${bairro}`, valor: brl(r.m2) }, { rotulo: 'Fonte do m²', valor: `${r.fonte || '—'}${r.ref ? ` (${r.ref})` : ''}` }]} /> : <p className="section-sub">Ainda não há um valor de referência <b>oficial confirmado</b> para <b>{bairro}</b> nas fontes públicas. Para esse bairro, faça uma <b>avaliação presencial</b> (posição, padrão e estado definem o preço real).</p>}{nota('Estimativa pela mediana de venda do bairro × área, ajustada pelo estado, de fontes públicas (Proprietário Direto/IPD e ZAP). É um ponto de partida — posição, andar, vista e acabamento ajustam o valor final. A avaliação presencial é o que fecha o preço.')}</div></div>)
 }
 
-const RENDER = { financiamento: CalcFinanciamento, capacidade: CalcCapacidade, renda: CalcRenda, fgts: CalcFGTS, amortizacao: CalcAmortizacao, custos: CalcCustos, aluguel: CalcAluguel, rentabilidade: CalcRentabilidade, investir: CalcInvestir, entrada: CalcEntrada, ganho: CalcGanho, valorm2: CalcValorM2, score: CalcScore, checklist: Checklist, comissao: CalcComissao, acm: CalcACM, ficha: FichaAvaliacao }
+const RENDER = { financiamento: CalcFinanciamento, capacidade: CalcCapacidade, renda: CalcRenda, fgts: CalcFGTS, amortizacao: CalcAmortizacao, custos: CalcCustos, aluguel: CalcAluguel, rentabilidade: CalcRentabilidade, investir: CalcInvestir, entrada: CalcEntrada, ganho: CalcGanho, valorm2: CalcValorM2, score: CalcScore, checklist: Checklist, comissao: CalcComissao, acm: CalcACM, ficha: FichaAvaliacao, rotina: FerramentaRotina }
 
 export default function Ferramentas() {
   const [ativa, setAtiva] = useState('financiamento')
