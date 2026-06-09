@@ -1879,6 +1879,17 @@ section { position: relative; padding: clamp(100px, 13vw, 184px) 0; }
 .crm-status-chip { font-size: 0.68rem; font-weight: 700; color: #fff; padding: 3px 9px; border-radius: 100px; letter-spacing: 0.02em; }
 .crm-status-sel { font-size: 0.8rem; padding: 7px 10px; border: 1px solid rgba(22,26,34,0.18); border-radius: 9px; background: #fff; color: #3a4150; cursor: pointer; }
 .crm-parado { color: #b04a4a; font-size: 0.82rem; font-weight: 600; margin-top: 2px; }
+
+/* Pop-up de saída (exit-intent) */
+.exit-overlay { position: fixed; inset: 0; z-index: 120; background: rgba(7,10,17,0.66); backdrop-filter: blur(4px); display: grid; place-items: center; padding: 20px; animation: cbfade 0.2s var(--ease); }
+.exit-card { position: relative; max-width: 460px; width: 100%; background: linear-gradient(135deg, #11151d 0%, #181f2b 100%); border: 1px solid rgba(184,134,47,0.4); border-radius: 22px; padding: clamp(26px, 5vw, 40px); box-shadow: 0 40px 90px -30px rgba(0,0,0,0.7); animation: cbpop 0.26s var(--ease); }
+.exit-card h3 { font-family: var(--font-head); font-weight: 800; font-size: clamp(1.4rem, 3vw, 1.85rem); color: #fff; line-height: 1.15; margin: 10px 0 12px; }
+.exit-card h3 em { font-style: italic; background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.exit-card p { color: #c3c9d4; line-height: 1.6; margin-bottom: 22px; }
+.exit-acoes { display: flex; gap: 10px; flex-wrap: wrap; }
+.exit-acoes .btn { flex: 1; justify-content: center; }
+.exit-close { position: absolute; top: 14px; right: 14px; width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.1); border: none; color: #fff; cursor: pointer; display: grid; place-items: center; }
+.exit-close:hover { background: rgba(255,255,255,0.2); }
 /* bloco "sua página de seleção" na área do cliente */
 .conta-selo-link { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; background: linear-gradient(120% 120% at 0% 0%, #161a22 0%, #20262f 100%); border: 1px solid rgba(184,134,47,0.4); border-radius: 16px; padding: 20px 22px; margin: 28px 0 8px; }
 .conta-selo-link b { display: block; font-family: var(--font-head); color: #fff; font-size: 1.05rem; margin-bottom: 4px; }

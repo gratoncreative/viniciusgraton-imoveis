@@ -6,6 +6,7 @@ import ErrorBoundary from './components/ErrorBoundary'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import BackToTop from './components/BackToTop'
+import ExitIntent from './components/ExitIntent'
 import Home from './pages/Home'
 import { CONFIG, linkWhatsApp, WA, aplicarOverridesImoveis } from './data'
 import { IconWhats } from './components/icons'
@@ -146,6 +147,7 @@ export default function App() {
       </a>
 
       <BackToTop />
+      <ExitIntent />
     </>
   )
 }
