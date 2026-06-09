@@ -885,12 +885,10 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .nav-links a.is-active::after { transform: scaleX(1); }
 
 /* ============ APRESENTAÇÃO (home) ============ */
-.apres-grid { display: grid; grid-template-columns: 1fr 1.04fr; gap: clamp(28px, 5vw, 72px); align-items: center; }
+.apres-grid { display: grid; grid-template-columns: clamp(190px, 25vw, 290px) 1fr; gap: clamp(28px, 5vw, 56px); align-items: center; }
 .apres-foto-col { position: relative; }
-/* painel dourado decorativo atrás da foto — dá um ar editorial/premium */
-.apres-foto-col::before { content: ''; position: absolute; inset: auto -18px -22px 26px; height: 86%; border-radius: 24px; background: linear-gradient(135deg, rgba(184,134,47,0.22), rgba(224,181,86,0.08)); z-index: 0; }
-.apres-foto { position: relative; z-index: 1; width: 100%; max-width: 540px; margin-left: auto; border-radius: 22px; overflow: hidden; border: 1px solid rgba(184,134,47,0.35); box-shadow: 0 40px 80px -36px rgba(22,26,34,0.6); }
-.apres-foto img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 22%; }
+.apres-foto { position: relative; width: 100%; max-width: 290px; border-radius: 20px; overflow: hidden; border: 1px solid rgba(184,134,47,0.3); box-shadow: 0 24px 50px -34px rgba(22,26,34,0.5); }
+.apres-foto img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; object-position: center 25%; }
 .apres-selo { position: absolute; left: 16px; bottom: 16px; display: inline-flex; align-items: center; gap: 9px; padding: 8px 14px; border-radius: 12px; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); box-shadow: 0 12px 28px -12px rgba(0,0,0,0.6); }
 .apres-selo img { height: 18px; width: auto; display: block; }
 .apres-selo-txt { font-family: var(--font-head); font-weight: 600; font-size: 0.7rem; letter-spacing: 0.04em; color: #6b7280; border-left: 1px solid rgba(0,0,0,0.12); padding-left: 9px; }
@@ -903,9 +901,8 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .apres-checks li i { font-style: normal; color: var(--gold-1); font-weight: 600; }
 .apres-acoes { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
 @media (max-width: 860px) {
-  .apres-grid { grid-template-columns: 1fr; gap: 30px; }
-  .apres-foto { margin: 0 auto; max-width: 440px; }
-  .apres-foto-col::before { display: none; }
+  .apres-grid { grid-template-columns: 1fr; gap: 26px; }
+  .apres-foto { margin: 0 auto; max-width: 240px; }
   .apres-acoes .btn { flex: 1 1 100%; justify-content: center; }
 }
 
