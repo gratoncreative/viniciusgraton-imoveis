@@ -114,6 +114,8 @@ export default function Catalogo() {
           </div>
         </Reveal>
 
+        <div className="cat-layout">
+        <aside className="cat-rail">
         <div className="cat-painel">
         {/* buscas rápidas */}
         <div className="cat-rapidas">
@@ -183,15 +185,15 @@ export default function Catalogo() {
             <button className="cat-limpar" onClick={limpar}>Limpar tudo</button>
           </div>
         )}
+        </aside>
 
+        <div className="cat-main">
         <p className="cat-count">{lista.length} {lista.length === 1 ? 'imóvel encontrado' : 'imóveis encontrados'}</p>
 
         {lista.length ? (
-          <div className="im-grid" style={{ perspective: '1400px' }}>
-            {lista.map((im, i) => (
-              <Reveal key={im.codigo} delay={(i % 3) * 0.06}>
-                <CardImovel im={im} />
-              </Reveal>
+          <div className="cat-lista">
+            {lista.map((im) => (
+              <CardImovel key={im.codigo} im={im} variante="linha" />
             ))}
           </div>
         ) : (
@@ -207,6 +209,8 @@ export default function Catalogo() {
         )}
 
         <AviseMe />
+        </div>
+        </div>
       </div>
     </main>
   )

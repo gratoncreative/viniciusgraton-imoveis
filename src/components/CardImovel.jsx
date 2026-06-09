@@ -17,7 +17,7 @@ function Spec({ icon, valor, label }) {
   )
 }
 
-export default function CardImovel({ im }) {
+export default function CardImovel({ im, variante }) {
   const ref = useRef(null)
   const raf = useRef(0)
   const navigate = useNavigate()
@@ -53,6 +53,41 @@ export default function CardImovel({ im }) {
   ].filter(Boolean)
 
   const irParaImovel = () => navigate(`/imovel/${im.codigo}`)
+
+  // ——— variante horizontal (listagem estilo portal): foto à esquerda, infos à direita ———
+  if (variante === 'linha') {
+    return (
+      <article className="im-linha card-clickable" onClick={irParaImovel}>
+        <div className="im-linha-media">
+          <img src={im.img} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} loading="lazy" decoding="async" onError={onImgError} />
+          <span className="im-tag">{im.tipo}</span>
+          {im.novo && <span className="im-novo">Novo</span>}
+        </div>
+        <div className="im-linha-body">
+          <div className="im-linha-top">
+            <div>
+              <h3 className="im-bairro">{im.bairro}</h3>
+              <p className="im-local">{im.cidade} — {im.uf} · Cód. {im.codigo}</p>
+            </div>
+            <Engajamento im={im} variante="detalhe" />
+          </div>
+          <p className="im-desc">{truncar(resumoImovel(im), 165)}</p>
+          <div className="im-specs">
+            {specs.map((s, i) => <Spec key={i} {...s} />)}
+          </div>
+          <div className="im-linha-rodape">
+            <span className="im-linha-preco">{formatPreco(im.preco)}</span>
+            <div className="im-actions">
+              <Link className="im-ver" to={`/imovel/${im.codigo}`} onClick={(e) => e.stopPropagation()}>Ver detalhes</Link>
+              <a className="im-cta" href={linkWhatsApp(waImovel(im))} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()}>
+                <IconWhats width={18} height={18} /> Tenho interesse
+              </a>
+            </div>
+          </div>
+        </div>
+      </article>
+    )
+  }
 
   return (
     <article

@@ -421,6 +421,32 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .cat-painel { background: #fff; border: 1px solid rgba(22,26,34,0.1); border-radius: 18px; padding: clamp(16px, 2.5vw, 24px); margin-bottom: 24px; box-shadow: 0 18px 44px -34px rgba(22,26,34,0.5); }
 .cat-painel .cat-rapidas { margin-bottom: 14px; }
 .cat-painel .cat-filtros { margin-bottom: 0; }
+
+/* layout de listagem: filtros na lateral + resultados em linha */
+.cat-layout { display: grid; grid-template-columns: 290px 1fr; gap: 28px; align-items: start; }
+.cat-rail { position: sticky; top: 86px; }
+.cat-rail .cat-painel { margin-bottom: 14px; }
+.cat-rail .cat-filtros { flex-direction: column; gap: 10px; }
+.cat-rail .cat-filtros select, .cat-rail .cat-busca { width: 100%; }
+.cat-main { min-width: 0; }
+.cat-lista { display: flex; flex-direction: column; gap: 18px; }
+@media (max-width: 880px) {
+  .cat-layout { grid-template-columns: 1fr; gap: 18px; }
+  .cat-rail { position: static; }
+}
+
+/* card horizontal (resultado da listagem) */
+.im-linha { display: grid; grid-template-columns: 300px 1fr; background: #fff; border: 1px solid rgba(22,26,34,0.1); border-radius: 16px; overflow: hidden; cursor: pointer; box-shadow: 0 14px 36px -30px rgba(22,26,34,0.5); transition: box-shadow 0.3s var(--ease), border-color 0.3s var(--ease), transform 0.3s var(--ease); }
+.im-linha:hover { box-shadow: 0 26px 56px -32px rgba(22,26,34,0.55); border-color: var(--gold-3); transform: translateY(-2px); }
+.im-linha-media { position: relative; min-height: 230px; background: #e9e5db; }
+.im-linha-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.im-linha-media .im-tag { position: absolute; top: 12px; left: 12px; z-index: 2; transform: none; }
+.im-linha-media .im-novo { position: absolute; top: 12px; right: 12px; z-index: 2; transform: none; }
+.im-linha-body { padding: 18px 22px; display: flex; flex-direction: column; gap: 9px; }
+.im-linha-top { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; }
+.im-linha-rodape { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-top: auto; padding-top: 12px; flex-wrap: wrap; }
+.im-linha-preco { font-family: var(--font-head); font-weight: 800; font-size: 1.5rem; color: var(--gold-1); letter-spacing: -0.01em; }
+@media (max-width: 620px) { .im-linha { grid-template-columns: 1fr; } .im-linha-media { min-height: 200px; } }
 .cat-filtros { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
 .cat-filtros input, .cat-filtros select {
   font-family: var(--font-body); font-size: 0.9rem; color: var(--text);
