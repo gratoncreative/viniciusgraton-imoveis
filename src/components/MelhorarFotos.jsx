@@ -93,6 +93,38 @@ function exportarCanvas(img, s) {
   ctx.drawImage(base, 0, 0, out.width, out.height)
   return out
 }
+
+// ——— vídeo (slideshow 9:16): cada foto centralizada sobre fundo desfocado dela mesma ———
+function montarSlide(quadro, W, H) {
+  const c = document.createElement('canvas'); c.width = W; c.height = H
+  const ctx = c.getContext('2d'); ctx.imageSmoothingQuality = 'high'
+  ctx.fillStyle = '#0a0e16'; ctx.fillRect(0, 0, W, H)
+  ctx.save(); ctx.filter = 'blur(28px) brightness(0.5)'
+  coverDraw(ctx, quadro, -50, -50, W + 100, H + 100) // fundo desfocado preenchendo
+  ctx.restore()
+  const s = Math.min(W / quadro.width, H / quadro.height)
+  const w = quadro.width * s, h = quadro.height * s
+  ctx.drawImage(quadro, (W - w) / 2, (H - h) / 2, w, h)
+  return c
+}
+function marcaDagua(ctx, W, H, localMs, slideMs) {
+  const f = 700
+  let alpha = 1
+  if (localMs < f) alpha = localMs / f
+  else if (localMs > slideMs - f) alpha = Math.max(0, (slideMs - localMs) / f)
+  ctx.save()
+  ctx.textAlign = 'center'
+  ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 16
+  ctx.globalAlpha = 0.92 * alpha
+  ctx.font = '600 56px Georgia, "Times New Roman", serif'
+  ctx.fillStyle = '#f3e2b4'
+  ctx.fillText('VINÍCIUS GRATON', W / 2, H - 104)
+  ctx.globalAlpha = 0.78 * alpha
+  ctx.font = '400 28px Georgia, serif'
+  ctx.fillStyle = 'rgba(255,255,255,0.96)'
+  ctx.fillText('Consultor de Imóveis · Uberlândia', W / 2, H - 60)
+  ctx.restore()
+}
 const MIME = { jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp' }
 const EXT = { jpeg: 'jpg', png: 'png', webp: 'webp' }
 const canvasParaBlob = (canvas, fmt) => new Promise((res) => canvas.toBlob((b) => res(b), MIME[fmt] || 'image/jpeg', fmt === 'png' ? undefined : 0.92))
@@ -116,6 +148,8 @@ export default function MelhorarFotos() {
   const [verOriginal, setVerOriginal] = useState(false)
   const [baixando, setBaixando] = useState('')
   const [formato, setFormato] = useState('jpeg')
+  const [durSeg, setDurSeg] = useState(3)
+  const [video, setVideo] = useState(null) // {fase:'gravando'|'pronto'|'erro', pct, msg}
   const previewRef = useRef(null)
   const fotosRef = useRef(fotos); fotosRef.current = fotos
 
@@ -165,6 +199,69 @@ export default function MelhorarFotos() {
   }, [redesenhar, foto?.s, atual])
 
   const autoAngulo = () => { if (foto) setS({ angle: (() => { try { return estimarAngulo(foto.img) } catch { return 0 } })() }) }
+  const autoAnguloTodas = () => setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, angle: (() => { try { return estimarAngulo(ft.img) } catch { return 0 } })() } })))
+
+  // gera um vídeo (slideshow) das fotos: transição suave + marca d'água Vinícius Graton
+  const gerarVideo = async () => {
+    if (!fotos.length || video) return
+    if (!window.MediaRecorder) { setVideo({ fase: 'erro', msg: 'Seu navegador não permite gerar vídeo aqui. Use o Chrome.' }); return }
+    setVideo({ fase: 'gravando', pct: 0 })
+    try {
+      const W = 1080, H = 1920, FPS = 30
+      const slideMs = durSeg * 1000, fadeMs = Math.min(700, slideMs * 0.3)
+      const n = fotos.length
+      const cv = document.createElement('canvas'); cv.width = W; cv.height = H
+      const ctx = cv.getContext('2d')
+      const slides = new Array(n).fill(null)
+      const getSlide = (i) => {
+        if (i < 0 || i >= n) return null
+        if (!slides[i]) slides[i] = montarSlide(processar(fotos[i].img, fotos[i].s, 1280), W, H)
+        return slides[i]
+      }
+      const mime = ['video/mp4;codecs=avc1.42E01E', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm']
+        .find((m) => MediaRecorder.isTypeSupported(m)) || 'video/webm'
+      const stream = cv.captureStream(FPS)
+      const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 8000000 })
+      const chunks = []
+      rec.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data) }
+      const parou = new Promise((res) => { rec.onstop = res })
+      getSlide(0); getSlide(1)
+      rec.start(100)
+      const total = n * slideMs
+      const t0 = performance.now()
+      let idxAtual = -1
+      await new Promise((resolve) => {
+        const frame = (now) => {
+          const t = now - t0
+          if (t >= total) { resolve(); return }
+          const idx = Math.min(n - 1, Math.floor(t / slideMs))
+          if (idx !== idxAtual) { idxAtual = idx; getSlide(idx); getSlide(idx + 1); if (idx - 1 >= 0) slides[idx - 1] = null }
+          const localT = t - idx * slideMs
+          ctx.fillStyle = '#0a0e16'; ctx.fillRect(0, 0, W, H)
+          const a0 = getSlide(idx); if (a0) ctx.drawImage(a0, 0, 0)
+          if (idx < n - 1 && localT > slideMs - fadeMs) {
+            const a = (localT - (slideMs - fadeMs)) / fadeMs
+            const a1 = getSlide(idx + 1)
+            if (a1) { ctx.globalAlpha = a; ctx.drawImage(a1, 0, 0); ctx.globalAlpha = 1 }
+          }
+          marcaDagua(ctx, W, H, localT, slideMs)
+          setVideo({ fase: 'gravando', pct: Math.round((t / total) * 100) })
+          requestAnimationFrame(frame)
+        }
+        requestAnimationFrame(frame)
+      })
+      rec.stop(); await parou
+      const blob = new Blob(chunks, { type: mime })
+      const ext = mime.includes('mp4') ? 'mp4' : 'webm'
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `apresentacao-imoveis.${ext}`
+      document.body.appendChild(a); a.click(); a.remove()
+      setTimeout(() => URL.revokeObjectURL(a.href), 6000)
+      setVideo({ fase: 'pronto', pct: 100 })
+      setTimeout(() => setVideo(null), 2600)
+    } catch (e) {
+      setVideo({ fase: 'erro', msg: e.message || String(e) })
+    }
+  }
   const restaurar = () => setS({ ...PADRAO, angle: foto ? foto.s.angle : 0 })
   const aplicarTodas = () => { if (foto) setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, brilho: foto.s.brilho, contraste: foto.s.contraste, satur: foto.s.satur, nitidez: foto.s.nitidez, wb: foto.s.wb, escala: foto.s.escala } }))) }
   const remover = (i) => { setFotos((fs) => fs.filter((_, k) => k !== i)); setAtual((a) => (a >= fotos.length - 1 ? fotos.length - 2 : a)) }
@@ -239,7 +336,10 @@ export default function MelhorarFotos() {
                 <div className="mf-grupo">
                   <div className="mf-grupo-tit">Inclinação</div>
                   <Slider label="Ângulo" val={foto.s.angle} min={-15} max={15} step={0.1} on={(v) => setS({ angle: v })} fmt={(v) => `${v.toFixed(1)}°`} />
-                  <button className="admin-btn admin-btn--mini" onClick={autoAngulo}>🎯 Auto-endireitar</button>
+                  <div className="mf-botoes">
+                    <button className="admin-btn admin-btn--mini" onClick={autoAngulo}>🎯 Auto-endireitar</button>
+                    <button className="admin-btn admin-btn--mini" onClick={autoAnguloTodas}>🎯 Endireitar TODAS</button>
+                  </div>
                 </div>
 
                 <div className="mf-grupo">
@@ -268,6 +368,22 @@ export default function MelhorarFotos() {
                     </select>
                   </label>
                   <p className="mf-nota">Ampliação reamostra em alta qualidade + nitidez — fica maior e mais nítida (não é super-resolução por IA). O formato e a ampliação valem pra todos os downloads.</p>
+                </div>
+
+                <div className="mf-grupo">
+                  <div className="mf-grupo-tit">🎬 Vídeo de apresentação</div>
+                  <label className="mf-sel"><span>Tempo por foto</span>
+                    <select value={durSeg} onChange={(e) => setDurSeg(parseFloat(e.target.value))} disabled={!!video}>
+                      <option value={2}>2 segundos</option>
+                      <option value={3}>3 segundos</option>
+                      <option value={4}>4 segundos</option>
+                    </select>
+                  </label>
+                  <button className="btn btn-gold" onClick={gerarVideo} disabled={!!video}>
+                    {video ? (video.fase === 'gravando' ? `Gerando vídeo… ${video.pct}%` : video.fase === 'pronto' ? '✓ Vídeo pronto!' : 'Tentar de novo') : '🎬 Baixar como vídeo'}
+                  </button>
+                  <p className="mf-nota">Slideshow vertical (9:16) com transição suave entre as fotos e a marca d'água "Vinícius Graton" aparecendo suavemente. Gera em tempo real (~{Math.round(fotos.length * durSeg)}s). Usa o realce de cada foto. Sai em MP4 (ou WebM, conforme o navegador).</p>
+                  {video?.fase === 'erro' && <p className="lead-erro">{video.msg}</p>}
                 </div>
 
                 <div className="mf-botoes">
