@@ -3,7 +3,9 @@
 // Uso: node scripts/avisa-whatsapp.mjs <outcome-do-gerar> <mudou:sim|nao>
 import fs from 'node:fs'
 
-const FONE = (process.env.WHATS_DESTINO || '5534991570494').replace(/\D/g, '')
+// Número EXATO que o CallMeBot ativou (o WhatsApp do Vinícius está registrado sem o nono dígito).
+// O CallMeBot só entrega pro número idêntico ao da ativação.
+const FONE = (process.env.WHATS_DESTINO || '553491570494').replace(/\D/g, '')
 const KEY = (process.env.CALLMEBOT_KEY || '').trim()
 const outcome = (process.argv[2] || 'success').trim() // success | failure (passo de geração)
 const mudou = (process.argv[3] || 'nao').trim() // sim | nao (houve commit/push)
