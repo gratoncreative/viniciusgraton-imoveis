@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import CardImovel from '../components/CardImovel'
@@ -59,6 +59,30 @@ export default function Catalogo() {
     path: '/imoveis',
   })
 
+  // Espelho de TODOS os imóveis à venda da Rotina — feed leve carregado em runtime (não vai no bundle).
+  const [feed, setFeed] = useState([])
+  const [carregandoFeed, setCarregandoFeed] = useState(true)
+  useEffect(() => {
+    let vivo = true
+    fetch('/catalogo.json')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => { if (vivo && d && Array.isArray(d.imoveis)) setFeed(d.imoveis) })
+      .catch(() => {})
+      .finally(() => { if (vivo) setCarregandoFeed(false) })
+    return () => { vivo = false }
+  }, [])
+
+  // une o feed com os imóveis curados do bundle (estes têm prioridade, com galeria/descrição completas)
+  const TODOS = useMemo(() => {
+    const mapa = new Map()
+    for (const im of feed) mapa.set(String(im.codigo), im)
+    for (const im of IMOVEIS) mapa.set(String(im.codigo), im)
+    return [...mapa.values()]
+  }, [feed])
+  const BAIRROS_TODOS = useMemo(() => [...new Set(TODOS.map((i) => i.bairro).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')), [TODOS])
+  const [limite, setLimite] = useState(60)
+  useEffect(() => { setLimite(60) }, [params.toString()])
+
   const f = {
     q: params.get('q') || '',
     tipo: params.get('tipo') || '',
@@ -98,7 +122,7 @@ export default function Catalogo() {
   }
 
   const lista = useMemo(() => {
-    let r = IMOVEIS.filter((im) => {
+    let r = TODOS.filter((im) => {
       if (f.tipo && im.tipo !== f.tipo) return false
       if (f.grupo) { const g = TIPO_CHIPS.find((c) => c.grupo === f.grupo); if (g && !g.re.test(im.tipo || '')) return false }
       if (f.bairro && im.bairro !== f.bairro) return false
@@ -122,7 +146,7 @@ export default function Catalogo() {
     if (f.ordem === 'area-maior') r = [...r].sort((a, b) => (b.area || 0) - (a.area || 0))
     if (f.ordem === 'area-menor') r = [...r].sort((a, b) => (a.area || 0) - (b.area || 0))
     return r
-  }, [f.tipo, f.grupo, f.bairro, f.quartos, f.suites, f.vagas, f.area, f.carac, f.faixa, f.q, f.ordem])
+  }, [TODOS, f.tipo, f.grupo, f.bairro, f.quartos, f.suites, f.vagas, f.area, f.carac, f.faixa, f.q, f.ordem])
 
   const limpar = () => setParams({}, { replace: true })
 
@@ -181,7 +205,7 @@ export default function Catalogo() {
           </select></div>
           <div className="cat-f"><FIco n="bairro" /><select value={f.bairro} onChange={(e) => up('bairro', e.target.value)}>
             <option value="">Todos os bairros</option>
-            {BAIRROS_IMOVEL.map((b) => <option key={b} value={b}>{b}</option>)}
+            {(BAIRROS_TODOS.length ? BAIRROS_TODOS : BAIRROS_IMOVEL).map((b) => <option key={b} value={b}>{b}</option>)}
           </select></div>
           <div className="cat-f"><FIco n="preco" /><select value={f.faixa} onChange={(e) => up('faixa', parseInt(e.target.value, 10))}>
             <option value={-1}>Qualquer preço</option>
@@ -239,14 +263,23 @@ export default function Catalogo() {
           ))}
         </div>
 
-        <p className="cat-count">{lista.length} {lista.length === 1 ? 'imóvel encontrado' : 'imóveis encontrados'}</p>
+        <p className="cat-count">{carregandoFeed && !feed.length ? 'Carregando imóveis da Rotina…' : `${lista.length} ${lista.length === 1 ? 'imóvel encontrado' : 'imóveis encontrados'}`}</p>
 
         {lista.length ? (
+          <>
           <div className="cat-lista">
-            {lista.map((im) => (
+            {lista.slice(0, limite).map((im) => (
               <CardImovel key={im.codigo} im={im} variante="linha" />
             ))}
           </div>
+          {lista.length > limite && (
+            <div style={{ textAlign: 'center', marginTop: 28 }}>
+              <button className="btn btn-gold" type="button" onClick={() => setLimite((n) => n + 60)}>
+                Ver mais imóveis ({lista.length - limite} restantes)
+              </button>
+            </div>
+          )}
+          </>
         ) : (
           <div className="cat-vazio">
             <p>Não encontrei imóveis com esses filtros. Deixa eu achar pra você?</p>

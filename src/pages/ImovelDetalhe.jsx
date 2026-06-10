@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import Galeria from '../components/Galeria'
@@ -14,6 +14,21 @@ import {
 import { IconWhats, IconArrow, IconPin, IconShield, ICONS } from './../components/icons'
 
 const plural = (n, s, p) => (n > 1 ? p : s)
+
+// converte o imóvel vindo da API da Rotina (/api/rotina-imovel) para o formato do site
+function mapApi(a) {
+  return {
+    codigo: String(a.codigo), tipo: a.tipo || '', bairro: a.bairro || '', cidade: a.cidade || 'Uberlândia', uf: a.estado || 'MG',
+    finalidade: a.operacao === 'locação' ? 'Locação' : 'Venda',
+    preco: a.valorNum || 0, condominio: a.condominio || 0,
+    quartos: a.quartos || 0, suites: a.suites || 0, banheiros: a.banheiros || 0, vagas: a.vagas || 0,
+    area: a.areaNum || 0, andar: a.andar, elevador: a.elevador,
+    descricao: a.descricao || '', endereco: a.rua || '',
+    img: a.foto || (a.fotos && a.fotos[0]) || '',
+    fotos: a.fotos && a.fotos.length ? a.fotos : (a.foto ? [a.foto] : []),
+    externo: true,
+  }
+}
 
 // condomínio pode vir como número (ex.: 325) ou texto (ex.: "Cond. R$ 325,00") — trata os dois
 const condominioTxt = (c) => {
@@ -60,7 +75,21 @@ function Destaque({ icon, titulo, sub }) {
 
 export default function ImovelDetalhe() {
   const { codigo } = useParams()
-  const im = getImovel(codigo)
+  const local = getImovel(codigo)
+  const [imApi, setImApi] = useState(null)
+  const [buscando, setBuscando] = useState(false)
+  useEffect(() => {
+    if (local) { setImApi(null); return }
+    let vivo = true
+    setBuscando(true)
+    fetch(`/api/rotina-imovel?codigo=${encodeURIComponent(codigo)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => { if (vivo && j && j.imovel) setImApi(mapApi(j.imovel)) })
+      .catch(() => {})
+      .finally(() => { if (vivo) setBuscando(false) })
+    return () => { vivo = false }
+  }, [codigo, local])
+  const im = local || imApi
   const fotos = fotosDe(im)
 
   useEffect(() => {
@@ -109,6 +138,16 @@ export default function ImovelDetalhe() {
   }, [im, fotos])
 
   if (!im) {
+    if (buscando) {
+      return (
+        <main className="section--light det-vazio">
+          <div className="container" style={{ textAlign: 'center' }}>
+            <div className="rota-load" aria-busy="true"><span className="rota-spinner" /></div>
+            <p className="section-sub" style={{ marginTop: 18 }}>Carregando o imóvel…</p>
+          </div>
+        </main>
+      )
+    }
     return (
       <main className="section--light det-vazio">
         <div className="container" style={{ textAlign: 'center' }}>

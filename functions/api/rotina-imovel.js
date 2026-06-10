@@ -53,6 +53,7 @@ function montarImovel(im) {
     aceitaPermuta: n(im.aceitapermuta) > 0,
     descricao: (im.descricao || '').trim(),
     foto: im.urlfotoprincipal || im.urlfotoprincipalm || '',
+    fotos: Array.isArray(im.fotos) ? im.fotos.map((x) => x && x.url).filter(Boolean) : [],
     video: im.urlvideo || '',
     lat: f(im.latitude),
     lng: f(im.longitude),
@@ -161,7 +162,7 @@ export async function onRequestGet({ request, env }) {
   const codigo = (url.searchParams.get('codigo') || '').replace(/\D/g, '')
   if (!codigo) return json({ erro: 'Informe o código do imóvel.' }, 400)
 
-  const cacheKey = 'rotina:v2:' + codigo
+  const cacheKey = 'rotina:v3:' + codigo
   const temKV = env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
   if (temKV) {
     try { const cached = await env.ENGAGEMENT.get(cacheKey, 'json'); if (cached && cached.imovel) return json(cached) } catch {}
