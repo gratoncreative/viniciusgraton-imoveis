@@ -16,6 +16,23 @@ const TIPO_CHIPS = [
   { grupo: 'terreno', label: 'Terrenos & Lotes', re: /terreno|lote|área|chácara|sítio|fazenda/i, d: 'M3 20h18M5 20l3-9 4 5 3-7 4 11' },
 ]
 
+// ícones dos filtros (um antes de cada campo)
+const FICN = {
+  search: 'M21 21l-4.3-4.3M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14z',
+  tipo: 'M3 21h18M5 21V7l7-4 7 4v14M9 13h.01M9 17h.01M15 13h.01M15 17h.01',
+  bairro: 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0zM12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
+  preco: 'M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6',
+  quartos: 'M3 18v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5M3 18h18M3 18v3M21 18v3M6 11V8a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v3M13 11V8a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v3',
+  suites: 'M12 3l2.2 5.5L20 9l-4.5 4 1.3 6L12 16l-4.8 3 1.3-6L4 9l5.8-.5z',
+  vagas: 'M5 13l1.5-4.5A2 2 0 0 1 8.4 7h7.2a2 2 0 0 1 1.9 1.5L19 13m-14 0h14m-14 0v4m14-4v4M7 17h.01M17 17h.01',
+  area: 'M3 8V5a2 2 0 0 1 2-2h3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M21 16v3a2 2 0 0 1-2 2h-3',
+  carac: 'M4 6h16M4 12h16M4 18h10M19 16l2 2 3-3',
+  ordem: 'M3 6h13M3 12h9M3 18h5M19 4v14m0 0l-3-3m3 3l3-3',
+}
+const FIco = ({ n }) => (
+  <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={FICN[n]} /></svg>
+)
+
 const AREAS = [60, 100, 150, 200, 300]
 const CARACS = ['Piscina', 'Churrasqueira', 'Varanda gourmet', 'Academia', 'Portaria 24h', 'Closet', 'Energia solar']
 
@@ -126,10 +143,10 @@ export default function Catalogo() {
       <div className="container">
         <Reveal>
           <div className="cat-head">
-            <span className="eyebrow">Vitrine de imóveis · Uberlândia</span>
-            <h1 className="section-title">Imóveis à <em>venda</em></h1>
+            <span className="eyebrow">Imóveis da Rotina Imobiliária · Uberlândia</span>
+            <h1 className="section-title">Imóveis à venda em <em>destaque na Rotina</em></h1>
             <p className="section-sub" style={{ marginTop: 12 }}>
-              Selecionados da minha carteira. Use os filtros para encontrar o que combina com você.
+              Imóveis da carteira da <b>Rotina Imobiliária</b>, com o meu atendimento pessoal do começo ao fim. Use os filtros para encontrar o que combina com você.
             </p>
           </div>
         </Reveal>
@@ -144,8 +161,9 @@ export default function Catalogo() {
           ))}
         </div>
 
-        {/* Filtros */}
-        <div className="cat-filtros">
+        {/* Campo de busca em destaque */}
+        <div className="cat-busca-box">
+          <span className="cat-busca-ico"><FIco n="search" /></span>
           <input
             className="cat-busca"
             type="search"
@@ -153,45 +171,49 @@ export default function Catalogo() {
             value={f.q}
             onChange={(e) => up('q', e.target.value)}
           />
-          <select value={f.tipo} onChange={(e) => up('tipo', e.target.value)}>
+        </div>
+
+        {/* Filtros */}
+        <div className="cat-filtros">
+          <div className="cat-f"><FIco n="tipo" /><select value={f.tipo} onChange={(e) => up('tipo', e.target.value)}>
             <option value="">Todos os tipos</option>
             {TIPOS_IMOVEL.map((t) => <option key={t} value={t}>{t}</option>)}
-          </select>
-          <select value={f.bairro} onChange={(e) => up('bairro', e.target.value)}>
+          </select></div>
+          <div className="cat-f"><FIco n="bairro" /><select value={f.bairro} onChange={(e) => up('bairro', e.target.value)}>
             <option value="">Todos os bairros</option>
             {BAIRROS_IMOVEL.map((b) => <option key={b} value={b}>{b}</option>)}
-          </select>
-          <select value={f.faixa} onChange={(e) => up('faixa', parseInt(e.target.value, 10))}>
+          </select></div>
+          <div className="cat-f"><FIco n="preco" /><select value={f.faixa} onChange={(e) => up('faixa', parseInt(e.target.value, 10))}>
             <option value={-1}>Qualquer preço</option>
             {FAIXAS_PRECO.map((p, i) => <option key={i} value={i}>{p.label}</option>)}
-          </select>
-          <select value={f.quartos} onChange={(e) => up('quartos', parseInt(e.target.value, 10))}>
+          </select></div>
+          <div className="cat-f"><FIco n="quartos" /><select value={f.quartos} onChange={(e) => up('quartos', parseInt(e.target.value, 10))}>
             <option value={0}>Quartos</option>
             {[1, 2, 3, 4].map((n) => <option key={n} value={n}>{n}+ quartos</option>)}
-          </select>
-          <select value={f.suites} onChange={(e) => up('suites', parseInt(e.target.value, 10))}>
+          </select></div>
+          <div className="cat-f"><FIco n="suites" /><select value={f.suites} onChange={(e) => up('suites', parseInt(e.target.value, 10))}>
             <option value={0}>Suítes</option>
             {[1, 2, 3, 4].map((n) => <option key={n} value={n}>{n}+ suítes</option>)}
-          </select>
-          <select value={f.vagas} onChange={(e) => up('vagas', parseInt(e.target.value, 10))}>
+          </select></div>
+          <div className="cat-f"><FIco n="vagas" /><select value={f.vagas} onChange={(e) => up('vagas', parseInt(e.target.value, 10))}>
             <option value={0}>Vagas</option>
             {[1, 2, 3, 4].map((n) => <option key={n} value={n}>{n}+ vagas</option>)}
-          </select>
-          <select value={f.area} onChange={(e) => up('area', parseInt(e.target.value, 10))}>
+          </select></div>
+          <div className="cat-f"><FIco n="area" /><select value={f.area} onChange={(e) => up('area', parseInt(e.target.value, 10))}>
             <option value={0}>Área</option>
             {AREAS.map((n) => <option key={n} value={n}>{n}+ m²</option>)}
-          </select>
-          <select value={f.carac} onChange={(e) => up('carac', e.target.value)}>
+          </select></div>
+          <div className="cat-f"><FIco n="carac" /><select value={f.carac} onChange={(e) => up('carac', e.target.value)}>
             <option value="">Característica</option>
             {CARACS.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
-          <select value={f.ordem} onChange={(e) => up('ordem', e.target.value)}>
+          </select></div>
+          <div className="cat-f"><FIco n="ordem" /><select value={f.ordem} onChange={(e) => up('ordem', e.target.value)}>
             <option value="recentes">Mais recentes</option>
             <option value="menor">Menor preço</option>
             <option value="maior">Maior preço</option>
             <option value="area-maior">Maior área</option>
             <option value="area-menor">Menor área</option>
-          </select>
+          </select></div>
         </div>
         </div>
 

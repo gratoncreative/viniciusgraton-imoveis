@@ -17,8 +17,8 @@ export default function Destaque({ limite = 6 }) {
               <span className="eyebrow">Atualizado diariamente</span>
               <h2 className="section-title">Imóveis em <em>destaque</em></h2>
               <p className="section-sub" style={{ marginTop: 14, maxWidth: 560 }}>
-                Uma seleção dos imóveis mais recentes da minha carteira em Uberlândia.
-                Novas oportunidades entram aqui todos os dias.
+                Uma seleção dos imóveis mais recentes da carteira da Rotina Imobiliária em Uberlândia,
+                com o meu atendimento pessoal. Novas oportunidades entram aqui todos os dias.
               </p>
             </div>
           </Reveal>

@@ -482,6 +482,19 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .cat-filtros input:focus, .cat-filtros select:focus { border-color: var(--gold-2); }
 .cat-busca { flex: 1 1 260px; min-width: 220px; }
 .cat-filtros select { cursor: pointer; }
+
+/* campo de busca em destaque (diferente dos filtros) */
+.cat-busca-box { display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 16px; margin-bottom: 14px; border-radius: 13px; background: #fff; border: 2px solid var(--gold-3); box-shadow: 0 12px 28px -16px rgba(184,134,47,0.55); transition: box-shadow 0.25s var(--ease); }
+.cat-busca-box:focus-within { box-shadow: 0 14px 32px -14px rgba(184,134,47,0.75); }
+.cat-busca-box .cat-busca-ico { color: var(--gold-3); display: grid; place-items: center; flex: none; }
+.cat-busca-box .cat-busca { flex: 1 1 auto; min-width: 0; border: none; background: none; padding: 0; height: 100%; font-size: 0.95rem; color: var(--text); }
+.cat-busca-box .cat-busca:focus { border: none; outline: none; }
+.cat-busca-box .cat-busca::placeholder { color: var(--text-mute); }
+
+/* ícone antes de cada filtro */
+.cat-f { position: relative; display: block; width: 100%; }
+.cat-f > svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--gold-3); pointer-events: none; z-index: 1; }
+.cat-f select { width: 100%; padding-left: 42px; }
 .cat-limpar { background: none; border: 1px solid var(--border); border-radius: 11px; padding: 11px 16px; cursor: pointer; font-family: var(--font-head); font-weight: 600; font-size: 0.85rem; color: var(--text-soft); }
 .cat-limpar:hover { color: var(--gold-1); border-color: var(--gold-3); }
 .cat-chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 2px 0 16px; }

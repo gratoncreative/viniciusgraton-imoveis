@@ -459,7 +459,7 @@ export const slugify = (s) =>
 
 // Bairros com página própria (SEO): editoriais + os que têm imóveis na carteira.
 const _descBairro = (n) =>
-  `Imóveis à venda em ${n}, Uberlândia. Veja as opções da minha carteira e fale comigo para uma curadoria sob medida na região.`
+  `Imóveis à venda em ${n}, Uberlândia. Veja as opções da Rotina Imobiliária com o meu atendimento pessoal e uma curadoria sob medida na região.`
 const _editorial = Object.fromEntries(BAIRROS.map((b) => [b.nome.toLowerCase(), b.desc]))
 export const BAIRROS_SEO = [...new Set([...BAIRROS.map((b) => b.nome), ...BAIRROS_IMOVEL])]
   .map((nome) => ({ nome, slug: slugify(nome), desc: _editorial[nome.toLowerCase()] || _descBairro(nome) }))
