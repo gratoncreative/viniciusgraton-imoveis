@@ -666,6 +666,8 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .cat-pager-n.on { background: var(--gold-grad); border-color: transparent; color: #20160a; }
 .cat-pager-nav:disabled { opacity: 0.4; cursor: default; }
 .cat-pager-gap { padding: 0 2px; color: #9a8e78; align-self: flex-end; }
+.cat-infinito { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 34px 0 10px; color: #8a8170; font-family: var(--font-head); font-weight: 600; font-size: 0.9rem; }
+.cat-infinito .rota-spinner { width: 22px; height: 22px; }
 
 /* ===== Painel: Acessos + Newsletter ===== */
 .admin-sec-tit { font-family: var(--font-head); font-weight: 800; font-size: 1.1rem; color: #2a2118; margin: 26px 0 14px; }

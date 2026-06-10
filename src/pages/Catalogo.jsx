@@ -90,10 +90,10 @@ export default function Catalogo() {
     return [...mapa.values()]
   }, [feed])
   const BAIRROS_TODOS = useMemo(() => [...new Set(TODOS.map((i) => i.bairro).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')), [TODOS])
-  const POR_PAGINA = 5
-  const [pagina, setPagina] = useState(1)
-  const topoRef = useRef(null)
-  useEffect(() => { setPagina(1) }, [params.toString()])
+  const LOTE = 12
+  const [mostrar, setMostrar] = useState(LOTE)
+  const sentinelaRef = useRef(null)
+  useEffect(() => { setMostrar(LOTE) }, [params.toString()])
 
   const f = {
     q: params.get('q') || '',
@@ -160,13 +160,19 @@ export default function Catalogo() {
     return r
   }, [TODOS, f.tipo, f.grupo, f.bairro, f.quartos, f.suites, f.vagas, f.area, f.carac, f.faixa, f.q, f.ordem])
 
-  const totalPag = Math.max(1, Math.ceil(lista.length / POR_PAGINA))
-  const pgAtual = Math.min(pagina, totalPag)
-  const visiveis = lista.slice((pgAtual - 1) * POR_PAGINA, pgAtual * POR_PAGINA)
-  const irPag = (p) => {
-    setPagina(Math.min(Math.max(1, p), totalPag))
-    setTimeout(() => topoRef.current && topoRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' }), 30)
-  }
+  const visiveis = lista.slice(0, mostrar)
+  const temMais = mostrar < lista.length
+  // rolagem infinita: carrega mais um lote quando o sentinela aparece
+  useEffect(() => {
+    if (!temMais) return
+    const el = sentinelaRef.current
+    if (!el) return
+    const obs = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) setMostrar((m) => Math.min(m + LOTE, lista.length))
+    }, { rootMargin: '700px 0px' })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [temMais, lista.length])
 
   const limpar = () => setParams({}, { replace: true })
 
@@ -273,7 +279,7 @@ export default function Catalogo() {
         )}
         </aside>
 
-        <div className="cat-main" ref={topoRef}>
+        <div className="cat-main">
         <div className="cat-tipos">
           {TIPO_CHIPS.map((c) => (
             <button key={c.grupo} type="button" className={`cat-tipo ${f.grupo === c.grupo ? 'on' : ''}`} onClick={() => toggleGrupo(c.grupo)}>
@@ -283,7 +289,7 @@ export default function Catalogo() {
           ))}
         </div>
 
-        <p className="cat-count">{carregandoFeed && !feed.length ? 'Carregando imóveis da Rotina…' : `${lista.length} ${lista.length === 1 ? 'imóvel encontrado' : 'imóveis encontrados'}${totalPag > 1 ? ` · página ${pgAtual} de ${totalPag}` : ''}`}</p>
+        <p className="cat-count">{carregandoFeed && !feed.length ? 'Carregando imóveis da Rotina…' : `${lista.length} ${lista.length === 1 ? 'imóvel encontrado' : 'imóveis encontrados'}`}</p>
 
         {lista.length ? (
           <>
@@ -292,16 +298,10 @@ export default function Catalogo() {
               <CardImovel key={im.codigo} im={im} variante="linha" />
             ))}
           </div>
-          {totalPag > 1 && (
-            <nav className="cat-pager" aria-label="Paginação">
-              <button type="button" className="cat-pager-nav" disabled={pgAtual <= 1} onClick={() => irPag(pgAtual - 1)} aria-label="Página anterior">‹</button>
-              {janelasPaginas(pgAtual, totalPag).map((p, i) => (
-                p === '…'
-                  ? <span key={`g${i}`} className="cat-pager-gap">…</span>
-                  : <button key={p} type="button" className={`cat-pager-n ${p === pgAtual ? 'on' : ''}`} onClick={() => irPag(p)}>{p}</button>
-              ))}
-              <button type="button" className="cat-pager-nav" disabled={pgAtual >= totalPag} onClick={() => irPag(pgAtual + 1)} aria-label="Próxima página">›</button>
-            </nav>
+          {temMais && (
+            <div ref={sentinelaRef} className="cat-infinito" aria-hidden="true">
+              <span className="rota-spinner" /> Carregando mais imóveis…
+            </div>
           )}
           </>
         ) : (
