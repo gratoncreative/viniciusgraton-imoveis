@@ -94,6 +94,16 @@ function exportarCanvas(img, s) {
   return out
 }
 
+// desenha a imagem/canvas cobrindo todo o retângulo (object-fit: cover)
+function coverDraw(ctx, img, x, y, w, h) {
+  const iw = img.width || img.naturalWidth, ih = img.height || img.naturalHeight
+  const ir = iw / ih, r = w / h
+  let sw, sh, sx, sy
+  if (ir > r) { sh = ih; sw = sh * r; sx = (iw - sw) / 2; sy = 0 }
+  else { sw = iw; sh = sw / r; sx = 0; sy = (ih - sh) / 2 }
+  ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h)
+}
+
 // ——— vídeo (slideshow 9:16): cada foto centralizada sobre fundo desfocado dela mesma ———
 function montarSlide(quadro, W, H) {
   const c = document.createElement('canvas'); c.width = W; c.height = H
