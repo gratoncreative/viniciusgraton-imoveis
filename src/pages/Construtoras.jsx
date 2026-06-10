@@ -64,9 +64,18 @@ export default function ConstrutorasPage() {
         </Reveal>
 
         <div className="cns-stats">
-          <div className="cns-stat"><b>{CONSTRUTORAS.length}</b><span>construtoras</span></div>
-          <div className="cns-stat"><b>{totalEmp}</b><span>empreendimentos</span></div>
-          <div className="cns-stat"><b>100%</b><span>com curadoria</span></div>
+          <div className="cns-stat">
+            <span className="cns-stat-ico"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 21h6M7.5 21V5M5 5h14.5M8 5L19.5 9.5M16 5v5a1 1 0 0 1-2 0" /></svg></span>
+            <b>{CONSTRUTORAS.length}</b><span>construtoras</span>
+          </div>
+          <div className="cns-stat">
+            <span className="cns-stat-ico"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V6h6v15M13 21V10h6v11M7 9h2M7 13h2M15 14h2M15 17h2" /></svg></span>
+            <b>{totalEmp}</b><span>empreendimentos</span>
+          </div>
+          <div className="cns-stat">
+            <span className="cns-stat-ico"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3zM9 12l2 2 4-4" /></svg></span>
+            <b>100%</b><span>com curadoria</span>
+          </div>
         </div>
 
         <div className="cns-busca-wrap">
