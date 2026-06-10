@@ -108,7 +108,7 @@ export default function CardImovel({ im, variante }) {
             </div>
             <Engajamento im={im} variante="detalhe" />
           </div>
-          <p className="im-desc">{truncar(resumoImovel(im), 165)}</p>
+          <p className="im-desc">{truncar(resumoImovel(im), 120)}</p>
           <div className="im-specs">
             {specs.map((s, i) => <Spec key={i} {...s} />)}
           </div>
