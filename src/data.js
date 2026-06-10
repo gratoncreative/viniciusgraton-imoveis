@@ -49,7 +49,7 @@ export const IMOVEIS_INFO = { geradoEm: destaqueData.geradoEm, fonte: destaqueDa
 
 // Aplica os overrides do painel (campos editados / ocultar) vindos de /api/imoveis-pub.
 // Só campos PÚBLICOS do anúncio — dados do proprietário NUNCA chegam aqui.
-const CAMPOS_OVERRIDE = ['preco', 'precoAnterior', 'tipo', 'bairro', 'quartos', 'suites', 'banheiros', 'vagas', 'area', 'andar', 'elevador', 'descricao']
+const CAMPOS_OVERRIDE = ['preco', 'precoAnterior', 'tipo', 'bairro', 'quartos', 'suites', 'banheiros', 'vagas', 'area', 'andar', 'elevador', 'descricao', 'destaque']
 export function aplicarOverridesImoveis(mapa, aprovados) {
   // Reinsere no site os imóveis pendentes que o Vinícius já aprovou (lista vinda do KV).
   const apSet = new Set((aprovados || []).map(String))
@@ -64,6 +64,9 @@ export function aplicarOverridesImoveis(mapa, aprovados) {
     if (o && !o.oculto) {
       for (const f of CAMPOS_OVERRIDE) if (f in o && o[f] !== '' && o[f] != null) im[f] = o[f]
       if (Array.isArray(o.fotos) && o.fotos.length) { im.fotos = o.fotos; im.img = o.fotos[0] }
+      // impulsionamento pago: destaque vale só até a data paga (expira sozinho)
+      if (o.destaque && o.destaqueAte) im.destaque = Date.now() < Number(o.destaqueAte)
+      if (im.destaque) im.impulsionado = !!o.destaqueAte
     }
   }
   for (let i = IMOVEIS.length - 1; i >= 0; i--) {

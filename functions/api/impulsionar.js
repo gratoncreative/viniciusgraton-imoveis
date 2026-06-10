@@ -1,0 +1,89 @@
+/**
+ * Impulsionamento pago de anúncio — Mercado Pago (Checkout Pro).
+ *
+ *  POST /api/impulsionar { action:'criar', codigo, plano }  -> { ok, url }   (cria a preferência e devolve o link de pagamento)
+ *  POST/GET /api/impulsionar?evento=mp  (webhook do Mercado Pago)            -> confirma pagamento e ATIVA o destaque
+ *
+ * Preço/dias são definidos AQUI no servidor (nunca confia no que o cliente envia).
+ * Precisa do segredo MP_ACCESS_TOKEN (Cloudflare). Sem ele -> { naoConfigurado:true }.
+ */
+const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } })
+const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
+const SITE = 'https://viniciusgraton.com.br'
+const MP = 'https://api.mercadopago.com'
+
+// planos (autoritativos no servidor)
+const PLANOS = {
+  p7: { nome: 'Destaque 7 dias', dias: 7, preco: 29.9 },
+  p15: { nome: 'Destaque 15 dias', dias: 15, preco: 49.9 },
+  p30: { nome: 'Super Destaque 30 dias', dias: 30, preco: 89.9 },
+}
+
+async function ativarDestaque(env, codigo, dias) {
+  if (!temKV(env)) return
+  const key = 'imovel:' + codigo
+  let reg = await env.ENGAGEMENT.get(key, 'json')
+  if (!reg || typeof reg !== 'object') reg = { owner: {}, campos: {} }
+  reg.campos = reg.campos || {}
+  reg.campos.destaque = true
+  reg.campos.destaqueAte = Date.now() + dias * 86400000
+  reg.impulsionadoEm = Date.now()
+  await env.ENGAGEMENT.put(key, JSON.stringify(reg))
+}
+
+export async function onRequestPost({ env, request }) {
+  const url = new URL(request.url)
+  const token = String(env.MP_ACCESS_TOKEN || '').trim()
+
+  // ---- Webhook do Mercado Pago ----
+  if (url.searchParams.get('evento') === 'mp' || url.searchParams.get('type') === 'payment' || url.searchParams.get('topic') === 'payment') {
+    if (!token) return json({ ok: true })
+    let payId = url.searchParams.get('data.id') || url.searchParams.get('id')
+    if (!payId) { const b = await request.json().catch(() => ({})); payId = (b && (b.data?.id || b.id)) || null }
+    if (!payId) return json({ ok: true })
+    try {
+      const r = await fetch(`${MP}/v1/payments/${payId}`, { headers: { authorization: 'Bearer ' + token } })
+      const pay = await r.json()
+      if (pay && pay.status === 'approved' && pay.external_reference) {
+        const [codigo, planoId] = String(pay.external_reference).split('|')
+        const plano = PLANOS[planoId]
+        if (codigo && plano) await ativarDestaque(env, codigo, plano.dias)
+      }
+    } catch {}
+    return json({ ok: true })
+  }
+
+  // ---- Criar preferência de pagamento ----
+  const b = await request.json().catch(() => ({}))
+  if (b.action !== 'criar') return json({ error: 'acao' }, 400)
+  const codigo = String(b.codigo || '').replace(/[^\w-]/g, '').slice(0, 16)
+  const plano = PLANOS[b.plano]
+  if (!codigo || !plano) return json({ error: 'dados', msg: 'Informe o código do imóvel e o plano.' }, 400)
+  if (!token) return json({ ok: false, naoConfigurado: true })
+  try {
+    const pref = {
+      items: [{ title: `${plano.nome} — imóvel ${codigo}`, quantity: 1, unit_price: plano.preco, currency_id: 'BRL' }],
+      external_reference: `${codigo}|${b.plano}`,
+      back_urls: { success: `${SITE}/impulsionar?status=sucesso`, pending: `${SITE}/impulsionar?status=pendente`, failure: `${SITE}/impulsionar?status=falha` },
+      auto_return: 'approved',
+      notification_url: `${SITE}/api/impulsionar?evento=mp`,
+      statement_descriptor: 'VINICIUS GRATON',
+      metadata: { codigo, plano: b.plano, dias: plano.dias },
+    }
+    const r = await fetch(`${MP}/checkout/preferences`, {
+      method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer ' + token }, body: JSON.stringify(pref),
+    })
+    const pj = await r.json()
+    if (!pj.init_point) return json({ ok: false, erro: (pj.message || 'falha ao criar pagamento') })
+    return json({ ok: true, url: pj.init_point })
+  } catch (e) { return json({ ok: false, erro: e.message }) }
+}
+
+// MP às vezes valida o webhook por GET
+export async function onRequestGet({ env, request }) {
+  const url = new URL(request.url)
+  if (url.searchParams.get('type') === 'payment' || url.searchParams.get('topic') === 'payment' || url.searchParams.get('evento') === 'mp') {
+    return onRequestPost({ env, request })
+  }
+  return json({ ok: true })
+}

@@ -184,6 +184,7 @@ export default function Anunciar() {
               <a className="btn btn-gold btn-grande" href="#cadastrar">Cadastrar meu imóvel <IconArrow /></a>
               <span className="anu-hero-selo"><IconShield width={17} height={17} /> Grátis e sem compromisso</span>
             </div>
+            <p className="anu-hero-imp">Já tem um anúncio no site? <Link to="/impulsionar">Impulsione e ganhe destaque →</Link></p>
           </Reveal>
           <div className="anu-stats">
             {STATS.map((s) => <div key={s.l} className="anu-stat"><b>{s.n}</b><span>{s.l}</span></div>)}

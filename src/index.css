@@ -792,6 +792,22 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .det-apre-destaques li::before { content: ''; position: absolute; left: 2px; top: 8px; width: 7px; height: 7px; border-radius: 50%; background: var(--gold-2); }
 @media (max-width: 600px) { .det-apre-destaques { grid-template-columns: 1fr; } }
 
+/* ===== Impulsionar anúncio (pago) ===== */
+.imp-planos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 30px 0 26px; }
+.imp-plano { position: relative; text-align: left; background: #fff; border: 2px solid rgba(22,26,34,0.1); border-radius: 18px; padding: 24px 20px 22px; cursor: pointer; transition: border-color 0.2s, transform 0.2s var(--ease), box-shadow 0.2s; display: flex; flex-direction: column; gap: 6px; }
+.imp-plano:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -28px rgba(0,0,0,0.4); }
+.imp-plano.on { border-color: var(--gold-3); box-shadow: 0 0 0 1px var(--gold-3), 0 18px 40px -28px rgba(184,134,47,0.5); }
+.imp-pop { position: absolute; top: -11px; left: 20px; background: var(--gold-grad); color: #20160a; font-family: var(--font-head); font-weight: 700; font-size: 0.68rem; padding: 4px 11px; border-radius: 999px; }
+.imp-plano-nome { font-family: var(--font-head); font-weight: 700; font-size: 1.02rem; color: #2a2118; }
+.imp-plano-preco { font-family: var(--font-head); font-weight: 800; font-size: 1.55rem; color: var(--gold-3); }
+.imp-plano-desc { font-size: 0.85rem; color: #6c6253; line-height: 1.45; }
+.imp-check { position: absolute; top: 18px; right: 18px; width: 20px; height: 20px; border-radius: 50%; border: 2px solid rgba(22,26,34,0.2); }
+.imp-check.on { border-color: var(--gold-3); background: radial-gradient(circle, var(--gold-3) 45%, transparent 47%); }
+.imp-form { max-width: 460px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+.imp-btn { width: 100%; justify-content: center; }
+.imp-nota { display: flex; align-items: center; gap: 7px; justify-content: center; font-size: 0.8rem; color: #8a8170; text-align: center; line-height: 1.45; flex-wrap: wrap; }
+@media (max-width: 720px) { .imp-planos { grid-template-columns: 1fr; } }
+
 /* Q&A com resposta no hover/clique (página do imóvel) */
 .qa-dica { font-size: 0.8rem; color: #8a8170; margin-bottom: 12px; }
 .qa-lista { display: flex; flex-direction: column; gap: 9px; }
@@ -890,6 +906,9 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .anu-hero-sub { color: rgba(235,238,244,0.9); font-size: clamp(1.02rem, 1.5vw, 1.18rem); line-height: 1.6; max-width: 620px; }
 .anu-hero-acoes { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 26px; }
 .anu-hero-selo { display: inline-flex; align-items: center; gap: 8px; color: var(--gold-1); font-family: var(--font-head); font-weight: 600; font-size: 0.9rem; }
+.anu-hero-imp { margin-top: 16px; font-size: 0.92rem; color: rgba(255,255,255,0.82); }
+.anu-hero-imp a { color: var(--gold-1); font-weight: 600; text-decoration: none; border-bottom: 1px solid rgba(212,175,108,0.4); padding-bottom: 1px; transition: border-color 0.2s; }
+.anu-hero-imp a:hover { border-color: var(--gold-1); }
 .anu-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 40px; max-width: 640px; }
 .anu-stat { background: rgba(255,255,255,0.07); border: 1px solid rgba(224,181,86,0.28); border-radius: 14px; padding: 16px 12px; text-align: center; backdrop-filter: blur(6px); }
 .anu-stat b { display: block; font-family: var(--font-head); font-weight: 800; font-size: clamp(1.2rem, 2.4vw, 1.7rem); color: var(--gold-1); }
