@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy, Suspense } from 'react'
+import { useEffect, useState, useRef, lazy, Suspense } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
 import ScrollProgress from './components/ScrollProgress'
@@ -45,6 +45,7 @@ const NotFound = lazy(() => import('./pages/NotFound'))
 export default function App() {
   const { pathname } = useLocation()
   const [ovKey, setOvKey] = useState('base')
+  const lenisRef = useRef(null)
 
   // Busca os overrides do painel (edições / ocultar) e aplica nos imóveis publicados.
   // Só campos do anúncio — dados do proprietário nunca trafegam aqui.
@@ -61,6 +62,8 @@ export default function App() {
 
   // sobe ao topo e registra a visualização de página
   useEffect(() => {
+    // sobe ao topo na troca de página (o Lenis controla a rolagem, então usamos o método dele)
+    if (lenisRef.current) lenisRef.current.scrollTo(0, { immediate: true })
     window.scrollTo(0, 0)
     if (CONFIG.gaId && window.gtag) {
       window.gtag('event', 'page_view', { page_path: pathname + window.location.search })
@@ -79,6 +82,7 @@ export default function App() {
     if (reduce) return
 
     const lenis = new Lenis({ duration: 1.1, smoothWheel: true })
+    lenisRef.current = lenis
     let raf
     const loop = (time) => {
       lenis.raf(time)

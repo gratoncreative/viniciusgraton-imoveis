@@ -601,6 +601,15 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 /* ===== Detalhe do imóvel (/imovel/:codigo) ===== */
 .det { padding: 110px 0 110px; min-height: 100vh; }
 .det-vazio { padding: 160px 0 120px; min-height: 70vh; }
+/* tela de carregamento do imóvel (animação + mensagem descontraída) */
+.det-carregando { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
+.det-load-casa { position: relative; width: 96px; height: 96px; display: grid; place-items: center; color: var(--gold-3); animation: detCasaSobe 1.6s ease-in-out infinite; }
+.det-load-anel { position: absolute; inset: 0; border-radius: 50%; border: 3px solid rgba(184,134,47,0.18); border-top-color: var(--gold-3); animation: detGira 0.9s linear infinite; }
+@keyframes detCasaSobe { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes detGira { to { transform: rotate(360deg); } }
+.det-load-msg { font-family: var(--font-head); font-size: 1.25rem; color: #2a2118; min-height: 1.5em; animation: detMsgFade 2.6s ease-in-out infinite; }
+@keyframes detMsgFade { 0%,100% { opacity: 0.55; } 25%,75% { opacity: 1; } }
+.det-load-sub { color: var(--text-soft); font-size: 0.92rem; max-width: 380px; }
 .det-bread { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 24px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .det-bread a { color: var(--text-soft); }
 .det-bread a:hover { color: var(--gold-1); }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import Galeria from '../components/Galeria'
@@ -125,23 +125,65 @@ function Destaque({ icon, titulo, sub }) {
   )
 }
 
+// mensagens descontraídas que giram enquanto o imóvel carrega
+const MSG_LOAD = [
+  'Pegando as chaves desse imóvel… 🔑',
+  'Separando as melhores fotos pra você…',
+  'Já tá quase abrindo a porta…',
+  'Conferindo cada detalhe pra você…',
+]
+
 export default function ImovelDetalhe() {
   const { codigo } = useParams()
   const local = getImovel(codigo)
   const [imApi, setImApi] = useState(null)
+  const [feed, setFeed] = useState([])
   const [buscando, setBuscando] = useState(false)
+  const [tentativa, setTentativa] = useState(0)
+
+  // base completa (espelho) — mostra o imóvel NA HORA, sem esperar a API/galeria
+  useEffect(() => {
+    let vivo = true
+    fetch('/catalogo.json').then((r) => (r.ok ? r.json() : null))
+      .then((d) => { if (vivo && d && Array.isArray(d.imoveis)) setFeed(d.imoveis) })
+      .catch(() => {})
+    return () => { vivo = false }
+  }, [])
+  const feedItem = useMemo(() => feed.find((i) => String(i.codigo) === String(codigo)) || null, [feed, codigo])
+
+  // dados completos (galeria, 360, mapa) vêm da API — com timeout de 9s pra nunca travar
   useEffect(() => {
     if (local) { setImApi(null); return }
     let vivo = true
     setBuscando(true)
-    fetch(`/api/rotina-imovel?codigo=${encodeURIComponent(codigo)}`)
+    const ctrl = new AbortController()
+    const t = setTimeout(() => ctrl.abort(), 9000)
+    fetch(`/api/rotina-imovel?codigo=${encodeURIComponent(codigo)}`, { signal: ctrl.signal })
       .then((r) => (r.ok ? r.json() : null))
       .then((j) => { if (vivo && j && j.imovel) setImApi(mapApi(j.imovel)) })
       .catch(() => {})
-      .finally(() => { if (vivo) setBuscando(false) })
-    return () => { vivo = false }
-  }, [codigo, local])
-  const im = local || imApi
+      .finally(() => { clearTimeout(t); if (vivo) setBuscando(false) })
+    return () => { vivo = false; clearTimeout(t); ctrl.abort() }
+  }, [codigo, local, tentativa])
+
+  // mostra o feed na hora; quando a API completa chega, troca pela versão completa
+  const im = local || imApi || feedItem
+
+  // se NADA carregou ainda, tenta de novo sozinho a cada 5s (até 3x) — nunca fica preso
+  useEffect(() => {
+    if (im || tentativa >= 3) return
+    const t = setTimeout(() => setTentativa((n) => n + 1), 5000)
+    return () => clearTimeout(t)
+  }, [im, tentativa])
+
+  // mensagem descontraída girando enquanto carrega
+  const [msgIdx, setMsgIdx] = useState(0)
+  useEffect(() => {
+    if (im) return
+    const t = setInterval(() => setMsgIdx((n) => n + 1), 2600)
+    return () => clearInterval(t)
+  }, [im])
+
   const fotos = fotosDe(im)
 
   useEffect(() => {
@@ -190,12 +232,16 @@ export default function ImovelDetalhe() {
   }, [im, fotos])
 
   if (!im) {
-    if (buscando) {
+    if (buscando || tentativa < 3) {
       return (
         <main className="section--light det-vazio">
-          <div className="container" style={{ textAlign: 'center' }}>
-            <div className="rota-load" aria-busy="true"><span className="rota-spinner" /></div>
-            <p className="section-sub" style={{ marginTop: 18 }}>Carregando o imóvel…</p>
+          <div className="container det-carregando">
+            <div className="det-load-casa" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11l9-7 9 7M5 10v10h14V10M10 20v-5h4v5" /></svg>
+              <span className="det-load-anel" />
+            </div>
+            <p className="det-load-msg">{MSG_LOAD[msgIdx % MSG_LOAD.length]}</p>
+            <p className="det-load-sub">Se a internet estiver lenta, a gente tenta de novo sozinho em alguns segundos. 😉</p>
           </div>
         </main>
       )
