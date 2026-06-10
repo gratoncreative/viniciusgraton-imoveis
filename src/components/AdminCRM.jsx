@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_TODOS, filtrarParaCliente, formatPreco, getImovel } from '../data'
 import InputMoeda from './InputMoeda'
 
@@ -49,19 +49,22 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
   // base COMPLETA para casar com o cliente: espelho de TODOS os imóveis (catalogo.json) + curados do bundle.
   // (Antes o CRM só via os ~58 curados, por isso "0 combinam" mesmo havendo imóveis na base.)
   const [feed, setFeed] = useState([])
+  const [feedPronto, setFeedPronto] = useState(false)
   useEffect(() => {
     let vivo = true
     fetch('/catalogo.json').then((r) => (r.ok ? r.json() : null))
       .then((d) => { if (vivo && d && Array.isArray(d.imoveis)) setFeed(d.imoveis) })
       .catch(() => {})
+      .finally(() => { if (vivo) setFeedPronto(true) })
     return () => { vivo = false }
   }, [])
-  const baseImoveis = (() => {
+  // memorizado: só recalcula quando o feed muda (não a cada tecla) → preview instantâneo
+  const baseImoveis = useMemo(() => {
     const mapa = new Map()
     for (const im of feed) mapa.set(String(im.codigo), im)
     for (const im of IMOVEIS) mapa.set(String(im.codigo), im) // curados têm prioridade (galeria/descrição completas)
     return [...mapa.values()]
-  })()
+  }, [feed])
 
   const setF = (k, v) => setSel((s) => ({ ...s, [k]: v }))
   const toggleArr = (k, val) => setSel((s) => { const a = new Set(s[k] || []); a.has(val) ? a.delete(val) : a.add(val); return { ...s, [k]: [...a] } })
@@ -84,11 +87,11 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
   }
 
   // imóveis que casam com os critérios atuais (para sugerir/escolher)
-  const matches = sel ? filtrarParaCliente({
+  const matches = useMemo(() => (sel ? filtrarParaCliente({
     tipos: sel.tipos, bairros: sel.bairros,
     precoMin: +sel.precoMin || 0, precoMax: +sel.precoMax || 0,
     quartosMin: +sel.quartosMin || 0, suitesMin: +sel.suitesMin || 0, vagasMin: +sel.vagasMin || 0, areaMin: +sel.areaMin || 0,
-  }, baseImoveis) : []
+  }, baseImoveis) : []), [sel, baseImoveis])
 
   // resumo AO VIVO do que o filtro atual rende (atualiza conforme preenche, sem precisar abrir a página)
   const resumo = (() => {
@@ -218,7 +221,9 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
           <div>
             <div className="admin-owner crm-resumo">
               <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Resumo do filtro <span className="painel-meta">· ao vivo</span></h3>
-              {!resumo ? (
+              {!feedPronto ? (
+                <p className="painel-meta">Carregando a base completa de imóveis…</p>
+              ) : !resumo ? (
                 <p className="painel-meta">Vá preenchendo os filtros ao lado — aqui aparece, na hora, quantos imóveis batem com os critérios e um resumo deles (antes de abrir a página).</p>
               ) : (
                 <>
