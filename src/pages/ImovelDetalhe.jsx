@@ -317,6 +317,12 @@ export default function ImovelDetalhe() {
               <p className="det-local"><IconPin width={15} height={15} /> {im.cidade} — {im.uf} · Cód. {im.codigo}</p>
               <h1 className="det-titulo">{im.tipo} no {im.bairro}</h1>
               <p className="det-subtitulo">{subtituloImovel(im)}</p>
+              {im.impulsionado && (
+                <Link to="/impulsionar" className="det-pub">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 15l7-7 7 7" /></svg>
+                  <span><b>Publicidade</b> · anúncio impulsionado em destaque. Você também pode impulsionar o seu →</span>
+                </Link>
+              )}
               {(() => { const op = oportunidade(im); return (op.temDesconto || op.abaixoMercado) ? (
                 <div className="det-selos">
                   {op.temDesconto && <span className="im-selo im-selo--off">Preço reduzido · -{op.pctDesconto}%</span>}

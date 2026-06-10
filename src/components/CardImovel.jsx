@@ -19,6 +19,23 @@ function SelosOportunidade({ op }) {
   )
 }
 
+// Selo de transparência para anúncio impulsionado (publicidade). Clicável: leva o
+// visitante a impulsionar o próprio anúncio. Atende à sinalização exigida (CDC/CONAR).
+function SeloPublicidade({ im }) {
+  if (!im.impulsionado) return null
+  return (
+    <Link
+      to="/impulsionar"
+      className="im-pub"
+      onClick={(e) => e.stopPropagation()}
+      title="Publicidade — anúncio impulsionado (destaque pago). Você também pode impulsionar o seu anúncio."
+    >
+      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 15l7-7 7 7" /></svg>
+      Publicidade
+    </Link>
+  )
+}
+
 function Spec({ icon, valor, label }) {
   const Icon = ICONS[icon]
   return (
@@ -75,11 +92,12 @@ export default function CardImovel({ im, variante }) {
   // ——— variante horizontal (listagem estilo portal): foto à esquerda, infos à direita ———
   if (variante === 'linha') {
     return (
-      <article className="im-linha card-clickable" onClick={irParaImovel}>
+      <article className={`im-linha card-clickable ${im.impulsionado ? 'im-pub-on' : ''}`} onClick={irParaImovel}>
         <div className="im-linha-media">
           <img src={im.img} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} loading="lazy" decoding="async" onError={onImgError} />
           <span className="im-tag">{im.tipo}</span>
           {im.novo && <span className="im-novo">Novo</span>}
+          <SeloPublicidade im={im} />
           <SelosOportunidade op={op} />
         </div>
         <div className="im-linha-body">
@@ -111,7 +129,7 @@ export default function CardImovel({ im, variante }) {
   return (
     <article
       ref={ref}
-      className="card-imovel im-card card-clickable"
+      className={`card-imovel im-card card-clickable ${im.impulsionado ? 'im-pub-on' : ''}`}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
       onClick={irParaImovel}
@@ -120,6 +138,7 @@ export default function CardImovel({ im, variante }) {
         <img src={im.img} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} loading="lazy" decoding="async" onError={onImgError} />
         <span className="im-tag">{im.tipo}</span>
         {im.novo && <span className="im-novo">Novo</span>}
+        <SeloPublicidade im={im} />
         <SelosOportunidade op={op} />
         <Engajamento im={im} variante="card" />
         <PrecoGate valor={im.preco} anterior={im.precoAnterior} className="im-preco" tipo="card" />

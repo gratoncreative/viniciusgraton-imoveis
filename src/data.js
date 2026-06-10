@@ -44,6 +44,18 @@ import bairrosM2 from './bairros-m2.json'
 const TODOS_IMOVEIS = destaqueData.imoveis || []
 // Imóveis importados entram como `pendente` e ficam FORA do site até o Vinícius aprovar.
 export const IMOVEIS = TODOS_IMOVEIS.filter((i) => !i.pendente)
+
+// Vitrine/publicidade do próprio site enquanto não há cliente pagando o impulsionamento.
+// São imóveis REAIS (do Vinícius) usados como demonstração do recurso. Ficam sempre
+// sinalizados no card com selo "Publicidade · Impulsionado" — transparente ao visitante,
+// que entende que é um anúncio em destaque e que pode fazer o mesmo (link p/ /impulsionar).
+const DEMO_IMPULSIONADOS = new Set(['29144'])
+function marcarDemoImpulsionados() {
+  for (const im of IMOVEIS) {
+    if (DEMO_IMPULSIONADOS.has(String(im.codigo))) { im.destaque = true; im.impulsionado = true }
+  }
+}
+marcarDemoImpulsionados()
 export const IMOVEIS_PENDENTES = TODOS_IMOVEIS.filter((i) => i.pendente)
 export const IMOVEIS_INFO = { geradoEm: destaqueData.geradoEm, fonte: destaqueData.fonte }
 
@@ -73,6 +85,7 @@ export function aplicarOverridesImoveis(mapa, aprovados) {
     const o = mapa[String(IMOVEIS[i].codigo)]
     if (o && o.oculto) IMOVEIS.splice(i, 1)
   }
+  marcarDemoImpulsionados() // mantém a vitrine impulsionada após aplicar overrides
 }
 
 // Construtoras de Uberlândia (vitrine + página por construtora)
