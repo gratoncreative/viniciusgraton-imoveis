@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import CardImovel from '../components/CardImovel'
-import { getImovel, filtrarParaCliente, avaliarMatch, formatPreco, linkWhatsApp, TIPOS_IMOVEL, BAIRROS_IMOVEL } from '../data'
+import { IMOVEIS, getImovel, filtrarParaCliente, avaliarMatch, formatPreco, linkWhatsApp, TIPOS_IMOVEL, BAIRROS_IMOVEL } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconHeart, IconClose } from '../components/icons'
 
@@ -23,6 +23,7 @@ export default function Cliente() {
   const { token } = useParams()
   const [estado, setEstado] = useState('carregando')
   const [cli, setCli] = useState(null)
+  const [feed, setFeed] = useState([])
   const [prefs, setPrefs] = useState({})
   const [feedback, setFeedback] = useState({})
   const [mexeu, setMexeu] = useState(false)
@@ -47,6 +48,15 @@ export default function Cliente() {
       .catch(() => vivo && setEstado('erro'))
     return () => { vivo = false }
   }, [token])
+
+  // base COMPLETA (espelho de todos os imóveis) p/ resolver as sugestões e filtrar — não só os curados
+  useEffect(() => {
+    let vivo = true
+    fetch('/catalogo.json').then((r) => (r.ok ? r.json() : null))
+      .then((d) => { if (vivo && d && Array.isArray(d.imoveis)) setFeed(d.imoveis) })
+      .catch(() => {})
+    return () => { vivo = false }
+  }, [])
 
   // salva (com pequeno atraso) o ESTADO COMPLETO das escolhas do cliente no
   // perfil dele — sempre o mapa inteiro, nunca um delta, pra nada se perder.
@@ -80,9 +90,17 @@ export default function Cliente() {
   }
 
   const nome = primeiroNome(cli.nome)
-  const curados = (cli.sugeridos || []).map((c) => getImovel(c)).filter(Boolean)
+  // base completa: espelho (catalogo.json) + curados do bundle (estes têm prioridade)
+  const baseImoveis = (() => {
+    const mapa = new Map()
+    for (const im of feed) mapa.set(String(im.codigo), im)
+    for (const im of IMOVEIS) mapa.set(String(im.codigo), im)
+    return [...mapa.values()]
+  })()
+  const acharImovel = (c) => baseImoveis.find((i) => String(i.codigo) === String(c)) || getImovel(c)
+  const curados = (cli.sugeridos || []).map((c) => acharImovel(c)).filter(Boolean)
   const usarFiltro = mexeu || curados.length === 0
-  const base = usarFiltro ? filtrarParaCliente(prefs).map((x) => x.im) : curados
+  const base = usarFiltro ? filtrarParaCliente(prefs, baseImoveis).map((x) => x.im) : curados
   const visiveis = base.filter((im) => feedback[String(im.codigo)] !== 'dislike')
   visiveis.sort((a, b) => (feedback[String(b.codigo)] === 'like' ? 1 : 0) - (feedback[String(a.codigo)] === 'like' ? 1 : 0))
   const descartados = base.filter((im) => feedback[String(im.codigo)] === 'dislike')

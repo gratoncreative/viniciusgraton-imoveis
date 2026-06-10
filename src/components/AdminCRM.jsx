@@ -46,6 +46,23 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
   }
   useEffect(() => { carregar() }, [])
 
+  // base COMPLETA para casar com o cliente: espelho de TODOS os imóveis (catalogo.json) + curados do bundle.
+  // (Antes o CRM só via os ~58 curados, por isso "0 combinam" mesmo havendo imóveis na base.)
+  const [feed, setFeed] = useState([])
+  useEffect(() => {
+    let vivo = true
+    fetch('/catalogo.json').then((r) => (r.ok ? r.json() : null))
+      .then((d) => { if (vivo && d && Array.isArray(d.imoveis)) setFeed(d.imoveis) })
+      .catch(() => {})
+    return () => { vivo = false }
+  }, [])
+  const baseImoveis = (() => {
+    const mapa = new Map()
+    for (const im of feed) mapa.set(String(im.codigo), im)
+    for (const im of IMOVEIS) mapa.set(String(im.codigo), im) // curados têm prioridade (galeria/descrição completas)
+    return [...mapa.values()]
+  })()
+
   const setF = (k, v) => setSel((s) => ({ ...s, [k]: v }))
   const toggleArr = (k, val) => setSel((s) => { const a = new Set(s[k] || []); a.has(val) ? a.delete(val) : a.add(val); return { ...s, [k]: [...a] } })
   // foto do cliente: redimensiona no navegador (máx 480px, JPEG) e guarda como dataURL
@@ -71,7 +88,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
     tipos: sel.tipos, bairros: sel.bairros,
     precoMin: +sel.precoMin || 0, precoMax: +sel.precoMax || 0,
     quartosMin: +sel.quartosMin || 0, suitesMin: +sel.suitesMin || 0, vagasMin: +sel.vagasMin || 0, areaMin: +sel.areaMin || 0,
-  }) : []
+  }, baseImoveis) : []
 
   // resumo AO VIVO do que o filtro atual rende (atualiza conforme preenche, sem precisar abrir a página)
   const resumo = (() => {
@@ -123,7 +140,9 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
   }
   // imóveis que combinam com o cliente e que ele ainda NÃO tem na página (oportunidade de envio)
   const prefsDe = (c) => ({ tipos: c.tipos, bairros: c.bairros, precoMin: +c.precoMin || 0, precoMax: +c.precoMax || 0, quartosMin: +c.quartosMin || 0, suitesMin: +c.suitesMin || 0, vagasMin: +c.vagasMin || 0, areaMin: +c.areaMin || 0 })
-  const novosMatch = (c) => { try { return filtrarParaCliente(prefsDe(c)).filter((x) => !(c.sugeridos || []).includes(String(x.im.codigo))).length } catch { return 0 } }
+  const novosMatch = (c) => { try { return filtrarParaCliente(prefsDe(c), baseImoveis).filter((x) => !(c.sugeridos || []).includes(String(x.im.codigo))).length } catch { return 0 } }
+  // resolve um imóvel pelo código olhando a base completa (espelho + curados), não só os curados
+  const resolverImovel = (cod) => baseImoveis.find((i) => String(i.codigo) === String(cod)) || getImovel(cod)
 
   const linkCliente = (c) => `${window.location.origin}/cliente/${c.id}`
 
@@ -220,7 +239,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
               <button className="admin-btn" onClick={sugerirAuto} style={{ marginBottom: 10 }}>✨ Sugerir automático ({matches.length} combinam)</button>
               <div className="crm-match-list">
                 {matches.length === 0 && <p className="painel-meta">Nenhum imóvel publicado combina com esses critérios ainda. Ajuste os filtros.</p>}
-                {matches.map(({ im, m }) => {
+                {matches.slice(0, 80).map(({ im, m }) => {
                   const cod = String(im.codigo); const on = (sel.sugeridos || []).includes(cod)
                   return (
                     <label className={`crm-match ${on ? 'on' : ''}`} key={cod}>
@@ -230,6 +249,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                     </label>
                   )
                 })}
+                {matches.length > 80 && <p className="painel-meta">Mostrando os 80 mais compatíveis de {matches.length}. Refine os filtros (bairro, preço, área) pra afunilar — ou use “Sugerir automático”.</p>}
               </div>
             </div>
 
@@ -238,7 +258,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
               const likes = Object.keys(fb).filter((k) => fb[k] === 'like')
               const dislikes = Object.keys(fb).filter((k) => fb[k] === 'dislike')
               if (!sel.refinadoEm && likes.length === 0 && dislikes.length === 0) return null
-              const linha = (cod) => { const im = getImovel(cod); return im ? `${im.tipo} · ${im.bairro} · ${formatPreco(im.preco)} (cód ${cod})` : `cód ${cod}` }
+              const linha = (cod) => { const im = resolverImovel(cod); return im ? `${im.tipo} · ${im.bairro} · ${formatPreco(im.preco)} (cód ${cod})` : `cód ${cod}` }
               return (
                 <div className="admin-owner crm-feedback" style={{ marginTop: 14 }}>
                   <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>O que o cliente sinalizou <span className="painel-meta">{sel.refinadoEm ? '· refinou em ' + new Date(sel.refinadoEm).toLocaleString('pt-BR') : ''}</span></h3>
