@@ -54,11 +54,11 @@ export default function Hero() {
           <p className="apres-lead">
             Sou <b>consultor de imóveis em Uberlândia</b>, da <b>Rotina Imobiliária</b>. Te ajudo a comprar, vender ou investir com segurança — da primeira conversa à entrega das chaves.
           </p>
-          <ul className="apres-checks">
-            <li><span>✓</span> Curadoria criteriosa</li>
-            <li><span>✓</span> Pontos fortes e riscos, na transparência</li>
-            <li><span>✓</span> Documentação conferida</li>
-            <li><span>✓</span> Negociação a seu favor</li>
+          <ul className="apres-checks apres-checks--link">
+            <li><Link to="/diferenciais#curadoria"><span>✓</span> Curadoria criteriosa</Link></li>
+            <li><Link to="/diferenciais#transparencia"><span>✓</span> Pontos fortes e riscos, na transparência</Link></li>
+            <li><Link to="/diferenciais#documentacao"><span>✓</span> Documentação conferida</Link></li>
+            <li><Link to="/diferenciais#negociacao"><span>✓</span> Negociação a seu favor</Link></li>
           </ul>
           <div className="hero-bio-acoes">
             <a className="btn btn-gold" href={linkWhatsApp(WA.hero)} target="_blank" rel="noopener"><IconWhats /> Falar comigo agora</a>

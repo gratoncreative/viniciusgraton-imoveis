@@ -39,6 +39,7 @@ const Favoritos = lazy(() => import('./pages/Favoritos'))
 const Cliente = lazy(() => import('./pages/Cliente'))
 const EncontrarImovel = lazy(() => import('./pages/EncontrarImovel'))
 const Privacidade = lazy(() => import('./pages/Privacidade'))
+const Diferenciais = lazy(() => import('./pages/Diferenciais'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 export default function App() {
@@ -136,6 +137,7 @@ export default function App() {
               <Route path="/cliente/:token" element={<Cliente />} />
               <Route path="/encontrar-imovel" element={<EncontrarImovel />} />
               <Route path="/privacidade" element={<Privacidade />} />
+              <Route path="/diferenciais" element={<Diferenciais />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
