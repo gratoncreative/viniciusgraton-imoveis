@@ -38,15 +38,25 @@ function pillGold(ctx, x, y, txt, fs = 28, h = 54) {
   ctx.fillStyle = '#1b1206'; ctx.textBaseline = 'middle'; ctx.textAlign = 'left'
   ctx.fillText(txt, x + padX, y + h / 2 + 1); ctx.textBaseline = 'alphabetic'
 }
-function eyebrowBadge(ctx, W, txt) {
+function eyebrowBadge(ctx, W, txt, safe) {
   if (!txt) return
   const t = txt.toUpperCase(), fs = 30, h = 58
   ctx.font = `800 ${fs}px Arial`
-  const padX = 26, w = ctx.measureText(t).width + padX * 2, x = W - 56 - w, y = 56
+  const padX = 26, w = ctx.measureText(t).width + padX * 2, x = W - safe.side - w, y = safe.top
   rr(ctx, x, y, w, h, 12); ctx.fillStyle = '#b3261e'; ctx.fill()
   ctx.fillStyle = '#fff'; ctx.textBaseline = 'middle'; ctx.textAlign = 'left'
   ctx.fillText(t, x + padX, y + h / 2 + 1); ctx.textBaseline = 'alphabetic'
 }
+
+// Zonas seguras do Instagram por formato (px num canvas 1080 de largura).
+// Story/Reels: topo (perfil) e base (barra de resposta/botões) ficam livres.
+const SAFE = {
+  feed: { top: 54, bottom: 60, side: 56 },
+  feed45: { top: 150, bottom: 160, side: 60 }, // 4:5 — miolo seguro p/ a grade do perfil (corte 1:1)
+  story: { top: 264, bottom: 300, side: 64 },
+}
+const dimsDe = (formato) => formato === 'story' ? [1080, 1920] : formato === 'feed45' ? [1080, 1350] : [1080, 1080]
+const safeDe = (formato) => SAFE[formato] || SAFE.feed
 
 export const TEMPLATES = [
   { id: 'faixa', nome: 'Faixa moderna' },
@@ -56,88 +66,100 @@ export const TEMPLATES = [
   { id: 'gradiente', nome: 'Gradiente' },
 ]
 
-function tplClassico(ctx, W, H, im, eyebrow, formato) {
-  const ini = formato === 'story' ? 0.34 : 0.40
-  const g = ctx.createLinearGradient(0, H * ini, 0, H)
-  g.addColorStop(0, 'rgba(8,11,18,0)'); g.addColorStop(0.5, 'rgba(8,11,18,0.72)'); g.addColorStop(1, 'rgba(8,11,18,0.97)')
-  ctx.fillStyle = g; ctx.fillRect(0, H * ini, W, H * (1 - ini))
-  ctx.strokeStyle = 'rgba(224,181,86,0.85)'; ctx.lineWidth = 6; ctx.strokeRect(26, 26, W - 52, H - 52)
-  pillGold(ctx, 56, 56, (im.tipo || 'Imóvel').toUpperCase())
-  eyebrowBadge(ctx, W, eyebrow)
-  const pad = 64; let y = H - pad; ctx.textAlign = 'left'
-  ctx.fillStyle = 'rgba(255,255,255,0.82)'; ctx.font = '500 30px Arial'
-  ctx.fillText(`viniciusgraton.com.br   ·   Cód. ${im.codigo}`, pad, y); y -= 60
+function tplClassico(ctx, W, H, im, eyebrow, safe) {
+  const bY = H - safe.bottom, gh = Math.min(H * 0.55, bY)
+  const g = ctx.createLinearGradient(0, bY - gh, 0, H)
+  g.addColorStop(0, 'rgba(8,11,18,0)'); g.addColorStop(0.6, 'rgba(8,11,18,0.72)'); g.addColorStop(1, 'rgba(8,11,18,0.97)')
+  ctx.fillStyle = g; ctx.fillRect(0, bY - gh, W, H - (bY - gh))
+  ctx.strokeStyle = 'rgba(224,181,86,0.85)'; ctx.lineWidth = 6
+  ctx.strokeRect(safe.side - 10, safe.top - 10, W - 2 * (safe.side - 10), (bY - safe.top) + 20)
+  pillGold(ctx, safe.side, safe.top, (im.tipo || 'Imóvel').toUpperCase()); eyebrowBadge(ctx, W, eyebrow, safe)
+  const pad = safe.side; let y = bY; ctx.textAlign = 'left'
+  ctx.fillStyle = 'rgba(255,255,255,0.82)'; ctx.font = '500 30px Arial'; ctx.fillText(`viniciusgraton.com.br   ·   Cód. ${im.codigo}`, pad, y); y -= 60
   ctx.fillStyle = '#ecc869'; ctx.font = '600 34px Arial'; ctx.fillText(specsLinha(im), pad, y); y -= 70
   ctx.fillStyle = 'rgba(255,255,255,0.92)'; ctx.font = '500 42px Arial'; ctx.fillText(`${im.tipo} no ${im.bairro} · ${im.cidade}/${im.uf || 'MG'}`, pad, y); y -= 96
   ctx.fillStyle = '#fff'; ctx.font = '800 96px Arial'; ctx.fillText(precoTxt(im), pad, y); y -= 110
   ctx.fillStyle = '#ecc869'; ctx.font = '700 30px Arial'; ctx.fillText('VINÍCIUS GRATON  ·  CONSULTOR DE IMÓVEIS', pad, y)
 }
-function tplFaixa(ctx, W, H, im, eyebrow, formato) {
-  const ph = Math.round(formato === 'story' ? H * 0.30 : H * 0.36), py = H - ph
+function tplFaixa(ctx, W, H, im, eyebrow, safe) {
+  const bY = H - safe.bottom, ph = 300, py = bY - ph
   const g = ctx.createLinearGradient(0, py - 90, 0, py); g.addColorStop(0, 'rgba(10,12,18,0)'); g.addColorStop(1, 'rgba(10,12,18,0.97)')
   ctx.fillStyle = g; ctx.fillRect(0, py - 90, W, 90)
-  ctx.fillStyle = 'rgba(10,12,18,0.97)'; ctx.fillRect(0, py, W, ph)
+  ctx.fillStyle = 'rgba(10,12,18,0.97)'; ctx.fillRect(0, py, W, H - py)
   ctx.fillStyle = '#e0b556'; ctx.fillRect(0, py, W, 7)
-  pillGold(ctx, 56, 56, (im.tipo || 'Imóvel').toUpperCase()); eyebrowBadge(ctx, W, eyebrow)
-  const pad = 64; let y = py + 64; ctx.textAlign = 'left'
-  ctx.fillStyle = '#ecc869'; ctx.font = '700 28px Arial'; ctx.fillText('VINÍCIUS GRATON · CONSULTOR DE IMÓVEIS', pad, y); y += 64
-  ctx.fillStyle = '#fff'; ctx.font = '800 92px Arial'; ctx.fillText(precoTxt(im), pad, y); y += 56
-  ctx.fillStyle = 'rgba(255,255,255,0.92)'; ctx.font = '500 38px Arial'; ctx.fillText(`${im.tipo} no ${im.bairro} · ${im.cidade}/${im.uf || 'MG'}`, pad, y); y += 50
-  ctx.fillStyle = '#ecc869'; ctx.font = '600 32px Arial'; ctx.fillText(specsLinha(im), pad, y)
-  ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.font = '500 26px Arial'; ctx.textAlign = 'right'
-  ctx.fillText(`Cód. ${im.codigo} · viniciusgraton.com.br`, W - pad, py + ph - 34); ctx.textAlign = 'left'
+  pillGold(ctx, safe.side, safe.top, (im.tipo || 'Imóvel').toUpperCase()); eyebrowBadge(ctx, W, eyebrow, safe)
+  const pad = safe.side; let y = py + 60; ctx.textAlign = 'left'
+  ctx.fillStyle = '#ecc869'; ctx.font = '700 28px Arial'; ctx.fillText('VINÍCIUS GRATON · CONSULTOR DE IMÓVEIS', pad, y); y += 62
+  ctx.fillStyle = '#fff'; ctx.font = '800 88px Arial'; ctx.fillText(precoTxt(im), pad, y); y += 54
+  ctx.fillStyle = 'rgba(255,255,255,0.92)'; ctx.font = '500 36px Arial'; ctx.fillText(`${im.tipo} no ${im.bairro} · ${im.cidade}/${im.uf || 'MG'}`, pad, y); y += 48
+  ctx.fillStyle = '#ecc869'; ctx.font = '600 31px Arial'; ctx.fillText(specsLinha(im), pad, y)
 }
-function tplMinimal(ctx, W, H, im, eyebrow) {
+function tplMinimal(ctx, W, H, im, eyebrow, safe) {
   const vg = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.4, W / 2, H / 2, Math.max(W, H) * 0.75)
   vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,0.45)'); ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H)
-  ctx.fillStyle = '#fff'; ctx.font = '700 30px Arial'; ctx.textAlign = 'left'
-  ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 12
-  ctx.fillText('V I N Í C I U S   G R A T O N', 64, 92); ctx.shadowBlur = 0
-  eyebrowBadge(ctx, W, eyebrow)
-  const pad = 64, ch = 96
+  ctx.fillStyle = '#fff'; ctx.font = '700 30px Arial'; ctx.textAlign = 'left'; ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 12
+  ctx.fillText('V I N Í C I U S   G R A T O N', safe.side, safe.top + 30); ctx.shadowBlur = 0
+  eyebrowBadge(ctx, W, eyebrow, safe)
+  const bY = H - safe.bottom, pad = safe.side, ch = 96
   ctx.font = '800 64px Arial'; const pw = ctx.measureText(precoTxt(im)).width
-  rr(ctx, pad, H - pad - ch, pw + 64, ch, 16); ctx.fillStyle = 'rgba(224,181,86,0.96)'; ctx.fill()
-  ctx.fillStyle = '#1b1206'; ctx.textBaseline = 'middle'; ctx.fillText(precoTxt(im), pad + 32, H - pad - ch / 2 + 2); ctx.textBaseline = 'alphabetic'
+  rr(ctx, pad, bY - ch, pw + 64, ch, 16); ctx.fillStyle = 'rgba(224,181,86,0.96)'; ctx.fill()
+  ctx.fillStyle = '#1b1206'; ctx.textBaseline = 'middle'; ctx.fillText(precoTxt(im), pad + 32, bY - ch / 2 + 2); ctx.textBaseline = 'alphabetic'
   ctx.fillStyle = '#fff'; ctx.font = '500 36px Arial'; ctx.shadowColor = 'rgba(0,0,0,0.6)'; ctx.shadowBlur = 10
-  ctx.fillText(`${im.tipo} no ${im.bairro} · ${specsLinha(im)}`, pad, H - pad - ch - 28); ctx.shadowBlur = 0
+  ctx.fillText(`${im.tipo} no ${im.bairro} · ${specsLinha(im)}`, pad, bY - ch - 28); ctx.shadowBlur = 0
 }
-function tplEditorial(ctx, W, H, im, eyebrow) {
+function tplEditorial(ctx, W, H, im, eyebrow, safe) {
   const g = ctx.createLinearGradient(0, 0, W * 0.85, 0); g.addColorStop(0, 'rgba(8,10,16,0.92)'); g.addColorStop(1, 'rgba(8,10,16,0)')
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H)
-  const x = 80; ctx.fillStyle = '#e0b556'; ctx.fillRect(x, H * 0.36, 5, H * 0.4)
-  ctx.textAlign = 'left'; ctx.fillStyle = '#ecc869'; ctx.font = '700 28px Georgia, serif'
-  ctx.fillText('VINÍCIUS GRATON · CONSULTOR DE IMÓVEIS', x + 26, 96)
-  eyebrowBadge(ctx, W, eyebrow)
-  let y = H * 0.40 + 30; const x2 = x + 30
+  const x = safe.side + 26, bY = H - safe.bottom
+  let y = Math.max(safe.top + 200, (safe.top + bY) / 2 - 40)
+  ctx.fillStyle = '#e0b556'; ctx.fillRect(safe.side, y - 130, 5, 380)
+  ctx.textAlign = 'left'; ctx.fillStyle = '#ecc869'; ctx.font = '700 28px Georgia, serif'; ctx.fillText('VINÍCIUS GRATON · CONSULTOR DE IMÓVEIS', x, safe.top + 30)
+  eyebrowBadge(ctx, W, eyebrow, safe)
   ctx.fillStyle = '#fff'; ctx.font = 'italic 600 70px Georgia, serif'
-  ctx.fillText(im.tipo || 'Imóvel', x2, y); y += 74
-  ctx.fillText(`no ${im.bairro}`, x2, y); y += 90
-  ctx.fillStyle = '#ecc869'; ctx.font = '700 78px Georgia, serif'; ctx.fillText(precoTxt(im), x2, y); y += 60
-  ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.font = '400 34px Georgia, serif'; ctx.fillText(specsLinha(im), x2, y); y += 48
-  ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.font = '400 26px Georgia, serif'; ctx.fillText(`${im.cidade}/${im.uf || 'MG'} · Cód. ${im.codigo}`, x2, y)
+  ctx.fillText(im.tipo || 'Imóvel', x, y); y += 74
+  ctx.fillText(`no ${im.bairro}`, x, y); y += 90
+  ctx.fillStyle = '#ecc869'; ctx.font = '700 76px Georgia, serif'; ctx.fillText(precoTxt(im), x, y); y += 56
+  ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.font = '400 34px Georgia, serif'; ctx.fillText(specsLinha(im), x, y); y += 46
+  ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.font = '400 26px Georgia, serif'; ctx.fillText(`${im.cidade}/${im.uf || 'MG'} · Cód. ${im.codigo}`, x, y)
 }
-function tplGradiente(ctx, W, H, im, eyebrow, formato) {
+function tplGradiente(ctx, W, H, im, eyebrow, safe) {
   const g = ctx.createLinearGradient(0, 0, W, H)
   g.addColorStop(0, 'rgba(184,38,18,0.0)'); g.addColorStop(0.55, 'rgba(20,16,10,0.2)'); g.addColorStop(1, 'rgba(201,150,47,0.78)')
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H)
-  const bg = ctx.createLinearGradient(0, H * 0.55, 0, H); bg.addColorStop(0, 'rgba(8,10,16,0)'); bg.addColorStop(1, 'rgba(8,10,16,0.9)')
-  ctx.fillStyle = bg; ctx.fillRect(0, H * 0.55, W, H * 0.45)
-  pillGold(ctx, 56, 56, (im.tipo || 'Imóvel').toUpperCase()); eyebrowBadge(ctx, W, eyebrow)
-  const pad = 64; let y = H - pad; ctx.textAlign = 'left'
+  const bY = H - safe.bottom
+  const bg = ctx.createLinearGradient(0, bY - 360, 0, H); bg.addColorStop(0, 'rgba(8,10,16,0)'); bg.addColorStop(1, 'rgba(8,10,16,0.9)')
+  ctx.fillStyle = bg; ctx.fillRect(0, bY - 360, W, H - (bY - 360))
+  pillGold(ctx, safe.side, safe.top, (im.tipo || 'Imóvel').toUpperCase()); eyebrowBadge(ctx, W, eyebrow, safe)
+  const pad = safe.side; let y = bY; ctx.textAlign = 'left'
   ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.font = '700 30px Arial'; ctx.fillText('VINÍCIUS GRATON · viniciusgraton.com.br', pad, y); y -= 58
   ctx.fillStyle = '#fff'; ctx.font = '600 38px Arial'; ctx.fillText(specsLinha(im), pad, y); y -= 64
   ctx.fillStyle = '#fff'; ctx.font = '500 42px Arial'; ctx.fillText(`${im.tipo} no ${im.bairro}`, pad, y); y -= 100
-  ctx.fillStyle = '#fff'; ctx.font = '900 104px Arial'; ctx.shadowColor = 'rgba(0,0,0,0.35)'; ctx.shadowBlur = 18; ctx.fillText(precoTxt(im), pad, y); ctx.shadowBlur = 0
+  ctx.fillStyle = '#fff'; ctx.font = '900 100px Arial'; ctx.shadowColor = 'rgba(0,0,0,0.35)'; ctx.shadowBlur = 18; ctx.fillText(precoTxt(im), pad, y); ctx.shadowBlur = 0
 }
 
 function desenhar(canvas, img, im, opts) {
   const { formato, template, eyebrow } = opts
-  const W = 1080, H = formato === 'story' ? 1920 : 1080
+  const [W, H] = dimsDe(formato), safe = safeDe(formato)
   canvas.width = W; canvas.height = H
   const ctx = canvas.getContext('2d')
   coverDraw(ctx, img, 0, 0, W, H)
   const fn = { classico: tplClassico, faixa: tplFaixa, minimal: tplMinimal, editorial: tplEditorial, gradiente: tplGradiente }[template] || tplFaixa
-  fn(ctx, W, H, im, eyebrow, formato)
+  fn(ctx, W, H, im, eyebrow, safe)
+}
+// guias de zona segura — desenhadas SÓ no preview (nunca entram no arquivo exportado)
+function desenharGuias(canvas, formato) {
+  const [W, H] = dimsDe(formato), safe = safeDe(formato)
+  const ctx = canvas.getContext('2d')
+  ctx.save(); ctx.strokeStyle = 'rgba(255,70,70,0.9)'; ctx.lineWidth = 3; ctx.setLineDash([16, 12])
+  ctx.strokeRect(safe.side, safe.top, W - 2 * safe.side, (H - safe.bottom) - safe.top); ctx.setLineDash([])
+  ctx.fillStyle = 'rgba(255,70,70,0.95)'; ctx.font = '600 26px Arial'; ctx.textAlign = 'center'
+  if (formato === 'story') {
+    ctx.fillText('▲ zona do @perfil — evite texto', W / 2, safe.top - 16)
+    ctx.fillText('▼ barra de resposta / botões', W / 2, H - safe.bottom + 36)
+  } else {
+    ctx.fillText('margem segura', W / 2, safe.top - 12)
+  }
+  ctx.restore()
 }
 
 function montarLegenda(im) {
@@ -175,6 +197,7 @@ export default function PostGen() {
   const [formato, setFormato] = useState('feed')
   const [template, setTemplate] = useState('faixa')
   const [eyebrow, setEyebrow] = useState('')
+  const [guias, setGuias] = useState(true)
   const [legenda, setLegenda] = useState('')
   const [copiado, setCopiado] = useState(false)
   const [baixando, setBaixando] = useState('')
@@ -204,9 +227,9 @@ export default function PostGen() {
   const redesenhar = useCallback(async () => {
     if (!im || !canvasRef.current) return
     const url = fotos[fotoIdx] || fotos[0]; if (!url) return
-    try { const img = await carregarImagem(fotoProxy(url)); desenhar(canvasRef.current, img, im, opts) }
+    try { const img = await carregarImagem(fotoProxy(url)); desenhar(canvasRef.current, img, im, opts); if (guias) desenharGuias(canvasRef.current, formato) }
     catch { setErro('Não consegui carregar essa foto. Tente outra.') }
-  }, [im, fotoIdx, formato, template, eyebrow])
+  }, [im, fotoIdx, formato, template, eyebrow, guias])
   useEffect(() => { redesenhar() }, [redesenhar])
 
   const toggleSel = (i) => setSel((s) => { const n = new Set(s); n.has(i) ? n.delete(i) : n.add(i); return n })
@@ -273,8 +296,10 @@ export default function PostGen() {
                 <span className="pg-lbl">Formato</span>
                 <div className="postgen-formato">
                   <button type="button" className={`fp-pill ${formato === 'feed' ? 'on' : ''}`} onClick={() => setFormato('feed')}>Feed 1:1</button>
+                  <button type="button" className={`fp-pill ${formato === 'feed45' ? 'on' : ''}`} onClick={() => setFormato('feed45')}>Feed 4:5</button>
                   <button type="button" className={`fp-pill ${formato === 'story' ? 'on' : ''}`} onClick={() => setFormato('story')}>Story 9:16</button>
                 </div>
+                <label className="mf-check" style={{ marginTop: 8 }}><input type="checkbox" checked={guias} onChange={(e) => setGuias(e.target.checked)} /> Mostrar zonas seguras (não saem no arquivo)</label>
               </div>
               <div style={{ flex: 1 }}>
                 <span className="pg-lbl">Selo (chamada)</span>

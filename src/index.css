@@ -2047,6 +2047,7 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .postgen-preview { position: sticky; top: 90px; }
 .postgen-canvas { width: 100%; height: auto; border-radius: 14px; box-shadow: 0 20px 50px -24px rgba(0,0,0,0.55); display: block; background: #0a0e16; }
 .postgen-canvas--feed { max-width: 360px; }
+.postgen-canvas--feed45 { max-width: 330px; }
 .postgen-canvas--story { max-width: 300px; }
 .postgen-controles { display: flex; flex-direction: column; gap: 12px; }
 .postgen-formato { display: flex; gap: 8px; }
