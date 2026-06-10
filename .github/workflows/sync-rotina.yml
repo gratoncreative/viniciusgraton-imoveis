@@ -6,7 +6,7 @@ name: Sincronizar catálogo da Rotina
 
 on:
   schedule:
-    - cron: '17 7 * * *' # ~04:17 (horário de Brasília), todos os dias
+    - cron: '0 16 * * *' # 13:00 (horário de Brasília = 16:00 UTC), todos os dias
   workflow_dispatch: {}
 
 permissions:
