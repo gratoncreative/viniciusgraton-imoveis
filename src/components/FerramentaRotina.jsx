@@ -33,24 +33,23 @@ function destaqueFrase(im) {
   return ''
 }
 
-// 5 ganchos de primeiro contato com gatilhos mentais
+// 5 ganchos de primeiro contato — tom consultivo (pede a opinião do cliente)
 function ganchos(im, nome) {
   const t = (im.tipo || 'imóvel').toLowerCase()
   const b = im.bairro || 'região'
-  const v = im.valor || ''
   return [
-    { tag: 'Escassez', txt: `Apareceu um ${t} no ${b} com a sua cara.. e imóvel bom nesse bairro costuma sair rápido. Quis te mostrar antes que esse voe.` },
-    { tag: 'Projeção', txt: `Fecha o olho e imagina.. você chegando todo dia num ${t} no ${b}${destaqueFrase(im)}. Esse aqui tem tudo pra ser o seu novo endereço.` },
-    { tag: 'Prova social', txt: `${b} é um dos pontos mais procurados de Uberlândia agora, e esse ${t} reúne o que mais pesa na hora de comprar bem.` },
-    { tag: 'Custo-benefício', txt: `Olha que oportunidade.. um ${t}${specsCurto(im) ? ` com ${specsCurto(im)}` : ''} no ${b}${v ? ` por ${v}` : ''}. Difícil achar um custo-benefício desses por aqui.` },
-    { tag: 'Exclusividade', txt: `Separei esse ${t} no ${b} pensando exatamente no seu perfil. Antes de abrir pra todo mundo, quis te dar a primeira olhada.` },
+    { tag: 'Opinião', txt: `Acabou de chegar para nós um imóvel potencial para você. Quero compartilhar com você e saber a sua opinião..` },
+    { tag: 'Exclusivo', txt: `Separei esse ${t} no ${b} pensando em você e queria muito ouvir o que você acha..` },
+    { tag: 'Oportunidade', txt: `Apareceu uma oportunidade que tem tudo a ver com o que você procura. Dá uma olhada e me conta o que achou..` },
+    { tag: 'Seu perfil', txt: `Esse ${t} no ${b} chegou agora e lembrei na hora do seu perfil. Quero a sua opinião sincera..` },
+    { tag: 'Prévia', txt: `Antes de divulgar pra mais gente, quis te mostrar primeiro. Vê se faz sentido pra você..` },
   ]
 }
 
 // monta a mensagem completa do WhatsApp (gancho + imóvel + LINK + tópicos de benefícios)
 function montarMensagem(im, beneficios, nome, gancho) {
   const pn = primeiroNome(nome)
-  const ola = pn ? `${saudacao()}, ${pn}! ` : `${saudacao()}! `
+  const ola = pn ? `${saudacao()}, ${pn}! Tudo bem? ` : `${saudacao()}! Tudo bem? `
   const valor = im.valor ? `${im.valor}${im.operacao === 'locação' ? '/mês' : ''}` : ''
   const linhas = [
     `${ola}${gancho}`,
@@ -62,10 +61,10 @@ function montarMensagem(im, beneficios, nome, gancho) {
     '',
     `📸 Fotos e todos os detalhes.. ${im.link}`,
     '',
-    `📍 A até 1km desse imóvel você tem..`,
+    `📍 E olha o melhor, no raio de 1km dele temos:`,
     ...beneficios.map((x) => `• ${x}`),
     '',
-    `Faz sentido marcarmos uma visita essa semana? Me diz o melhor dia e horário que eu organizo tudo pra você.`,
+    `Faz sentido marcarmos uma visita essa semana? Estou com a chave em mãos.`,
     '',
     `Vinícius Graton · Consultor de imóveis · Rotina Imobiliária`,
   ].filter((x) => x !== false && x !== undefined && x !== null)
