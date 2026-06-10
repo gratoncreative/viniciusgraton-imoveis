@@ -307,6 +307,14 @@ export default function ImovelDetalhe() {
                 <ul className="det-apre-destaques">
                   {ap.destaques.map((d, i) => <li key={i}>{d}</li>)}
                 </ul>
+                {temDescricao && (
+                  <>
+                    <span className="det-apre-sub">Descrição do imóvel</span>
+                    <div className="det-apre-desc">
+                      {paragrafos.map((p, i) => <p key={i}>{p}</p>)}
+                    </div>
+                  </>
+                )}
               </div>
             ) })()}
           </div>
@@ -372,19 +380,6 @@ export default function ImovelDetalhe() {
             <div className="det-dest-grid">
               {destaques.map((d, i) => <Destaque key={i} {...d} />)}
             </div>
-          </div>
-        )}
-
-        {/* Sobre o imóvel (descrição real da fonte) */}
-        {temDescricao && (
-          <div className="det-sobre">
-            <h2 className="det-rel-titulo">Sobre o imóvel</h2>
-            <div className="det-sobre-texto">
-              {paragrafos.map((p, i) => <p key={i}>{p}</p>)}
-            </div>
-            <a className="btn btn-gold det-sobre-cta" href={linkWhatsApp(waImovel(im))} target="_blank" rel="noopener">
-              <IconWhats /> Quero saber mais sobre este imóvel
-            </a>
           </div>
         )}
 
