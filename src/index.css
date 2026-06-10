@@ -795,6 +795,12 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .rt-gate-nota { font-size: 0.8rem; color: #9a8e78; text-align: center; margin-top: 6px; }
 .rt-gate-form .cg-destaque .calc-input { border: 2px solid var(--gold-3); box-shadow: 0 8px 22px -14px rgba(184,134,47,0.6); }
 .rt-gate-form .cg-destaque > span { color: var(--gold-3); font-weight: 700; }
+
+/* bloco SEO pré-renderizado (visível só um instante antes do app montar) */
+.pre-seo { max-width: 760px; margin: 100px auto; padding: 0 24px; color: var(--text-soft); }
+.pre-seo h1 { font-family: var(--font-head); font-weight: 800; font-size: 1.6rem; color: var(--text); margin-bottom: 14px; }
+.pre-seo ul { margin: 14px 0; padding-left: 18px; }
+.pre-seo a { color: var(--gold-1); }
 @media (max-width: 560px) { .rt-gate-2 { grid-template-columns: 1fr; } }
 
 /* ===== Landing /anunciar repaginada ===== */

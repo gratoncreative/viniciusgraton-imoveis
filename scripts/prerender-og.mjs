@@ -18,6 +18,10 @@ const SITE = 'https://viniciusgraton.com.br'
 const baseHtml = readFileSync(resolve(DIST, 'index.html'), 'utf8')
 const dados = JSON.parse(readFileSync(resolve(ROOT, 'src/imoveis-destaque.json'), 'utf8'))
 const imoveis = (dados.imoveis || []).filter((im) => !im.pendente) // pendentes só entram após aprovação
+// espelho completo da Rotina (feed leve) — gera página estática única p/ cada um (SEO)
+const feedAll = (() => { try { return JSON.parse(readFileSync(resolve(ROOT, 'public/catalogo.json'), 'utf8')).imoveis || [] } catch { return [] } })()
+const bundleCods = new Set(imoveis.map((im) => String(im.codigo)))
+const feed = feedAll.filter((im) => im && im.codigo && !bundleCods.has(String(im.codigo)))
 const construtoras = JSON.parse(readFileSync(resolve(ROOT, 'src/construtoras.json'), 'utf8')).construtoras || []
 const condominios = JSON.parse(readFileSync(resolve(ROOT, 'src/condominios.json'), 'utf8')).condominios || []
 // posts do blog (extrai os slugs do src/blog.js sem precisar de bundler)
@@ -51,9 +55,63 @@ const trunc = (s, n = 160) => {
 }
 const abs = (u) => (u && u.startsWith('http') ? u : SITE + u)
 
+// Descrição PRÓPRIA e única por imóvel (não copia a da Rotina) — varia por código + bairro + specs.
+function descricaoUnica(im) {
+  const t = im.tipo || 'Imóvel'
+  const tl = t.toLowerCase()
+  const b = im.bairro || 'Uberlândia'
+  const seed = [...String(im.codigo)].reduce((a, c) => a + c.charCodeAt(0), 0)
+  const pick = (arr, off = 0) => arr[(seed + off) % arr.length]
+  const ehApto = /apart|kit|studio|stúdio|loft|flat|cobertura/i.test(t)
+  const specs = [
+    im.area > 0 && `${im.area} m²`,
+    im.quartos > 0 && `${im.quartos} ${plural(im.quartos, 'quarto', 'quartos')}`,
+    im.suites > 0 && `${im.suites} ${plural(im.suites, 'suíte', 'suítes')}`,
+    im.banheiros > 0 && `${im.banheiros} ${plural(im.banheiros, 'banheiro', 'banheiros')}`,
+    im.vagas > 0 && `${im.vagas} ${plural(im.vagas, 'vaga', 'vagas')}`,
+  ].filter(Boolean)
+  const andar = ehApto && im.andar != null && im.andar !== '' ? (Number(im.andar) === 0 ? 'no térreo' : `no ${im.andar}º andar`) : ''
+  const elev = ehApto && typeof im.elevador === 'boolean' ? (im.elevador ? 'prédio com elevador' : 'prédio sem elevador') : ''
+  const ab = [
+    `Conheça este ${tl} à venda no bairro ${b}, em Uberlândia.`,
+    `Oportunidade no ${b}, Uberlândia: ${tl} à venda com atendimento personalizado.`,
+    `${t} à venda no ${b}, uma das regiões procuradas de Uberlândia.`,
+    `Disponível no ${b}, em Uberlândia, este ${tl} pode ser o seu próximo endereço.`,
+  ]
+  const me = [
+    `São ${specs.join(', ')}${andar ? ', ' + andar : ''}${elev ? ', ' + elev : ''}.`,
+    `O imóvel conta com ${specs.join(', ')}${andar ? ' ' + andar : ''}${elev ? ' e ' + elev : ''}.`,
+    `Oferece ${specs.join(', ')}${andar ? ', ' + andar : ''}${elev ? ', ' + elev : ''}.`,
+  ]
+  const fe = [
+    `Atendimento pessoal do Vinícius Graton, consultor da Rotina Imobiliária — agende uma visita e tire suas dúvidas.`,
+    `Fale com o Vinícius Graton (Rotina Imobiliária) para visitar, simular o financiamento e negociar com segurança.`,
+    `Com a curadoria e o acompanhamento do Vinícius Graton, da Rotina Imobiliária, do primeiro contato à entrega das chaves.`,
+  ]
+  return `${pick(ab)} ${specs.length ? pick(me, 1) + ' ' : ''}${im.condominio ? `Condomínio de R$ ${Number(im.condominio).toLocaleString('pt-BR')}. ` : ''}${pick(fe, 2)}`
+}
+
+// bloco de conteúdo estático único dentro do #root (crawler lê; o React substitui ao montar)
+function bodySeo(im, descUnica) {
+  const specs = [
+    im.area > 0 && `Área: ${im.area} m²`,
+    im.quartos > 0 && `Quartos: ${im.quartos}`,
+    im.suites > 0 && `Suítes: ${im.suites}`,
+    im.banheiros > 0 && `Banheiros: ${im.banheiros}`,
+    im.vagas > 0 && `Vagas: ${im.vagas}`,
+    im.condominio > 0 && `Condomínio: R$ ${Number(im.condominio).toLocaleString('pt-BR')}`,
+  ].filter(Boolean)
+  return `<main class="pre-seo"><h1>${esc(im.tipo)} à venda no ${esc(im.bairro)}, Uberlândia — Cód. ${esc(im.codigo)}</h1>` +
+    `<p>${esc(descUnica)}</p>` +
+    `<ul>${specs.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>` +
+    `<p>Imóvel à venda em ${esc(im.bairro)}, ${esc(im.cidade || 'Uberlândia')} - MG, com Vinícius Graton, consultor credenciado da Rotina Imobiliária. Veja fotos, localização e fale comigo para agendar uma visita.</p>` +
+    `<p><a href="/imoveis">Ver mais imóveis em Uberlândia</a></p></main>`
+}
+
 function render(im) {
   const titulo = `${im.tipo} no ${im.bairro}, Uberlândia — ${formatPreco(im.preco)}`
-  const desc = trunc(resumo(im))
+  const descUnica = descricaoUnica(im)
+  const desc = trunc(descUnica)
   const url = `${SITE}/imovel/${im.codigo}`
   const image = abs(im.img)
   const ld = {
@@ -63,7 +121,7 @@ function render(im) {
         '@type': 'Product',
         '@id': `${url}#imovel`,
         name: `${im.tipo} no ${im.bairro}, Uberlândia`,
-        description: resumo(im),
+        description: descUnica,
         image: (im.fotos && im.fotos.length ? im.fotos : [im.img]).map(abs),
         category: 'Imóvel à venda',
         sku: String(im.codigo),
@@ -103,6 +161,7 @@ function render(im) {
     .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${esc(image)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
     .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
+    .replace('<div id="root"></div>', `<div id="root">${bodySeo(im, descUnica)}</div>`)
 
   return html
 }
@@ -114,12 +173,20 @@ for (const im of imoveis) {
   writeFileSync(resolve(dir, 'index.html'), render(im))
   n++
 }
-console.log(`✓ prerender-og: ${n} páginas de imóvel geradas em dist/imovel/{codigo}/index.html`)
+// espelho da Rotina — uma página estática única por imóvel (conteúdo próprio + JSON-LD)
+let nf = 0
+for (const im of feed) {
+  const dir = resolve(DIST, 'imovel', String(im.codigo))
+  mkdirSync(dir, { recursive: true })
+  writeFileSync(resolve(dir, 'index.html'), render(im))
+  nf++
+}
+console.log(`✓ prerender-og: ${n} curados + ${nf} espelho = ${n + nf} páginas de imóvel`)
 
 // páginas de bairro (SEO) — meta/canonical/JSON-LD por bairro
 const slugify = (s) => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 const editoriais = ['Jardim Karaíba', 'Morada da Colina', 'Cidade Jardim', 'Gávea', 'Granja Marileusa', 'Vigilato Pereira', 'Santa Maria', 'Jardim Sul', 'Jardim Finotti', 'Parque Una', 'Patrimônio', 'Lídice', 'Santa Mônica', 'Tabajaras', 'Nova Uberlândia', 'Tubalina']
-const bairrosSeo = [...new Set([...editoriais, ...imoveis.map((im) => im.bairro)])]
+const bairrosSeo = [...new Set([...editoriais, ...imoveis.map((im) => im.bairro), ...feed.map((im) => im.bairro)])]
   .filter(Boolean)
   .map((nome) => ({ nome, slug: slugify(nome) }))
 
@@ -307,6 +374,13 @@ const urls = [
     loc: `${SITE}/imovel/${im.codigo}`,
     freq: 'weekly',
     pri: '0.8',
+    img: abs(im.img),
+    imgTitle: `${im.tipo} no ${im.bairro}, Uberlândia`,
+  })),
+  ...feed.map((im) => ({
+    loc: `${SITE}/imovel/${im.codigo}`,
+    freq: 'weekly',
+    pri: '0.6',
     img: abs(im.img),
     imgTitle: `${im.tipo} no ${im.bairro}, Uberlândia`,
   })),
