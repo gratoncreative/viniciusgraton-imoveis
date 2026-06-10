@@ -750,11 +750,17 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .dif-ganha { list-style: none; display: flex; flex-direction: column; gap: 9px; margin-top: 18px; }
 .dif-ganha li { display: flex; align-items: center; gap: 11px; font-weight: 500; color: #2f2a22; }
 .dif-check { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: rgba(184,134,47,0.14); color: var(--gold-3); }
-.dif-cta { text-align: center; max-width: 640px; margin: 44px auto 0; background: #11151d; color: #fff; border-radius: 22px; padding: 40px 32px; }
-.dif-cta svg { color: var(--gold-1); }
-.dif-cta h3 { font-family: var(--font-head); font-weight: 800; font-size: 1.5rem; margin: 12px 0 8px; }
-.dif-cta p { color: rgba(255,255,255,0.72); line-height: 1.55; margin-bottom: 22px; }
+.dif-cta { position: relative; overflow: hidden; text-align: center; max-width: 680px; margin: 56px auto 0; background: linear-gradient(160deg, #161b27 0%, #0d1119 100%); color: #fff; border: 1px solid rgba(224,181,86,0.28); border-radius: 24px; padding: clamp(36px, 5vw, 52px) clamp(24px, 4vw, 44px); box-shadow: 0 40px 90px -50px rgba(0,0,0,0.7); }
+.dif-cta::before { content: ''; position: absolute; top: -120px; left: 50%; transform: translateX(-50%); width: 420px; height: 280px; background: radial-gradient(circle, rgba(224,181,86,0.22), transparent 70%); filter: blur(10px); pointer-events: none; }
+.dif-cta > * { position: relative; z-index: 1; }
+.dif-cta > svg { color: var(--gold-1); }
+.dif-cta h3 { font-family: var(--font-head); font-weight: 800; font-size: clamp(1.4rem, 3vw, 1.8rem); margin: 12px 0 10px; color: #fff; }
+.dif-cta p { color: rgba(238,240,245,0.82); line-height: 1.6; margin-bottom: 26px; max-width: 30em; margin-left: auto; margin-right: auto; }
 .dif-cta-acoes { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.dif-cta-acoes .btn-ghost { color: #fff; border: 1.5px solid rgba(255,255,255,0.5); background: rgba(255,255,255,0.05); }
+.dif-cta-acoes .btn-ghost:hover { background: var(--gold-grad); border-color: transparent; color: #20160a; }
+.dif-cta-acoes .btn-ghost svg { color: currentColor; }
+@media (max-width: 480px) { .dif-cta-acoes { flex-direction: column; } .dif-cta-acoes .btn { width: 100%; justify-content: center; } }
 @media (max-width: 640px) { .dif-sec { grid-template-columns: 1fr; gap: 16px; padding: 26px 22px; } .dif-sec-ico { width: 58px; height: 58px; } }
 
 /* ===== Perguntas rápidas (página do imóvel) ===== */
