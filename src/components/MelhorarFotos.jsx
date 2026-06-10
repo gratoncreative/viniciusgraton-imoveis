@@ -11,6 +11,19 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
 const PADRAO = { angle: 0, brilho: 1.05, contraste: 1.09, satur: 1.12, nitidez: 0.6, wb: true, temp: 0, vinheta: 0, escala: 1 }
 const carregarImagem = (src) => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src })
 
+// Filtros prontos (presets de realce) — clicar aplica e mostra na hora
+const FILTROS = [
+  { nome: 'Original', s: { brilho: 1.05, contraste: 1.09, satur: 1.12, nitidez: 0.6, temp: 0, vinheta: 0, wb: true } },
+  { nome: 'Vívido', s: { brilho: 1.06, contraste: 1.16, satur: 1.32, nitidez: 0.75, temp: 0.04, vinheta: 0, wb: true } },
+  { nome: 'Nítido HDR', s: { brilho: 1.04, contraste: 1.22, satur: 1.16, nitidez: 1.1, temp: 0, vinheta: 0.1, wb: true } },
+  { nome: 'Clássico', s: { brilho: 1.03, contraste: 1.12, satur: 1.04, nitidez: 0.5, temp: 0.05, vinheta: 0, wb: true } },
+  { nome: 'Quente', s: { brilho: 1.05, contraste: 1.08, satur: 1.14, nitidez: 0.5, temp: 0.2, vinheta: 0, wb: false } },
+  { nome: 'Frio', s: { brilho: 1.05, contraste: 1.1, satur: 1.08, nitidez: 0.5, temp: -0.18, vinheta: 0, wb: false } },
+  { nome: 'Suave', s: { brilho: 1.08, contraste: 0.98, satur: 1.06, nitidez: 0.25, temp: 0.03, vinheta: 0, wb: true } },
+  { nome: 'Dramático', s: { brilho: 1.0, contraste: 1.26, satur: 1.1, nitidez: 0.8, temp: -0.02, vinheta: 0.32, wb: true } },
+  { nome: 'P&B', s: { brilho: 1.05, contraste: 1.14, satur: 0, nitidez: 0.7, temp: 0, vinheta: 0.12, wb: true } },
+]
+
 // ——— estima o ângulo de inclinação (graus) a partir das bordas horizontais/verticais ———
 function estimarAngulo(img) {
   const w = 240, h = Math.max(1, Math.round((img.height / img.width) * 240))
@@ -153,22 +166,19 @@ function montarSlide(quadro, W, H) {
   ctx.drawImage(quadro, (W - w) / 2, (H - h) / 2, w, h)
   return c
 }
-function marcaDagua(ctx, W, H, localMs, slideMs, texto) {
-  const f = 700
-  let alpha = 1
-  if (localMs < f) alpha = localMs / f
-  else if (localMs > slideMs - f) alpha = Math.max(0, (slideMs - localMs) / f)
+// marca d'água do vídeo: CENTRAL, CONSTANTE e TRANSLÚCIDA (deixa ver a transição ao fundo)
+function marcaDagua(ctx, W, H, texto) {
+  const fs = Math.round(Math.min(W, H) * 0.072)
   ctx.save()
-  ctx.textAlign = 'center'
-  ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 16
-  ctx.globalAlpha = 0.92 * alpha
-  ctx.font = '600 56px Georgia, "Times New Roman", serif'
-  ctx.fillStyle = '#f3e2b4'
-  ctx.fillText((texto || 'Vinícius Graton').toUpperCase(), W / 2, H - 104)
-  ctx.globalAlpha = 0.78 * alpha
-  ctx.font = '400 28px Georgia, serif'
-  ctx.fillStyle = 'rgba(255,255,255,0.96)'
-  ctx.fillText('Consultor de Imóveis · Uberlândia', W / 2, H - 60)
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+  ctx.shadowColor = 'rgba(0,0,0,0.4)'; ctx.shadowBlur = Math.round(W * 0.012)
+  ctx.globalAlpha = 0.22
+  ctx.fillStyle = '#ffffff'
+  ctx.font = `600 ${fs}px Georgia, "Times New Roman", serif`
+  ctx.fillText((texto || 'Vinícius Graton').toUpperCase(), W / 2, H / 2)
+  ctx.globalAlpha = 0.18
+  ctx.font = `400 ${Math.round(fs * 0.4)}px Georgia, serif`
+  ctx.fillText('Consultor de Imóveis · Uberlândia', W / 2, H / 2 + fs * 0.78)
   ctx.restore()
 }
 const MIME = { jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp' }
@@ -195,6 +205,7 @@ export default function MelhorarFotos() {
   const [baixando, setBaixando] = useState('')
   const [formato, setFormato] = useState('jpeg')
   const [durSeg, setDurSeg] = useState(3)
+  const [videoFmt, setVideoFmt] = useState('vertical')
   const [video, setVideo] = useState(null) // {fase:'gravando'|'pronto'|'erro', pct, msg}
   const [wm, setWm] = useState({ on: false, texto: 'Vinícius Graton', pos: 'inf-dir', tam: 4, opac: 0.85 })
   const [ia, setIa] = useState(null) // {fase, msg}
@@ -290,7 +301,9 @@ export default function MelhorarFotos() {
     if (!window.MediaRecorder) { setVideo({ fase: 'erro', msg: 'Seu navegador não permite gerar vídeo aqui. Use o Chrome.' }); return }
     setVideo({ fase: 'gravando', pct: 0 })
     try {
-      const W = 1080, H = 1920, FPS = 30
+      const DIMS = { vertical: [1080, 1920], quadrado: [1080, 1080], horizontal: [1920, 1080] }
+      const [W, H] = DIMS[videoFmt] || DIMS.vertical
+      const FPS = 30
       const slideMs = durSeg * 1000, fadeMs = Math.min(700, slideMs * 0.3)
       const n = fotos.length
       const cv = document.createElement('canvas'); cv.width = W; cv.height = H
@@ -327,7 +340,7 @@ export default function MelhorarFotos() {
             const a1 = getSlide(idx + 1)
             if (a1) { ctx.globalAlpha = a; ctx.drawImage(a1, 0, 0); ctx.globalAlpha = 1 }
           }
-          marcaDagua(ctx, W, H, localT, slideMs, wm.texto)
+          marcaDagua(ctx, W, H, wm.texto)
           setVideo({ fase: 'gravando', pct: Math.round((t / total) * 100) })
           requestAnimationFrame(frame)
         }
@@ -436,7 +449,17 @@ export default function MelhorarFotos() {
                 </div>
 
                 <div className="mf-grupo">
-                  <div className="mf-grupo-tit">Realce</div>
+                  <div className="mf-grupo-tit">Filtros (clique pra ver na hora)</div>
+                  <div className="mf-filtros">
+                    {FILTROS.map((f) => (
+                      <button key={f.nome} type="button" className="mf-filtro" onClick={() => setS(f.s)}>{f.nome}</button>
+                    ))}
+                  </div>
+                  <button className="admin-btn admin-btn--mini" onClick={aplicarTodas} style={{ marginTop: 4 }}>✓ Aplicar este realce a TODAS</button>
+                </div>
+
+                <div className="mf-grupo">
+                  <div className="mf-grupo-tit">Ajuste fino</div>
                   <Slider label="Brilho" val={foto.s.brilho} min={0.8} max={1.3} step={0.01} on={(v) => setS({ brilho: v })} fmt={(v) => `${Math.round(v * 100)}%`} />
                   <Slider label="Contraste" val={foto.s.contraste} min={0.8} max={1.4} step={0.01} on={(v) => setS({ contraste: v })} fmt={(v) => `${Math.round(v * 100)}%`} />
                   <Slider label="Cor (saturação)" val={foto.s.satur} min={0.8} max={1.5} step={0.01} on={(v) => setS({ satur: v })} fmt={(v) => `${Math.round(v * 100)}%`} />
@@ -492,6 +515,13 @@ export default function MelhorarFotos() {
 
                 <div className="mf-grupo">
                   <div className="mf-grupo-tit">🎬 Vídeo de apresentação</div>
+                  <label className="mf-sel"><span>Formato</span>
+                    <select value={videoFmt} onChange={(e) => setVideoFmt(e.target.value)} disabled={!!video}>
+                      <option value="vertical">Vertical 9:16 — Stories, Reels e Status</option>
+                      <option value="quadrado">Quadrado 1:1 — Feed do Instagram/Facebook</option>
+                      <option value="horizontal">Horizontal 16:9 — YouTube, site e TV</option>
+                    </select>
+                  </label>
                   <label className="mf-sel"><span>Tempo por foto</span>
                     <select value={durSeg} onChange={(e) => setDurSeg(parseFloat(e.target.value))} disabled={!!video}>
                       <option value={2}>2 segundos</option>
@@ -500,9 +530,15 @@ export default function MelhorarFotos() {
                     </select>
                   </label>
                   <button className="btn btn-gold" onClick={gerarVideo} disabled={!!video}>
-                    {video ? (video.fase === 'gravando' ? `Gerando vídeo… ${video.pct}%` : video.fase === 'pronto' ? '✓ Vídeo pronto!' : 'Tentar de novo') : '🎬 Baixar como vídeo'}
+                    {video ? (video.fase === 'gravando' ? `Montando seu vídeo… ${video.pct}%` : video.fase === 'pronto' ? '✓ Vídeo pronto!' : 'Tentar de novo') : '🎬 Baixar como vídeo'}
                   </button>
-                  <p className="mf-nota">Slideshow vertical (9:16) com transição suave entre as fotos e a marca d'água "Vinícius Graton" aparecendo suavemente. Gera em tempo real (~{Math.round(fotos.length * durSeg)}s). Usa o realce de cada foto. Sai em MP4 (ou WebM, conforme o navegador).</p>
+                  {video?.fase === 'gravando' && (
+                    <div className="mf-prog" aria-hidden="true">
+                      <div className="mf-prog-bar" style={{ width: (video.pct || 1) + '%' }} />
+                      <span className="mf-prog-film">🎞️</span>
+                    </div>
+                  )}
+                  <p className="mf-nota">Slideshow com transição suave e a marca d'água "{wm.texto || 'Vinícius Graton'}" centralizada e translúcida (constante, dá pra ver a transição por trás). Gera em tempo real (~{Math.round(fotos.length * durSeg)}s). Usa o realce de cada foto. Sai em MP4 (ou WebM, conforme o navegador).</p>
                   {video?.fase === 'erro' && <p className="lead-erro">{video.msg}</p>}
                 </div>
 
