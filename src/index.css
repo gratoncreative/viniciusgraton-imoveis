@@ -122,7 +122,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 .text-gold { background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
-section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
+section { position: relative; padding: clamp(30px, 4.2vw, 56px) 0; }
 
 /* ---------- seções com fundo claro (leveza, cores invertidas) ---------- */
 #destaque.section--light, #contato.section--light, .imovel-pg.section--light { background: #fff; }
@@ -224,23 +224,32 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 /* ---------- HERO ---------- */
 .hero { --px: 0; --py: 0; min-height: 100svh; display: grid; align-items: center; padding-top: 120px; padding-bottom: 60px; position: relative; overflow: hidden; perspective: 1000px; }
 /* camada 1: foto realista com parallax suave */
-.hero-bg { position: absolute; inset: -7%; z-index: 0; background-position: center; background-size: cover; transform: translate3d(calc(var(--px) * -22px), calc(var(--py) * -16px), 0) scale(1.12); transition: transform 0.5s cubic-bezier(0.22,1,0.36,1); filter: saturate(1.06) contrast(1.03); will-change: transform; }
-/* camada 2: tonalização escura premium + brilho dourado (legibilidade do texto) */
+.hero-bg { display: none; } /* fundo agora é a cena "jardim" (HeroSkyline), não a foto */
+/* camada 2: leve aprofundamento só onde tem texto (bio à direita / base), preservando a cena verde */
 .hero-bg-tint { position: absolute; inset: 0; z-index: 1; background:
-  linear-gradient(95deg, rgba(6,9,14,0.6) 0%, rgba(6,9,14,0.34) 34%, rgba(6,9,14,0.82) 70%, rgba(6,9,14,0.96) 100%),
-  linear-gradient(0deg, rgba(6,9,14,0.92) 0%, rgba(6,9,14,0.1) 42%, transparent 70%),
-  radial-gradient(760px 540px at 12% 6%, rgba(224,181,86,0.13), transparent 64%); }
+  linear-gradient(100deg, rgba(8,18,14,0) 38%, rgba(8,18,14,0.45) 72%, rgba(8,18,14,0.72) 100%),
+  linear-gradient(0deg, rgba(8,18,14,0.55) 0%, rgba(8,18,14,0.05) 34%, transparent 60%); }
 /* camada 2.5: skyline de prédios animado (silhueta + janelas que acendem em dourado) */
-.hero-skyline { position: absolute; left: 0; right: 0; bottom: 0; height: 62%; z-index: 1; pointer-events: none; overflow: hidden;
-  background: linear-gradient(to top, rgba(7,10,17,0.96) 0%, rgba(7,10,17,0.7) 26%, rgba(7,10,17,0.22) 62%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to top, #000 60%, transparent 100%); mask-image: linear-gradient(to top, #000 60%, transparent 100%); }
-.hero-skyline svg { position: absolute; left: 0; bottom: 0; width: 100%; height: 80%; display: block; }
-.hsk-win { fill: rgba(150,170,200,0.16); }
-.hsk-win.lit { fill: rgba(224,181,86,0.62); filter: drop-shadow(0 0 2px rgba(224,181,86,0.45)); }
-.hsk-win.tw { animation: hskTw 3.4s ease-in-out infinite; }
-.hsk-win.lit.tw { animation-duration: 4.2s; }
-@keyframes hskTw { 0%, 100% { opacity: 0.22; } 50% { opacity: 1; } }
-@media (prefers-reduced-motion: reduce) { .hsk-win.tw { animation: none; opacity: 0.7; } }
+/* cena "jardim ao entardecer": gradiente verde + folhagens + luzes que acendem */
+.hero-skyline { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  background:
+    radial-gradient(130% 100% at 18% 12%, #1c4533 0%, #143528 36%, #0e241c 66%, #0b1814 100%); }
+.hsk-glow { position: absolute; inset: 0; background:
+    radial-gradient(60% 50% at 80% 90%, rgba(224,181,86,0.16), transparent 70%),
+    radial-gradient(50% 45% at 15% 80%, rgba(120,200,150,0.12), transparent 70%); }
+.hsk-leaf { position: absolute; color: rgba(28,74,52,0.55); transform-origin: top center; animation: hskSway 9s ease-in-out infinite; filter: blur(0.4px); }
+.hsk-leaf-svg { width: 100%; height: 100%; display: block; }
+.hsk-leaf--tl { top: -7%; left: -5%; width: 230px; height: 345px; --rot: 28deg; }
+.hsk-leaf--tl2 { top: -10%; left: 7%; width: 170px; height: 255px; --rot: -12deg; color: rgba(36,92,64,0.5); }
+.hsk-leaf--bl { bottom: -10%; left: -6%; width: 200px; height: 300px; --rot: 150deg; color: rgba(24,66,46,0.5); }
+.hsk-leaf--br { bottom: -8%; right: -5%; width: 250px; height: 375px; --rot: -152deg; }
+.hsk-leaf--br2 { bottom: -12%; right: 8%; width: 175px; height: 262px; --rot: 165deg; color: rgba(36,92,64,0.46); }
+.hsk-luz { position: absolute; border-radius: 50%; transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255,228,160,0.95) 0%, rgba(255,201,110,0.5) 38%, rgba(255,190,90,0) 72%);
+  animation: hskAcende 4.5s ease-in-out infinite; will-change: opacity, transform; }
+@keyframes hskAcende { 0%, 100% { opacity: 0.12; transform: translate(-50%, -50%) scale(0.7); } 50% { opacity: 1; transform: translate(-50%, -52%) scale(1.12); } }
+@keyframes hskSway { 0%, 100% { transform: rotate(var(--rot, 0deg)) translateY(0); } 50% { transform: rotate(calc(var(--rot, 0deg) + 2deg)) translateY(-6px); } }
+@media (prefers-reduced-motion: reduce) { .hsk-luz, .hsk-leaf { animation: none; } .hsk-luz { opacity: 0.7; } }
 /* camada 3: poeira dourada leve (CSS) */
 .dust { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
 .dust-p { position: absolute; bottom: -12px; border-radius: 50%; background: radial-gradient(circle, #f4d98a 0%, rgba(244,217,138,0) 70%); animation-name: dustfloat; animation-timing-function: linear; animation-iteration-count: infinite; will-change: transform, opacity; }
@@ -352,7 +361,7 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 /* ---------- STATS / faixa ---------- */
 .stats { padding: 50px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.015); }
 /* pilares com foto real */
-.stats-fotos { padding: clamp(56px, 8vw, 96px) 0; }
+.stats-fotos { padding: clamp(34px, 5vw, 64px) 0; }
 .stats-fotos .stats-grid { align-items: stretch; }
 .pilar-card { position: relative; height: 230px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease); }
 .pilar-card:hover { transform: translateY(-6px); box-shadow: 0 26px 50px -26px rgba(0,0,0,0.8); }
@@ -2139,6 +2148,11 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 @media (max-width: 1100px) { .mf-aba-conteudo { columns: auto; } }
 .mf-acoes-bar { position: sticky; bottom: 12px; display: flex; align-items: center; gap: 10px; margin-top: 16px; padding: 12px 16px; background: var(--surface, #11151d); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 18px 40px -20px rgba(0,0,0,0.6); backdrop-filter: blur(8px); }
 .mf-acoes-info { font-size: 0.85rem; color: var(--text-mute); font-weight: 600; }
+/* Ouvir o artigo (TTS) */
+.ouvir-post { display: flex; gap: 8px; align-items: center; margin: 0 0 18px; }
+.ouvir-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 100px; border: 1px solid rgba(184,134,47,0.4); background: rgba(224,181,86,0.1); color: #8a6a1f; font-family: var(--font-head); font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: background .2s, border-color .2s; }
+.ouvir-btn:hover { background: rgba(224,181,86,0.2); border-color: var(--gold-2); }
+.ouvir-btn--mini { padding: 10px 14px; }
 .mf-tiras { max-height: 168px; overflow-y: auto; }
 
 /* Botões de ferramentas do imóvel (PDF + estudo m²) */

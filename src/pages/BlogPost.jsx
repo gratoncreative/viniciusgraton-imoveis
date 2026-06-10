@@ -6,6 +6,7 @@ import { linkWhatsApp } from '../data'
 import { registrarView } from '../engajamento'
 import { useSEO } from '../useSEO'
 import { IconArrow, IconWhats } from '../components/icons'
+import OuvirPost from '../components/OuvirPost'
 
 // negrito estratégico **termo** e links [texto](url) (internos e externos)
 const richText = (t) => String(t || '').split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g).map((s, i) => {
@@ -90,6 +91,7 @@ export default function BlogPost() {
         </div>
 
         <article className="post-artigo">
+          <OuvirPost post={p} />
           <p className="post-lead">{p.resumo}</p>
           {p.conteudo.map((b, i) => {
             switch (b.tipo) {
@@ -133,8 +135,8 @@ export default function BlogPost() {
 
         <div className="post-cta">
           <div>
-            <b>Quer ajuda com isso na prática?</b>
-            <span>Eu te oriento de graça, no seu ritmo, e cuido de tudo até a entrega das chaves.</span>
+            <b>Quer um acompanhamento de verdade nessa decisão?</b>
+            <span>Comigo você tem atenção dedicada do início ao fim — eu cuido de cada detalhe, no seu tempo, até a entrega das chaves. Aqui você não é mais um número.</span>
           </div>
           <a className="btn btn-gold" href={linkWhatsApp('Olá Vinícius! Li um artigo no seu site e quero tirar uma dúvida / começar a procurar meu imóvel.')} target="_blank" rel="noopener">
             <IconWhats /> Falar com o Vinícius

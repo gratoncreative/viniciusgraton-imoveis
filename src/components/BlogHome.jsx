@@ -14,10 +14,10 @@ export default function BlogHome() {
   const fonte = views && totalViews > 0
     ? [...POSTS].sort((a, b) => (views[b.slug] || 0) - (views[a.slug] || 0))
     : [...POSTS].sort((a, b) => String(b.data || '').localeCompare(String(a.data || '')))
-  const sel = fonte.slice(0, 9)
+  const sel = fonte.slice(0, 7)
   if (sel.length < 4) return null
   const feat = sel[0]
-  const resto = sel.slice(1, 9)
+  const resto = sel.slice(1, 7)
   const vw = (s) => (views && views[s]) || 0
 
   return (

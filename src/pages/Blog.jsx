@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import { POSTS } from '../blog'
@@ -32,8 +32,20 @@ export default function Blog() {
   })
   const [cat, setCat] = useState('Todos')
   const [views, setViews] = useState({})
+  const [mostrar, setMostrar] = useState(12)
+  const sentinela = useRef(null)
   useEffect(() => { lerBlogViews().then(setViews) }, [])
-  const lista = cat === 'Todos' ? POSTS : POSTS.filter((p) => p.categoria === cat)
+  const ordenados = [...POSTS].sort((a, b) => String(b.data || '').localeCompare(String(a.data || '')))
+  const lista = cat === 'Todos' ? ordenados : ordenados.filter((p) => p.categoria === cat)
+  const visiveis = lista.slice(0, mostrar)
+  const temMais = mostrar < lista.length
+  useEffect(() => { setMostrar(12) }, [cat])
+  useEffect(() => {
+    if (!temMais) return
+    const el = sentinela.current; if (!el) return
+    const obs = new IntersectionObserver((e) => { if (e[0].isIntersecting) setMostrar((m) => m + 12) }, { rootMargin: '800px 0px' })
+    obs.observe(el); return () => obs.disconnect()
+  }, [temMais, cat])
 
   return (
     <main className="pagina section--light det blog-pg">
@@ -55,8 +67,9 @@ export default function Blog() {
         </div>
 
         <div className="post-grid">
-          {lista.map((p) => <CardPost key={p.slug} p={p} views={views[p.slug] || 0} />)}
+          {visiveis.map((p) => <CardPost key={p.slug} p={p} views={views[p.slug] || 0} />)}
         </div>
+        {temMais && <div ref={sentinela} className="cat-infinito" aria-hidden="true"><span className="rota-spinner" /> Carregando mais artigos…</div>}
       </div>
     </main>
   )
