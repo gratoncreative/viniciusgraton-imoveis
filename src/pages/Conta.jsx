@@ -4,6 +4,7 @@ import CardImovel from '../components/CardImovel'
 import { IMOVEIS, getImovel, FAIXAS_PRECO, BAIRROS_IMOVEL } from '../data'
 import { favoritos, registrarLead } from '../engajamento'
 import { getConta, salvarConta, logout, getHistorico, estaLogado } from '../conta'
+import GoogleLogin from '../components/GoogleLogin'
 import { useSEO } from '../useSEO'
 import { IconArrow, IconHeart, IconShield, IconWhats } from '../components/icons'
 
@@ -83,6 +84,7 @@ function CadastroView({ onPronto }) {
       <form className="lead-form conta-form" onSubmit={enviar}>
         <span className="conta-form-selo">Grátis · 30 segundos</span>
         <h3>Criar minha conta</h3>
+        <GoogleLogin onPronto={onPronto} />
         <label><span>Nome completo *</span><input value={f.nome} onChange={set('nome')} required /></label>
         <label><span>E-mail *</span><input type="email" value={f.email} onChange={set('email')} required /></label>
         <label><span>WhatsApp (com DDD) *</span><input type="tel" inputMode="tel" value={f.fone} onChange={set('fone')} placeholder="(34) 9____-____" required /></label>

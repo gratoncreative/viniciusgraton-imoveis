@@ -2030,6 +2030,10 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .conta-form-selo { position: absolute; top: -12px; right: 20px; font-family: var(--font-head); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #20160a; background: var(--gold-grad); padding: 5px 12px; border-radius: 100px; }
 @media (min-width: 861px) { .conta-form { position: sticky; top: 90px; } }
 .conta-form h3 { font-family: var(--font-head); font-weight: 700; font-size: 1.25rem; margin-bottom: 4px; }
+.google-login { margin: 14px 0 4px; }
+.google-login-btn { display: flex; justify-content: center; min-height: 40px; }
+.google-login-ou { display: flex; align-items: center; gap: 12px; margin: 16px 0 4px; color: var(--text-mute); font-size: 0.82rem; }
+.google-login-ou::before, .google-login-ou::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 .conta-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .conta-painel { }
 .conta-hero { display: flex; flex-wrap: wrap; gap: 18px 24px; align-items: flex-end; justify-content: space-between; margin-bottom: 18px; }
