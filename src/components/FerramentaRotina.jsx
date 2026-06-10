@@ -54,14 +54,14 @@ function montarMensagem(im, beneficios, nome, gancho) {
   const linhas = [
     `${ola}${gancho}`,
     '',
-    `🏠 ${im.tipo} no ${im.bairro}`,
+    `${im.tipo} no ${im.bairro}`,
     specsLinha(im) && `${specsLinha(im)}`,
-    valor && `💰 ${valor}`,
+    valor && `Valor.. ${valor}`,
     im.condominio ? `Condomínio.. R$ ${im.condominio.toLocaleString('pt-BR')}` : '',
     '',
-    `📸 Fotos e todos os detalhes.. ${im.link}`,
+    `Fotos e todos os detalhes.. ${im.link}`,
     '',
-    `📍 E olha o melhor, no raio de 1km dele temos:`,
+    `E olha o melhor, no raio de 1km dele você tem:`,
     ...beneficios.map((x) => `• ${x}`),
     '',
     `Faz sentido marcarmos uma visita essa semana? Estou com a chave em mãos.`,
@@ -149,7 +149,7 @@ export default function FerramentaRotina() {
               {gs.map((g, i) => (
                 <div className="rt-gancho" key={i}>
                   <span className="rt-tag">{g.tag}</span>
-                  <p>{g.txt}</p>
+                  <pre className="rt-msg-preview">{montarMensagem(im, beneficios, nome, g.txt)}</pre>
                   <div className="rt-gancho-acoes">
                     <button className="btn btn-gold rt-envia" type="button" onClick={() => enviar(g)}><IconWhats width={17} height={17} /> Enviar no WhatsApp</button>
                     <button className="btn btn-ghost rt-copia" type="button" onClick={() => copiar(g, i)}>{copiado === i ? 'Copiado!' : 'Copiar texto'}</button>
