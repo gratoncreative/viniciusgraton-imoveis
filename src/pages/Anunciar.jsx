@@ -76,6 +76,22 @@ const PlacaPreview = ({ modelo }) => {
   )
 }
 
+// imagem do hero (casa de alto padrão) e ícones dos passos
+const ANU_HERO = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600&auto=format&fit=crop'
+const PASSOS = [
+  { d: 'M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z', titulo: 'Cadastre em 2 minutos', txt: 'Preencha os dados e mande as fotos aqui mesmo. Sem custo e sem compromisso.' },
+  { d: 'M4 20V4M4 20h16M8 20v-7M13 20V9M18 20v-4', titulo: 'Eu avalio o valor justo', txt: 'Faço a avaliação real pelo mercado do seu bairro — preço certo pra vender no tempo certo.' },
+  { d: 'M3 11v2a1 1 0 0 0 1 1h2l4 4V6L6 10H4a1 1 0 0 0-1 1zM15 8a5 5 0 0 1 0 8M18 5a9 9 0 0 1 0 14', titulo: 'Divulgo pra vender', txt: 'No site, nas redes e direto pros clientes que já procuram um imóvel como o seu.' },
+  { d: 'M12 2l8 4v5c0 5-3.5 9-8 11-4.5-2-8-6-8-11V6l8-4zM9 12l2 2 4-4', titulo: 'Cuido até as chaves', txt: 'Negociação e documentação conferidas, com a estrutura da Rotina Imobiliária.' },
+]
+const STATS = [
+  { n: '30+', l: 'anos de Rotina' },
+  { n: '5.000+', l: 'imóveis ativos' },
+  { n: 'CRECI', l: 'PJ 132' },
+  { n: 'R$ 0', l: 'pra anunciar' },
+]
+const PIco = ({ d }) => <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={d} /></svg>
+
 export default function Anunciar() {
   useSEO({
     title: 'Anuncie seu imóvel em Uberlândia — cadastre com o Vinícius Graton',
@@ -151,29 +167,84 @@ export default function Anunciar() {
     )
   }
 
+  const check = <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+
   return (
-    <main className="pagina section--light det anunciar-pg">
-      <div className="container" style={{ maxWidth: 920 }}>
-        <Reveal>
-          <div style={{ textAlign: 'center', maxWidth: 720, margin: '0 auto 10px' }}>
-            <span className="eyebrow" style={{ justifyContent: 'center' }}>Quero vender / alugar</span>
-            <h1 className="section-title">Venda seu imóvel <em>sem dor de cabeça</em></h1>
-            <p className="section-sub" style={{ marginTop: 14 }}>
-              Eu cuido de tudo: avalio pelo valor justo, faço a curadoria e as fotos, divulgo pra minha base de clientes e conduzo a negociação com segurança — você acompanha de perto, do anúncio à entrega das chaves. <b>Cadastrar é grátis e sem compromisso.</b>
+    <main className="anunciar-pg2 section--light">
+      {/* HERO */}
+      <section className="anu-hero">
+        <div className="anu-hero-bg" style={{ backgroundImage: `url(${ANU_HERO})` }} />
+        <div className="anu-hero-tint" />
+        <div className="container anu-hero-in">
+          <Reveal>
+            <span className="eyebrow">Quero vender ou alugar</span>
+            <h1 className="anu-hero-tit">Venda seu imóvel <em>sem dor de cabeça</em></h1>
+            <p className="anu-hero-sub">
+              Eu cuido de tudo: avalio pelo valor justo, faço a curadoria e as fotos, divulgo pra minha base de clientes e conduzo a negociação com segurança — você acompanha de perto, do anúncio à entrega das chaves.
             </p>
+            <div className="anu-hero-acoes">
+              <a className="btn btn-gold btn-grande" href="#cadastrar">Cadastrar meu imóvel <IconArrow /></a>
+              <span className="anu-hero-selo"><IconShield width={17} height={17} /> Grátis e sem compromisso</span>
+            </div>
+          </Reveal>
+          <div className="anu-stats">
+            {STATS.map((s) => <div key={s.l} className="anu-stat"><b>{s.n}</b><span>{s.l}</span></div>)}
+          </div>
+        </div>
+      </section>
+
+      <div className="container anunciar-corpo">
+        {/* COMO FUNCIONA */}
+        <Reveal>
+          <div className="anu-sec-head">
+            <span className="eyebrow" style={{ justifyContent: 'center' }}>Simples assim</span>
+            <h2 className="section-title">Como funciona</h2>
           </div>
         </Reveal>
+        <div className="anu-passos">
+          {PASSOS.map((p, i) => (
+            <Reveal key={i} delay={i * 0.07}>
+              <div className="anu-passo">
+                <span className="anu-passo-num">{i + 1}</span>
+                <span className="anu-passo-ico"><PIco d={p.d} /></span>
+                <b>{p.titulo}</b>
+                <i>{p.txt}</i>
+              </div>
+            </Reveal>
+          ))}
+        </div>
 
-        <Reveal delay={0.08}>
-          <ul className="anunciar-beneficios">
-            <li><span>✓</span><div><b>Avaliação justa e grátis</b><i>Preço de mercado de verdade, sem chute — pra vender no tempo certo.</i></div></li>
-            <li><span>✓</span><div><b>Curadoria + fotos que vendem</b><i>Seu imóvel apresentado do jeito que valoriza e atrai comprador.</i></div></li>
-            <li><span>✓</span><div><b>Divulgação ativa</b><i>No site, nas redes e direto pra clientes que já procuram algo assim.</i></div></li>
-            <li><span>✓</span><div><b>Segurança em cada etapa</b><i>Documentação conferida e negociação com a estrutura da Rotina.</i></div></li>
-            <li><span>✓</span><div><b>Placa "VENDE-SE" grátis</b><i>Se quiser, uma placa profissional no seu imóvel, sem custo.</i></div></li>
-            <li><span>✓</span><div><b>Você no controle</b><i>Acompanha tudo de perto, sem enrolação. Cadastrar não tem compromisso.</i></div></li>
-          </ul>
+        {/* BENEFÍCIOS */}
+        <Reveal>
+          <div className="anu-sec-head">
+            <span className="eyebrow" style={{ justifyContent: 'center' }}>Por que comigo</span>
+            <h2 className="section-title">O que você ganha</h2>
+          </div>
         </Reveal>
+        <div className="anu-beneficios">
+          {[
+            ['Avaliação justa e grátis', 'Preço de mercado de verdade, sem chute — pra vender no tempo certo.'],
+            ['Curadoria + fotos que vendem', 'Seu imóvel apresentado do jeito que valoriza e atrai comprador.'],
+            ['Divulgação ativa', 'No site, nas redes e direto pra clientes que já procuram algo assim.'],
+            ['Segurança em cada etapa', 'Documentação conferida e negociação com a estrutura da Rotina.'],
+            ['Placa "VENDE-SE" grátis', 'Se quiser, uma placa profissional no seu imóvel, sem custo.'],
+            ['Você no controle', 'Acompanha tudo de perto, sem enrolação. Cadastrar não tem compromisso.'],
+          ].map(([t, d]) => (
+            <Reveal key={t}>
+              <div className="anu-benef-card"><span className="anu-benef-check">{check}</span><div><b>{t}</b><i>{d}</i></div></div>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* FORMULÁRIO */}
+        <div id="cadastrar" className="anu-form-wrap">
+          <Reveal>
+            <div className="anu-sec-head">
+              <span className="eyebrow" style={{ justifyContent: 'center' }}>É rápido</span>
+              <h2 className="section-title">Cadastre seu imóvel</h2>
+              <p className="section-sub" style={{ marginTop: 12 }}>Preencha os dados e mande as fotos. <b>Cadastrar é grátis e sem compromisso.</b></p>
+            </div>
+          </Reveal>
 
         <form className="lead-form anunciar-form" onSubmit={enviar}>
           <div className="anunciar-grid">
@@ -258,6 +329,7 @@ export default function Anunciar() {
             <IconWhats /> {estado === 'enviando' ? 'Enviando…' : 'Enviar para avaliação'} <IconArrow />
           </button>
         </form>
+        </div>
       </div>
     </main>
   )

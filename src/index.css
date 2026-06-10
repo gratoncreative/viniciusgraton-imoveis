@@ -794,6 +794,56 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .rt-gate-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .rt-gate-nota { font-size: 0.8rem; color: #9a8e78; text-align: center; margin-top: 6px; }
 @media (max-width: 560px) { .rt-gate-2 { grid-template-columns: 1fr; } }
+
+/* ===== Landing /anunciar repaginada ===== */
+.anunciar-pg2 { background: #fff; padding: 0 0 80px; }
+.anunciar-pg2.section--light { background: #fff; }
+.anu-hero { position: relative; overflow: hidden; padding: clamp(90px, 13vw, 150px) 0 clamp(40px, 6vw, 64px); }
+.anu-hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; transform: scale(1.05); }
+.anu-hero-tint { position: absolute; inset: 0; background: linear-gradient(120deg, rgba(8,11,18,0.92) 0%, rgba(8,11,18,0.74) 50%, rgba(8,11,18,0.5) 100%); }
+.anu-hero-in { position: relative; z-index: 2; max-width: 760px; }
+.anu-hero .eyebrow { color: var(--gold-1); }
+.anu-hero .eyebrow::before { background: var(--gold-1); }
+.anu-hero-tit { font-family: var(--font-head); font-weight: 800; font-size: clamp(2.1rem, 5vw, 3.4rem); line-height: 1.05; letter-spacing: -0.02em; color: #fff; margin: 12px 0 16px; }
+.anu-hero-tit em { font-family: var(--font-serif); font-style: italic; font-weight: 500; background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.anu-hero-sub { color: rgba(235,238,244,0.9); font-size: clamp(1.02rem, 1.5vw, 1.18rem); line-height: 1.6; max-width: 620px; }
+.anu-hero-acoes { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 26px; }
+.anu-hero-selo { display: inline-flex; align-items: center; gap: 8px; color: var(--gold-1); font-family: var(--font-head); font-weight: 600; font-size: 0.9rem; }
+.anu-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 40px; max-width: 640px; }
+.anu-stat { background: rgba(255,255,255,0.07); border: 1px solid rgba(224,181,86,0.28); border-radius: 14px; padding: 16px 12px; text-align: center; backdrop-filter: blur(6px); }
+.anu-stat b { display: block; font-family: var(--font-head); font-weight: 800; font-size: clamp(1.2rem, 2.4vw, 1.7rem); color: var(--gold-1); }
+.anu-stat span { display: block; font-size: 0.76rem; color: rgba(235,238,244,0.7); margin-top: 3px; }
+
+.anunciar-corpo { max-width: 1040px; }
+.anu-sec-head { text-align: center; max-width: 640px; margin: clamp(46px, 7vw, 78px) auto 26px; }
+.anu-passos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.anu-passo { position: relative; background: #faf7f0; border: 1px solid rgba(22,26,34,0.08); border-radius: 18px; padding: 30px 22px 24px; height: 100%; transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease); }
+.anu-passo:hover { transform: translateY(-4px); box-shadow: 0 24px 48px -30px rgba(0,0,0,0.45); }
+.anu-passo-num { position: absolute; top: 16px; right: 18px; font-family: var(--font-head); font-weight: 800; font-size: 1.6rem; color: rgba(184,134,47,0.25); }
+.anu-passo-ico { display: inline-grid; place-items: center; width: 52px; height: 52px; border-radius: 14px; background: #11151d; color: var(--gold-1); margin-bottom: 14px; }
+.anu-passo b { display: block; font-family: var(--font-head); font-weight: 700; font-size: 1.05rem; color: #2a2118; margin-bottom: 7px; }
+.anu-passo i { font-style: normal; color: #5b5446; font-size: 0.9rem; line-height: 1.5; }
+
+.anu-beneficios { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.anu-benef-card { display: flex; gap: 13px; align-items: flex-start; background: #fff; border: 1px solid rgba(22,26,34,0.1); border-radius: 16px; padding: 20px; height: 100%; transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s; }
+.anu-benef-card:hover { transform: translateY(-3px); box-shadow: 0 22px 44px -30px rgba(0,0,0,0.4); border-color: var(--gold-3); }
+.anu-benef-check { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: rgba(184,134,47,0.14); color: var(--gold-3); margin-top: 1px; }
+.anu-benef-card b { display: block; font-family: var(--font-head); font-weight: 700; font-size: 1rem; color: #2a2118; margin-bottom: 5px; }
+.anu-benef-card i { font-style: normal; color: #5b5446; font-size: 0.9rem; line-height: 1.5; }
+
+.anu-form-wrap { margin: clamp(46px, 7vw, 78px) auto 0; max-width: 880px; scroll-margin-top: 90px; }
+.anu-form-wrap .anu-sec-head { margin-top: 0; }
+.anu-form-wrap .anunciar-form { margin-top: 18px; }
+
+@media (max-width: 900px) {
+  .anu-passos { grid-template-columns: repeat(2, 1fr); }
+  .anu-beneficios { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .anu-stats { grid-template-columns: repeat(2, 1fr); }
+  .anu-passos, .anu-beneficios { grid-template-columns: 1fr; }
+  .anu-hero-acoes { gap: 12px; }
+}
 .rt-gancho-acoes { display: flex; gap: 10px; flex-wrap: wrap; }
 .rt-envia, .rt-copia { font-size: 0.86rem; padding: 9px 15px; }
 @media (max-width: 760px) {
