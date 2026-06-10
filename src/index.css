@@ -96,7 +96,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 ::-webkit-scrollbar-thumb:hover { background: var(--gold-3); }
 
 /* ---------- utilitários ---------- */
-.container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+.container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(22px, 3.2vw, 56px); }
 
 .eyebrow {
   display: inline-flex; align-items: center; gap: 9px;
