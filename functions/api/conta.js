@@ -17,6 +17,14 @@ export async function onRequestPost({ env, request }) {
   const b = await request.json().catch(() => ({}))
   const token = str(b.token, 60)
   if (!token) return json({ error: 'token obrigatorio' }, 400)
+  if (b.site) return json({ ok: true }) // honeypot
+  if (temKV(env)) {
+    const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || 'sem-ip'
+    const rlKey = 'rl:conta:' + ip
+    const usos = parseInt(await env.ENGAGEMENT.get(rlKey), 10) || 0
+    if (usos >= 30) return json({ ok: true, limite: true })
+    await env.ENGAGEMENT.put(rlKey, String(usos + 1), { expirationTtl: 3600 })
+  }
   const conta = {
     token, atualizadoEm: Date.now(), data: new Date().toISOString(),
     nome: str(b.nome, 80), email: str(b.email, 120), fone: str(b.fone, 30),

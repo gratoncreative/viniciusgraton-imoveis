@@ -214,7 +214,9 @@ export default function ChatBusca() {
             {atual.tipo === 'tel' && (
               <form className="cb-form" onSubmit={(e) => { e.preventDefault(); enviar() }}>
                 <input autoFocus type="tel" inputMode="tel" value={ans.whatsapp} onChange={(e) => setAns((a) => ({ ...a, whatsapp: e.target.value }))} placeholder="34 99999-9999" maxLength={20} />
+                <input type="text" name="site" value="" onChange={() => {}} tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1 }} />
                 <button type="submit" className="btn btn-gold" disabled={enviando}>{enviando ? 'Enviando…' : 'Ver minha seleção'}</button>
+                <p className="cb-consent">Ao enviar, você concorda com a <a href="/privacidade" target="_blank" rel="noopener">Política de Privacidade</a>. Seus dados ficam só com o Vinícius.</p>
               </form>
             )}
 

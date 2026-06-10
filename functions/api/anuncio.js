@@ -13,11 +13,20 @@ const str = (v, n) => String(v || '').slice(0, n)
 
 export async function onRequestPost({ env, request }) {
   const body = await request.json().catch(() => ({}))
+  if (body.site) return json({ ok: true }) // honeypot (bot)
   const nome = str(body.nome, 80)
   const fone = str(body.fone, 30)
   if (!nome || !fone) return json({ error: 'dados incompletos' }, 400)
+  // rate-limit por IP: máx. 5 anúncios por hora (anti-spam)
+  if (temKV(env)) {
+    const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || 'sem-ip'
+    const rlKey = 'rl:anuncio:' + ip
+    const usos = parseInt(await env.ENGAGEMENT.get(rlKey), 10) || 0
+    if (usos >= 5) return json({ ok: true, limite: true })
+    await env.ENGAGEMENT.put(rlKey, String(usos + 1), { expirationTtl: 3600 })
+  }
   const fotos = Array.isArray(body.fotos)
-    ? body.fotos.filter((f) => typeof f === 'string' && f.startsWith('data:image')).slice(0, 15)
+    ? body.fotos.filter((f) => typeof f === 'string' && f.startsWith('data:image') && f.length < 3000000).slice(0, 15)
     : []
   const ts = Date.now()
   const sub = {
