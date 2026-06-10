@@ -3,7 +3,6 @@ import Destaque from '../components/Destaque'
 import BlogHome from '../components/BlogHome'
 import VenderCta from '../components/VenderCta'
 import Contato from '../components/Contato'
-import BannerAds from '../components/BannerAds'
 import { useSEO } from '../useSEO'
 
 // Página inicial = VITRINE. Lidera com os imóveis disponíveis; o conteúdo de
@@ -20,9 +19,6 @@ export default function Home() {
     <main>
       <Hero />
       <Destaque limite={9} />
-      <section className="section--light" style={{ paddingTop: 0 }}>
-        <div className="container"><BannerAds orientacao="horizontal" /></div>
-      </section>
       <VenderCta />
       <BlogHome />
       <Contato />

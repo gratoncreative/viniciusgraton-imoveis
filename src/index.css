@@ -315,7 +315,7 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 @media (max-width: 560px) { .hero-card { max-width: 100%; } }
 
 /* ===== Hero unificado: bio (esquerda) + card de busca (direita) ===== */
-.hero-grid2 { position: relative; z-index: 4; display: grid; grid-template-columns: clamp(380px, 34vw, 480px) 1.05fr; gap: clamp(28px, 4vw, 60px); align-items: center; width: 100%; }
+.hero-grid2 { position: relative; z-index: 4; display: grid; grid-template-columns: clamp(360px, 32vw, 460px) minmax(0, 1fr); gap: clamp(28px, 4vw, 56px); align-items: center; width: 100%; max-width: 1180px; margin-inline: auto; }
 .hero-bio { max-width: 640px; }
 .hero-nome { font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: clamp(2.6rem, 5.5vw, 4.4rem); line-height: 1.02; margin: 6px 0 16px; background: linear-gradient(135deg, #ecd07c 0%, #b8862f 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .hero-bio .apres-lead { max-width: 560px; }
