@@ -113,7 +113,7 @@ function LeadCard({ lead, token, onSair, onMudou }) {
   )
 }
 
-function ImoveisPub({ token, onSair }) {
+function ImoveisPub({ token, onSair, alvo, onAbriu }) {
   const [sel, setSel] = useState(null)
   const [reg, setReg] = useState(null)
   const [carregando, setCarregando] = useState(false)
@@ -137,6 +137,13 @@ function ImoveisPub({ token, onSair }) {
     })
     setCarregando(false)
   }
+  // veio de "Proprietário / editar" num imóvel: abre direto o editor dele
+  useEffect(() => {
+    if (!alvo) return
+    abrir(String(alvo)); onAbriu && onAbriu()
+    setTimeout(() => { try { document.querySelector('.admin-owner')?.scrollIntoView({ behavior: 'smooth', block: 'center' }) } catch {} }, 450)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [alvo])
   const setC = (k, v) => setReg((r) => ({ ...r, campos: { ...r.campos, [k]: v } }))
   const setO = (k, v) => setReg((r) => ({ ...r, owner: { ...r.owner, [k]: v } }))
   const moverFoto = (i, dir) => setReg((r) => { const a = [...(r.campos.fotos || [])]; const j = i + dir; if (j < 0 || j >= a.length) return r; [a[i], a[j]] = [a[j], a[i]]; return { ...r, campos: { ...r.campos, fotos: a } } })
@@ -428,6 +435,7 @@ export default function Admin() {
   const [blogViews, setBlogViews] = useState(null)
   const [aba, setAba] = useState('geral')
   const [subImovel, setSubImovel] = useState('avaliar') // sub-aba do hub de Imóveis
+  const [imovelAlvo, setImovelAlvo] = useState(null) // abre direto o editor/proprietário deste código
   const [erro, setErro] = useState('')
   const [aprovadosLocais, setAprovadosLocais] = useState([]) // esconde na hora (KV tem atraso de leitura)
   const [carregando, setCarregando] = useState(false)
@@ -639,7 +647,7 @@ export default function Admin() {
                       <button className="btn btn-gold" onClick={() => aprovarImovel(im.codigo, true)}>✓ Aprovar e publicar</button>
                       <a className="admin-btn" href={`/imovel/${im.codigo}`} target="_blank" rel="noopener">Pré-visualizar</a>
                       <a className="admin-btn admin-btn--imoview" href={`https://app.imoview.com.br/Imovel/Detalhes/${im.codigo}`} target="_blank" rel="noopener">↗ Conferir no Imoview</a>
-                      <button className="admin-btn" onClick={() => { setAba('imoveis'); setSubImovel('publicados') }}>🔒 Proprietário / editar</button>
+                      <button className="admin-btn" onClick={() => { setImovelAlvo(im.codigo); setAba('imoveis'); setSubImovel('publicados') }}>🔒 Proprietário / editar</button>
                     </div>
                   </div>
                 </article>
@@ -696,7 +704,7 @@ export default function Admin() {
           </section>
         )}
 
-        {aba === 'imoveis' && subImovel === 'publicados' && <ImoveisPub token={token} onSair={sair} />}
+        {aba === 'imoveis' && subImovel === 'publicados' && <ImoveisPub token={token} onSair={sair} alvo={imovelAlvo} onAbriu={() => setImovelAlvo(null)} />}
 
         {aba === 'crm' && <AdminCRM token={token} onSair={sair} cadastros={clientes} onExcluirCadastro={(c) => excluir(c._key, `o cadastro de ${c.nome || 'cliente'}`)} />}
 
