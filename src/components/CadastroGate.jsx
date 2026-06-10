@@ -1,8 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
 import { salvarConta, estaLogado } from '../conta'
 import { registrarLead } from '../engajamento'
+import { linkWhatsApp } from '../data'
+import { IconWhats } from './icons'
 
 const soNum = (s) => String(s || '').replace(/\D/g, '')
+// valida celular brasileiro: 11 dígitos, DDD 11–99, 9º dígito = 9 (móvel)
+const foneValido = (s) => { const d = soNum(s); return d.length === 11 && +d.slice(0, 2) >= 11 && d[2] === '9' }
+const emailValido = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(s).trim())
 const mascaraFone = (s) => {
   const d = soNum(s).slice(0, 11)
   if (d.length <= 2) return d
@@ -42,13 +47,12 @@ export default function CadastroGate() {
   const enviar = (e) => {
     e.preventDefault()
     const nome = f.nome.trim()
-    const fone = soNum(f.fone)
     if (nome.length < 2) { setErro('Como posso te chamar?'); return }
-    if (fone.length < 10) { setErro('Confira o WhatsApp com DDD.'); return }
+    if (!foneValido(f.fone)) { setErro('Digite um WhatsApp válido — DDD + 9 dígitos. Ex.: (34) 99999-9999'); return }
+    if (f.email.trim() && !emailValido(f.email)) { setErro('Esse e-mail parece incompleto. Confira ou deixe em branco.'); return }
     salvarConta({ nome, fone: f.fone.trim(), email: f.email.trim(), objetivo: 'Comprar' })
     try { registrarLead({ cod: 'ver-preco', nome, fone: f.fone.trim(), email: f.email.trim(), origem: 'Liberar preços' }) } catch {}
     setPronto(true)
-    setTimeout(() => setAberto(false), 1700)
   }
 
   return (
@@ -62,7 +66,12 @@ export default function CadastroGate() {
               <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
             </div>
             <h3>Preços liberados!</h3>
-            <p>Agora você vê o valor de todos os imóveis do site. Bom garimpo.</p>
+            <p>Agora você vê o valor de todos os imóveis do site, agora e nas próximas visitas.</p>
+            <a className="cg-btn cg-ok-wa" href={linkWhatsApp(`Oi Vinícius! Sou ${f.nome.trim() || 'um cliente'}, liberei os preços no seu site e quero começar a busca pelo meu imóvel.`)} target="_blank" rel="noopener" onClick={() => setAberto(false)}>
+              <IconWhats width={18} height={18} /> Confirmar meu WhatsApp e falar com o Vinícius
+            </a>
+            <button type="button" className="cg-ok-fechar" onClick={() => setAberto(false)}>Continuar vendo os imóveis</button>
+            <p className="cg-nota" style={{ marginTop: 10 }}>A confirmação é opcional — seus preços já estão liberados. Falar comigo só agiliza a sua busca.</p>
           </div>
         ) : (
           <>

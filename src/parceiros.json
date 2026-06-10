@@ -1,0 +1,31 @@
+{
+  "slots": [
+    {
+      "id": "vaga-marca",
+      "tipo": "vaga",
+      "titulo": "Sua marca aqui",
+      "subtitulo": "Apareça para quem está comprando imóvel em Uberlândia agora.",
+      "cta": "Quero anunciar",
+      "cor": 0,
+      "wa": "Olá Vinícius! Tenho interesse em anunciar minha marca no seu site de imóveis. Pode me passar os formatos e valores?"
+    },
+    {
+      "id": "vaga-servico",
+      "tipo": "vaga",
+      "titulo": "Divulgue seu serviço",
+      "subtitulo": "Financiamento, reforma, mudança, móveis planejados, seguros, cartório...",
+      "cta": "Falar com a gente",
+      "cor": 1,
+      "wa": "Olá Vinícius! Presto serviços ligados ao mercado imobiliário e quero anunciar no seu site. Como funciona?"
+    },
+    {
+      "id": "vaga-premium",
+      "tipo": "vaga",
+      "titulo": "Espaço publicitário premium",
+      "subtitulo": "Seu negócio na frente de um público qualificado e pronto para comprar.",
+      "cta": "Anunciar aqui",
+      "cor": 2,
+      "wa": "Olá Vinícius! Quero saber sobre os espaços de publicidade premium no seu site. Pode me detalhar?"
+    }
+  ]
+}
