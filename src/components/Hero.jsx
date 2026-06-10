@@ -33,9 +33,10 @@ export default function Hero() {
 
   return (
     <header className="hero" id="topo" ref={heroRef}>
-      <div className="hero-bg" style={{ backgroundImage: `url(${CONFIG.heroImg})` }} />
+      <div className="hero-bg" />
       <div className="hero-bg-tint" />
       <HeroSkyline />
+      <img className="hero-foto" src="/vinicius-graton-cutout.png" alt="Vinícius Graton, consultor de imóveis em Uberlândia" loading="eager" />
       <Scene3D />
 
       <div className="container hero-grid2">

@@ -224,7 +224,13 @@ section { position: relative; padding: clamp(30px, 4.2vw, 56px) 0; }
 /* ---------- HERO ---------- */
 .hero { --px: 0; --py: 0; min-height: 100svh; display: grid; align-items: center; padding-top: 120px; padding-bottom: 60px; position: relative; overflow: hidden; perspective: 1000px; }
 /* camada 1: foto realista com parallax suave */
-.hero-bg { position: absolute; inset: -7%; z-index: 0; background-position: center; background-size: cover; transform: translate3d(calc(var(--px) * -22px), calc(var(--py) * -16px), 0) scale(1.12); transition: transform 0.5s cubic-bezier(0.22,1,0.36,1); filter: saturate(1.05); will-change: transform; }
+/* fundo premium escuro (a foto do Vinícius é o destaque) */
+.hero-bg { position: absolute; inset: 0; z-index: 0; background: radial-gradient(125% 95% at 70% 14%, #232c40 0%, #161c2a 45%, #0b0f17 100%); }
+/* foto (recorte) do Vinícius — credibilidade: quem te atende */
+.hero-foto { position: absolute; right: clamp(-90px, -2vw, 0px); bottom: 0; height: 98%; max-height: 830px; width: auto; z-index: 1; pointer-events: none; object-fit: contain; object-position: bottom right; filter: drop-shadow(0 26px 54px rgba(0,0,0,0.55)); -webkit-mask-image: linear-gradient(to bottom, #000 85%, transparent 100%); mask-image: linear-gradient(to bottom, #000 85%, transparent 100%); }
+@media (min-width: 1101px) { .hero-bio { padding-right: 270px; } }
+@media (max-width: 1100px) { .hero-foto { height: 76%; right: -100px; opacity: 0.8; } }
+@media (max-width: 820px) { .hero-foto { display: none; } }
 /* camada 2: tonalização premium pra legibilidade (mais forte à direita/base, onde tem texto) */
 .hero-bg-tint { position: absolute; inset: 0; z-index: 1; background:
   linear-gradient(100deg, rgba(8,16,13,0.18) 30%, rgba(8,16,13,0.5) 66%, rgba(8,16,13,0.82) 100%),
