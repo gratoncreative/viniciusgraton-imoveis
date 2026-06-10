@@ -9,7 +9,7 @@ export default function Destaque({ limite = 6 }) {
   const lista = IMOVEIS.slice(0, limite)
 
   return (
-    <section id="destaque">
+    <section id="destaque" className="section--light">
       <div className="container">
         <div className="sec-head">
           <Reveal>

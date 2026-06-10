@@ -24,7 +24,7 @@
   --font-body: 'Inter', system-ui, sans-serif;
   --font-serif: 'Fraunces', Georgia, serif;
 
-  --maxw: 1480px;
+  --maxw: 1360px;
   --radius: 20px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -122,6 +122,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 
 /* ---------- seções com fundo claro (leveza, cores invertidas) ---------- */
+#destaque.section--light { background: #fff; }
 .section--light {
   background: #f5f2ea;
   --text: #161a22;
