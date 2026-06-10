@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react'
-import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_TODOS, filtrarParaCliente, formatPreco, getImovel } from '../data'
+import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_TODOS, filtrarParaCliente, formatPreco, getImovel, oportunidade, ehEsquina } from '../data'
 import InputMoeda from './InputMoeda'
 
 const api = (payload) => fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) }).then((r) => r.json().then((j) => ({ status: r.status, j })))
@@ -149,6 +149,42 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
 
   const linkCliente = (c) => `${window.location.origin}/cliente/${c.id}`
 
+  // mensagem PERSONALIZADA pro WhatsApp (estilo Vinícius/Rotina): cumprimenta pelo nome,
+  // resume o que o cliente procura e os diferenciais dos imóveis escolhidos, depois o link.
+  const montarMsgCliente = (c) => {
+    const nome = c.nome ? c.nome.trim().split(' ')[0] : ''
+    const fin = (c.finalidade || 'Comprar').toLowerCase()
+    const finTxt = fin.includes('alug') ? 'alugar' : fin.includes('invest') ? 'investir em' : 'comprar'
+    const nec = []
+    if (c.tipos && c.tipos.length) nec.push(c.tipos.join(' ou ').toLowerCase())
+    if (c.bairros && c.bairros.length) nec.push(c.bairros.length <= 3 ? `no ${c.bairros.join(', ')}` : `no ${c.bairros.slice(0, 3).join(', ')} e outros bairros`)
+    if (+c.quartosMin > 0) nec.push(`${c.quartosMin}+ quartos`)
+    if (+c.areaMin > 0) nec.push(`a partir de ${c.areaMin} m²`)
+    if (+c.precoMax > 0) nec.push(`até ${formatPreco(c.precoMax)}`)
+    const necTxt = nec.length ? nec.join(', ') : 'o que combina com o seu momento'
+    const ims = (c.sugeridos || []).map(resolverImovel).filter(Boolean)
+    const difs = []
+    if (ims.some((im) => ehEsquina(im))) difs.push('tem opção de esquina')
+    if (ims.some((im) => { const o = oportunidade(im); return o.abaixoMercado || o.temDesconto })) difs.push('tem imóvel com preço abaixo do mercado')
+    if (ims.some((im) => im.aceitaFinanciamento || /financia|fgts|minha casa/i.test(im.descricao || ''))) difs.push('com opção de financiamento')
+    const n = ims.length
+    const L = []
+    L.push(`Oi${nome ? ' ' + nome : ''}, tudo bem? Aqui é o Vinícius, do atendimento da Rotina Imobiliária.`)
+    L.push('')
+    L.push(`Separei uma seleção pensando no que você me disse que procura.. ${finTxt} ${necTxt}.`)
+    if (n > 0) {
+      let frase = `São ${n} ${n === 1 ? 'opção escolhida' : 'opções escolhidas'} a dedo pra você`
+      if (difs.length) frase += `, e ${difs.join(', ')}`
+      L.push('')
+      L.push(frase + '.')
+    }
+    L.push('')
+    L.push(`Dá uma olhada na sua seleção exclusiva aqui.. ${linkCliente(c)}`)
+    L.push('')
+    L.push('Pode curtir e descartar à vontade por lá, que vou te entendendo melhor. Qualquer uma que te chamar atenção, me fala que já organizo a visita pra você. 🤝')
+    return L.join('\n')
+  }
+
   // transforma um cadastro da "área do cliente" (conta) num cliente do CRM, já pré-preenchido
   const adicionarAoCRM = (c) => {
     setSel({
@@ -281,7 +317,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                   <button className="admin-btn" onClick={() => comSalvar((c) => window.open(linkCliente(c), '_blank', 'noopener'))}>Salvar e abrir página</button>
                   <button className="admin-btn" onClick={() => comSalvar((c) => { navigator.clipboard?.writeText(linkCliente(c)); setLinkCopiado(true); setTimeout(() => setLinkCopiado(false), 1500) })}>{linkCopiado ? '✓ copiado' : 'Salvar e copiar link'}</button>
-                  <button className="btn btn-gold" onClick={() => comSalvar((c) => window.open(waLink(c.whatsapp, `Olá${c.nome ? ' ' + c.nome.split(' ')[0] : ''}! Aqui é o Vinícius. Separei alguns imóveis pensando no que você procura. Dá uma olhada na sua seleção: ${linkCliente(c)}`), '_blank', 'noopener'))}>Salvar e enviar no WhatsApp</button>
+                  <button className="btn btn-gold" onClick={() => comSalvar((c) => window.open(waLink(c.whatsapp, montarMsgCliente(c)), '_blank', 'noopener'))}>Salvar e enviar no WhatsApp</button>
                 </div>
               </div>
             )}
