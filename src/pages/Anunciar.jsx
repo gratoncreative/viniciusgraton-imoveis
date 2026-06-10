@@ -77,7 +77,7 @@ const PlacaPreview = ({ modelo }) => {
 }
 
 // imagem do hero (casa de alto padrão) e ícones dos passos
-const ANU_HERO = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600&auto=format&fit=crop'
+const ANU_HERO = 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1600&auto=format&fit=crop'
 const PASSOS = [
   { d: 'M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z', titulo: 'Cadastre em 2 minutos', txt: 'Preencha os dados e mande as fotos aqui mesmo. Sem custo e sem compromisso.' },
   { d: 'M4 20V4M4 20h16M8 20v-7M13 20V9M18 20v-4', titulo: 'Eu avalio o valor justo', txt: 'Faço a avaliação real pelo mercado do seu bairro — preço certo pra vender no tempo certo.' },
@@ -85,10 +85,10 @@ const PASSOS = [
   { d: 'M12 2l8 4v5c0 5-3.5 9-8 11-4.5-2-8-6-8-11V6l8-4zM9 12l2 2 4-4', titulo: 'Cuido até as chaves', txt: 'Negociação e documentação conferidas, com a estrutura da Rotina Imobiliária.' },
 ]
 const STATS = [
-  { n: '30+', l: 'anos de Rotina' },
-  { n: '5.000+', l: 'imóveis ativos' },
-  { n: 'CRECI', l: 'PJ 132' },
-  { n: 'R$ 0', l: 'pra anunciar' },
+  { n: 'Grátis', l: 'cadastrar e avaliar' },
+  { n: 'Fotos', l: 'e divulgação inclusas' },
+  { n: 'Placa', l: 'VENDE-SE sem custo' },
+  { n: 'Direto', l: 'atendimento comigo' },
 ]
 const PIco = ({ d }) => <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={d} /></svg>
 

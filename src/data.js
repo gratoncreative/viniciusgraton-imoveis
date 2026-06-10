@@ -12,7 +12,7 @@ export const CONFIG = {
   email: 'contato@viniciusgraton.com.br',
   gaId: 'G-MYTY0KBK9E', // ID do Google Analytics 4; vazio = analytics desligado
   // Imagem realista da capa (troque por uma foto sua/local quando quiser)
-  heroImg: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1920&auto=format&fit=crop',
+  heroImg: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1920&auto=format&fit=crop',
 }
 
 // aceita uma mensagem personalizada por contexto; usa a padrão se nenhuma for passada
