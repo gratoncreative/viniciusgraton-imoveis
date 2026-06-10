@@ -459,13 +459,15 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .cat-painel .cat-filtros { margin-bottom: 0; }
 
 /* layout de listagem: filtros na lateral + resultados em linha */
-.cat-layout { display: grid; grid-template-columns: 360px 1fr; gap: 28px; align-items: start; }
-.cat-rail { position: sticky; top: 86px; align-self: start; }
+.cat-layout { display: grid; grid-template-columns: 320px 1fr; gap: 28px; align-items: start; }
+.cat-rail { position: sticky; top: 86px; align-self: start; max-height: calc(100vh - 92px); overflow-y: auto; overflow-x: hidden; padding-right: 2px; scrollbar-width: thin; scrollbar-color: rgba(184,134,47,0.4) transparent; }
+.cat-rail::-webkit-scrollbar { width: 6px; }
+.cat-rail::-webkit-scrollbar-thumb { background: rgba(184,134,47,0.3); border-radius: 4px; }
 .cat-rail .cat-painel { margin-bottom: 14px; }
-/* seletores em 2 colunas pra caber tudo sem rolagem interna */
-.cat-rail .cat-filtros { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.cat-rail .cat-filtros select { width: 100%; font-size: 0.8rem; padding-left: 34px; padding-right: 22px; text-overflow: ellipsis; }
-.cat-rail .cat-f > svg { left: 11px; width: 16px; height: 16px; }
+/* seletores em 1 coluna (largura cheia) → texto inteiro, legível, sem vazar */
+.cat-rail .cat-filtros { display: flex; flex-direction: column; gap: 9px; }
+.cat-rail .cat-filtros select { width: 100%; font-size: 0.88rem; padding-left: 40px; padding-right: 30px; text-overflow: ellipsis; }
+.cat-rail .cat-f > svg { left: 13px; width: 17px; height: 17px; }
 .cat-rail .cat-busca { width: 100%; flex: 0 0 auto; min-width: 0; }
 .cat-rail .cat-busca { flex: 0 0 auto; min-width: 0; }
 .cat-main { min-width: 0; }
@@ -473,9 +475,6 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 @media (max-width: 880px) {
   .cat-layout { grid-template-columns: 1fr; gap: 18px; }
   .cat-rail { position: static; }
-}
-@media (max-width: 520px) {
-  .cat-rail .cat-filtros { grid-template-columns: 1fr; }
 }
 
 /* card horizontal (resultado da listagem) */
