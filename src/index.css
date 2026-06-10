@@ -1861,6 +1861,9 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .cliente-motivos ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
 .cliente-motivos li { display: flex; gap: 8px; align-items: flex-start; color: #41484f; font-size: .86rem; line-height: 1.4; }
 .cliente-motivos li span { color: #2e8c57; font-weight: 700; flex: none; }
+.cliente-vantagens { border-color: rgba(184,134,47,0.4); background: linear-gradient(180deg, rgba(184,134,47,0.06), #fff); }
+.cliente-vantagens li span { color: var(--gold-3); }
+.im-tag-esq { font-style: normal; margin-left: 5px; color: #fff; opacity: 0.92; font-weight: 700; }
 
 /* Cliente refina o próprio perfil */
 .cliente-salvo { display: inline-block; margin-left: 8px; color: #2e8c57; font-weight: 700; font-size: .82rem; animation: fadeIn .25s var(--ease); }

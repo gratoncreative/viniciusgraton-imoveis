@@ -235,6 +235,46 @@ export const subtituloImovel = (im) => {
   return `${im.tipo} no ${im.bairro} — um dos endereços mais procurados de ${im.cidade}.${lista}`
 }
 
+// procura um termo (com acento-insensível) no título + descrição do imóvel
+const _txtImovel = (im) => _semAcento(`${im?.titulo || ''} ${im?.descricao || ''}`)
+const _ehTerreno = (im) => /terreno|lote|[áa]rea|ch[áa]car/i.test(im?.tipo || '')
+// imóvel de esquina? (detecta pela descrição/título — dado real da fonte)
+export const ehEsquina = (im) => !!im && /\besquina\b/.test(_txtImovel(im))
+
+// VANTAGENS reais do imóvel (selling points) — derivadas só de dados verdadeiros (specs,
+// oportunidade legítima e termos presentes na descrição da fonte). Nada inventado.
+export function vantagensImovel(im) {
+  if (!im) return []
+  const t = _txtImovel(im)
+  const tem = (re) => re.test(t)
+  const terreno = _ehTerreno(im)
+  const op = oportunidade(im)
+  const v = []
+  if (op.temDesconto) v.push(`Preço reduzido — ${op.pctDesconto}% abaixo do valor anterior`)
+  if (op.abaixoMercado) v.push('Abaixo do preço médio do bairro')
+  if (ehEsquina(im)) v.push(terreno ? 'Lote de esquina — mais frente, iluminação e valorização' : 'Imóvel de esquina — mais arejado, iluminado e valorizado')
+  if (terreno) {
+    if (im.area > 0) v.push(`Terreno amplo de ${formatArea(im.area)} — espaço pra projetar do seu jeito`)
+    if (tem(/plano|topografia|nivelad/)) v.push('Terreno plano, fácil de construir')
+    if (tem(/murad/)) v.push('Já murado')
+    if (tem(/document|escritur|registr/)) v.push('Documentação em ordem')
+    if (tem(/condominio fechado|portaria|seguranca 24/)) v.push('Em condomínio fechado, com segurança')
+  } else {
+    if (im.suites > 0) v.push(`${im.suites} ${_plural(im.suites, 'suíte', 'suítes')}`)
+    else if (im.quartos > 0) v.push(`${im.quartos} ${_plural(im.quartos, 'quarto', 'quartos')}`)
+    if (im.vagas > 0) v.push(`${im.vagas} ${_plural(im.vagas, 'vaga', 'vagas')} de garagem`)
+    if (im.area > 0) v.push(`${formatArea(im.area)} de área`)
+    if (tem(/piscina/)) v.push('Com piscina')
+    if (tem(/churrasqueira|gourmet/)) v.push('Espaço gourmet / churrasqueira')
+    if (tem(/elevador/)) v.push('Prédio com elevador')
+    if (tem(/mobiliad/)) v.push('Mobiliado')
+    if (tem(/reformad|novo|nova/)) v.push('Pronto pra morar')
+  }
+  if (im.aceitaFinanciamento || tem(/financia|fgts|minha casa/)) v.push('Aceita financiamento')
+  if (im.bairro) v.push(`Bem localizado no ${im.bairro}`)
+  return [...new Set(v)].slice(0, 5)
+}
+
 // Destaques (benefícios) — entre 6 e 12 cards, derivados dos specs + características reais
 // (e de palavras-chave da descrição real p/ imóveis sem o grid de características). Nada inventado.
 export const destaquesImovel = (im) => {

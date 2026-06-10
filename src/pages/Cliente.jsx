@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import CardImovel from '../components/CardImovel'
-import { IMOVEIS, getImovel, filtrarParaCliente, avaliarMatch, formatPreco, linkWhatsApp, TIPOS_IMOVEL, BAIRROS_IMOVEL } from '../data'
+import { IMOVEIS, getImovel, filtrarParaCliente, avaliarMatch, vantagensImovel, formatPreco, linkWhatsApp, TIPOS_IMOVEL, BAIRROS_IMOVEL } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconHeart, IconClose } from '../components/icons'
 
@@ -183,6 +183,12 @@ export default function Cliente() {
                         <button type="button" className={`cliente-fb-btn ${fb === 'like' ? 'on-like' : ''}`} onClick={() => setFb(String(im.codigo), 'like')}><IconHeart filled={fb === 'like'} width={16} height={16} /> Gostei</button>
                         <button type="button" className={`cliente-fb-btn ${fb === 'dislike' ? 'on-dislike' : ''}`} onClick={() => setFb(String(im.codigo), 'dislike')}><IconClose width={15} height={15} /> Não é bem isso</button>
                       </div>
+                      {(() => { const van = vantagensImovel(im); return van.length > 0 && (
+                        <div className="cliente-motivos cliente-vantagens">
+                          <b>Vantagens deste imóvel</b>
+                          <ul>{van.map((va, i) => <li key={i}><span>★</span> {va}</li>)}</ul>
+                        </div>
+                      ) })()}
                       {m && m.motivos && m.motivos.length > 0 && (
                         <div className="cliente-motivos">
                           <b>Por que combina com você</b>

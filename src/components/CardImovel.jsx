@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { formatPreco, formatArea, resumoImovel, truncar, linkWhatsApp, waImovel, oportunidade } from '../data'
+import { formatPreco, formatArea, resumoImovel, truncar, linkWhatsApp, waImovel, oportunidade, ehEsquina } from '../data'
 import PrecoGate from './PrecoGate'
 import { IconWhats, ICONS } from './icons'
 import Engajamento from './Engajamento'
@@ -95,7 +95,7 @@ export default function CardImovel({ im, variante }) {
       <article className={`im-linha card-clickable ${im.impulsionado ? 'im-pub-on' : ''}`} onClick={irParaImovel}>
         <div className="im-linha-media">
           <img src={im.img} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} loading="lazy" decoding="async" onError={onImgError} />
-          <span className="im-tag">{im.tipo}</span>
+          <span className="im-tag">{im.tipo}{ehEsquina(im) && <em className="im-tag-esq">· Esquina</em>}</span>
           {im.novo && <span className="im-novo">Novo</span>}
           <SeloPublicidade im={im} />
           <SelosOportunidade op={op} />
@@ -136,7 +136,7 @@ export default function CardImovel({ im, variante }) {
     >
       <div className="card-media im-media" data-depth>
         <img src={im.img} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} loading="lazy" decoding="async" onError={onImgError} />
-        <span className="im-tag">{im.tipo}</span>
+        <span className="im-tag">{im.tipo}{ehEsquina(im) && <em className="im-tag-esq">· Esquina</em>}</span>
         {im.novo && <span className="im-novo">Novo</span>}
         <SeloPublicidade im={im} />
         <SelosOportunidade op={op} />
