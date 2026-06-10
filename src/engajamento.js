@@ -14,13 +14,12 @@ function hashCod(cod) {
   for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0
   return h
 }
-// prova social: 20..90, MAIS para imóveis melhor posicionados (preço maior),
-// determinístico por código (estável, sem flicker). MESMA fórmula no back (eng.js).
-function seedDe(cod, preco) {
+// prova social: contagem inicial entre 2 e 45, variando por imóvel (determinístico,
+// estável, sem flicker). MESMA fórmula no back (eng.js).
+function seedDe(cod) {
   const h = hashCod(cod)
-  const p = Math.max(0, Math.min(1, ((Number(preco) || 0) - 200000) / 1300000)) // 0..1 entre 200k e 1,5M
-  const likes = Math.max(20, Math.min(90, Math.round(30 + p * 52 + (h % 11))))
-  const shares = Math.max(20, Math.min(90, Math.round(22 + p * 46 + ((h >>> 5) % 9))))
+  const likes = 2 + (h % 44) // 2..45
+  const shares = 2 + ((h >>> 7) % 44) // 2..45
   return { likes, shares }
 }
 export const seedLikes = (cod, preco) => seedDe(cod, preco).likes

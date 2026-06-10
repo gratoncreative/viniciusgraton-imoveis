@@ -23,12 +23,11 @@ function hashCod(cod) {
 }
 // prova social: 20..90, MAIS para imóveis melhor posicionados (preço maior).
 // MESMA fórmula do frontend (src/engajamento.js) p/ os números baterem sem flicker.
-const SEED_V = 2
-const seedDe = (cod, preco) => {
+const SEED_V = 3
+const seedDe = (cod) => {
   const h = hashCod(cod)
-  const p = Math.max(0, Math.min(1, ((Number(preco) || 0) - 200000) / 1300000))
-  const likes = Math.max(20, Math.min(90, Math.round(30 + p * 52 + (h % 11))))
-  const shares = Math.max(20, Math.min(90, Math.round(22 + p * 46 + ((h >>> 5) % 9))))
+  const likes = 2 + (h % 44) // 2..45
+  const shares = 2 + ((h >>> 7) % 44) // 2..45
   return { likes, shares }
 }
 const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
