@@ -68,6 +68,14 @@ const recs = (await poolMap(codes, async (cod) => {
   return r
 }, 12)).filter(Boolean)
 
+// trava de segurança: se a sincronização trouxe poucos imóveis (provável bloqueio/erro),
+// NÃO sobrescreve o catálogo bom — mantém o último e sai sem erro.
+const MINIMO = 500
+if (recs.length < MINIMO) {
+  console.warn(`⚠ Só ${recs.length} imóveis (< ${MINIMO}). Provável falha/bloqueio — mantendo o catálogo anterior, sem sobrescrever.`)
+  process.exit(0)
+}
+
 const out = { geradoEm: new Date().toISOString(), fonte: 'Rotina Imobiliária', total: recs.length, imoveis: recs }
 fs.writeFileSync('public/catalogo.json', JSON.stringify(out))
 const kb = Math.round(fs.statSync('public/catalogo.json').size / 1024)

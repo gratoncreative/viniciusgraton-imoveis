@@ -1,0 +1,45 @@
+name: Sincronizar catálogo da Rotina
+
+# Roda todo dia de madrugada e regenera o feed de imóveis (public/catalogo.json).
+# Ao dar push da atualização, o Cloudflare Pages refaz o build (e o prerender SEO)
+# automaticamente. Também dá pra rodar na mão pelo botão "Run workflow".
+
+on:
+  schedule:
+    - cron: '17 7 * * *' # ~04:17 (horário de Brasília), todos os dias
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-rotina
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Gerar catálogo da Rotina
+        run: node scripts/gera-catalogo-rotina.mjs
+
+      - name: Commit e push (só se mudou)
+        run: |
+          if git diff --quiet -- public/catalogo.json; then
+            echo "Sem mudanças no catálogo — nada a fazer."
+          else
+            git config user.name "rotina-sync-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add public/catalogo.json
+            git commit -m "chore: sincroniza catálogo da Rotina (automático)"
+            git push
+            echo "Catálogo atualizado e enviado."
+          fi
