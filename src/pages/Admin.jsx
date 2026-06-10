@@ -3,6 +3,7 @@ import { useSEO } from '../useSEO'
 import { CONFIG, IMOVEIS, IMOVEIS_PENDENTES, formatPreco, CONSTRUTORAS } from '../data'
 import { IconShield, IconArrow, IconWhats } from '../components/icons'
 import RemoverMarca from '../components/RemoverMarca'
+import MelhorarFotos from '../components/MelhorarFotos'
 import PostGen from '../components/PostGen'
 import AdminCRM from '../components/AdminCRM'
 import InputMoeda from '../components/InputMoeda'
@@ -544,6 +545,7 @@ export default function Admin() {
     ['news', `Newsletter (${(dados?.news || []).length})`],
     ['acessos', 'Acessos'],
     ['post', '📣 Gerar post'],
+    ['fotos', '✨ Melhorar fotos'],
     ['marca', "Remover marca d'água"],
   ]
 
@@ -819,6 +821,8 @@ export default function Admin() {
         })()}
 
         {aba === 'post' && <PostGen />}
+
+        {aba === 'fotos' && <MelhorarFotos />}
 
         {aba === 'marca' && <RemoverMarca />}
 
