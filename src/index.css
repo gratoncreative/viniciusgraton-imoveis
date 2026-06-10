@@ -783,7 +783,7 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .rt-gancho { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 14px; padding: 14px 16px; }
 .rt-tag { display: inline-block; font-family: var(--font-head); font-weight: 700; font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-3); background: rgba(184,134,47,0.13); padding: 4px 10px; border-radius: 999px; margin-bottom: 8px; }
 .rt-gancho p { font-size: 0.94rem; color: #2f2a22; line-height: 1.5; margin-bottom: 12px; }
-.rt-msg-preview { font-family: var(--font-body), system-ui, sans-serif; white-space: pre-wrap; word-break: break-word; font-size: 0.88rem; line-height: 1.5; color: #2f2a22; background: #faf6ee; border: 1px solid rgba(184,134,47,0.18); border-radius: 11px; padding: 14px 16px; margin: 0 0 12px; max-height: 320px; overflow-y: auto; }
+.rt-msg-preview { font-family: var(--font-body), system-ui, sans-serif; white-space: pre-wrap; word-break: break-word; font-size: 0.88rem; line-height: 1.5; color: #2f2a22; background: #faf6ee; border: 1px solid rgba(184,134,47,0.18); border-radius: 11px; padding: 14px 16px; margin: 0 0 12px; }
 .rt-gancho-acoes { display: flex; gap: 10px; flex-wrap: wrap; }
 .rt-envia, .rt-copia { font-size: 0.86rem; padding: 9px 15px; }
 @media (max-width: 760px) {
