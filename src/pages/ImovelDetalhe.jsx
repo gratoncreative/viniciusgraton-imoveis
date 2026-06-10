@@ -348,15 +348,19 @@ export default function ImovelDetalhe() {
               </a>
               <AgendarVisita im={im} />
 
-              {(im.video || im.tour360) && (
-                <div className="det-tour">
-                  <span className="det-tour-tit">Visita virtual</span>
-                  <div className="det-tour-btns">
-                    {im.tour360 && <a className="det-tour-b" href={im.tour360} target="_blank" rel="noopener"><span aria-hidden="true">🔄</span> Tour 360°</a>}
-                    {im.video && <a className="det-tour-b" href={ytWatch(im.video)} target="_blank" rel="noopener"><span aria-hidden="true">▶</span> Ver vídeo do imóvel</a>}
+              {(() => {
+                // ignora o vídeo publicitário genérico da Rotina (não é o vídeo do imóvel)
+                const videoOk = im.video && !/NnAmly9Gb9s/.test(im.video) ? im.video : ''
+                return (videoOk || im.tour360) && (
+                  <div className="det-tour">
+                    <span className="det-tour-tit">Visita virtual</span>
+                    <div className="det-tour-btns">
+                      {im.tour360 && <a className="det-tour-b" href={im.tour360} target="_blank" rel="noopener"><span aria-hidden="true">🔄</span> Tour 360°</a>}
+                      {videoOk && <a className="det-tour-b" href={ytWatch(videoOk)} target="_blank" rel="noopener"><span aria-hidden="true">▶</span> Ver vídeo do imóvel</a>}
+                    </div>
                   </div>
-                </div>
-              )}
+                )
+              })()}
 
               <PerguntasImovel im={im} />
 
