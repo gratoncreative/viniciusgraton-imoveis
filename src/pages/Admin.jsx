@@ -3,6 +3,7 @@ import { useSEO } from '../useSEO'
 import { CONFIG, IMOVEIS, IMOVEIS_PENDENTES, formatPreco, CONSTRUTORAS } from '../data'
 import { IconShield, IconArrow, IconWhats } from '../components/icons'
 import RemoverMarca from '../components/RemoverMarca'
+import PostGen from '../components/PostGen'
 import AdminCRM from '../components/AdminCRM'
 import InputMoeda from '../components/InputMoeda'
 
@@ -542,6 +543,7 @@ export default function Admin() {
     ['crm', `Clientes${crmNovidades ? ` 🔔${crmNovidades}` : crmNovos ? ` (${crmNovos} novos)` : ''}`],
     ['news', `Newsletter (${(dados?.news || []).length})`],
     ['acessos', 'Acessos'],
+    ['post', '📣 Gerar post'],
     ['marca', "Remover marca d'água"],
   ]
 
@@ -815,6 +817,8 @@ export default function Admin() {
             </section>
           )
         })()}
+
+        {aba === 'post' && <PostGen />}
 
         {aba === 'marca' && <RemoverMarca />}
 
