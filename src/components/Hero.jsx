@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import Scene3D from './Scene3D'
+import HeroSkyline from './HeroSkyline'
 import HeroBusca from './HeroBusca'
 import { CONFIG, linkWhatsApp, WA } from '../data'
 import { IconWhats, IconArrow } from './icons'
@@ -34,6 +35,7 @@ export default function Hero() {
     <header className="hero" id="topo" ref={heroRef}>
       <div className="hero-bg" style={{ backgroundImage: `url(${CONFIG.heroImg})` }} />
       <div className="hero-bg-tint" />
+      <HeroSkyline />
       <Scene3D />
 
       <div className="container hero-grid2">

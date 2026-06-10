@@ -230,6 +230,17 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
   linear-gradient(95deg, rgba(6,9,14,0.6) 0%, rgba(6,9,14,0.34) 34%, rgba(6,9,14,0.82) 70%, rgba(6,9,14,0.96) 100%),
   linear-gradient(0deg, rgba(6,9,14,0.92) 0%, rgba(6,9,14,0.1) 42%, transparent 70%),
   radial-gradient(760px 540px at 12% 6%, rgba(224,181,86,0.13), transparent 64%); }
+/* camada 2.5: skyline de prédios animado (silhueta + janelas que acendem em dourado) */
+.hero-skyline { position: absolute; left: 0; right: 0; bottom: 0; height: 62%; z-index: 1; pointer-events: none; overflow: hidden;
+  background: linear-gradient(to top, rgba(7,10,17,0.96) 0%, rgba(7,10,17,0.7) 26%, rgba(7,10,17,0.22) 62%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, #000 60%, transparent 100%); mask-image: linear-gradient(to top, #000 60%, transparent 100%); }
+.hero-skyline svg { position: absolute; left: 0; bottom: 0; width: 100%; height: 80%; display: block; }
+.hsk-win { fill: rgba(150,170,200,0.16); }
+.hsk-win.lit { fill: rgba(224,181,86,0.62); filter: drop-shadow(0 0 2px rgba(224,181,86,0.45)); }
+.hsk-win.tw { animation: hskTw 3.4s ease-in-out infinite; }
+.hsk-win.lit.tw { animation-duration: 4.2s; }
+@keyframes hskTw { 0%, 100% { opacity: 0.22; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .hsk-win.tw { animation: none; opacity: 0.7; } }
 /* camada 3: poeira dourada leve (CSS) */
 .dust { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
 .dust-p { position: absolute; bottom: -12px; border-radius: 50%; background: radial-gradient(circle, #f4d98a 0%, rgba(244,217,138,0) 70%); animation-name: dustfloat; animation-timing-function: linear; animation-iteration-count: infinite; will-change: transform, opacity; }
