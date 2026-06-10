@@ -15,8 +15,8 @@ const IconUser = (p) => (
 // Menu principal (desktop) — enxuto e com ícones, referência Chaves na Mão
 const LINKS = [
   { to: '/imoveis', label: 'Imóveis', d: 'M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10' },
-  { to: '/construtoras', label: 'Construtoras', d: 'M4 9h16l-1-5H5L4 9zM4 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0M6 12v8h12v-8' },
-  { to: '/condominios', label: 'Condomínios', d: 'M3 21h18M6 21V8l5-3 5 3v13M10 12h2M10 16h2' },
+  { to: '/construtoras', label: 'Construtoras', d: 'M4.5 21h6M7.5 21V5M5 5h14.5M8 5L19.5 9.5M16 5v5a1 1 0 0 1-2 0' },
+  { to: '/condominios', label: 'Condomínios', d: 'M3 21h18M5 21V6h6v15M13 21V10h6v11M7 9h2M7 13h2M7 17h2M15 14h2M15 17h2' },
   { to: '/ferramentas', label: 'Ferramentas', d: 'M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.3 2.3-2-2 2.3-2.3z' },
   { to: '/anunciar', label: 'Anunciar', d: 'M3 11v2a1 1 0 0 0 1 1h2l4 4V6L6 10H4a1 1 0 0 0-1 1zM15 8a5 5 0 0 1 0 8' },
 ]
@@ -31,8 +31,8 @@ const LINKS_MOBILE = [
 // Cards do menu mobile (com ícone + subtítulo, mais envolvente que só texto)
 const MM_ICN = {
   home: 'M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10',
-  building: 'M5 21V4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v17M14 21V9h4a1 1 0 0 1 1 1v11M3 21h18M8 7h2M8 11h2M8 15h2',
-  store: 'M4 9h16l-1-5H5L4 9zM4 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0M6 12v8h12v-8',
+  building: 'M3 21h18M5 21V6h6v15M13 21V10h6v11M7 9h2M7 13h2M7 17h2M15 14h2M15 17h2',
+  crane: 'M4.5 21h6M7.5 21V5M5 5h14.5M8 5L19.5 9.5M16 5v5a1 1 0 0 1-2 0',
   tools: 'M6 3h12a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM8 7h8M8 11h.01M12 11h.01M16 11h.01M8 15h8',
   doc: 'M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM14 3v5h5M9 13h6M9 17h4',
   pin: 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0zM12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
@@ -43,7 +43,7 @@ const MMIcon = ({ name }) => (
 const MENU_CARDS = [
   { to: '/imoveis', label: 'Imóveis', sub: 'À venda em Uberlândia', icon: 'home' },
   { to: '/condominios', label: 'Condomínios', sub: 'Fechados e lançamentos', icon: 'building' },
-  { to: '/construtoras', label: 'Construtoras', sub: 'Empreendimentos', icon: 'store' },
+  { to: '/construtoras', label: 'Construtoras', sub: 'Empreendimentos', icon: 'crane' },
   { to: '/ferramentas', label: 'Ferramentas', sub: 'Simuladores grátis', icon: 'tools' },
   { to: '/blog', label: 'Blog', sub: 'Guias e dicas', icon: 'doc' },
   { to: '/regioes', label: 'Uberlândia', sub: 'Bairros e regiões', icon: 'pin' },
