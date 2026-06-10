@@ -8,7 +8,8 @@ const PREVIEW_MAX = 900   // resolução do preview (rápido)
 const EXPORT_MAX = 2560   // teto da resolução base na exportação
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
-const PADRAO = { angle: 0, brilho: 1.05, contraste: 1.09, satur: 1.12, nitidez: 0.6, wb: true, escala: 1 }
+const PADRAO = { angle: 0, brilho: 1.05, contraste: 1.09, satur: 1.12, nitidez: 0.6, wb: true, temp: 0, vinheta: 0, escala: 1 }
+const carregarImagem = (src) => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src })
 
 // ——— estima o ângulo de inclinação (graus) a partir das bordas horizontais/verticais ———
 function estimarAngulo(img) {
@@ -66,6 +67,15 @@ function nitidezUnsharp(imageData, amount) {
     }
   }
 }
+function aplicarTemp(imageData, t) { // t: -0.3 (frio) .. +0.3 (quente)
+  const d = imageData.data, kr = 1 + t * 0.6, kb = 1 - t * 0.6
+  for (let i = 0; i < d.length; i += 4) { d[i] *= kr; d[i + 2] *= kb }
+}
+function aplicarVinheta(ctx, W, H, v) { // v: 0..0.6
+  const g = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.32, W / 2, H / 2, Math.max(W, H) * 0.72)
+  g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, `rgba(0,0,0,${v})`)
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H)
+}
 function processar(img, s, maxLado) {
   const esc = Math.min(1, maxLado / Math.max(img.width, img.height))
   const W = Math.max(1, Math.round(img.width * esc)), H = Math.max(1, Math.round(img.height * esc))
@@ -80,9 +90,35 @@ function processar(img, s, maxLado) {
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.filter = 'none'
   const dados = ctx.getImageData(0, 0, W, H)
   if (s.wb) balancoBranco(dados)
+  if (s.temp) aplicarTemp(dados, s.temp)
   if (s.nitidez > 0) nitidezUnsharp(dados, s.nitidez)
   ctx.putImageData(dados, 0, 0)
+  if (s.vinheta > 0) aplicarVinheta(ctx, W, H, s.vinheta)
   return c
+}
+// desenha a marca d'água de texto na posição escolhida (sobre a foto exportada/preview)
+function aplicarMarca(canvas, wm) {
+  if (!wm || !wm.on || !wm.texto) return canvas
+  const ctx = canvas.getContext('2d'), W = canvas.width, H = canvas.height
+  const fs = Math.max(13, Math.round(Math.min(W, H) * (wm.tam / 100)))
+  const pad = Math.round(fs * 0.8)
+  ctx.save()
+  ctx.font = `600 ${fs}px Georgia, "Times New Roman", serif`
+  ctx.globalAlpha = clamp(wm.opac, 0.05, 1)
+  ctx.fillStyle = '#fff'
+  ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = fs * 0.3
+  const p = wm.pos || 'inf-dir'
+  if (p.includes('dir')) { ctx.textAlign = 'right'; }
+  else if (p.includes('esq')) { ctx.textAlign = 'left'; }
+  else { ctx.textAlign = 'center'; }
+  const x = p.includes('dir') ? W - pad : p.includes('esq') ? pad : W / 2
+  let y
+  if (p.includes('sup')) { ctx.textBaseline = 'top'; y = pad }
+  else if (p === 'centro') { ctx.textBaseline = 'middle'; y = H / 2 }
+  else { ctx.textBaseline = 'alphabetic'; y = H - pad }
+  ctx.fillText(wm.texto, x, y)
+  ctx.restore()
+  return canvas
 }
 function exportarCanvas(img, s) {
   const base = processar(img, s, EXPORT_MAX)
@@ -117,7 +153,7 @@ function montarSlide(quadro, W, H) {
   ctx.drawImage(quadro, (W - w) / 2, (H - h) / 2, w, h)
   return c
 }
-function marcaDagua(ctx, W, H, localMs, slideMs) {
+function marcaDagua(ctx, W, H, localMs, slideMs, texto) {
   const f = 700
   let alpha = 1
   if (localMs < f) alpha = localMs / f
@@ -128,7 +164,7 @@ function marcaDagua(ctx, W, H, localMs, slideMs) {
   ctx.globalAlpha = 0.92 * alpha
   ctx.font = '600 56px Georgia, "Times New Roman", serif'
   ctx.fillStyle = '#f3e2b4'
-  ctx.fillText('VINÍCIUS GRATON', W / 2, H - 104)
+  ctx.fillText((texto || 'Vinícius Graton').toUpperCase(), W / 2, H - 104)
   ctx.globalAlpha = 0.78 * alpha
   ctx.font = '400 28px Georgia, serif'
   ctx.fillStyle = 'rgba(255,255,255,0.96)'
@@ -160,6 +196,8 @@ export default function MelhorarFotos() {
   const [formato, setFormato] = useState('jpeg')
   const [durSeg, setDurSeg] = useState(3)
   const [video, setVideo] = useState(null) // {fase:'gravando'|'pronto'|'erro', pct, msg}
+  const [wm, setWm] = useState({ on: false, texto: 'Vinícius Graton', pos: 'inf-dir', tam: 4, opac: 0.85 })
+  const [ia, setIa] = useState(null) // {fase, msg}
   const previewRef = useRef(null)
   const fotosRef = useRef(fotos); fotosRef.current = fotos
 
@@ -198,10 +236,11 @@ export default function MelhorarFotos() {
       cv.width = W; cv.height = H; ctx.drawImage(foto.img, 0, 0, W, H)
     } else {
       const c = processar(foto.img, foto.s, PREVIEW_MAX)
+      if (wm.on) aplicarMarca(c, wm)
       cv.width = c.width; cv.height = c.height
       ctx.drawImage(c, 0, 0)
     }
-  }, [foto, verOriginal])
+  }, [foto, verOriginal, wm])
 
   useEffect(() => {
     const t = setTimeout(redesenhar, 60)
@@ -210,6 +249,40 @@ export default function MelhorarFotos() {
 
   const autoAngulo = () => { if (foto) setS({ angle: (() => { try { return estimarAngulo(foto.img) } catch { return 0 } })() }) }
   const autoAnguloTodas = () => setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, angle: (() => { try { return estimarAngulo(ft.img) } catch { return 0 } })() } })))
+
+  // ——— Super-resolução com IA (open source, no navegador) ———
+  const melhorarIA = async () => {
+    if (!foto || ia) return
+    setIa({ fase: 'carregando', msg: 'Carregando a IA… (a 1ª vez baixa o modelo, ~alguns MB)' })
+    try {
+      const tf = await import('@huggingface/transformers')
+      const { pipeline, env } = tf
+      env.allowLocalModels = false
+      env.useBrowserCache = true
+      env.remoteHost = window.location.origin
+      env.remotePathTemplate = 'api/modelo-ia/{model}/resolve/{revision}'
+      let up
+      try { up = await pipeline('image-to-image', 'Xenova/swin2SR-classical-sr-x2-64', { device: 'webgpu' }) }
+      catch { up = await pipeline('image-to-image', 'Xenova/swin2SR-classical-sr-x2-64') }
+      setIa({ fase: 'processando', msg: 'Recuperando a foto com IA… pode levar alguns segundos.' })
+      // reduz a entrada (o modelo é pesado) — o x2 da IA recompõe o detalhe
+      const sc = Math.min(1, 768 / Math.max(foto.img.width, foto.img.height))
+      const pre = document.createElement('canvas')
+      pre.width = Math.round(foto.img.width * sc); pre.height = Math.round(foto.img.height * sc)
+      pre.getContext('2d').drawImage(foto.img, 0, 0, pre.width, pre.height)
+      const blob = await canvasParaBlob(pre, 'png')
+      const url = URL.createObjectURL(blob)
+      const out = await up(url)
+      URL.revokeObjectURL(url)
+      const canvas = out.toCanvas ? out.toCanvas() : (() => { const cc = document.createElement('canvas'); cc.width = out.width; cc.height = out.height; cc.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(out.data.length === out.width * out.height * 4 ? out.data : out.rgba().data), out.width, out.height), 0, 0); return cc })()
+      const novo = await carregarImagem(canvas.toDataURL('image/jpeg', 0.95))
+      setFotos((fs) => fs.map((ft, i) => i === atual ? { ...ft, img: novo, s: { ...ft.s, escala: 1 } } : ft))
+      setIa({ fase: 'pronto', msg: '✓ Foto recuperada com IA! Agora ela está maior e mais nítida.' })
+      setTimeout(() => setIa(null), 3000)
+    } catch (e) {
+      setIa({ fase: 'erro', msg: 'A IA não rodou neste navegador (' + (e.message || e) + '). Use a ampliação 2× normal — também melhora bastante.' })
+    }
+  }
 
   // gera um vídeo (slideshow) das fotos: transição suave + marca d'água Vinícius Graton
   const gerarVideo = async () => {
@@ -254,7 +327,7 @@ export default function MelhorarFotos() {
             const a1 = getSlide(idx + 1)
             if (a1) { ctx.globalAlpha = a; ctx.drawImage(a1, 0, 0); ctx.globalAlpha = 1 }
           }
-          marcaDagua(ctx, W, H, localT, slideMs)
+          marcaDagua(ctx, W, H, localT, slideMs, wm.texto)
           setVideo({ fase: 'gravando', pct: Math.round((t / total) * 100) })
           requestAnimationFrame(frame)
         }
@@ -273,10 +346,11 @@ export default function MelhorarFotos() {
     }
   }
   const restaurar = () => setS({ ...PADRAO, angle: foto ? foto.s.angle : 0 })
-  const aplicarTodas = () => { if (foto) setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, brilho: foto.s.brilho, contraste: foto.s.contraste, satur: foto.s.satur, nitidez: foto.s.nitidez, wb: foto.s.wb, escala: foto.s.escala } }))) }
+  const aplicarTodas = () => { if (foto) setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, brilho: foto.s.brilho, contraste: foto.s.contraste, satur: foto.s.satur, nitidez: foto.s.nitidez, temp: foto.s.temp, vinheta: foto.s.vinheta, wb: foto.s.wb, escala: foto.s.escala } }))) }
   const remover = (i) => { setFotos((fs) => fs.filter((_, k) => k !== i)); setAtual((a) => (a >= fotos.length - 1 ? fotos.length - 2 : a)) }
 
   const baixarCanvas = async (canvas, nome) => {
+    if (wm.on) aplicarMarca(canvas, wm)
     const blob = await canvasParaBlob(canvas, formato)
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${nome}.${EXT[formato]}`
     document.body.appendChild(a); a.click(); a.remove()
@@ -343,6 +417,15 @@ export default function MelhorarFotos() {
               </div>
 
               <div className="mf-controles">
+                <div className="mf-grupo mf-grupo--ia">
+                  <div className="mf-grupo-tit">🤖 Super-resolução com IA <span className="mf-beta">Beta</span></div>
+                  <p className="mf-nota" style={{ marginTop: 0 }}>Pra fotos de baixa resolução. Uma IA open-source recompõe o detalhe (não é só ampliar). Roda no seu navegador — a 1ª vez baixa o modelo.</p>
+                  <button className="btn btn-gold" onClick={melhorarIA} disabled={!!ia}>
+                    {ia ? (ia.fase === 'carregando' ? 'Carregando IA…' : ia.fase === 'processando' ? 'Recuperando foto…' : ia.fase === 'pronto' ? '✓ Pronto!' : 'Tentar de novo') : '✨ Melhorar esta foto com IA'}
+                  </button>
+                  {ia?.msg && <p className={`mf-nota ${ia.fase === 'erro' ? 'mf-erro' : ''}`}>{ia.msg}</p>}
+                </div>
+
                 <div className="mf-grupo">
                   <div className="mf-grupo-tit">Inclinação</div>
                   <Slider label="Ângulo" val={foto.s.angle} min={-15} max={15} step={0.1} on={(v) => setS({ angle: v })} fmt={(v) => `${v.toFixed(1)}°`} />
@@ -358,6 +441,8 @@ export default function MelhorarFotos() {
                   <Slider label="Contraste" val={foto.s.contraste} min={0.8} max={1.4} step={0.01} on={(v) => setS({ contraste: v })} fmt={(v) => `${Math.round(v * 100)}%`} />
                   <Slider label="Cor (saturação)" val={foto.s.satur} min={0.8} max={1.5} step={0.01} on={(v) => setS({ satur: v })} fmt={(v) => `${Math.round(v * 100)}%`} />
                   <Slider label="Nitidez" val={foto.s.nitidez} min={0} max={1.4} step={0.05} on={(v) => setS({ nitidez: v })} fmt={(v) => v.toFixed(2)} />
+                  <Slider label="Temperatura" val={foto.s.temp} min={-0.3} max={0.3} step={0.02} on={(v) => setS({ temp: v })} fmt={(v) => v === 0 ? 'neutro' : v > 0 ? 'quente' : 'fria'} />
+                  <Slider label="Vinheta" val={foto.s.vinheta} min={0} max={0.6} step={0.05} on={(v) => setS({ vinheta: v })} fmt={(v) => v === 0 ? 'não' : Math.round(v * 100) + '%'} />
                   <label className="mf-check"><input type="checkbox" checked={foto.s.wb} onChange={(e) => setS({ wb: e.target.checked })} /> Balanço de branco automático</label>
                 </div>
 
@@ -377,7 +462,32 @@ export default function MelhorarFotos() {
                       <option value={2}>2× maior (UHD)</option>
                     </select>
                   </label>
-                  <p className="mf-nota">Ampliação reamostra em alta qualidade + nitidez — fica maior e mais nítida (não é super-resolução por IA). O formato e a ampliação valem pra todos os downloads.</p>
+                  <p className="mf-nota">Ampliação reamostra em alta qualidade + nitidez. Pra recuperar foto ruim de verdade, use a Super-resolução com IA acima. O formato e a ampliação valem pra todos os downloads.</p>
+                </div>
+
+                <div className="mf-grupo">
+                  <div className="mf-grupo-tit">💧 Marca d'água</div>
+                  <label className="mf-check"><input type="checkbox" checked={wm.on} onChange={(e) => setWm({ ...wm, on: e.target.checked })} /> Inserir marca d'água nas fotos</label>
+                  {wm.on && (
+                    <>
+                      <label className="mf-campo"><span>Texto</span>
+                        <input type="text" value={wm.texto} onChange={(e) => setWm({ ...wm, texto: e.target.value })} placeholder="Ex.: Vinícius Graton" />
+                      </label>
+                      <label className="mf-sel"><span>Posição</span>
+                        <select value={wm.pos} onChange={(e) => setWm({ ...wm, pos: e.target.value })}>
+                          <option value="inf-dir">Inferior direita</option>
+                          <option value="inf-esq">Inferior esquerda</option>
+                          <option value="inf-centro">Inferior centro</option>
+                          <option value="sup-dir">Superior direita</option>
+                          <option value="sup-esq">Superior esquerda</option>
+                          <option value="centro">Centro</option>
+                        </select>
+                      </label>
+                      <Slider label="Tamanho" val={wm.tam} min={2} max={9} step={0.5} on={(v) => setWm({ ...wm, tam: v })} fmt={(v) => v.toFixed(1)} />
+                      <Slider label="Opacidade" val={wm.opac} min={0.2} max={1} step={0.05} on={(v) => setWm({ ...wm, opac: v })} fmt={(v) => Math.round(v * 100) + '%'} />
+                      <p className="mf-nota">Aparece nas fotos baixadas e no vídeo. Vale pra todas.</p>
+                    </>
+                  )}
                 </div>
 
                 <div className="mf-grupo">
