@@ -464,7 +464,8 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .cat-rail .cat-painel { margin-bottom: 14px; }
 /* seletores em 2 colunas pra caber tudo sem rolagem interna */
 .cat-rail .cat-filtros { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.cat-rail .cat-filtros select { width: 100%; }
+.cat-rail .cat-filtros select { width: 100%; font-size: 0.8rem; padding-left: 34px; padding-right: 22px; text-overflow: ellipsis; }
+.cat-rail .cat-f > svg { left: 11px; width: 16px; height: 16px; }
 .cat-rail .cat-busca { width: 100%; flex: 0 0 auto; min-width: 0; }
 .cat-rail .cat-busca { flex: 0 0 auto; min-width: 0; }
 .cat-main { min-width: 0; }
