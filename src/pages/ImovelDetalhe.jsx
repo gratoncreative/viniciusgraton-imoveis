@@ -49,7 +49,21 @@ function apresentacao(im) {
     `Quer ver de perto? Eu te acompanho na visita, esclareço tudo e cuido da documentação e do financiamento. Me chama no WhatsApp que a gente agenda.`,
     `Posso te mostrar pessoalmente e simular o financiamento com você — atendimento direto, do primeiro contato à entrega das chaves. É só chamar.`,
   ], 2)
-  return [abre, corpo, valor, fecha]
+  // destaques REAIS do imóvel (preenchem a apresentação de forma verdadeira)
+  const ehTerreo = ehApto && (Number(im.andar) === 0)
+  const destaques = [
+    im.area && `${im.area} m² de área`,
+    im.quartos && `${im.quartos} ${im.quartos > 1 ? 'quartos' : 'quarto'}${im.suites ? ` (sendo ${im.suites} suíte${im.suites > 1 ? 's' : ''})` : ''}`,
+    im.banheiros && `${im.banheiros} banheiro${im.banheiros > 1 ? 's' : ''}`,
+    im.vagas && `${im.vagas} vaga${im.vagas > 1 ? 's' : ''} de garagem`,
+    ehApto && (im.andar != null && im.andar !== '') && (ehTerreo ? 'Térreo' : `${im.andar}º andar`),
+    ehApto && typeof im.elevador === 'boolean' && (im.elevador ? 'Prédio com elevador' : 'Prédio sem elevador'),
+    im.condominio && `Condomínio de ${formatPreco(im.condominio)}`,
+    ...(im.amenidades || []),
+    op.abaixoMercado && 'Preço abaixo da média do m² do bairro',
+    `Localização no ${b}, ${im.cidade || 'Uberlândia'} — MG`,
+  ].filter(Boolean)
+  return { paras: [abre, corpo, valor, fecha], destaques }
 }
 
 // converte o imóvel vindo da API da Rotina (/api/rotina-imovel) para o formato do site
@@ -285,10 +299,16 @@ export default function ImovelDetalhe() {
           <div className="det-galeria">
             <span className="det-tag">{im.tipo}</span>
             <Galeria fotos={fotos} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} />
-            <div className="det-apresenta">
-              <h2 className="det-apresenta-tit">Por que esse imóvel vale a sua visita</h2>
-              {apresentacao(im).map((p, i) => <p key={i}>{p}</p>)}
-            </div>
+            {(() => { const ap = apresentacao(im); return (
+              <div className="det-apresenta">
+                <h2 className="det-apresenta-tit">Por que esse imóvel vale a sua visita</h2>
+                {ap.paras.map((p, i) => <p key={i}>{p}</p>)}
+                <span className="det-apre-sub">Destaques deste imóvel</span>
+                <ul className="det-apre-destaques">
+                  {ap.destaques.map((d, i) => <li key={i}>{d}</li>)}
+                </ul>
+              </div>
+            ) })()}
           </div>
 
           {/* Painel de info */}
