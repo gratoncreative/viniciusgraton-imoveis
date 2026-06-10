@@ -258,6 +258,7 @@ function ImoveisPub({ token, onSair }) {
               <label className="admin-field"><span>Tipo</span><input value={reg.campos.tipo} onChange={(e) => setC('tipo', e.target.value)} /></label>
               <label className="admin-field"><span>Bairro</span><input value={reg.campos.bairro} onChange={(e) => setC('bairro', e.target.value)} /></label>
               <label className="admin-field"><span>Preço</span><InputMoeda value={reg.campos.preco} onChange={(v) => setC('preco', v)} /></label>
+              <label className="admin-field"><span>Preço anterior <i style={{ fontWeight: 400, color: '#9a8e78' }}>(opcional — só se baixou de verdade)</i></span><InputMoeda value={reg.campos.precoAnterior} onChange={(v) => setC('precoAnterior', v)} /></label>
               <label className="admin-field"><span>Área (m²)</span><input type="number" value={reg.campos.area} onChange={(e) => setC('area', e.target.value)} /></label>
               <label className="admin-field"><span>Quartos</span><input type="number" value={reg.campos.quartos} onChange={(e) => setC('quartos', e.target.value)} /></label>
               <label className="admin-field"><span>Suítes</span><input type="number" value={reg.campos.suites} onChange={(e) => setC('suites', e.target.value)} /></label>

@@ -8,7 +8,7 @@ import Engajamento from '../components/Engajamento'
 import PrecoGate from '../components/PrecoGate'
 import {
   getImovel, fotosDe, formatPreco, formatArea, resumoImovel, subtituloImovel,
-  destaquesImovel, ehCondominio, IMOVEIS, linkWhatsApp, waImovel, CONFIG, BAIRROS,
+  destaquesImovel, ehCondominio, IMOVEIS, linkWhatsApp, waImovel, CONFIG, BAIRROS, oportunidade,
 } from '../data'
 import { IconWhats, IconArrow, IconPin, IconShield, ICONS } from './../components/icons'
 
@@ -215,7 +215,13 @@ export default function ImovelDetalhe() {
               <p className="det-local"><IconPin width={15} height={15} /> {im.cidade} — {im.uf} · Cód. {im.codigo}</p>
               <h1 className="det-titulo">{im.tipo} no {im.bairro}</h1>
               <p className="det-subtitulo">{subtituloImovel(im)}</p>
-              <PrecoGate valor={im.preco} className="det-preco" tipo="detalhe" />
+              {(() => { const op = oportunidade(im); return (op.temDesconto || op.abaixoMercado) ? (
+                <div className="det-selos">
+                  {op.temDesconto && <span className="im-selo im-selo--off">Preço reduzido · -{op.pctDesconto}%</span>}
+                  {op.abaixoMercado && <span className="im-selo im-selo--mercado">Abaixo do m² do bairro</span>}
+                </div>
+              ) : null })()}
+              <PrecoGate valor={im.preco} anterior={im.precoAnterior} className="det-preco" tipo="detalhe" />
 
               <div className="det-specs">
                 {specs.map((s, i) => <Spec key={i} {...s} />)}

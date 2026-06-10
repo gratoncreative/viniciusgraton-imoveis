@@ -10,7 +10,7 @@ const Cadeado = (p) => (
 
 // Mostra o preço só depois que o visitante faz o cadastro (gatilho de captação de lead).
 // tipo: 'card' (sobre a foto) | 'linha' (listagem) | 'detalhe' (página do imóvel)
-export default function PrecoGate({ valor, className = '', tipo = 'card' }) {
+export default function PrecoGate({ valor, anterior, className = '', tipo = 'card' }) {
   const [ok, setOk] = useState(() => estaLogado())
   useEffect(() => {
     const ler = () => setOk(estaLogado())
@@ -19,7 +19,19 @@ export default function PrecoGate({ valor, className = '', tipo = 'card' }) {
     return () => { window.removeEventListener('vg-conta', ler); window.removeEventListener('storage', ler) }
   }, [])
 
-  if (ok) return <span className={className}>{formatPreco(valor)}</span>
+  const temPromo = anterior && Number(anterior) > Number(valor)
+
+  if (ok) {
+    if (temPromo) {
+      return (
+        <span className={`${className} pg-promo pg-promo--${tipo}`}>
+          <span className="pg-de">{formatPreco(anterior)}</span>
+          <span className="pg-por">{formatPreco(valor)}</span>
+        </span>
+      )
+    }
+    return <span className={className}>{formatPreco(valor)}</span>
+  }
 
   const abrir = (e) => { e.preventDefault(); e.stopPropagation(); window.dispatchEvent(new CustomEvent('vg-abrir-cadastro')) }
   const txt = String(formatPreco(valor))

@@ -8,7 +8,7 @@
  */
 const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'public, max-age=30' } })
 const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
-const CAMPOS = ['preco', 'tipo', 'bairro', 'quartos', 'suites', 'banheiros', 'vagas', 'area', 'andar', 'elevador', 'descricao', 'destaque', 'oculto', 'fotos']
+const CAMPOS = ['preco', 'precoAnterior', 'tipo', 'bairro', 'quartos', 'suites', 'banheiros', 'vagas', 'area', 'andar', 'elevador', 'descricao', 'destaque', 'oculto', 'fotos']
 
 export async function onRequestGet({ env }) {
   if (!temKV(env)) return json({ ov: {}, ap: [] })

@@ -160,7 +160,7 @@ export async function onRequestPost({ env, request }) {
     const owner = { nome: String(o.nome || '').slice(0, 120), email: String(o.email || '').slice(0, 160), fone: String(o.fone || '').slice(0, 40) }
     const c = b.campos && typeof b.campos === 'object' ? b.campos : {}
     const campos = {}
-    for (const k of ['preco', 'quartos', 'suites', 'banheiros', 'vagas', 'area']) if (k in c) campos[k] = Number(c[k]) || 0
+    for (const k of ['preco', 'precoAnterior', 'quartos', 'suites', 'banheiros', 'vagas', 'area']) if (k in c) campos[k] = Number(c[k]) || 0
     for (const k of ['tipo', 'bairro', 'descricao']) if (k in c) campos[k] = String(c[k] || '').slice(0, 3000)
     for (const k of ['destaque', 'oculto']) if (k in c) campos[k] = !!c[k]
     // apartamento: andar (0 = térreo) e elevador (true/false). Só grava se informado.

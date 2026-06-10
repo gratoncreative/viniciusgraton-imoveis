@@ -1,12 +1,23 @@
 import { useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { formatPreco, formatArea, resumoImovel, truncar, linkWhatsApp, waImovel } from '../data'
+import { formatPreco, formatArea, resumoImovel, truncar, linkWhatsApp, waImovel, oportunidade } from '../data'
 import PrecoGate from './PrecoGate'
 import { IconWhats, ICONS } from './icons'
 import Engajamento from './Engajamento'
 import { onImgError } from '../img'
 
 const plural = (n, s, p) => (n > 1 ? p : s)
+
+// Selos de oportunidade (legítimos): % de desconto real ou abaixo do m² do bairro
+function SelosOportunidade({ op }) {
+  if (!op || (!op.temDesconto && !op.abaixoMercado)) return null
+  return (
+    <div className="im-selos">
+      {op.temDesconto && <span className="im-selo im-selo--off">-{op.pctDesconto}%</span>}
+      {op.abaixoMercado && <span className="im-selo im-selo--mercado">Abaixo do mercado</span>}
+    </div>
+  )
+}
 
 function Spec({ icon, valor, label }) {
   const Icon = ICONS[icon]
@@ -58,6 +69,7 @@ export default function CardImovel({ im, variante }) {
     ehApto && typeof im.elevador === 'boolean' && { icon: 'elevator', valor: im.elevador ? 'Com' : 'Sem', label: 'elevador' },
   ].filter(Boolean)
 
+  const op = oportunidade(im)
   const irParaImovel = () => navigate(`/imovel/${im.codigo}`)
 
   // ——— variante horizontal (listagem estilo portal): foto à esquerda, infos à direita ———
@@ -68,6 +80,7 @@ export default function CardImovel({ im, variante }) {
           <img src={im.img} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} loading="lazy" decoding="async" onError={onImgError} />
           <span className="im-tag">{im.tipo}</span>
           {im.novo && <span className="im-novo">Novo</span>}
+          <SelosOportunidade op={op} />
         </div>
         <div className="im-linha-body">
           <div className="im-linha-top">
@@ -82,7 +95,7 @@ export default function CardImovel({ im, variante }) {
             {specs.map((s, i) => <Spec key={i} {...s} />)}
           </div>
           <div className="im-linha-rodape">
-            <PrecoGate valor={im.preco} className="im-linha-preco" tipo="linha" />
+            <PrecoGate valor={im.preco} anterior={im.precoAnterior} className="im-linha-preco" tipo="linha" />
             <div className="im-actions">
               <Link className="im-ver" to={`/imovel/${im.codigo}`} onClick={(e) => e.stopPropagation()}>Ver detalhes</Link>
               <a className="im-cta" href={linkWhatsApp(waImovel(im))} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()}>
@@ -107,8 +120,9 @@ export default function CardImovel({ im, variante }) {
         <img src={im.img} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} loading="lazy" decoding="async" onError={onImgError} />
         <span className="im-tag">{im.tipo}</span>
         {im.novo && <span className="im-novo">Novo</span>}
+        <SelosOportunidade op={op} />
         <Engajamento im={im} variante="card" />
-        <PrecoGate valor={im.preco} className="im-preco" tipo="card" />
+        <PrecoGate valor={im.preco} anterior={im.precoAnterior} className="im-preco" tipo="card" />
       </div>
       <div className="card-body im-body">
         <h3 className="im-bairro">{im.bairro}</h3>

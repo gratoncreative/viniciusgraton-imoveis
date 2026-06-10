@@ -49,7 +49,7 @@ export const IMOVEIS_INFO = { geradoEm: destaqueData.geradoEm, fonte: destaqueDa
 
 // Aplica os overrides do painel (campos editados / ocultar) vindos de /api/imoveis-pub.
 // Só campos PÚBLICOS do anúncio — dados do proprietário NUNCA chegam aqui.
-const CAMPOS_OVERRIDE = ['preco', 'tipo', 'bairro', 'quartos', 'suites', 'banheiros', 'vagas', 'area', 'andar', 'elevador', 'descricao']
+const CAMPOS_OVERRIDE = ['preco', 'precoAnterior', 'tipo', 'bairro', 'quartos', 'suites', 'banheiros', 'vagas', 'area', 'andar', 'elevador', 'descricao']
 export function aplicarOverridesImoveis(mapa, aprovados) {
   // Reinsere no site os imóveis pendentes que o Vinícius já aprovou (lista vinda do KV).
   const apSet = new Set((aprovados || []).map(String))
@@ -96,6 +96,29 @@ export const formatPreco = (v) => {
 
 export const formatArea = (a) =>
   a ? `${a.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} m²` : null
+
+// Sinais de OPORTUNIDADE — 100% legítimos e verificáveis (sem preço inventado):
+//  - desconto real: só quando o proprietário registra um "preço anterior" maior que o atual
+//  - abaixo do mercado: preço/m² do imóvel < m² médio do bairro (fontes públicas IPD/ZAP)
+const _norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim()
+const _m2Bairro = (bairro) => { const r = (bairrosM2 || []).find((x) => _norm(x.bairro) === _norm(bairro)); return (r && r.m2) || 0 }
+export function oportunidade(im) {
+  const out = { temDesconto: false, pctDesconto: 0, precoAnterior: 0, abaixoMercado: false, pctAbaixo: 0 }
+  if (!im) return out
+  const ant = Number(im.precoAnterior) || 0
+  if (ant > 0 && im.preco > 0 && ant > im.preco) {
+    out.temDesconto = true
+    out.precoAnterior = ant
+    out.pctDesconto = Math.round((1 - im.preco / ant) * 100)
+  }
+  const m2 = _m2Bairro(im.bairro)
+  const area = Number(im.area) || 0
+  if (m2 > 0 && area > 0 && im.preco > 0) {
+    const precoM2 = im.preco / area
+    if (precoM2 < m2 * 0.93) { out.abaixoMercado = true; out.pctAbaixo = Math.round((1 - precoM2 / m2) * 100) }
+  }
+  return out
+}
 
 // Mensagem de WhatsApp personalizada por imóvel
 export const waImovel = (im) =>
