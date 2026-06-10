@@ -213,7 +213,7 @@ export default function Catalogo() {
         </Reveal>
 
         <div className="cat-layout">
-        <aside className="cat-rail">
+        <aside className="cat-rail" data-lenis-prevent>
         <div className="cat-painel">
         {/* buscas rápidas */}
         <div className="cat-rapidas">
@@ -269,7 +269,7 @@ export default function Catalogo() {
         )}
         </aside>
 
-        <div className="cat-main">
+        <div className="cat-main" data-lenis-prevent>
         <div className="cat-tipos">
           {TIPO_CHIPS.map((c) => (
             <button key={c.grupo} type="button" className={`cat-tipo ${f.grupo === c.grupo ? 'on' : ''}`} onClick={() => toggleGrupo(c.grupo)}>

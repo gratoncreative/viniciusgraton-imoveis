@@ -8,15 +8,34 @@ import { useState, useRef, useEffect } from 'react'
 export default function FiltroSelect({ icon, placeholder, options = [], value, multiple = false, searchable = false, neutral = '', onChange }) {
   const [open, setOpen] = useState(false)
   const [q, setQ] = useState('')
+  const [pos, setPos] = useState(null) // posição fixa do dropdown (não é cortado por colunas que rolam)
   const ref = useRef(null)
+  const popRef = useRef(null)
 
   useEffect(() => {
     if (!open) return
-    const onDoc = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false) }
+    const calc = () => {
+      const t = ref.current
+      if (!t) return
+      const r = t.getBoundingClientRect()
+      const espacoAbaixo = window.innerHeight - r.bottom - 12
+      setPos({ left: r.left, top: r.bottom + 6, width: r.width, maxH: Math.max(180, Math.min(340, espacoAbaixo)) })
+    }
+    calc()
+    const onDoc = (e) => { if (ref.current && !ref.current.contains(e.target) && popRef.current && !popRef.current.contains(e.target)) setOpen(false) }
     const onKey = (e) => { if (e.key === 'Escape') setOpen(false) }
+    // reposiciona quando a coluna/página rola — MAS ignora a rolagem interna do próprio dropdown
+    const onScroll = (e) => { if (popRef.current && popRef.current.contains(e.target)) return; calc() }
     document.addEventListener('mousedown', onDoc)
     document.addEventListener('keydown', onKey)
-    return () => { document.removeEventListener('mousedown', onDoc); document.removeEventListener('keydown', onKey) }
+    window.addEventListener('resize', calc)
+    window.addEventListener('scroll', onScroll, true)
+    return () => {
+      document.removeEventListener('mousedown', onDoc)
+      document.removeEventListener('keydown', onKey)
+      window.removeEventListener('resize', calc)
+      window.removeEventListener('scroll', onScroll, true)
+    }
   }, [open])
 
   const arr = multiple ? (Array.isArray(value) ? value : []) : []
@@ -52,7 +71,7 @@ export default function FiltroSelect({ icon, placeholder, options = [], value, m
         <svg className="fs-chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
       </button>
       {open && (
-        <div className="fs-pop" data-lenis-prevent>
+        <div className="fs-pop" data-lenis-prevent ref={popRef} style={pos ? { position: 'fixed', left: pos.left, top: pos.top, width: pos.width, maxHeight: pos.maxH } : undefined}>
           {searchable && (
             <input className="fs-busca" autoFocus type="search" placeholder="Buscar bairro…" value={q} onChange={(e) => setQ(e.target.value)} />
           )}
