@@ -659,6 +659,14 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .cat-tipo.on svg { color: var(--gold-3); }
 @media (max-width: 680px) { .cat-tipos { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; } .cat-tipo { flex: 0 0 112px; } }
 
+/* paginação do catálogo (números de página) */
+.cat-pager { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; margin-top: 32px; }
+.cat-pager-n, .cat-pager-nav { min-width: 40px; height: 40px; padding: 0 12px; border-radius: 10px; border: 1px solid rgba(22,26,34,0.14); background: #fff; color: #3a342a; font-family: var(--font-head); font-weight: 600; font-size: 0.92rem; cursor: pointer; transition: border-color 0.2s var(--ease), background 0.2s, color 0.2s; }
+.cat-pager-n:hover, .cat-pager-nav:hover:not(:disabled) { border-color: var(--gold-3); color: var(--gold-3); }
+.cat-pager-n.on { background: var(--gold-grad); border-color: transparent; color: #20160a; }
+.cat-pager-nav:disabled { opacity: 0.4; cursor: default; }
+.cat-pager-gap { padding: 0 2px; color: #9a8e78; align-self: flex-end; }
+
 /* ===== Painel: Acessos + Newsletter ===== */
 .admin-sec-tit { font-family: var(--font-head); font-weight: 800; font-size: 1.1rem; color: #2a2118; margin: 26px 0 14px; }
 .admin-rank { list-style: none; display: flex; flex-direction: column; gap: 2px; background: #fff; border: 1px solid rgba(22,26,34,0.08); border-radius: 14px; overflow: hidden; }

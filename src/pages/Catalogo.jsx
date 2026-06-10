@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState, useEffect, useRef } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import CardImovel from '../components/CardImovel'
@@ -51,6 +51,16 @@ const blobDe = (im) => {
   return [...(c.internas || []), ...(c.externas || []), ...(c.extras || []), im.descricao || ''].join(' ').toLowerCase()
 }
 
+// números de página com reticências: 1 … 4 [5] 6 … 653
+function janelasPaginas(atual, total) {
+  const s = new Set([1, total, atual, atual - 1, atual + 1])
+  const arr = [...s].filter((p) => p >= 1 && p <= total).sort((a, b) => a - b)
+  const out = []
+  let prev = 0
+  for (const p of arr) { if (p - prev > 1) out.push('…'); out.push(p); prev = p }
+  return out
+}
+
 export default function Catalogo() {
   const [params, setParams] = useSearchParams()
   useSEO({
@@ -80,8 +90,10 @@ export default function Catalogo() {
     return [...mapa.values()]
   }, [feed])
   const BAIRROS_TODOS = useMemo(() => [...new Set(TODOS.map((i) => i.bairro).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')), [TODOS])
-  const [limite, setLimite] = useState(60)
-  useEffect(() => { setLimite(60) }, [params.toString()])
+  const POR_PAGINA = 5
+  const [pagina, setPagina] = useState(1)
+  const topoRef = useRef(null)
+  useEffect(() => { setPagina(1) }, [params.toString()])
 
   const f = {
     q: params.get('q') || '',
@@ -147,6 +159,14 @@ export default function Catalogo() {
     if (f.ordem === 'area-menor') r = [...r].sort((a, b) => (a.area || 0) - (b.area || 0))
     return r
   }, [TODOS, f.tipo, f.grupo, f.bairro, f.quartos, f.suites, f.vagas, f.area, f.carac, f.faixa, f.q, f.ordem])
+
+  const totalPag = Math.max(1, Math.ceil(lista.length / POR_PAGINA))
+  const pgAtual = Math.min(pagina, totalPag)
+  const visiveis = lista.slice((pgAtual - 1) * POR_PAGINA, pgAtual * POR_PAGINA)
+  const irPag = (p) => {
+    setPagina(Math.min(Math.max(1, p), totalPag))
+    setTimeout(() => topoRef.current && topoRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' }), 30)
+  }
 
   const limpar = () => setParams({}, { replace: true })
 
@@ -253,7 +273,7 @@ export default function Catalogo() {
         )}
         </aside>
 
-        <div className="cat-main">
+        <div className="cat-main" ref={topoRef}>
         <div className="cat-tipos">
           {TIPO_CHIPS.map((c) => (
             <button key={c.grupo} type="button" className={`cat-tipo ${f.grupo === c.grupo ? 'on' : ''}`} onClick={() => toggleGrupo(c.grupo)}>
@@ -263,21 +283,25 @@ export default function Catalogo() {
           ))}
         </div>
 
-        <p className="cat-count">{carregandoFeed && !feed.length ? 'Carregando imóveis da Rotina…' : `${lista.length} ${lista.length === 1 ? 'imóvel encontrado' : 'imóveis encontrados'}`}</p>
+        <p className="cat-count">{carregandoFeed && !feed.length ? 'Carregando imóveis da Rotina…' : `${lista.length} ${lista.length === 1 ? 'imóvel encontrado' : 'imóveis encontrados'}${totalPag > 1 ? ` · página ${pgAtual} de ${totalPag}` : ''}`}</p>
 
         {lista.length ? (
           <>
           <div className="cat-lista">
-            {lista.slice(0, limite).map((im) => (
+            {visiveis.map((im) => (
               <CardImovel key={im.codigo} im={im} variante="linha" />
             ))}
           </div>
-          {lista.length > limite && (
-            <div style={{ textAlign: 'center', marginTop: 28 }}>
-              <button className="btn btn-gold" type="button" onClick={() => setLimite((n) => n + 60)}>
-                Ver mais imóveis ({lista.length - limite} restantes)
-              </button>
-            </div>
+          {totalPag > 1 && (
+            <nav className="cat-pager" aria-label="Paginação">
+              <button type="button" className="cat-pager-nav" disabled={pgAtual <= 1} onClick={() => irPag(pgAtual - 1)} aria-label="Página anterior">‹</button>
+              {janelasPaginas(pgAtual, totalPag).map((p, i) => (
+                p === '…'
+                  ? <span key={`g${i}`} className="cat-pager-gap">…</span>
+                  : <button key={p} type="button" className={`cat-pager-n ${p === pgAtual ? 'on' : ''}`} onClick={() => irPag(p)}>{p}</button>
+              ))}
+              <button type="button" className="cat-pager-nav" disabled={pgAtual >= totalPag} onClick={() => irPag(pgAtual + 1)} aria-label="Próxima página">›</button>
+            </nav>
           )}
           </>
         ) : (
