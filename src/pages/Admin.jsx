@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useSEO } from '../useSEO'
-import { CONFIG, IMOVEIS, IMOVEIS_PENDENTES, formatPreco } from '../data'
+import { CONFIG, IMOVEIS, IMOVEIS_PENDENTES, formatPreco, CONSTRUTORAS } from '../data'
 import { IconShield, IconArrow, IconWhats } from '../components/icons'
 import RemoverMarca from '../components/RemoverMarca'
 import AdminCRM from '../components/AdminCRM'
@@ -400,8 +400,10 @@ export default function Admin() {
   const [aprovadosLocais, setAprovadosLocais] = useState([]) // esconde na hora (KV tem atraso de leitura)
   const [carregando, setCarregando] = useState(false)
   const [espelhoTotal, setEspelhoTotal] = useState(null) // total do espelho da Rotina (catalogo-meta.json)
+  const [novidades, setNovidades] = useState(null)
   useEffect(() => {
     fetch('/catalogo-meta.json').then((r) => (r.ok ? r.json() : null)).then((d) => { if (d && typeof d.total === 'number') setEspelhoTotal(d.total) }).catch(() => {})
+    fetch('/novidades.json').then((r) => (r.ok ? r.json() : null)).then((d) => { if (d) setNovidades(d) }).catch(() => {})
   }, [])
 
   const salvarToken = (t) => { try { localStorage.setItem(LSK, t) } catch {}; setToken(t) }
@@ -504,6 +506,7 @@ export default function Admin() {
 
   const ABAS = [
     ['geral', 'Visão geral'],
+    ['relatorio', '📄 Relatório'],
     ['imoveis', `Imóveis${aAvaliar ? ` (${aAvaliar} a avaliar)` : ''}`],
     ['leads', `Leads (${leads.length})`],
     ['crm', `Clientes${crmNovidades ? ` 🔔${crmNovidades}` : crmNovos ? ` (${crmNovos} novos)` : ''}`],
@@ -710,9 +713,82 @@ export default function Admin() {
           </section>
         )}
 
+        {aba === 'relatorio' && (() => {
+          const porStatus = {}
+          leads.forEach((l) => { const s = l.status || 'Novo'; porStatus[s] = (porStatus[s] || 0) + 1 })
+          const empre = CONSTRUTORAS.reduce((a, c) => a + ((c.projetos || []).length), 0)
+          const agora = new Date()
+          const Bloco = ({ titulo, itens }) => (
+            <>
+              <h4 className="rel-h">{titulo}</h4>
+              <div className="rel-nums">{itens.map((it, i) => <div key={i}><b>{it.v}</b><span>{it.l}</span></div>)}</div>
+            </>
+          )
+          return (
+            <section className="admin-relatorio">
+              <div className="rel-top">
+                <div>
+                  <h3 className="admin-sec-tit" style={{ margin: 0 }}>Relatório completo do site</h3>
+                  <p className="section-sub" style={{ margin: '4px 0 0', fontSize: '0.9rem' }}>Tudo num lugar só. Clique pra salvar em PDF (na janela, escolha "Salvar como PDF").</p>
+                </div>
+                <button className="btn btn-gold" onClick={() => window.print()}>⬇ Baixar PDF / Imprimir</button>
+              </div>
+
+              <div className="rel-doc" id="relatorio-doc">
+                <div className="rel-cabec">
+                  <div><b className="rel-marca">{CONFIG.nome}</b><span>Consultor de imóveis · Uberlândia</span></div>
+                  <div className="rel-data">Gerado em<br /><b>{agora.toLocaleString('pt-BR')}</b></div>
+                </div>
+
+                <Bloco titulo="Imóveis" itens={[
+                  { v: (espelhoTotal != null ? espelhoTotal : IMOVEIS.length).toLocaleString('pt-BR'), l: 'no site' },
+                  { v: IMOVEIS.length, l: 'em destaque' },
+                  { v: aAvaliar, l: 'a avaliar' },
+                  { v: CONSTRUTORAS.length, l: 'construtoras' },
+                  { v: empre, l: 'empreendimentos' },
+                ]} />
+
+                <Bloco titulo="Leads" itens={[
+                  { v: leads.length, l: 'no total' },
+                  { v: leadsNovos, l: 'últimos 7 dias' },
+                  ...STATUS_LEAD.map((s) => ({ v: porStatus[s] || 0, l: s })),
+                ]} />
+
+                <Bloco titulo="Clientes e contatos" itens={[
+                  { v: crmTotal, l: 'clientes (CRM)' },
+                  { v: clientes.length, l: 'cadastros (área do cliente)' },
+                  { v: (dados?.news || []).length, l: 'inscritos newsletter' },
+                ]} />
+
+                <Bloco titulo="Acessos e novidades" itens={[
+                  { v: totalViews, l: 'leituras no blog' },
+                  { v: (novidades?.novos || []).length, l: 'imóveis novos (hoje)' },
+                  { v: (novidades?.baixaram || []).length, l: 'baixaram de preço' },
+                ]} />
+
+                {leads.length > 0 && (
+                  <>
+                    <h4 className="rel-h">Últimos leads</h4>
+                    <table className="rel-tab">
+                      <thead><tr><th>Nome</th><th>WhatsApp</th><th>Origem</th><th>Status</th><th>Data</th></tr></thead>
+                      <tbody>
+                        {[...leads].sort((a, b) => (b.ts || 0) - (a.ts || 0)).slice(0, 12).map((l, i) => (
+                          <tr key={i}><td>{l.nome}</td><td>{l.fone}</td><td>{l.bairro || l.cod || '—'}</td><td>{l.status || 'Novo'}</td><td>{l.data ? new Date(l.data).toLocaleDateString('pt-BR') : '—'}</td></tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </>
+                )}
+
+                <p className="rel-rod">Relatório gerado pela Central do Vinícius · {CONFIG.nome} · {agora.toLocaleDateString('pt-BR')}</p>
+              </div>
+            </section>
+          )
+        })()}
+
         {aba === 'marca' && <RemoverMarca />}
 
-        <p className="calc-nota" style={{ marginTop: 22 }}>Painel seguro · sessão de 12h · WhatsApp do site: {CONFIG.telefone || ''}.</p>
+        <p className="calc-nota rel-noprint" style={{ marginTop: 22 }}>Painel seguro · sessão de 12h · WhatsApp do site: {CONFIG.telefone || ''}.</p>
       </div>
     </main>
   )
