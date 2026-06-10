@@ -65,11 +65,24 @@ export async function onRequestPost({ env, request }) {
 
   if (action === 'login') {
     if (!auth && !env.ADMIN_PASS) return json({ error: 'config', msg: 'Defina a variável ADMIN_PASS na Cloudflare (ou troque a senha pelo painel) para ativar o login.' }, 503)
+    // proteção contra força-bruta: máx. 5 tentativas falhas por IP a cada 15 min
+    const kv = env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function' ? env.ENGAGEMENT : null
+    const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || 'sem-ip'
+    const rlKey = 'rl:adminlogin:' + ip
+    if (kv) {
+      const tentativas = parseInt(await kv.get(rlKey), 10) || 0
+      if (tentativas >= 5) return json({ error: 'limite', msg: 'Muitas tentativas. Aguarde alguns minutos e tente de novo.' }, 429)
+    }
     const okEmail = String(b.email || '').trim().toLowerCase() === email
     let okPass = false
     if (auth) okPass = eqStr(await pbkdf2(String(b.senha || ''), auth.salt, auth.iter), auth.hash)
     else okPass = eqStr(String(b.senha || ''), String(env.ADMIN_PASS))
-    if (!okEmail || !okPass) return json({ error: 'credenciais', msg: 'E-mail ou senha incorretos.' }, 401)
+    if (!okEmail || !okPass) {
+      if (kv) { const t = parseInt(await kv.get(rlKey), 10) || 0; try { await kv.put(rlKey, String(t + 1), { expirationTtl: 900 }) } catch {} }
+      await new Promise((r) => setTimeout(r, 600)) // atraso fixo contra brute-force
+      return json({ error: 'credenciais', msg: 'E-mail ou senha incorretos.' }, 401)
+    }
+    if (kv) { try { await kv.delete(rlKey) } catch {} }
     return json({ ok: true, token: await makeToken(signKey) })
   }
 

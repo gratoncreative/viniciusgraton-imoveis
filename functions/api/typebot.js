@@ -15,7 +15,8 @@ const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, header
 const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
 const lim = (v, n) => String(v == null ? '' : v).slice(0, n)
 const num = (v) => Math.max(0, Math.min(99999999, Number(String(v).replace(/[^\d]/g, '')) || 0))
-const SEGREDO = 'vg-typebot-2026' // o mesmo deve ir na URL do webhook do Typebot (?k=vg-typebot-2026)
+// comparação em tempo constante (evita timing attack)
+const eqStr = (a, b) => { a = String(a); b = String(b); if (a.length !== b.length) return false; let r = 0; for (let i = 0; i < a.length; i++) r |= a.charCodeAt(i) ^ b.charCodeAt(i); return r === 0 }
 
 const lista = (v, max, n) => {
   if (Array.isArray(v)) return v.filter((x) => typeof x === 'string').slice(0, max).map((x) => lim(x, n))
@@ -25,7 +26,8 @@ const objToFinal = (o) => { const s = (o || '').toLowerCase(); if (s.includes('a
 
 export async function onRequestPost({ env, request }) {
   const url = new URL(request.url)
-  if (url.searchParams.get('k') !== SEGREDO) return json({ error: 'nao-autorizado' }, 401)
+  const segredo = String((env && env.TYPEBOT_KEY) || '').trim()
+  if (!segredo || !eqStr(url.searchParams.get('k') || '', segredo)) return json({ error: 'nao-autorizado' }, 401)
   if (!temKV(env)) return json({ ok: true, token: '', persistido: false })
 
   const b = await request.json().catch(() => ({}))

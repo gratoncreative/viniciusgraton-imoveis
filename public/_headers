@@ -19,6 +19,14 @@
 /cliente/*
   X-Robots-Tag: noindex, nofollow
 
+# Áreas privadas / pessoais: nunca indexar
+/painel
+  X-Robots-Tag: noindex, nofollow
+/conta
+  X-Robots-Tag: noindex, nofollow
+/favoritos
+  X-Robots-Tag: noindex, nofollow
+
 # Cache das imagens de imóveis: 1h no navegador, depois revalida (pega versão nova rápido).
 # Evita que uma foto trocada fique "presa" desfocada no cache do visitante.
 /imoveis/*

@@ -9,6 +9,15 @@ const HIST = 'vg_historico'
 
 const ler = (k, fb) => { try { return JSON.parse(localStorage.getItem(k) || fb) } catch { return JSON.parse(fb) } }
 
+// token forte (criptográfico) — substitui Math.random (adivinhável). ~122 bits de entropia.
+function tokenSeguro() {
+  try {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID().replace(/-/g, '')
+    const a = new Uint8Array(16); crypto.getRandomValues(a)
+    return [...a].map((b) => b.toString(16).padStart(2, '0')).join('')
+  } catch { return Date.now().toString(36) + Math.random().toString(36).slice(2) }
+}
+
 export function getConta() {
   try { return JSON.parse(localStorage.getItem(KEY) || 'null') } catch { return null }
 }
@@ -35,7 +44,7 @@ async function sincronizar(conta) {
 export function salvarConta(dados) {
   const atual = getConta() || {}
   const conta = { ...atual, ...dados }
-  if (!conta.token) conta.token = 'vg_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36)
+  if (!conta.token) conta.token = 'vg_' + tokenSeguro()
   if (!conta.criadoEm) conta.criadoEm = Date.now()
   try { localStorage.setItem(KEY, JSON.stringify(conta)) } catch {}
   try { window.dispatchEvent(new Event('vg-conta')) } catch {}

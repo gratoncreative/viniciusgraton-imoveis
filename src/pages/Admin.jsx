@@ -10,6 +10,8 @@ const LSK = 'vg_admin_token'
 const waLink = (fone) => `https://wa.me/55${String(fone || '').replace(/\D/g, '')}`
 const api = (payload) => fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) }).then((r) => r.json().then((j) => ({ status: r.status, j })))
 const STATUS_LEAD = ['Novo', 'Em conversa', 'Visita marcada', 'Fechado', 'Descartado']
+// célula CSV segura: neutraliza injeção de fórmula (= + - @ tab CR no início) e aspas
+const csvCel = (c) => { let s = String(c == null ? '' : c); if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; return '"' + s.replace(/"/g, '""') + '"' }
 
 function Login({ onOk }) {
   const [email, setEmail] = useState('')
@@ -488,7 +490,7 @@ export default function Admin() {
   const exportarNews = () => {
     const linhas = [['E-mail', 'Nome', 'Data']]
     ;(dados?.news || []).forEach((n) => linhas.push([n.email || '', n.nome || '', n.ts ? new Date(n.ts).toLocaleString('pt-BR') : '']))
-    const csv = linhas.map((r) => r.map((c) => `"${String(c == null ? '' : c).replace(/"/g, '""')}"`).join(';')).join('\r\n')
+    const csv = linhas.map((r) => r.map(csvCel).join(';')).join('\r\n')
     const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'newsletter-vinicius-graton.csv'; a.click()
     setTimeout(() => URL.revokeObjectURL(a.href), 2000)
@@ -497,7 +499,7 @@ export default function Admin() {
   const exportarCSV = () => {
     const linhas = [['Nome', 'Telefone', 'Origem', 'Status', 'Anotação', 'Data']]
     leads.forEach((l) => linhas.push([l.nome, l.fone, l.bairro || l.cod || '', l.status || 'Novo', (l.nota || '').replace(/[\r\n]+/g, ' '), l.data ? new Date(l.data).toLocaleString('pt-BR') : '']))
-    const csv = linhas.map((r) => r.map((c) => `"${String(c == null ? '' : c).replace(/"/g, '""')}"`).join(';')).join('\r\n')
+    const csv = linhas.map((r) => r.map(csvCel).join(';')).join('\r\n')
     const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob); a.download = 'leads-vinicius-graton.csv'; a.click()
