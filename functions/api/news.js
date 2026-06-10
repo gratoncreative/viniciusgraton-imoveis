@@ -45,8 +45,9 @@ export async function onRequestPost({ env, request }) {
   if (existe) return json({ ok: true, jaInscrito: true })
   const ts = Date.now()
   const reg = { ts, data: new Date(ts).toISOString(), email, nome: lim(b.nome, 80), origem: lim(b.origem, 30) || 'site' }
-  await env.ENGAGEMENT.put('news:' + ts + '-' + Math.random().toString(36).slice(2, 8), JSON.stringify(reg))
-  await env.ENGAGEMENT.put(idx, '1')
+  const TTL = 63072000 // 24 meses (retenção LGPD; o MailerLite mantém a cópia da lista)
+  await env.ENGAGEMENT.put('news:' + ts + '-' + Math.random().toString(36).slice(2, 8), JSON.stringify(reg), { expirationTtl: TTL })
+  await env.ENGAGEMENT.put(idx, '1', { expirationTtl: TTL })
   await enviarMailerLite(env, email, reg.nome)
   return json({ ok: true })
 }

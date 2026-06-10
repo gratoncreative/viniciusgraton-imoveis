@@ -25,9 +25,12 @@ export async function onRequestPost({ env, request }) {
     if (usos >= 5) return json({ ok: true, limite: true })
     await env.ENGAGEMENT.put(rlKey, String(usos + 1), { expirationTtl: 3600 })
   }
-  const fotos = Array.isArray(body.fotos)
-    ? body.fotos.filter((f) => typeof f === 'string' && f.startsWith('data:image') && f.length < 3000000).slice(0, 15)
+  let fotos = Array.isArray(body.fotos)
+    ? body.fotos.filter((f) => typeof f === 'string' && /^data:image\/(png|jpe?g|webp);base64,/i.test(f) && f.length < 3000000).slice(0, 15)
     : []
+  // cap do total (~18MB) — evita estourar o limite do KV
+  let acc = 0
+  fotos = fotos.filter((f) => { acc += f.length; return acc < 18000000 })
   const ts = Date.now()
   const sub = {
     ts, data: new Date(ts).toISOString(), nome, fone,

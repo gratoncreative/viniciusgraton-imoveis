@@ -39,9 +39,15 @@ export async function onRequestPost({ env, request }) {
 
 export async function onRequestGet({ env, request }) {
   const url = new URL(request.url)
-  const token = url.searchParams.get('token')
-  if (!token) return json({ error: 'token obrigatorio' }, 400)
+  const token = str(url.searchParams.get('token'), 60)
+  // só aceita o formato dos tokens emitidos (vg_ + ~13-40 chars) — descarta sondagem
+  if (!/^vg_[a-z0-9]{8,40}$/i.test(token)) return json(null, 404)
   if (!temKV(env)) return json(null)
+  const ip = request.headers.get('cf-connecting-ip') || 'sem-ip'
+  const rlKey = 'rl:contaget:' + ip
+  const usos = parseInt(await env.ENGAGEMENT.get(rlKey), 10) || 0
+  if (usos >= 60) return json(null, 429)
+  await env.ENGAGEMENT.put(rlKey, String(usos + 1), { expirationTtl: 3600 })
   const v = await env.ENGAGEMENT.get('conta:' + token, 'json')
   return json(v || null)
 }

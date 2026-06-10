@@ -12,10 +12,11 @@ const richText = (t) => String(t || '').split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\
   if (s.startsWith('**') && s.endsWith('**')) return <strong key={i}>{s.slice(2, -2)}</strong>
   const m = s.match(/^\[([^\]]+)\]\(([^)]+)\)$/)
   if (m) {
-    const ext = /^https?:/.test(m[2])
-    return ext
-      ? <a key={i} href={m[2]} target="_blank" rel="noopener noreferrer">{m[1]}</a>
-      : <Link key={i} to={m[2]}>{m[1]}</Link>
+    const ext = /^https:\/\//.test(m[2])
+    const interno = /^[/#]/.test(m[2]) // só caminho interno seguro (bloqueia javascript:, data:, etc.)
+    if (ext) return <a key={i} href={m[2]} target="_blank" rel="noopener noreferrer">{m[1]}</a>
+    if (interno) return <Link key={i} to={m[2]}>{m[1]}</Link>
+    return m[1] // esquema não permitido → vira texto puro
   }
   return s
 })
