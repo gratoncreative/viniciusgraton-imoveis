@@ -2962,3 +2962,129 @@ html[data-theme="dark"] .ferr-drag-handle { color: rgba(255,255,255,0.3); }
 html[data-theme="dark"] .corr-lista li { background: #11161f; border-color: rgba(255,255,255,0.1); }
 html[data-theme="dark"] .corr-lista-ico { color: var(--gold-1); background: rgba(224,181,86,0.14); }
 html[data-theme="dark"] .corr-chip { color: var(--gold-1); border-color: rgba(224,181,86,0.4); background: rgba(224,181,86,0.1); }
+
+/* ============================================================
+   MODO ESCURO — varredura completa: fundo escuro => letra clara
+   (auditoria página a página; cobre catálogo, imóvel, blog,
+   ferramentas, conta, anunciar, condomínios, construtoras, chat)
+   ============================================================ */
+
+/* catálogo / cards de imóvel */
+html[data-theme="dark"] .im-linha-media { background: #0c111b; }
+html[data-theme="dark"] .im-spec, html[data-theme="dark"] .im-specs--min .im-spec { color: #cfd4dd; }
+html[data-theme="dark"] .im-spec b { color: #f1ede4; }
+html[data-theme="dark"] .im-linha-preco { color: #f1ede4; }
+html[data-theme="dark"] .fs-opt { color: #d6dae2; }
+html[data-theme="dark"] .fs-opt.on { color: #f4d98a; }
+html[data-theme="dark"] .fs--on .fs-label { color: #f4d98a; }
+html[data-theme="dark"] .det-load-msg { color: #9298a6; }
+
+/* página do imóvel */
+html[data-theme="dark"] .det-preco { color: #f1ede4; }
+html[data-theme="dark"] .det-apresenta-tit { color: #f1ede4; }
+html[data-theme="dark"] .det-apresenta p { color: #c6cbd5; }
+html[data-theme="dark"] .qa-item, html[data-theme="dark"] .qa-txt, html[data-theme="dark"] .qa-item summary { color: #dfe3ea; }
+html[data-theme="dark"] .qa-item p { color: #b8bfca; }
+
+/* modal "ver preço" (cg) */
+html[data-theme="dark"] .cg-titulo, html[data-theme="dark"] .cg-ok h3 { color: #f1ede4; }
+html[data-theme="dark"] .cg-sub, html[data-theme="dark"] .cg-ok p, html[data-theme="dark"] .cg-ok-fechar { color: #aab2bf; }
+html[data-theme="dark"] .cg-campo > span { color: #c6cbd5; }
+html[data-theme="dark"] .cg-x { color: #9298a6; }
+html[data-theme="dark"] .cg-x:hover { color: #dfe3ea; }
+
+/* calculadoras / ferramentas */
+html[data-theme="dark"] .calc-painel, html[data-theme="dark"] .calc-tab { background: #11161f; border-color: rgba(255,255,255,0.1); }
+html[data-theme="dark"] .calc-input { background: #0c111b; border-color: rgba(255,255,255,0.14); }
+html[data-theme="dark"] .calc-input input, html[data-theme="dark"] .calc-input select { color: #eef0f4; }
+html[data-theme="dark"] .calc-campo > span { color: #c6cbd5; }
+html[data-theme="dark"] .calc-input i { color: #9298a6; }
+html[data-theme="dark"] .calc-painel-tit { color: #f1ede4; }
+html[data-theme="dark"] .calc-tab-txt b { color: #eef0f4; }
+html[data-theme="dark"] .calc-tab-txt i { color: #9298a6; }
+html[data-theme="dark"] .calc-nota { color: #9298a6; }
+html[data-theme="dark"] .check-grupo h4 { color: #f1ede4; }
+html[data-theme="dark"] .check-item { color: #c6cbd5; border-bottom-color: rgba(255,255,255,0.07); }
+html[data-theme="dark"] .check-item.on span { color: #6c7480; }
+html[data-theme="dark"] .check-bar { background: rgba(255,255,255,0.1); }
+html[data-theme="dark"] .ficha-preview { background: #0c111b; color: #dfe3ea; border-color: rgba(255,255,255,0.12); }
+html[data-theme="dark"] .ferr-card { background: #11161f; border-color: rgba(255,255,255,0.1); }
+html[data-theme="dark"] .ferr-txt b { color: #eef0f4; }
+html[data-theme="dark"] .ferr-txt i { color: #9298a6; }
+html[data-theme="dark"] .ferr-ico { background: #161c27; border-color: rgba(255,255,255,0.1); color: var(--gold-1); }
+html[data-theme="dark"] .ferr-card--gold { background: var(--gold-grad); }
+html[data-theme="dark"] .ferr-card--gold .ferr-txt b { color: #20160a; }
+html[data-theme="dark"] .ferr-card--gold .ferr-txt i { color: #5a4316; }
+
+/* blog (cards, post e tabelas) */
+html[data-theme="dark"] .blog-home { background: #0c111b; }
+html[data-theme="dark"] .post-card, html[data-theme="dark"] .blog-feat, html[data-theme="dark"] .post-autor { background: #11161f; border-color: rgba(255,255,255,0.1); }
+html[data-theme="dark"] .post-titulo, html[data-theme="dark"] .blog-feat-titulo { color: #f1ede4; }
+html[data-theme="dark"] .post-resumo, html[data-theme="dark"] .blog-feat-resumo, html[data-theme="dark"] .post-autor span { color: #aab2bf; }
+html[data-theme="dark"] .post-lead { color: #c6cbd5; }
+html[data-theme="dark"] .post-artigo h2, html[data-theme="dark"] .post-artigo h3, html[data-theme="dark"] .post-artigo strong, html[data-theme="dark"] .post-faq-item b, html[data-theme="dark"] .post-cta b, html[data-theme="dark"] .post-autor b, html[data-theme="dark"] .post-fontes b { color: #f1ede4; }
+html[data-theme="dark"] .post-artigo p, html[data-theme="dark"] .post-lista li, html[data-theme="dark"] .post-tabela td { color: #c2c8d2; }
+html[data-theme="dark"] .post-cta span { color: #aab2bf; }
+html[data-theme="dark"] .post-destaque { color: #d6dae2; }
+html[data-theme="dark"] .post-tabela th { background: #161c27; color: #f1ede4; }
+html[data-theme="dark"] .post-tabela tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
+html[data-theme="dark"] .post-fig figcaption { color: #9298a6; }
+
+/* CTA de venda na home */
+html[data-theme="dark"] .vender-cta-sec { background: #0c111b; }
+
+/* conta */
+html[data-theme="dark"] .conta-trust-chips span { color: #f4d98a; }
+html[data-theme="dark"] .conta-beneficios li b { color: #f1ede4; }
+html[data-theme="dark"] .conta-beneficios li span { color: #aab2bf; }
+html[data-theme="dark"] .conta-bene-ico { background: #161c27; border-color: rgba(255,255,255,0.1); color: var(--gold-1); }
+html[data-theme="dark"] .conta-comp { background: #11161f; border-color: rgba(255,255,255,0.12); }
+html[data-theme="dark"] .conta-comp-row { border-top-color: rgba(255,255,255,0.08); }
+html[data-theme="dark"] .conta-comp-rot { color: #dfe3ea; }
+html[data-theme="dark"] .conta-comp-row .conta-comp-com { color: #f1ede4; }
+
+/* anunciar (passos) */
+html[data-theme="dark"] .anu-passo b { color: #f1ede4; }
+html[data-theme="dark"] .anu-passo i { color: #9298a6; }
+html[data-theme="dark"] .anunciar-beneficios li b { color: #f1ede4; }
+html[data-theme="dark"] .anu-benef-card b { color: #f1ede4; }
+html[data-theme="dark"] .anu-benef-card i { color: #aab2bf; }
+
+/* diferenciais */
+html[data-theme="dark"] .dif-sec-corpo h2 { color: #f1ede4; }
+html[data-theme="dark"] .dif-lead { color: #c6cbd5; }
+html[data-theme="dark"] .dif-para, html[data-theme="dark"] .dif-ganha li { color: #b8bfca; }
+html[data-theme="dark"] .dif-nav-item { color: #d6dae2; }
+
+/* corretor / rotina */
+html[data-theme="dark"] .rt-msg-preview { color: #dfe3ea; }
+html[data-theme="dark"] .rt-bloco b, html[data-theme="dark"] .rt-gancho b, html[data-theme="dark"] .rt-imovel b { color: #f1ede4; }
+
+/* condomínios / construtoras / comparar */
+html[data-theme="dark"] .condo-card, html[data-theme="dark"] .condo-busca, html[data-theme="dark"] .condo-filtros,
+html[data-theme="dark"] .cns-stat, html[data-theme="dark"] .cns-busca, html[data-theme="dark"] .cns-busca-res,
+html[data-theme="dark"] .cns-card, html[data-theme="dark"] .construtora-stat, html[data-theme="dark"] .proj-card,
+html[data-theme="dark"] .empre-mini, html[data-theme="dark"] .bairro-ed-card, html[data-theme="dark"] .cmp-box,
+html[data-theme="dark"] .comparar-mini, html[data-theme="dark"] .painel-card { background: #11161f; border-color: rgba(255,255,255,0.1); color: #dfe3ea; }
+html[data-theme="dark"] :is(.condo-card, .cns-card, .proj-card, .empre-mini, .bairro-ed-card, .cmp-box, .comparar-mini, .cns-stat, .construtora-stat) :is(b, h3, h4, strong) { color: #f1ede4; }
+html[data-theme="dark"] :is(.condo-card, .cns-card, .proj-card, .empre-mini, .bairro-ed-card, .cmp-box, .comparar-mini) :is(i, p, span:not(.eyebrow)) { color: #aab2bf; }
+html[data-theme="dark"] .condo-busca input, html[data-theme="dark"] .cns-busca input { background: transparent; color: #eef0f4; }
+
+/* chat / assistente */
+html[data-theme="dark"] .cb-msg.bot .cb-bubble, html[data-theme="dark"] .cb-pergunta .cb-bubble,
+html[data-theme="dark"] .cb-chip, html[data-theme="dark"] .cb-trilha-chip,
+html[data-theme="dark"] .cb-widget-panel, html[data-theme="dark"] .cb-link-box { background: #11161f; border-color: rgba(255,255,255,0.12); color: #dfe3ea; }
+html[data-theme="dark"] .cb-form input, html[data-theme="dark"] .cb-textarea, html[data-theme="dark"] .cb-busca, html[data-theme="dark"] .cb-link-box input { background: #0c111b; border-color: rgba(255,255,255,0.14); color: #eef0f4; }
+
+/* admin (painel do Vinícius) */
+html[data-theme="dark"] .admin-card, html[data-theme="dark"] .admin-stat, html[data-theme="dark"] .admin-im-card,
+html[data-theme="dark"] .crm-card, html[data-theme="dark"] .aprovar-banner, html[data-theme="dark"] .cliente-refino,
+html[data-theme="dark"] .marca-lista, html[data-theme="dark"] .admin-owner { background: #11161f; border-color: rgba(255,255,255,0.1); color: #dfe3ea; }
+html[data-theme="dark"] .admin-field input, html[data-theme="dark"] .admin-field textarea, html[data-theme="dark"] .admin-field select,
+html[data-theme="dark"] .admin-busca input, html[data-theme="dark"] .admin-busca select, html[data-theme="dark"] .admin-owner .admin-field input { background: #0c111b; border-color: rgba(255,255,255,0.14); color: #eef0f4; }
+html[data-theme="dark"] .admin-sec-tit { color: #f1ede4; }
+html[data-theme="dark"] .admin-rank li a, html[data-theme="dark"] .admin-info-box p, html[data-theme="dark"] .admin-news-info b { color: #dfe3ea; }
+html[data-theme="dark"] .condo-chip { color: #d6dae2; background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.16); }
+/* selo "Destaque do blog": dourado escuro no claro (legível), claro no escuro */
+.section--light .blog-feat-tag { color: var(--gold-3); }
+html[data-theme="dark"] .section--light .blog-feat-tag { color: var(--gold-1); }
