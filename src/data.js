@@ -165,6 +165,57 @@ export function oportunidade(im) {
   return out
 }
 
+// ——— Estudo do valor do m² (comparativo de mercado, individual por imóvel) ———
+const _quantil = (sorted, q) => {
+  if (!sorted.length) return 0
+  const pos = (sorted.length - 1) * q
+  const b = Math.floor(pos), resto = pos - b
+  return sorted[b + 1] !== undefined ? sorted[b] + resto * (sorted[b + 1] - sorted[b]) : sorted[b]
+}
+const _tipoGrupo = (t) => {
+  const s = _norm(t)
+  if (/apart|kit|stud|loft|flat|cobertura/.test(s)) return 'apartamento'
+  if (/casa|sobrado/.test(s)) return 'casa'
+  if (/terreno|lote|area|chacara|sitio|fazenda/.test(s)) return 'terreno'
+  if (/comerc|sala|loja|ponto|gal|barrac|predio/.test(s)) return 'comercial'
+  return 'outro'
+}
+// recebe o imóvel e a base completa (catalogo) -> análise de preço/m²
+export function estudoM2(im, base) {
+  if (!im || !(im.preco > 0) || !(im.area > 0)) return { ok: false }
+  const precoM2 = im.preco / im.area
+  const grupo = _tipoGrupo(im.tipo)
+  const norm = _norm(im.bairro)
+  const lista = Array.isArray(base) ? base : []
+  const m2de = (x) => (x && x.preco > 0 && x.area > 0 ? x.preco / x.area : 0)
+  const ok = (x) => String(x.codigo) !== String(im.codigo) && _tipoGrupo(x.tipo) === grupo && m2de(x) > 0
+  const compBairro = lista.filter((x) => ok(x) && _norm(x.bairro) === norm).map(m2de).sort((a, b) => a - b)
+  const compCidade = lista.filter((x) => ok(x)).map(m2de).sort((a, b) => a - b)
+  const est = (arr) => arr.length ? { n: arr.length, min: arr[0], max: arr[arr.length - 1], mediana: _quantil(arr, 0.5), p25: _quantil(arr, 0.25), p75: _quantil(arr, 0.75) } : null
+  const bairro = est(compBairro)
+  const cidade = est(compCidade)
+  const refIPD = _m2Bairro(im.bairro)
+  const refRow = (bairrosM2 || []).find((x) => _norm(x.bairro) === norm)
+  let referencia = 0, baseLabel = ''
+  if (bairro && bairro.n >= 5) { referencia = bairro.mediana; baseLabel = `mediana de ${bairro.n} imóveis semelhantes no ${im.bairro}` }
+  else if (refIPD > 0) { referencia = refIPD; baseLabel = `índice de mercado do ${im.bairro}${refRow?.fonte ? ` (${refRow.fonte})` : ''}` }
+  else if (cidade && cidade.n >= 5) { referencia = cidade.mediana; baseLabel = `mediana de ${cidade.n} imóveis do mesmo tipo em ${im.cidade || 'Uberlândia'}` }
+  if (!referencia) return { ok: false }
+  const diffPct = Math.round((precoM2 / referencia - 1) * 100)
+  const veredito = diffPct <= -10 ? 'abaixo' : diffPct >= 10 ? 'acima' : 'dentro'
+  const fatores = [
+    `Tipo do imóvel: ${im.tipo || grupo}`,
+    `Bairro: ${im.bairro}`,
+    `Área de referência: ${Math.round(im.area)} m²`,
+    bairro ? `${bairro.n} imóveis comparáveis no bairro` : 'Poucos comparáveis no bairro — usamos índice de mercado/cidade',
+    im.condominio > 0 ? `Condomínio de ${formatPreco(im.condominio)} (entra no custo mensal)` : null,
+    im.vagas > 0 ? `${im.vagas} vaga(s) de garagem` : null,
+    typeof im.elevador === 'boolean' ? (im.elevador ? 'Prédio com elevador' : 'Prédio sem elevador') : null,
+    im.andar ? `Andar: ${im.andar}` : null,
+  ].filter(Boolean)
+  return { ok: true, precoM2, area: im.area, referencia, baseLabel, diffPct, veredito, bairro, cidade, refIPD, refFonte: refRow?.fonte, refRef: refRow?.ref, grupo, fatores }
+}
+
 // Mensagem de WhatsApp personalizada por imóvel
 export const waImovel = (im) =>
   `Olá Vinícius! Tenho interesse no imóvel cód. ${im.codigo} — ${im.tipo} no ${im.bairro} (${formatPreco(im.preco)}). Pode me passar mais informações?`

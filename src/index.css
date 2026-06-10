@@ -2088,6 +2088,42 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .mf-sel select { padding: 8px 10px; border-radius: 9px; background: var(--surface); border: 1px solid var(--border); color: var(--text); }
 .mf-nota { font-size: 0.78rem; color: var(--text-mute); line-height: 1.4; margin: 2px 0 0; }
 .mf-botoes { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Botões de ferramentas do imóvel (PDF + estudo m²) */
+.det-ferramentas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0 4px; }
+@media (max-width: 480px) { .det-ferramentas { grid-template-columns: 1fr; } }
+.det-ferr-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: var(--font-head); font-weight: 600; font-size: 0.88rem; cursor: pointer; transition: border-color .2s, color .2s, transform .15s; }
+.det-ferr-btn:hover { border-color: var(--gold-3); color: var(--gold-2); transform: translateY(-1px); }
+.det-ferr-btn svg { color: var(--gold-3); flex: none; }
+.det-ferr-btn:disabled { opacity: .6; cursor: default; }
+
+/* Modal — estudo do valor do m² */
+.em2 { position: relative; width: min(560px, 94vw); max-height: 92vh; overflow-y: auto; background: var(--surface, #11151d); border: 1px solid var(--border); border-radius: 18px; padding: clamp(20px, 3vw, 32px); box-shadow: 0 40px 90px -30px rgba(0,0,0,0.7); }
+.em2-tit { font-family: var(--font-head); font-weight: 700; font-size: 1.3rem; margin: 6px 0 16px; color: var(--text); }
+.em2-topo { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.em2-num { display: flex; flex-direction: column; }
+.em2-num span { font-size: 0.82rem; color: var(--text-mute); }
+.em2-num b { font-family: var(--font-head); font-size: 1.7rem; color: var(--text); }
+.em2-verdito { font-family: var(--font-head); font-weight: 700; font-size: 0.92rem; padding: 8px 14px; border-radius: 100px; }
+.em2-verdito--ok { background: rgba(29,122,69,0.16); color: #46c47e; border: 1px solid rgba(29,122,69,0.4); }
+.em2-verdito--neutro { background: rgba(224,181,86,0.14); color: var(--gold-1); border: 1px solid rgba(224,181,86,0.4); }
+.em2-verdito--alto { background: rgba(214,140,60,0.16); color: #e0a44e; border: 1px solid rgba(214,140,60,0.4); }
+.em2-regua { position: relative; height: 16px; border-radius: 100px; background: linear-gradient(90deg, rgba(70,196,126,0.25), rgba(224,181,86,0.25), rgba(214,140,60,0.25)); margin: 8px 0 12px; }
+.em2-banda { position: absolute; top: 0; bottom: 0; background: rgba(255,255,255,0.12); border-left: 1px dashed rgba(255,255,255,0.4); border-right: 1px dashed rgba(255,255,255,0.4); }
+.em2-ref { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--gold-1); transform: translateX(-1px); }
+.em2-eu { position: absolute; top: 50%; width: 18px; height: 18px; border-radius: 50%; background: #46c47e; border: 3px solid #0a0e16; transform: translate(-50%, -50%); box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+.em2-legenda { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.78rem; color: var(--text-soft); margin-bottom: 14px; }
+.em2-legenda span { display: inline-flex; align-items: center; gap: 6px; }
+.em2-dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+.em2-dot--eu { background: #46c47e; }
+.em2-dot--ref { background: var(--gold-1); border-radius: 2px; width: 4px; height: 12px; }
+.em2-dot--banda { background: rgba(255,255,255,0.3); }
+.em2-base { font-size: 0.9rem; color: var(--text-soft); line-height: 1.5; margin: 0 0 16px; }
+.em2-fatores { border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 14px; }
+.em2-fatores b { font-family: var(--font-head); font-size: 0.85rem; color: var(--gold-3); text-transform: uppercase; letter-spacing: 0.04em; }
+.em2-fatores ul { margin: 8px 0 0; padding-left: 18px; color: var(--text-soft); font-size: 0.88rem; line-height: 1.6; }
+.em2-disc { font-size: 0.76rem; color: var(--text-mute); line-height: 1.45; margin: 0 0 16px; }
+.em2-cta { width: 100%; justify-content: center; }
 .conta-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .conta-painel { }
 .conta-hero { display: flex; flex-wrap: wrap; gap: 18px 24px; align-items: flex-end; justify-content: space-between; margin-bottom: 18px; }

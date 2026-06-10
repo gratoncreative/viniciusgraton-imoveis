@@ -7,9 +7,10 @@ import CardImovel from '../components/CardImovel'
 import Engajamento from '../components/Engajamento'
 import PrecoGate from '../components/PrecoGate'
 import PerguntasImovel from '../components/PerguntasImovel'
+import EstudoM2 from '../components/EstudoM2'
 import {
   getImovel, fotosDe, formatPreco, formatArea, resumoImovel, subtituloImovel,
-  destaquesImovel, ehCondominio, IMOVEIS, linkWhatsApp, waImovel, CONFIG, BAIRROS, oportunidade,
+  destaquesImovel, ehCondominio, IMOVEIS, linkWhatsApp, waImovel, CONFIG, BAIRROS, oportunidade, estudoM2,
 } from '../data'
 import { IconWhats, IconArrow, IconPin, IconShield, ICONS } from './../components/icons'
 
@@ -185,6 +186,15 @@ export default function ImovelDetalhe() {
   }, [im])
 
   const fotos = fotosDe(im)
+  const [pdfProc, setPdfProc] = useState(false)
+  const [estudoAberto, setEstudoAberto] = useState(false)
+  const est = useMemo(() => { try { return estudoM2(im, feed) } catch { return { ok: false } } }, [im, feed])
+  const baixarPdf = async () => {
+    if (!im) return
+    setPdfProc(true)
+    try { const { gerarPdfImovel } = await import('../pdfImovel'); await gerarPdfImovel(im, fotos) } catch { /* ignora */ }
+    setPdfProc(false)
+  }
 
   useEffect(() => {
     if (im) document.title = `${im.tipo} no ${im.bairro} — ${formatPreco(im.preco)} | ${CONFIG.nome}`
@@ -394,6 +404,19 @@ export default function ImovelDetalhe() {
               </a>
               <AgendarVisita im={im} />
 
+              <div className="det-ferramentas">
+                <button className="det-ferr-btn" onClick={baixarPdf} disabled={pdfProc}>
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-5zM12 18v-6M9 15l3 3 3-3" /></svg>
+                  {pdfProc ? 'Gerando PDF…' : 'Material técnico (PDF)'}
+                </button>
+                {est?.ok && (
+                  <button className="det-ferr-btn" onClick={() => setEstudoAberto(true)}>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18M7 14l4-4 3 3 5-6" /></svg>
+                    Estudo do valor do m²
+                  </button>
+                )}
+              </div>
+
               {(() => {
                 // ignora o vídeo publicitário genérico da Rotina (não é o vídeo do imóvel)
                 const videoOk = im.video && !/NnAmly9Gb9s/.test(im.video) ? im.video : ''
@@ -503,6 +526,7 @@ export default function ImovelDetalhe() {
           <Link className="btn btn-ghost" to="/imoveis"><IconArrow style={{ transform: 'rotate(180deg)' }} /> Voltar para o catálogo</Link>
         </div>
       </div>
+      {estudoAberto && est?.ok && <EstudoM2 im={im} est={est} onClose={() => setEstudoAberto(false)} />}
     </main>
   )
 }
