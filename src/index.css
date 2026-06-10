@@ -2188,6 +2188,15 @@ section { position: relative; padding: clamp(30px, 4.2vw, 56px) 0; }
 .em2-fatores ul { margin: 8px 0 0; padding-left: 18px; color: var(--text-soft); font-size: 0.88rem; line-height: 1.6; }
 .em2-disc { font-size: 0.76rem; color: var(--text-mute); line-height: 1.45; margin: 0 0 16px; }
 .em2-cta { width: 100%; justify-content: center; }
+.em2-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 4px 0 16px; }
+@media (max-width: 480px) { .em2-cards { grid-template-columns: 1fr; } }
+.em2-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 8px; text-align: center; }
+.em2-card span { display: block; font-size: 0.7rem; color: var(--text-mute); margin-bottom: 3px; }
+.em2-card b { font-family: var(--font-head); font-size: 0.96rem; color: var(--text); }
+.em2-fontes { font-size: 0.82rem; color: var(--text-soft); margin-bottom: 14px; }
+.em2-fontes > b { display: block; font-family: var(--font-head); font-size: 0.8rem; color: var(--gold-3); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+.em2-fontes ul { margin: 0; padding-left: 18px; line-height: 1.5; }
+.em2-fatores--lim > b { color: #d99a4a; }
 .conta-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .conta-painel { }
 .conta-hero { display: flex; flex-wrap: wrap; gap: 18px 24px; align-items: flex-end; justify-content: space-between; margin-bottom: 18px; }

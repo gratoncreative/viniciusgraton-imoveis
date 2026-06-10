@@ -180,40 +180,99 @@ const _tipoGrupo = (t) => {
   if (/comerc|sala|loja|ponto|gal|barrac|predio/.test(s)) return 'comercial'
   return 'outro'
 }
-// recebe o imóvel e a base completa (catalogo) -> análise de preço/m²
+// Parâmetros técnicos da homogeneização (NBR 14653)
+const VAGA_VALOR = 32000   // valor médio de 1 vaga de garagem em Uberlândia (estimativa)
+const FATOR_OFERTA = 0.90  // anúncio -> estimativa de venda (gordura de negociação ~10%)
+const EXP_AREA = 0.10      // economia de escala: imóvel menor tende a ter m² maior
+const _fontesM2 = (refRow) => {
+  const f = ['Carteira de imóveis da Rotina Imobiliária (preços anunciados)', 'Metodologia ABNT NBR 14653 (avaliação de bens imóveis)']
+  if (refRow && refRow.fonte) f.push(`Índice de m² do bairro — ${refRow.fonte}${refRow.ref ? ', ' + refRow.ref : ''}`)
+  f.push('Para o valor de venda real: ITBI/cartórios (Prefeitura de Uberlândia)')
+  return f
+}
+
+// recebe o imóvel e a base completa (catalogo) -> estudo do valor do m² homogeneizado
 export function estudoM2(im, base) {
   if (!im || !(im.preco > 0) || !(im.area > 0)) return { ok: false }
-  const precoM2 = im.preco / im.area
   const grupo = _tipoGrupo(im.tipo)
+  const ehTer = grupo === 'terreno'
   const norm = _norm(im.bairro)
   const lista = Array.isArray(base) ? base : []
-  const m2de = (x) => (x && x.preco > 0 && x.area > 0 ? x.preco / x.area : 0)
-  const ok = (x) => String(x.codigo) !== String(im.codigo) && _tipoGrupo(x.tipo) === grupo && m2de(x) > 0
-  const compBairro = lista.filter((x) => ok(x) && _norm(x.bairro) === norm).map(m2de).sort((a, b) => a - b)
-  const compCidade = lista.filter((x) => ok(x)).map(m2de).sort((a, b) => a - b)
-  const est = (arr) => arr.length ? { n: arr.length, min: arr[0], max: arr[arr.length - 1], mediana: _quantil(arr, 0.5), p25: _quantil(arr, 0.25), p75: _quantil(arr, 0.75) } : null
-  const bairro = est(compBairro)
-  const cidade = est(compCidade)
+  const areaSubj = im.area
+  const precoM2 = im.preco / im.area
   const refIPD = _m2Bairro(im.bairro)
   const refRow = (bairrosM2 || []).find((x) => _norm(x.bairro) === norm)
-  let referencia = 0, baseLabel = ''
-  if (bairro && bairro.n >= 5) { referencia = bairro.mediana; baseLabel = `mediana de ${bairro.n} imóveis semelhantes no ${im.bairro}` }
-  else if (refIPD > 0) { referencia = refIPD; baseLabel = `índice de mercado do ${im.bairro}${refRow?.fonte ? ` (${refRow.fonte})` : ''}` }
-  else if (cidade && cidade.n >= 5) { referencia = cidade.mediana; baseLabel = `mediana de ${cidade.n} imóveis do mesmo tipo em ${im.cidade || 'Uberlândia'}` }
-  if (!referencia) return { ok: false }
-  const diffPct = Math.round((precoM2 / referencia - 1) * 100)
-  const veredito = diffPct <= -10 ? 'abaixo' : diffPct >= 10 ? 'acima' : 'dentro'
-  const fatores = [
-    `Tipo do imóvel: ${im.tipo || grupo}`,
-    `Bairro: ${im.bairro}`,
-    `Área de referência: ${Math.round(im.area)} m²`,
-    bairro ? `${bairro.n} imóveis comparáveis no bairro` : 'Poucos comparáveis no bairro — usamos índice de mercado/cidade',
-    im.condominio > 0 ? `Condomínio de ${formatPreco(im.condominio)} (entra no custo mensal)` : null,
-    im.vagas > 0 ? `${im.vagas} vaga(s) de garagem` : null,
-    typeof im.elevador === 'boolean' ? (im.elevador ? 'Prédio com elevador' : 'Prédio sem elevador') : null,
-    im.andar ? `Andar: ${im.andar}` : null,
-  ].filter(Boolean)
-  return { ok: true, precoM2, area: im.area, referencia, baseLabel, diffPct, veredito, bairro, cidade, refIPD, refFonte: refRow?.fonte, refRef: refRow?.ref, grupo, fatores }
+
+  // m² HOMOGENEIZADO: desconta vaga + ajusta pela área (economia de escala)
+  const m2homog = (x) => {
+    if (!(x.preco > 0) || !(x.area > 0)) return 0
+    let preco = x.preco
+    if (!ehTer && x.vagas > 0) preco = Math.max(x.preco * 0.6, x.preco - x.vagas * VAGA_VALOR)
+    const f = Math.min(1.15, Math.max(0.85, Math.pow(x.area / areaSubj, EXP_AREA)))
+    return (preco / x.area) * f
+  }
+  const ok = (x) => String(x.codigo) !== String(im.codigo) && _tipoGrupo(x.tipo) === grupo && x.preco > 0 && x.area > 0
+  let comps = lista.filter((x) => ok(x) && _norm(x.bairro) === norm).map(m2homog).filter((v) => v > 0).sort((a, b) => a - b)
+  let escopo = 'bairro'
+  if (comps.length < 5) { comps = lista.filter(ok).map(m2homog).filter((v) => v > 0).sort((a, b) => a - b); escopo = 'cidade' }
+
+  // valor do próprio imóvel (sem vaga, nível oferta) p/ comparar de forma justa
+  let precoSubj = im.preco
+  if (!ehTer && im.vagas > 0) precoSubj = Math.max(im.preco * 0.6, im.preco - im.vagas * VAGA_VALOR)
+  const m2Subj = precoSubj / im.area
+
+  // amostra pequena -> cai no índice público do bairro
+  if (comps.length < 3) {
+    if (!(refIPD > 0)) return { ok: false }
+    const diffPct = Math.round((precoM2 / refIPD - 1) * 100)
+    return {
+      ok: true, simples: true, precoM2, m2Subj, referencia: refIPD, valorVenda: Math.round(refIPD * FATOR_OFERTA),
+      campoMin: Math.round(refIPD * 0.92), campoMax: Math.round(refIPD * 1.08), n: 0, nDesc: 0,
+      min: Math.round(refIPD * 0.85), max: Math.round(refIPD * 1.15), area: areaSubj, vagas: im.vagas || 0,
+      diffPct, veredito: diffPct <= -10 ? 'abaixo' : diffPct >= 10 ? 'acima' : 'dentro',
+      baseLabel: `índice de mercado do ${im.bairro}${refRow && refRow.fonte ? ' (' + refRow.fonte + ')' : ''}`,
+      refFonte: refRow && refRow.fonte, refRef: refRow && refRow.ref, grupo, escopo: 'indice',
+      fatoresAplicados: ['Poucos comparáveis na carteira — usamos o índice público do bairro como referência'],
+      limitacoes: ['Sem amostra suficiente de imóveis iguais para a homogeneização completa.'],
+      fontes: _fontesM2(refRow),
+    }
+  }
+
+  // saneamento estatístico: descarta fora de ±30% da mediana e recalcula
+  const med0 = _quantil(comps, 0.5)
+  const saneados = comps.filter((v) => v >= med0 * 0.7 && v <= med0 * 1.3)
+  const usar = saneados.length >= 3 ? saneados : comps
+  const nDesc = comps.length - usar.length
+  const mediana = _quantil(usar, 0.5)
+  const media = usar.reduce((s, v) => s + v, 0) / usar.length
+  const dp = Math.sqrt(usar.reduce((s, v) => s + (v - media) ** 2, 0) / usar.length)
+  const dpPct = mediana ? dp / mediana : 0
+  const margem = Math.min(0.15, Math.max(0.06, dpPct))
+  const referencia = mediana
+  const diffPct = Math.round((m2Subj / referencia - 1) * 100)
+
+  return {
+    ok: true, precoM2, m2Subj, referencia, valorVenda: Math.round(referencia * FATOR_OFERTA),
+    campoMin: Math.round(referencia * (1 - margem)), campoMax: Math.round(referencia * (1 + margem)),
+    n: usar.length, nDesc, dpPct: Math.round(dpPct * 100), escopo,
+    min: Math.round(usar[0]), max: Math.round(usar[usar.length - 1]), area: areaSubj, vagas: im.vagas || 0,
+    diffPct, veredito: diffPct <= -10 ? 'abaixo' : diffPct >= 10 ? 'acima' : 'dentro',
+    baseLabel: `${usar.length} imóveis do mesmo tipo ${escopo === 'bairro' ? 'no ' + im.bairro : 'em ' + (im.cidade || 'Uberlândia')}, homogeneizados`,
+    refIPD, refFonte: refRow && refRow.fonte, refRef: refRow && refRow.ref, grupo,
+    fatoresAplicados: [
+      `Comparação só com imóveis do mesmo tipo (${im.tipo || grupo}) ${escopo === 'bairro' ? 'no ' + im.bairro : 'na cidade'}`,
+      'Fator oferta — anúncios ajustados ~10% (gordura de negociação) para nível de venda',
+      !ehTer ? `Fator vaga — valor das vagas (~${formatPreco(VAGA_VALOR)} cada) descontado antes do m²` : 'Sem fator vaga (terreno)',
+      `Fator área — homogeneização pela área do imóvel (${Math.round(areaSubj)} m²), economia de escala`,
+      `Saneamento estatístico — ${nDesc} imóvel(is) fora de ±30% da mediana descartado(s)`,
+      'Campo de arbítrio (intervalo) calculado pelo desvio padrão da amostra',
+    ],
+    limitacoes: [
+      'Baseado em preços anunciados (não em escrituras/ITBI), ajustados pelo fator oferta.',
+      'Não considera idade exata, padrão de acabamento e microlocalização de cada comparável (exigiriam vistoria/laudo).',
+    ],
+    fontes: _fontesM2(refRow),
+  }
 }
 
 // Mensagem de WhatsApp personalizada por imóvel
