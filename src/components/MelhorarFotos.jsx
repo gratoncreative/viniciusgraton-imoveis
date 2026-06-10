@@ -306,7 +306,7 @@ export default function MelhorarFotos() {
       const DIMS = { vertical: [1080, 1920], quadrado: [1080, 1080], horizontal: [1920, 1080] }
       const [W, H] = DIMS[videoFmt] || DIMS.vertical
       const FPS = 30
-      const slideMs = durSeg * 1000, fadeMs = Math.min(700, slideMs * 0.3)
+      const slideMs = durSeg * 1000, fadeMs = Math.min(1200, slideMs * 0.5)
       const n = fotos.length
       const cv = document.createElement('canvas'); cv.width = W; cv.height = H
       const ctx = cv.getContext('2d')
@@ -338,11 +338,13 @@ export default function MelhorarFotos() {
           ctx.fillStyle = '#0a0e16'; ctx.fillRect(0, 0, W, H)
           const a0 = getSlide(idx); if (a0) ctx.drawImage(a0, 0, 0)
           if (idx < n - 1 && localT > slideMs - fadeMs) {
-            const a = (localT - (slideMs - fadeMs)) / fadeMs
+            const t01 = (localT - (slideMs - fadeMs)) / fadeMs
+            const a = t01 * t01 * (3 - 2 * t01) // easing suave (smoothstep) — dissolve esmaecendo
             const a1 = getSlide(idx + 1)
             if (a1) { ctx.globalAlpha = a; ctx.drawImage(a1, 0, 0); ctx.globalAlpha = 1 }
           }
-          marcaDagua(ctx, W, H, wm.texto)
+          // mesma marca d'água das fotos (texto/posição/tamanho/opacidade), constante no vídeo
+          if (wm.on) aplicarMarca(cv, wm)
           setVideo({ fase: 'gravando', pct: Math.round((t / total) * 100) })
           requestAnimationFrame(frame)
         }
@@ -560,7 +562,7 @@ export default function MelhorarFotos() {
                         </div>
                       </div>
                     )}
-                    <p className="mf-nota">Slideshow com transição suave e a marca d'água "{wm.texto || 'Vinícius Graton'}" centralizada e translúcida (constante, dá pra ver a transição por trás). Gera em tempo real (~{Math.round(fotos.length * durSeg)}s). Usa o realce de cada foto. Sai em MP4 (ou WebM, conforme o navegador).</p>
+                    <p className="mf-nota">Slideshow com transição bem suave (dissolve esmaecendo). Usa a <b>mesma marca d'água das fotos</b> ({wm.on ? `"${wm.texto}"` : 'ative na aba 💧 Marca'}) e o realce de cada foto. Gera em tempo real (~{Math.round(fotos.length * durSeg)}s). Sai em MP4 (ou WebM, conforme o navegador).</p>
                     {video?.fase === 'erro' && <p className="lead-erro">{video.msg}</p>}
                   </div>
                 )}
