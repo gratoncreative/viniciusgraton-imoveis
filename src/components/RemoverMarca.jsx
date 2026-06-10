@@ -103,7 +103,7 @@ export default function RemoverMarca() {
 
   const pintar = (e) => {
     if (!pintando.current || atual < 0) return
-    const ft = fotosRef.current[atual]; if (!ft || ft.done) return
+    const ft = fotosRef.current[atual]; if (!ft) return
     const r = paintC.current.getBoundingClientRect()
     // converte da tela para o pixel interno do canvas (funciona com qualquer zoom)
     const ratio = paintC.current.width / r.width
@@ -155,11 +155,15 @@ export default function RemoverMarca() {
       }
       oc.getContext('2d').putImageData(od, 0, 0)
       const url = oc.toDataURL('image/jpeg', 0.92)
-      setFotos((fs) => fs.map((x, k) => k === atual ? { ...x, done: true, clean: url } : x))
-      // mostra o resultado no canvas
-      const im = new Image(); im.onload = () => imgC.current.getContext('2d').drawImage(im, 0, 0, imgC.current.width, imgC.current.height); im.src = url
-      paintC.current.getContext('2d').clearRect(0, 0, paintC.current.width, paintC.current.height)
-      setMsg('✓ Marca removida. Use "Baixar" (ou "Baixar todas") para salvar.')
+      // o resultado vira a NOVA imagem de trabalho → permite remover mais itens na mesma foto
+      const novaImg = new Image()
+      novaImg.onload = () => {
+        setFotos((fs) => fs.map((x, k) => k === atual ? { ...x, done: true, clean: url, img: novaImg, strokes: [] } : x))
+        setTimeout(() => { abrir(atual); setProc(false); setMsg('✓ Item removido. Pode pintar e remover outro item nesta mesma foto, ou ir pra próxima.') }, 0)
+      }
+      novaImg.onerror = () => { setProc(false); setMsg('Item removido, mas falhei ao recarregar a prévia.') }
+      novaImg.src = url
+      return
     } catch (e) {
       setMsg('Falhou nessa foto: ' + (e.message || e))
     }
@@ -172,9 +176,30 @@ export default function RemoverMarca() {
     a.download = (ft.name.replace(/\.[^.]+$/, '') || 'foto') + '-limpa.jpg'
     document.body.appendChild(a); a.click(); a.remove()
   }
-  const baixarTodas = () => {
-    const prontas = fotos.filter((f) => f.done)
-    prontas.forEach((f, i) => setTimeout(() => baixar(f), i * 400))
+  // baixa TODAS as fotos que subiram (editadas = versão limpa; intactas = original) num único .zip
+  const baixarTodas = async () => {
+    if (!fotos.length) return
+    setProc(true); setMsg('Preparando o download de todas as fotos…')
+    try {
+      const JSZip = (await import('jszip')).default
+      const zip = new JSZip()
+      let i = 0
+      for (const ft of fotos) {
+        i++
+        const url = ft.clean || ft.img.src
+        const blob = await fetch(url).then((r) => r.blob())
+        const base = (ft.name.replace(/\.[^.]+$/, '') || 'foto')
+        zip.file(`${String(i).padStart(2, '0')}-${base}${ft.clean ? '-limpa' : ''}.jpg`, blob)
+      }
+      const out = await zip.generateAsync({ type: 'blob' })
+      const a = document.createElement('a'); a.href = URL.createObjectURL(out); a.download = 'fotos.zip'
+      document.body.appendChild(a); a.click(); a.remove()
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000)
+      setMsg(`✓ Download de ${fotos.length} foto(s) gerado.`)
+    } catch (e) {
+      setMsg('Não consegui gerar o download: ' + (e.message || e))
+    }
+    setProc(false)
   }
 
   const okCount = fotos.filter((f) => f.done).length
@@ -203,7 +228,7 @@ export default function RemoverMarca() {
                 </div>
               ))}
             </div>
-            {okCount > 1 && <button className="admin-btn" style={{ width: '100%', marginTop: 10 }} onClick={baixarTodas}>Baixar todas ({okCount})</button>}
+            {fotos.length > 0 && <button className="btn btn-gold" style={{ width: '100%', marginTop: 10 }} onClick={baixarTodas} disabled={proc}>{proc ? 'Gerando…' : `DOWNLOAD (${fotos.length})`}</button>}
           </aside>
 
           <div className="marca-editor">
@@ -219,7 +244,7 @@ export default function RemoverMarca() {
               <button className="admin-btn" onClick={limpar} disabled={atual < 0}>Limpar seleção</button>
               <span style={{ flex: 1 }} />
               {atual >= 0 && fotos[atual]?.done && <button className="admin-btn" onClick={() => baixar(fotos[atual])}>Baixar esta</button>}
-              <button className="btn btn-gold" onClick={remover} disabled={proc || atual < 0 || (fotos[atual] && fotos[atual].done)}>{proc ? 'Removendo…' : 'Remover marca'}</button>
+              <button className="btn btn-gold" onClick={remover} disabled={proc || atual < 0}>{proc ? 'Removendo…' : 'Remover marca'}</button>
             </div>
             <div className="marca-palco">
               {atual < 0 ? (

@@ -1824,12 +1824,13 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .admin-btn--upload input:disabled { cursor: progress; }
 .lead-erro { font-size: 0.84rem; color: #c0392b; font-weight: 600; }
 /* Ferramenta de remover marca d'água (área restrita) */
-.marca-grid { display: grid; grid-template-columns: 200px 1fr; gap: 16px; align-items: start; }
+.marca-grid { display: grid; grid-template-columns: 232px 1fr; gap: 16px; align-items: start; }
 .marca-lista { border: 1px solid rgba(22,26,34,0.12); border-radius: 12px; padding: 12px; background: #fff; }
-.marca-thumbs { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; max-height: 460px; overflow: auto; }
-.marca-thumb { position: relative; border: 2px solid transparent; border-radius: 9px; overflow: hidden; cursor: pointer; background: #0c0f15; }
-.marca-thumb.on { border-color: var(--gold-3); }
-.marca-thumb img { width: 100%; height: 72px; object-fit: cover; display: block; opacity: .92; }
+.marca-thumbs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; max-height: 56vh; overflow-y: auto; padding-right: 4px; }
+.marca-thumb { position: relative; border: 2px solid transparent; border-radius: 9px; overflow: hidden; cursor: pointer; background: #0c0f15; aspect-ratio: 4 / 3; }
+.marca-thumb.on { border-color: var(--gold-3); box-shadow: 0 0 0 2px rgba(224,181,86,0.35); }
+.marca-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: .92; }
+.marca-thumb.on img { opacity: 1; }
 .marca-st { position: absolute; top: 5px; left: 5px; width: 18px; height: 18px; border-radius: 100px; background: #000a; color: #fff; font-size: .7rem; display: grid; place-items: center; }
 .marca-st.ok { background: #1d7a45; }
 .marca-editor { min-width: 0; }
