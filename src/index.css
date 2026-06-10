@@ -685,11 +685,11 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .det-pergunta:hover { border-color: var(--gold-3); background: rgba(184,134,47,0.07); transform: translateY(-1px); }
 
 /* ===== Menu principal sempre com fundo CLARO ===== */
-.nav { background: rgba(250,246,238,0.82); backdrop-filter: blur(18px) saturate(140%); border-bottom: 1px solid rgba(22,26,34,0.07); }
-.nav.scrolled { background: rgba(250,246,238,0.93); }
-.nav .brand-name { color: #1d2230; }
-.nav .brand-sub { color: #9a8e78; }
-.nav .nav-links a { color: #4a4234; }
+.nav { background: rgba(248,244,236,0.96); backdrop-filter: blur(20px) saturate(140%); border-bottom: 1px solid rgba(22,26,34,0.08); }
+.nav.scrolled { background: rgba(248,244,236,0.98); box-shadow: 0 6px 24px -16px rgba(0,0,0,0.4); }
+.nav .brand-name { color: #161a22; }
+.nav .brand-sub { color: #8a8170; }
+.nav .nav-links a { color: #2f2a22; font-weight: 600; }
 .nav .nav-links a:hover, .nav .nav-links a.is-active { color: var(--gold-3); }
 .nav .nav-links a.is-active::after, .nav .nav-links a:hover::after { background: var(--gold-grad); width: 100%; }
 .nav .nav-fav { color: #4a4234; }
