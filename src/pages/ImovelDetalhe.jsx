@@ -433,9 +433,25 @@ export default function ImovelDetalhe() {
               <AgendarVisita im={im} />
 
               <div className="det-ferramentas">
-                <button className="det-ferr-btn" onClick={baixarPdf} disabled={pdfProc}>
-                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-5zM12 18v-6M9 15l3 3 3-3" /></svg>
-                  {pdfProc ? 'Gerando PDF…' : 'Material técnico (PDF)'}
+                <button className={`det-ferr-btn ${pdfProc ? 'det-ferr-btn--proc' : ''}`} onClick={baixarPdf} disabled={pdfProc}>
+                  {pdfProc ? (
+                    <span className="pdfgen" role="status" aria-label="Gerando o PDF">
+                      <span className="pdfgen-doc" aria-hidden="true">
+                        <span className="pdfgen-fold" />
+                        <span className="pdfgen-linha pdfgen-l1" />
+                        <span className="pdfgen-linha pdfgen-l2" />
+                        <span className="pdfgen-linha pdfgen-l3" />
+                        <span className="pdfgen-selo">PDF</span>
+                      </span>
+                      <span className="pdfgen-txt">Montando seu material<span className="pdfgen-dots" /></span>
+                      <span className="pdfgen-barra" aria-hidden="true" />
+                    </span>
+                  ) : (
+                    <>
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-5zM12 18v-6M9 15l3 3 3-3" /></svg>
+                      Material técnico (PDF)
+                    </>
+                  )}
                 </button>
                 {est?.ok && (
                   <button className="det-ferr-btn" onClick={() => setEstudoAberto(true)}>

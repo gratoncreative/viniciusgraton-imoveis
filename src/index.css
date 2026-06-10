@@ -3088,3 +3088,54 @@ html[data-theme="dark"] .condo-chip { color: #d6dae2; background: rgba(255,255,2
 /* selo "Destaque do blog": dourado escuro no claro (legível), claro no escuro */
 .section--light .blog-feat-tag { color: var(--gold-3); }
 html[data-theme="dark"] .section--light .blog-feat-tag { color: var(--gold-1); }
+
+/* ============================================================
+   BOTÃO "GERANDO PDF" — documento que se escreve (animado)
+   ============================================================ */
+.det-ferr-btn--proc { position: relative; overflow: hidden; border-color: var(--gold-3); opacity: 1 !important; animation: pdfRespira 2.4s ease-in-out infinite; }
+@keyframes pdfRespira { 0%, 100% { box-shadow: 0 0 0 0 rgba(224,181,86,0); } 50% { box-shadow: 0 0 18px -2px rgba(224,181,86,0.45); } }
+
+.pdfgen { display: inline-flex; align-items: center; gap: 10px; }
+.pdfgen-txt { color: var(--gold-2); }
+
+/* a folhinha */
+.pdfgen-doc { position: relative; width: 17px; height: 22px; border: 1.5px solid var(--gold-3); border-radius: 3px 6px 3px 3px; background: rgba(224,181,86,0.07); flex: none; }
+.pdfgen-fold { position: absolute; top: -1.5px; right: -1.5px; width: 6px; height: 6px; background: var(--gold-3); clip-path: polygon(0 0, 100% 100%, 0 100%); border-radius: 0 0 0 2px; opacity: 0.9; }
+
+/* linhas de texto sendo "escritas" uma a uma, em loop */
+.pdfgen-linha { position: absolute; left: 3px; height: 2px; border-radius: 2px; background: var(--gold-2); width: 0; animation: pdfEscreve 1.8s var(--ease) infinite; }
+.pdfgen-l1 { top: 5px; animation-delay: 0s; }
+.pdfgen-l2 { top: 9px; animation-delay: 0.22s; }
+.pdfgen-l3 { top: 13px; animation-delay: 0.44s; width: 0; --w: 6px; }
+@keyframes pdfEscreve {
+  0% { width: 0; opacity: 0.4; }
+  35% { width: 9px; opacity: 1; }
+  70% { width: 9px; opacity: 1; }
+  86% { opacity: 0; }
+  100% { width: 0; opacity: 0; }
+}
+
+/* carimbo PDF que bate na folha no fim de cada ciclo */
+.pdfgen-selo { position: absolute; right: -7px; bottom: -5px; font-family: var(--font-head); font-weight: 800; font-size: 6.5px; line-height: 1; letter-spacing: 0.04em; color: #20160a; background: var(--gold-grad); padding: 2.5px 3.5px; border-radius: 4px; transform: scale(0); animation: pdfCarimba 1.8s var(--ease) infinite; box-shadow: 0 3px 8px -2px rgba(184,134,47,0.6); }
+@keyframes pdfCarimba {
+  0%, 55% { transform: scale(0) rotate(-12deg); }
+  68% { transform: scale(1.25) rotate(3deg); }
+  76% { transform: scale(1) rotate(0deg); }
+  92% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+/* reticências animadas */
+.pdfgen-dots::after { content: ''; display: inline-block; width: 1.2em; text-align: left; animation: pdfDots 1.2s steps(1) infinite; }
+@keyframes pdfDots { 0% { content: ''; } 25% { content: '.'; } 50% { content: '..'; } 75% { content: '...'; } }
+
+/* barra de progresso indeterminada no pé do botão */
+.pdfgen-barra { position: absolute; left: 0; bottom: 0; height: 2.5px; width: 42%; border-radius: 100px; background: var(--gold-grad); animation: pdfBarra 1.5s ease-in-out infinite; }
+@keyframes pdfBarra { 0% { left: -42%; } 100% { left: 100%; } }
+
+/* respeita quem prefere menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  .det-ferr-btn--proc, .pdfgen-linha, .pdfgen-selo, .pdfgen-barra, .pdfgen-dots::after { animation: none; }
+  .pdfgen-linha { width: 9px; opacity: 1; }
+  .pdfgen-selo { transform: scale(1); }
+}
