@@ -4,6 +4,7 @@ import Reveal from '../components/Reveal'
 import CardImovel from '../components/CardImovel'
 import AviseMe from '../components/AviseMe'
 import FiltroSelect from '../components/FiltroSelect'
+import FiltroPills from '../components/FiltroPills'
 import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, FAIXAS_PRECO, linkWhatsApp, WA } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconClose } from '../components/icons'
@@ -242,12 +243,9 @@ export default function Catalogo() {
             options={(BAIRROS_TODOS.length ? BAIRROS_TODOS : BAIRROS_IMOVEL).map((b) => ({ value: b, label: b }))} />
           <FiltroSelect icon={<FIco n="preco" />} placeholder="Qualquer preço" neutral={-1} value={f.faixa} onChange={(v) => up('faixa', v)}
             options={[{ value: -1, label: 'Qualquer preço' }, ...FAIXAS_PRECO.map((p, i) => ({ value: i, label: p.label }))]} />
-          <FiltroSelect icon={<FIco n="quartos" />} placeholder="Quartos" neutral={0} value={f.quartos} onChange={(v) => up('quartos', v)}
-            options={[{ value: 0, label: 'Indiferente' }, ...[1, 2, 3, 4].map((n) => ({ value: n, label: `${n}+ quartos` }))]} />
-          <FiltroSelect icon={<FIco n="suites" />} placeholder="Suítes" neutral={0} value={f.suites} onChange={(v) => up('suites', v)}
-            options={[{ value: 0, label: 'Indiferente' }, ...[1, 2, 3, 4].map((n) => ({ value: n, label: `${n}+ suítes` }))]} />
-          <FiltroSelect icon={<FIco n="vagas" />} placeholder="Vagas" neutral={0} value={f.vagas} onChange={(v) => up('vagas', v)}
-            options={[{ value: 0, label: 'Indiferente' }, ...[1, 2, 3, 4].map((n) => ({ value: n, label: `${n}+ vagas` }))]} />
+          <FiltroPills icon={<FIco n="quartos" />} label="Quartos" value={f.quartos} onChange={(v) => up('quartos', v)} />
+          <FiltroPills icon={<FIco n="suites" />} label="Suítes" value={f.suites} onChange={(v) => up('suites', v)} />
+          <FiltroPills icon={<FIco n="vagas" />} label="Vagas" value={f.vagas} onChange={(v) => up('vagas', v)} />
           <FiltroSelect icon={<FIco n="area" />} placeholder="Área mín. (m²)" neutral={0} value={f.area} onChange={(v) => up('area', v)}
             options={[{ value: 0, label: 'Qualquer área' }, ...AREAS.map((n) => ({ value: n, label: `${n.toLocaleString('pt-BR')}+ m²` }))]} />
           <FiltroSelect icon={<FIco n="carac" />} placeholder="Característica" neutral="" value={f.carac} onChange={(v) => up('carac', v)}
