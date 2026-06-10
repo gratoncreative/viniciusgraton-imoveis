@@ -6,6 +6,15 @@ import { useEffect, useRef, useState } from 'react'
 
 // servido pelo nosso domínio (functions/ort) — same-origin (CSP 'self'); absoluto evita ambiguidade de base
 const MAX_LADO = 2048 // limita o lado maior p/ memória/velocidade (a IA recorta na máscara mesmo assim)
+const MIME = { jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp' }
+const EXT = { jpeg: 'jpg', png: 'png', webp: 'webp' }
+const carregarImg = (src) => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src })
+async function srcParaBlob(src, fmt) {
+  const img = await carregarImg(src)
+  const c = document.createElement('canvas'); c.width = img.naturalWidth; c.height = img.naturalHeight
+  c.getContext('2d').drawImage(img, 0, 0)
+  return new Promise((res) => c.toBlob((b) => res(b), MIME[fmt] || 'image/jpeg', fmt === 'png' ? undefined : 0.92))
+}
 
 export default function RemoverMarca() {
   const [ort, setOrt] = useState(null)
@@ -17,6 +26,7 @@ export default function RemoverMarca() {
   const [proc, setProc] = useState(false)
   const [msg, setMsg] = useState('')
   const [zoom, setZoom] = useState(1)
+  const [formato, setFormato] = useState('jpeg')
 
   const imgC = useRef(null)
   const paintC = useRef(null)
@@ -170,34 +180,31 @@ export default function RemoverMarca() {
     setProc(false)
   }
 
-  const baixar = (ft) => {
-    if (!ft.clean) return
-    const a = document.createElement('a'); a.href = ft.clean
-    a.download = (ft.name.replace(/\.[^.]+$/, '') || 'foto') + '-limpa.jpg'
+  const baixar = async (ft) => {
+    const blob = await srcParaBlob(ft.clean || ft.img.src, formato)
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob)
+    a.download = ((ft.name || 'foto').replace(/\.[^.]+$/, '')) + (ft.clean ? '-limpa' : '') + '.' + EXT[formato]
     document.body.appendChild(a); a.click(); a.remove()
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000)
   }
-  // baixa TODAS as fotos que subiram (editadas = versão limpa; intactas = original) num único .zip
+  // baixa TODAS as fotos que subiram, uma a uma (em lote, SEM compactar), no formato escolhido.
+  // Editadas saem na versão limpa; as intactas saem como original.
   const baixarTodas = async () => {
     if (!fotos.length) return
-    setProc(true); setMsg('Preparando o download de todas as fotos…')
+    setProc(true); setMsg('Baixando todas as fotos…')
     try {
-      const JSZip = (await import('jszip')).default
-      const zip = new JSZip()
-      let i = 0
-      for (const ft of fotos) {
-        i++
-        const url = ft.clean || ft.img.src
-        const blob = await fetch(url).then((r) => r.blob())
-        const base = (ft.name.replace(/\.[^.]+$/, '') || 'foto')
-        zip.file(`${String(i).padStart(2, '0')}-${base}${ft.clean ? '-limpa' : ''}.jpg`, blob)
+      for (let i = 0; i < fotos.length; i++) {
+        const ft = fotos[i]
+        const blob = await srcParaBlob(ft.clean || ft.img.src, formato)
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob)
+        a.download = `${String(i + 1).padStart(2, '0')}-${(ft.name || 'foto').replace(/\.[^.]+$/, '')}${ft.clean ? '-limpa' : ''}.${EXT[formato]}`
+        document.body.appendChild(a); a.click(); a.remove()
+        await new Promise((r) => setTimeout(r, 300)) // intervalo curto pro navegador aceitar todos
+        URL.revokeObjectURL(a.href)
       }
-      const out = await zip.generateAsync({ type: 'blob' })
-      const a = document.createElement('a'); a.href = URL.createObjectURL(out); a.download = 'fotos.zip'
-      document.body.appendChild(a); a.click(); a.remove()
-      setTimeout(() => URL.revokeObjectURL(a.href), 5000)
-      setMsg(`✓ Download de ${fotos.length} foto(s) gerado.`)
+      setMsg(`✓ ${fotos.length} foto(s) baixadas.`)
     } catch (e) {
-      setMsg('Não consegui gerar o download: ' + (e.message || e))
+      setMsg('Falhou no download: ' + (e.message || e))
     }
     setProc(false)
   }
@@ -228,7 +235,18 @@ export default function RemoverMarca() {
                 </div>
               ))}
             </div>
-            {fotos.length > 0 && <button className="btn btn-gold" style={{ width: '100%', marginTop: 10 }} onClick={baixarTodas} disabled={proc}>{proc ? 'Gerando…' : `DOWNLOAD (${fotos.length})`}</button>}
+            {fotos.length > 0 && (
+              <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <label className="mf-sel"><span>Formato</span>
+                  <select value={formato} onChange={(e) => setFormato(e.target.value)}>
+                    <option value="jpeg">JPG</option>
+                    <option value="png">PNG</option>
+                    <option value="webp">WebP</option>
+                  </select>
+                </label>
+                <button className="btn btn-gold" style={{ width: '100%' }} onClick={baixarTodas} disabled={proc}>{proc ? 'Baixando…' : `DOWNLOAD (${fotos.length})`}</button>
+              </div>
+            )}
           </aside>
 
           <div className="marca-editor">

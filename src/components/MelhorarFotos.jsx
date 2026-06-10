@@ -93,8 +93,11 @@ function exportarCanvas(img, s) {
   ctx.drawImage(base, 0, 0, out.width, out.height)
   return out
 }
-const canvasParaBlob = (canvas) => new Promise((res) => canvas.toBlob((b) => res(b), 'image/jpeg', 0.92))
+const MIME = { jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp' }
+const EXT = { jpeg: 'jpg', png: 'png', webp: 'webp' }
+const canvasParaBlob = (canvas, fmt) => new Promise((res) => canvas.toBlob((b) => res(b), MIME[fmt] || 'image/jpeg', fmt === 'png' ? undefined : 0.92))
 const baseNome = (n) => n.replace(/\.[^.]+$/, '')
+const esperar = (ms) => new Promise((r) => setTimeout(r, ms))
 
 // fora do componente (não remontar a cada render — senão o arraste do slider trava)
 function Slider({ label, val, min, max, step, on, fmt }) {
@@ -112,6 +115,7 @@ export default function MelhorarFotos() {
   const [grade, setGrade] = useState(true)
   const [verOriginal, setVerOriginal] = useState(false)
   const [baixando, setBaixando] = useState('')
+  const [formato, setFormato] = useState('jpeg')
   const previewRef = useRef(null)
   const fotosRef = useRef(fotos); fotosRef.current = fotos
 
@@ -165,27 +169,27 @@ export default function MelhorarFotos() {
   const aplicarTodas = () => { if (foto) setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, brilho: foto.s.brilho, contraste: foto.s.contraste, satur: foto.s.satur, nitidez: foto.s.nitidez, wb: foto.s.wb, escala: foto.s.escala } }))) }
   const remover = (i) => { setFotos((fs) => fs.filter((_, k) => k !== i)); setAtual((a) => (a >= fotos.length - 1 ? fotos.length - 2 : a)) }
 
+  const baixarCanvas = async (canvas, nome) => {
+    const blob = await canvasParaBlob(canvas, formato)
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${nome}.${EXT[formato]}`
+    document.body.appendChild(a); a.click(); a.remove()
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000)
+  }
   const baixarUma = async () => {
     if (!foto) return
     setBaixando('uma')
-    const blob = await canvasParaBlob(exportarCanvas(foto.img, foto.s))
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${baseNome(foto.name)}-melhorada.jpg`; a.click()
-    setTimeout(() => URL.revokeObjectURL(a.href), 3000); setBaixando('')
+    await baixarCanvas(exportarCanvas(foto.img, foto.s), `${baseNome(foto.name)}-melhorada`)
+    setBaixando('')
   }
+  // baixa TODAS individualmente (em lote, sem compactar) — uma a uma, no formato escolhido
   const baixarTodas = async () => {
     if (!fotos.length) return
-    setBaixando('zip')
-    try {
-      const JSZip = (await import('jszip')).default
-      const zip = new JSZip()
-      for (const ft of fotos) {
-        const blob = await canvasParaBlob(exportarCanvas(ft.img, ft.s))
-        zip.file(`${baseNome(ft.name)}-melhorada.jpg`, blob)
-      }
-      const out = await zip.generateAsync({ type: 'blob' })
-      const a = document.createElement('a'); a.href = URL.createObjectURL(out); a.download = 'fotos-melhoradas.zip'; a.click()
-      setTimeout(() => URL.revokeObjectURL(a.href), 4000)
-    } catch { /* ignora */ }
+    setBaixando('todas')
+    for (let i = 0; i < fotos.length; i++) {
+      const ft = fotos[i]
+      await baixarCanvas(exportarCanvas(ft.img, ft.s), `${String(i + 1).padStart(2, '0')}-${baseNome(ft.name)}-melhorada`)
+      await esperar(300) // intervalo curto pro navegador aceitar todos os downloads
+    }
     setBaixando('')
   }
 
@@ -248,7 +252,14 @@ export default function MelhorarFotos() {
                 </div>
 
                 <div className="mf-grupo">
-                  <div className="mf-grupo-tit">Resolução</div>
+                  <div className="mf-grupo-tit">Exportação</div>
+                  <label className="mf-sel"><span>Formato</span>
+                    <select value={formato} onChange={(e) => setFormato(e.target.value)}>
+                      <option value="jpeg">JPG — menor, ideal pra anúncio</option>
+                      <option value="png">PNG — sem perda, arquivo maior</option>
+                      <option value="webp">WebP — moderno e leve</option>
+                    </select>
+                  </label>
                   <label className="mf-sel"><span>Ampliar</span>
                     <select value={foto.s.escala} onChange={(e) => setS({ escala: parseFloat(e.target.value) })}>
                       <option value={1}>Original (nítida)</option>
@@ -256,14 +267,14 @@ export default function MelhorarFotos() {
                       <option value={2}>2× maior (UHD)</option>
                     </select>
                   </label>
-                  <p className="mf-nota">Ampliação reamostra em alta qualidade + nitidez — fica maior e mais nítida (não é super-resolução por IA).</p>
+                  <p className="mf-nota">Ampliação reamostra em alta qualidade + nitidez — fica maior e mais nítida (não é super-resolução por IA). O formato e a ampliação valem pra todos os downloads.</p>
                 </div>
 
                 <div className="mf-botoes">
                   <button className="admin-btn" onClick={restaurar}>↺ Padrão</button>
                   <button className="admin-btn" onClick={aplicarTodas}>Aplicar realce a todas</button>
                   <button className="btn btn-gold" onClick={baixarUma} disabled={baixando}>{baixando === 'uma' ? 'Gerando…' : '⬇ Baixar esta'}</button>
-                  <button className="btn btn-gold" onClick={baixarTodas} disabled={baixando}>{baixando === 'zip' ? 'Gerando zip…' : `⬇ Baixar todas (${fotos.length})`}</button>
+                  <button className="btn btn-gold" onClick={baixarTodas} disabled={baixando}>{baixando === 'todas' ? 'Baixando…' : `⬇ Baixar todas (${fotos.length})`}</button>
                 </div>
               </div>
             </div>
