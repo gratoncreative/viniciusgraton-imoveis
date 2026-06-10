@@ -48,7 +48,7 @@ export default function Contato() {
   }
 
   return (
-    <section id="contato">
+    <section id="contato" className="section--light">
       <div className="container">
         <Reveal>
           <div className="cta-wrap">

@@ -122,7 +122,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 
 /* ---------- seções com fundo claro (leveza, cores invertidas) ---------- */
-#destaque.section--light { background: #fff; }
+#destaque.section--light, #contato.section--light { background: #fff; }
+.section--light .contact-row .ci { color: var(--gold-3); }
 .section--light {
   background: #f5f2ea;
   --text: #161a22;
@@ -1766,7 +1767,7 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .post-cta div { display: flex; flex-direction: column; gap: 3px; max-width: 460px; }
 .post-cta b { font-family: var(--font-head); font-size: 1.05rem; color: #1a1f29; }
 .post-cta span { color: #5a6370; font-size: 0.92rem; }
-.blog-home { background: #efeae0; }
+.blog-home { background: #fff; }
 /* post em destaque (home) — layout editorial moderno */
 .blog-feat { display: grid; grid-template-columns: 1.05fr 1fr; gap: 0; background: #fff; border: 1px solid rgba(22,26,34,0.1); border-radius: 20px; overflow: hidden; text-decoration: none; color: inherit; box-shadow: 0 22px 50px -30px rgba(22,26,34,0.55); transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.35s var(--ease); }
 .blog-feat:hover { transform: translateY(-4px); box-shadow: 0 34px 64px -32px rgba(22,26,34,0.6); border-color: var(--gold-3); }
@@ -1810,7 +1811,7 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .post-autor span { font-size: 0.88rem; color: #5a6370; line-height: 1.55; }
 
 /* CTA de venda (proprietário) na home */
-.vender-cta-sec { padding: clamp(48px, 7vw, 96px) 0; background: #f5f2ea; }
+.vender-cta-sec { padding: clamp(48px, 7vw, 96px) 0; background: #fff; }
 .vender-cta { display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(28px, 5vw, 56px); align-items: center; background: linear-gradient(135deg, #0d1119 0%, #141925 100%); border: 1px solid rgba(184,134,47,0.32); border-radius: clamp(20px, 3vw, 30px); padding: clamp(28px, 4.5vw, 56px); box-shadow: 0 44px 90px -44px rgba(0,0,0,0.55); }
 .btn-grande { font-size: 1.04rem; padding: 16px 28px; }
 .vender-cta-txt .eyebrow { color: var(--gold-1); }
