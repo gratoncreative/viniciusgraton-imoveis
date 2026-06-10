@@ -21,9 +21,11 @@ function carregarGIS() {
   return gisPromise
 }
 
-export default function GoogleLogin({ onPronto }) {
+export default function GoogleLogin({ onPronto, onLogin }) {
   const ref = useRef(null)
   const clientId = CONFIG.googleClientId
+  const onLoginRef = useRef(onLogin)
+  onLoginRef.current = onLogin
 
   useEffect(() => {
     if (!clientId) return
@@ -42,14 +44,19 @@ export default function GoogleLogin({ onPronto }) {
             })
             const j = await r.json()
             if (j && j.ok && j.perfil && j.perfil.sub) {
-              salvarConta({
-                token: 'g_' + j.perfil.sub,
-                nome: j.perfil.nome,
-                email: j.perfil.email,
-                foto: j.perfil.foto,
-                login: 'google',
-              })
-              onPronto && onPronto()
+              // se o pai quer tratar o login (ex.: pedir o WhatsApp antes), entrega o perfil
+              if (onLoginRef.current) {
+                onLoginRef.current(j.perfil)
+              } else {
+                salvarConta({
+                  token: 'g_' + j.perfil.sub,
+                  nome: j.perfil.nome,
+                  email: j.perfil.email,
+                  foto: j.perfil.foto,
+                  login: 'google',
+                })
+                onPronto && onPronto()
+              }
             }
           } catch { /* silencioso: o cadastro manual continua disponível */ }
         },

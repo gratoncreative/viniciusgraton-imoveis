@@ -2034,6 +2034,8 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .google-login-btn { display: flex; justify-content: center; min-height: 40px; }
 .google-login-ou { display: flex; align-items: center; gap: 12px; margin: 16px 0 4px; color: var(--text-mute); font-size: 0.82rem; }
 .google-login-ou::before, .google-login-ou::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.conta-pular { display: block; margin: 12px auto 0; background: none; border: none; color: var(--text-mute); font-size: 0.86rem; cursor: pointer; text-decoration: underline; }
+.conta-pular:hover { color: var(--text-soft); }
 
 /* Gerador de post pra redes (painel) */
 .postgen-intro h3 { font-family: var(--font-head); font-weight: 700; font-size: 1.3rem; }

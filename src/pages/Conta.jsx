@@ -49,6 +49,19 @@ function CadastroView({ onPronto }) {
     registrarLead({ cod: 'cadastro', nome: f.nome.trim(), fone: f.fone.trim(), bairro: `cadastro · ${f.objetivo} · ${f.bairros || 'sem bairro'} · ${f.faixa || 'faixa livre'}` })
     onPronto()
   }
+
+  // login com Google entrega nome+e-mail; pedimos só o WhatsApp num passo curto
+  const [googlePerfil, setGooglePerfil] = useState(null)
+  const [gFone, setGFone] = useState('')
+  const [gObj, setGObj] = useState('Comprar para morar')
+  const salvarGoogle = (comFone) => {
+    const p = googlePerfil
+    salvarConta({ token: 'g_' + p.sub, nome: p.nome, email: p.email, foto: p.foto, login: 'google', ...(comFone ? { fone: gFone.trim(), objetivo: gObj } : {}) })
+    registrarLead({ cod: 'cadastro', nome: p.nome, fone: comFone ? gFone.trim() : '', email: p.email, objetivo: comFone ? gObj : '', origem: 'conta-google' })
+    onPronto()
+  }
+  const concluirGoogle = (e) => { e.preventDefault(); if (!gFone.trim()) return; salvarGoogle(true) }
+
   return (
     <div className="conta-cadastro">
       <div className="conta-pitch">
@@ -81,10 +94,27 @@ function CadastroView({ onPronto }) {
         </div>
       </div>
 
+      {googlePerfil ? (
+        <form className="lead-form conta-form" onSubmit={concluirGoogle}>
+          <span className="conta-form-selo">Quase lá</span>
+          <h3>Boa, {String(googlePerfil.nome || '').split(' ')[0]}! Falta só seu WhatsApp</h3>
+          <p className="lead-note" style={{ marginTop: 0, marginBottom: 8 }}>
+            Entrei com seu Google ({googlePerfil.email}). Me passa seu WhatsApp que eu te aviso em primeira mão dos imóveis com a sua cara.
+          </p>
+          <label><span>WhatsApp (com DDD) *</span><input type="tel" inputMode="tel" value={gFone} onChange={(e) => setGFone(e.target.value)} placeholder="(34) 9____-____" required autoFocus /></label>
+          <label><span>O que você busca?</span>
+            <select value={gObj} onChange={(e) => setGObj(e.target.value)}>
+              <option>Comprar para morar</option><option>Comprar para investir</option><option>Alugar</option><option>Vender meu imóvel</option>
+            </select>
+          </label>
+          <button type="submit" className="btn btn-gold lead-submit"><IconWhats width={18} height={18} /> Concluir meu cadastro <IconArrow /></button>
+          <button type="button" className="conta-pular" onClick={() => salvarGoogle(false)}>Agora não, entrar direto</button>
+        </form>
+      ) : (
       <form className="lead-form conta-form" onSubmit={enviar}>
         <span className="conta-form-selo">Grátis · 30 segundos</span>
         <h3>Criar minha conta</h3>
-        <GoogleLogin onPronto={onPronto} />
+        <GoogleLogin onLogin={setGooglePerfil} onPronto={onPronto} />
         <label><span>Nome completo *</span><input value={f.nome} onChange={set('nome')} required /></label>
         <label><span>E-mail *</span><input type="email" value={f.email} onChange={set('email')} required /></label>
         <label><span>WhatsApp (com DDD) *</span><input type="tel" inputMode="tel" value={f.fone} onChange={set('fone')} placeholder="(34) 9____-____" required /></label>
@@ -116,6 +146,7 @@ function CadastroView({ onPronto }) {
         <button type="submit" className="btn btn-gold lead-submit"><IconShield width={18} height={18} /> Criar conta grátis <IconArrow /></button>
         <p className="lead-note">Sem custo, sem spam. Você pode sair ou apagar sua conta quando quiser.</p>
       </form>
+      )}
     </div>
   )
 }
