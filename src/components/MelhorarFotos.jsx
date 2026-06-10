@@ -186,6 +186,7 @@ const EXT = { jpeg: 'jpg', png: 'png', webp: 'webp' }
 const canvasParaBlob = (canvas, fmt) => new Promise((res) => canvas.toBlob((b) => res(b), MIME[fmt] || 'image/jpeg', fmt === 'png' ? undefined : 0.92))
 const baseNome = (n) => n.replace(/\.[^.]+$/, '')
 const esperar = (ms) => new Promise((r) => setTimeout(r, ms))
+const msgVideo = (p) => p < 25 ? 'Preparando as cenas…' : p < 50 ? 'Aplicando transições suaves…' : p < 78 ? 'Caprichando no acabamento…' : 'Quase pronto, segura aí…'
 
 // fora do componente (não remontar a cada render — senão o arraste do slider trava)
 function Slider({ label, val, min, max, step, on, fmt }) {
@@ -533,9 +534,12 @@ export default function MelhorarFotos() {
                     {video ? (video.fase === 'gravando' ? `Montando seu vídeo… ${video.pct}%` : video.fase === 'pronto' ? '✓ Vídeo pronto!' : 'Tentar de novo') : '🎬 Baixar como vídeo'}
                   </button>
                   {video?.fase === 'gravando' && (
-                    <div className="mf-prog" aria-hidden="true">
-                      <div className="mf-prog-bar" style={{ width: (video.pct || 1) + '%' }} />
-                      <span className="mf-prog-film">🎞️</span>
+                    <div className="mf-prog-wrap">
+                      <div className="mf-prog-top"><span className="mf-prog-emoji">🎬</span> {msgVideo(video.pct)} <b>{video.pct}%</b></div>
+                      <div className="mf-prog">
+                        <div className="mf-prog-bar" style={{ width: Math.max(4, video.pct || 0) + '%' }} />
+                        <span className="mf-prog-rider" style={{ left: Math.max(4, video.pct || 0) + '%' }}>🏠</span>
+                      </div>
                     </div>
                   )}
                   <p className="mf-nota">Slideshow com transição suave e a marca d'água "{wm.texto || 'Vinícius Graton'}" centralizada e translúcida (constante, dá pra ver a transição por trás). Gera em tempo real (~{Math.round(fotos.length * durSeg)}s). Usa o realce de cada foto. Sai em MP4 (ou WebM, conforme o navegador).</p>
