@@ -200,7 +200,9 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .brand-name { font-family: var(--font-head); font-weight: 700; font-size: 1.02rem; letter-spacing: 0.01em; line-height: 1.2; }
 .brand-sub { font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-mute); line-height: 1.2; }
 .nav-links { display: flex; align-items: center; gap: clamp(18px, 2.2vw, 32px); }
-.nav-links a { font-size: 0.92rem; color: var(--text-soft); transition: color 0.3s; position: relative; white-space: nowrap; }
+.nav-links a { display: inline-flex; align-items: center; gap: 7px; font-size: 0.92rem; color: var(--text-soft); transition: color 0.3s; position: relative; white-space: nowrap; }
+.nav-ico { flex: none; opacity: 0.65; transition: opacity 0.25s var(--ease); }
+.nav-links a:hover .nav-ico, .nav-links a.is-active .nav-ico { opacity: 1; }
 .nav-links a::after { content: ''; position: absolute; left: 0; bottom: -6px; width: 0; height: 1.5px; background: var(--gold-grad); transition: width 0.35s var(--ease); }
 .nav-links a:hover { color: var(--text); }
 .nav-links a:hover::after { width: 100%; }
@@ -610,6 +612,17 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .adbox-dots button { width: 7px; height: 7px; border-radius: 50%; border: none; background: rgba(150,140,120,0.4); cursor: pointer; padding: 0; transition: background 0.2s, width 0.2s; }
 .adbox-dots button.on { background: var(--gold-2); width: 18px; border-radius: 4px; }
 @media (prefers-reduced-motion: reduce) { .adslot-shine { animation: none; } }
+.cat-rail .adbox { margin-top: 18px; }
+
+/* ===== Chips de tipo de imóvel (catálogo) ===== */
+.cat-tipos { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.cat-tipo { flex: 1 1 120px; min-width: 108px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 9px; padding: 18px 12px; border-radius: 14px; background: #fff; border: 1.5px solid rgba(22,26,34,0.1); color: #5b5446; cursor: pointer; font-family: var(--font-head); font-weight: 600; font-size: 0.85rem; text-align: center; line-height: 1.22; transition: transform 0.2s var(--ease), border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s; }
+.cat-tipo svg { color: #8a8170; transition: color 0.2s; }
+.cat-tipo:hover { border-color: var(--gold-3); transform: translateY(-2px); box-shadow: 0 14px 30px -20px rgba(0,0,0,0.4); }
+.cat-tipo:hover svg { color: var(--gold-3); }
+.cat-tipo.on { border-color: var(--gold-3); background: rgba(184,134,47,0.09); color: #2a2118; }
+.cat-tipo.on svg { color: var(--gold-3); }
+@media (max-width: 680px) { .cat-tipos { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; } .cat-tipo { flex: 0 0 112px; } }
 @media (max-width: 680px) {
   .adbox--horizontal .adslot { flex-direction: column; align-items: flex-start; text-align: left; min-height: 0; padding: 20px 22px; }
   .adslot-tit { font-size: 1.25rem; }

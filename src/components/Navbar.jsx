@@ -12,14 +12,13 @@ const IconUser = (p) => (
   </svg>
 )
 
-// Páginas do menu principal
+// Menu principal (desktop) — enxuto e com ícones, referência Chaves na Mão
 const LINKS = [
-  { to: '/imoveis', label: 'Imóveis' },
-  { to: '/construtoras', label: 'Construtoras' },
-  { to: '/condominios', label: 'Condomínios' },
-  { to: '/ferramentas', label: 'Ferramentas' },
-  { to: '/blog', label: 'Blog' },
-  { to: '/regioes', label: 'Uberlândia' },
+  { to: '/imoveis', label: 'Imóveis', d: 'M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10' },
+  { to: '/construtoras', label: 'Construtoras', d: 'M4 9h16l-1-5H5L4 9zM4 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0M6 12v8h12v-8' },
+  { to: '/condominios', label: 'Condomínios', d: 'M3 21h18M6 21V8l5-3 5 3v13M10 12h2M10 16h2' },
+  { to: '/ferramentas', label: 'Ferramentas', d: 'M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.3 2.3-2-2 2.3-2.3z' },
+  { to: '/anunciar', label: 'Anunciar', d: 'M3 11v2a1 1 0 0 0 1 1h2l4 4V6L6 10H4a1 1 0 0 0-1 1zM15 8a5 5 0 0 1 0 8' },
 ]
 // links extras (só no menu mobile, p/ manter a barra desktop limpa)
 const LINKS_MOBILE = [
@@ -115,8 +114,9 @@ export default function Navbar() {
           <Brand />
           <div className="nav-links">
             {LINKS.map((l) => (
-              <NavLink key={l.to} to={l.to} className={({ isActive }) => [isActive ? 'is-active' : '', l.destaque ? 'nav-destaque' : ''].filter(Boolean).join(' ') || undefined}>
-                {l.label}
+              <NavLink key={l.to} to={l.to} className={({ isActive }) => isActive ? 'is-active' : undefined}>
+                <svg className="nav-ico" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={l.d} /></svg>
+                <span>{l.label}</span>
               </NavLink>
             ))}
           </div>

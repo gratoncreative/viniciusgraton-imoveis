@@ -3,9 +3,19 @@ import { useSearchParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import CardImovel from '../components/CardImovel'
 import AviseMe from '../components/AviseMe'
+import BannerAds from '../components/BannerAds'
 import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, FAIXAS_PRECO, linkWhatsApp, WA } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconClose } from '../components/icons'
+
+// Chips de tipo com ícone (referência Chaves na Mão) — cada um agrupa vários tipos
+const TIPO_CHIPS = [
+  { grupo: 'apartamento', label: 'Apartamento', re: /apart/i, d: 'M4 3h7v18H4zM13 8h7v13h-7zM7 6h.5M7 9h.5M7 12h.5M16 11h.5M16 14h.5M16 17h.5' },
+  { grupo: 'casa', label: 'Casas & Sobrados', re: /casa|sobrado/i, d: 'M3 11l9-7 9 7M5 10v10h14V10M10 20v-5h4v5' },
+  { grupo: 'kit', label: 'Kitnets & Stúdios', re: /kit|studio|stúdio|loft|flat/i, d: 'M5 3h14v18H5zM9 7h.5M13 7h.5M9 11h.5M13 11h.5M9 15h6v6H9z' },
+  { grupo: 'comercial', label: 'Comercial', re: /comerc|sala|loja|ponto|gal/i, d: 'M4 9h16l-1-5H5L4 9zM5 9v11h14V9M9 20v-6h6v6' },
+  { grupo: 'terreno', label: 'Terrenos & Lotes', re: /terreno|lote|área|chácara|sítio|fazenda/i, d: 'M3 20h18M5 20l3-9 4 5 3-7 4 11' },
+]
 
 const AREAS = [60, 100, 150, 200, 300]
 const CARACS = ['Piscina', 'Churrasqueira', 'Varanda gourmet', 'Academia', 'Portaria 24h', 'Closet', 'Energia solar']
@@ -43,7 +53,17 @@ export default function Catalogo() {
     vagas: parseInt(params.get('vagas') || '0', 10),
     area: parseInt(params.get('area') || '0', 10),
     carac: params.get('carac') || '',
+    grupo: params.get('grupo') || '',
     ordem: params.get('ordem') || 'recentes',
+  }
+
+  // clica num chip de tipo → liga/desliga o grupo (e limpa o tipo exato pra não conflitar)
+  const toggleGrupo = (g) => {
+    const p = new URLSearchParams(params)
+    p.delete('tipo')
+    if (f.grupo === g) p.delete('grupo')
+    else p.set('grupo', g)
+    setParams(p, { replace: true })
   }
 
   const up = (k, v) => {
@@ -64,6 +84,7 @@ export default function Catalogo() {
   const lista = useMemo(() => {
     let r = IMOVEIS.filter((im) => {
       if (f.tipo && im.tipo !== f.tipo) return false
+      if (f.grupo) { const g = TIPO_CHIPS.find((c) => c.grupo === f.grupo); if (g && !g.re.test(im.tipo || '')) return false }
       if (f.bairro && im.bairro !== f.bairro) return false
       if (f.quartos && (im.quartos || 0) < f.quartos) return false
       if (f.suites && (im.suites || 0) < f.suites) return false
@@ -85,7 +106,7 @@ export default function Catalogo() {
     if (f.ordem === 'area-maior') r = [...r].sort((a, b) => (b.area || 0) - (a.area || 0))
     if (f.ordem === 'area-menor') r = [...r].sort((a, b) => (a.area || 0) - (b.area || 0))
     return r
-  }, [f.tipo, f.bairro, f.quartos, f.suites, f.vagas, f.area, f.carac, f.faixa, f.q, f.ordem])
+  }, [f.tipo, f.grupo, f.bairro, f.quartos, f.suites, f.vagas, f.area, f.carac, f.faixa, f.q, f.ordem])
 
   const limpar = () => setParams({}, { replace: true })
 
@@ -185,9 +206,20 @@ export default function Catalogo() {
             <button className="cat-limpar" onClick={limpar}>Limpar tudo</button>
           </div>
         )}
+
+        <BannerAds orientacao="vertical" />
         </aside>
 
         <div className="cat-main">
+        <div className="cat-tipos">
+          {TIPO_CHIPS.map((c) => (
+            <button key={c.grupo} type="button" className={`cat-tipo ${f.grupo === c.grupo ? 'on' : ''}`} onClick={() => toggleGrupo(c.grupo)}>
+              <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={c.d} /></svg>
+              <span>{c.label}</span>
+            </button>
+          ))}
+        </div>
+
         <p className="cat-count">{lista.length} {lista.length === 1 ? 'imóvel encontrado' : 'imóveis encontrados'}</p>
 
         {lista.length ? (
