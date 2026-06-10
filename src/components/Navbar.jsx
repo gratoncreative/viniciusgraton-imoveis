@@ -5,6 +5,7 @@ import { CONFIG, linkWhatsApp, WA } from '../data'
 import { favoritos } from '../engajamento'
 import { getConta } from '../conta'
 import { IconWhats, IconMenu, IconClose, IconHeart } from './icons'
+import TemaToggle from './TemaToggle'
 
 const IconUser = (p) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" {...p}>
@@ -121,6 +122,7 @@ export default function Navbar() {
             ))}
           </div>
           <div className="nav-cta">
+            <TemaToggle className="tema-toggle--nav" />
             <Link to="/favoritos" className="nav-fav" aria-label={`Meus favoritos${favs ? ` (${favs})` : ''}`}>
               <IconHeart filled={favs > 0} width={20} height={20} />
               {favs > 0 && <span className="nav-fav-badge">{favs}</span>}
@@ -147,7 +149,10 @@ export default function Navbar() {
           >
             <div className="mm-top">
               <Brand />
-              <button className="mm-close" onClick={() => setOpen(false)} aria-label="Fechar menu"><IconClose width={24} height={24} /></button>
+              <div className="mm-top-acoes">
+                <TemaToggle />
+                <button className="mm-close" onClick={() => setOpen(false)} aria-label="Fechar menu"><IconClose width={24} height={24} /></button>
+              </div>
             </div>
             <div className="mm-grid">
               {MENU_CARDS.map((l) => (

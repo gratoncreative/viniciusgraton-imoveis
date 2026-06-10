@@ -18,8 +18,8 @@ export default function Home() {
   return (
     <main>
       <Hero />
-      <Destaque limite={9} />
       <Novidades />
+      <Destaque limite={9} />
       <VenderCta />
       <BlogHome />
     </main>

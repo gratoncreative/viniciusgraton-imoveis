@@ -35,13 +35,13 @@ export default function Novidades() {
   return (
     <section className="section--light">
       <div className="container">
-        {novos.length > 0 && (
-          <Bloco eyebrow="Atualizado hoje" titulo="Chegaram" em="agora" itens={novos}
-            sub="Imóveis que acabaram de entrar na carteira da Rotina — com o meu atendimento pessoal." />
-        )}
         {baixaram.length > 0 && (
-          <Bloco eyebrow="Oportunidade real" titulo="Baixaram de" em="preço" itens={baixaram} top
+          <Bloco eyebrow="Oportunidade real" titulo="Baixaram de" em="preço" itens={baixaram}
             sub="Imóveis que tiveram o preço reduzido. Oportunidade boa não espera — corre comigo." />
+        )}
+        {novos.length > 0 && (
+          <Bloco eyebrow="Atualizado hoje" titulo="Chegaram" em="agora" itens={novos} top={baixaram.length > 0}
+            sub="Imóveis que acabaram de entrar na carteira da Rotina — com o meu atendimento pessoal." />
         )}
       </div>
     </section>
