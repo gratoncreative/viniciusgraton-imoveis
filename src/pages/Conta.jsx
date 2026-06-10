@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import CardImovel from '../components/CardImovel'
-import { IMOVEIS, getImovel, FAIXAS_PRECO, BAIRROS_IMOVEL, validarWhatsappBR } from '../data'
+import { IMOVEIS, getImovel, FAIXAS_PRECO, BAIRROS_IMOVEL, validarWhatsappBR, linkWhatsApp } from '../data'
 import { favoritos, registrarLead } from '../engajamento'
 import { getConta, salvarConta, logout, getHistorico, estaLogado } from '../conta'
 import GoogleLogin from '../components/GoogleLogin'
@@ -43,12 +43,20 @@ function CadastroView({ onPronto }) {
   const [f, setF] = useState({ nome: '', email: '', fone: '', idade: '', sexo: '', objetivo: 'Comprar para morar', bairros: '', faixa: '' })
   const [erroFone, setErroFone] = useState('')
   const set = (k) => (e) => setF((s) => ({ ...s, [k]: e.target.value }))
+
+  // confirmação na prática: abre o WhatsApp do cliente com a mensagem pronta pra ELE te enviar.
+  // Quando ele manda, você recebe do número real → confirma que o número é dele e já inicia a conversa.
+  const confirmarNoWhats = (nome) => {
+    const msg = `Olá Vinícius! Sou ${nome || ''} e acabei de criar minha conta no seu site. Quero receber em primeira mão os imóveis com a minha cara. Esse é o meu WhatsApp 🤝`
+    try { window.open(linkWhatsApp(msg), '_blank', 'noopener') } catch { /* ok */ }
+  }
   const enviar = (e) => {
     e.preventDefault()
     if (!f.nome.trim() || !f.email.trim() || !f.fone.trim()) return
     if (!validarWhatsappBR(f.fone)) { setErroFone('Confira o WhatsApp: precisa ser DDD + número (ex.: (34) 99157-0494).'); return }
     salvarConta({ ...f })
     registrarLead({ cod: 'cadastro', nome: f.nome.trim(), fone: f.fone.trim(), bairro: `cadastro · ${f.objetivo} · ${f.bairros || 'sem bairro'} · ${f.faixa || 'faixa livre'}` })
+    confirmarNoWhats(f.nome.trim())
     onPronto()
   }
 
@@ -60,6 +68,7 @@ function CadastroView({ onPronto }) {
     const p = googlePerfil
     salvarConta({ token: 'g_' + p.sub, nome: p.nome, email: p.email, foto: p.foto, login: 'google', ...(comFone ? { fone: gFone.trim(), objetivo: gObj } : {}) })
     registrarLead({ cod: 'cadastro', nome: p.nome, fone: comFone ? gFone.trim() : '', email: p.email, objetivo: comFone ? gObj : '', origem: 'conta-google' })
+    if (comFone) confirmarNoWhats(p.nome)
     onPronto()
   }
   const [gErro, setGErro] = useState('')
@@ -115,8 +124,8 @@ function CadastroView({ onPronto }) {
               <option>Comprar para morar</option><option>Comprar para investir</option><option>Alugar</option><option>Vender meu imóvel</option>
             </select>
           </label>
-          <button type="submit" className="btn btn-gold lead-submit"><IconWhats width={18} height={18} /> Concluir meu cadastro <IconArrow /></button>
-          <p className="lead-note">É rapidinho — só preciso do seu WhatsApp pra te enviar as opções certas.</p>
+          <button type="submit" className="btn btn-gold lead-submit"><IconWhats width={18} height={18} /> Concluir e confirmar no WhatsApp <IconArrow /></button>
+          <p className="lead-note">Ao concluir, abro o WhatsApp pra você confirmar seu número e já falar comigo. Leva 10 segundos.</p>
         </form>
       ) : (
       <form className="lead-form conta-form" onSubmit={enviar}>
@@ -153,7 +162,7 @@ function CadastroView({ onPronto }) {
           <span>Concordo em ser contatado e com o tratamento dos meus dados conforme a <Link to="/privacidade" target="_blank">Política de Privacidade</Link>.</span>
         </label>
         <button type="submit" className="btn btn-gold lead-submit"><IconShield width={18} height={18} /> Criar conta grátis <IconArrow /></button>
-        <p className="lead-note">Sem custo, sem spam. Você pode sair ou apagar sua conta quando quiser.</p>
+        <p className="lead-note">Ao criar, abro o WhatsApp pra você confirmar seu número e já falar comigo. Sem custo, sem spam.</p>
       </form>
       )}
     </div>
