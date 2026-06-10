@@ -8,7 +8,7 @@ const PREVIEW_MAX = 900   // resolução do preview (rápido)
 const EXPORT_MAX = 2560   // teto da resolução base na exportação
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
-const PADRAO = { angle: 0, brilho: 1.05, contraste: 1.09, satur: 1.12, nitidez: 0.6, suave: 0, wb: true, temp: 0, vinheta: 0, escala: 1 }
+const PADRAO = { angle: 0, brilho: 1.05, contraste: 1.09, satur: 1.12, nitidez: 0.6, suave: 0, realces: 0, sombras: 0, vibrar: 0, wb: true, temp: 0, vinheta: 0, escala: 1 }
 
 // analisa a foto (histograma) e devolve os ajustes ideais — "auto-melhorar"
 function autoConfig(img) {
@@ -26,7 +26,7 @@ function autoConfig(img) {
     const brilho = clamp(132 / (mean || 1), 0.9, 1.24)
     const contraste = clamp(1.05 + Math.max(0, 52 - std) / 130, 1.0, 1.24)
     let angle = 0; try { angle = estimarAngulo(img) } catch { angle = 0 }
-    return { angle, brilho, contraste, satur: 1.16, nitidez: 0.7, suave: 0.3, temp: 0, vinheta: 0, wb: true }
+    return { angle, brilho, contraste, satur: 1.16, nitidez: 0.7, suave: 0.3, realces: 0.18, sombras: 0.18, vibrar: 0.15, temp: 0, vinheta: 0, wb: true }
   } catch { return { ...PADRAO } }
 }
 const carregarImagem = (src) => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src })
@@ -104,6 +104,27 @@ function aplicarTemp(imageData, t) { // t: -0.3 (frio) .. +0.3 (quente)
   const d = imageData.data, kr = 1 + t * 0.6, kb = 1 - t * 0.6
   for (let i = 0; i < d.length; i += 4) { d[i] *= kr; d[i + 2] *= kb }
 }
+// realces (recupera claros), sombras (levanta escuros) e vibração (satura só o que está apagado)
+function aplicarTom(imageData, s) {
+  const rea = s.realces || 0, som = s.sombras || 0, vib = s.vibrar || 0
+  if (!rea && !som && !vib) return
+  const d = imageData.data
+  for (let i = 0; i < d.length; i += 4) {
+    let r = d[i], g = d[i + 1], b = d[i + 2]
+    if (som || rea) {
+      const L = 0.299 * r + 0.587 * g + 0.114 * b
+      if (som) { const w = (1 - L / 255) * (1 - L / 255); const a = som * 75 * w; r += a; g += a; b += a }
+      if (rea) { const w = (L / 255) * (L / 255); const a = rea * 75 * w; r -= a; g -= a; b -= a }
+    }
+    if (vib) {
+      const mx = Math.max(r, g, b), mn = Math.min(r, g, b)
+      const sat = mx ? (mx - mn) / mx : 0
+      const boost = vib * (1 - sat), gray = (r + g + b) / 3
+      r = gray + (r - gray) * (1 + boost); g = gray + (g - gray) * (1 + boost); b = gray + (b - gray) * (1 + boost)
+    }
+    d[i] = r; d[i + 1] = g; d[i + 2] = b
+  }
+}
 function aplicarVinheta(ctx, W, H, v) { // v: 0..0.6
   const g = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.32, W / 2, H / 2, Math.max(W, H) * 0.72)
   g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, `rgba(0,0,0,${v})`)
@@ -125,6 +146,7 @@ function processar(img, s, maxLado) {
   const dados = ctx.getImageData(0, 0, W, H)
   if (s.wb) balancoBranco(dados)
   if (s.temp) aplicarTemp(dados, s.temp)
+  aplicarTom(dados, s)
   if (s.nitidez > 0) nitidezUnsharp(dados, s.nitidez)
   ctx.putImageData(dados, 0, 0)
   if (s.vinheta > 0) aplicarVinheta(ctx, W, H, s.vinheta)
@@ -295,8 +317,8 @@ export default function MelhorarFotos() {
       const { pipeline, env } = tf
       env.allowLocalModels = false
       env.useBrowserCache = true
-      env.remoteHost = window.location.origin
-      env.remotePathTemplate = 'api/modelo-ia/{model}/resolve/{revision}'
+      env.remoteHost = window.location.origin + '/'
+      env.remotePathTemplate = 'api/modelo-ia/{model}/resolve/{revision}/'
       let up
       try { up = await pipeline('image-to-image', 'Xenova/swin2SR-classical-sr-x2-64', { device: 'webgpu' }) }
       catch { up = await pipeline('image-to-image', 'Xenova/swin2SR-classical-sr-x2-64') }
@@ -386,7 +408,7 @@ export default function MelhorarFotos() {
     }
   }
   const restaurar = () => setS({ ...PADRAO, angle: foto ? foto.s.angle : 0 })
-  const aplicarTodas = () => { if (foto) setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, brilho: foto.s.brilho, contraste: foto.s.contraste, satur: foto.s.satur, nitidez: foto.s.nitidez, suave: foto.s.suave, temp: foto.s.temp, vinheta: foto.s.vinheta, wb: foto.s.wb, escala: foto.s.escala } }))) }
+  const aplicarTodas = () => { if (foto) { const r = foto.s; setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, brilho: r.brilho, contraste: r.contraste, satur: r.satur, nitidez: r.nitidez, suave: r.suave, realces: r.realces, sombras: r.sombras, vibrar: r.vibrar, temp: r.temp, vinheta: r.vinheta, wb: r.wb, escala: r.escala } }))) } }
   const remover = (i) => { setFotos((fs) => fs.filter((_, k) => k !== i)); setAtual((a) => (a >= fotos.length - 1 ? fotos.length - 2 : a)) }
 
   const baixarCanvas = async (canvas, nome) => {
@@ -493,6 +515,9 @@ export default function MelhorarFotos() {
                       <Slider label="Cor (saturação)" val={foto.s.satur} min={0.8} max={1.5} step={0.01} on={(v) => setS({ satur: v })} fmt={(v) => `${Math.round(v * 100)}%`} />
                       <Slider label="Nitidez" val={foto.s.nitidez} min={0} max={1.4} step={0.05} on={(v) => setS({ nitidez: v })} fmt={(v) => v.toFixed(2)} />
                       <Slider label="Suavizar (reduz ruído)" val={foto.s.suave} min={0} max={1} step={0.05} on={(v) => setS({ suave: v })} fmt={(v) => v === 0 ? 'não' : Math.round(v * 100) + '%'} />
+                      <Slider label="Realces (recupera claros)" val={foto.s.realces} min={0} max={0.6} step={0.05} on={(v) => setS({ realces: v })} fmt={(v) => v === 0 ? 'não' : Math.round(v * 100) + '%'} />
+                      <Slider label="Sombras (levanta escuros)" val={foto.s.sombras} min={0} max={0.6} step={0.05} on={(v) => setS({ sombras: v })} fmt={(v) => v === 0 ? 'não' : Math.round(v * 100) + '%'} />
+                      <Slider label="Vibração" val={foto.s.vibrar} min={0} max={0.6} step={0.05} on={(v) => setS({ vibrar: v })} fmt={(v) => v === 0 ? 'não' : Math.round(v * 100) + '%'} />
                       <Slider label="Temperatura" val={foto.s.temp} min={-0.3} max={0.3} step={0.02} on={(v) => setS({ temp: v })} fmt={(v) => v === 0 ? 'neutro' : v > 0 ? 'quente' : 'fria'} />
                       <Slider label="Vinheta" val={foto.s.vinheta} min={0} max={0.6} step={0.05} on={(v) => setS({ vinheta: v })} fmt={(v) => v === 0 ? 'não' : Math.round(v * 100) + '%'} />
                       <label className="mf-check"><input type="checkbox" checked={foto.s.wb} onChange={(e) => setS({ wb: e.target.checked })} /> Balanço de branco automático</label>
