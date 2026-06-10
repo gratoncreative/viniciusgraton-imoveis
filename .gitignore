@@ -28,3 +28,4 @@ ferramentas-imagem/
 # Bot de WhatsApp local (nao vai pro site)
 ferramentas-whatsapp/
 public/sync-status.json
+scripts/_imoview-*
