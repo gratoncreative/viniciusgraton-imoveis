@@ -8,7 +8,27 @@ const PREVIEW_MAX = 900   // resolução do preview (rápido)
 const EXPORT_MAX = 2560   // teto da resolução base na exportação
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
-const PADRAO = { angle: 0, brilho: 1.05, contraste: 1.09, satur: 1.12, nitidez: 0.6, wb: true, temp: 0, vinheta: 0, escala: 1 }
+const PADRAO = { angle: 0, brilho: 1.05, contraste: 1.09, satur: 1.12, nitidez: 0.6, suave: 0, wb: true, temp: 0, vinheta: 0, escala: 1 }
+
+// analisa a foto (histograma) e devolve os ajustes ideais — "auto-melhorar"
+function autoConfig(img) {
+  try {
+    const w = 160, h = Math.max(1, Math.round((img.height / img.width) * 160))
+    const c = document.createElement('canvas'); c.width = w; c.height = h
+    const ctx = c.getContext('2d'); ctx.drawImage(img, 0, 0, w, h)
+    const d = ctx.getImageData(0, 0, w, h).data
+    let sum = 0, sum2 = 0, n = 0
+    for (let i = 0; i < d.length; i += 8) {
+      const L = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2]
+      sum += L; sum2 += L * L; n++
+    }
+    const mean = sum / n, std = Math.sqrt(Math.max(0, sum2 / n - mean * mean))
+    const brilho = clamp(132 / (mean || 1), 0.9, 1.24)
+    const contraste = clamp(1.05 + Math.max(0, 52 - std) / 130, 1.0, 1.24)
+    let angle = 0; try { angle = estimarAngulo(img) } catch { angle = 0 }
+    return { angle, brilho, contraste, satur: 1.16, nitidez: 0.7, suave: 0.3, temp: 0, vinheta: 0, wb: true }
+  } catch { return { ...PADRAO } }
+}
 const carregarImagem = (src) => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src })
 
 // Filtros prontos (presets de realce) — clicar aplica e mostra na hora
@@ -95,7 +115,8 @@ function processar(img, s, maxLado) {
   const c = document.createElement('canvas'); c.width = W; c.height = H
   const ctx = c.getContext('2d')
   ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'
-  ctx.filter = `brightness(${s.brilho}) contrast(${s.contraste}) saturate(${s.satur})`
+  const blurPx = (s.suave || 0) * Math.max(1, W / 1000) * 2.2 // suavização (reduz ruído de câmera ruim)
+  ctx.filter = `brightness(${s.brilho}) contrast(${s.contraste}) saturate(${s.satur})${blurPx > 0.05 ? ` blur(${blurPx.toFixed(2)}px)` : ''}`
   const a = (s.angle || 0) * Math.PI / 180
   const z = Math.cos(Math.abs(a)) + Math.sin(Math.abs(a)) * Math.max(W / H, H / W)
   ctx.translate(W / 2, H / 2); ctx.rotate(a); ctx.scale(z, z)
@@ -262,6 +283,8 @@ export default function MelhorarFotos() {
 
   const autoAngulo = () => { if (foto) setS({ angle: (() => { try { return estimarAngulo(foto.img) } catch { return 0 } })() }) }
   const autoAnguloTodas = () => setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, angle: (() => { try { return estimarAngulo(ft.img) } catch { return 0 } })() } })))
+  const autoMelhorar = () => { if (foto) setS(autoConfig(foto.img)) }
+  const autoMelhorarTodas = () => setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, ...autoConfig(ft.img) } })))
 
   // ——— Super-resolução com IA (open source, no navegador) ———
   const melhorarIA = async () => {
@@ -363,7 +386,7 @@ export default function MelhorarFotos() {
     }
   }
   const restaurar = () => setS({ ...PADRAO, angle: foto ? foto.s.angle : 0 })
-  const aplicarTodas = () => { if (foto) setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, brilho: foto.s.brilho, contraste: foto.s.contraste, satur: foto.s.satur, nitidez: foto.s.nitidez, temp: foto.s.temp, vinheta: foto.s.vinheta, wb: foto.s.wb, escala: foto.s.escala } }))) }
+  const aplicarTodas = () => { if (foto) setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, brilho: foto.s.brilho, contraste: foto.s.contraste, satur: foto.s.satur, nitidez: foto.s.nitidez, suave: foto.s.suave, temp: foto.s.temp, vinheta: foto.s.vinheta, wb: foto.s.wb, escala: foto.s.escala } }))) }
   const remover = (i) => { setFotos((fs) => fs.filter((_, k) => k !== i)); setAtual((a) => (a >= fotos.length - 1 ? fotos.length - 2 : a)) }
 
   const baixarCanvas = async (canvas, nome) => {
@@ -443,6 +466,12 @@ export default function MelhorarFotos() {
               <div className="mf-aba-conteudo">
                 {aba === 'ajustes' && (
                   <>
+                    <div className="mf-grupo mf-grupo--ia">
+                      <div className="mf-grupo-tit">🪄 Melhoria automática</div>
+                      <p className="mf-nota" style={{ marginTop: 0 }}>Analiso a foto e aplico luz, contraste, cor, nitidez, suavização e endireitamento ideais pra ela.</p>
+                      <button className="btn btn-gold" onClick={autoMelhorar}>🪄 Auto-melhorar tudo</button>
+                      <button className="admin-btn admin-btn--mini" onClick={autoMelhorarTodas} style={{ marginTop: 6 }}>🪄 Auto-melhorar TODAS</button>
+                    </div>
                     <div className="mf-grupo">
                       <div className="mf-grupo-tit">Filtros (clique pra ver na hora)</div>
                       <div className="mf-filtros">
@@ -463,6 +492,7 @@ export default function MelhorarFotos() {
                       <Slider label="Contraste" val={foto.s.contraste} min={0.8} max={1.4} step={0.01} on={(v) => setS({ contraste: v })} fmt={(v) => `${Math.round(v * 100)}%`} />
                       <Slider label="Cor (saturação)" val={foto.s.satur} min={0.8} max={1.5} step={0.01} on={(v) => setS({ satur: v })} fmt={(v) => `${Math.round(v * 100)}%`} />
                       <Slider label="Nitidez" val={foto.s.nitidez} min={0} max={1.4} step={0.05} on={(v) => setS({ nitidez: v })} fmt={(v) => v.toFixed(2)} />
+                      <Slider label="Suavizar (reduz ruído)" val={foto.s.suave} min={0} max={1} step={0.05} on={(v) => setS({ suave: v })} fmt={(v) => v === 0 ? 'não' : Math.round(v * 100) + '%'} />
                       <Slider label="Temperatura" val={foto.s.temp} min={-0.3} max={0.3} step={0.02} on={(v) => setS({ temp: v })} fmt={(v) => v === 0 ? 'neutro' : v > 0 ? 'quente' : 'fria'} />
                       <Slider label="Vinheta" val={foto.s.vinheta} min={0} max={0.6} step={0.05} on={(v) => setS({ vinheta: v })} fmt={(v) => v === 0 ? 'não' : Math.round(v * 100) + '%'} />
                       <label className="mf-check"><input type="checkbox" checked={foto.s.wb} onChange={(e) => setS({ wb: e.target.checked })} /> Balanço de branco automático</label>
