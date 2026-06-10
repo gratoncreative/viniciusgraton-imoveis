@@ -3,6 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import CardImovel from '../components/CardImovel'
 import AviseMe from '../components/AviseMe'
+import FiltroSelect from '../components/FiltroSelect'
 import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, FAIXAS_PRECO, linkWhatsApp, WA } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconClose } from '../components/icons'
@@ -98,7 +99,7 @@ export default function Catalogo() {
   const f = {
     q: params.get('q') || '',
     tipo: params.get('tipo') || '',
-    bairro: params.get('bairro') || '',
+    bairros: (params.get('bairros') || params.get('bairro') || '').split(',').map((s) => s.trim()).filter(Boolean),
     faixa: params.has('faixa') ? parseInt(params.get('faixa'), 10) : -1,
     quartos: parseInt(params.get('quartos') || '0', 10),
     suites: parseInt(params.get('suites') || '0', 10),
@@ -126,6 +127,14 @@ export default function Catalogo() {
     setParams(p, { replace: true })
   }
 
+  // seleção de MÚLTIPLOS bairros (guardada como lista separada por vírgula na URL)
+  const setBairros = (arr) => {
+    const p = new URLSearchParams(params)
+    p.delete('bairro')
+    if (arr && arr.length) p.set('bairros', arr.join(',')); else p.delete('bairros')
+    setParams(p, { replace: true })
+  }
+
   // aplica um conjunto de filtros (buscas rápidas), limpando o resto
   const aplicarRapida = (novos) => {
     const p = new URLSearchParams()
@@ -137,7 +146,7 @@ export default function Catalogo() {
     let r = TODOS.filter((im) => {
       if (f.tipo && im.tipo !== f.tipo) return false
       if (f.grupo) { const g = TIPO_CHIPS.find((c) => c.grupo === f.grupo); if (g && !g.re.test(im.tipo || '')) return false }
-      if (f.bairro && im.bairro !== f.bairro) return false
+      if (f.bairros.length && !f.bairros.includes(im.bairro)) return false
       if (f.quartos && (im.quartos || 0) < f.quartos) return false
       if (f.suites && (im.suites || 0) < f.suites) return false
       if (f.vagas && (im.vagas || 0) < f.vagas) return false
@@ -160,7 +169,7 @@ export default function Catalogo() {
     // anúncios impulsionados (publicidade) sobem para o topo da listagem, como nos portais
     r = [...r].sort((a, b) => (b.impulsionado ? 1 : 0) - (a.impulsionado ? 1 : 0))
     return r
-  }, [TODOS, f.tipo, f.grupo, f.bairro, f.quartos, f.suites, f.vagas, f.area, f.carac, f.faixa, f.q, f.ordem])
+  }, [TODOS, f.tipo, f.grupo, f.bairros.join(','), f.quartos, f.suites, f.vagas, f.area, f.carac, f.faixa, f.q, f.ordem])
 
   const visiveis = lista.slice(0, mostrar)
   const temMais = mostrar < lista.length
@@ -179,15 +188,15 @@ export default function Catalogo() {
   const limpar = () => setParams({}, { replace: true })
 
   const chips = [
-    f.q && { k: 'q', label: `“${f.q}”`, reset: '' },
-    f.tipo && { k: 'tipo', label: f.tipo, reset: '' },
-    f.bairro && { k: 'bairro', label: f.bairro, reset: '' },
-    f.faixa >= 0 && { k: 'faixa', label: FAIXAS_PRECO[f.faixa].label, reset: -1 },
-    f.quartos > 0 && { k: 'quartos', label: `${f.quartos}+ quartos`, reset: 0 },
-    f.suites > 0 && { k: 'suites', label: `${f.suites}+ suítes`, reset: 0 },
-    f.vagas > 0 && { k: 'vagas', label: `${f.vagas}+ vagas`, reset: 0 },
-    f.area > 0 && { k: 'area', label: `${f.area}+ m²`, reset: 0 },
-    f.carac && { k: 'carac', label: f.carac, reset: '' },
+    f.q && { k: 'q', label: `“${f.q}”`, onRemove: () => up('q', '') },
+    f.tipo && { k: 'tipo', label: f.tipo, onRemove: () => up('tipo', '') },
+    ...f.bairros.map((b) => ({ k: 'b:' + b, label: b, onRemove: () => setBairros(f.bairros.filter((x) => x !== b)) })),
+    f.faixa >= 0 && { k: 'faixa', label: FAIXAS_PRECO[f.faixa].label, onRemove: () => up('faixa', -1) },
+    f.quartos > 0 && { k: 'quartos', label: `${f.quartos}+ quartos`, onRemove: () => up('quartos', 0) },
+    f.suites > 0 && { k: 'suites', label: `${f.suites}+ suítes`, onRemove: () => up('suites', 0) },
+    f.vagas > 0 && { k: 'vagas', label: `${f.vagas}+ vagas`, onRemove: () => up('vagas', 0) },
+    f.area > 0 && { k: 'area', label: `${f.area}+ m²`, onRemove: () => up('area', 0) },
+    f.carac && { k: 'carac', label: f.carac, onRemove: () => up('carac', '') },
   ].filter(Boolean)
 
   return (
@@ -227,52 +236,31 @@ export default function Catalogo() {
 
         {/* Filtros */}
         <div className="cat-filtros">
-          <div className="cat-f"><FIco n="tipo" /><select value={f.tipo} onChange={(e) => up('tipo', e.target.value)}>
-            <option value="">Todos os tipos</option>
-            {TIPOS_IMOVEL.map((t) => <option key={t} value={t}>{t}</option>)}
-          </select></div>
-          <div className="cat-f"><FIco n="bairro" /><select value={f.bairro} onChange={(e) => up('bairro', e.target.value)}>
-            <option value="">Todos os bairros</option>
-            {(BAIRROS_TODOS.length ? BAIRROS_TODOS : BAIRROS_IMOVEL).map((b) => <option key={b} value={b}>{b}</option>)}
-          </select></div>
-          <div className="cat-f"><FIco n="preco" /><select value={f.faixa} onChange={(e) => up('faixa', parseInt(e.target.value, 10))}>
-            <option value={-1}>Qualquer preço</option>
-            {FAIXAS_PRECO.map((p, i) => <option key={i} value={i}>{p.label}</option>)}
-          </select></div>
-          <div className="cat-f"><FIco n="quartos" /><select value={f.quartos} onChange={(e) => up('quartos', parseInt(e.target.value, 10))}>
-            <option value={0}>Quartos</option>
-            {[1, 2, 3, 4].map((n) => <option key={n} value={n}>{n}+ quartos</option>)}
-          </select></div>
-          <div className="cat-f"><FIco n="suites" /><select value={f.suites} onChange={(e) => up('suites', parseInt(e.target.value, 10))}>
-            <option value={0}>Suítes</option>
-            {[1, 2, 3, 4].map((n) => <option key={n} value={n}>{n}+ suítes</option>)}
-          </select></div>
-          <div className="cat-f"><FIco n="vagas" /><select value={f.vagas} onChange={(e) => up('vagas', parseInt(e.target.value, 10))}>
-            <option value={0}>Vagas</option>
-            {[1, 2, 3, 4].map((n) => <option key={n} value={n}>{n}+ vagas</option>)}
-          </select></div>
-          <div className="cat-f"><FIco n="area" /><select value={f.area} onChange={(e) => up('area', parseInt(e.target.value, 10))}>
-            <option value={0}>Área mín. (m²)</option>
-            {AREAS.map((n) => <option key={n} value={n}>{n.toLocaleString('pt-BR')}+ m²</option>)}
-          </select></div>
-          <div className="cat-f"><FIco n="carac" /><select value={f.carac} onChange={(e) => up('carac', e.target.value)}>
-            <option value="">Característica</option>
-            {CARACS.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select></div>
-          <div className="cat-f"><FIco n="ordem" /><select value={f.ordem} onChange={(e) => up('ordem', e.target.value)}>
-            <option value="recentes">Mais recentes</option>
-            <option value="menor">Menor preço</option>
-            <option value="maior">Maior preço</option>
-            <option value="area-maior">Maior área</option>
-            <option value="area-menor">Menor área</option>
-          </select></div>
+          <FiltroSelect icon={<FIco n="tipo" />} placeholder="Todos os tipos" neutral="" value={f.tipo} onChange={(v) => up('tipo', v)}
+            options={[{ value: '', label: 'Todos os tipos' }, ...TIPOS_IMOVEL.map((t) => ({ value: t, label: t }))]} />
+          <FiltroSelect icon={<FIco n="bairro" />} placeholder="Todos os bairros" multiple searchable value={f.bairros} onChange={setBairros}
+            options={(BAIRROS_TODOS.length ? BAIRROS_TODOS : BAIRROS_IMOVEL).map((b) => ({ value: b, label: b }))} />
+          <FiltroSelect icon={<FIco n="preco" />} placeholder="Qualquer preço" neutral={-1} value={f.faixa} onChange={(v) => up('faixa', v)}
+            options={[{ value: -1, label: 'Qualquer preço' }, ...FAIXAS_PRECO.map((p, i) => ({ value: i, label: p.label }))]} />
+          <FiltroSelect icon={<FIco n="quartos" />} placeholder="Quartos" neutral={0} value={f.quartos} onChange={(v) => up('quartos', v)}
+            options={[{ value: 0, label: 'Indiferente' }, ...[1, 2, 3, 4].map((n) => ({ value: n, label: `${n}+ quartos` }))]} />
+          <FiltroSelect icon={<FIco n="suites" />} placeholder="Suítes" neutral={0} value={f.suites} onChange={(v) => up('suites', v)}
+            options={[{ value: 0, label: 'Indiferente' }, ...[1, 2, 3, 4].map((n) => ({ value: n, label: `${n}+ suítes` }))]} />
+          <FiltroSelect icon={<FIco n="vagas" />} placeholder="Vagas" neutral={0} value={f.vagas} onChange={(v) => up('vagas', v)}
+            options={[{ value: 0, label: 'Indiferente' }, ...[1, 2, 3, 4].map((n) => ({ value: n, label: `${n}+ vagas` }))]} />
+          <FiltroSelect icon={<FIco n="area" />} placeholder="Área mín. (m²)" neutral={0} value={f.area} onChange={(v) => up('area', v)}
+            options={[{ value: 0, label: 'Qualquer área' }, ...AREAS.map((n) => ({ value: n, label: `${n.toLocaleString('pt-BR')}+ m²` }))]} />
+          <FiltroSelect icon={<FIco n="carac" />} placeholder="Característica" neutral="" value={f.carac} onChange={(v) => up('carac', v)}
+            options={[{ value: '', label: 'Qualquer' }, ...CARACS.map((c) => ({ value: c, label: c }))]} />
+          <FiltroSelect icon={<FIco n="ordem" />} placeholder="Mais recentes" neutral="recentes" value={f.ordem} onChange={(v) => up('ordem', v)}
+            options={[{ value: 'recentes', label: 'Mais recentes' }, { value: 'menor', label: 'Menor preço' }, { value: 'maior', label: 'Maior preço' }, { value: 'area-maior', label: 'Maior área' }, { value: 'area-menor', label: 'Menor área' }]} />
         </div>
         </div>
 
         {chips.length > 0 && (
           <div className="cat-chips">
             {chips.map((c) => (
-              <button key={c.k} className="cat-chip" onClick={() => up(c.k, c.reset)}>
+              <button key={c.k} className="cat-chip" onClick={c.onRemove}>
                 {c.label} <IconClose width={13} height={13} />
               </button>
             ))}

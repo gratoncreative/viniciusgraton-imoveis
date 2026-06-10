@@ -460,15 +460,36 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 
 /* layout de listagem: filtros na lateral + resultados em linha */
 .cat-layout { display: grid; grid-template-columns: 320px 1fr; gap: 28px; align-items: start; }
-.cat-rail { position: sticky; top: 86px; align-self: start; max-height: calc(100vh - 92px); overflow-y: auto; overflow-x: hidden; padding-right: 2px; scrollbar-width: thin; scrollbar-color: rgba(184,134,47,0.4) transparent; }
-.cat-rail::-webkit-scrollbar { width: 6px; }
-.cat-rail::-webkit-scrollbar-thumb { background: rgba(184,134,47,0.3); border-radius: 4px; }
+.cat-rail { position: sticky; top: 86px; align-self: start; }
 .cat-rail .cat-painel { margin-bottom: 14px; }
-/* seletores em 1 coluna (largura cheia) → texto inteiro, legível, sem vazar */
+/* filtros (dropdowns personalizados) em 1 coluna, largura cheia */
 .cat-rail .cat-filtros { display: flex; flex-direction: column; gap: 9px; }
-.cat-rail .cat-filtros select { width: 100%; font-size: 0.88rem; padding-left: 40px; padding-right: 30px; text-overflow: ellipsis; }
-.cat-rail .cat-f > svg { left: 13px; width: 17px; height: 17px; }
 .cat-rail .cat-busca { width: 100%; flex: 0 0 auto; min-width: 0; }
+
+/* ===== Dropdown de filtro personalizado (FiltroSelect) ===== */
+.fs { position: relative; width: 100%; }
+.fs-trigger { width: 100%; display: flex; align-items: center; gap: 10px; padding: 11px 12px 11px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 11px; cursor: pointer; font-family: var(--font-body); font-size: 0.9rem; color: var(--text); transition: border-color 0.2s, box-shadow 0.2s; text-align: left; }
+.fs-trigger:hover { border-color: var(--gold-3); }
+.fs--open .fs-trigger, .fs--on .fs-trigger { border-color: var(--gold-3); }
+.fs--on .fs-trigger { box-shadow: inset 0 0 0 1px var(--gold-3); }
+.fs-ico { display: inline-flex; color: var(--gold-3); flex: none; }
+.fs-label { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fs--on .fs-label { font-weight: 600; color: #2a2118; }
+.fs-chev { flex: none; color: var(--text-mute); transition: transform 0.2s; }
+.fs--open .fs-chev { transform: rotate(180deg); color: var(--gold-3); }
+.fs-pop { position: absolute; z-index: 40; top: calc(100% + 6px); left: 0; right: 0; background: #fff; border: 1px solid rgba(22,26,34,0.14); border-radius: 12px; box-shadow: 0 22px 50px -22px rgba(22,26,34,0.45); padding: 6px; max-height: 320px; overflow-y: auto; scrollbar-width: thin; }
+.fs-busca { width: 100%; box-sizing: border-box; padding: 9px 12px; margin-bottom: 6px; border: 1px solid var(--border); border-radius: 9px; font-family: inherit; font-size: 0.88rem; outline: none; }
+.fs-busca:focus { border-color: var(--gold-3); }
+.fs-opts { list-style: none; display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; }
+.fs-opt { width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: none; border: none; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 0.9rem; color: #2a3038; text-align: left; }
+.fs-opt:hover { background: rgba(184,134,47,0.09); }
+.fs-opt.on { background: rgba(184,134,47,0.14); color: #2a2118; font-weight: 600; }
+.fs-opt-txt { flex: 1; min-width: 0; }
+.fs-check { flex: none; width: 17px; height: 17px; border-radius: 5px; border: 1.5px solid rgba(22,26,34,0.28); position: relative; }
+.fs-check.on { background: var(--gold-3); border-color: var(--gold-3); }
+.fs-check.on::after { content: ''; position: absolute; left: 5px; top: 1px; width: 4px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.fs-vazio { padding: 12px; text-align: center; color: var(--text-mute); font-size: 0.86rem; }
+.fs-limpar { width: 100%; margin-top: 6px; padding: 8px; background: none; border: none; border-top: 1px solid var(--border); color: var(--gold-3); font-family: var(--font-head); font-weight: 600; font-size: 0.82rem; cursor: pointer; }
 .cat-rail .cat-busca { flex: 0 0 auto; min-width: 0; }
 .cat-main { min-width: 0; }
 .cat-lista { display: flex; flex-direction: column; gap: 18px; }
