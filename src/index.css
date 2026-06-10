@@ -478,6 +478,9 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
   .cat-rail { position: static; top: auto; height: 100%; overflow-y: auto; overflow-x: hidden; padding: 2px 10px 30px 2px; scrollbar-width: none; -ms-overflow-style: none; }
   .cat-main { height: 100%; overflow-y: auto; overflow-x: hidden; padding: 2px 6px 48px 2px; scrollbar-width: none; -ms-overflow-style: none; }
   .cat-rail::-webkit-scrollbar, .cat-main::-webkit-scrollbar { width: 0; height: 0; display: none; }
+  /* no catálogo, a página não rola e o rodapé não aparece — só as duas colunas rolam */
+  body.rota-catalogo { overflow: hidden; }
+  body.rota-catalogo .footer { display: none; }
 }
 
 /* ===== Dropdown de filtro personalizado (FiltroSelect) ===== */

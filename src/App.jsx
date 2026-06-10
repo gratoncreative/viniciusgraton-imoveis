@@ -67,6 +67,13 @@ export default function App() {
     }
   }, [pathname])
 
+  // catálogo (/imoveis) usa layout de "duas colunas que rolam sozinhas" — no desktop a
+  // página não rola e o rodapé não aparece (estilo Chaves na Mão). Marca o body p/ o CSS.
+  useEffect(() => {
+    document.body.classList.toggle('rota-catalogo', pathname === '/imoveis')
+    return () => document.body.classList.remove('rota-catalogo')
+  }, [pathname])
+
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduce) return
