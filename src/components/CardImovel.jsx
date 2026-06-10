@@ -102,18 +102,26 @@ export default function CardImovel({ im, variante }) {
         </div>
         <div className="im-linha-body">
           <div className="im-linha-top">
-            <div>
+            <div className="im-linha-tit">
+              <span className="im-linha-tipo">{im.tipo}{im.suites > 0 ? ` · ${im.suites} ${plural(im.suites, 'suíte', 'suítes')}` : ''}</span>
               <h3 className="im-bairro">{im.bairro}</h3>
               <p className="im-local">{im.cidade} — {im.uf} · Cód. {im.codigo}</p>
             </div>
             <Engajamento im={im} variante="detalhe" />
           </div>
-          <p className="im-desc">{truncar(resumoImovel(im), 120)}</p>
-          <div className="im-specs">
-            {specs.map((s, i) => <Spec key={i} {...s} />)}
+          <div className="im-specs im-specs--min">
+            {[
+              im.area > 0 && { icon: 'area', valor: formatArea(im.area), label: '' },
+              im.quartos > 0 && { icon: 'bed', valor: im.quartos, label: plural(im.quartos, 'quarto', 'quartos') },
+              im.banheiros > 0 && { icon: 'bath', valor: im.banheiros, label: plural(im.banheiros, 'banheiro', 'banheiros') },
+              im.vagas > 0 && { icon: 'car', valor: im.vagas, label: plural(im.vagas, 'vaga', 'vagas') },
+            ].filter(Boolean).map((s, i) => <Spec key={i} {...s} />)}
           </div>
           <div className="im-linha-rodape">
-            <PrecoGate valor={im.preco} anterior={im.precoAnterior} className="im-linha-preco" tipo="linha" />
+            <div className="im-linha-precobloco">
+              <PrecoGate valor={im.preco} anterior={im.precoAnterior} className="im-linha-preco" tipo="linha" />
+              {im.condominio > 0 && <span className="im-linha-cond">Condomínio R$ {Number(im.condominio).toLocaleString('pt-BR')}</span>}
+            </div>
             <div className="im-actions">
               <Link className="im-ver" to={`/imovel/${im.codigo}`} onClick={(e) => e.stopPropagation()}>Ver detalhes</Link>
               <a className="im-cta" href={linkWhatsApp(waImovel(im))} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()}>
