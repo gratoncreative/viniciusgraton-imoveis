@@ -140,7 +140,8 @@ function CadastroView({ onPronto }) {
       ) : (
       <form className="lead-form conta-form" onSubmit={enviar}>
         <span className="conta-form-selo">Grátis · 30 segundos</span>
-        <h3>Criar minha conta completa</h3>
+        <h3>Crie sua conta e receba os imóveis com a sua cara no e-mail</h3>
+        <p className="conta-form-promessa">Todo imóvel <b>novo</b> que entrar no <b>perfil que você busca</b> chega <b>direto no seu e-mail</b>, em primeira mão — automático, sem você precisar ficar procurando.</p>
         <label><span>Nome completo *</span><input value={f.nome} onChange={set('nome')} required /></label>
         <label><span>E-mail *</span><input type="email" value={f.email} onChange={set('email')} required /></label>
         <label><span>WhatsApp (com DDD) *</span><input type="tel" inputMode="tel" value={f.fone} onChange={(e) => { setF((s) => ({ ...s, fone: formatarFoneBR(e.target.value) })); if (erroFone) setErroFone('') }} placeholder="(34) 99157-0494" required /></label>

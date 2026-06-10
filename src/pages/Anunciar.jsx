@@ -246,26 +246,50 @@ export default function Anunciar() {
           </Reveal>
 
         <form className="lead-form anunciar-form" onSubmit={enviar}>
-          <div className="anunciar-grid">
-            <label><span>Seu nome *</span><input value={f.nome} onChange={set('nome')} required /></label>
-            <label><span>WhatsApp (com DDD) *</span><input type="tel" inputMode="tel" value={f.fone} onChange={set('fone')} placeholder="(34) 9____-____" required /></label>
-            <label><span>E-mail <i>(opcional)</i></span><input type="email" value={f.email} onChange={set('email')} /></label>
-            <label><span>Finalidade</span><select value={f.finalidade} onChange={set('finalidade')}>{FINALIDADES.map((o) => <option key={o}>{o}</option>)}</select></label>
-            <label><span>Tipo de imóvel</span><select value={f.tipo} onChange={set('tipo')}>{TIPOS.map((o) => <option key={o}>{o}</option>)}</select></label>
-            <label><span>Bairro</span><input value={f.bairro} onChange={set('bairro')} placeholder="Ex.: Santa Mônica" /></label>
-            <label className="anunciar-full"><span>Endereço <i>(rua e número — fica só comigo)</i></span><input value={f.endereco} onChange={set('endereco')} /></label>
-            <CampoMoeda label="Valor pretendido" valor={f.preco} onChange={setNum('preco')} />
-            <CampoMoeda label="Condomínio (se houver)" valor={f.condominio} onChange={setNum('condominio')} />
-            <label><span>IPTU <i>(anual, opcional)</i></span><input value={f.iptu} onChange={set('iptu')} placeholder="Ex.: R$1.200/ano" /></label>
-            <label><span>Quartos</span><input inputMode="numeric" value={f.quartos} onChange={set('quartos')} /></label>
-            <label><span>Suítes</span><input inputMode="numeric" value={f.suites} onChange={set('suites')} /></label>
-            <label><span>Vagas</span><input inputMode="numeric" value={f.vagas} onChange={set('vagas')} /></label>
-            <label><span>Área (m²)</span><input inputMode="numeric" value={f.area} onChange={set('area')} placeholder="Ex.: 120" /></label>
-            <label className="anunciar-full"><span>Descrição <i>(diferenciais, reforma, sol da manhã, andar...)</i></span><textarea rows="3" value={f.descricao} onChange={set('descricao')} /></label>
-          </div>
+          <fieldset className="anu-grupo">
+            <legend className="anu-grupo-tit"><span className="anu-grupo-n">1</span> Seus dados <i>— pra eu te retornar</i></legend>
+            <div className="anunciar-grid">
+              <label><span>Seu nome *</span><input value={f.nome} onChange={set('nome')} required /></label>
+              <label><span>WhatsApp (com DDD) *</span><input type="tel" inputMode="tel" value={f.fone} onChange={set('fone')} placeholder="(34) 9____-____" required /></label>
+              <label className="anunciar-full"><span>E-mail <i>(opcional)</i></span><input type="email" value={f.email} onChange={set('email')} placeholder="voce@email.com" /></label>
+            </div>
+          </fieldset>
 
+          <fieldset className="anu-grupo">
+            <legend className="anu-grupo-tit"><span className="anu-grupo-n">2</span> Sobre o imóvel</legend>
+            <div className="anunciar-grid">
+              <label><span>Finalidade</span><select value={f.finalidade} onChange={set('finalidade')}>{FINALIDADES.map((o) => <option key={o}>{o}</option>)}</select></label>
+              <label><span>Tipo de imóvel</span><select value={f.tipo} onChange={set('tipo')}>{TIPOS.map((o) => <option key={o}>{o}</option>)}</select></label>
+              <label><span>Bairro</span><input value={f.bairro} onChange={set('bairro')} placeholder="Ex.: Santa Mônica" /></label>
+              <label><span>Área (m²)</span><input inputMode="numeric" value={f.area} onChange={set('area')} placeholder="Ex.: 120" /></label>
+              <label className="anunciar-full"><span>Endereço <i>(rua e número — fica só comigo)</i></span><input value={f.endereco} onChange={set('endereco')} /></label>
+            </div>
+            <div className="anu-mini-grid">
+              <label><span>Quartos</span><input inputMode="numeric" value={f.quartos} onChange={set('quartos')} placeholder="0" /></label>
+              <label><span>Suítes</span><input inputMode="numeric" value={f.suites} onChange={set('suites')} placeholder="0" /></label>
+              <label><span>Vagas</span><input inputMode="numeric" value={f.vagas} onChange={set('vagas')} placeholder="0" /></label>
+            </div>
+          </fieldset>
+
+          <fieldset className="anu-grupo">
+            <legend className="anu-grupo-tit"><span className="anu-grupo-n">3</span> Valores</legend>
+            <div className="anunciar-grid">
+              <CampoMoeda label="Valor pretendido" valor={f.preco} onChange={setNum('preco')} />
+              <CampoMoeda label="Condomínio (se houver)" valor={f.condominio} onChange={setNum('condominio')} />
+              <label className="anunciar-full"><span>IPTU <i>(anual, opcional)</i></span><input value={f.iptu} onChange={set('iptu')} placeholder="Ex.: R$1.200/ano" /></label>
+            </div>
+          </fieldset>
+
+          <fieldset className="anu-grupo">
+            <legend className="anu-grupo-tit"><span className="anu-grupo-n">4</span> Conte os diferenciais</legend>
+            <div className="anunciar-grid">
+              <label className="anunciar-full"><span>Descrição <i>(reforma, sol da manhã, andar alto, vista...)</i></span><textarea rows="3" value={f.descricao} onChange={set('descricao')} placeholder="O que faz seu imóvel valer a pena? Escreva à vontade." /></label>
+            </div>
+          </fieldset>
+
+          <fieldset className="anu-grupo">
+          <legend className="anu-grupo-tit"><span className="anu-grupo-n">5</span> Fotos do imóvel <i>({fotos.length}/15 — quanto mais, melhor)</i></legend>
           <div className="anunciar-fotos">
-            <span className="anunciar-fotos-tit">Fotos do imóvel <i>({fotos.length}/15 — quanto mais, melhor)</i></span>
             <div className="anunciar-thumbs">
               {fotos.map((src, i) => (
                 <div className="anunciar-thumb" key={i}>
@@ -281,9 +305,10 @@ export default function Anunciar() {
               )}
             </div>
           </div>
+          </fieldset>
 
-          <div className="placa-bloco">
-            <span className="anunciar-fotos-tit">Placa “VENDE-SE” no seu imóvel <i>(grátis e opcional)</i></span>
+          <fieldset className="anu-grupo placa-bloco">
+            <legend className="anu-grupo-tit"><span className="anu-grupo-n">6</span> Placa “VENDE-SE” no seu imóvel <i>(grátis e opcional)</i></legend>
             <p className="placa-pitch">
               Placa <b>vende</b>. Quem passa na rua, o vizinho, o porteiro — muita gente compra (ou indica alguém) ao ver uma placa profissional no imóvel. Ela transmite <b>credibilidade</b> e <b>autoridade</b>, mostra que o imóvel está <b>seriamente à venda</b> com um consultor de confiança e gera contatos diretos, somando à divulgação online. <b>A colocação é por minha conta — sem nenhum custo pra você.</b>
             </p>
@@ -291,7 +316,7 @@ export default function Anunciar() {
               <button type="button" className={`placa-toggle ${placa.quer ? 'on' : ''}`} onClick={() => setPlaca((s) => ({ ...s, quer: true }))}>Quero a placa (grátis)</button>
               <button type="button" className={`placa-toggle ${!placa.quer ? 'on' : ''}`} onClick={() => setPlaca((s) => ({ ...s, quer: false }))}>Agora não</button>
             </div>
-          </div>
+          </fieldset>
 
           <label className="lead-consent">
             <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} required />

@@ -1,7 +1,8 @@
-import { useState, useMemo, useRef } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import CampoMoeda from '../components/CampoMoeda'
+import { estaLogado } from '../conta'
 import { IMOVEIS, BAIRROS_IMOVEL, linkWhatsApp } from '../data'
 import BAIRROS_M2 from '../bairros-m2.json'
 import { formatBRL } from '../extenso'
@@ -38,19 +39,20 @@ const FerrIcon = ({ name, size = 22 }) => (
 )
 
 const TOOLS = [
+  // ordem: das MAIS usadas para as menos usadas (padrão; o cliente logado pode reordenar arrastando)
   { id: 'financiamento', nome: 'Simulador de financiamento', desc: 'Parcela e total a pagar (SAC e Price).', icon: 'bank', cat: 'voce' },
   { id: 'capacidade', nome: 'Quanto consigo financiar?', desc: 'O valor do imóvel que cabe na sua renda.', icon: 'chart', cat: 'voce' },
+  { id: 'valorm2', nome: 'Quanto vale o m² do bairro', desc: 'Preço médio por m² por bairro de Uberlândia.', icon: 'home', cat: 'voce' },
+  { id: 'custos', nome: 'Custos de compra (ITBI + cartório)', desc: 'Quanto reservar além do preço, em Uberlândia.', icon: 'receipt', cat: 'voce' },
   { id: 'renda', nome: 'Renda necessária pra financiar', desc: 'Qual renda o banco exige pro imóvel que você quer.', icon: 'wallet', cat: 'voce' },
   { id: 'fgts', nome: 'Simulador de FGTS', desc: 'Quanto o seu saldo abate na entrada e na parcela.', icon: 'wallet', cat: 'voce' },
+  { id: 'score', nome: 'Chance de aprovação', desc: 'Estimativa da sua chance no banco.', icon: 'gauge', cat: 'voce' },
+  { id: 'entrada', nome: 'Quanto juntar pra entrada', desc: 'Quanto guardar por mês pra dar a entrada.', icon: 'coins', cat: 'voce' },
   { id: 'amortizacao', nome: 'Amortização com FGTS', desc: 'Quanto o FGTS encurta o seu financiamento.', icon: 'calc', cat: 'voce' },
-  { id: 'custos', nome: 'Custos de compra (ITBI + cartório)', desc: 'Quanto reservar além do preço, em Uberlândia.', icon: 'receipt', cat: 'voce' },
   { id: 'aluguel', nome: 'Alugar ou financiar?', desc: 'Compare o aluguel com a parcela.', icon: 'scale', cat: 'voce' },
   { id: 'rentabilidade', nome: 'Rentabilidade do aluguel', desc: 'Quanto um imóvel rende de aluguel por ano.', icon: 'trend', cat: 'voce' },
-  { id: 'investir', nome: 'Imóvel x CDI/poupança', desc: 'Vale mais comprar pra alugar ou aplicar?', icon: 'coins', cat: 'voce' },
-  { id: 'entrada', nome: 'Quanto juntar pra entrada', desc: 'Quanto guardar por mês pra dar a entrada.', icon: 'coins', cat: 'voce' },
   { id: 'ganho', nome: 'IR na venda do imóvel', desc: 'Imposto sobre o lucro (ganho de capital) e isenções.', icon: 'receipt', cat: 'voce' },
-  { id: 'valorm2', nome: 'Quanto vale o m² do bairro', desc: 'Preço médio por m² por bairro de Uberlândia.', icon: 'home', cat: 'voce' },
-  { id: 'score', nome: 'Chance de aprovação', desc: 'Estimativa da sua chance no banco.', icon: 'gauge', cat: 'voce' },
+  { id: 'investir', nome: 'Imóvel x CDI/poupança', desc: 'Vale mais comprar pra alugar ou aplicar?', icon: 'coins', cat: 'voce' },
   { id: 'checklist', nome: 'Checklist de documentos', desc: 'Tudo que você precisa, por etapa.', icon: 'doc', cat: 'voce' },
   { id: 'comparar', nome: 'Comparar imóveis', desc: 'Veja imóveis lado a lado.', icon: 'compare', cat: 'voce', to: '/comparar' },
   { id: 'mapa', nome: 'Buscar no mapa', desc: 'Explore os imóveis por região.', icon: 'map', cat: 'voce', to: '/mapa' },
@@ -59,7 +61,6 @@ const TOOLS = [
   { id: 'acm', nome: 'Análise de mercado (ACM)', desc: 'Sugere o preço do imóvel pelo m² do bairro.', icon: 'chart', cat: 'corretor' },
   { id: 'ficha', nome: 'Ficha de avaliação rápida', desc: 'Gera um resumo do imóvel pra enviar.', icon: 'edit', cat: 'corretor' },
   { id: 'converter', nome: 'Conversor de fotos', desc: 'Converte fotos entre JPG, PNG, WebP e AVIF em lote — suba quantas quiser e baixe tudo de uma vez.', icon: 'edit', cat: 'corretor', to: '/ferramentas/converter', destaque: true },
-  { id: 'painel', nome: 'Painel administrativo', desc: 'Imóveis, leads, clientes e tudo do seu negócio (acesso restrito).', icon: 'bell', cat: 'corretor', to: '/painel', destaque: true },
 ]
 
 function Campo({ label, valor, onChange, sufixo, step = '1', min = '0' }) {
@@ -218,17 +219,85 @@ function CalcACM() {
 
 const RENDER = { financiamento: CalcFinanciamento, capacidade: CalcCapacidade, renda: CalcRenda, fgts: CalcFGTS, amortizacao: CalcAmortizacao, custos: CalcCustos, aluguel: CalcAluguel, rentabilidade: CalcRentabilidade, investir: CalcInvestir, entrada: CalcEntrada, ganho: CalcGanho, valorm2: CalcValorM2, score: CalcScore, checklist: Checklist, comissao: CalcComissao, acm: CalcACM, ficha: FichaAvaliacao, rotina: FerramentaRotina }
 
+const ORDEM_KEY = 'vg_ferr_ordem'
+const idsVoce = () => TOOLS.filter((t) => t.cat === 'voce').map((t) => t.id)
+// ordem salva do cliente, completada com ferramentas novas que ainda não estavam na lista
+function lerOrdem() {
+  const base = idsVoce()
+  try {
+    const salvo = JSON.parse(localStorage.getItem(ORDEM_KEY) || '[]')
+    const validos = salvo.filter((id) => base.includes(id))
+    return [...validos, ...base.filter((id) => !validos.includes(id))]
+  } catch { return base }
+}
+
 export default function Ferramentas() {
   const [ativa, setAtiva] = useState('financiamento')
   const painelRef = useRef(null)
+  const [logado, setLogado] = useState(false)
+  const [ordem, setOrdem] = useState(idsVoce)
+  const [arrastando, setArrastando] = useState(null)
+  const [salvo, setSalvo] = useState(false)
   useSEO({ title: 'Ferramentas e calculadoras de imóveis — Uberlândia', description: 'Calculadoras gratuitas: financiamento, FGTS, amortização, ITBI, aluguel x compra, rentabilidade, valor do m², chance de aprovação, checklist de documentos e mais. Por Vinícius Graton.', path: '/ferramentas' })
+
+  useEffect(() => {
+    setLogado(estaLogado())
+    setOrdem(lerOrdem())
+    const ler = () => setLogado(estaLogado())
+    window.addEventListener('vg-conta', ler)
+    return () => window.removeEventListener('vg-conta', ler)
+  }, [])
+
   const atual = TOOLS.find((t) => t.id === ativa)
   const Ativa = RENDER[ativa]
   const escolher = (id) => { setAtiva(id); setTimeout(() => painelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60) }
   const grupo = (cat) => TOOLS.filter((t) => t.cat === cat)
+  // grupo "voce" na ordem personalizada do cliente
+  const voceOrdenado = ordem.map((id) => TOOLS.find((t) => t.id === id)).filter(Boolean)
+
+  const salvarOrdem = (nova) => {
+    setOrdem(nova)
+    try { localStorage.setItem(ORDEM_KEY, JSON.stringify(nova)) } catch {}
+    setSalvo(true); setTimeout(() => setSalvo(false), 1600)
+  }
+  const aoSoltar = (alvoId) => {
+    if (!arrastando || arrastando === alvoId) return
+    const nova = [...ordem]
+    const de = nova.indexOf(arrastando)
+    const para = nova.indexOf(alvoId)
+    if (de < 0 || para < 0) return
+    nova.splice(de, 1)
+    nova.splice(para, 0, arrastando)
+    salvarOrdem(nova)
+  }
+  const restaurarOrdem = () => { try { localStorage.removeItem(ORDEM_KEY) } catch {}; setOrdem(idsVoce()) }
+
   const Card = (t) => t.to
     ? <Link key={t.id} className={`ferr-card ${t.destaque ? 'ferr-card--gold' : ''}`} to={t.to}><span className="ferr-ico"><FerrIcon name={t.icon} /></span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></Link>
     : <button key={t.id} className={`ferr-card ${ativa === t.id ? 'on' : ''}`} onClick={() => escolher(t.id)}><span className="ferr-ico"><FerrIcon name={t.icon} /></span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></button>
+
+  // versão arrastável (só p/ cliente logado): mesmo card, com handle e eventos de drag
+  const CardDrag = (t) => {
+    const inner = (
+      <>
+        <span className="ferr-drag-handle" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
+        <span className="ferr-ico"><FerrIcon name={t.icon} /></span>
+        <span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span>
+      </>
+    )
+    const common = {
+      key: t.id,
+      className: `ferr-card ferr-card--drag ${ativa === t.id ? 'on' : ''} ${arrastando === t.id ? 'is-dragging' : ''}`,
+      draggable: true,
+      onDragStart: (e) => { setArrastando(t.id); e.dataTransfer.effectAllowed = 'move' },
+      onDragEnd: () => setArrastando(null),
+      onDragOver: (e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move' },
+      onDrop: (e) => { e.preventDefault(); aoSoltar(t.id) },
+    }
+    return t.to
+      ? <Link {...common} to={t.to} onClick={(e) => { if (arrastando) e.preventDefault() }}>{inner}</Link>
+      : <button {...common} type="button" onClick={() => escolher(t.id)}>{inner}</button>
+  }
 
   return (
     <main className="pagina section--light det ferramentas-pg">
@@ -242,8 +311,15 @@ export default function Ferramentas() {
           </div>
         </Reveal>
 
-        <h3 className="ferr-cat">Para você — comprador e investidor</h3>
-        <div className="ferr-grid">{grupo('voce').map(Card)}</div>
+        <div className="ferr-cat-head">
+          <h3 className="ferr-cat">Para você — comprador e investidor</h3>
+          {logado ? (
+            <span className="ferr-ordenar-dica">{salvo ? '✓ ordem salva' : '✦ arraste os cards pra montar do seu jeito'}<button type="button" className="ferr-restaurar" onClick={restaurarOrdem}>restaurar padrão</button></span>
+          ) : (
+            <Link to="/conta" className="ferr-ordenar-dica ferr-ordenar-dica--link">Entre na sua conta pra personalizar e salvar esta ordem →</Link>
+          )}
+        </div>
+        <div className="ferr-grid">{(logado ? voceOrdenado.map(CardDrag) : voceOrdenado.map(Card))}</div>
 
         <h3 className="ferr-cat">Para o corretor</h3>
         <div className="ferr-grid">{grupo('corretor').map(Card)}</div>
