@@ -52,6 +52,7 @@ export default function Footer() {
             <div className="footer-col">
               <h5>Institucional</h5>
               <Link to="/privacidade">Política de privacidade</Link>
+              <Link to="/corretor">Sou corretor — área Rotina</Link>
             </div>
           </div>
         </div>

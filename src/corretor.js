@@ -12,3 +12,7 @@ export function salvarCorretor(dados) {
   try { window.dispatchEvent(new Event('vg-corretor')) } catch {}
   return c
 }
+export function sairCorretor() {
+  try { localStorage.removeItem(KEY) } catch {}
+  try { window.dispatchEvent(new Event('vg-corretor')) } catch {}
+}

@@ -8,7 +8,6 @@ import BAIRROS_M2 from '../bairros-m2.json'
 import { formatBRL } from '../extenso'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow } from '../components/icons'
-import FerramentaRotina from '../components/FerramentaRotina'
 
 const brl = (n) => (isFinite(n) ? n : 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })
 const brl2 = (n) => (isFinite(n) ? n : 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 })
@@ -56,11 +55,8 @@ const TOOLS = [
   { id: 'checklist', nome: 'Checklist de documentos', desc: 'Tudo que você precisa, por etapa.', icon: 'doc', cat: 'voce' },
   { id: 'comparar', nome: 'Comparar imóveis', desc: 'Veja imóveis lado a lado.', icon: 'compare', cat: 'voce', to: '/comparar' },
   { id: 'mapa', nome: 'Buscar no mapa', desc: 'Explore os imóveis por região.', icon: 'map', cat: 'voce', to: '/mapa' },
-  { id: 'rotina', nome: 'Rotina — abordagem por código', desc: 'Cole o código do imóvel da Rotina e gere a mensagem de 1º contato com gatilhos + benefícios da região (raio de 1km).', icon: 'chat', cat: 'corretor' },
-  { id: 'comissao', nome: 'Calculadora de comissão', desc: 'Comissão e repasse de uma venda.', icon: 'percent', cat: 'corretor' },
-  { id: 'acm', nome: 'Análise de mercado (ACM)', desc: 'Sugere o preço do imóvel pelo m² do bairro.', icon: 'chart', cat: 'corretor' },
-  { id: 'ficha', nome: 'Ficha de avaliação rápida', desc: 'Gera um resumo do imóvel pra enviar.', icon: 'edit', cat: 'corretor' },
-  { id: 'converter', nome: 'Conversor de fotos', desc: 'Converte fotos entre JPG, PNG, WebP e AVIF em lote — suba quantas quiser e baixe tudo de uma vez.', icon: 'edit', cat: 'corretor', to: '/ferramentas/converter', destaque: true },
+  { id: 'converter', nome: 'Conversor de fotos', desc: 'Converte fotos entre JPG, PNG, WebP e AVIF em lote — suba quantas quiser e baixe tudo de uma vez.', icon: 'edit', cat: 'corretor', to: '/ferramentas/converter' },
+  { id: 'corretor', nome: 'Área do corretor — Rotina', desc: 'Abordagem por código, estúdios de foto e publicidade com IA, comissão, ACM e ficha. Entre com o código da Rotina.', icon: 'chat', cat: 'corretor', to: '/corretor', destaque: true },
 ]
 
 function Campo({ label, valor, onChange, sufixo, step = '1', min = '0' }) {
@@ -164,12 +160,12 @@ function Checklist() {
   const feitos = Object.values(marcados).filter(Boolean).length
   return (<div><div className="check-progress"><div className="check-bar"><span style={{ width: `${(feitos / total) * 100}%` }} /></div><b>{feitos}/{total}</b></div><div className="check-cols">{CHECKLIST.map(([grupo, itens]) => (<div className="check-grupo" key={grupo}><h4>{grupo}</h4>{itens.map((it) => { const k = grupo + '|' + it; return (<label className={`check-item ${marcados[k] ? 'on' : ''}`} key={k}><input type="checkbox" checked={!!marcados[k]} onChange={() => toggle(k)} /><span>{it}</span></label>) })}</div>))}</div>{nota('Marque conforme for reunindo — fica salvo no seu navegador. Lista geral; no seu caso eu envio a relação exata que o banco/cartório vai pedir.')}</div>)
 }
-function CalcComissao() {
+export function CalcComissao() {
   const [valor, setValor] = useState(500000); const [com, setCom] = useState('6'); const [corretor, setCorretor] = useState('50')
   const r = useMemo(() => { const total = valor * ((+com || 0) / 100); const parteCorretor = total * ((+corretor || 0) / 100); return { total, parteCorretor, parteImob: total - parteCorretor } }, [valor, com, corretor])
   return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor da venda" valor={valor} onChange={setValor} /><Campo label="Comissão" sufixo="%" valor={com} onChange={setCom} step="0.5" /><Campo label="Parte do corretor" sufixo="%" valor={corretor} onChange={setCorretor} step="5" /></div><div><Resultado destaque={{ rotulo: 'Comissão total', valor: brl(r.total) }} itens={[{ rotulo: 'Parte do corretor', valor: brl(r.parteCorretor) }, { rotulo: 'Parte da imobiliária/captação', valor: brl(r.parteImob) }]} />{nota('Ferramenta de apoio ao corretor. Percentuais e divisões variam por contrato e imobiliária.')}</div></div>)
 }
-function FichaAvaliacao() {
+export function FichaAvaliacao() {
   const [f, setF] = useState({ tipo: 'Casa', bairro: '', area: '', quartos: '', suites: '', vagas: '', estado: 'Bem conservado', preco: 0, dif: '' })
   const set = (k) => (e) => setF((s) => ({ ...s, [k]: e.target.value }))
   const texto = `${f.tipo}${f.bairro ? ` no ${f.bairro}` : ''} — Uberlândia\n${[f.area && `${f.area} m²`, f.quartos && `${f.quartos} quartos`, f.suites && `${f.suites} suíte(s)`, f.vagas && `${f.vagas} vagas`].filter(Boolean).join(' · ')}\nEstado: ${f.estado}${f.preco ? `\nValor: ${formatBRL(f.preco)}` : ''}${f.dif ? `\nDiferenciais: ${f.dif}` : ''}\n\nFale com Vinícius Graton — Consultor de Imóveis em Uberlândia.`
@@ -206,7 +202,7 @@ function CalcGanho() {
   }, [venda, compra, unico, reinveste])
   return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor de venda" valor={venda} onChange={setVenda} /><CampoMoeda label="Valor de compra (custo)" valor={compra} onChange={setCompra} /><label className="calc-check"><input type="checkbox" checked={unico} onChange={(e) => setUnico(e.target.checked)} /><span>É meu único imóvel e a venda é de até R$ 440 mil</span></label><label className="calc-check"><input type="checkbox" checked={reinveste} onChange={(e) => setReinveste(e.target.checked)} /><span>Vou comprar outro imóvel residencial em até 180 dias</span></label></div><div><Resultado destaque={{ rotulo: r.isento ? 'Imposto (isento)' : 'Imposto estimado (IR)', valor: brl(r.ir) }} itens={[{ rotulo: 'Lucro (ganho de capital)', valor: brl(r.lucro) }, { rotulo: 'Você recebe (líquido)', valor: brl(r.liquido) }, { rotulo: 'Situação', valor: r.isento ? (r.isentoUnico ? 'Isento · único ≤ 440 mil' : 'Isento · reinvestimento') : 'Tributável · 15%' }]} />{nota('Regra geral: 15% sobre o lucro na venda. Isenções em lei: único imóvel vendido por até R$ 440 mil (1x a cada 5 anos) e reinvestimento em residencial em 180 dias. Existem fatores de redução por tempo de posse — confirme com um contador antes de declarar.')}</div></div>)
 }
-function CalcACM() {
+export function CalcACM() {
   const ord = useMemo(() => [...BAIRROS_M2].sort((a, b) => a.bairro.localeCompare(b.bairro, 'pt-BR')), [])
   const [bairro, setBairro] = useState(ord[0]?.bairro || ''); const [area, setArea] = useState('120'); const [estado, setEstado] = useState('0')
   const r = useMemo(() => {
@@ -217,7 +213,7 @@ function CalcACM() {
   return (<div className="calc-grid"><div className="calc-form"><Select label="Bairro" valor={bairro} onChange={setBairro} opcoes={ord.map((x) => x.bairro)} /><Campo label="Área privativa" sufixo="m²" valor={area} onChange={setArea} /><Select label="Estado do imóvel" valor={estado} onChange={setEstado} opcoes={[{ v: '8', t: 'Novo / lançamento' }, { v: '4', t: 'Reformado' }, { v: '0', t: 'Bem conservado' }, { v: '-10', t: 'Precisa de reforma' }]} /></div><div>{r.m2 ? <Resultado destaque={{ rotulo: 'Preço sugerido', valor: brl(r.central) }} itens={[{ rotulo: 'Faixa de mercado', valor: `${brl(r.min)} a ${brl(r.max)}` }, { rotulo: `m² médio em ${bairro}`, valor: brl(r.m2) }, { rotulo: 'Fonte do m²', valor: `${r.fonte || '—'}${r.ref ? ` (${r.ref})` : ''}` }]} /> : <p className="section-sub">Ainda não há um valor de referência <b>oficial confirmado</b> para <b>{bairro}</b> nas fontes públicas. Para esse bairro, faça uma <b>avaliação presencial</b> (posição, padrão e estado definem o preço real).</p>}{nota('Estimativa pela mediana de venda do bairro × área, ajustada pelo estado, de fontes públicas (Proprietário Direto/IPD e ZAP). É um ponto de partida — posição, andar, vista e acabamento ajustam o valor final. A avaliação presencial é o que fecha o preço.')}</div></div>)
 }
 
-const RENDER = { financiamento: CalcFinanciamento, capacidade: CalcCapacidade, renda: CalcRenda, fgts: CalcFGTS, amortizacao: CalcAmortizacao, custos: CalcCustos, aluguel: CalcAluguel, rentabilidade: CalcRentabilidade, investir: CalcInvestir, entrada: CalcEntrada, ganho: CalcGanho, valorm2: CalcValorM2, score: CalcScore, checklist: Checklist, comissao: CalcComissao, acm: CalcACM, ficha: FichaAvaliacao, rotina: FerramentaRotina }
+const RENDER = { financiamento: CalcFinanciamento, capacidade: CalcCapacidade, renda: CalcRenda, fgts: CalcFGTS, amortizacao: CalcAmortizacao, custos: CalcCustos, aluguel: CalcAluguel, rentabilidade: CalcRentabilidade, investir: CalcInvestir, entrada: CalcEntrada, ganho: CalcGanho, valorm2: CalcValorM2, score: CalcScore, checklist: Checklist }
 
 const ORDEM_KEY = 'vg_ferr_ordem'
 const idsVoce = () => TOOLS.filter((t) => t.cat === 'voce').map((t) => t.id)

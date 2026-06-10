@@ -2939,3 +2939,26 @@ html[data-theme="dark"] .ferr-drag-handle { color: rgba(255,255,255,0.3); }
 .anu-mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
 .anu-grupo.placa-bloco { background: linear-gradient(135deg, rgba(224,181,86,0.08), rgba(255,255,255,0.02)); border-color: rgba(224,181,86,0.28); }
 @media (max-width: 560px) { .anu-mini-grid { gap: 10px; } .anu-grupo { padding: 16px 14px 18px; } }
+
+/* ============================================================
+   ÁREA DO CORRETOR (/corretor)
+   ============================================================ */
+.corretor-pg { padding-top: clamp(96px, 12vw, 128px); }
+.corr-gate-wrap { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(28px, 5vw, 60px); align-items: start; max-width: 1080px; margin: 0 auto; }
+.corr-pitch .section-title { margin-top: 6px; }
+.corr-lista { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-top: 22px; }
+.corr-lista li { display: flex; gap: 12px; align-items: flex-start; background: #fff; border: 1px solid rgba(22,26,34,0.09); border-radius: 14px; padding: 13px 15px; box-shadow: 0 12px 30px -26px rgba(22,26,34,0.5); }
+.corr-lista-ico { flex: none; width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: var(--gold-3); background: rgba(184,134,47,0.12); }
+.corr-lista b { display: block; font-family: var(--font-head); font-weight: 600; font-size: 0.95rem; }
+.corr-lista span:not(.corr-lista-ico) { display: block; font-size: 0.82rem; color: var(--text-mute); margin-top: 1px; }
+.corr-form { width: 100%; max-width: 440px; }
+.corr-hero { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: 26px; }
+.corr-hero-acoes { display: flex; align-items: center; gap: 12px; }
+.corr-chip { font-family: var(--font-head); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.03em; color: var(--gold-3); border: 1px solid rgba(184,134,47,0.4); background: rgba(184,134,47,0.08); padding: 7px 13px; border-radius: 100px; }
+.corr-grid { margin-top: 6px; }
+@media (max-width: 860px) { .corr-gate-wrap { grid-template-columns: 1fr; } .corr-form { margin: 0 auto; } }
+
+/* área do corretor no modo escuro */
+html[data-theme="dark"] .corr-lista li { background: #11161f; border-color: rgba(255,255,255,0.1); }
+html[data-theme="dark"] .corr-lista-ico { color: var(--gold-1); background: rgba(224,181,86,0.14); }
+html[data-theme="dark"] .corr-chip { color: var(--gold-1); border-color: rgba(224,181,86,0.4); background: rgba(224,181,86,0.1); }
