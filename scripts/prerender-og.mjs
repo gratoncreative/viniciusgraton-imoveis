@@ -54,6 +54,21 @@ const trunc = (s, n = 160) => {
   return t.slice(0, n - 1).replace(/\s+\S*$/, '') + '…'
 }
 const abs = (u) => (u && u.startsWith('http') ? u : SITE + u)
+const slugify = (s) => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+
+// FAQ factual por imóvel — vira FAQPage (JSON-LD) + texto visível no HTML estático
+function faqImovel(im) {
+  const t = (im.tipo || 'imóvel').toLowerCase()
+  const b = im.bairro || 'Uberlândia'
+  const qa = []
+  qa.push({ q: `Qual o valor deste ${t} no ${b}?`, a: `O ${t} no ${b}, em Uberlândia, está à venda por ${formatPreco(im.preco)}${im.condominio ? `, com condomínio de R$ ${Number(im.condominio).toLocaleString('pt-BR')}` : ''}. Fale com o Vinícius Graton para condições e financiamento.` })
+  if (im.area > 0) qa.push({ q: 'Qual a área do imóvel?', a: `Este ${t} tem ${im.area} m².` })
+  const comp = [im.quartos > 0 && `${im.quartos} ${plural(im.quartos, 'quarto', 'quartos')}`, im.suites > 0 && `${im.suites} ${plural(im.suites, 'suíte', 'suítes')}`, im.banheiros > 0 && `${im.banheiros} ${plural(im.banheiros, 'banheiro', 'banheiros')}`, im.vagas > 0 && `${im.vagas} ${plural(im.vagas, 'vaga', 'vagas')}`].filter(Boolean)
+  if (comp.length) qa.push({ q: 'Quantos quartos e vagas tem?', a: `O imóvel oferece ${comp.join(', ')}.` })
+  qa.push({ q: 'Onde fica este imóvel?', a: `Fica no bairro ${b}, em Uberlândia - MG. A localização exata é informada no atendimento.` })
+  qa.push({ q: 'Como agendar uma visita?', a: 'É só falar com o Vinícius Graton, consultor da Rotina Imobiliária, pelo WhatsApp (34) 99157-0494 — ele acompanha do primeiro contato à entrega das chaves.' })
+  return qa
+}
 
 // Descrição PRÓPRIA e única por imóvel (não copia a da Rotina) — varia por código + bairro + specs.
 function descricaoUnica(im) {
@@ -101,11 +116,13 @@ function bodySeo(im, descUnica) {
     im.vagas > 0 && `Vagas: ${im.vagas}`,
     im.condominio > 0 && `Condomínio: R$ ${Number(im.condominio).toLocaleString('pt-BR')}`,
   ].filter(Boolean)
+  const faqs = faqImovel(im)
   return `<main class="pre-seo"><h1>${esc(im.tipo)} à venda no ${esc(im.bairro)}, Uberlândia — Cód. ${esc(im.codigo)}</h1>` +
     `<p>${esc(descUnica)}</p>` +
     `<ul>${specs.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>` +
     `<p>Imóvel à venda em ${esc(im.bairro)}, ${esc(im.cidade || 'Uberlândia')} - MG, com Vinícius Graton, consultor credenciado da Rotina Imobiliária. Veja fotos, localização e fale comigo para agendar uma visita.</p>` +
-    `<p><a href="/imoveis">Ver mais imóveis em Uberlândia</a></p></main>`
+    `<section><h2>Perguntas frequentes sobre este imóvel</h2>${faqs.map((qa) => `<h3>${esc(qa.q)}</h3><p>${esc(qa.a)}</p>`).join('')}</section>` +
+    `<p><a href="/imoveis/uberlandia/${esc(slugify(im.bairro))}">Ver outros imóveis em ${esc(im.bairro)}</a> · <a href="/imoveis">Ver todos os imóveis em Uberlândia</a></p></main>`
 }
 
 function render(im) {
@@ -139,8 +156,13 @@ function render(im) {
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Início', item: `${SITE}/` },
           { '@type': 'ListItem', position: 2, name: 'Imóveis', item: `${SITE}/imoveis` },
-          { '@type': 'ListItem', position: 3, name: `${im.tipo} no ${im.bairro}`, item: url },
+          { '@type': 'ListItem', position: 3, name: `Imóveis em ${im.bairro}`, item: `${SITE}/imoveis/uberlandia/${slugify(im.bairro)}` },
+          { '@type': 'ListItem', position: 4, name: `${im.tipo} no ${im.bairro}`, item: url },
         ],
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: faqImovel(im).map((qa) => ({ '@type': 'Question', name: qa.q, acceptedAnswer: { '@type': 'Answer', text: qa.a } })),
       },
     ],
   }
@@ -184,11 +206,20 @@ for (const im of feed) {
 console.log(`✓ prerender-og: ${n} curados + ${nf} espelho = ${n + nf} páginas de imóvel`)
 
 // páginas de bairro (SEO) — meta/canonical/JSON-LD por bairro
-const slugify = (s) => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 const editoriais = ['Jardim Karaíba', 'Morada da Colina', 'Cidade Jardim', 'Gávea', 'Granja Marileusa', 'Vigilato Pereira', 'Santa Maria', 'Jardim Sul', 'Jardim Finotti', 'Parque Una', 'Patrimônio', 'Lídice', 'Santa Mônica', 'Tabajaras', 'Nova Uberlândia', 'Tubalina']
 const bairrosSeo = [...new Set([...editoriais, ...imoveis.map((im) => im.bairro), ...feed.map((im) => im.bairro)])]
   .filter(Boolean)
   .map((nome) => ({ nome, slug: slugify(nome) }))
+
+function bairroBody(b) {
+  const doBairro = [...imoveis, ...feed].filter((im) => im.bairro && slugify(im.bairro) === b.slug).slice(0, 24)
+  const outros = bairrosSeo.filter((x) => x.slug !== b.slug).slice(0, 30)
+  return `<main class="pre-seo"><h1>Imóveis à venda em ${esc(b.nome)}, Uberlândia</h1>` +
+    `<p>Veja imóveis à venda em ${esc(b.nome)}, Uberlândia - MG, com o atendimento pessoal do Vinícius Graton, consultor da Rotina Imobiliária — do primeiro contato à entrega das chaves.</p>` +
+    (doBairro.length ? `<ul>${doBairro.map((im) => `<li><a href="/imovel/${esc(im.codigo)}">${esc(im.tipo)} no ${esc(im.bairro)} — ${esc(formatPreco(im.preco))} (cód. ${esc(im.codigo)})</a></li>`).join('')}</ul>` : '') +
+    `<p><a href="/imoveis">Ver todos os imóveis em Uberlândia</a></p>` +
+    `<nav><h2>Imóveis em outros bairros de Uberlândia</h2>${outros.map((x) => `<a href="/imoveis/uberlandia/${x.slug}">${esc(x.nome)}</a>`).join(' · ')}</nav></main>`
+}
 
 function renderBairro(b) {
   const titulo = `Imóveis à venda em ${b.nome}, Uberlândia`
@@ -212,6 +243,7 @@ function renderBairro(b) {
     .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
     .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
+    .replace('<div id="root"></div>', `<div id="root">${bairroBody(b)}</div>`)
 }
 
 let nb = 0
@@ -370,35 +402,31 @@ const urls = [
   }))),
   { loc: `${SITE}/contato`, freq: 'monthly', pri: '0.5' },
   ...bairrosSeo.map((b) => ({ loc: `${SITE}/imoveis/uberlandia/${b.slug}`, freq: 'weekly', pri: '0.7' })),
-  ...imoveis.map((im) => ({
-    loc: `${SITE}/imovel/${im.codigo}`,
-    freq: 'weekly',
-    pri: '0.8',
-    img: abs(im.img),
-    imgTitle: `${im.tipo} no ${im.bairro}, Uberlândia`,
-  })),
-  ...feed.map((im) => ({
-    loc: `${SITE}/imovel/${im.codigo}`,
-    freq: 'weekly',
-    pri: '0.6',
-    img: abs(im.img),
-    imgTitle: `${im.tipo} no ${im.bairro}, Uberlândia`,
-  })),
   { loc: `${SITE}/privacidade`, freq: 'yearly', pri: '0.2' },
 ]
-const sitemap =
+// imóveis num sitemap separado (é a maior lista e a que mais muda)
+const urlsImoveis = [
+  ...imoveis.map((im) => ({ loc: `${SITE}/imovel/${im.codigo}`, freq: 'weekly', pri: '0.8', img: abs(im.img), imgTitle: `${im.tipo} no ${im.bairro}, Uberlândia` })),
+  ...feed.map((im) => ({ loc: `${SITE}/imovel/${im.codigo}`, freq: 'weekly', pri: '0.6', img: abs(im.img), imgTitle: `${im.tipo} no ${im.bairro}, Uberlândia` })),
+]
+const urlset = (list) =>
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n` +
-  urls
-    .map((u) => {
-      const imgBlock = u.img
-        ? `\n    <image:image>\n      <image:loc>${esc(u.img)}</image:loc>\n      <image:title>${esc(u.imgTitle)}</image:title>\n    </image:image>`
-        : ''
-      return `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>${imgBlock}\n  </url>`
-    })
-    .join('\n') +
+  list.map((u) => {
+    const imgBlock = u.img
+      ? `\n    <image:image>\n      <image:loc>${esc(u.img)}</image:loc>\n      <image:title>${esc(u.imgTitle)}</image:title>\n    </image:image>`
+      : ''
+    return `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>${imgBlock}\n  </url>`
+  }).join('\n') +
   `\n</urlset>\n`
-writeFileSync(resolve(DIST, 'sitemap.xml'), sitemap)
-console.log(`✓ sitemap.xml: ${urls.length} URLs`)
+writeFileSync(resolve(DIST, 'sitemap-geral.xml'), urlset(urls))
+writeFileSync(resolve(DIST, 'sitemap-imoveis.xml'), urlset(urlsImoveis))
+// sitemap.xml = ÍNDICE apontando para os dois (é o que o robots.txt e o Google leem)
+const sitemapIndex =
+  `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+  ['sitemap-geral.xml', 'sitemap-imoveis.xml'].map((s) => `  <sitemap>\n    <loc>${SITE}/${s}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`).join('\n') +
+  `\n</sitemapindex>\n`
+writeFileSync(resolve(DIST, 'sitemap.xml'), sitemapIndex)
+console.log(`✓ sitemap índice: ${urls.length} gerais + ${urlsImoveis.length} imóveis`)
 
 // ===== feed.xml (VRSync — ZAP/VivaReal/Grupo OLX/Canal Pro) das captações curadas =====
 const tipoPortal = (t) => /apart|kit|studio|loft|flat|cobertura/i.test(t) ? 'Residential / Apartment'
