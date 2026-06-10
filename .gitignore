@@ -30,3 +30,6 @@ ferramentas-whatsapp/
 public/sync-status.json
 scripts/_imoview-*
 scripts/_og-bg.jpg
+
+# arquivos temporarios de geracao (mesclados depois)
+scripts/_*
