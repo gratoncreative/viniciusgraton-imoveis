@@ -210,6 +210,7 @@ export default function MelhorarFotos() {
   const [video, setVideo] = useState(null) // {fase:'gravando'|'pronto'|'erro', pct, msg}
   const [wm, setWm] = useState({ on: false, texto: 'Vinícius Graton', pos: 'inf-dir', tam: 4, opac: 0.85 })
   const [ia, setIa] = useState(null) // {fase, msg}
+  const [aba, setAba] = useState('ajustes')
   const previewRef = useRef(null)
   const fotosRef = useRef(fotos); fotosRef.current = fotos
 
@@ -402,160 +403,179 @@ export default function MelhorarFotos() {
         <span>📤 Selecionar fotos</span>
       </label>
 
-      {fotos.length > 0 && (
-        <>
-          <div className="mf-tiras">
-            {fotos.map((ft, i) => (
-              <button key={i} className={`mf-tira ${i === atual ? 'on' : ''}`} onClick={() => setAtual(i)} title={ft.name}>
-                <img src={ft.img.src} alt={ft.name} />
-                <span className="mf-tira-x" onClick={(e) => { e.stopPropagation(); remover(i) }}>×</span>
-              </button>
-            ))}
-          </div>
-
-          {foto && (
-            <div className="mf-edit">
-              <div className="mf-preview">
-                <div className="mf-canvas-wrap">
-                  <canvas ref={previewRef} className="mf-canvas" />
-                  {grade && !verOriginal && (
-                    <div className="mf-grade" aria-hidden="true"><span /><span /><span /><span /></div>
-                  )}
-                </div>
-                <div className="mf-preview-acoes">
-                  <button className="admin-btn" onMouseDown={() => setVerOriginal(true)} onMouseUp={() => setVerOriginal(false)} onMouseLeave={() => setVerOriginal(false)} onTouchStart={() => setVerOriginal(true)} onTouchEnd={() => setVerOriginal(false)}>
-                    👁 Segurar p/ ver original
-                  </button>
-                  <label className="mf-check"><input type="checkbox" checked={grade} onChange={(e) => setGrade(e.target.checked)} /> Grade de nível</label>
-                </div>
+      {foto && (
+        <div className="mf-editor">
+          <div className="mf-edit">
+            {/* COLUNA ESQUERDA: preview + filmstrip */}
+            <div className="mf-preview">
+              <div className="mf-canvas-wrap">
+                <canvas ref={previewRef} className="mf-canvas" />
+                {grade && !verOriginal && (
+                  <div className="mf-grade" aria-hidden="true"><span /><span /><span /><span /></div>
+                )}
               </div>
-
-              <div className="mf-controles">
-                <div className="mf-grupo mf-grupo--ia">
-                  <div className="mf-grupo-tit">🤖 Super-resolução com IA <span className="mf-beta">Beta</span></div>
-                  <p className="mf-nota" style={{ marginTop: 0 }}>Pra fotos de baixa resolução. Uma IA open-source recompõe o detalhe (não é só ampliar). Roda no seu navegador — a 1ª vez baixa o modelo.</p>
-                  <button className="btn btn-gold" onClick={melhorarIA} disabled={!!ia}>
-                    {ia ? (ia.fase === 'carregando' ? 'Carregando IA…' : ia.fase === 'processando' ? 'Recuperando foto…' : ia.fase === 'pronto' ? '✓ Pronto!' : 'Tentar de novo') : '✨ Melhorar esta foto com IA'}
+              <div className="mf-preview-acoes">
+                <button className="admin-btn" onMouseDown={() => setVerOriginal(true)} onMouseUp={() => setVerOriginal(false)} onMouseLeave={() => setVerOriginal(false)} onTouchStart={() => setVerOriginal(true)} onTouchEnd={() => setVerOriginal(false)}>
+                  👁 Segurar p/ ver original
+                </button>
+                <label className="mf-check"><input type="checkbox" checked={grade} onChange={(e) => setGrade(e.target.checked)} /> Grade de nível</label>
+              </div>
+              <div className="mf-tiras">
+                {fotos.map((ft, i) => (
+                  <button key={i} className={`mf-tira ${i === atual ? 'on' : ''}`} onClick={() => setAtual(i)} title={ft.name}>
+                    <img src={ft.img.src} alt={ft.name} />
+                    <span className="mf-tira-x" onClick={(e) => { e.stopPropagation(); remover(i) }}>×</span>
                   </button>
-                  {ia?.msg && <p className={`mf-nota ${ia.fase === 'erro' ? 'mf-erro' : ''}`}>{ia.msg}</p>}
-                </div>
-
-                <div className="mf-grupo">
-                  <div className="mf-grupo-tit">Inclinação</div>
-                  <Slider label="Ângulo" val={foto.s.angle} min={-15} max={15} step={0.1} on={(v) => setS({ angle: v })} fmt={(v) => `${v.toFixed(1)}°`} />
-                  <div className="mf-botoes">
-                    <button className="admin-btn admin-btn--mini" onClick={autoAngulo}>🎯 Auto-endireitar</button>
-                    <button className="admin-btn admin-btn--mini" onClick={autoAnguloTodas}>🎯 Endireitar TODAS</button>
-                  </div>
-                </div>
-
-                <div className="mf-grupo">
-                  <div className="mf-grupo-tit">Filtros (clique pra ver na hora)</div>
-                  <div className="mf-filtros">
-                    {FILTROS.map((f) => (
-                      <button key={f.nome} type="button" className="mf-filtro" onClick={() => setS(f.s)}>{f.nome}</button>
-                    ))}
-                  </div>
-                  <button className="admin-btn admin-btn--mini" onClick={aplicarTodas} style={{ marginTop: 4 }}>✓ Aplicar este realce a TODAS</button>
-                </div>
-
-                <div className="mf-grupo">
-                  <div className="mf-grupo-tit">Ajuste fino</div>
-                  <Slider label="Brilho" val={foto.s.brilho} min={0.8} max={1.3} step={0.01} on={(v) => setS({ brilho: v })} fmt={(v) => `${Math.round(v * 100)}%`} />
-                  <Slider label="Contraste" val={foto.s.contraste} min={0.8} max={1.4} step={0.01} on={(v) => setS({ contraste: v })} fmt={(v) => `${Math.round(v * 100)}%`} />
-                  <Slider label="Cor (saturação)" val={foto.s.satur} min={0.8} max={1.5} step={0.01} on={(v) => setS({ satur: v })} fmt={(v) => `${Math.round(v * 100)}%`} />
-                  <Slider label="Nitidez" val={foto.s.nitidez} min={0} max={1.4} step={0.05} on={(v) => setS({ nitidez: v })} fmt={(v) => v.toFixed(2)} />
-                  <Slider label="Temperatura" val={foto.s.temp} min={-0.3} max={0.3} step={0.02} on={(v) => setS({ temp: v })} fmt={(v) => v === 0 ? 'neutro' : v > 0 ? 'quente' : 'fria'} />
-                  <Slider label="Vinheta" val={foto.s.vinheta} min={0} max={0.6} step={0.05} on={(v) => setS({ vinheta: v })} fmt={(v) => v === 0 ? 'não' : Math.round(v * 100) + '%'} />
-                  <label className="mf-check"><input type="checkbox" checked={foto.s.wb} onChange={(e) => setS({ wb: e.target.checked })} /> Balanço de branco automático</label>
-                </div>
-
-                <div className="mf-grupo">
-                  <div className="mf-grupo-tit">Exportação</div>
-                  <label className="mf-sel"><span>Formato</span>
-                    <select value={formato} onChange={(e) => setFormato(e.target.value)}>
-                      <option value="jpeg">JPG — menor, ideal pra anúncio</option>
-                      <option value="png">PNG — sem perda, arquivo maior</option>
-                      <option value="webp">WebP — moderno e leve</option>
-                    </select>
-                  </label>
-                  <label className="mf-sel"><span>Ampliar</span>
-                    <select value={foto.s.escala} onChange={(e) => setS({ escala: parseFloat(e.target.value) })}>
-                      <option value={1}>Original (nítida)</option>
-                      <option value={1.5}>1,5× maior</option>
-                      <option value={2}>2× maior (UHD)</option>
-                    </select>
-                  </label>
-                  <p className="mf-nota">Ampliação reamostra em alta qualidade + nitidez. Pra recuperar foto ruim de verdade, use a Super-resolução com IA acima. O formato e a ampliação valem pra todos os downloads.</p>
-                </div>
-
-                <div className="mf-grupo">
-                  <div className="mf-grupo-tit">💧 Marca d'água</div>
-                  <label className="mf-check"><input type="checkbox" checked={wm.on} onChange={(e) => setWm({ ...wm, on: e.target.checked })} /> Inserir marca d'água nas fotos</label>
-                  {wm.on && (
-                    <>
-                      <label className="mf-campo"><span>Texto</span>
-                        <input type="text" value={wm.texto} onChange={(e) => setWm({ ...wm, texto: e.target.value })} placeholder="Ex.: Vinícius Graton" />
-                      </label>
-                      <label className="mf-sel"><span>Posição</span>
-                        <select value={wm.pos} onChange={(e) => setWm({ ...wm, pos: e.target.value })}>
-                          <option value="inf-dir">Inferior direita</option>
-                          <option value="inf-esq">Inferior esquerda</option>
-                          <option value="inf-centro">Inferior centro</option>
-                          <option value="sup-dir">Superior direita</option>
-                          <option value="sup-esq">Superior esquerda</option>
-                          <option value="centro">Centro</option>
-                        </select>
-                      </label>
-                      <Slider label="Tamanho" val={wm.tam} min={2} max={9} step={0.5} on={(v) => setWm({ ...wm, tam: v })} fmt={(v) => v.toFixed(1)} />
-                      <Slider label="Opacidade" val={wm.opac} min={0.2} max={1} step={0.05} on={(v) => setWm({ ...wm, opac: v })} fmt={(v) => Math.round(v * 100) + '%'} />
-                      <p className="mf-nota">Aparece nas fotos baixadas e no vídeo. Vale pra todas.</p>
-                    </>
-                  )}
-                </div>
-
-                <div className="mf-grupo">
-                  <div className="mf-grupo-tit">🎬 Vídeo de apresentação</div>
-                  <label className="mf-sel"><span>Formato</span>
-                    <select value={videoFmt} onChange={(e) => setVideoFmt(e.target.value)} disabled={!!video}>
-                      <option value="vertical">Vertical 9:16 — Stories, Reels e Status</option>
-                      <option value="quadrado">Quadrado 1:1 — Feed do Instagram/Facebook</option>
-                      <option value="horizontal">Horizontal 16:9 — YouTube, site e TV</option>
-                    </select>
-                  </label>
-                  <label className="mf-sel"><span>Tempo por foto</span>
-                    <select value={durSeg} onChange={(e) => setDurSeg(parseFloat(e.target.value))} disabled={!!video}>
-                      <option value={2}>2 segundos</option>
-                      <option value={3}>3 segundos</option>
-                      <option value={4}>4 segundos</option>
-                    </select>
-                  </label>
-                  <button className="btn btn-gold" onClick={gerarVideo} disabled={!!video}>
-                    {video ? (video.fase === 'gravando' ? `Montando seu vídeo… ${video.pct}%` : video.fase === 'pronto' ? '✓ Vídeo pronto!' : 'Tentar de novo') : '🎬 Baixar como vídeo'}
-                  </button>
-                  {video?.fase === 'gravando' && (
-                    <div className="mf-prog-wrap">
-                      <div className="mf-prog-top"><span className="mf-prog-emoji">🎬</span> {msgVideo(video.pct)} <b>{video.pct}%</b></div>
-                      <div className="mf-prog">
-                        <div className="mf-prog-bar" style={{ width: Math.max(4, video.pct || 0) + '%' }} />
-                        <span className="mf-prog-rider" style={{ left: Math.max(4, video.pct || 0) + '%' }}>🏠</span>
-                      </div>
-                    </div>
-                  )}
-                  <p className="mf-nota">Slideshow com transição suave e a marca d'água "{wm.texto || 'Vinícius Graton'}" centralizada e translúcida (constante, dá pra ver a transição por trás). Gera em tempo real (~{Math.round(fotos.length * durSeg)}s). Usa o realce de cada foto. Sai em MP4 (ou WebM, conforme o navegador).</p>
-                  {video?.fase === 'erro' && <p className="lead-erro">{video.msg}</p>}
-                </div>
-
-                <div className="mf-botoes">
-                  <button className="admin-btn" onClick={restaurar}>↺ Padrão</button>
-                  <button className="admin-btn" onClick={aplicarTodas}>Aplicar realce a todas</button>
-                  <button className="btn btn-gold" onClick={baixarUma} disabled={baixando}>{baixando === 'uma' ? 'Gerando…' : '⬇ Baixar esta'}</button>
-                  <button className="btn btn-gold" onClick={baixarTodas} disabled={baixando}>{baixando === 'todas' ? 'Baixando…' : `⬇ Baixar todas (${fotos.length})`}</button>
-                </div>
+                ))}
               </div>
             </div>
-          )}
-        </>
+
+            {/* COLUNA DIREITA: painel em abas */}
+            <div className="mf-painel">
+              <div className="mf-abas">
+                {[['ajustes', '🪄 Ajustes'], ['ia', '🤖 IA'], ['marca', "💧 Marca"], ['export', '📤 Exportar'], ['video', '🎬 Vídeo']].map(([id, nome]) => (
+                  <button key={id} className={`mf-aba ${aba === id ? 'on' : ''}`} onClick={() => setAba(id)}>{nome}</button>
+                ))}
+              </div>
+
+              <div className="mf-aba-conteudo">
+                {aba === 'ajustes' && (
+                  <>
+                    <div className="mf-grupo">
+                      <div className="mf-grupo-tit">Filtros (clique pra ver na hora)</div>
+                      <div className="mf-filtros">
+                        {FILTROS.map((f) => <button key={f.nome} type="button" className="mf-filtro" onClick={() => setS(f.s)}>{f.nome}</button>)}
+                      </div>
+                    </div>
+                    <div className="mf-grupo">
+                      <div className="mf-grupo-tit">Inclinação</div>
+                      <Slider label="Ângulo" val={foto.s.angle} min={-15} max={15} step={0.1} on={(v) => setS({ angle: v })} fmt={(v) => `${v.toFixed(1)}°`} />
+                      <div className="mf-botoes">
+                        <button className="admin-btn admin-btn--mini" onClick={autoAngulo}>🎯 Auto-endireitar</button>
+                        <button className="admin-btn admin-btn--mini" onClick={autoAnguloTodas}>🎯 Endireitar TODAS</button>
+                      </div>
+                    </div>
+                    <div className="mf-grupo">
+                      <div className="mf-grupo-tit">Ajuste fino</div>
+                      <Slider label="Brilho" val={foto.s.brilho} min={0.8} max={1.3} step={0.01} on={(v) => setS({ brilho: v })} fmt={(v) => `${Math.round(v * 100)}%`} />
+                      <Slider label="Contraste" val={foto.s.contraste} min={0.8} max={1.4} step={0.01} on={(v) => setS({ contraste: v })} fmt={(v) => `${Math.round(v * 100)}%`} />
+                      <Slider label="Cor (saturação)" val={foto.s.satur} min={0.8} max={1.5} step={0.01} on={(v) => setS({ satur: v })} fmt={(v) => `${Math.round(v * 100)}%`} />
+                      <Slider label="Nitidez" val={foto.s.nitidez} min={0} max={1.4} step={0.05} on={(v) => setS({ nitidez: v })} fmt={(v) => v.toFixed(2)} />
+                      <Slider label="Temperatura" val={foto.s.temp} min={-0.3} max={0.3} step={0.02} on={(v) => setS({ temp: v })} fmt={(v) => v === 0 ? 'neutro' : v > 0 ? 'quente' : 'fria'} />
+                      <Slider label="Vinheta" val={foto.s.vinheta} min={0} max={0.6} step={0.05} on={(v) => setS({ vinheta: v })} fmt={(v) => v === 0 ? 'não' : Math.round(v * 100) + '%'} />
+                      <label className="mf-check"><input type="checkbox" checked={foto.s.wb} onChange={(e) => setS({ wb: e.target.checked })} /> Balanço de branco automático</label>
+                      <div className="mf-botoes" style={{ marginTop: 8 }}>
+                        <button className="admin-btn admin-btn--mini" onClick={restaurar}>↺ Padrão</button>
+                        <button className="admin-btn admin-btn--mini" onClick={aplicarTodas}>✓ Aplicar a TODAS</button>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {aba === 'ia' && (
+                  <div className="mf-grupo mf-grupo--ia">
+                    <div className="mf-grupo-tit">🤖 Super-resolução com IA <span className="mf-beta">Beta</span></div>
+                    <p className="mf-nota" style={{ marginTop: 0 }}>Pra fotos de baixa resolução. Uma IA open-source recompõe o detalhe (não é só ampliar). Roda no seu navegador — a 1ª vez baixa o modelo.</p>
+                    <button className="btn btn-gold" onClick={melhorarIA} disabled={!!ia}>
+                      {ia ? (ia.fase === 'carregando' ? 'Carregando IA…' : ia.fase === 'processando' ? 'Recuperando foto…' : ia.fase === 'pronto' ? '✓ Pronto!' : 'Tentar de novo') : '✨ Melhorar esta foto com IA'}
+                    </button>
+                    {ia?.msg && <p className={`mf-nota ${ia.fase === 'erro' ? 'mf-erro' : ''}`}>{ia.msg}</p>}
+                  </div>
+                )}
+
+                {aba === 'marca' && (
+                  <div className="mf-grupo">
+                    <div className="mf-grupo-tit">💧 Marca d'água</div>
+                    <label className="mf-check"><input type="checkbox" checked={wm.on} onChange={(e) => setWm({ ...wm, on: e.target.checked })} /> Inserir marca d'água nas fotos</label>
+                    {wm.on && (
+                      <>
+                        <label className="mf-campo"><span>Texto</span>
+                          <input type="text" value={wm.texto} onChange={(e) => setWm({ ...wm, texto: e.target.value })} placeholder="Ex.: Vinícius Graton" />
+                        </label>
+                        <label className="mf-sel"><span>Posição</span>
+                          <select value={wm.pos} onChange={(e) => setWm({ ...wm, pos: e.target.value })}>
+                            <option value="inf-dir">Inferior direita</option>
+                            <option value="inf-esq">Inferior esquerda</option>
+                            <option value="inf-centro">Inferior centro</option>
+                            <option value="sup-dir">Superior direita</option>
+                            <option value="sup-esq">Superior esquerda</option>
+                            <option value="centro">Centro</option>
+                          </select>
+                        </label>
+                        <Slider label="Tamanho" val={wm.tam} min={2} max={9} step={0.5} on={(v) => setWm({ ...wm, tam: v })} fmt={(v) => v.toFixed(1)} />
+                        <Slider label="Opacidade" val={wm.opac} min={0.2} max={1} step={0.05} on={(v) => setWm({ ...wm, opac: v })} fmt={(v) => Math.round(v * 100) + '%'} />
+                        <p className="mf-nota">Aparece nas fotos baixadas e no vídeo. Vale pra todas.</p>
+                      </>
+                    )}
+                  </div>
+                )}
+
+                {aba === 'export' && (
+                  <div className="mf-grupo">
+                    <div className="mf-grupo-tit">📤 Exportação</div>
+                    <label className="mf-sel"><span>Formato</span>
+                      <select value={formato} onChange={(e) => setFormato(e.target.value)}>
+                        <option value="jpeg">JPG — menor, ideal pra anúncio</option>
+                        <option value="png">PNG — sem perda, arquivo maior</option>
+                        <option value="webp">WebP — moderno e leve</option>
+                      </select>
+                    </label>
+                    <label className="mf-sel"><span>Ampliar</span>
+                      <select value={foto.s.escala} onChange={(e) => setS({ escala: parseFloat(e.target.value) })}>
+                        <option value={1}>Original (nítida)</option>
+                        <option value={1.5}>1,5× maior</option>
+                        <option value={2}>2× maior (UHD)</option>
+                      </select>
+                    </label>
+                    <p className="mf-nota">Ampliação reamostra em alta qualidade + nitidez. Pra recuperar foto ruim de verdade, use a aba IA. O formato e a ampliação valem pra todos os downloads.</p>
+                  </div>
+                )}
+
+                {aba === 'video' && (
+                  <div className="mf-grupo">
+                    <div className="mf-grupo-tit">🎬 Vídeo de apresentação</div>
+                    <label className="mf-sel"><span>Formato</span>
+                      <select value={videoFmt} onChange={(e) => setVideoFmt(e.target.value)} disabled={!!video}>
+                        <option value="vertical">Vertical 9:16 — Stories, Reels e Status</option>
+                        <option value="quadrado">Quadrado 1:1 — Feed do Instagram/Facebook</option>
+                        <option value="horizontal">Horizontal 16:9 — YouTube, site e TV</option>
+                      </select>
+                    </label>
+                    <label className="mf-sel"><span>Tempo por foto</span>
+                      <select value={durSeg} onChange={(e) => setDurSeg(parseFloat(e.target.value))} disabled={!!video}>
+                        <option value={2}>2 segundos</option>
+                        <option value={3}>3 segundos</option>
+                        <option value={4}>4 segundos</option>
+                      </select>
+                    </label>
+                    <button className="btn btn-gold" onClick={gerarVideo} disabled={!!video}>
+                      {video ? (video.fase === 'gravando' ? `Montando seu vídeo… ${video.pct}%` : video.fase === 'pronto' ? '✓ Vídeo pronto!' : 'Tentar de novo') : '🎬 Baixar como vídeo'}
+                    </button>
+                    {video?.fase === 'gravando' && (
+                      <div className="mf-prog-wrap">
+                        <div className="mf-prog-top"><span className="mf-prog-emoji">🎬</span> {msgVideo(video.pct)} <b>{video.pct}%</b></div>
+                        <div className="mf-prog">
+                          <div className="mf-prog-bar" style={{ width: Math.max(4, video.pct || 0) + '%' }} />
+                          <span className="mf-prog-rider" style={{ left: Math.max(4, video.pct || 0) + '%' }}>🏠</span>
+                        </div>
+                      </div>
+                    )}
+                    <p className="mf-nota">Slideshow com transição suave e a marca d'água "{wm.texto || 'Vinícius Graton'}" centralizada e translúcida (constante, dá pra ver a transição por trás). Gera em tempo real (~{Math.round(fotos.length * durSeg)}s). Usa o realce de cada foto. Sai em MP4 (ou WebM, conforme o navegador).</p>
+                    {video?.fase === 'erro' && <p className="lead-erro">{video.msg}</p>}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* BARRA DE AÇÕES FIXA */}
+          <div className="mf-acoes-bar">
+            <span className="mf-acoes-info">{fotos.length} foto(s)</span>
+            <span style={{ flex: 1 }} />
+            <button className="admin-btn" onClick={baixarUma} disabled={baixando}>{baixando === 'uma' ? 'Gerando…' : '⬇ Baixar esta'}</button>
+            <button className="btn btn-gold" onClick={baixarTodas} disabled={baixando}>{baixando === 'todas' ? 'Baixando…' : `⬇ Baixar todas (${fotos.length})`}</button>
+          </div>
+        </div>
       )}
     </div>
   )
