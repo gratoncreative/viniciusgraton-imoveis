@@ -66,7 +66,7 @@ function montarImovel(im) {
 
 // ---- Benefícios reais num raio de 1km (Overpass / OpenStreetMap) ----
 async function beneficios1km(lat, lng) {
-  const q = `[out:json][timeout:18];(` +
+  const q = `[out:json][timeout:8];(` +
     `node(around:1000,${lat},${lng})[amenity~"school|kindergarten|college|university|language_school|pharmacy|hospital|clinic|doctors|bank|atm|restaurant|cafe|fast_food|fuel|marketplace|place_of_worship|cinema|theatre|library|bus_station"];` +
     `node(around:1000,${lat},${lng})[shop~"supermarket|mall|bakery|convenience|department_store|greengrocer|butcher"];` +
     `node(around:1000,${lat},${lng})[leisure~"park|garden|fitness_centre|sports_centre|playground|stadium|pitch"];` +
@@ -80,6 +80,7 @@ async function beneficios1km(lat, lng) {
         method: 'POST',
         headers: { 'content-type': 'application/x-www-form-urlencoded', 'user-agent': 'ViniciusGratonImoveis/1.0 (viniciusgraton.com.br)' },
         body: 'data=' + encodeURIComponent(q),
+        signal: AbortSignal.timeout(4500), // não deixa o Overpass segurar a resposta (galeria não pode esperar)
       })
       if (!r.ok) continue
       const j = await r.json()
@@ -186,14 +187,26 @@ export async function onRequestGet({ request, env }) {
   }
 
   const imovel = montarImovel(raw.lista[0])
+  // Os benefícios (Overpass/OSM) são a parte lenta. Eles NÃO podem segurar a resposta:
+  // a galeria de fotos já está pronta no `imovel`. Damos um teto de 5,5s — se estourar,
+  // entra o fallback. Assim a função sempre responde abaixo do timeout do cliente (9s).
   let beneficios = []
-  if (imovel.lat && imovel.lng) beneficios = await beneficios1km(imovel.lat, imovel.lng)
+  let beneficiosReais = false
+  if (imovel.lat && imovel.lng) {
+    beneficios = (await Promise.race([
+      beneficios1km(imovel.lat, imovel.lng),
+      new Promise((res) => setTimeout(() => res(null), 5500)),
+    ]).catch(() => null)) || []
+    beneficiosReais = beneficios.length > 0
+  }
   if (beneficios.length < 10) {
     const fb = FALLBACK(imovel.bairro || 'O bairro')
     for (const b of fb) { if (beneficios.length >= 10) break; if (!beneficios.includes(b)) beneficios.push(b) }
   }
 
   const out = { imovel, beneficios }
-  if (temKV) { try { await env.ENGAGEMENT.put(cacheKey, JSON.stringify(out), { expirationTtl: 86400 }) } catch {} }
+  // cache longo quando os benefícios são reais; curto quando caímos no fallback (Overpass lento),
+  // pra tentar os benefícios reais de novo logo — sem nunca penalizar a galeria.
+  if (temKV) { try { await env.ENGAGEMENT.put(cacheKey, JSON.stringify(out), { expirationTtl: beneficiosReais ? 86400 : 3600 }) } catch {} }
   return json(out)
 }

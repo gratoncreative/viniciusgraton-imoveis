@@ -157,7 +157,7 @@ export default function ImovelDetalhe() {
     let vivo = true
     setBuscando(true)
     const ctrl = new AbortController()
-    const t = setTimeout(() => ctrl.abort(), 9000)
+    const t = setTimeout(() => ctrl.abort(), 12000)
     fetch(`/api/rotina-imovel?codigo=${encodeURIComponent(codigo)}`, { signal: ctrl.signal })
       .then((r) => (r.ok ? r.json() : null))
       .then((j) => { if (vivo && j && j.imovel) setImApi(mapApi(j.imovel)) })
