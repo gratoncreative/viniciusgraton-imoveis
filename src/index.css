@@ -779,6 +779,12 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .det-tour-b:hover { transform: translateY(-2px); filter: brightness(1.12); }
 .det-tour-b span { font-size: 1.05rem; }
 
+/* Apresentação persuasiva do imóvel (abaixo da galeria) */
+.det-apresenta { margin-top: 24px; background: #faf7f0; border: 1px solid rgba(184,134,47,0.2); border-radius: 16px; padding: clamp(20px, 3vw, 28px); }
+.det-apresenta-tit { font-family: var(--font-head); font-weight: 800; font-size: clamp(1.1rem, 2.4vw, 1.35rem); color: #2a2118; margin-bottom: 12px; }
+.det-apresenta p { color: #4a4234; line-height: 1.65; margin-bottom: 10px; }
+.det-apresenta p:last-child { margin-bottom: 0; }
+
 /* Q&A com resposta no hover/clique (página do imóvel) */
 .qa-dica { font-size: 0.8rem; color: #8a8170; margin-bottom: 12px; }
 .qa-lista { display: flex; flex-direction: column; gap: 9px; }

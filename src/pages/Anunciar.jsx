@@ -104,11 +104,9 @@ export default function Anunciar() {
     preco: 0, quartos: '', suites: '', vagas: '', area: '', condominio: 0, iptu: '', descricao: '',
   })
   const [fotos, setFotos] = useState([])
-  const [placa, setPlaca] = useState({ quer: true, modelo: 'premium', tamanho: 'media' })
+  const [placa, setPlaca] = useState({ quer: true })
   const [consent, setConsent] = useState(false)
-  const placaTxt = placa.quer
-    ? `Sim — modelo ${PLACA_MODELOS.find((m) => m.id === placa.modelo)?.nome}, tamanho ${PLACA_TAMANHOS.find((t) => t.id === placa.tamanho)?.nome} (${PLACA_TAMANHOS.find((t) => t.id === placa.tamanho)?.dim})`
-    : 'Não, por enquanto'
+  const placaTxt = placa.quer ? 'Sim, quero a placa VENDE-SE (grátis)' : 'Não, por enquanto'
   const [estado, setEstado] = useState('idle') // idle | enviando | ok | erro
   const set = (k) => (e) => setF((s) => ({ ...s, [k]: e.target.value }))
   const setNum = (k) => (v) => setF((s) => ({ ...s, [k]: v }))
@@ -292,25 +290,6 @@ export default function Anunciar() {
               <button type="button" className={`placa-toggle ${placa.quer ? 'on' : ''}`} onClick={() => setPlaca((s) => ({ ...s, quer: true }))}>Quero a placa (grátis)</button>
               <button type="button" className={`placa-toggle ${!placa.quer ? 'on' : ''}`} onClick={() => setPlaca((s) => ({ ...s, quer: false }))}>Agora não</button>
             </div>
-            {placa.quer && (
-              <>
-                <span className="placa-label">Escolha o modelo</span>
-                <div className="placa-modelos">
-                  {PLACA_MODELOS.map((m) => (
-                    <button type="button" key={m.id} className={`placa-card ${placa.modelo === m.id ? 'on' : ''}`} onClick={() => setPlaca((s) => ({ ...s, modelo: m.id }))}>
-                      <PlacaPreview modelo={m.id} />
-                      <b>{m.nome}</b><i>{m.desc}</i>
-                    </button>
-                  ))}
-                </div>
-                <span className="placa-label">Tamanho</span>
-                <div className="condo-chips">
-                  {PLACA_TAMANHOS.map((t) => (
-                    <button type="button" key={t.id} className={`condo-chip ${placa.tamanho === t.id ? 'on' : ''}`} onClick={() => setPlaca((s) => ({ ...s, tamanho: t.id }))}>{t.nome} · {t.dim}</button>
-                  ))}
-                </div>
-              </>
-            )}
           </div>
 
           <label className="lead-consent">

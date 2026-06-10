@@ -30,7 +30,15 @@ export async function onRequestPost({ env, request }) {
   if (b.site) return json({ ok: true }) // bot
   const email = lim(b.email, 140).trim().toLowerCase()
   if (!emailOk(email)) return json({ error: 'email', msg: 'E-mail inválido.' }, 400)
+  // descarta silenciosamente domínios de teste/descartáveis (spam/bot)
+  if (/@(test|teste|example|exemplo|mailinator|tempmail|guerrillamail|10minutemail|trashmail|yopmail)\.|^(test|teste|diagnostico|admin)@/i.test(email)) return json({ ok: true })
   if (!temKV(env)) return json({ ok: true, persistido: false })
+  // rate-limit por IP: máx. 3 inscrições por hora (anti-spam/teste)
+  const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || 'sem-ip'
+  const rlKey = 'rl:news:' + ip
+  const usos = parseInt(await env.ENGAGEMENT.get(rlKey), 10) || 0
+  if (usos >= 3) return json({ ok: true, limite: true })
+  await env.ENGAGEMENT.put(rlKey, String(usos + 1), { expirationTtl: 3600 })
   // evita duplicar o mesmo e-mail
   const idx = 'newsidx:' + email
   const existe = await env.ENGAGEMENT.get(idx)

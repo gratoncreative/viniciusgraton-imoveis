@@ -18,6 +18,40 @@ const plural = (n, s, p) => (n > 1 ? p : s)
 // URL de vídeo "assistível" (extrai o ID do YouTube e monta /watch)
 const ytWatch = (u) => { const m = String(u || '').match(/(?:embed\/|v=|youtu\.be\/)([\w-]{11})/); return m ? `https://www.youtube.com/watch?v=${m[1]}` : u }
 
+// Apresentação PERSUASIVA e única por imóvel (gatilhos mentais), variando por código
+function apresentacao(im) {
+  const t = im.tipo || 'imóvel'
+  const tl = t.toLowerCase()
+  const b = im.bairro || 'Uberlândia'
+  const seed = [...String(im.codigo)].reduce((a, c) => a + c.charCodeAt(0), 0)
+  const pick = (arr, o = 0) => arr[(seed + o) % arr.length]
+  const ehApto = /apart|kit|studio|stúdio|loft|flat|cobertura/i.test(t)
+  const op = oportunidade(im)
+  const extras = []
+  if (im.suites) extras.push(`${im.suites} suíte${im.suites > 1 ? 's' : ''}`)
+  if (im.vagas >= 2) extras.push(`${im.vagas} vagas`)
+  if (ehApto && im.elevador) extras.push('elevador')
+  ;(im.amenidades || []).slice(0, 2).forEach((a) => extras.push(String(a).toLowerCase()))
+
+  const abre = pick([
+    `Se você procura um ${tl} no ${b} que une boa localização, conforto e um negócio que vale a pena, esse merece a sua atenção.`,
+    `Imóvel bom no ${b} não fica muito tempo no mercado — e esse ${tl} reúne o que mais pesa na hora de comprar bem.`,
+    `Esse ${tl} no ${b} foi feito pra quem quer morar bem, sem abrir mão de praticidade, espaço e segurança.`,
+  ])
+  const corpo = `São ${[im.area && `${im.area} m²`, im.quartos && `${im.quartos} quartos`, ...extras].filter(Boolean).join(', ')}${im.condominio ? `, com condomínio organizado` : ''} — espaço e conforto pensados pra sua rotina.`
+  const valor = op.abaixoMercado
+    ? `E olha que oportunidade: pelo preço do metro quadrado no ${b}, ele está abaixo da média da região — chance real de comprar bem e ainda valorizar.`
+    : pick([
+      `Pelo padrão e pela localização, é o tipo de imóvel que mantém valor e tem boa liquidez na hora de revender.`,
+      `Comprar no ${b} é decisão segura: região consolidada, procurada e com tendência de valorização.`,
+    ], 1)
+  const fecha = pick([
+    `Quer ver de perto? Eu te acompanho na visita, esclareço tudo e cuido da documentação e do financiamento. Me chama no WhatsApp que a gente agenda.`,
+    `Posso te mostrar pessoalmente e simular o financiamento com você — atendimento direto, do primeiro contato à entrega das chaves. É só chamar.`,
+  ], 2)
+  return [abre, corpo, valor, fecha]
+}
+
 // converte o imóvel vindo da API da Rotina (/api/rotina-imovel) para o formato do site
 function mapApi(a) {
   return {
@@ -251,6 +285,10 @@ export default function ImovelDetalhe() {
           <div className="det-galeria">
             <span className="det-tag">{im.tipo}</span>
             <Galeria fotos={fotos} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} />
+            <div className="det-apresenta">
+              <h2 className="det-apresenta-tit">Por que esse imóvel vale a sua visita</h2>
+              {apresentacao(im).map((p, i) => <p key={i}>{p}</p>)}
+            </div>
           </div>
 
           {/* Painel de info */}
