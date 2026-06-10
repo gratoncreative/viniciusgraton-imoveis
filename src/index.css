@@ -459,19 +459,22 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .cat-painel .cat-filtros { margin-bottom: 0; }
 
 /* layout de listagem: filtros na lateral + resultados em linha */
-.cat-layout { display: grid; grid-template-columns: 290px 1fr; gap: 28px; align-items: start; }
-.cat-rail { position: sticky; top: 86px; align-self: start; max-height: calc(100vh - 100px); overflow-y: auto; overflow-x: hidden; padding-right: 4px; scrollbar-width: thin; }
-.cat-rail::-webkit-scrollbar { width: 7px; }
-.cat-rail::-webkit-scrollbar-thumb { background: rgba(184,134,47,0.35); border-radius: 4px; }
+.cat-layout { display: grid; grid-template-columns: 360px 1fr; gap: 28px; align-items: start; }
+.cat-rail { position: sticky; top: 86px; align-self: start; }
 .cat-rail .cat-painel { margin-bottom: 14px; }
-.cat-rail .cat-filtros { flex-direction: column; gap: 10px; }
-.cat-rail .cat-filtros select, .cat-rail .cat-busca { width: 100%; }
+/* seletores em 2 colunas pra caber tudo sem rolagem interna */
+.cat-rail .cat-filtros { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cat-rail .cat-filtros select { width: 100%; }
+.cat-rail .cat-busca { width: 100%; flex: 0 0 auto; min-width: 0; }
 .cat-rail .cat-busca { flex: 0 0 auto; min-width: 0; }
 .cat-main { min-width: 0; }
 .cat-lista { display: flex; flex-direction: column; gap: 18px; }
 @media (max-width: 880px) {
   .cat-layout { grid-template-columns: 1fr; gap: 18px; }
   .cat-rail { position: static; }
+}
+@media (max-width: 520px) {
+  .cat-rail .cat-filtros { grid-template-columns: 1fr; }
 }
 
 /* card horizontal (resultado da listagem) */
