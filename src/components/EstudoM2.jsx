@@ -6,7 +6,7 @@ import { IconClose, IconWhats } from './icons'
 const fmtM2 = (v) => 'R$ ' + Math.round(v).toLocaleString('pt-BR') + '/m²'
 
 // Estudo do valor do m² — comparativo de mercado homogeneizado (NBR 14653).
-export default function EstudoM2({ im, est, onClose }) {
+export default function EstudoM2({ im, est, onClose, onLaudo }) {
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     const k = (e) => { if (e.key === 'Escape') onClose() }
@@ -77,6 +77,12 @@ export default function EstudoM2({ im, est, onClose }) {
           Estudo comparativo de mercado, calculado individualmente para este imóvel pelo método da norma ABNT NBR 14653, com homogeneização da amostra. É uma estimativa de referência — não substitui um laudo de avaliação com vistoria, feito por profissional credenciado.
         </p>
 
+        {onLaudo && (
+          <button type="button" className="em2-laudo" onClick={onLaudo}>
+            <span>📄 Laudo técnico completo em PDF</span>
+            <em>todos os comparáveis, cada cálculo e as fontes · R$ 29,90</em>
+          </button>
+        )}
         <a className="btn btn-gold em2-cta" href={linkWhatsApp(msg)} target="_blank" rel="noopener"><IconWhats width={18} height={18} /> Falar sobre o preço com o Vinícius</a>
       </div>
     </div>,

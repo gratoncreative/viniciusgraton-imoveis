@@ -212,9 +212,11 @@ export function estudoM2(im, base) {
     return (preco / x.area) * f
   }
   const ok = (x) => String(x.codigo) !== String(im.codigo) && _tipoGrupo(x.tipo) === grupo && x.preco > 0 && x.area > 0
-  let comps = lista.filter((x) => ok(x) && _norm(x.bairro) === norm).map(m2homog).filter((v) => v > 0).sort((a, b) => a - b)
+  const det = (x) => ({ codigo: String(x.codigo), bairro: x.bairro, area: x.area, preco: x.preco, vagas: x.vagas || 0, m2bruto: x.preco / x.area, m2: m2homog(x) })
+  let objs = lista.filter((x) => ok(x) && _norm(x.bairro) === norm).map(det).filter((o) => o.m2 > 0).sort((a, b) => a.m2 - b.m2)
   let escopo = 'bairro'
-  if (comps.length < 5) { comps = lista.filter(ok).map(m2homog).filter((v) => v > 0).sort((a, b) => a - b); escopo = 'cidade' }
+  if (objs.length < 5) { objs = lista.filter(ok).map(det).filter((o) => o.m2 > 0).sort((a, b) => a.m2 - b.m2); escopo = 'cidade' }
+  let comps = objs.map((o) => o.m2)
 
   // valor do próprio imóvel (sem vaga, nível oferta) p/ comparar de forma justa
   let precoSubj = im.preco
@@ -240,8 +242,9 @@ export function estudoM2(im, base) {
 
   // saneamento estatístico: descarta fora de ±30% da mediana e recalcula
   const med0 = _quantil(comps, 0.5)
-  const saneados = comps.filter((v) => v >= med0 * 0.7 && v <= med0 * 1.3)
-  const usar = saneados.length >= 3 ? saneados : comps
+  const saneObj = objs.filter((o) => o.m2 >= med0 * 0.7 && o.m2 <= med0 * 1.3)
+  const usarObj = saneObj.length >= 3 ? saneObj : objs
+  const usar = usarObj.map((o) => o.m2)
   const nDesc = comps.length - usar.length
   const mediana = _quantil(usar, 0.5)
   const media = usar.reduce((s, v) => s + v, 0) / usar.length
@@ -272,6 +275,8 @@ export function estudoM2(im, base) {
       'Não considera idade exata, padrão de acabamento e microlocalização de cada comparável (exigiriam vistoria/laudo).',
     ],
     fontes: _fontesM2(refRow),
+    comparaveis: usarObj.slice(0, 40),
+    parametros: { vagaValor: VAGA_VALOR, fatorOferta: FATOR_OFERTA, expArea: EXP_AREA },
   }
 }
 

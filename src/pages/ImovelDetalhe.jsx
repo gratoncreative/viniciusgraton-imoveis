@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import Galeria from '../components/Galeria'
@@ -196,6 +196,37 @@ export default function ImovelDetalhe() {
     try { const { gerarPdfImovel } = await import('../pdfImovel'); await gerarPdfImovel(im, fotos, beneficios) } catch { /* ignora */ }
     setPdfProc(false)
   }
+
+  // Laudo técnico pago (Mercado Pago R$ 29,90) -> gera o PDF completo após aprovado
+  const [laudoLiberado, setLaudoLiberado] = useState(false)
+  const laudoGerado = useRef(false)
+  const comprarLaudo = async () => {
+    if (!im) return
+    try {
+      const r = await fetch('/api/laudo-pagar', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ codigo: im.codigo }) })
+      const j = await r.json()
+      if (j && j.ok && j.url) { window.location.href = j.url; return }
+      if (j && j.naoConfigurado) { alert('O pagamento ainda não está configurado. Me chama no WhatsApp que eu te envio o laudo.'); return }
+      alert('Não consegui iniciar o pagamento agora. Tente de novo em instantes.')
+    } catch { alert('Falha de conexão. Tente de novo.') }
+  }
+  // ao voltar do Mercado Pago: verifica o pagamento e libera o PDF
+  useEffect(() => {
+    const sp = new URLSearchParams(window.location.search)
+    if (sp.get('laudo') !== '1') return
+    const status = sp.get('status') || sp.get('collection_status')
+    const payId = sp.get('payment_id') || sp.get('collection_id')
+    if (status === 'approved' && payId) {
+      fetch(`/api/laudo-verificar?payment_id=${encodeURIComponent(payId)}&codigo=${encodeURIComponent(codigo)}`)
+        .then((r) => r.json()).then((j) => { if (j && j.ok) setLaudoLiberado(true) }).catch(() => {})
+    }
+    try { window.history.replaceState({}, '', `/imovel/${codigo}`) } catch { /* ok */ }
+  }, [codigo])
+  useEffect(() => {
+    if (!laudoLiberado || !est || !est.ok || laudoGerado.current) return
+    laudoGerado.current = true
+    import('../pdfLaudoM2').then((m) => m.gerarPdfLaudoM2(im, est)).catch(() => {})
+  }, [laudoLiberado, est, im])
 
   useEffect(() => {
     if (im) document.title = `${im.tipo} no ${im.bairro} — ${formatPreco(im.preco)} | ${CONFIG.nome}`
@@ -523,7 +554,7 @@ export default function ImovelDetalhe() {
           <Link className="btn btn-ghost" to="/imoveis"><IconArrow style={{ transform: 'rotate(180deg)' }} /> Voltar para o catálogo</Link>
         </div>
       </div>
-      {estudoAberto && est?.ok && <EstudoM2 im={im} est={est} onClose={() => setEstudoAberto(false)} />}
+      {estudoAberto && est?.ok && <EstudoM2 im={im} est={est} onClose={() => setEstudoAberto(false)} onLaudo={comprarLaudo} />}
     </main>
   )
 }
