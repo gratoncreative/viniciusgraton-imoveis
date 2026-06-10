@@ -28,6 +28,7 @@ export default function GoogleLogin({ onPronto }) {
   useEffect(() => {
     if (!clientId) return
     let vivo = true
+    let limparResize = () => {}
     carregarGIS().then(() => {
       if (!vivo || !(window.google && window.google.accounts && window.google.accounts.id)) return
       window.google.accounts.id.initialize({
@@ -53,13 +54,21 @@ export default function GoogleLogin({ onPronto }) {
           } catch { /* silencioso: o cadastro manual continua disponível */ }
         },
       })
-      if (ref.current) {
+      // desenha o botão na largura do espaço disponível (sem cortar o texto),
+      // limitado a 400px (máximo do Google) — re-desenha ao redimensionar
+      const desenharBotao = () => {
+        if (!vivo || !ref.current || !(window.google && window.google.accounts && window.google.accounts.id)) return
+        const largura = Math.min(400, Math.max(240, Math.floor(ref.current.offsetWidth) || 320))
+        ref.current.innerHTML = ''
         window.google.accounts.id.renderButton(ref.current, {
-          theme: 'outline', size: 'large', text: 'continue_with', shape: 'pill', logo_alignment: 'left', width: 320,
+          theme: 'outline', size: 'large', text: 'continue_with', shape: 'pill', width: largura,
         })
       }
+      desenharBotao()
+      window.addEventListener('resize', desenharBotao)
+      limparResize = () => window.removeEventListener('resize', desenharBotao)
     }).catch(() => {})
-    return () => { vivo = false }
+    return () => { vivo = false; limparResize() }
   }, [clientId])
 
   if (!clientId) return null
