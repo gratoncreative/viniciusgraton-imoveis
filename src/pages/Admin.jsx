@@ -474,6 +474,19 @@ export default function Admin() {
     importadosPendentes.forEach((im) => window.open(`https://app.imoview.com.br/Imovel/Detalhes/${im.codigo}`, '_blank', 'noopener'))
   }
 
+  const copiarEmails = () => {
+    const emails = (dados?.news || []).map((n) => n.email).filter(Boolean).join(', ')
+    try { navigator.clipboard.writeText(emails) } catch {}
+  }
+  const exportarNews = () => {
+    const linhas = [['E-mail', 'Nome', 'Data']]
+    ;(dados?.news || []).forEach((n) => linhas.push([n.email || '', n.nome || '', n.ts ? new Date(n.ts).toLocaleString('pt-BR') : '']))
+    const csv = linhas.map((r) => r.map((c) => `"${String(c == null ? '' : c).replace(/"/g, '""')}"`).join(';')).join('\r\n')
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'newsletter-vinicius-graton.csv'; a.click()
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000)
+  }
+
   const exportarCSV = () => {
     const linhas = [['Nome', 'Telefone', 'Origem', 'Status', 'Anotação', 'Data']]
     leads.forEach((l) => linhas.push([l.nome, l.fone, l.bairro || l.cod || '', l.status || 'Novo', (l.nota || '').replace(/[\r\n]+/g, ' '), l.data ? new Date(l.data).toLocaleString('pt-BR') : '']))
@@ -489,6 +502,8 @@ export default function Admin() {
     ['imoveis', `Imóveis${aAvaliar ? ` (${aAvaliar} a avaliar)` : ''}`],
     ['leads', `Leads (${leads.length})`],
     ['crm', `Clientes${crmNovidades ? ` 🔔${crmNovidades}` : crmNovos ? ` (${crmNovos} novos)` : ''}`],
+    ['news', `Newsletter (${(dados?.news || []).length})`],
+    ['acessos', 'Acessos'],
     ['marca', "Remover marca d'água"],
   ]
 
@@ -520,8 +535,8 @@ export default function Admin() {
               <StatCard rotulo="Leads (7 dias)" valor={leadsNovos} sub={`${leads.length} no total`} onClick={() => setAba('leads')} />
               <StatCard rotulo="Clientes" valor={crmTotal} sub={`${crmNovidades ? '🔔 ' + crmNovidades + ' mexeram · ' : ''}${crmNovos ? crmNovos + ' novos · ' : ''}${clientes.length} cadastros`} onClick={() => setAba('crm')} />
               <StatCard rotulo="Imóveis publicados" valor={IMOVEIS.length} sub="em destaque no site" onClick={() => { setAba('imoveis'); setSubImovel('publicados') }} />
-              <StatCard rotulo="Leituras no blog" valor={totalViews} sub={blogViews ? `${Object.keys(blogViews).length} posts` : '—'} onClick={() => window.open('/blog', '_blank')} />
-              <StatCard rotulo="Newsletter" valor={(dados?.news || []).length} sub="inscritos por e-mail" onClick={baixarBackup} />
+              <StatCard rotulo="Acessos no site" valor={totalViews} sub={blogViews ? `${Object.keys(blogViews).length} posts lidos` : 'leituras registradas'} onClick={() => setAba('acessos')} />
+              <StatCard rotulo="Newsletter" valor={(dados?.news || []).length} sub="inscritos por e-mail" onClick={() => setAba('news')} />
             </div>
             <div className="det-trust" style={{ marginTop: 18 }}>
               <IconShield width={20} height={20} />
@@ -642,6 +657,53 @@ export default function Admin() {
         {aba === 'imoveis' && subImovel === 'publicados' && <ImoveisPub token={token} onSair={sair} />}
 
         {aba === 'crm' && <AdminCRM token={token} onSair={sair} cadastros={clientes} onExcluirCadastro={(c) => excluir(c._key, `o cadastro de ${c.nome || 'cliente'}`)} />}
+
+        {aba === 'acessos' && (
+          <section>
+            <div className="admin-stats">
+              <StatCard rotulo="Leituras no blog" valor={totalViews} sub={blogViews ? `${Object.keys(blogViews).length} posts lidos` : '—'} />
+              <StatCard rotulo="Imóveis publicados" valor={IMOVEIS.length} sub="no ar agora" />
+              <StatCard rotulo="Leads (7 dias)" valor={leadsNovos} sub={`${leads.length} no total`} />
+              <StatCard rotulo="Clientes" valor={crmTotal} sub={`${clientes.length} cadastros`} />
+            </div>
+            <h3 className="admin-sec-tit">Conteúdo mais acessado</h3>
+            {blogViews && Object.keys(blogViews).length ? (
+              <ul className="admin-rank">
+                {Object.entries(blogViews).sort((a, b) => b[1] - a[1]).slice(0, 15).map(([slug, n]) => (
+                  <li key={slug}><a href={`/blog/${slug}`} target="_blank" rel="noopener">{slug.replace(/-/g, ' ')}</a><b>{n} {n === 1 ? 'leitura' : 'leituras'}</b></li>
+                ))}
+              </ul>
+            ) : <p className="section-sub">Ainda sem leituras registradas. Conforme o site recebe visitas, o ranking aparece aqui.</p>}
+            <div className="admin-info-box">
+              <p><b>Visão de acessos do site.</b> Aqui mostro o que o próprio site registra em tempo real (leituras do blog, leads e cadastros). Para o relatório completo de visitas, origem do tráfego, dispositivos e tempo de navegação, abra o Google Analytics.</p>
+              <a className="btn btn-ghost" href="https://analytics.google.com/" target="_blank" rel="noopener">Abrir o Google Analytics ↗</a>
+            </div>
+          </section>
+        )}
+
+        {aba === 'news' && (
+          <section>
+            <div className="admin-news-top">
+              <h3 className="admin-sec-tit" style={{ margin: 0 }}>{(dados?.news || []).length} {(dados?.news || []).length === 1 ? 'inscrito' : 'inscritos'} na newsletter</h3>
+              <div className="admin-news-acoes">
+                <button className="btn btn-ghost" onClick={copiarEmails}>Copiar e-mails</button>
+                <button className="btn btn-ghost" onClick={exportarNews}>Exportar CSV</button>
+                <a className="btn btn-ghost" href="https://dashboard.mailerlite.com/subscribers" target="_blank" rel="noopener">Abrir MailerLite ↗</a>
+              </div>
+            </div>
+            {(dados?.news || []).length ? (
+              <ul className="admin-news-lista">
+                {dados.news.map((nw) => (
+                  <li key={nw._key || nw.email}>
+                    <div className="admin-news-info"><b>{nw.email || '—'}</b>{nw.nome ? <i> · {nw.nome}</i> : null}</div>
+                    <span className="admin-news-data">{nw.ts ? new Date(nw.ts).toLocaleDateString('pt-BR') : ''}</span>
+                    <button className="admin-news-x" onClick={() => excluir(nw._key, `o inscrito ${nw.email || ''}`)} title="Remover inscrito" aria-label="Remover">✕</button>
+                  </li>
+                ))}
+              </ul>
+            ) : <p className="section-sub">Ninguém inscrito ainda. Os e-mails capturados no rodapé do site aparecem aqui automaticamente.</p>}
+          </section>
+        )}
 
         {aba === 'marca' && <RemoverMarca />}
 
