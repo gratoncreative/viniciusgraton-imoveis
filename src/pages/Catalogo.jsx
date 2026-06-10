@@ -33,7 +33,7 @@ const FIco = ({ n }) => (
   <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={FICN[n]} /></svg>
 )
 
-const AREAS = [60, 100, 150, 200, 300]
+const AREAS = [50, 80, 100, 150, 200, 250, 300, 400, 500, 750, 1000]
 const CARACS = ['Piscina', 'Churrasqueira', 'Varanda gourmet', 'Academia', 'Portaria 24h', 'Closet', 'Energia solar']
 
 // atalhos temáticos (buscas rápidas) → catálogo pré-filtrado
@@ -252,8 +252,8 @@ export default function Catalogo() {
             {[1, 2, 3, 4].map((n) => <option key={n} value={n}>{n}+ vagas</option>)}
           </select></div>
           <div className="cat-f"><FIco n="area" /><select value={f.area} onChange={(e) => up('area', parseInt(e.target.value, 10))}>
-            <option value={0}>Área</option>
-            {AREAS.map((n) => <option key={n} value={n}>{n}+ m²</option>)}
+            <option value={0}>Área mín. (m²)</option>
+            {AREAS.map((n) => <option key={n} value={n}>{n.toLocaleString('pt-BR')}+ m²</option>)}
           </select></div>
           <div className="cat-f"><FIco n="carac" /><select value={f.carac} onChange={(e) => up('carac', e.target.value)}>
             <option value="">Característica</option>

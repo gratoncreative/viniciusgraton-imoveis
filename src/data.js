@@ -170,11 +170,13 @@ export const avaliarMatch = (im, p) => {
   if (p.quartosMin > 0) { if ((im.quartos || 0) < p.quartosMin) return { ok: false, score: 0, motivos: [] }; motivos.push(`${im.quartos} quartos — atende o que você precisa`); score += 12 }
   if (p.suitesMin > 0) { if ((im.suites || 0) < p.suitesMin) return { ok: false, score: 0, motivos: [] }; motivos.push(`${im.suites} suíte${im.suites > 1 ? 's' : ''}`); score += 8 }
   if (p.vagasMin > 0) { if ((im.vagas || 0) < p.vagasMin) return { ok: false, score: 0, motivos: [] }; motivos.push(`${im.vagas} vaga${im.vagas > 1 ? 's' : ''} de garagem`); score += 8 }
-  if (p.areaMin > 0 && (im.area || 0) >= p.areaMin) { motivos.push(`${im.area} m² — bom espaço`); score += 8 }
-  // bairro preferido (impulso, não exclui)
+  if (p.areaMin > 0) { if ((im.area || 0) < p.areaMin) return { ok: false, score: 0, motivos: [] }; motivos.push(`${im.area} m² — bom espaço`); score += 8 }
+  // bairro (filtro FORTE: se o cliente escolheu bairros, só entram imóveis nesses bairros)
   if (Array.isArray(p.bairros) && p.bairros.length) {
     const b = _semAcento(im.bairro)
-    if (p.bairros.some((x) => _semAcento(x) === b || b.includes(_semAcento(x)))) { motivos.push(`No ${im.bairro}, um dos bairros que você curtiu`); score += 20 }
+    const bate = p.bairros.some((x) => _semAcento(x) === b)
+    if (!bate) return { ok: false, score: 0, motivos: [] }
+    motivos.push(`No ${im.bairro}, um dos bairros que você curtiu`); score += 20
   }
   return { ok: true, score, motivos }
 }
