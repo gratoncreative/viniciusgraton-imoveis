@@ -166,11 +166,13 @@ export const avaliarMatch = (im, p) => {
     if (im.preco <= p.precoMax) { motivos.push('Dentro do seu orçamento'); score += 25 }
   }
   if (p.precoMin > 0 && im.preco < p.precoMin * 0.9) return { ok: false, score: 0, motivos: [] }
-  // quartos / suítes / vagas / área (mínimos)
+  // Quartos e área: filtro FORTE (campos confiáveis/preenchidos no feed).
   if (p.quartosMin > 0) { if ((im.quartos || 0) < p.quartosMin) return { ok: false, score: 0, motivos: [] }; motivos.push(`${im.quartos} quartos — atende o que você precisa`); score += 12 }
-  if (p.suitesMin > 0) { if ((im.suites || 0) < p.suitesMin) return { ok: false, score: 0, motivos: [] }; motivos.push(`${im.suites} suíte${im.suites > 1 ? 's' : ''}`); score += 8 }
-  if (p.vagasMin > 0) { if ((im.vagas || 0) < p.vagasMin) return { ok: false, score: 0, motivos: [] }; motivos.push(`${im.vagas} vaga${im.vagas > 1 ? 's' : ''} de garagem`); score += 8 }
   if (p.areaMin > 0) { if ((im.area || 0) < p.areaMin) return { ok: false, score: 0, motivos: [] }; motivos.push(`${im.area} m² — bom espaço`); score += 8 }
+  // Suítes e vagas: a Rotina muitas vezes NÃO preenche (0 = "não informado").
+  // Então só excluímos quando o imóvel TEM o dado e ele é menor que o pedido — senão, mantém (benefício da dúvida).
+  if (p.suitesMin > 0) { if (im.suites > 0 && im.suites < p.suitesMin) return { ok: false, score: 0, motivos: [] }; if ((im.suites || 0) >= p.suitesMin) { motivos.push(`${im.suites} suíte${im.suites > 1 ? 's' : ''}`); score += 8 } }
+  if (p.vagasMin > 0) { if (im.vagas > 0 && im.vagas < p.vagasMin) return { ok: false, score: 0, motivos: [] }; if ((im.vagas || 0) >= p.vagasMin) { motivos.push(`${im.vagas} vaga${im.vagas > 1 ? 's' : ''} de garagem`); score += 8 } }
   // bairro (filtro FORTE: se o cliente escolheu bairros, só entram imóveis nesses bairros)
   if (Array.isArray(p.bairros) && p.bairros.length) {
     const b = _semAcento(im.bairro)
