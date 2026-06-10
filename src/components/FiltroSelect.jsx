@@ -18,8 +18,12 @@ export default function FiltroSelect({ icon, placeholder, options = [], value, m
       const t = ref.current
       if (!t) return
       const r = t.getBoundingClientRect()
-      const espacoAbaixo = window.innerHeight - r.bottom - 12
-      setPos({ left: r.left, top: r.bottom + 6, width: r.width, maxH: Math.max(180, Math.min(340, espacoAbaixo)) })
+      const abaixo = window.innerHeight - r.bottom - 12
+      const acima = r.top - 12
+      // se não há espaço suficiente embaixo, abre PRA CIMA (não vaza pra fora da tela)
+      const abrirCima = abaixo < 240 && acima > abaixo
+      const maxH = Math.max(160, Math.min(360, abrirCima ? acima : abaixo))
+      setPos({ left: r.left, width: r.width, maxH, abrirCima, top: r.bottom + 6, bottom: window.innerHeight - r.top + 6 })
     }
     calc()
     const onDoc = (e) => { if (ref.current && !ref.current.contains(e.target) && popRef.current && !popRef.current.contains(e.target)) setOpen(false) }
@@ -71,7 +75,7 @@ export default function FiltroSelect({ icon, placeholder, options = [], value, m
         <svg className="fs-chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
       </button>
       {open && (
-        <div className="fs-pop" data-lenis-prevent ref={popRef} style={pos ? { position: 'fixed', left: pos.left, top: pos.top, width: pos.width, maxHeight: pos.maxH } : undefined}>
+        <div className="fs-pop" data-lenis-prevent ref={popRef} style={pos ? { position: 'fixed', left: pos.left, width: pos.width, maxHeight: pos.maxH, ...(pos.abrirCima ? { bottom: pos.bottom } : { top: pos.top }) } : undefined}>
           {searchable && (
             <input className="fs-busca" autoFocus type="search" placeholder="Buscar bairro…" value={q} onChange={(e) => setQ(e.target.value)} />
           )}
