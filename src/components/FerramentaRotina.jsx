@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { IconWhats } from './icons'
+import { IconWhats, IconShield } from './icons'
+import { getCorretor, salvarCorretor } from '../corretor'
+import { registrarLead } from '../engajamento'
 
 const soNum = (s) => String(s || '').replace(/\D/g, '')
 const mascaraFone = (s) => {
@@ -71,7 +73,53 @@ function montarMensagem(im, beneficios, nome, gancho) {
   return linhas.join('\n')
 }
 
+// Área restrita: o corretor precisa se cadastrar antes de usar a ferramenta.
+function CadastroCorretor({ onOk }) {
+  const [f, setF] = useState({ nome: '', creci: '', imobiliaria: '', fone: '', email: '' })
+  const [erro, setErro] = useState('')
+  const set = (k) => (e) => setF({ ...f, [k]: k === 'fone' ? mascaraFone(e.target.value) : e.target.value })
+  const enviar = (e) => {
+    e.preventDefault()
+    const nome = f.nome.trim()
+    if (nome.length < 3) { setErro('Informe seu nome completo.'); return }
+    if (soNum(f.fone).length < 10) { setErro('Informe um WhatsApp válido com DDD.'); return }
+    if (!f.imobiliaria.trim()) { setErro('Informe a imobiliária onde você atua.'); return }
+    const c = salvarCorretor({ nome, creci: f.creci.trim(), imobiliaria: f.imobiliaria.trim(), fone: f.fone.trim(), email: f.email.trim() })
+    try {
+      registrarLead({
+        cod: 'corretor', nome, fone: f.fone.trim(), email: f.email.trim(),
+        bairro: `Corretor · ${f.creci.trim() ? 'CRECI ' + f.creci.trim() + ' · ' : ''}${f.imobiliaria.trim()}`.slice(0, 120),
+      })
+    } catch {}
+    onOk(c)
+  }
+  return (
+    <div className="rt-tool">
+      <div className="rt-gate">
+        <span className="rt-gate-ico"><IconShield width={26} height={26} /></span>
+        <h4>Ferramenta exclusiva para corretores</h4>
+        <p>Esta é uma ferramenta profissional. Faça seu cadastro de corretor para liberar o acesso — leva 20 segundos e é só uma vez.</p>
+        <form className="rt-gate-form" onSubmit={enviar}>
+          <label className="calc-campo"><span>Nome completo</span><div className="calc-input"><input value={f.nome} onChange={set('nome')} placeholder="Seu nome" /></div></label>
+          <div className="rt-gate-2">
+            <label className="calc-campo"><span>CRECI <i style={{ fontWeight: 400, color: '#9a8e78' }}>(se tiver)</i></span><div className="calc-input"><input value={f.creci} onChange={set('creci')} placeholder="MG-00000" /></div></label>
+            <label className="calc-campo"><span>Imobiliária</span><div className="calc-input"><input value={f.imobiliaria} onChange={set('imobiliaria')} placeholder="Onde você atua" /></div></label>
+          </div>
+          <div className="rt-gate-2">
+            <label className="calc-campo"><span>WhatsApp</span><div className="calc-input"><input value={f.fone} onChange={set('fone')} placeholder="(34) 99999-9999" inputMode="numeric" /></div></label>
+            <label className="calc-campo"><span>E-mail <i style={{ fontWeight: 400, color: '#9a8e78' }}>(opcional)</i></span><div className="calc-input"><input value={f.email} onChange={set('email')} placeholder="voce@email.com" /></div></label>
+          </div>
+          {erro && <p className="rt-erro">{erro}</p>}
+          <button type="submit" className="btn btn-gold rt-buscar" style={{ width: '100%' }}>Liberar a ferramenta</button>
+          <p className="rt-gate-nota">Seus dados ficam só com o Vinícius (Rotina Imobiliária) para uso profissional. Sem spam.</p>
+        </form>
+      </div>
+    </div>
+  )
+}
+
 export default function FerramentaRotina() {
+  const [corretor, setCorretor] = useState(() => getCorretor())
   const [nome, setNome] = useState('')
   const [fone, setFone] = useState('')
   const [codigo, setCodigo] = useState('')
@@ -79,6 +127,8 @@ export default function FerramentaRotina() {
   const [erro, setErro] = useState('')
   const [dados, setDados] = useState(null)
   const [copiado, setCopiado] = useState(-1)
+
+  if (!corretor) return <CadastroCorretor onOk={setCorretor} />
 
   const buscar = async (e) => {
     e && e.preventDefault()

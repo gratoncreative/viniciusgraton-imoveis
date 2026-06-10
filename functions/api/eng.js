@@ -93,7 +93,7 @@ export async function onRequestPost({ env, request }) {
     if (!nome || !fone) return json({ error: 'dados incompletos' }, 400)
     if (!temKV(env)) return json({ ok: true, persistido: false }) // sem KV: não grava, mas o WhatsApp do visitante já abre
     const ts = Date.now()
-    const lead = { ts, nome, fone, cod: String(cod || '').slice(0, 12), bairro: String(body.bairro || '').slice(0, 60), data: new Date(ts).toISOString() }
+    const lead = { ts, nome, fone, cod: String(cod || '').slice(0, 12), bairro: String(body.bairro || '').slice(0, 120), email: String(body.email || '').slice(0, 120), data: new Date(ts).toISOString() }
     await env.ENGAGEMENT.put('lead:' + ts + '-' + Math.random().toString(36).slice(2, 8), JSON.stringify(lead))
     return json({ ok: true, persistido: true })
   }

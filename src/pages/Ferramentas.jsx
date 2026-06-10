@@ -54,10 +54,10 @@ const TOOLS = [
   { id: 'checklist', nome: 'Checklist de documentos', desc: 'Tudo que você precisa, por etapa.', icon: 'doc', cat: 'voce' },
   { id: 'comparar', nome: 'Comparar imóveis', desc: 'Veja imóveis lado a lado.', icon: 'compare', cat: 'voce', to: '/comparar' },
   { id: 'mapa', nome: 'Buscar no mapa', desc: 'Explore os imóveis por região.', icon: 'map', cat: 'voce', to: '/mapa' },
+  { id: 'rotina', nome: 'Rotina — abordagem por código', desc: 'Cole o código do imóvel da Rotina e gere a mensagem de 1º contato com gatilhos + benefícios da região (raio de 1km).', icon: 'chat', cat: 'corretor' },
   { id: 'comissao', nome: 'Calculadora de comissão', desc: 'Comissão e repasse de uma venda.', icon: 'percent', cat: 'corretor' },
   { id: 'acm', nome: 'Análise de mercado (ACM)', desc: 'Sugere o preço do imóvel pelo m² do bairro.', icon: 'chart', cat: 'corretor' },
   { id: 'ficha', nome: 'Ficha de avaliação rápida', desc: 'Gera um resumo do imóvel pra enviar.', icon: 'edit', cat: 'corretor' },
-  { id: 'rotina', nome: 'Rotina — abordagem por código', desc: 'Cole o código do imóvel da Rotina e gere a mensagem de 1º contato com gatilhos + benefícios da região (raio de 1km).', icon: 'chat', cat: 'corretor' },
   { id: 'painel', nome: 'Painel administrativo', desc: 'Imóveis, leads, clientes e tudo do seu negócio (acesso restrito).', icon: 'bell', cat: 'corretor', to: '/painel', destaque: true },
 ]
 
