@@ -1910,6 +1910,1254 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "brasal-incorporacoes",
+      "nome": "Brasal Incorporações",
+      "site": "https://www.brasal.com.br/incorporacoes/",
+      "segmento": "Alto padrão / Premium",
+      "descricao": "Construtora de alto padrão presente em Uberlândia há mais de 7 anos, referência em apartamentos premium na Zona Sul da cidade.",
+      "projetos": [
+        {
+          "slug": "iris-brasal",
+          "nome": "Íris Brasal",
+          "bairro": "Jardim Sul",
+          "status": "Pronto",
+          "entrega": "2025 (100% concluído)",
+          "endereco": "Alameda PBV-02, 60 - Jardim Sul, Uberlândia - MG, 38411-106",
+          "preco": "",
+          "descricao": "Empreendimento mais recente da Brasal em Uberlândia, com conceito baseado na unicidade da íris humana — representa pessoas únicas. Alto padrão na Zona Sul, com amplos espaços, conforto e qualidade. Torre única de 21 pavimentos e 70 unidades.",
+          "tipologias": [
+            "Apto Tipo: 147m², 3 suítes",
+            "Apto Tipo Garden: 196m², 3 suítes",
+            "Coberturas Lineares: 304m²",
+            "2 a 4 vagas de garagem"
+          ],
+          "amenidades": [
+            "Salão de festas",
+            "Sala SPA",
+            "Sauna / Espaço descanso",
+            "Brinquedoteca",
+            "Academia",
+            "Salão de jogos",
+            "Espaço gourmet",
+            "Cinema",
+            "Coworking",
+            "Piscina adulto (raia 25m)",
+            "Piscina infantil",
+            "Espelho d'água",
+            "Espaço Family com piscina privativa"
+          ],
+          "video": "",
+          "capa": "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2022/10/IRIS-BRASAL-TOUR.jpg",
+          "galeria": [
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2022/10/IRIS-BRASAL-TOUR.jpg",
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2022/10/parede.jpg",
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2022/10/Sem-Titulo-1.jpg"
+          ]
+        },
+        {
+          "slug": "chess",
+          "nome": "Chess",
+          "bairro": "Jardim Sul",
+          "status": "Pronto",
+          "entrega": "2025 (100% concluído em agosto/2025)",
+          "endereco": "Alameda Pastor José Domingos de Oliveira, 90 - Jardim Sul, Uberlândia - MG, 38411-840",
+          "preco": "",
+          "descricao": "\"O movimento inteligente em direção à Zona Sul.\" Produto compacto, refinado e estrategicamente pensado, na região mais valorizada de Uberlândia. Duas torres (24 e 25 pavimentos) em terreno de 5.940,34m², com 429 vagas. Possui tour virtual disponível.",
+          "tipologias": [
+            "Studios: 45m² e 48m²",
+            "1 a 3 suítes: 77m², 78m², 86m² e 103m²",
+            "Coberturas Duplex: 155m², 157m², 172m² e 208m²",
+            "1 a 2 vagas"
+          ],
+          "amenidades": [
+            "Piscina adulto (raia 18m)",
+            "Piscina infantil",
+            "Sauna",
+            "Playground",
+            "Academia",
+            "Coworking",
+            "Salão de festas",
+            "Espaço gourmet",
+            "Quadra de beach tennis",
+            "Pet place",
+            "Espaço beleza"
+          ],
+          "video": "",
+          "capa": "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2022/04/capa-site-chess.jpg",
+          "galeria": [
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2022/04/capa-site-chess.jpg",
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2022/05/Sem-Titulo-1.jpg",
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2022/04/usar.jpg"
+          ]
+        },
+        {
+          "slug": "duo",
+          "nome": "Duo",
+          "bairro": "Jardim das Acácias",
+          "status": "Pronto",
+          "entrega": "2025 (ambas as torres 100% concluídas em outubro/2025)",
+          "endereco": "Rua José Elias, 150 - Jardim das Acácias, Uberlândia - MG, 38411-201",
+          "preco": "",
+          "descricao": "\"Onde os opostos se complementam.\" Projeto residencial de alto padrão com conceito de harmonia e equilíbrio entre opostos. Apartamentos amplos e penthouses, com infraestrutura de lazer e trabalho completa. Lançamento foi apresentado em live meeting para mais de 250 corretores.",
+          "tipologias": [
+            "Apartamentos: 185m² e 225m²",
+            "Penthouses: 448m² e 453m²",
+            "4 a 5 suítes",
+            "3 a 5 vagas"
+          ],
+          "amenidades": [
+            "Coworking",
+            "Salas de reuniões",
+            "Snooker bar",
+            "Espaço kids",
+            "Espaço gourmet",
+            "2 salões de festas",
+            "Academia (121m²)",
+            "Playground",
+            "Piscina adulto (raia 25m)",
+            "Piscina infantil",
+            "Sauna",
+            "2 churrasqueiras",
+            "Quadra esportiva",
+            "Quadra street ball"
+          ],
+          "video": "",
+          "capa": "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2021/03/1920x654.jpg",
+          "galeria": [
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2021/03/1920x654.jpg",
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2021/03/fundo2.jpg",
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2021/06/frente.jpg"
+          ]
+        },
+        {
+          "slug": "arven",
+          "nome": "Arven",
+          "bairro": "Jardim das Acácias",
+          "status": "Pronto",
+          "entrega": "2024 (100% concluído em julho/2024)",
+          "endereco": "Rua José Elias, 100 - Jardim das Acácias, Uberlândia - MG, 38411-201",
+          "preco": "",
+          "descricao": "Arven, do norueguês \"legado\", traz o que há de mais sofisticado em infraestrutura e tecnologia. Representa a fusão entre qualidade de vida presente e legado futuro. Torre de 31 andares em terreno de 3.135,13m², com 119 vagas. Marco para a cidade e para a Brasal.",
+          "tipologias": [
+            "4 suítes",
+            "346m²",
+            "4 ou 5 vagas de garagem"
+          ],
+          "amenidades": [
+            "Sala de reuniões",
+            "Academia",
+            "Espaço kids",
+            "Espaço gourmet 1 e 2",
+            "Sauna / descanso",
+            "Quadra de tênis",
+            "Piscina climatizada (adulto e infantil)",
+            "Playground",
+            "Churrasqueira"
+          ],
+          "video": "https://www.youtube.com/watch?v=ksf_jv3uCvU",
+          "capa": "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2020/09/072-IMA-EX-019-LIVING_FECH_2__-R01.jpg",
+          "galeria": [
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2020/09/072-IMA-EX-019-LIVING_FECH_2__-R01.jpg",
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2020/09/WhatsApp-Image-2021-01-26-at-17.26.55.jpeg",
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2020/09/900x720.jpg"
+          ]
+        },
+        {
+          "slug": "sense-vertical-living",
+          "nome": "Sense Vertical Living",
+          "bairro": "Jardim das Acácias",
+          "status": "Pronto",
+          "entrega": "2024 (torre Lumini 100% concluída em julho/2024)",
+          "endereco": "Rua José Elias, 200 - Jardim das Acácias, Uberlândia - MG, 38411-201",
+          "preco": "",
+          "descricao": "Projeto que aproxima os sentidos e a tecnologia, numa composição única onde qualidade de vida se completa com inovação. Complexo de três torres em amplo terreno de 11.093,94m² com 408 vagas e infraestrutura de lazer robusta.",
+          "tipologias": [
+            "Torre Touch: 25 andares, 150m², 2 a 3 suítes",
+            "Torre Wind: 24 andares, 135m², 2 a 3 suítes",
+            "Torre Lumini: 21 andares, 115m², 2 a 3 suítes"
+          ],
+          "amenidades": [
+            "Pilotis",
+            "Piscina adulto e infantil",
+            "Quadra esportiva",
+            "Mini quadra street ball",
+            "Playground",
+            "Churrasqueira",
+            "Pet place",
+            "Academia ao ar livre",
+            "Coworking",
+            "Salas de reunião",
+            "Espaços gourmet",
+            "Salões de festas",
+            "Academia",
+            "Espaço kids",
+            "Sauna",
+            "Sinuca / bar"
+          ],
+          "video": "",
+          "capa": "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2018/10/054-IMA-EX-002-SALACVARANDCAM1-R02-1.jpg",
+          "galeria": [
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2018/10/054-IMA-EX-002-SALACVARANDCAM1-R02-1.jpg",
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2018/10/WhatsApp-Image-2021-01-26-at-17.46.00.jpeg",
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2018/10/Sense-Faixada.jpg"
+          ]
+        },
+        {
+          "slug": "triad-vertical-residence",
+          "nome": "Triad Vertical Residence",
+          "bairro": "Jardim das Acácias",
+          "status": "Pronto",
+          "entrega": "Entregue (pronto para morar)",
+          "endereco": "Rua José Elias, 50 - Jardim das Acácias, Uberlândia - MG",
+          "preco": "",
+          "descricao": "O primeiro condomínio vertical de Uberlândia com estrutura de condomínio horizontal, na região mais nobre da cidade, a Zona Sul. Marco inaugural da Brasal em Uberlândia, com três plantas amplas de alto padrão.",
+          "tipologias": [
+            "Triad Liber: 270m², 4 suítes",
+            "Triad Concord: 220m², 3 a 4 suítes",
+            "Triad Aventino: 185m², 3 suítes",
+            "2 a 3 vagas por unidade"
+          ],
+          "amenidades": [
+            "Piscinas",
+            "Deck solarium",
+            "Mirante",
+            "Playground",
+            "Espaço gourmet",
+            "Salão de festas",
+            "Churrasqueira",
+            "Sala de jogos",
+            "Fitness",
+            "Espaço kids"
+          ],
+          "video": "",
+          "capa": "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2020/09/Triad_1920x850.jpg",
+          "galeria": [
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2020/09/Triad_1920x850.jpg",
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2018/05/053-IMA-FL-013-LIVING-TIPO-185-R00-1.jpg",
+            "https://www.brasal.com.br/incorporacoes/wp-content/uploads/2018/05/053-IMA-FL-001-FACHADANOTURNA_-R03-1.jpg"
+          ]
+        }
+      ],
+      "fundacao": "Grupo Brasal: mais de 60 anos. Atuação em Uberlândia: desde ~2015 (7+ anos)",
+      "atuacao": "Uberlândia e região",
+      "diferenciais": [
+        "Pioneira em imóveis de alto padrão em Uberlândia",
+        "Primeiro condomínio vertical da cidade com estrutura de horizontal (Triad)",
+        "Concentração na valorizada Zona Sul (Jardim das Acácias e Jardim Sul)",
+        "Arquitetura e paisagismo assinados por escritórios renomados (MKZ, Torres Miranda, Tellini Vontobel, Martha Gavião)",
+        "Lazer completo: piscinas, academia, espaços gourmet, coworking, quadras esportivas",
+        "Respaldo do Grupo Brasal, com mais de 60 anos de história",
+        "Robusto banco de terrenos (63 mil m²) para expansão na cidade",
+        "Filosofia própria: o Jeito Brasal de Construir"
+      ],
+      "descricaoLonga": "A Brasal Incorporações é o braço imobiliário do Grupo Brasal, conglomerado com mais de 60 anos de história e atuação consolidada em Brasília (DF), Goiânia (GO) e Uberlândia (MG). Reconhecida pela filosofia do \"Jeito Brasal de Construir\", a empresa se posiciona no segmento de alto padrão, com empreendimentos residenciais e comerciais marcados por arquitetura assinada, lazer completo e localização em regiões nobres.\n\nEm Uberlândia, a Brasal foi pioneira ao introduzir um novo patamar de imóveis premium na cidade. Em pouco mais de sete anos de trajetória local, lançou seis empreendimentos concentrados na valorizada Zona Sul — Jardim das Acácias e Jardim Sul — totalizando mais de 870 unidades. O Triad Vertical Residence foi o primeiro condomínio vertical da cidade com estrutura de condomínio horizontal, abrindo caminho para projetos como Sense, Arven, Duo, Chess e o mais recente Íris Brasal.\n\nA construtora mantém um robusto banco de terrenos (mais de 63 mil m², avaliados em cerca de R$ 440 milhões) destinado à expansão na cidade. Seus diferenciais incluem projetos de arquitetura e paisagismo assinados por escritórios renomados (MKZ Arquitetura, Torres Miranda, Tellini Vontobel, Martha Gavião), infraestrutura de lazer e tecnologia de ponta, e o respaldo de um grupo sólido e tradicional do Centro-Oeste brasileiro.",
+      "instagram": "https://www.instagram.com/brasalincorporacoes/"
+    },
+    {
+      "slug": "manzan-construtora",
+      "nome": "Manzan Construtora",
+      "site": "https://manzanconstrutora.com.br/",
+      "segmento": "Apartamentos residenciais de médio e alto padrão",
+      "descricao": "Construtora e incorporadora de Uberlândia-MG focada em apartamentos de médio e alto padrão com projetos de personalidade e lazer completo.",
+      "projetos": [
+        {
+          "slug": "belvedere-towers",
+          "nome": "Belvedere Towers",
+          "bairro": "Tubalina",
+          "status": "Lançamento",
+          "entrega": "Não informada no site",
+          "endereco": "R. Aniceto Pereira, 55 - Tubalina, Uberlândia-MG, CEP 38412-036 (ao lado do Praia Clube)",
+          "preco": "",
+          "descricao": "Apartamentos ao lado do Praia Clube, com plantas de 2 e 3 quartos com suíte, coberturas duplex e lazer completo. Acabamento de alto padrão com fechadura digital e porcelanato 80x80.",
+          "tipologias": [
+            "2 quartos com suíte (70m²)",
+            "3 quartos com suíte (até 166m²)",
+            "Coberturas Duplex (146m² e 166m²)",
+            "2 a 3 vagas de garagem"
+          ],
+          "amenidades": [
+            "Espaço Fitness coberto e descoberto",
+            "SPA",
+            "Brinquedoteca",
+            "Espaço Pizza",
+            "Home Cinema",
+            "Piscina adulto e infantil",
+            "Playground",
+            "Quadra poliesportiva",
+            "Salas de estudo e reuniões",
+            "Salão de festas adulto e infantil",
+            "Salão de jogos",
+            "Loja de conveniência",
+            "Espaço churrasco",
+            "Redário",
+            "Espaço picnic",
+            "Espaço das Jabuticabeiras"
+          ],
+          "video": "",
+          "capa": "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/belvedere-towers.jpg",
+          "galeria": [
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/belvedere-towers.jpg",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/03-copy-2-1-1024x800.jpg",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/01-copy-2-1024x806.jpg",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/hall-elevador-862x1024.jpg",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/02-copy-1-1024x559.jpg",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/05-copy-901x1024.jpg",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/quadra-poliesportiva-1024x768.jpg",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/salao-de-jogos-1024x768.jpg",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/playground-1024x768.jpg",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/brinquedoteca-1024x768.jpg",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/salao-de-festa-infantil-1024x768.jpg",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/espaco-churrasco-1024x805.jpg",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/espaco-pizza-1024x768.jpg",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/espaco-picnic-no-local-1024x717.jpg",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/academia-equipada-1024x768.jpeg",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/sala-de-estudos-belvedere-1024x768.jpg",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/140808-varanda-gourmet-1024x768.jpg",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/apto-70m-1-1024x770.png",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/duplex-inferior-166-1024x770.png",
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/06/duplex-superior-166-1024x770.png"
+          ]
+        },
+        {
+          "slug": "arbre",
+          "nome": "Arbre",
+          "bairro": "Santa Mônica",
+          "status": "Lançamento",
+          "entrega": "Não informada no site",
+          "endereco": "Rua Cecílio Jorge, 619, Santa Mônica, Uberlândia-MG",
+          "preco": "",
+          "descricao": "Arbre significa 'árvore' em francês e homenageia a natureza presente no bairro Santa Mônica. Projeto residencial de alto padrão inspirado em elementos naturais, com plantas de 3 quartos (83 a 107m²) e opção rooftop.",
+          "tipologias": [
+            "3 quartos | 83m² (final 01)",
+            "3 quartos | 107m² (final 02)",
+            "3 quartos | 105m² (final 03)",
+            "3 quartos | 99m² (rooftop)"
+          ],
+          "amenidades": [
+            "Rooftop com gourmet (churrasqueira, fogão, geladeira, cervejeira)",
+            "Lazer com sinuca, lareira, cascata e espaço vinho",
+            "Academia",
+            "Espaço pet",
+            "Bicicletário",
+            "Delivery room",
+            "Coworking",
+            "Brinquedoteca"
+          ],
+          "video": "",
+          "capa": "https://manzanconstrutora.com.br/wp-content/uploads/2022/11/arbre-1.jpg",
+          "galeria": [
+            "https://manzanconstrutora.com.br/wp-content/uploads/2022/11/arbre-1.jpg"
+          ]
+        },
+        {
+          "slug": "edge",
+          "nome": "Edge",
+          "bairro": "Granja Marileusa",
+          "status": "Lançamento / em comercialização",
+          "entrega": "Não informada no site",
+          "endereco": "Rua Lapa do Lobo, esquina com Floriano Peixoto, Granja Marileusa, Uberlândia-MG (a 3 minutos do aeroporto)",
+          "preco": "",
+          "descricao": "Empreendimento residencial composto por studios e lofts de 32m² a 68m², todos com varanda, localizado na Granja Marileusa (polo de inovação), a 3 minutos do aeroporto. Foco em qualidade de vida urbana integrada à natureza.",
+          "tipologias": [
+            "Studios e lofts de 32m² a 68m²",
+            "Todos com varanda"
+          ],
+          "amenidades": [
+            "Piscina e piscina noturna",
+            "Academia / cross",
+            "Espaço gourmet",
+            "Car wash",
+            "Lavanderia",
+            "Rooftop",
+            "Parquinho",
+            "Bicicletário",
+            "Pavimento de lazer completo (mais de 20 itens)"
+          ],
+          "video": "",
+          "capa": "https://manzanconstrutora.com.br/wp-content/uploads/2023/07/cimabaixo-e1723130508659.png",
+          "galeria": [
+            "https://manzanconstrutora.com.br/wp-content/uploads/2023/07/cimabaixo-e1723130508659.png"
+          ]
+        },
+        {
+          "slug": "edge-landscape",
+          "nome": "Edge Landscape",
+          "bairro": "Jardim Sul",
+          "status": "Breve lançamento",
+          "entrega": "Não informada no site",
+          "endereco": "Jardim Sul, Uberlândia-MG",
+          "preco": "",
+          "descricao": "Lançamento da linha Edge Landscape no bairro Jardim Sul. Detalhes ainda não publicados pela construtora (status 'breve lançamento').",
+          "tipologias": [],
+          "amenidades": [],
+          "video": "",
+          "capa": "https://manzanconstrutora.com.br/wp-content/uploads/2026/05/edge-landscape-600x800.jpg",
+          "galeria": [
+            "https://manzanconstrutora.com.br/wp-content/uploads/2026/05/edge-landscape-600x800.jpg"
+          ]
+        },
+        {
+          "slug": "edge-landscape-nexus",
+          "nome": "Edge Landscape Nexus",
+          "bairro": "Jardim Sul",
+          "status": "Breve lançamento",
+          "entrega": "Não informada no site",
+          "endereco": "Jardim Sul, Uberlândia-MG",
+          "preco": "",
+          "descricao": "Lançamento da linha Edge Landscape Nexus no bairro Jardim Sul. Detalhes ainda não publicados pela construtora (status 'breve lançamento').",
+          "tipologias": [],
+          "amenidades": [],
+          "video": "",
+          "capa": "https://manzanconstrutora.com.br/wp-content/uploads/2026/05/edge-nexus-1-600x800.jpg",
+          "galeria": [
+            "https://manzanconstrutora.com.br/wp-content/uploads/2026/05/edge-nexus-1-600x800.jpg"
+          ]
+        }
+      ],
+      "fundacao": "26/11/2012 (Uberlândia-MG)",
+      "atuacao": "Uberlândia e região",
+      "diferenciais": [
+        "Localização estratégica (próximo ao Praia Clube, Granja Marileusa, Santa Mônica)",
+        "Acabamento de alto padrão (porcelanato 80x80, fechadura digital)",
+        "Lazer completo com mais de 20 itens em vários empreendimentos",
+        "Projetos com personalidade e assinatura arquitetônica única",
+        "Integração de engenharia, arquitetura e design moderno",
+        "Quase duas décadas de experiência: 170 unidades entregues, 171 em construção, ~450 em projeto"
+      ],
+      "descricaoLonga": "A Manzan Construtora e Incorporadora S/A é uma empresa de Uberlândia-MG (fundada em 26/11/2012, CNPJ 17.212.631/0001-77), sediada na Avenida Benjamim Magalhães, 41, bairro Tibery. Atua na incorporação e construção de empreendimentos residenciais de médio e alto padrão na cidade, com a marca posicionada sob o mote \"Manzan, o detalhe de morar bem!\". A liderança atual reúne Rodrigo Carvalho Manzan (presidente) e Flavia Borges Duarte Manzan (diretora), e a empresa comunica experiência de quase duas décadas em projetos entregues.\n\nA proposta da construtora parte da ideia de que \"morar bem vai muito além da entrega de um imóvel\": os projetos enfatizam personalidade arquitetônica, acabamentos refinados, integração entre engenharia, arquitetura e design moderno, além de soluções inteligentes voltadas a bem-estar, segurança e valorização imobiliária. A localização estratégica é um diferencial recorrente — empreendimentos próximos ao Praia Clube, na Granja Marileusa (polo de inovação) e no Santa Mônica.\n\nEm números divulgados pela própria empresa, a Manzan soma 170 unidades entregues, 171 unidades em construção e cerca de 450 em fase de projeto. O portfólio atual em Uberlândia inclui o Belvedere Towers (Tubalina, ao lado do Praia Clube), o Arbre (Santa Mônica), o Edge (Granja Marileusa) e os lançamentos da linha Edge Landscape e Edge Landscape Nexus, no Jardim Sul.",
+      "instagram": "https://www.instagram.com/manzanconstrutora/"
+    },
+    {
+      "slug": "machado-incorporadora",
+      "nome": "Machado Incorporadora",
+      "site": "https://machadoincorporadora.com/",
+      "segmento": "Residencial de alto padrão e médio padrão (studios a coberturas)",
+      "descricao": "Construtora e incorporadora de Uberlândia-MG, atuando desde 2014 com empreendimentos residenciais de alto padrão.",
+      "projetos": [
+        {
+          "slug": "atto",
+          "nome": "Atto",
+          "bairro": "Vale dos Vinhedos (Zona Sul)",
+          "status": "Em obras",
+          "entrega": "Não informada",
+          "endereco": "Rua Vicente Paula Vaz, 160 - Vale dos Vinhedos, Uberlândia/MG",
+          "preco": "Sob consulta",
+          "descricao": "Projeto residencial de alto padrão com torre única, apenas 2 unidades por pavimento e 2 elevadores, voltado para quem busca exclusividade e sofisticação, com completa infraestrutura de lazer.",
+          "tipologias": [
+            "Apartamento tipo: 161m², 3 suítes, 2 varandas panorâmicas",
+            "Cobertura linear: 350m², 4 suítes, 7 banheiros, pé-direito de 3,5m"
+          ],
+          "amenidades": [
+            "Piscina com raia",
+            "Solarium",
+            "Lounge club",
+            "Academia",
+            "Brinquedoteca",
+            "Salão de festas",
+            "Bicicletário"
+          ],
+          "video": "",
+          "capa": "https://machadoincorporadora.com/wp-content/uploads/2025/04/fachada-sol-1.jpg",
+          "galeria": [
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/fachada-sol-1.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/Living_Atto-View01.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/Living_Atto-View02.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/Living_Atto-View03.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/Living_Atto-View04.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/Living_Atto-View05.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/Suite_Master-Atto-View01.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/Suite_Master-Atto-View03.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/Suite_Master-View02.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/TIPO_ANDAR_GERAL_SRGB_300DPI_SEM_COTAS.png",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/TIPO_APT_01_SRGB_300DPI_SEM_COTAS.png",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/TIPO_APT_COBERTURA_SRGB_300DPI_SEM_COTAS.png"
+          ]
+        },
+        {
+          "slug": "harbor",
+          "nome": "Harbor",
+          "bairro": "Copacabana",
+          "status": "Em obras",
+          "entrega": "Não informada",
+          "endereco": "Bairro Copacabana, Uberlândia/MG (endereço completo não publicado)",
+          "preco": "Sob consulta",
+          "descricao": "Empreendimento de 19 pavimentos descrito como 'um convite para experimentar o conforto, a sofisticação e a tranquilidade de um verdadeiro porto seguro'. Localizado no Copacabana, perto de restaurantes, bares e espaços esportivos, com tecnologia moderna: energia fotovoltaica, reconhecimento facial e foco em sustentabilidade.",
+          "tipologias": [
+            "3 suítes por unidade",
+            "Varanda gourmet",
+            "Área de serviço independente",
+            "Infraestrutura para ar-condicionado"
+          ],
+          "amenidades": [
+            "Piscina climatizada",
+            "Miniparque aquático",
+            "Academia",
+            "Salão de eventos",
+            "Varanda relax",
+            "Boteco carioca",
+            "Espaço grill",
+            "Coworking",
+            "Espaço beleza",
+            "Brinquedoteca",
+            "Bicicletário",
+            "Pomar",
+            "Pet place",
+            "Deck"
+          ],
+          "video": "https://machadoincorporadora.com/wp-content/uploads/2024/10/Harbor.mp4",
+          "capa": "https://machadoincorporadora.com/wp-content/uploads/2017/11/Fachada-Topo-Base_Harbor_View01-scaled.jpg",
+          "galeria": [
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/Fachada-Topo-Base_Harbor_View01-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/Fachada-Topo-Base_Harbor_View02-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/Fachada-Noturna_Harbor-View-01-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/Fachada-Noturna_Harbor-View-04-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/Portaria_Harbor-View01-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/Piscina_Harbor-View01-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/Piscina_Harbor-View03-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/Salao-de-Eventos_Harbor-View01-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/Fitness_Harbor_View01-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/CoWorking_Harbor-View01-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/Living_Harbor-View01-scaled-625x350.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/Suite-Geral_Harbor-View01-scaled-625x350.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/Varanda-AP_Harbor-View01-scaled-625x350.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/compressed_Planta-Pavimento-Tipo_Harbor.jpg"
+          ]
+        },
+        {
+          "slug": "neo-piazza",
+          "nome": "Neo Piazza",
+          "bairro": "Santa Mônica (Jardim Finotti)",
+          "status": "Em obras",
+          "entrega": "Não informada",
+          "endereco": "Rua Armando Tucci, 1.452 / Av. Dr. Misael Rodrigues de Castro, 1.718 - Santa Mônica, Uberlândia/MG",
+          "preco": "Sob consulta",
+          "descricao": "Empreendimento voltado para quem busca tranquilidade e bem-estar em bairro consolidado, localizado de frente para uma praça. Indicado para primeira compra, investimento ou novo lar moderno.",
+          "tipologias": [
+            "Apartamentos de 39,20m² a 59,95m² (39,20m², 54,99m², 59,59m² e 59,95m²)"
+          ],
+          "amenidades": [
+            "Brinquedoteca",
+            "Coworking",
+            "Academia",
+            "Salão de festas",
+            "Sala de jogos",
+            "Bicicletário",
+            "Neo Spa"
+          ],
+          "video": "",
+          "capa": "https://machadoincorporadora.com/wp-content/uploads/2024/06/Fachada-Base_Topo_Neo-Piazza-Noturna.jpg",
+          "galeria": [
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/Fachada-Base_Topo_Neo-Piazza-Noturna.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/Varanda-Living_Neo-Piazza-View01.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/Varanda-Living_Neo-Piazza-View02.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/Suite_Neo-Piazza-View01.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/Sala-de-Estar_Neo-Piazza.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/Sala-de-Jantar_Neo-Piazza.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/Cozinha_Neo-Piazza.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/Planta-Pav.-Tipo-Neo-Piazza-TEXTOS.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/Planta_Ap-01-Neo-Piazza-TEXTOS.jpg"
+          ]
+        },
+        {
+          "slug": "infinity-living",
+          "nome": "Infinity Living",
+          "bairro": "Patrimônio (Zona Sul)",
+          "status": "Em obras",
+          "entrega": "Não informada",
+          "endereco": "Rua Pão de Açúcar, Patrimônio, Uberlândia/MG",
+          "preco": "Sob consulta",
+          "descricao": "Projeto moderno e funcional com fachada imponente, iluminação LED e paisagismo sofisticado. Convida a viver uma nova experiência com conforto, qualidade e suntuosidade, com mais de 18 áreas de lazer equipadas e decoradas, próximo às principais vias da cidade.",
+          "tipologias": [
+            "Studios: 52,73m²",
+            "1 quarto: 72,94m²",
+            "2 a 3 quartos: 96,98m²",
+            "Plantas personalizáveis"
+          ],
+          "amenidades": [
+            "Piscina climatizada",
+            "Snooker bar",
+            "Salão de festas",
+            "Espaço pet",
+            "Marketplace",
+            "Espaço gourmet",
+            "Fitness",
+            "Sauna úmida",
+            "Brinquedoteca",
+            "Coworking",
+            "Espaço grill",
+            "Bicicletário",
+            "Fire pit",
+            "Sala de games",
+            "Lounge",
+            "Espaço beleza",
+            "Oficina bike",
+            "Vaga verde"
+          ],
+          "video": "https://www.youtube.com/watch?v=_8KFGaFqOKM",
+          "capa": "https://machadoincorporadora.com/wp-content/uploads/2024/05/portaria_infinity.png",
+          "galeria": [
+            "https://machadoincorporadora.com/wp-content/uploads/2024/05/portaria_infinity.png",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/fachada_dia.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/fachada-noite.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/inifinity_inserido-1.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/piscina.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/lobby.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2017/11/hall-entrada.png"
+          ]
+        },
+        {
+          "slug": "beaumont-finotti",
+          "nome": "Beaumont Finotti",
+          "bairro": "Jardim Finotti",
+          "status": "Pronto",
+          "entrega": "Entregue (Habite-se nº 14929/2022, de 19/12/2022)",
+          "endereco": "Jardim Finotti, Uberlândia/MG",
+          "preco": "Sob consulta",
+          "descricao": "Empreendimento pronto para morar, com acabamento sofisticado em localização privilegiada. Unidades espaçosas com varanda gourmet, duto para churrasqueira e porcelanato premium. Condomínio com elevadores inteligentes, garagens cobertas e áreas comuns entregues mobiliadas e decoradas.",
+          "tipologias": [
+            "2 quartos: 97,09m²",
+            "3 quartos: 72,06m²"
+          ],
+          "amenidades": [
+            "Coworking",
+            "Hall decorado",
+            "Salão de festas",
+            "Espaço pizza",
+            "Espaço gourmet",
+            "Fitness",
+            "Brinquedoteca",
+            "Espaço grill",
+            "Bicicletário",
+            "Vagas para visitantes"
+          ],
+          "video": "",
+          "capa": "https://machadoincorporadora.com/wp-content/uploads/2024/06/DJI_0350-scaled.jpg",
+          "galeria": [
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/DJI_0350-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/IMG_5365-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/IMG_5367-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/IMG_5374-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/IMG_5385-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/IMG_5202-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/IMG_5205-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/IMG_5215-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/Planta-final-2-Beumont-Finotti-9709-m²-Opcao-de-render-1-scaled.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/Planta-final-3-Beaumont-Finotti-7206m²-opcao-render-1-scaled.jpg"
+          ]
+        },
+        {
+          "slug": "residencial-roma",
+          "nome": "Residencial Roma",
+          "bairro": "Pampulha",
+          "status": "Pronto",
+          "entrega": "Pronto para morar",
+          "endereco": "Rua Bernardo de Vasconcelos, 644, Uberlândia/MG",
+          "preco": "Sob consulta",
+          "descricao": "Empreendimento moderno e bem localizado, com alto padrão de acabamento. Torre única com 18 apartamentos (6 por andar), garantindo privacidade e exclusividade, com baixo custo condominial.",
+          "tipologias": [
+            "2 quartos (opções com suíte): 51m², 56m² e 59m²",
+            "Sacada, sala para dois ambientes, cozinha integrada e área de serviço"
+          ],
+          "amenidades": [
+            "Elevador",
+            "Iluminação LED",
+            "Baixo custo condominial"
+          ],
+          "video": "",
+          "capa": "https://machadoincorporadora.com/wp-content/uploads/2024/06/FOTO-8.jpg",
+          "galeria": [
+            "https://machadoincorporadora.com/wp-content/uploads/2024/06/FOTO-8.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/IMG_8741-Editar-625x350.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/IMG_8743-625x350.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/IMG_8747-625x350.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/IMG_8750-625x350.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/IMG_8755-625x350.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/IMG_8760-625x350.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/Captura_de_Tela_2025-08-28_as_16.26.33.jpg",
+            "https://machadoincorporadora.com/wp-content/uploads/2025/04/Captura_de_Tela_2025-08-28_as_16.27.43.jpg"
+          ]
+        }
+      ],
+      "fundacao": "2014",
+      "atuacao": "Uberlândia e região",
+      "diferenciais": [
+        "Atuação consolidada em Uberlândia desde 2014, com diversos empreendimentos entregues",
+        "Foco em alto padrão de acabamento (porcelanato premium, varandas gourmet, áreas comuns mobiliadas e decoradas)",
+        "Infraestrutura de lazer ampla — empreendimentos com mais de 18 áreas de lazer",
+        "Tecnologias modernas: energia fotovoltaica, reconhecimento facial, iluminação LED e elevadores inteligentes",
+        "Portfólio diversificado: de studios e compactos a apartamentos de 3 suítes e coberturas lineares de 350m²",
+        "Presença em bairros valorizados: Santa Mônica, Jardim Finotti, Copacabana, Patrimônio, Pampulha e Vale dos Vinhedos"
+      ],
+      "descricaoLonga": "A Machado Incorporadora é uma construtora e incorporadora sediada em Uberlândia, Minas Gerais, atuando no mercado imobiliário da cidade desde 2014. A empresa se posiciona no segmento de empreendimentos residenciais de alto padrão, com a proposta de oferecer imóveis \"para você morar, investir e concretizar o seu sonho\". Seu portfólio reúne mais de uma dezena de prédios espalhados por bairros valorizados como Santa Mônica, Jardim Finotti, Copacabana, Patrimônio, Pampulha e Vale dos Vinhedos.\n\nA construtora pauta sua atuação pela ética, respeito, transparência, responsabilidade e máxima qualidade de acabamento, descrevendo-se como \"sempre atenta e cuidadosa com cada detalhe do processo construtivo\". Conta com equipe qualificada e comprometida em superar as expectativas dos clientes, entregando unidades com acabamento sofisticado (porcelanato premium, varandas gourmet, dutos para churrasqueira) e áreas comuns mobiliadas e decoradas.\n\nOs empreendimentos da Machado se caracterizam por infraestrutura de lazer robusta — alguns com mais de 18 áreas de lazer equipadas —, tecnologias modernas (energia fotovoltaica, reconhecimento facial, iluminação LED, elevadores inteligentes) e projetos que vão de studios e apartamentos compactos a coberturas lineares de 350m². A marca também é conhecida historicamente como \"Machado Pacheco\". Site oficial: machadoincorporadora.com; Instagram: @incorporadoramachado.",
+      "instagram": "https://www.instagram.com/incorporadoramachado/"
+    },
+    {
+      "slug": "portento-construtora",
+      "nome": "Portento Construtora",
+      "site": "https://portentoconstrutora.com.br/",
+      "segmento": "Incorporadora e construtora de imóveis residenciais (apartamentos e studios)",
+      "descricao": "Construtora e incorporadora de Uberlândia-MG, fundada em 2005, com mais de 44 mil m² construídos e certificações ISO 9001 e PBQP-H nível A.",
+      "projetos": [
+        {
+          "slug": "residencial-amburana",
+          "nome": "Residencial Amburana",
+          "bairro": "Jaraguá",
+          "status": "Em obras",
+          "entrega": "Agosto/2025",
+          "endereco": "Rua Amburana, 635 – Uberlândia, MG",
+          "preco": "Não informado no site",
+          "descricao": "Residencial com unidades de 2 e 3 suítes, sacadas e duas vagas de garagem por apartamento. Estrutura em sistema pilotis, gás encanado, elevador e hidrômetros individualizados. Bom para famílias que buscam pronto/quase pronto no Jaraguá.",
+          "tipologias": [
+            "2 suítes – 65,47 m² (2 sacadas, 2 vagas)",
+            "3 suítes – 86,87 m² (2-3 sacadas, 2 vagas, closet)"
+          ],
+          "amenidades": [
+            "Elevador",
+            "Gás encanado",
+            "Área gourmet com churrasqueira elétrica",
+            "Espaço kids / playground",
+            "Portaria",
+            "Lavanderia externa",
+            "Salão de eventos",
+            "Hidrômetros individualizados",
+            "Sistema pilotis"
+          ],
+          "video": "",
+          "capa": "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/6-salao-eventos-thegem-gallery-fullwidth.png",
+          "galeria": [
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/6-salao-eventos-thegem-gallery-fullwidth.png",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/4-sacada-thegem-gallery-fullwidth.png",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/5-sala-1-thegem-gallery-fullwidth.png",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/6-Playground-thegem-gallery-fullwidth.png",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/2-banho-suite-02-thegem-gallery-fullwidth.png",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/7-suite-01-thegem-gallery-fullwidth.png",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/8-suite-02-thegem-gallery-fullwidth.png",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/9-suite-solteiro-thegem-gallery-fullwidth.png",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/1-banho-social-thegem-gallery-fullwidth.png"
+          ]
+        },
+        {
+          "slug": "residencial-carioca",
+          "nome": "Residencial Carioca",
+          "bairro": "Tabajaras",
+          "status": "Lançamento / À venda",
+          "entrega": "Não informada no site",
+          "endereco": "Bairro Tabajaras – Uberlândia, MG",
+          "preco": "Não informado no site",
+          "descricao": "Empreendimento de apartamentos amplos, de alto padrão, com áreas de 132 a 292 m², no bairro Tabajaras. ATENÇÃO: a página oficial está com texto descritivo de modelo (Lorem Ipsum) — a metragem e galeria são reais, mas a descrição detalhada e amenidades não estavam publicadas; confirmar com a construtora.",
+          "tipologias": [
+            "Apartamentos de 132 a 292 m²"
+          ],
+          "amenidades": [],
+          "video": "",
+          "capa": "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/000-scaled-thegem-gallery-fullwidth.jpg",
+          "galeria": [
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/000-scaled-thegem-gallery-fullwidth.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/DSC9659-Copia-scaled-thegem-gallery-fullwidth.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/IMG_1451-scaled-thegem-gallery-fullwidth.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/DSC9651-Copia-scaled-thegem-gallery-fullwidth.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/DSC9648-Copia-scaled-thegem-gallery-fullwidth.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/DSC9653-Copia-scaled-thegem-gallery-fullwidth.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/DSC9654-Copia-scaled-thegem-gallery-fullwidth.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/IMG_1445-scaled-thegem-gallery-fullwidth.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/IMG_1446-scaled-thegem-gallery-fullwidth.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/IMG_1443-scaled-thegem-gallery-fullwidth.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/IMG_1447-scaled-thegem-gallery-fullwidth.jpg"
+          ]
+        },
+        {
+          "slug": "sante-residence",
+          "nome": "Santé Residence",
+          "bairro": "Região da UFU / Santa Mônica (próximo à universidade e hospitais)",
+          "status": "Na planta / Em desenvolvimento",
+          "entrega": "Não informada no site",
+          "endereco": "Uberlândia, MG (próximo à UFU e hospitais)",
+          "preco": "Não informado no site",
+          "descricao": "Empreendimento de studios compactos voltado para investimento e moradia de estudantes/profissionais da saúde, próximo à UFU e a hospitais. Studios de 37 e 41 m². Inclui área de piscina. Página dedicada no site ainda sem ficha técnica completa.",
+          "tipologias": [
+            "Studios de 37 m²",
+            "Studios de 41 m²"
+          ],
+          "amenidades": [
+            "Piscina"
+          ],
+          "video": "",
+          "capa": "https://portentoconstrutora.com.br/wp-content/uploads/2026/05/11-1-scaled.webp",
+          "galeria": [
+            "https://portentoconstrutora.com.br/wp-content/uploads/2026/05/11-1-scaled.webp",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2026/05/WhatsApp-Image-2025-04-08-at-16.42.46-1.webp",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2026/05/piscina-2-scaled.webp",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2025/03/Sante-Fachada-thegem-blog-timeline-large.jpeg"
+          ]
+        },
+        {
+          "slug": "life-residence",
+          "nome": "LIFE Residence",
+          "bairro": "Santa Mônica (ao lado da UFU)",
+          "status": "Lançado / 100% vendido",
+          "entrega": "Não informada no site",
+          "endereco": "Bairro Santa Mônica – Uberlândia, MG",
+          "preco": "Baixa entrada e parcelas (divulgado como acessível para investimento)",
+          "descricao": "Lançamento de studios ao lado da UFU, no Santa Mônica, com 130 unidades. Divulgado como 100% vendido em 7 dias, posicionado para investimento na região de maior demanda da cidade. Vendas encerradas — usar como prova de credibilidade/velocidade de venda da construtora.",
+          "tipologias": [
+            "Studios (130 unidades)"
+          ],
+          "amenidades": [],
+          "video": "",
+          "capa": "https://portentoconstrutora.com.br/wp-content/uploads/2026/05/FACHADA-03.png",
+          "galeria": [
+            "https://portentoconstrutora.com.br/wp-content/uploads/2026/05/FACHADA-03.png"
+          ]
+        },
+        {
+          "slug": "bruxelas",
+          "nome": "Bruxelas",
+          "bairro": "Tubalina",
+          "status": "Futuro lançamento / À venda",
+          "entrega": "Não informada no site",
+          "endereco": "Av. Silvio Rugani, 1466 – Bairro Tubalina, Uberlândia, MG",
+          "preco": "Não informado no site (página oficial usa preço de modelo, desconsiderar)",
+          "descricao": "Futuro lançamento no bairro Tubalina. ATENÇÃO: a página oficial está com ficha técnica de template (metragem em sqft, '$995.000', '2 quartos' genéricos) — esses dados NÃO são reais. A galeria contém renders reais de salas, suítes e planta humanizada. Confirmar tipologias e preço com a construtora antes de publicar.",
+          "tipologias": [],
+          "amenidades": [
+            "Piscina",
+            "Sacada",
+            "Área de serviço",
+            "Garagem"
+          ],
+          "video": "",
+          "capa": "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/00-Sala-Elevador-scaled.jpg",
+          "galeria": [
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/00-Sala-Elevador-scaled.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/00-Sala-Estar-scaled.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/01-Sala-Estar-02--scaled.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/04-Bho-Social--scaled.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/05-Bho-Suite-.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/06-Qto-Suite--scaled.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/09-Area-Servico-scaled.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/10-Sacada-Qto-Suite-scaled.jpg",
+            "https://portentoconstrutora.com.br/wp-content/uploads/2023/11/Planta-Humanizada.jpg"
+          ]
+        }
+      ],
+      "fundacao": "2005",
+      "atuacao": "Uberlândia e região",
+      "diferenciais": [
+        "Quase 20 anos de atuação em Uberlândia (fundada em 2005)",
+        "Mais de 44 mil m² já construídos e ~10 mil m² em construção",
+        "Certificação ISO 9001 (gestão de qualidade)",
+        "Certificação PBQP-H nível A",
+        "Portfólio diversificado: de studios para investimento a apartamentos de alto padrão",
+        "Política de preços justos e relacionamento transparente",
+        "Área do corretor própria no site"
+      ],
+      "descricaoLonga": "A Portento Construtora é uma incorporadora enraizada em Uberlândia-MG, fundada em 2005. O nome \"Portento\" remete a grandeza extraordinária e simboliza o compromisso da empresa com excelência e atenção aos detalhes em cada empreendimento. Ao longo de quase duas décadas de atuação, a construtora consolidou um portfólio diversificado de residenciais na cidade, somando mais de 44 mil m² já construídos e cerca de 10 mil m² em desenvolvimento e construção.\n\nA empresa se posiciona por valores fundamentais: entrega incansável de produtos de qualidade excepcional, eficiência construtiva, política de preços justos e relacionamentos baseados em transparência genuína com clientes e fornecedores. Esse compromisso é reforçado pelas certificações ISO 9001 e PBQP-H nível A, que atestam padrão de gestão de qualidade reconhecido no setor da construção civil.\n\nSeu histórico inclui empreendimentos como Porto, Montreal, Sevilha, Paris, Toronto, Milão, Tenerife, Rio de Janeiro e Coimbra, além de lançamentos e obras atuais como Residencial Amburana, Residencial Carioca, Santé Residence e LIFE Residence. A Portento atende tanto quem busca um lar quanto investidores, com produtos que vão de studios compactos próximos à UFU a apartamentos amplos de alto padrão.",
+      "instagram": "https://www.instagram.com/portentoconstrutora/"
+    },
+    {
+      "slug": "mor-construtora",
+      "nome": "Mor Construtora",
+      "site": "https://morconstrutora.com.br/",
+      "segmento": "Residencial vertical e horizontal de padrão médio; Minha Casa Minha Vida; comercial",
+      "descricao": "Construtora de Uberlândia-MG especializada em condomínios residenciais verticais e horizontais de bom padrão, com forte atuação na Zona Sul da cidade e empreendimentos pelo programa Minha Casa Minha Vida.",
+      "projetos": [
+        {
+          "slug": "palladium-residence",
+          "nome": "Palladium Residence",
+          "bairro": "Região do Bairro Martins",
+          "status": "Em obras",
+          "entrega": "Não divulgada",
+          "endereco": "Rua Francisco Sales, Uberlândia-MG",
+          "preco": "Sob consulta",
+          "descricao": "Empreendimento residencial urbano premium na região central/Martins de Uberlândia, com design contemporâneo, torre única de 17 pavimentos e 102 unidades. Combina conforto moderno e localização estratégica com fácil acesso a serviços.",
+          "tipologias": [
+            "2 quartos (1 suíte), 54,10 m² e 54,42 m²"
+          ],
+          "amenidades": [],
+          "video": "",
+          "capa": "https://morconstrutora.com.br/wp-content/uploads/2022/04/Palladium-Residence_01-2.png",
+          "galeria": [
+            "https://morconstrutora.com.br/wp-content/uploads/2022/04/Palladium-Residence_01-2.png",
+            "https://morconstrutora.com.br/wp-content/uploads/2022/04/Palladium06-1.jpg",
+            "https://morconstrutora.com.br/wp-content/uploads/2022/04/Palladium03.jpg",
+            "https://morconstrutora.com.br/wp-content/uploads/2022/04/Palladium01.jpeg",
+            "https://morconstrutora.com.br/wp-content/uploads/2022/04/Palladium04.jpeg",
+            "https://morconstrutora.com.br/wp-content/uploads/2022/04/palladium-08.jpg",
+            "https://morconstrutora.com.br/wp-content/uploads/2022/04/palladium-10.jpg",
+            "https://morconstrutora.com.br/wp-content/uploads/2022/04/palladium-12.jpg",
+            "https://morconstrutora.com.br/wp-content/uploads/2023/10/WhatsApp-Image-2023-10-10-at-15.56.10.jpeg"
+          ]
+        },
+        {
+          "slug": "bello-sul",
+          "nome": "Bello Sul",
+          "bairro": "Zona Sul (próximo ao Uberlândia Shopping e Unitri, ~10 min do Centro)",
+          "status": "Pronto",
+          "entrega": "Entregue",
+          "endereco": "Zona Sul de Uberlândia-MG (~1,5 km do Uberlândia Shopping)",
+          "preco": "Sob consulta (faixa Minha Casa Minha Vida)",
+          "descricao": "Condomínio de apartamentos compactos na Zona Sul de Uberlândia, com excelente localização a cerca de 1,5 km do Uberlândia Shopping e do Unitri e 10 minutos do Centro. Área de lazer completa e segurança 24h.",
+          "tipologias": [
+            "2 quartos (1 suíte), 50 m², com varanda"
+          ],
+          "amenidades": [
+            "Portaria 24h",
+            "Espaço gourmet com 4 quiosques com churrasqueira",
+            "Salão de festas",
+            "Espaço fitness ao ar livre",
+            "Vestiários",
+            "Piscina adulto",
+            "Piscina infantil",
+            "Quadra de esportes em grama",
+            "Playground"
+          ],
+          "video": "",
+          "capa": "https://morconstrutora.com.br/wp-content/uploads/2021/05/WhatsApp-Image-2021-05-17-at-14.08.49-1024x766.jpeg",
+          "galeria": [
+            "https://morconstrutora.com.br/wp-content/uploads/2021/05/WhatsApp-Image-2021-05-17-at-14.08.49-1024x766.jpeg"
+          ]
+        },
+        {
+          "slug": "maison-phoenix",
+          "nome": "Maison Phoenix",
+          "bairro": "Santa Maria",
+          "status": "Pronto",
+          "entrega": "Entregue",
+          "endereco": "Av. Divino Lucas Martins, Uberlândia-MG",
+          "preco": "Sob consulta",
+          "descricao": "Empreendimento de padrão mais elevado no bairro Santa Maria, com torre única de 8 pavimentos e apartamentos amplos de 3 quartos. Proposta de morar com estilo.",
+          "tipologias": [
+            "3 quartos (1 suíte), 109 m², 111 m² e 119 m²"
+          ],
+          "amenidades": [],
+          "video": "",
+          "capa": "https://morconstrutora.com.br/wp-content/uploads/2023/01/Maison-Phoenix-1.jpg",
+          "galeria": [
+            "https://morconstrutora.com.br/wp-content/uploads/2023/01/Maison-Phoenix-1.jpg"
+          ]
+        },
+        {
+          "slug": "boulevard-north",
+          "nome": "Boulevard North",
+          "bairro": "Jardim Brasília",
+          "status": "Pronto",
+          "entrega": "Entregue",
+          "endereco": "Av. Rural, Uberlândia-MG",
+          "preco": "Sob consulta (faixa Minha Casa Minha Vida)",
+          "descricao": "Condomínio horizontal/vertical de apartamentos compactos no Jardim Brasília, composto por 11 blocos (térreo + 3 pavimentos). Posicionado como lugar para criar memórias e compartilhar momentos em família.",
+          "tipologias": [
+            "2 quartos, 45,21 m²"
+          ],
+          "amenidades": [],
+          "video": "",
+          "capa": "https://morconstrutora.com.br/wp-content/uploads/2023/01/Boulevard-North-1.jpg",
+          "galeria": [
+            "https://morconstrutora.com.br/wp-content/uploads/2023/01/Boulevard-North-1.jpg",
+            "https://morconstrutora.com.br/wp-content/uploads/2023/01/Boulevard-North-2.jpg",
+            "https://morconstrutora.com.br/wp-content/uploads/2023/01/Boulevard-North-3.jpg",
+            "https://morconstrutora.com.br/wp-content/uploads/2023/01/Boulevard-North-4.jpg"
+          ]
+        },
+        {
+          "slug": "colina-sul",
+          "nome": "Colina Sul",
+          "bairro": "Shopping Park (Zona Sul)",
+          "status": "Pronto",
+          "entrega": "Entregue",
+          "endereco": "Rua Mauro Belório, Uberlândia-MG",
+          "preco": "Sob consulta (faixa Minha Casa Minha Vida)",
+          "descricao": "Empreendimento da Mor na Zona Sul de Uberlândia (Shopping Park), com apartamentos compactos de 2 quartos em blocos térreo + 3 pavimentos, totalizando 192 apartamentos. Voltado ao público Minha Casa Minha Vida.",
+          "tipologias": [
+            "2 quartos, 45 m²"
+          ],
+          "amenidades": [],
+          "video": "",
+          "capa": "https://morconstrutora.com.br/wp-content/uploads/2023/01/Colina-Sul-1.jpeg",
+          "galeria": [
+            "https://morconstrutora.com.br/wp-content/uploads/2023/01/Colina-Sul-1.jpeg"
+          ]
+        },
+        {
+          "slug": "mansour-residence",
+          "nome": "Mansour Residence",
+          "bairro": "Uberlândia-MG (bairro não confirmado)",
+          "status": "Pronto",
+          "entrega": "Entregue (100% vendido)",
+          "endereco": "Uberlândia-MG",
+          "preco": "Sob consulta",
+          "descricao": "Empreendimento residencial da Mor Construtora, já entregue e 100% vendido.",
+          "tipologias": [],
+          "amenidades": [],
+          "video": "",
+          "capa": "https://morconstrutora.com.br/wp-content/uploads/2020/09/mansourresidence-1024x1024.png",
+          "galeria": [
+            "https://morconstrutora.com.br/wp-content/uploads/2020/09/mansourresidence-1024x1024.png"
+          ]
+        }
+      ],
+      "fundacao": "Não divulgada no site oficial. CNPJ 09.043.436/0001-32 (Mor Construtora Brasileira Ltda).",
+      "atuacao": "Uberlândia e região",
+      "diferenciais": [
+        "Certificações de qualidade ISO 9001 e PBQP-H Nível A",
+        "Conceito próprio \"Qualidade Mor em Construção\" com padronização de procedimentos",
+        "Rigor no cumprimento de prazos de entrega",
+        "Histórico consolidado de empreendimentos entregues em Uberlândia",
+        "Atuação no programa Minha Casa Minha Vida (unidades subsidiadas)",
+        "Áreas de lazer completas mesmo em empreendimentos compactos",
+        "Forte presença na Zona Sul de Uberlândia, próxima a Shopping e universidades"
+      ],
+      "descricaoLonga": "A Mor Construtora é uma construtora e incorporadora sediada em Uberlândia, no Triângulo Mineiro, com atuação em obras comerciais e residenciais. A empresa se posiciona como referência em inovação para projetos residenciais de bom padrão, tanto em condomínios verticais (apartamentos) quanto horizontais, e possui um histórico consolidado de entregas na região, com diversos empreendimentos finalizados como Maison Phoenix, Boulevard North, Mansour Residence, Colina Sul e Bello Sul.\n\nA construtora baseia sua atuação em princípios de sustentabilidade, ética e respeito ao meio ambiente, e conta com uma equipe técnica experiente em construção civil. Possui certificações de qualidade ISO 9001 e PBQP-H Nível A, e desenvolveu internamente o conceito \"Qualidade Mor em Construção\", que reforça a padronização de procedimentos e o rigor no cumprimento de prazos — diferenciais que sustentam sua credibilidade no mercado de Uberlândia.\n\nUma característica marcante da Mor é a democratização do acesso à casa própria: além de empreendimentos de padrão médio, a construtora trabalha com unidades subsidiadas pelo programa Minha Casa Minha Vida, oferecendo apartamentos compactos (em torno de 45 a 54 m²) com áreas de lazer completas. Boa parte de seu portfólio se concentra na Zona Sul de Uberlândia, próxima a polos como o Uberlândia Shopping e o Unitri.",
+      "instagram": "https://www.instagram.com/mor.construtora/"
+    },
+    {
+      "slug": "construtora-stefani",
+      "nome": "Construtora Stéfani",
+      "site": "https://www.construtorastefani.com.br/",
+      "segmento": "Loteamentos e condomínios fechados de alto padrão (urbanização e incorporação)",
+      "descricao": "Construtora com mais de 40 anos de mercado, especialista em loteamentos e condomínios fechados, com 3 empreendimentos de alto padrão em Uberlândia em parceria com a Baduy Desenvolvimento.",
+      "projetos": [
+        {
+          "slug": "reserva-do-parque",
+          "nome": "Reserva do Parque",
+          "bairro": "Tibery (região Leste), ao lado do Parque do Sabiá",
+          "status": "Em obras (abertura de ruas e infraestrutura em andamento)",
+          "entrega": "Não divulgada; áreas comuns serão entregues mobiliadas, com academia completa",
+          "endereco": "Uberlândia-MG, a 3 minutos do Parque do Sabiá e 8 minutos do Center Shopping (endereço exato não divulgado no site)",
+          "preco": "A partir de R$ 990/m² (7% de desconto para pagamento à vista)",
+          "descricao": "Loteamento fechado de alto padrão em parceria entre Construtora Stéfani, Baduy Desenvolvimento e Vertex. Conta com cerca de 420 lotes em ambiente planejado para segurança, bem-estar e infraestrutura completa, com localização privilegiada ao lado do Parque do Sabiá. Áreas comuns entregues mobiliadas.",
+          "tipologias": [
+            "Lotes a partir de 275 m²",
+            "Aproximadamente 420 lotes"
+          ],
+          "amenidades": [
+            "2 quadras de tênis (saibro)",
+            "Piscina adulto e infantil",
+            "Quadra de beach tennis",
+            "Quadra poliesportiva",
+            "Espaço pizza/wine lounge",
+            "Área de churrasco",
+            "Academia completa",
+            "Playground",
+            "Espaços kids e teen",
+            "Espaço pet",
+            "Coworking",
+            "Espaço zen",
+            "Área de alongamento",
+            "Horta",
+            "Espaço fogueira",
+            "Pista de caminhada",
+            "Espaço gourmet",
+            "Quiosque",
+            "Varanda multiuso",
+            "Segurança 24h com reconhecimento facial, câmeras de perímetro, speed domes e cerca elétrica setorizada"
+          ],
+          "video": "https://www.youtube.com/watch?v=JCjm-eS2Qys",
+          "capa": "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/banner-1-2.jpg",
+          "galeria": [
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/banner-1-2.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/Banner-2-1.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/Banner-3-1.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/Banner-4-1.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-1.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-2.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-3.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-4.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-5.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-6.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-7.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-8.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-9.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-10.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-11.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-12.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-13.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-14.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-15.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-16.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-17.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-18.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-19.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-20.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-21.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/projeto-22.jpg",
+            "https://reservadoparqueudi.com.br/wp-content/uploads/2025/02/map-reserva.jpg"
+          ]
+        },
+        {
+          "slug": "solares-da-gavea",
+          "nome": "Solares da Gávea",
+          "bairro": "Gávea (Zona Sul)",
+          "status": "Pronto para construir",
+          "entrega": "Infraestrutura concluída (pronto para construir)",
+          "endereco": "Zona Sul de Uberlândia-MG (endereço exato não divulgado no site)",
+          "preco": "",
+          "descricao": "Condomínio fechado de alto padrão em parceria entre Construtora Stéfani, Baduy Desenvolvimento, San Marino Urbanismo e Gávea Empreendimentos. Divulgado como 'o condomínio mais aguardado de Uberlândia', voltado a famílias que buscam viver com sofisticação na Zona Sul da cidade.",
+          "tipologias": [
+            "Lotes residenciais em condomínio fechado (metragem não detalhada no site)"
+          ],
+          "amenidades": [
+            "Quadra de tênis",
+            "2 quadras de squash",
+            "Quadra poliesportiva",
+            "Sauna e vestiários",
+            "Piscina aquecida e coberta",
+            "Salão de festas",
+            "Pista de caminhada",
+            "Academia",
+            "Áreas verdes",
+            "Ruas pavimentadas",
+            "Paisagismo integrado",
+            "Redes de energia e iluminação",
+            "Água, esgoto e galerias de águas pluviais",
+            "Guias e sarjetas"
+          ],
+          "video": "",
+          "capa": "https://static.wixstatic.com/media/f50ff6_bbc36cf317894dfc81e4cf7ab84ac587~mv2.jpg/v1/fit/w_960,h_541,q_90,enc_avif,quality_auto/f50ff6_bbc36cf317894dfc81e4cf7ab84ac587~mv2.jpg",
+          "galeria": [
+            "https://static.wixstatic.com/media/f50ff6_bbc36cf317894dfc81e4cf7ab84ac587~mv2.jpg/v1/fit/w_960,h_541,q_90,enc_avif,quality_auto/f50ff6_bbc36cf317894dfc81e4cf7ab84ac587~mv2.jpg",
+            "https://static.wixstatic.com/media/f50ff6_cc23594d567d44cfad6c5e34e9d90644~mv2.jpg/v1/fit/w_960,h_541,q_90,enc_avif,quality_auto/f50ff6_cc23594d567d44cfad6c5e34e9d90644~mv2.jpg",
+            "https://static.wixstatic.com/media/f50ff6_25161e2e0a3242a99a79d5d2be94345b~mv2.jpg/v1/fit/w_960,h_541,q_90,enc_avif,quality_auto/f50ff6_25161e2e0a3242a99a79d5d2be94345b~mv2.jpg",
+            "https://static.wixstatic.com/media/f50ff6_ff31817dd9f7459a87848b81de04e45c~mv2.jpg/v1/fit/w_960,h_541,q_90,enc_avif,quality_auto/f50ff6_ff31817dd9f7459a87848b81de04e45c~mv2.jpg",
+            "https://static.wixstatic.com/media/f50ff6_42343ca262a6438291c921b743017aac~mv2.jpg/v1/fit/w_960,h_541,q_90,enc_avif,quality_auto/f50ff6_42343ca262a6438291c921b743017aac~mv2.jpg",
+            "https://static.wixstatic.com/media/f50ff6_3e3742a4335343f7b0d7d88951d744fe~mv2.jpg/v1/fit/w_960,h_541,q_90,enc_avif,quality_auto/f50ff6_3e3742a4335343f7b0d7d88951d744fe~mv2.jpg",
+            "https://static.wixstatic.com/media/f50ff6_66002f4119bf43c7ad8e6724f9dd0dec~mv2.jpg/v1/fit/w_960,h_541,q_90,enc_avif,quality_auto/f50ff6_66002f4119bf43c7ad8e6724f9dd0dec~mv2.jpg",
+            "https://static.wixstatic.com/media/f50ff6_4a4ec54b43e74cc7908bfe8e9aceb2c9~mv2.jpg/v1/fit/w_960,h_541,q_90,enc_avif,quality_auto/f50ff6_4a4ec54b43e74cc7908bfe8e9aceb2c9~mv2.jpg",
+            "https://static.wixstatic.com/media/f50ff6_6e1383ad2333436e988006e46572ac9f~mv2.jpg/v1/fit/w_960,h_541,q_90,enc_avif,quality_auto/f50ff6_6e1383ad2333436e988006e46572ac9f~mv2.jpg",
+            "https://static.wixstatic.com/media/f50ff6_d786817c6c164755a2ab80ef0042029a~mv2.jpg/v1/fit/w_960,h_541,q_90,enc_avif,quality_auto/f50ff6_d786817c6c164755a2ab80ef0042029a~mv2.jpg",
+            "https://static.wixstatic.com/media/f50ff6_85f26c91a6554464807feea5aab98377~mv2.jpg/v1/fit/w_960,h_541,q_90,enc_avif,quality_auto/f50ff6_85f26c91a6554464807feea5aab98377~mv2.jpg",
+            "https://static.wixstatic.com/media/f50ff6_a9c0014150e8494aa1763324075351a6~mv2.jpg/v1/fit/w_960,h_541,q_90,enc_avif,quality_auto/f50ff6_a9c0014150e8494aa1763324075351a6~mv2.jpg",
+            "https://static.wixstatic.com/media/f50ff6_6faf339afc3c48d1be0b1f776fc32082~mv2.jpg/v1/fit/w_960,h_541,q_90,enc_avif,quality_auto/f50ff6_6faf339afc3c48d1be0b1f776fc32082~mv2.jpg",
+            "https://static.wixstatic.com/media/f50ff6_fe5b055c4de34e478ab03a11f903a5dc~mv2.jpg/v1/fit/w_960,h_541,q_90,enc_avif,quality_auto/f50ff6_fe5b055c4de34e478ab03a11f903a5dc~mv2.jpg",
+            "https://static.wixstatic.com/media/f50ff6_4db82db4c8e14866a8489b3d2c8e9403~mv2.jpg/v1/fit/w_960,h_541,q_90,enc_avif,quality_auto/f50ff6_4db82db4c8e14866a8489b3d2c8e9403~mv2.jpg",
+            "https://static.wixstatic.com/media/f50ff6_329f9fa668a7464594f50d1a1fa4e4a7~mv2.jpg/v1/fill/w_968,h_478,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/solares-mapa.jpg"
+          ]
+        },
+        {
+          "slug": "gavea-jardins",
+          "nome": "Gávea Jardins",
+          "bairro": "Gávea / Gávea Jardins (Zona Sul)",
+          "status": "Pronto (obras concluídas / lotes à venda no mercado)",
+          "entrega": "Concluído (obras realizadas em cerca de 14 meses)",
+          "endereco": "Zona Sul de Uberlândia-MG, Avenida Landscape (bairro planejado Gávea Jardins)",
+          "preco": "Lotes residenciais de 360 m² na faixa de R$ 465 mil a R$ 575 mil (aprox. R$ 1.300 a R$ 1.600/m²). Lotes comerciais a partir de 1.440 m² (~R$ 3.300/m²)",
+          "descricao": "Bairro planejado de alto padrão na Zona Sul de Uberlândia, desenvolvido por Construtora Stéfani, Baduy e Gávea Empreendimentos. Conceito 'open' (sem muros perimetrais) com forte segurança eletrônica: apenas 2 acessos e 34 câmeras de monitoramento, 5 delas integradas ao sistema da PM-MG para identificação facial e veicular. Estrutura, paisagismo e segurança premium.",
+          "tipologias": [
+            "Lotes residenciais a partir de 360 m² (12 x 30 m)",
+            "Lotes comerciais a partir de 1.440 m² (24 x 60 m)"
+          ],
+          "amenidades": [
+            "Praça Jardins (playground, quadras, pergolado, arquibancadas)",
+            "Praça Gávea com Pet Place",
+            "Orla verde com mais de 52.000 m² de área verde e 550 metros lineares",
+            "Ciclovia",
+            "Academia ao ar livre",
+            "Sede de associação de moradores",
+            "Segurança com 2 acessos e 34 câmeras (5 integradas à PM-MG)"
+          ],
+          "video": "",
+          "capa": "",
+          "galeria": []
+        }
+      ],
+      "fundacao": "Mais de 40 anos de mercado (ano exato de fundação não divulgado no site oficial)",
+      "atuacao": "Uberlândia e região",
+      "diferenciais": [
+        "Mais de 40 anos de experiência e 130+ empreendimentos lançados",
+        "Mais de 25 milhões de m² urbanizados e 50 mil+ unidades entregues",
+        "Especialista em loteamentos e condomínios fechados de alto padrão",
+        "Infraestrutura completa: pavimentação, água, esgoto, drenagem e energia em padrão técnico rigoroso",
+        "Forte investimento em segurança eletrônica (reconhecimento facial, câmeras, cerca elétrica)",
+        "Paisagismo e amplas áreas de lazer tipo clube",
+        "Parcelamento direto com o cliente (sem intermediação bancária)",
+        "Em Uberlândia atua em parceria com a Baduy Desenvolvimento"
+      ],
+      "descricaoLonga": "A Construtora Stéfani é uma das maiores referências nacionais em urbanização e loteamentos, com mais de 40 anos de atuação no mercado imobiliário. Em sua trajetória, já lançou mais de 130 empreendimentos, urbanizou mais de 25 milhões de m² e entregou mais de 50 mil unidades, estando presente em mais de 60 cidades das regiões Sudeste e Centro-Oeste do Brasil. Sediada em Ribeirão Preto (SP), a empresa construiu uma marca consolidada em construção civil e desenvolvimento urbano, reconhecida pela qualidade técnica de suas obras e por um portfólio diversificado que inclui loteamentos, condomínios fechados, edifícios e empreendimentos comerciais.\n\nEm Uberlândia, a Stéfani chegou em parceria com a Baduy Desenvolvimento (e, em alguns projetos, San Marino Urbanismo e Gávea Empreendimentos) com o objetivo de transformar o padrão de urbanização da cidade. Dessa união nasceram três empreendimentos de alto padrão na cidade: o Gávea Jardins e o Solares da Gávea, na Zona Sul, e o Reserva do Parque, na região Leste (bairro Tibery), ao lado do Parque do Sabiá. Todos seguem o conceito de comunidades planejadas, com forte investimento em segurança eletrônica, paisagismo e amplas áreas de lazer.\n\nO diferencial da Stéfani está na engenharia de infraestrutura: estudos topográficos de alta precisão, pavimentação, redes completas de água, esgoto, drenagem e energia executadas dentro de rigorosos padrões técnicos, além de parcelamento direto com o cliente e forte foco em sustentabilidade e qualidade do produto final. Isso posiciona seus empreendimentos como opções premium para quem quer construir a casa dos sonhos em ambiente seguro, arborizado e com lazer de clube.",
+      "instagram": "https://www.instagram.com/construtorastefani/"
+    },
+    {
+      "slug": "hamoa-resort-residencial-jmd-hamoa-urbanismo",
+      "nome": "Hamoa Resort Residencial (JMD Hamoa Urbanismo)",
+      "site": "https://www.hamoauberlandia.com/",
+      "segmento": "Alto padrão / Luxo — loteamento fechado conceito resort",
+      "descricao": "Primeiro condomínio fechado com conceito resort do Triângulo Mineiro, na zona sul de Uberlândia.",
+      "projetos": [
+        {
+          "slug": "hamoa-resort-residencial",
+          "nome": "Hamoa Resort Residencial",
+          "bairro": "Jardim Sul (zona sul)",
+          "status": "Na planta / lançamento (lançado em 2025)",
+          "entrega": "Previsão para 2028",
+          "endereco": "Avenida Landscape, Jardim Sul, Uberlândia-MG",
+          "preco": "Lotes de R$ 1.950 a R$ 2.550 por m² (revendas anunciadas entre ~R$ 840 mil e R$ 2 milhões). Taxa de condomínio estimada em ~R$ 1.500–1.600/mês (base abr/2025).",
+          "descricao": "Loteamento fechado de altíssimo padrão com conceito resort, o primeiro do Triângulo Mineiro. Área superior a 636 mil m² com 495 lotes residenciais, 93 mil m² de área verde preservada e 62 mil m² de complexo de lazer e esportes. Proposta de viver como em férias todos os dias, em residência fixa, com segurança 24h e acesso controlado.",
+          "tipologias": [
+            "Lotes residenciais de 400 a 1.570 m² (média aproximada de 600 m²)",
+            "495 lotes no total"
+          ],
+          "amenidades": [
+            "Parque aquático com piscinas de formatos sinuosos",
+            "Hidromassagens integradas",
+            "Areal (praia artificial) com coqueiros",
+            "Bares molhado e seco",
+            "Bangalôs/cabanas privativas",
+            "Cerca de 25 quadras e campos esportivos (mais de 11 modalidades)",
+            "Quadras cobertas de tênis e beach tennis",
+            "Spa Kauai",
+            "Restaurante premium Kauai",
+            "Academia / fitness",
+            "Espaços gourmet privativos",
+            "Brinquedoteca",
+            "Espaço pet",
+            "Concierge exclusivo (Quality Service Hamoa)",
+            "Programação de eventos (Make It Fun)",
+            "Segurança 24h e acesso controlado",
+            "93 mil m² de área verde preservada"
+          ],
+          "video": "https://www.youtube.com/watch?v=abFafYDRDuA",
+          "capa": "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-39-30-1.jpg",
+          "galeria": [
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-39-30-1.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-39-06-4.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-39-06-5.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-39-06-6.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-39-06-7.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-39-06-8.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-39-07-9.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-39-07-10.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-39-30-0.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-39-30-2.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-39-30-3.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-39-30-4.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-39-44-0.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-39-44-2.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-39-05-2.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-26-20-0.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-34-33-0.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-34-34-2.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-39-23-0.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-40-10-0.jpg",
+            "https://axvliw1bcpyx.objectstorage.sa-vinhedo-1.oci.customer-oci.com/n/axvliw1bcpyx/b/ksi/o/1293/foto_edificio_/2025/16007/uberlandia-jardim-sul-condominio-hamoa-18-08-2025_09-40-13-14.jpg"
+          ]
+        }
+      ],
+      "fundacao": "JMD Hamoa Urbanismo atua há cerca de 20 anos no mercado de loteamentos fechados (origem no Mato Grosso). Hamoa Uberlândia foi lançado em 2025.",
+      "atuacao": "Uberlândia e região",
+      "diferenciais": [
+        "Primeiro condomínio fechado conceito resort do Triângulo Mineiro",
+        "Área total superior a 636 mil m² com 93 mil m² de área verde preservada",
+        "62 mil m² só de complexo de lazer e esportes",
+        "Parque aquático com piscinas sinuosas, hidromassagens e areal com coqueiros",
+        "Cerca de 25 quadras e campos esportivos para mais de 11 modalidades",
+        "Spa Kauai e restaurante premium Kauai dentro do condomínio",
+        "Serviços exclusivos: concierge Quality Service Hamoa e programação de eventos Make It Fun",
+        "Segurança 24h e acesso controlado",
+        "Lotes amplos de 400 a 1.570 m² (média ~600 m²)",
+        "Assinatura da JMD Hamoa Urbanismo, com ~20 anos de experiência em loteamentos fechados"
+      ],
+      "descricaoLonga": "O Hamoa Resort Residencial é o primeiro condomínio fechado com conceito resort do Triângulo Mineiro, desenvolvido pela JMD Hamoa Urbanismo em Uberlândia-MG. Implantado em uma área superior a 636 mil m² no Jardim Sul, zona sul da cidade, o empreendimento reúne 495 lotes residenciais (de 400 a 1.570 m², com média próxima de 600 m²), 93 mil m² de área verde preservada e 62 mil m² dedicados a um complexo de lazer e esportes. A proposta é de \"viver como em férias todos os dias\", oferecendo infraestrutura de resort em uma residência fixa, com fácil acesso a tudo o que a cidade oferece.\n\nA JMD Hamoa Urbanismo carrega cerca de duas décadas de experiência no desenvolvimento de condomínios fechados e bairros planejados no Centro-Oeste, com cerca de 10 empreendimentos no Mato Grosso e dois em Goiás, antes de chegar ao mercado do Sudeste com Hamoa Uberlândia. A operação na cidade conta com a parceria da Miramontes Empreendimentos Imobiliários, reconhecida no setor têxtil e na incorporação de condomínios verticais em Uberlândia.\n\nO grande diferencial é a curadoria de lazer e serviços: parque aquático com piscinas sinuosas e hidromassagens, areal com coqueiros, bares molhado e seco, cerca de 25 quadras e campos esportivos para mais de 11 modalidades, Spa Kauai, restaurante premium Kauai, academia, espaços gourmet privativos, além de serviços exclusivos de concierge (Quality Service Hamoa) e programação de eventos (Make It Fun), com segurança 24h e acesso controlado. A entrega está prevista para 2028.",
+      "instagram": "https://www.instagram.com/hamoa.resort/"
     }
   ]
 }
