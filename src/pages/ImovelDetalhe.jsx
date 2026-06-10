@@ -139,6 +139,7 @@ export default function ImovelDetalhe() {
   const local = getImovel(codigo)
   const [imApi, setImApi] = useState(null)
   const [feed, setFeed] = useState([])
+  const [beneficios, setBeneficios] = useState([])
   const [buscando, setBuscando] = useState(false)
   const [tentativa, setTentativa] = useState(0)
 
@@ -161,7 +162,7 @@ export default function ImovelDetalhe() {
     const t = setTimeout(() => ctrl.abort(), 12000)
     fetch(`/api/rotina-imovel?codigo=${encodeURIComponent(codigo)}`, { signal: ctrl.signal })
       .then((r) => (r.ok ? r.json() : null))
-      .then((j) => { if (vivo && j && j.imovel) setImApi(mapApi(j.imovel)) })
+      .then((j) => { if (vivo && j && j.imovel) { setImApi(mapApi(j.imovel)); if (Array.isArray(j.beneficios)) setBeneficios(j.beneficios) } })
       .catch(() => {})
       .finally(() => { clearTimeout(t); if (vivo) setBuscando(false) })
     return () => { vivo = false; clearTimeout(t); ctrl.abort() }
@@ -192,7 +193,7 @@ export default function ImovelDetalhe() {
   const baixarPdf = async () => {
     if (!im) return
     setPdfProc(true)
-    try { const { gerarPdfImovel } = await import('../pdfImovel'); await gerarPdfImovel(im, fotos) } catch { /* ignora */ }
+    try { const { gerarPdfImovel } = await import('../pdfImovel'); await gerarPdfImovel(im, fotos, beneficios) } catch { /* ignora */ }
     setPdfProc(false)
   }
 
@@ -359,10 +360,6 @@ export default function ImovelDetalhe() {
               <div className="det-apresenta">
                 <h2 className="det-apresenta-tit">Por que esse imóvel vale a sua visita</h2>
                 {ap.paras.map((p, i) => <p key={i}>{p}</p>)}
-                <span className="det-apre-sub">Destaques deste imóvel</span>
-                <ul className="det-apre-destaques">
-                  {ap.destaques.map((d, i) => <li key={i}>{d}</li>)}
-                </ul>
                 {temDescricao && (
                   <>
                     <span className="det-apre-sub">Descrição do imóvel</span>
@@ -449,7 +446,7 @@ export default function ImovelDetalhe() {
         {/* Destaques (benefícios) */}
         {destaques.length > 0 && (
           <div className="det-destaques">
-            <h2 className="det-rel-titulo">Por que você vai gostar</h2>
+            <h2 className="det-rel-titulo">Destaques deste imóvel</h2>
             <div className="det-dest-grid">
               {destaques.map((d, i) => <Destaque key={i} {...d} />)}
             </div>

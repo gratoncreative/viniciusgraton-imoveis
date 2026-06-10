@@ -14,8 +14,8 @@ export const CONFIG = {
   // Login com Google (gratuito). Client ID OAuth (público — pode ficar no código).
   // Criado no Google Cloud (projeto gen-lang-client). Enquanto vazio, o botão fica oculto.
   googleClientId: '522410029650-rrsga1dakfh4j3b5bqqepp1ha0bnfc5d.apps.googleusercontent.com',
-  // Imagem realista da capa (troque por uma foto sua/local quando quiser)
-  heroImg: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1920&auto=format&fit=crop',
+  // Imagem realista da capa — imóvel elegante com verde (troque por uma foto sua quando quiser)
+  heroImg: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=1920&auto=format&fit=crop',
 }
 
 // aceita uma mensagem personalizada por contexto; usa a padrão se nenhuma for passada

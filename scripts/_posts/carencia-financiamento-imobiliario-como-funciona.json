@@ -1,0 +1,76 @@
+{
+  "titulo": "Carência no financiamento imobiliário: dá para atrasar o início das parcelas?",
+  "slug": "carencia-financiamento-imobiliario-como-funciona",
+  "resumo": "Entenda a carência financiamento imobiliário: quando o banco adia o início das parcelas e o custo escondido de atrasar o pagamento do seu imóvel.",
+  "categoria": "Financiamento",
+  "keyword": "carência financiamento imobiliário",
+  "leitura": "6 min",
+  "conteudo": [
+    { "tipo": "p", "txt": "Você fez as contas, juntou a entrada, foi aprovado no financiamento e, de repente, bate o medo: \"vou pegar as chaves, pagar a mudança, talvez uma reforminha… e ainda começar a pagar a parcela no mês seguinte?\". É exatamente nesse aperto que muita gente ouve falar da **carência** e pensa que encontrou a solução mágica. Como consultor da Rotina Imobiliária aqui em Uberlândia, ouço essa dúvida toda semana — e a resposta honesta é: dá para adiar, sim, mas tem um custo que quase ninguém te explica antes." },
+    { "tipo": "p", "txt": "Neste guia eu vou direto ao ponto: o que é a **carência financiamento imobiliário**, em quais situações o banco realmente oferece, quanto isso pode pesar no bolso lá na frente e quando vale (ou não vale) a pena usar esse fôlego extra." },
+
+    { "tipo": "h2", "txt": "O que é carência no financiamento imobiliário" },
+    { "tipo": "p", "txt": "Carência é o período em que você **adia o início do pagamento das parcelas** do financiamento. Em vez de começar a pagar a prestação cheia logo no mês seguinte à assinatura do contrato, você ganha algumas semanas — em geral de 30 a 90 dias, podendo chegar a mais em casos específicos — antes do primeiro vencimento." },
+    { "tipo": "p", "txt": "O ponto que confunde muita gente é este: **carência não é um mês de graça**. O dinheiro continua emprestado e os **juros continuam correndo** sobre o saldo devedor durante todo o período. Ou seja, você não está deixando de pagar — está apenas empurrando o pagamento para frente e, no caminho, acumulando juros que serão somados à sua dívida." },
+
+    { "tipo": "h2", "txt": "Quando o banco oferece carência" },
+    { "tipo": "p", "txt": "A carência não é um direito automático do comprador: ela depende da política de cada banco, do tipo de operação e do momento. As situações mais comuns em que ela aparece são:" },
+    { "tipo": "lista", "itens": [
+      "**Imóvel na planta ou em construção:** durante a obra, é comum existir um período em que você paga apenas juros e correção (a chamada fase de obra), e a parcela cheia da amortização só começa quando o imóvel fica pronto e é entregue.",
+      "**Carência contratual de início:** alguns contratos já preveem que a primeira parcela vence 30, 60 ou até 90 dias após a assinatura, dando um respiro para o comprador se organizar.",
+      "**Renegociação ou pausa de parcelas:** clientes que já pagam o financiamento e passam por aperto (desemprego, queda de renda) podem solicitar ao banco uma carência emergencial, pausando algumas parcelas — algo que ganhou força em períodos de crise.",
+      "**Campanhas comerciais:** em lançamentos e promoções, construtoras e bancos chegam a oferecer carência estendida como atrativo de venda."
+    ] },
+    { "tipo": "destaque", "txt": "Atenção ao detalhe que muda tudo: durante a carência, **os juros continuam sendo cobrados** e, na maioria dos casos, são capitalizados (somados ao saldo devedor). Resultado: ao adiar o início das parcelas, você termina pagando **mais juros no total** e pode até ver sua dívida crescer antes de começar a cair. Sempre peça ao banco a simulação COM e SEM carência por escrito antes de decidir." },
+
+    { "tipo": "h2", "txt": "O custo escondido de adiar o início das parcelas" },
+    { "tipo": "p", "txt": "Aqui está a parte que o entusiasmo da compra costuma esconder. Adiar as parcelas parece um alívio imediato, mas o efeito de longo prazo aparece de três formas:" },
+    { "tipo": "lista", "itens": [
+      "**Saldo devedor maior:** os juros do período de carência se acumulam e, em muitos contratos, entram no saldo. Você passa a financiar um valor um pouco maior do que pegou.",
+      "**Parcelas iniciais mais altas ou prazo mais longo:** dependendo de como o banco recompõe a dívida, ou as primeiras prestações vêm mais pesadas, ou o financiamento se estende por mais tempo.",
+      "**Juros sobre juros no fim:** num financiamento de 20 ou 30 anos, alguns meses de carência no começo podem representar alguns milhares de reais a mais no total pago, por causa do efeito composto."
+    ] },
+    { "tipo": "p", "txt": "Para visualizar a lógica (os valores abaixo são apenas ilustrativos para mostrar o comportamento — sempre confirme os números na sua simulação real):" },
+    { "tipo": "tabela", "cols": ["Item", "Sem carência", "Com 90 dias de carência"],
+      "linhas": [
+        ["Início das parcelas", "Mês seguinte à assinatura", "Cerca de 3 meses depois"],
+        ["Juros do período", "Já entram na 1ª parcela", "Acumulam no saldo devedor"],
+        ["Saldo financiado", "Valor original", "Valor original + juros acumulados"],
+        ["Total pago ao final", "Menor", "Maior (efeito dos juros sobre o período)"],
+        ["Quando faz sentido", "Caixa organizado desde o início", "Aperto pontual no começo"]
+      ]
+    },
+    { "tipo": "p", "txt": "Antes de fechar negócio, vale rodar as contas com calma. Você pode usar nossas [ferramentas de simulação](/ferramentas) para estimar parcela e renda necessária, e entender melhor as etapas em [como funciona](/como-funciona) o processo de compra com a gente." },
+
+    { "tipo": "h2", "txt": "Quando vale a pena usar a carência" },
+    { "tipo": "p", "txt": "Carência não é vilã — é uma ferramenta. Bem usada, ela protege seu fluxo de caixa num momento delicado. Mal usada, vira armadilha. Faz sentido considerar quando:" },
+    { "tipo": "lista", "itens": [
+      "Você terá **despesas pesadas de entrada na casa** (mudança, móveis, pequena reforma) e precisa de fôlego nos primeiros meses.",
+      "Está comprando **na planta** e a carência da fase de obra já faz parte natural do contrato.",
+      "Passou por uma **queda temporária de renda** e a alternativa seria atrasar a parcela e sujar o nome.",
+      "Você consegue, durante a carência, **guardar dinheiro** para abater o saldo devedor ou começar com a parcela em dia e tranquilo."
+    ] },
+    { "tipo": "p", "txt": "Por outro lado, se o seu orçamento já está organizado e você tem **reserva de emergência**, adiar parcela só para \"folgar\" no começo costuma não compensar — você paga mais juros por um alívio que não precisava." },
+
+    { "tipo": "h3", "txt": "Carência x comprometimento de renda" },
+    { "tipo": "p", "txt": "Lembre que, independentemente da carência, os bancos no Brasil costumam limitar a parcela a cerca de **30% da renda familiar** e financiar até por volta de **80% do valor do imóvel** nas linhas mais comuns. A carência não muda essas regras de aprovação — ela só desloca o início do pagamento. Por isso, planejamento de orçamento conta mais do que qualquer prazo extra. Se você ainda está nessa fase, vale começar a [encontrar o imóvel ideal](/encontrar-imovel) já com a conta da parcela na ponta do lápis." },
+
+    { "tipo": "faq", "perguntas": [
+      { "q": "Carência no financiamento imobiliário é um mês sem pagar nada?", "a": "Não. Você adia o início das parcelas, mas os **juros continuam correndo** sobre o saldo devedor durante o período. Não é um mês de graça — é um adiamento que normalmente sai mais caro no total." },
+      { "q": "Quanto tempo dura a carência?", "a": "Depende do banco e do tipo de operação. Em geral varia de **30 a 90 dias** para o início das parcelas. Em imóvel na planta, a fase de obra (em que se paga só juros) pode durar todo o período de construção." },
+      { "q": "Posso pedir carência se já estou pagando o financiamento?", "a": "Em alguns casos, sim. Diante de aperto financeiro, é possível solicitar ao banco uma **pausa ou carência emergencial** de algumas parcelas. As condições e o número de meses dependem da análise da instituição e do seu contrato." },
+      { "q": "Vale a pena pegar carência para comprar com mais folga?", "a": "Só se você realmente precisar do fôlego no início. Se seu orçamento já está organizado e você tem reserva, adiar as parcelas tende a aumentar o total de juros pagos sem real necessidade. Sempre compare a simulação com e sem carência." }
+    ] },
+
+    { "tipo": "h2", "txt": "Resumo de consultor" },
+    { "tipo": "p", "txt": "A carência pode ser um respiro valioso nos primeiros meses de uma compra — especialmente quando você está com despesas de mudança ou comprou na planta. Mas ela tem nome e sobrenome: **juros que continuam correndo**. O segredo é entrar de olhos abertos, pedir a simulação completa ao banco e usar a carência como estratégia, nunca como muleta para uma compra que ainda não cabe no bolso." },
+    { "tipo": "p", "txt": "Se quiser, eu te ajudo a montar o cenário com e sem carência, comparar bancos e encontrar o imóvel certo aqui em Uberlândia, com a parcela cabendo no seu orçamento de verdade." },
+
+    { "tipo": "cta", "label": "Falar com o Vinícius sobre carência", "txt": "Olá Vinícius! Quero entender melhor a carência no financiamento imobiliário e simular as parcelas do meu imóvel em Uberlândia." }
+  ],
+  "fontes": [
+    { "nome": "Caixa Econômica Federal — Habitação", "url": "https://www.caixa.gov.br/voce/habitacao/Paginas/default.aspx" },
+    { "nome": "Banco Central do Brasil — Financiamento imobiliário", "url": "https://www.bcb.gov.br/" },
+    { "nome": "gov.br — Minha Casa Minha Vida", "url": "https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/habitacao/minha-casa-minha-vida" }
+  ]
+}

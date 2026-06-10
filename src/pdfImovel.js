@@ -1,4 +1,4 @@
-import { formatPreco } from './data'
+import { formatPreco, vantagensImovel } from './data'
 
 // Gera o material técnico do imóvel em PDF (100% no navegador). Capa, ficha,
 // descrição, diferenciais e galeria — com a marca do Vinícius e rodapé legal.
@@ -16,7 +16,7 @@ function jpegCover(img, tw, th) {
   return c.toDataURL('image/jpeg', 0.84)
 }
 
-export async function gerarPdfImovel(im, fotos) {
+export async function gerarPdfImovel(im, fotos, beneficios) {
   const { jsPDF } = await import('jspdf')
   const doc = new jsPDF({ unit: 'pt', format: 'a4', compress: true })
   fotos = (fotos || []).filter(Boolean)
@@ -83,17 +83,39 @@ export async function gerarPdfImovel(im, fotos) {
     y += Math.ceil(specs.length / 2) * 20 + 16
   }
 
+  const tituloSecao = (titulo) => {
+    if (y > PH - 130) { nova(); y = 72 }
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(22, 26, 34); doc.text(titulo, M, y); y += 6
+    doc.setDrawColor(224, 181, 86); doc.setLineWidth(1.4); doc.line(M, y, M + 42, y)
+    doc.setDrawColor(230); doc.setLineWidth(0.5); doc.line(M + 50, y, PW - M, y); y += 16
+  }
   const secao = (titulo, texto) => {
     if (!texto) return
-    if (y > PH - 120) { nova(); y = 72 }
-    doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(22, 26, 34); doc.text(titulo, M, y); y += 6
-    doc.setDrawColor(230); doc.line(M, y, PW - M, y); y += 16
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(60, 66, 78)
-    doc.splitTextToSize(texto, PW - 2 * M).forEach((ln) => { if (y > PH - 48) { nova(); y = 72 } doc.text(ln, M, y); y += 14 })
+    tituloSecao(titulo)
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(10.5); doc.setTextColor(58, 64, 76)
+    doc.splitTextToSize(texto, PW - 2 * M).forEach((ln) => { if (y > PH - 48) { nova(); y = 72 } doc.text(ln, M, y); y += 15 })
+    y += 12
+  }
+  const lista = (titulo, itens) => {
+    const arr = (itens || []).filter(Boolean)
+    if (!arr.length) return
+    tituloSecao(titulo)
+    doc.setFontSize(10.5); doc.setTextColor(58, 64, 76)
+    for (const it of arr) {
+      const linhas = doc.splitTextToSize(String(it), PW - 2 * M - 18)
+      if (y + linhas.length * 15 > PH - 46) { nova(); y = 72 }
+      doc.setFont('helvetica', 'bold'); doc.setTextColor(201, 150, 47); doc.text('•', M, y)
+      doc.setFont('helvetica', 'normal'); doc.setTextColor(58, 64, 76)
+      linhas.forEach((ln, k) => { doc.text(ln, M + 16, y + k * 15) })
+      y += linhas.length * 15 + 4
+    }
     y += 10
   }
+
+  lista('Por que vale a sua visita', vantagensImovel(im))
   secao('Descrição do imóvel', (im.descricao || '').trim())
-  if (Array.isArray(im.amenidades) && im.amenidades.length) secao('Diferenciais', im.amenidades.join('  ·  '))
+  if (Array.isArray(im.amenidades) && im.amenidades.length) lista('Características e comodidades', im.amenidades)
+  lista('Localização e proximidades', beneficios)
 
   const resto = fotos.slice(1, 13)
   if (resto.length) {

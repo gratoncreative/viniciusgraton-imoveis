@@ -224,32 +224,20 @@ section { position: relative; padding: clamp(30px, 4.2vw, 56px) 0; }
 /* ---------- HERO ---------- */
 .hero { --px: 0; --py: 0; min-height: 100svh; display: grid; align-items: center; padding-top: 120px; padding-bottom: 60px; position: relative; overflow: hidden; perspective: 1000px; }
 /* camada 1: foto realista com parallax suave */
-.hero-bg { display: none; } /* fundo agora é a cena "jardim" (HeroSkyline), não a foto */
-/* camada 2: leve aprofundamento só onde tem texto (bio à direita / base), preservando a cena verde */
+.hero-bg { position: absolute; inset: -7%; z-index: 0; background-position: center; background-size: cover; transform: translate3d(calc(var(--px) * -22px), calc(var(--py) * -16px), 0) scale(1.12); transition: transform 0.5s cubic-bezier(0.22,1,0.36,1); filter: saturate(1.05); will-change: transform; }
+/* camada 2: tonalização premium pra legibilidade (mais forte à direita/base, onde tem texto) */
 .hero-bg-tint { position: absolute; inset: 0; z-index: 1; background:
-  linear-gradient(100deg, rgba(8,18,14,0) 38%, rgba(8,18,14,0.45) 72%, rgba(8,18,14,0.72) 100%),
-  linear-gradient(0deg, rgba(8,18,14,0.55) 0%, rgba(8,18,14,0.05) 34%, transparent 60%); }
+  linear-gradient(100deg, rgba(8,16,13,0.18) 30%, rgba(8,16,13,0.5) 66%, rgba(8,16,13,0.82) 100%),
+  linear-gradient(0deg, rgba(8,16,13,0.7) 0%, rgba(8,16,13,0.1) 38%, transparent 64%),
+  radial-gradient(800px 560px at 14% 8%, rgba(224,181,86,0.1), transparent 62%); }
 /* camada 2.5: skyline de prédios animado (silhueta + janelas que acendem em dourado) */
-/* cena "jardim ao entardecer": gradiente verde + folhagens + luzes que acendem */
-.hero-skyline { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
-  background:
-    radial-gradient(130% 100% at 18% 12%, #1c4533 0%, #143528 36%, #0e241c 66%, #0b1814 100%); }
-.hsk-glow { position: absolute; inset: 0; background:
-    radial-gradient(60% 50% at 80% 90%, rgba(224,181,86,0.16), transparent 70%),
-    radial-gradient(50% 45% at 15% 80%, rgba(120,200,150,0.12), transparent 70%); }
-.hsk-leaf { position: absolute; color: rgba(28,74,52,0.55); transform-origin: top center; animation: hskSway 9s ease-in-out infinite; filter: blur(0.4px); }
-.hsk-leaf-svg { width: 100%; height: 100%; display: block; }
-.hsk-leaf--tl { top: -7%; left: -5%; width: 230px; height: 345px; --rot: 28deg; }
-.hsk-leaf--tl2 { top: -10%; left: 7%; width: 170px; height: 255px; --rot: -12deg; color: rgba(36,92,64,0.5); }
-.hsk-leaf--bl { bottom: -10%; left: -6%; width: 200px; height: 300px; --rot: 150deg; color: rgba(24,66,46,0.5); }
-.hsk-leaf--br { bottom: -8%; right: -5%; width: 250px; height: 375px; --rot: -152deg; }
-.hsk-leaf--br2 { bottom: -12%; right: 8%; width: 175px; height: 262px; --rot: 165deg; color: rgba(36,92,64,0.46); }
+/* luzes douradas bem discretas sobre a foto (vaga-lumes sutis) */
+.hero-skyline { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
 .hsk-luz { position: absolute; border-radius: 50%; transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(255,228,160,0.95) 0%, rgba(255,201,110,0.5) 38%, rgba(255,190,90,0) 72%);
-  animation: hskAcende 4.5s ease-in-out infinite; will-change: opacity, transform; }
-@keyframes hskAcende { 0%, 100% { opacity: 0.12; transform: translate(-50%, -50%) scale(0.7); } 50% { opacity: 1; transform: translate(-50%, -52%) scale(1.12); } }
-@keyframes hskSway { 0%, 100% { transform: rotate(var(--rot, 0deg)) translateY(0); } 50% { transform: rotate(calc(var(--rot, 0deg) + 2deg)) translateY(-6px); } }
-@media (prefers-reduced-motion: reduce) { .hsk-luz, .hsk-leaf { animation: none; } .hsk-luz { opacity: 0.7; } }
+  background: radial-gradient(circle, rgba(255,228,160,0.9) 0%, rgba(255,201,110,0.4) 40%, rgba(255,190,90,0) 72%);
+  animation: hskAcende 5s ease-in-out infinite; will-change: opacity, transform; }
+@keyframes hskAcende { 0%, 100% { opacity: 0.06; transform: translate(-50%, -50%) scale(0.6); } 50% { opacity: 0.55; transform: translate(-50%, -54%) scale(1.05); } }
+@media (prefers-reduced-motion: reduce) { .hsk-luz { animation: none; opacity: 0.4; } }
 /* camada 3: poeira dourada leve (CSS) */
 .dust { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
 .dust-p { position: absolute; bottom: -12px; border-radius: 50%; background: radial-gradient(circle, #f4d98a 0%, rgba(244,217,138,0) 70%); animation-name: dustfloat; animation-timing-function: linear; animation-iteration-count: infinite; will-change: transform, opacity; }
