@@ -468,10 +468,10 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 
 /* ===== Desktop: filtro e listagem rolam INDEPENDENTES, sem barra visível (estilo Chaves na Mão) ===== */
 @media (min-width: 881px) {
-  .catalogo { height: 100vh; min-height: 0; padding: 92px 0 0; overflow: hidden; display: flex; flex-direction: column; }
+  .catalogo { height: 100vh; min-height: 0; padding: 108px 0 0; overflow: hidden; display: flex; flex-direction: column; }
   .catalogo > .container { flex: 1; min-height: 0; display: flex; flex-direction: column; width: 100%; }
-  .cat-head { flex: none; margin-bottom: 12px; max-width: none; }
-  .cat-head .eyebrow { margin-bottom: 4px; }
+  .cat-head { flex: none; margin-bottom: 24px; max-width: none; }
+  .cat-head .eyebrow { margin-bottom: 9px; }
   .cat-head .section-title { font-size: clamp(1.5rem, 2.4vw, 2.1rem); margin: 0; }
   .cat-head .section-sub { display: none; }
   .cat-layout { flex: 1; min-height: 0; align-items: stretch; }
@@ -541,7 +541,7 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .im-linha .im-bairro { font-size: 1.34rem; }
 .im-linha-top { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; }
 .im-linha-rodape { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: auto; padding-top: 8px; flex-wrap: wrap; }
-.im-linha-preco { font-family: var(--font-head); font-weight: 800; font-size: 1.35rem; color: var(--gold-1); letter-spacing: -0.01em; }
+.im-linha-preco { font-family: var(--font-head); font-weight: 800; font-size: 1.42rem; color: #1c2230; letter-spacing: -0.01em; }
 @media (max-width: 620px) { .im-linha { grid-template-columns: 1fr; } .im-linha-media { min-height: 170px; } }
 .cat-filtros { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
 .cat-filtros input, .cat-filtros select {
@@ -614,7 +614,7 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .det-bread a { color: var(--text-soft); }
 .det-bread a:hover { color: var(--gold-1); }
 .det-bread b { color: var(--text); }
-.det-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 44px; align-items: stretch; }
+.det-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 44px; align-items: start; }
 .det-galeria, .det-info { min-width: 0; }
 .det-galeria { display: flex; flex-direction: column; }
 .det-titulo { overflow-wrap: anywhere; }
@@ -628,7 +628,7 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .det-info { position: sticky; top: 100px; }
 .det-local { color: var(--text-soft); font-size: 0.85rem; }
 .det-titulo { font-family: var(--font-head); font-weight: 700; font-size: 1.9rem; line-height: 1.15; margin: 6px 0 10px; }
-.det-preco { display: block; font-family: var(--font-head); font-weight: 800; font-size: 2.1rem; margin-bottom: 22px; background: linear-gradient(135deg, #c9962f, #9a6c1c); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.det-preco { display: block; font-family: var(--font-head); font-weight: 800; font-size: 2.1rem; margin-bottom: 22px; color: #1c2230; letter-spacing: -0.01em; }
 
 /* ===== Preço bloqueado até o cadastro (gatilho de captação) ===== */
 .preco-gate { font: inherit; background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: inherit; text-align: left; display: inline-flex; flex-direction: column; gap: 5px; }
@@ -1204,7 +1204,7 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 /* ===== Galeria (página do imóvel) ===== */
 .det-galeria { position: relative; }
 .det-galeria .det-tag { position: absolute; top: 16px; left: 16px; z-index: 4; }
-.gal-main { position: relative; aspect-ratio: 4/3; border-radius: var(--radius); overflow: hidden; background: var(--surface); border: 1px solid var(--border); }
+.gal-main { position: relative; aspect-ratio: 4/3; max-height: 440px; border-radius: var(--radius); overflow: hidden; background: var(--surface); border: 1px solid var(--border); }
 .gal-main > img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; }
 /* slides do tour (crossfade + Ken Burns) */
 .gal-slide { position: absolute; inset: 0; will-change: opacity, transform; }
