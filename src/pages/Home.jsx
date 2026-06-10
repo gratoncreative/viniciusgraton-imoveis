@@ -2,7 +2,6 @@ import Hero from '../components/Hero'
 import Destaque from '../components/Destaque'
 import BlogHome from '../components/BlogHome'
 import VenderCta from '../components/VenderCta'
-import Contato from '../components/Contato'
 import Novidades from '../components/Novidades'
 import { useSEO } from '../useSEO'
 
@@ -23,7 +22,6 @@ export default function Home() {
       <Novidades />
       <VenderCta />
       <BlogHome />
-      <Contato />
     </main>
   )
 }
