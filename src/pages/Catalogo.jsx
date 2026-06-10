@@ -88,7 +88,12 @@ export default function Catalogo() {
   const TODOS = useMemo(() => {
     const mapa = new Map()
     for (const im of feed) mapa.set(String(im.codigo), im)
-    for (const im of IMOVEIS) mapa.set(String(im.codigo), im)
+    // curados têm prioridade (galeria/descrição completas), mas herdam visto/novo do feed
+    for (const im of IMOVEIS) {
+      const cod = String(im.codigo)
+      const base = mapa.get(cod)
+      mapa.set(cod, base ? { ...base, ...im } : im)
+    }
     return [...mapa.values()]
   }, [feed])
   const BAIRROS_TODOS = useMemo(() => [...new Set(TODOS.map((i) => i.bairro).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')), [TODOS])
@@ -163,6 +168,8 @@ export default function Catalogo() {
       }
       return true
     })
+    // "Mais recentes" (padrão): imóveis recém-chegados (com data de 1ª aparição) primeiro
+    if (f.ordem === 'recentes') r = [...r].sort((a, b) => String(b.visto || '').localeCompare(String(a.visto || '')))
     if (f.ordem === 'menor') r = [...r].sort((a, b) => a.preco - b.preco)
     if (f.ordem === 'maior') r = [...r].sort((a, b) => b.preco - a.preco)
     if (f.ordem === 'area-maior') r = [...r].sort((a, b) => (b.area || 0) - (a.area || 0))

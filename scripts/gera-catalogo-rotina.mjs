@@ -88,8 +88,16 @@ try {
   const mapaAnt = new Map((antigo.imoveis || []).map((i) => [String(i.codigo), i]))
   for (const r of recs) {
     const a = mapaAnt.get(String(r.codigo))
-    if (!a) novos.push(r)
-    else if (a.preco && r.preco && r.preco < a.preco) baixaram.push({ ...r, precoAnterior: a.preco })
+    if (!a) {
+      // recém-chegado: carimba a data de primeira aparição e marca como novo
+      r.visto = geradoEm
+      r.novo = true
+      novos.push(r)
+    } else {
+      // já existia: preserva a data de primeira aparição (se já tínhamos)
+      if (a.visto) r.visto = a.visto
+      if (a.preco && r.preco && r.preco < a.preco) baixaram.push({ ...r, precoAnterior: a.preco })
+    }
   }
   console.log(`Novidades: ${novos.length} novos · ${baixaram.length} baixaram de preço`)
 } catch { /* primeira geração: sem diff */ }
