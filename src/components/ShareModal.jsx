@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CONFIG, formatPreco } from '../data'
 import { registrarLead } from '../engajamento'
-import { IconWhats, IconClose, IconLink, IconCheck, IconShare } from './icons'
+import { IconWhats, IconClose, IconLink, IconCheck, IconShare, IconFacebook, IconTelegram, IconInsta, IconTikTok } from './icons'
 
 // Modal de compartilhamento + captação de lead.
 // Ao compartilhar (WhatsApp / copiar / nativo) dispara onShared (incrementa o contador).
@@ -13,6 +13,7 @@ export default function ShareModal({ im, onClose, onShared }) {
   const [fone, setFone] = useState('')
   const [copiado, setCopiado] = useState(false)
   const [enviado, setEnviado] = useState(false)
+  const [legendaDe, setLegendaDe] = useState('')
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -39,6 +40,22 @@ export default function ShareModal({ im, onClose, onShared }) {
       await navigator.share({ title: resumo, text: `Olha esse imóvel: ${resumo}`, url })
       onShared && onShared()
     } catch { /* cancelado */ }
+  }
+
+  // redes com URL de compartilhamento que funciona pela web
+  const abrirRede = (urlRede) => { onShared && onShared(); window.open(urlRede, '_blank', 'noopener') }
+  const compartilharFacebook = () => abrirRede(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`)
+  const compartilharTelegram = () => abrirRede(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(resumo)}`)
+
+  // Instagram e TikTok não aceitam link pré-preenchido pela web: copiamos a legenda
+  // pronta (com o link) e abrimos o app — é só colar no story/post.
+  const legenda = `${resumo}\n📍 ${im.bairro}, ${im.cidade} · Cód. ${im.codigo}\n${url}`
+  const compartilharApp = (rede, appUrl) => {
+    if (navigator.clipboard) navigator.clipboard.writeText(legenda).catch(() => {})
+    setLegendaDe(rede)
+    setTimeout(() => setLegendaDe(''), 3200)
+    onShared && onShared()
+    window.open(appUrl, '_blank', 'noopener')
   }
 
   const copiarLink = async () => {
@@ -90,6 +107,22 @@ export default function ShareModal({ im, onClose, onShared }) {
               <IconWhats width={22} height={22} />
               <span>Enviar no<br /><b>WhatsApp</b></span>
             </button>
+            <button type="button" className="share-op share-op--insta" onClick={() => compartilharApp('insta', 'https://www.instagram.com/')}>
+              {legendaDe === 'insta' ? <IconCheck width={22} height={22} /> : <IconInsta width={22} height={22} />}
+              <span>{legendaDe === 'insta' ? 'Legenda copiada!' : <>Story/feed<br /><b>Instagram</b></>}</span>
+            </button>
+            <button type="button" className="share-op share-op--tiktok" onClick={() => compartilharApp('tiktok', 'https://www.tiktok.com/')}>
+              {legendaDe === 'tiktok' ? <IconCheck width={22} height={22} /> : <IconTikTok width={22} height={22} />}
+              <span>{legendaDe === 'tiktok' ? 'Legenda copiada!' : <>Postar no<br /><b>TikTok</b></>}</span>
+            </button>
+            <button type="button" className="share-op share-op--face" onClick={compartilharFacebook}>
+              <IconFacebook width={22} height={22} />
+              <span>Postar no<br /><b>Facebook</b></span>
+            </button>
+            <button type="button" className="share-op share-op--tg" onClick={compartilharTelegram}>
+              <IconTelegram width={22} height={22} />
+              <span>Enviar no<br /><b>Telegram</b></span>
+            </button>
             <button type="button" className="share-op" onClick={copiarLink}>
               {copiado ? <IconCheck width={22} height={22} /> : <IconLink width={22} height={22} />}
               <span>{copiado ? 'Link copiado!' : <>Copiar<br /><b>o link</b></>}</span>
@@ -101,6 +134,9 @@ export default function ShareModal({ im, onClose, onShared }) {
               </button>
             )}
           </div>
+          {legendaDe && (
+            <p className="share-dica-app">Legenda e link copiados — é só <b>colar</b> no seu {legendaDe === 'insta' ? 'story ou post do Instagram' : 'vídeo do TikTok'}. No celular, o botão <b>“Mais opções”</b> também abre o {legendaDe === 'insta' ? 'Instagram' : 'TikTok'} direto.</p>
+          )}
 
           {!enviado ? (
             <form className="share-lead" onSubmit={enviarLead}>
