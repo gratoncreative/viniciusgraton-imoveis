@@ -36,6 +36,17 @@ export const normalizarWhatsappBR = (s) => {
   if (n.startsWith('55') && n.length > 11) n = n.slice(2)
   return '55' + n
 }
+// máscara amigável enquanto digita: (34) 99157-0494
+export const formatarFoneBR = (s) => {
+  let n = soDigitos(s)
+  if (n.startsWith('55') && n.length > 11) n = n.slice(2)
+  n = n.slice(0, 11)
+  if (n.length > 10) return `(${n.slice(0, 2)}) ${n.slice(2, 7)}-${n.slice(7)}`
+  if (n.length > 6) return `(${n.slice(0, 2)}) ${n.slice(2, 6)}-${n.slice(6)}`
+  if (n.length > 2) return `(${n.slice(0, 2)}) ${n.slice(2)}`
+  if (n.length > 0) return `(${n}`
+  return ''
+}
 
 // Mensagens pré-salvas por área do site
 export const WA = {

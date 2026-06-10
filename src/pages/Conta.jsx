@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import CardImovel from '../components/CardImovel'
-import { IMOVEIS, getImovel, FAIXAS_PRECO, BAIRROS_IMOVEL, validarWhatsappBR, linkWhatsApp } from '../data'
+import { IMOVEIS, getImovel, FAIXAS_PRECO, BAIRROS_IMOVEL, validarWhatsappBR, linkWhatsApp, formatarFoneBR } from '../data'
 import { favoritos, registrarLead } from '../engajamento'
 import { getConta, salvarConta, logout, getHistorico, estaLogado } from '../conta'
 import GoogleLogin from '../components/GoogleLogin'
@@ -55,7 +55,7 @@ function CadastroView({ onPronto }) {
     if (!f.nome.trim() || !f.email.trim() || !f.fone.trim()) return
     if (!validarWhatsappBR(f.fone)) { setErroFone('Confira o WhatsApp: precisa ser DDD + número (ex.: (34) 99157-0494).'); return }
     salvarConta({ ...f })
-    registrarLead({ cod: 'cadastro', nome: f.nome.trim(), fone: f.fone.trim(), bairro: `cadastro · ${f.objetivo} · ${f.bairros || 'sem bairro'} · ${f.faixa || 'faixa livre'}` })
+    registrarLead({ cod: 'cadastro', nome: f.nome.trim(), fone: f.fone.trim(), objetivo: f.objetivo, origem: 'conta', bairro: `${f.bairros || 'sem bairro'} · ${f.faixa || 'faixa livre'}` })
     confirmarNoWhats(f.nome.trim())
     onPronto()
   }
@@ -117,7 +117,7 @@ function CadastroView({ onPronto }) {
           <p className="lead-note" style={{ marginTop: 0, marginBottom: 8 }}>
             Entrei com seu Google ({googlePerfil.email}). Me passa seu WhatsApp que eu te aviso em primeira mão dos imóveis com a sua cara.
           </p>
-          <label><span>WhatsApp (com DDD) *</span><input type="tel" inputMode="tel" value={gFone} onChange={(e) => { setGFone(e.target.value); if (gErro) setGErro('') }} placeholder="(34) 9____-____" required autoFocus /></label>
+          <label><span>WhatsApp (com DDD) *</span><input type="tel" inputMode="tel" value={gFone} onChange={(e) => { setGFone(formatarFoneBR(e.target.value)); if (gErro) setGErro('') }} placeholder="(34) 99157-0494" required autoFocus /></label>
           {gErro && <p className="lead-erro">{gErro}</p>}
           <label><span>O que você busca?</span>
             <select value={gObj} onChange={(e) => setGObj(e.target.value)}>
@@ -134,7 +134,7 @@ function CadastroView({ onPronto }) {
         <GoogleLogin onLogin={setGooglePerfil} onPronto={onPronto} />
         <label><span>Nome completo *</span><input value={f.nome} onChange={set('nome')} required /></label>
         <label><span>E-mail *</span><input type="email" value={f.email} onChange={set('email')} required /></label>
-        <label><span>WhatsApp (com DDD) *</span><input type="tel" inputMode="tel" value={f.fone} onChange={(e) => { set('fone')(e); if (erroFone) setErroFone('') }} placeholder="(34) 9____-____" required /></label>
+        <label><span>WhatsApp (com DDD) *</span><input type="tel" inputMode="tel" value={f.fone} onChange={(e) => { setF((s) => ({ ...s, fone: formatarFoneBR(e.target.value) })); if (erroFone) setErroFone('') }} placeholder="(34) 99157-0494" required /></label>
         {erroFone && <p className="lead-erro">{erroFone}</p>}
         <div className="conta-form-row">
           <label><span>Idade <i>(opcional)</i></span><input inputMode="numeric" value={f.idade} onChange={set('idade')} /></label>
