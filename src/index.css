@@ -725,6 +725,16 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 
 /* ===== Página de diferenciais ===== */
 .dif-hero { text-align: center; max-width: 760px; margin: 0 auto; }
+.dif-pg { padding-top: 0 !important; }
+.dif-banner { position: relative; overflow: hidden; padding: clamp(96px, 13vw, 150px) 0 clamp(40px, 6vw, 64px); }
+.dif-banner-bg { position: absolute; inset: 0; background-size: cover; background-position: center 22%; transform: scale(1.05); }
+.dif-banner-tint { position: absolute; inset: 0; background: linear-gradient(120deg, rgba(8,11,18,0.93) 0%, rgba(8,11,18,0.8) 55%, rgba(8,11,18,0.62) 100%); }
+.dif-banner-in { position: relative; z-index: 2; text-align: center; max-width: 760px; margin: 0 auto; }
+.dif-banner .eyebrow { color: var(--gold-1); justify-content: center; }
+.dif-banner .eyebrow::before { background: var(--gold-1); }
+.dif-banner-tit { font-family: var(--font-head); font-weight: 800; font-size: clamp(2.1rem, 5vw, 3.4rem); line-height: 1.05; letter-spacing: -0.02em; color: #fff; margin: 12px 0 16px; }
+.dif-banner-tit em { font-family: var(--font-serif); font-style: italic; font-weight: 500; background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.dif-banner-sub { color: rgba(235,238,244,0.9); font-size: clamp(1rem, 1.5vw, 1.16rem); line-height: 1.6; max-width: 620px; margin: 0 auto; }
 .dif-nav { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 32px 0 10px; }
 .dif-nav-item { display: inline-flex; align-items: center; gap: 9px; padding: 10px 16px; border-radius: 999px; background: #fff; border: 1px solid rgba(22,26,34,0.1); color: #4a4234; font-family: var(--font-head); font-weight: 600; font-size: 0.85rem; text-decoration: none; transition: border-color 0.2s, transform 0.2s var(--ease); }
 .dif-nav-item:hover { border-color: var(--gold-3); transform: translateY(-2px); }

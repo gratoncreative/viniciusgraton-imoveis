@@ -75,16 +75,21 @@ export default function Diferenciais() {
 
   return (
     <main className="pagina section--light det dif-pg">
-      <div className="container">
-        <Reveal>
-          <div className="dif-hero">
-            <span className="eyebrow" style={{ justifyContent: 'center' }}>Por que comprar comigo</span>
-            <h1 className="section-title">O que me torna <em>diferente</em></h1>
-            <p className="section-sub" style={{ marginTop: 14, maxWidth: 680, marginInline: 'auto' }}>
+      <section className="dif-banner">
+        <div className="dif-banner-bg" style={{ backgroundImage: 'url(/vinicius-graton.jpg)' }} />
+        <div className="dif-banner-tint" />
+        <div className="container dif-banner-in">
+          <Reveal>
+            <span className="eyebrow">Por que comprar comigo</span>
+            <h1 className="dif-banner-tit">O que me torna <em>diferente</em></h1>
+            <p className="dif-banner-sub">
               Comprar imóvel não é sobre receber links. É sobre ter alguém de confiança do seu lado em cada etapa. Esses são os quatro pilares do meu atendimento.
             </p>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
+      </section>
+
+      <div className="container">
 
         <div className="dif-nav">
           {DIFERENCIAIS.map((d) => (
