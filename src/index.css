@@ -122,7 +122,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 
 /* ---------- seções com fundo claro (leveza, cores invertidas) ---------- */
-#destaque.section--light, #contato.section--light { background: #fff; }
+#destaque.section--light, #contato.section--light, .imovel-pg.section--light { background: #fff; }
 .section--light .contact-row .ci { color: var(--gold-3); }
 .section--light {
   background: #f5f2ea;

@@ -236,7 +236,7 @@ export default function ImovelDetalhe() {
     .map((x) => x.i)
 
   return (
-    <main className="section--light det">
+    <main className="section--light det imovel-pg">
       <div className="container">
         <nav className="det-bread">
           <Link to="/">Início</Link> <span>/</span> <Link to="/imoveis">Imóveis</Link> <span>/</span> <b>{im.bairro}</b>
