@@ -18,7 +18,8 @@ export async function onRequestPost({ env, request }) {
   const credential = String(b.credential || '')
   if (!credential) return json({ error: 'credential obrigatorio' }, 400)
 
-  const clientId = env && env.GOOGLE_CLIENT_ID
+  // Client ID é público — pode ficar no código. Usa a env do Cloudflare se existir.
+  const clientId = (env && env.GOOGLE_CLIENT_ID) || '522410029650-rrsga1dakfh4j3b5bqqepp1ha0bnfc5d.apps.googleusercontent.com'
   if (!clientId) return json({ error: 'login google nao configurado' }, 503)
 
   // valida o ID token no endpoint oficial do Google (confere assinatura e validade)
