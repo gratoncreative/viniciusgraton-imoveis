@@ -3,7 +3,6 @@ import { useSearchParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import CardImovel from '../components/CardImovel'
 import AviseMe from '../components/AviseMe'
-import BannerAds from '../components/BannerAds'
 import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, FAIXAS_PRECO, linkWhatsApp, WA } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconClose } from '../components/icons'
@@ -206,8 +205,6 @@ export default function Catalogo() {
             <button className="cat-limpar" onClick={limpar}>Limpar tudo</button>
           </div>
         )}
-
-        <BannerAds orientacao="vertical" />
         </aside>
 
         <div className="cat-main">
