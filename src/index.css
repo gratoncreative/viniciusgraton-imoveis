@@ -503,7 +503,7 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .fs--on .fs-label { font-weight: 600; color: #2a2118; }
 .fs-chev { flex: none; color: var(--text-mute); transition: transform 0.2s; }
 .fs--open .fs-chev { transform: rotate(180deg); color: var(--gold-3); }
-.fs-pop { position: absolute; z-index: 40; top: calc(100% + 6px); left: 0; right: 0; background: #fff; border: 1px solid rgba(22,26,34,0.14); border-radius: 12px; box-shadow: 0 22px 50px -22px rgba(22,26,34,0.45); padding: 6px; max-height: 320px; overflow-y: auto; scrollbar-width: thin; }
+.fs-pop { position: fixed; z-index: 60; background: #fff; border: 1px solid rgba(22,26,34,0.14); border-radius: 12px; box-shadow: 0 22px 50px -22px rgba(22,26,34,0.45); padding: 6px; max-height: 360px; overflow-y: auto; scrollbar-width: thin; }
 .fs-busca { width: 100%; box-sizing: border-box; padding: 9px 12px; margin-bottom: 6px; border: 1px solid var(--border); border-radius: 9px; font-family: inherit; font-size: 0.88rem; outline: none; }
 .fs-busca:focus { border-color: var(--gold-3); }
 .fs-opts { list-style: none; display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; }

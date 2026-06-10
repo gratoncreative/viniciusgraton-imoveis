@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useLayoutEffect } from 'react'
 
 // Dropdown de filtro personalizado (substitui o <select> nativo).
 // - single: escolha única (tipo, preço, quartos…)
@@ -12,7 +12,7 @@ export default function FiltroSelect({ icon, placeholder, options = [], value, m
   const ref = useRef(null)
   const popRef = useRef(null)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!open) return
     const calc = () => {
       const t = ref.current
@@ -75,7 +75,7 @@ export default function FiltroSelect({ icon, placeholder, options = [], value, m
         <svg className="fs-chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
       </button>
       {open && (
-        <div className="fs-pop" data-lenis-prevent ref={popRef} style={pos ? { position: 'fixed', left: pos.left, width: pos.width, maxHeight: pos.maxH, ...(pos.abrirCima ? { bottom: pos.bottom } : { top: pos.top }) } : undefined}>
+        <div className="fs-pop" data-lenis-prevent ref={popRef} style={pos ? { position: 'fixed', left: pos.left, width: pos.width, maxHeight: pos.maxH, right: 'auto', top: pos.abrirCima ? 'auto' : pos.top, bottom: pos.abrirCima ? pos.bottom : 'auto' } : { visibility: 'hidden' }}>
           {searchable && (
             <input className="fs-busca" autoFocus type="search" placeholder="Buscar bairro…" value={q} onChange={(e) => setQ(e.target.value)} />
           )}
