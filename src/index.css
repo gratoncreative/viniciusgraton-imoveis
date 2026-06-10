@@ -24,7 +24,7 @@
   --font-body: 'Inter', system-ui, sans-serif;
   --font-serif: 'Fraunces', Georgia, serif;
 
-  --maxw: 1240px;
+  --maxw: 1480px;
   --radius: 20px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -535,7 +535,9 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 
 /* ===== Preço bloqueado até o cadastro (gatilho de captação) ===== */
 .preco-gate { font: inherit; background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: inherit; text-align: left; display: inline-flex; flex-direction: column; gap: 5px; }
-.preco-gate .pg-num { filter: blur(8px); opacity: 0.78; user-select: none; pointer-events: none; white-space: nowrap; }
+.preco-gate .pg-num { user-select: none; pointer-events: none; white-space: nowrap; display: inline-flex; align-items: baseline; gap: 5px; }
+.preco-gate .pg-rs { filter: none; opacity: 0.95; }
+.preco-gate .pg-dig { filter: blur(3.2px); opacity: 0.9; }
 .preco-gate .pg-cta { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-head); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.01em; transition: transform 0.18s var(--ease), filter 0.18s; }
 .preco-gate:hover .pg-cta { filter: brightness(1.06); transform: translateY(-1px); }
 .preco-gate svg { flex: none; }
@@ -1137,6 +1139,12 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .ferr-card.on { border-color: var(--gold-3); box-shadow: 0 0 0 2px var(--gold-3); }
 .ferr-ico { flex: none; width: 46px; height: 46px; display: grid; place-items: center; border-radius: 11px; background: #f4f1e8; border: 1px solid rgba(22,26,34,0.09); color: var(--gold-3); transition: background 0.22s var(--ease), color 0.22s var(--ease); }
 .ferr-card:hover .ferr-ico, .ferr-card.on .ferr-ico { background: #11151d; color: var(--gold-1); }
+.ferr-card--gold { background: var(--gold-grad); border-color: transparent; box-shadow: 0 16px 36px -20px rgba(184,134,47,0.7); }
+.ferr-card--gold .ferr-txt b { color: #20160a; }
+.ferr-card--gold .ferr-txt i { color: #5a4316; }
+.ferr-card--gold .ferr-ico { background: rgba(20,16,10,0.92); color: var(--gold-1); border-color: transparent; }
+.ferr-card--gold:hover { transform: translateY(-3px); box-shadow: 0 22px 46px -20px rgba(184,134,47,0.85); border-color: transparent; }
+.ferr-card--gold:hover .ferr-ico { background: #11151d; color: var(--gold-1); }
 .calc-tit-ico { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: #11151d; color: var(--gold-1); margin-right: 12px; }
 .ferr-txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .ferr-txt b { font-family: var(--font-head); font-size: 0.96rem; color: #1a1f29; line-height: 1.2; }

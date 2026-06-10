@@ -22,9 +22,13 @@ export default function PrecoGate({ valor, className = '', tipo = 'card' }) {
   if (ok) return <span className={className}>{formatPreco(valor)}</span>
 
   const abrir = (e) => { e.preventDefault(); e.stopPropagation(); window.dispatchEvent(new CustomEvent('vg-abrir-cadastro')) }
+  const txt = String(formatPreco(valor))
+  const m = txt.match(/^(\D*)(.+)$/)
+  const moeda = (m && m[1].trim()) || 'R$'
+  const dig = m ? m[2] : txt
   return (
-    <button type="button" className={`preco-gate preco-gate--${tipo}`} onClick={abrir} aria-label="Cadastre-se para ver o preço">
-      <span className="pg-num" aria-hidden="true">{formatPreco(valor)}</span>
+    <button type="button" className={`preco-gate preco-gate--${tipo}`} onClick={abrir} aria-label="Cadastre-se para ver o preço do imóvel">
+      <span className="pg-num" aria-hidden="true"><span className="pg-rs">{moeda}</span> <span className="pg-dig">{dig}</span></span>
       <span className="pg-cta"><Cadeado /> Clique para ver o preço</span>
     </button>
   )

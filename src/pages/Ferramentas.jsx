@@ -58,7 +58,7 @@ const TOOLS = [
   { id: 'acm', nome: 'Análise de mercado (ACM)', desc: 'Sugere o preço do imóvel pelo m² do bairro.', icon: 'chart', cat: 'corretor' },
   { id: 'ficha', nome: 'Ficha de avaliação rápida', desc: 'Gera um resumo do imóvel pra enviar.', icon: 'edit', cat: 'corretor' },
   { id: 'rotina', nome: 'Rotina — abordagem por código', desc: 'Cole o código do imóvel da Rotina e gere a mensagem de 1º contato com gatilhos + benefícios da região (raio de 1km).', icon: 'chat', cat: 'corretor' },
-  { id: 'painel', nome: 'Painel de leads', desc: 'Seus cadastros e leads (acesso restrito).', icon: 'bell', cat: 'corretor', to: '/painel' },
+  { id: 'painel', nome: 'Painel administrativo', desc: 'Imóveis, leads, clientes e tudo do seu negócio (acesso restrito).', icon: 'bell', cat: 'corretor', to: '/painel', destaque: true },
 ]
 
 function Campo({ label, valor, onChange, sufixo, step = '1', min = '0' }) {
@@ -226,7 +226,7 @@ export default function Ferramentas() {
   const escolher = (id) => { setAtiva(id); setTimeout(() => painelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60) }
   const grupo = (cat) => TOOLS.filter((t) => t.cat === cat)
   const Card = (t) => t.to
-    ? <Link key={t.id} className="ferr-card" to={t.to}><span className="ferr-ico"><FerrIcon name={t.icon} /></span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></Link>
+    ? <Link key={t.id} className={`ferr-card ${t.destaque ? 'ferr-card--gold' : ''}`} to={t.to}><span className="ferr-ico"><FerrIcon name={t.icon} /></span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></Link>
     : <button key={t.id} className={`ferr-card ${ativa === t.id ? 'on' : ''}`} onClick={() => escolher(t.id)}><span className="ferr-ico"><FerrIcon name={t.icon} /></span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></button>
 
   return (
