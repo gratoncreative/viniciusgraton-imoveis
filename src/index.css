@@ -1766,6 +1766,13 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .crm-match img { width: 64px; height: 48px; object-fit: cover; border-radius: 6px; flex: none; }
 .crm-match-info { display: flex; flex-direction: column; font-size: .82rem; color: #2a3038; }
 .crm-match-info i { color: var(--text-mute); font-style: normal; font-size: .76rem; }
+/* Resumo ao vivo do filtro do cliente */
+.crm-resumo { margin-bottom: 14px; border-left: 3px solid var(--gold-3); }
+.crm-resumo-num { font-family: var(--font-head); font-size: 1.02rem; color: #2a3038; margin: 6px 0 10px; }
+.crm-resumo-num b { color: var(--gold-3); font-size: 1.25rem; }
+.crm-resumo-lista { list-style: none; display: flex; flex-direction: column; gap: 7px; margin: 0; padding: 0; }
+.crm-resumo-lista li { display: flex; gap: 10px; font-size: 0.86rem; color: #2a3038; line-height: 1.4; }
+.crm-resumo-lista li span { flex: 0 0 64px; color: var(--text-mute); font-weight: 600; text-transform: uppercase; font-size: 0.68rem; letter-spacing: 0.05em; padding-top: 2px; }
 .crm-lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
 .crm-card { border: 1px solid rgba(22,26,34,0.12); border-radius: 14px; padding: 16px; background: #fff; }
 .crm-card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }

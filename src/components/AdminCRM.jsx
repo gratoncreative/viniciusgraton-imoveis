@@ -73,6 +73,22 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
     quartosMin: +sel.quartosMin || 0, suitesMin: +sel.suitesMin || 0, vagasMin: +sel.vagasMin || 0, areaMin: +sel.areaMin || 0,
   }) : []
 
+  // resumo AO VIVO do que o filtro atual rende (atualiza conforme preenche, sem precisar abrir a página)
+  const resumo = (() => {
+    if (!matches.length) return null
+    const precos = matches.map((x) => x.im.preco).filter((p) => p > 0)
+    const areas = matches.map((x) => x.im.area).filter((a) => a > 0)
+    return {
+      total: matches.length,
+      precoMin: precos.length ? Math.min(...precos) : 0,
+      precoMax: precos.length ? Math.max(...precos) : 0,
+      areaMin: areas.length ? Math.min(...areas) : 0,
+      areaMax: areas.length ? Math.max(...areas) : 0,
+      tipos: [...new Set(matches.map((x) => x.im.tipo).filter(Boolean))],
+      bairros: [...new Set(matches.map((x) => x.im.bairro).filter(Boolean))],
+    }
+  })()
+
   const sugerirAuto = () => setSel((s) => ({ ...s, sugeridos: matches.slice(0, 9).map((x) => String(x.im.codigo)) }))
   const toggleSug = (cod) => setSel((s) => { const a = new Set(s.sugeridos || []); a.has(cod) ? a.delete(cod) : a.add(cod); return { ...s, sugeridos: [...a] } })
 
@@ -181,6 +197,23 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
           </div>
 
           <div>
+            <div className="admin-owner crm-resumo">
+              <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Resumo do filtro <span className="painel-meta">· ao vivo</span></h3>
+              {!resumo ? (
+                <p className="painel-meta">Vá preenchendo os filtros ao lado — aqui aparece, na hora, quantos imóveis batem com os critérios e um resumo deles (antes de abrir a página).</p>
+              ) : (
+                <>
+                  <p className="crm-resumo-num"><b>{resumo.total}</b> imóvel{resumo.total > 1 ? 'is' : ''} combina{resumo.total > 1 ? 'm' : ''} com esses critérios agora</p>
+                  <ul className="crm-resumo-lista">
+                    <li><span>Preço</span>{resumo.precoMin === resumo.precoMax ? formatPreco(resumo.precoMin) : `${formatPreco(resumo.precoMin)} — ${formatPreco(resumo.precoMax)}`}</li>
+                    <li><span>Tipos</span>{resumo.tipos.join(', ')}</li>
+                    <li><span>Bairros</span>{resumo.bairros.slice(0, 8).join(', ')}{resumo.bairros.length > 8 ? ` +${resumo.bairros.length - 8}` : ''}</li>
+                    {resumo.areaMax > 0 && <li><span>Área</span>{resumo.areaMin === resumo.areaMax ? `${resumo.areaMin} m²` : `${resumo.areaMin} — ${resumo.areaMax} m²`}</li>}
+                  </ul>
+                </>
+              )}
+            </div>
+
             <div className="admin-owner">
               <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Imóveis sugeridos <span className="painel-meta">({(sel.sugeridos || []).length})</span></h3>
               <p className="calc-nota">Marque os imóveis que vão aparecer na página do cliente. Use <b>Sugerir automático</b> pra preencher com os que mais combinam.</p>
