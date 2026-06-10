@@ -22,6 +22,21 @@ export const CONFIG = {
 export const linkWhatsApp = (msg) =>
   `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg || CONFIG.whatsappMsg)}`
 
+// ——— Validação de WhatsApp/celular brasileiro ———
+// Aceita com ou sem +55. Exige DDD válido (11–99) + 9 + 8 dígitos (celular).
+export const soDigitos = (s) => String(s || '').replace(/\D/g, '')
+export const validarWhatsappBR = (s) => {
+  let n = soDigitos(s)
+  if (n.startsWith('55') && n.length > 11) n = n.slice(2)
+  return /^[1-9][0-9]9\d{8}$/.test(n)
+}
+// normaliza pro formato wa.me (55 + DDD + número)
+export const normalizarWhatsappBR = (s) => {
+  let n = soDigitos(s)
+  if (n.startsWith('55') && n.length > 11) n = n.slice(2)
+  return '55' + n
+}
+
 // Mensagens pré-salvas por área do site
 export const WA = {
   navbar: 'Olá Vinícius! Vim pelo seu site e quero falar com você sobre imóveis em Uberlândia.',
