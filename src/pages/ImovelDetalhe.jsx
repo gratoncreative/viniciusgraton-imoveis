@@ -225,6 +225,24 @@ export default function ImovelDetalhe() {
                 <IconWhats /> Tenho interesse neste imóvel
               </a>
               <AgendarVisita im={im} />
+
+              <div className="det-perguntas">
+                <span className="det-perguntas-tit">Perguntas rápidas</span>
+                <div className="det-perguntas-chips">
+                  {[
+                    'Posso agendar uma visita?',
+                    'Esse imóvel ainda está disponível?',
+                    'Aceita financiamento e uso de FGTS?',
+                    'Aceita permuta?',
+                    ehApto && !temAndar && 'Qual é o andar?',
+                    !im.condominio && 'Tem condomínio? Qual o valor?',
+                    'Consegue me mandar mais fotos e vídeo?',
+                  ].filter(Boolean).map((q) => (
+                    <a key={q} className="det-pergunta" href={linkWhatsApp(`Olá Vinícius! Sobre o ${im.tipo} no ${im.bairro} (cód. ${im.codigo}).. ${q}`)} target="_blank" rel="noopener">{q}</a>
+                  ))}
+                </div>
+              </div>
+
               <div className="det-engaj">
                 <Engajamento im={im} variante="detalhe" />
                 <span className="det-engaj-dica">Curta e compartilhe com quem vai amar este imóvel</span>

@@ -675,6 +675,14 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .dif-cta p { color: rgba(255,255,255,0.72); line-height: 1.55; margin-bottom: 22px; }
 .dif-cta-acoes { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 @media (max-width: 640px) { .dif-sec { grid-template-columns: 1fr; gap: 16px; padding: 26px 22px; } .dif-sec-ico { width: 58px; height: 58px; } }
+
+/* ===== Perguntas rápidas (página do imóvel) ===== */
+.det-perguntas { margin-top: 20px; }
+.det-perguntas-tit { display: block; font-family: var(--font-head); font-weight: 700; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-3); margin-bottom: 11px; }
+.det-perguntas-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.det-pergunta { display: inline-flex; align-items: center; padding: 9px 14px; border-radius: 999px; background: #fff; border: 1px solid rgba(22,26,34,0.12); color: #3a342a; font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: border-color 0.2s var(--ease), background 0.2s, transform 0.2s var(--ease); }
+.det-pergunta::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #25d366; margin-right: 8px; flex: none; }
+.det-pergunta:hover { border-color: var(--gold-3); background: rgba(184,134,47,0.07); transform: translateY(-1px); }
 @media (max-width: 680px) {
   .adbox--horizontal .adslot { flex-direction: column; align-items: flex-start; text-align: left; min-height: 0; padding: 20px 22px; }
   .adslot-tit { font-size: 1.25rem; }
