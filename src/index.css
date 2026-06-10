@@ -1203,12 +1203,17 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .apres-txt p { color: #a7afbd; margin-top: 14px; line-height: 1.7; }
 .apres-lead b, .apres-txt b { color: #fff; }
 .apres-checks { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.apres-checks li { display: flex; gap: 11px; align-items: flex-start; color: #d6dbe3; font-size: 0.94rem; line-height: 1.4; background: rgba(255,255,255,0.045); border: 1px solid rgba(224,181,86,0.22); border-radius: 13px; padding: 12px 14px; transition: border-color 0.25s var(--ease), transform 0.25s var(--ease), background 0.25s var(--ease); }
-.apres-checks li:hover { border-color: rgba(224,181,86,0.6); background: rgba(255,255,255,0.07); transform: translateY(-2px); }
+.apres-checks li { display: flex; gap: 11px; align-items: center; color: #f1f3f8; font-weight: 500; font-size: 0.95rem; line-height: 1.35; background: rgba(10,13,20,0.6); border: 1px solid rgba(224,181,86,0.3); border-radius: 13px; padding: 13px 15px; backdrop-filter: blur(6px); transition: border-color 0.25s var(--ease), transform 0.25s var(--ease), background 0.25s var(--ease); }
+.apres-checks li:hover { border-color: rgba(224,181,86,0.7); background: rgba(10,13,20,0.72); transform: translateY(-2px); }
 .apres-checks li span { flex: none; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; background: linear-gradient(135deg, rgba(224,181,86,0.28), rgba(224,181,86,0.12)); color: var(--gold-1); font-weight: 700; font-size: 0.82rem; margin-top: 1px; }
 .apres-checks li i { font-style: normal; color: var(--gold-1); font-weight: 600; }
 .apres-divisor { height: 1px; max-width: 320px; margin: 26px 0 4px; background: linear-gradient(90deg, var(--gold-2), rgba(224,181,86,0)); }
-@media (max-width: 620px) { .apres-checks { grid-template-columns: 1fr; } }
+@media (max-width: 620px) {
+  .apres-checks { grid-template-columns: 1fr; gap: 12px; margin-top: 22px; }
+  .apres-checks li { padding: 15px 16px; font-size: 1rem; }
+  .hero-bio-acoes { flex-direction: column; gap: 12px; margin-top: 26px; }
+  .hero-bio-acoes .btn { width: 100%; justify-content: center; }
+}
 .apres-acoes { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
 @media (max-width: 860px) {
   .apres-grid { grid-template-columns: 1fr; gap: 26px; }
