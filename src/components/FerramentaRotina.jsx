@@ -73,22 +73,31 @@ function montarMensagem(im, beneficios, nome, gancho) {
   return linhas.join('\n')
 }
 
-// Área restrita: o corretor precisa se cadastrar antes de usar a ferramenta.
+// Área restrita: EXCLUSIVA para corretores da Rotina (precisa do código de acesso).
 function CadastroCorretor({ onOk }) {
-  const [f, setF] = useState({ nome: '', creci: '', imobiliaria: '', fone: '', email: '' })
+  const [f, setF] = useState({ nome: '', creci: '', fone: '', email: '', codigo: '' })
   const [erro, setErro] = useState('')
+  const [enviando, setEnviando] = useState(false)
   const set = (k) => (e) => setF({ ...f, [k]: k === 'fone' ? mascaraFone(e.target.value) : e.target.value })
-  const enviar = (e) => {
+  const enviar = async (e) => {
     e.preventDefault()
     const nome = f.nome.trim()
     if (nome.length < 3) { setErro('Informe seu nome completo.'); return }
     if (soNum(f.fone).length < 10) { setErro('Informe um WhatsApp válido com DDD.'); return }
-    if (!f.imobiliaria.trim()) { setErro('Informe a imobiliária onde você atua.'); return }
-    const c = salvarCorretor({ nome, creci: f.creci.trim(), imobiliaria: f.imobiliaria.trim(), fone: f.fone.trim(), email: f.email.trim() })
+    if (!f.codigo.trim()) { setErro('Digite o código de acesso da Rotina.'); return }
+    setErro(''); setEnviando(true)
+    let res = { ok: false }
+    try {
+      const r = await fetch('/api/corretor-acesso', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ codigo: f.codigo.trim() }) })
+      res = await r.json()
+    } catch { setErro('Falha de conexão. Tente de novo.'); setEnviando(false); return }
+    if (res.naoConfigurado) { setErro('O acesso ainda não foi liberado pela administração. Fale com o Vinícius.'); setEnviando(false); return }
+    if (!res.ok) { setErro('Código de acesso inválido. Esta ferramenta é exclusiva para corretores da Rotina Imobiliária.'); setEnviando(false); return }
+    const c = salvarCorretor({ nome, creci: f.creci.trim(), imobiliaria: 'Rotina Imobiliária', rotina: true, fone: f.fone.trim(), email: f.email.trim() })
     try {
       registrarLead({
-        cod: 'corretor', nome, fone: f.fone.trim(), email: f.email.trim(),
-        bairro: `Corretor · ${f.creci.trim() ? 'CRECI ' + f.creci.trim() + ' · ' : ''}${f.imobiliaria.trim()}`.slice(0, 120),
+        cod: 'corretor-rotina', nome, fone: f.fone.trim(), email: f.email.trim(),
+        bairro: `Corretor Rotina${f.creci.trim() ? ' · CRECI ' + f.creci.trim() : ''}`.slice(0, 120),
       })
     } catch {}
     onOk(c)
@@ -97,21 +106,19 @@ function CadastroCorretor({ onOk }) {
     <div className="rt-tool">
       <div className="rt-gate">
         <span className="rt-gate-ico"><IconShield width={26} height={26} /></span>
-        <h4>Ferramenta exclusiva para corretores</h4>
-        <p>Esta é uma ferramenta profissional. Faça seu cadastro de corretor para liberar o acesso — leva 20 segundos e é só uma vez.</p>
+        <h4>Exclusivo para corretores da Rotina Imobiliária</h4>
+        <p>Esta ferramenta é de uso interno da equipe Rotina. Informe seus dados e o <b>código de acesso</b> que a Rotina forneceu para liberar.</p>
         <form className="rt-gate-form" onSubmit={enviar}>
+          <label className="calc-campo cg-destaque"><span>Código de acesso Rotina</span><div className="calc-input"><input value={f.codigo} onChange={set('codigo')} placeholder="Código fornecido pela Rotina" autoComplete="off" /></div></label>
           <label className="calc-campo"><span>Nome completo</span><div className="calc-input"><input value={f.nome} onChange={set('nome')} placeholder="Seu nome" /></div></label>
           <div className="rt-gate-2">
             <label className="calc-campo"><span>CRECI <i style={{ fontWeight: 400, color: '#9a8e78' }}>(se tiver)</i></span><div className="calc-input"><input value={f.creci} onChange={set('creci')} placeholder="MG-00000" /></div></label>
-            <label className="calc-campo"><span>Imobiliária</span><div className="calc-input"><input value={f.imobiliaria} onChange={set('imobiliaria')} placeholder="Onde você atua" /></div></label>
-          </div>
-          <div className="rt-gate-2">
             <label className="calc-campo"><span>WhatsApp</span><div className="calc-input"><input value={f.fone} onChange={set('fone')} placeholder="(34) 99999-9999" inputMode="numeric" /></div></label>
-            <label className="calc-campo"><span>E-mail <i style={{ fontWeight: 400, color: '#9a8e78' }}>(opcional)</i></span><div className="calc-input"><input value={f.email} onChange={set('email')} placeholder="voce@email.com" /></div></label>
           </div>
+          <label className="calc-campo"><span>E-mail <i style={{ fontWeight: 400, color: '#9a8e78' }}>(opcional)</i></span><div className="calc-input"><input value={f.email} onChange={set('email')} placeholder="voce@email.com" /></div></label>
           {erro && <p className="rt-erro">{erro}</p>}
-          <button type="submit" className="btn btn-gold rt-buscar" style={{ width: '100%' }}>Liberar a ferramenta</button>
-          <p className="rt-gate-nota">Seus dados ficam só com o Vinícius (Rotina Imobiliária) para uso profissional. Sem spam.</p>
+          <button type="submit" className="btn btn-gold rt-buscar" style={{ width: '100%' }} disabled={enviando}>{enviando ? 'Validando…' : 'Liberar a ferramenta'}</button>
+          <p className="rt-gate-nota">Acesso restrito à equipe da Rotina Imobiliária. Seus dados ficam só com o Vinícius.</p>
         </form>
       </div>
     </div>

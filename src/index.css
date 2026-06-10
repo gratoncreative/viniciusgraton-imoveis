@@ -793,6 +793,8 @@ section { position: relative; padding: clamp(48px, 7vw, 92px) 0; }
 .rt-gate-form { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; text-align: left; }
 .rt-gate-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .rt-gate-nota { font-size: 0.8rem; color: #9a8e78; text-align: center; margin-top: 6px; }
+.rt-gate-form .cg-destaque .calc-input { border: 2px solid var(--gold-3); box-shadow: 0 8px 22px -14px rgba(184,134,47,0.6); }
+.rt-gate-form .cg-destaque > span { color: var(--gold-3); font-weight: 700; }
 @media (max-width: 560px) { .rt-gate-2 { grid-template-columns: 1fr; } }
 
 /* ===== Landing /anunciar repaginada ===== */
