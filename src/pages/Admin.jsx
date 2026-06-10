@@ -87,8 +87,9 @@ function LeadCard({ lead, token, onSair, onMudou }) {
   return (
     <div className="painel-card">
       <b>{lead.nome} <span className={`lead-badge lead-badge--${cor}`}>{status}</span></b>
-      <span><a href={waLink(lead.fone)} target="_blank" rel="noopener">{lead.fone}</a></span>
-      <span className="painel-meta">{lead.bairro || lead.cod} · {lead.data ? new Date(lead.data).toLocaleDateString('pt-BR') : ''}</span>
+      <span>{lead.fone ? <a href={waLink(lead.fone)} target="_blank" rel="noopener">{lead.fone}</a> : <i style={{ color: 'var(--text-mute)' }}>sem telefone</i>}</span>
+      <span className="painel-meta">{[lead.objetivo, lead.bairro || lead.cod, lead.origem, lead.data ? new Date(lead.data).toLocaleDateString('pt-BR') : ''].filter(Boolean).join(' · ')}</span>
+      {lead.detalhes && <p className="painel-meta" style={{ marginTop: 4 }}>💬 {lead.detalhes}</p>}
       <div className="lead-status">
         {STATUS_LEAD.map((s) => (
           <button key={s} className={`lead-status-b ${status === s ? 'on' : ''}`} onClick={() => mudarStatus(s)}>{s}</button>
@@ -524,8 +525,8 @@ export default function Admin() {
   }
 
   const exportarCSV = () => {
-    const linhas = [['Nome', 'Telefone', 'Origem', 'Status', 'Anotação', 'Data']]
-    leads.forEach((l) => linhas.push([l.nome, l.fone, l.bairro || l.cod || '', l.status || 'Novo', (l.nota || '').replace(/[\r\n]+/g, ' '), l.data ? new Date(l.data).toLocaleString('pt-BR') : '']))
+    const linhas = [['Nome', 'Telefone', 'Objetivo', 'Detalhes', 'Bairro/Cód', 'Origem', 'Status', 'Anotação', 'Data']]
+    leads.forEach((l) => linhas.push([l.nome, l.fone, l.objetivo || '', (l.detalhes || '').replace(/[\r\n]+/g, ' '), l.bairro || l.cod || '', l.origem || '', l.status || 'Novo', (l.nota || '').replace(/[\r\n]+/g, ' '), l.data ? new Date(l.data).toLocaleString('pt-BR') : '']))
     const csv = linhas.map((r) => r.map(csvCel).join(';')).join('\r\n')
     const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })
     const a = document.createElement('a')

@@ -90,7 +90,9 @@ export async function onRequestPost({ env, request }) {
     if (body.site) return json({ ok: true }) // honeypot (bot preencheu campo-isca)
     const nome = String(body.nome || '').slice(0, 80)
     const fone = String(body.fone || '').slice(0, 30)
-    if (!nome || !fone) return json({ error: 'dados incompletos' }, 400)
+    // basta o NOME pra capturar o lead — telefone é desejável mas não obrigatório
+    // (senão o contato preenchido na Home/contato se perde quando o visitante não abre o WhatsApp)
+    if (!nome) return json({ error: 'dados incompletos' }, 400)
     if (!temKV(env)) return json({ ok: true, persistido: false }) // sem KV: não grava, mas o WhatsApp do visitante já abre
     // rate-limit por IP: máx. 8 leads por hora (anti-spam)
     const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || 'sem-ip'
@@ -99,7 +101,16 @@ export async function onRequestPost({ env, request }) {
     if (usos >= 8) return json({ ok: true, limite: true })
     await env.ENGAGEMENT.put(rlKey, String(usos + 1), { expirationTtl: 3600 })
     const ts = Date.now()
-    const lead = { ts, nome, fone, cod: String(cod || '').slice(0, 12), bairro: String(body.bairro || '').slice(0, 120), email: String(body.email || '').slice(0, 120), data: new Date(ts).toISOString() }
+    const lead = {
+      ts, nome, fone,
+      cod: String(cod || '').slice(0, 12),
+      bairro: String(body.bairro || '').slice(0, 120),
+      email: String(body.email || '').slice(0, 120),
+      objetivo: String(body.objetivo || '').slice(0, 60),
+      detalhes: String(body.detalhes || '').slice(0, 400),
+      origem: String(body.origem || '').slice(0, 30),
+      data: new Date(ts).toISOString(),
+    }
     await env.ENGAGEMENT.put('lead:' + ts + '-' + Math.random().toString(36).slice(2, 8), JSON.stringify(lead))
     return json({ ok: true, persistido: true })
   }

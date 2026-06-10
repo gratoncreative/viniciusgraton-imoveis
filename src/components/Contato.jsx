@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Reveal from './Reveal'
 import { CONFIG, linkWhatsApp, WA } from '../data'
+import { registrarLead } from '../engajamento'
 import { IconWhats, IconPhone, IconMail, IconPin, IconInsta, IconArrow } from './icons'
 
 function fmtPhone(w) {
@@ -15,11 +16,6 @@ function fmtPhone(w) {
 
 const OBJETIVOS = ['Comprar pra morar', 'Investir', 'Meu primeiro imóvel', 'Vender / avaliar', 'Ainda estou pesquisando']
 
-const encode = (data) =>
-  Object.keys(data)
-    .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
-    .join('&')
-
 export default function Contato() {
   const [form, setForm] = useState({ nome: '', telefone: '', objetivo: OBJETIVOS[0], detalhes: '' })
   const [enviado, setEnviado] = useState(false)
@@ -28,12 +24,15 @@ export default function Contato() {
 
   const enviar = (e) => {
     e.preventDefault()
-    // 1) salva o lead no Netlify Forms (painel + e-mail). Em dev pode falhar — seguimos mesmo assim.
-    fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: encode({ 'form-name': 'contato', ...form }),
-    }).catch(() => {})
+    // 1) salva o lead na nossa infra da Cloudflare (KV) — aparece no painel /admin.
+    //    Captura o contato mesmo que o visitante não conclua o WhatsApp.
+    registrarLead({
+      nome: form.nome.trim(),
+      fone: form.telefone.trim(),
+      objetivo: form.objetivo,
+      detalhes: form.detalhes.trim(),
+      origem: 'contato',
+    })
 
     // 2) abre o WhatsApp já com a mensagem pronta
     const linhas = [
@@ -91,16 +90,7 @@ export default function Contato() {
                   </a>
                 </div>
               ) : (
-              <form
-                className="lead-form"
-                name="contato"
-                method="POST"
-                data-netlify="true"
-                netlify-honeypot="bot-field"
-                onSubmit={enviar}
-              >
-                <input type="hidden" name="form-name" value="contato" />
-                <p hidden><label>Não preencha: <input name="bot-field" onChange={() => {}} /></label></p>
+              <form className="lead-form" onSubmit={enviar}>
                 <h3>Fale comigo agora</h3>
                 <label>
                   <span>Seu nome</span>
