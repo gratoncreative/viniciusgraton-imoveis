@@ -38,8 +38,12 @@ jobs:
           else
             git config user.name "rotina-sync-bot"
             git config user.email "actions@users.noreply.github.com"
-            git add public/catalogo.json
+            git add public/catalogo.json public/catalogo-meta.json public/novidades.json
             git commit -m "chore: sincroniza catálogo da Rotina (automático)"
             git push
             echo "Catálogo atualizado e enviado."
           fi
+
+      - name: Avisar buscadores (IndexNow)
+        continue-on-error: true
+        run: node scripts/indexnow.mjs

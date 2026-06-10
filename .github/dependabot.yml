@@ -1,0 +1,17 @@
+version: 2
+updates:
+  # Dependências do site (npm) — PRs automáticos de atualização/segurança
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    labels: ["dependencias"]
+    commit-message:
+      prefix: "deps"
+  # Atualiza as próprias GitHub Actions usadas
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencias"]

@@ -76,7 +76,25 @@ if (recs.length < MINIMO) {
   process.exit(0)
 }
 
-const out = { geradoEm: new Date().toISOString(), fonte: 'Rotina Imobiliária', total: recs.length, imoveis: recs }
+const geradoEm = new Date().toISOString()
+
+// diff com o catálogo anterior → NOVIDADES (recém-chegados + baixaram de preço)
+let novos = []
+let baixaram = []
+try {
+  const antigo = JSON.parse(fs.readFileSync('public/catalogo.json', 'utf8'))
+  const mapaAnt = new Map((antigo.imoveis || []).map((i) => [String(i.codigo), i]))
+  for (const r of recs) {
+    const a = mapaAnt.get(String(r.codigo))
+    if (!a) novos.push(r)
+    else if (a.preco && r.preco && r.preco < a.preco) baixaram.push({ ...r, precoAnterior: a.preco })
+  }
+  console.log(`Novidades: ${novos.length} novos · ${baixaram.length} baixaram de preço`)
+} catch { /* primeira geração: sem diff */ }
+fs.writeFileSync('public/novidades.json', JSON.stringify({ geradoEm, novos: novos.slice(0, 48), baixaram: baixaram.slice(0, 48) }))
+
+const out = { geradoEm, fonte: 'Rotina Imobiliária', total: recs.length, imoveis: recs }
 fs.writeFileSync('public/catalogo.json', JSON.stringify(out))
+fs.writeFileSync('public/catalogo-meta.json', JSON.stringify({ geradoEm, total: recs.length }))
 const kb = Math.round(fs.statSync('public/catalogo.json').size / 1024)
-console.log('OK -> public/catalogo.json |', recs.length, 'imóveis |', kb, 'KB')
+console.log('OK -> public/catalogo.json |', recs.length, 'imóveis |', kb, 'KB | + catalogo-meta.json')

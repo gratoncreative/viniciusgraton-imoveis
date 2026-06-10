@@ -1,0 +1,33 @@
+name: Checar fotos das construtoras
+
+on:
+  schedule:
+    - cron: '30 9 * * 1' # toda segunda, ~06:30 BRT
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  checar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Checar imagens
+        run: node scripts/checa-fotos.mjs
+      - name: Abrir issue se houver fotos quebradas
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -s foto-report.md ]; then
+            gh issue create \
+              --title "🖼️ Fotos de construtoras quebradas ($(date +%d/%m))" \
+              --body-file foto-report.md \
+              --label "manutencao" || echo "Não consegui abrir a issue (verifique se Issues está habilitado)."
+          else
+            echo "Todas as imagens OK ✅"
+          fi

@@ -3,6 +3,7 @@ import Destaque from '../components/Destaque'
 import BlogHome from '../components/BlogHome'
 import VenderCta from '../components/VenderCta'
 import Contato from '../components/Contato'
+import Novidades from '../components/Novidades'
 import { useSEO } from '../useSEO'
 
 // Página inicial = VITRINE. Lidera com os imóveis disponíveis; o conteúdo de
@@ -19,6 +20,7 @@ export default function Home() {
     <main>
       <Hero />
       <Destaque limite={9} />
+      <Novidades />
       <VenderCta />
       <BlogHome />
       <Contato />

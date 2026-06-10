@@ -399,6 +399,10 @@ export default function Admin() {
   const [erro, setErro] = useState('')
   const [aprovadosLocais, setAprovadosLocais] = useState([]) // esconde na hora (KV tem atraso de leitura)
   const [carregando, setCarregando] = useState(false)
+  const [espelhoTotal, setEspelhoTotal] = useState(null) // total do espelho da Rotina (catalogo-meta.json)
+  useEffect(() => {
+    fetch('/catalogo-meta.json').then((r) => (r.ok ? r.json() : null)).then((d) => { if (d && typeof d.total === 'number') setEspelhoTotal(d.total) }).catch(() => {})
+  }, [])
 
   const salvarToken = (t) => { try { localStorage.setItem(LSK, t) } catch {}; setToken(t) }
   const sair = useCallback(() => { try { localStorage.removeItem(LSK) } catch {}; setToken(''); setDados(null) }, [])
@@ -535,7 +539,7 @@ export default function Admin() {
               <StatCard rotulo="Imóveis a avaliar" valor={aAvaliar} sub={`${importadosPendentes.length} importados · ${pendentes} enviados`} onClick={() => { setAba('imoveis'); setSubImovel('avaliar') }} />
               <StatCard rotulo="Leads (7 dias)" valor={leadsNovos} sub={`${leads.length} no total`} onClick={() => setAba('leads')} />
               <StatCard rotulo="Clientes" valor={crmTotal} sub={`${crmNovidades ? '🔔 ' + crmNovidades + ' mexeram · ' : ''}${crmNovos ? crmNovos + ' novos · ' : ''}${clientes.length} cadastros`} onClick={() => setAba('crm')} />
-              <StatCard rotulo="Imóveis publicados" valor={IMOVEIS.length} sub="em destaque no site" onClick={() => { setAba('imoveis'); setSubImovel('publicados') }} />
+              <StatCard rotulo="Imóveis no site" valor={espelhoTotal != null ? espelhoTotal.toLocaleString('pt-BR') : IMOVEIS.length} sub={espelhoTotal != null ? `espelho da Rotina · ${IMOVEIS.length} em destaque` : 'em destaque no site'} onClick={() => { setAba('imoveis'); setSubImovel('publicados') }} />
               <StatCard rotulo="Acessos no site" valor={totalViews} sub={blogViews ? `${Object.keys(blogViews).length} posts lidos` : 'leituras registradas'} onClick={() => setAba('acessos')} />
               <StatCard rotulo="Newsletter" valor={(dados?.news || []).length} sub="inscritos por e-mail" onClick={() => setAba('news')} />
             </div>
@@ -663,7 +667,7 @@ export default function Admin() {
           <section>
             <div className="admin-stats">
               <StatCard rotulo="Leituras no blog" valor={totalViews} sub={blogViews ? `${Object.keys(blogViews).length} posts lidos` : '—'} />
-              <StatCard rotulo="Imóveis publicados" valor={IMOVEIS.length} sub="no ar agora" />
+              <StatCard rotulo="Imóveis no site" valor={espelhoTotal != null ? espelhoTotal.toLocaleString('pt-BR') : IMOVEIS.length} sub="no ar agora" />
               <StatCard rotulo="Leads (7 dias)" valor={leadsNovos} sub={`${leads.length} no total`} />
               <StatCard rotulo="Clientes" valor={crmTotal} sub={`${clientes.length} cadastros`} />
             </div>

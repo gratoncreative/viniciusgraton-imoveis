@@ -1,0 +1,29 @@
+name: CodeQL (segurança do código)
+
+# Escaneia o código atrás de vulnerabilidades. GRÁTIS para repositórios públicos.
+# Em repositório privado, exige GitHub Advanced Security — se falhar por isso, pode remover.
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 5 * * 0' # domingo, ~02h BRT
+  workflow_dispatch: {}
+
+jobs:
+  analyze:
+    name: Analisar
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Iniciar CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+      - name: Analisar
+        uses: github/codeql-action/analyze@v3
