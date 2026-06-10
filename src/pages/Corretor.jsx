@@ -66,26 +66,28 @@ function GateCorretor({ onOk }) {
     const nome = f.nome.trim()
     if (nome.length < 3) { setErro('Informe seu nome completo.'); return }
     if (soNum(f.fone).length < 10) { setErro('Informe um WhatsApp válido com DDD.'); return }
-    if (!f.codigo.trim()) { setErro('Digite o código de acesso da Rotina.'); return }
+    if (!f.codigo.trim()) { setErro('Digite o código de acesso enviado após o seu cadastro.'); return }
     setErro(''); setEnviando(true)
     let res = { ok: false }
     try {
       const r = await fetch('/api/corretor-acesso', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ codigo: f.codigo.trim() }) })
       res = await r.json()
     } catch { setErro('Falha de conexão. Tente de novo.'); setEnviando(false); return }
-    if (res.naoConfigurado) { setErro('O acesso ainda não foi liberado pela administração. Fale com o Vinícius.'); setEnviando(false); return }
-    if (!res.ok) { setErro('Código de acesso inválido. Esta área é exclusiva para corretores da Rotina Imobiliária.'); setEnviando(false); return }
-    const c = salvarCorretor({ nome, creci: f.creci.trim(), imobiliaria: 'Rotina Imobiliária', rotina: true, fone: f.fone.trim(), email: f.email.trim() })
+    if (res.naoConfigurado) { setErro('Acesso ainda não liberado. Aguarde a confirmação do seu cadastro ou entre em contato.'); setEnviando(false); return }
+    if (!res.ok) { setErro('Código inválido. Verifique o código recebido após a confirmação do seu cadastro.'); setEnviando(false); return }
+    const c = salvarCorretor({ nome, creci: f.creci.trim(), imobiliaria: f.email.trim() ? '' : 'Rotina Imobiliária', rotina: true, fone: f.fone.trim(), email: f.email.trim() })
     try {
-      registrarLead({ cod: 'corretor-rotina', nome, fone: f.fone.trim(), email: f.email.trim(), bairro: `Corretor Rotina${f.creci.trim() ? ' · CRECI ' + f.creci.trim() : ''}`.slice(0, 120) })
+      registrarLead({ cod: 'corretor-pro', nome, fone: f.fone.trim(), email: f.email.trim(), bairro: `Corretor Pro${f.creci.trim() ? ' · CRECI ' + f.creci.trim() : ''}`.slice(0, 120) })
     } catch {}
     onOk(c)
   }
 
+  const msgCadastro = 'Olá Vinícius! Tenho interesse em assinar a Área do Corretor. Pode me explicar como funciona o cadastro e o pagamento?'
+
   return (
     <div className="corr-gate-wrap">
       <div className="corr-pitch">
-        <span className="eyebrow">Equipe Rotina Imobiliária</span>
+        <span className="eyebrow">Ferramentas exclusivas para corretores</span>
         <h1 className="section-title">Área do <em>corretor</em></h1>
         <p className="section-sub" style={{ marginTop: 12 }}>
           Todas as ferramentas de trabalho num lugar só — feitas pra você captar, divulgar e vender mais rápido.
@@ -98,10 +100,27 @@ function GateCorretor({ onOk }) {
       </div>
 
       <form className="lead-form conta-form corr-form" onSubmit={enviar}>
-        <span className="conta-form-selo">Exclusivo · Rotina</span>
+        <span className="conta-form-selo">Área profissional</span>
         <h3>Entrar na área do corretor</h3>
-        <p className="conta-form-promessa">Acesso com o <b>código de acesso</b> fornecido pela Rotina. Não tem o código? <b>Fale com o Vinícius.</b></p>
-        <label><span>Código de acesso Rotina *</span><input value={f.codigo} onChange={set('codigo')} placeholder="Código fornecido pela Rotina" autoComplete="off" required /></label>
+        <div className="corr-planos">
+          <div className="corr-plano">
+            <span className="corr-plano-periodo">Mensal</span>
+            <strong className="corr-plano-preco">R$ 49,90</strong>
+            <span className="corr-plano-detalhe">/mês · acesso completo</span>
+          </div>
+          <div className="corr-plano-sep">ou</div>
+          <div className="corr-plano">
+            <span className="corr-plano-periodo">Semanal</span>
+            <strong className="corr-plano-preco">R$ 15</strong>
+            <span className="corr-plano-detalhe">/semana · sem compromisso</span>
+          </div>
+        </div>
+        <p className="conta-form-promessa">
+          Após o pagamento, você recebe o <b>código de acesso</b> para liberar todas as ferramentas imediatamente.
+          Ainda não tem cadastro?{' '}
+          <a href={`https://wa.me/5534991570494?text=${encodeURIComponent(msgCadastro)}`} target="_blank" rel="noopener"><b>Fale com o Vinícius.</b></a>
+        </p>
+        <label><span>Código de acesso *</span><input value={f.codigo} onChange={set('codigo')} placeholder="Código recebido após o pagamento" autoComplete="off" required /></label>
         <label><span>Nome completo *</span><input value={f.nome} onChange={set('nome')} required /></label>
         <div className="conta-form-row">
           <label><span>CRECI <i>(se tiver)</i></span><input value={f.creci} onChange={set('creci')} placeholder="MG-00000" /></label>
@@ -110,7 +129,7 @@ function GateCorretor({ onOk }) {
         <label><span>E-mail <i>(opcional)</i></span><input type="email" value={f.email} onChange={set('email')} placeholder="voce@email.com" /></label>
         {erro && <p className="lead-erro">{erro}</p>}
         <button type="submit" className="btn btn-gold lead-submit" disabled={enviando}><IconShield width={18} height={18} /> {enviando ? 'Validando…' : 'Entrar na área'} <IconArrow /></button>
-        <p className="lead-note">Acesso restrito à equipe da Rotina Imobiliária. Seus dados ficam só com o Vinícius.</p>
+        <p className="lead-note">Acesso liberado conforme o cadastro. Seus dados ficam protegidos e são usados apenas para autenticação.</p>
       </form>
     </div>
   )

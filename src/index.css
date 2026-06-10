@@ -2994,6 +2994,13 @@ html[data-theme="dark"] .ferr-drag-handle { color: rgba(255,255,255,0.3); }
 .corr-lista b { display: block; font-family: var(--font-head); font-weight: 600; font-size: 0.95rem; }
 .corr-lista span:not(.corr-lista-ico) { display: block; font-size: 0.82rem; color: var(--text-mute); margin-top: 1px; }
 .corr-form { width: 100%; max-width: 440px; }
+/* planos de assinatura na gate do corretor */
+.corr-planos { display: flex; align-items: center; gap: 12px; background: rgba(224,181,86,0.07); border: 1px solid rgba(224,181,86,0.25); border-radius: 14px; padding: 14px 16px; margin-bottom: 14px; }
+.corr-plano { flex: 1; display: flex; flex-direction: column; gap: 2px; text-align: center; }
+.corr-plano-sep { font-size: 0.78rem; color: var(--text-mute); flex-shrink: 0; }
+.corr-plano-periodo { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gold-3); }
+.corr-plano-preco { font-family: var(--font-head); font-size: 1.5rem; font-weight: 700; color: var(--text); line-height: 1.1; }
+.corr-plano-detalhe { font-size: 0.72rem; color: var(--text-mute); }
 .corr-hero { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: 26px; }
 .corr-hero-acoes { display: flex; align-items: center; gap: 12px; }
 .corr-chip { font-family: var(--font-head); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.03em; color: var(--gold-3); border: 1px solid rgba(184,134,47,0.4); background: rgba(184,134,47,0.08); padding: 7px 13px; border-radius: 100px; }
