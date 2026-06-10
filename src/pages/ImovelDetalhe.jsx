@@ -6,6 +6,7 @@ import AgendarVisita from '../components/AgendarVisita'
 import CardImovel from '../components/CardImovel'
 import Engajamento from '../components/Engajamento'
 import PrecoGate from '../components/PrecoGate'
+import PerguntasImovel from '../components/PerguntasImovel'
 import {
   getImovel, fotosDe, formatPreco, formatArea, resumoImovel, subtituloImovel,
   destaquesImovel, ehCondominio, IMOVEIS, linkWhatsApp, waImovel, CONFIG, BAIRROS, oportunidade,
@@ -232,22 +233,7 @@ export default function ImovelDetalhe() {
               </a>
               <AgendarVisita im={im} />
 
-              <div className="det-perguntas">
-                <span className="det-perguntas-tit">Perguntas rápidas</span>
-                <div className="det-perguntas-chips">
-                  {[
-                    'Posso agendar uma visita?',
-                    'Esse imóvel ainda está disponível?',
-                    'Aceita financiamento e uso de FGTS?',
-                    'Aceita permuta?',
-                    ehApto && !temAndar && 'Qual é o andar?',
-                    !im.condominio && 'Tem condomínio? Qual o valor?',
-                    'Consegue me mandar mais fotos e vídeo?',
-                  ].filter(Boolean).map((q) => (
-                    <a key={q} className="det-pergunta" href={linkWhatsApp(`Olá Vinícius! Sobre o ${im.tipo} no ${im.bairro} (cód. ${im.codigo}).. ${q}`)} target="_blank" rel="noopener">{q}</a>
-                  ))}
-                </div>
-              </div>
+              <PerguntasImovel im={im} />
 
               <div className="det-engaj">
                 <Engajamento im={im} variante="detalhe" />
