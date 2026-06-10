@@ -103,6 +103,46 @@ export async function onRequestPost({ env, request }) {
     return json({ ok: true, novoToken: await makeToken(tokenKey) })
   }
 
+  if (action === 'publicar-social') {
+    const fotos = (Array.isArray(b.fotos) ? b.fotos : []).filter((u) => typeof u === 'string' && /^https?:/.test(u)).slice(0, 10)
+    const legenda = String(b.legenda || '').slice(0, 2200)
+    const redes = b.redes || { ig: true, fb: true }
+    const metaToken = String(env.META_TOKEN || '')
+    const igUser = String(env.IG_USER_ID || '')
+    const fbPage = String(env.FB_PAGE_ID || '')
+    if (!fotos.length) return json({ error: 'fotos', msg: 'Sem fotos para publicar.' }, 400)
+    if (!metaToken || (redes.ig && !igUser) || (redes.fb && !fbPage)) return json({ error: 'config', msg: 'Configure META_TOKEN + IG_USER_ID/FB_PAGE_ID nas variáveis do Cloudflare.' }, 503)
+    // normaliza p/ 4:5 (1080x1350) c/ fundo branco — atende a proporção exigida pelo Instagram (proxy grátis)
+    const norm = (u) => `https://images.weserv.nl/?url=${encodeURIComponent(u.replace(/^https?:\/\//, ''))}&w=1080&h=1350&fit=contain&cbg=ffffff`
+    const G = 'https://graph.facebook.com/v19.0'
+    const out = {}
+    if (redes.ig && igUser) {
+      try {
+        const ids = []
+        for (const f of fotos) {
+          const r = await fetch(`${G}/${igUser}/media`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ image_url: norm(f), is_carousel_item: true, access_token: metaToken }) })
+          const j = await r.json(); if (j.id) ids.push(j.id); else throw new Error((j.error && j.error.message) || 'falha na foto')
+        }
+        const c = await fetch(`${G}/${igUser}/media`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ media_type: 'CAROUSEL', children: ids, caption: legenda, access_token: metaToken }) })
+        const cj = await c.json(); if (!cj.id) throw new Error((cj.error && cj.error.message) || 'falha no carrossel')
+        const p = await fetch(`${G}/${igUser}/media_publish`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ creation_id: cj.id, access_token: metaToken }) })
+        const pj = await p.json(); out.instagram = pj.id ? { ok: true, id: pj.id } : { ok: false, erro: (pj.error && pj.error.message) || 'falha ao publicar' }
+      } catch (e) { out.instagram = { ok: false, erro: e.message } }
+    }
+    if (redes.fb && fbPage) {
+      try {
+        const att = []
+        for (const f of fotos) {
+          const r = await fetch(`${G}/${fbPage}/photos`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ url: f, published: false, access_token: metaToken }) })
+          const j = await r.json(); if (j.id) att.push({ media_fbid: j.id })
+        }
+        const post = await fetch(`${G}/${fbPage}/feed`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ message: legenda, attached_media: att, access_token: metaToken }) })
+        const pj = await post.json(); out.facebook = pj.id ? { ok: true, id: pj.id } : { ok: false, erro: (pj.error && pj.error.message) || 'falha ao publicar' }
+      } catch (e) { out.facebook = { ok: false, erro: e.message } }
+    }
+    return json({ ok: true, resultados: out })
+  }
+
   if (action === 'data') {
     const out = { anuncios: [], leads: [], clientes: [], news: [] }
     const fontes = [['anuncio:', 'anuncios'], ['lead:', 'leads'], ['conta:', 'clientes'], ['news:', 'news']]

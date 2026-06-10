@@ -399,3 +399,51 @@ const sitemap =
   `\n</urlset>\n`
 writeFileSync(resolve(DIST, 'sitemap.xml'), sitemap)
 console.log(`✓ sitemap.xml: ${urls.length} URLs`)
+
+// ===== feed.xml (VRSync — ZAP/VivaReal/Grupo OLX/Canal Pro) das captações curadas =====
+const tipoPortal = (t) => /apart|kit|studio|loft|flat|cobertura/i.test(t) ? 'Residential / Apartment'
+  : /casa|sobrado/i.test(t) ? 'Residential / Home'
+  : /terreno|lote/i.test(t) ? 'Residential / Land Lot'
+  : /comerc|sala|loja|gal/i.test(t) ? 'Commercial / Office' : 'Residential / Home'
+const feedItem = (im) => `  <Listing>
+    <ListingID>${esc(im.codigo)}</ListingID>
+    <Title>${esc(im.tipo + ' à venda no ' + im.bairro + ', Uberlândia')}</Title>
+    <TransactionType>For Sale</TransactionType>
+    <Details>
+      <Description>${esc((im.descricao || resumo(im)).slice(0, 1500))}</Description>
+      <ListPrice currency="BRL">${im.preco || 0}</ListPrice>
+      <PropertyType>${tipoPortal(im.tipo)}</PropertyType>
+      <Bedrooms>${im.quartos || 0}</Bedrooms>
+      <Bathrooms>${im.banheiros || 0}</Bathrooms>
+      <Suites>${im.suites || 0}</Suites>
+      <Garage>${im.vagas || 0}</Garage>
+      <LivingArea unit="square metres">${im.area || 0}</LivingArea>${im.condominio ? `\n      <PropertyAdministrationFee currency="BRL">${im.condominio}</PropertyAdministrationFee>` : ''}
+    </Details>
+    <Location displayAddress="Neighborhood">
+      <Country abbreviation="BR">Brasil</Country>
+      <State abbreviation="MG">Minas Gerais</State>
+      <City>Uberlândia</City>
+      <Neighborhood>${esc(im.bairro)}</Neighborhood>
+    </Location>
+    <Media>${(im.fotos && im.fotos.length ? im.fotos : [im.img]).filter(Boolean).slice(0, 20).map((u) => `\n      <Item medium="image" caption="">${esc(abs(u))}</Item>`).join('')}\n    </Media>
+    <ContactInfo>
+      <Name>Vinícius Graton</Name>
+      <Email>contato@viniciusgraton.com.br</Email>
+      <Telephone>5534991570494</Telephone>
+    </ContactInfo>
+  </Listing>`
+const feedXml = `<?xml version="1.0" encoding="UTF-8"?>
+<ListingDataFeed xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Header>
+    <Provider>Vinícius Graton — Rotina Imobiliária</Provider>
+    <Email>contato@viniciusgraton.com.br</Email>
+    <ContactName>Vinícius Graton</ContactName>
+    <PublishDate>${new Date(lastmod).toISOString()}</PublishDate>
+  </Header>
+  <Listings>
+${imoveis.map(feedItem).join('\n')}
+  </Listings>
+</ListingDataFeed>
+`
+writeFileSync(resolve(DIST, 'feed.xml'), feedXml)
+console.log(`✓ feed.xml (portais): ${imoveis.length} imóveis (captações curadas)`)

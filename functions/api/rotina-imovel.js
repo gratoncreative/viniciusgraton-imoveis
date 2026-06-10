@@ -55,6 +55,7 @@ function montarImovel(im) {
     foto: im.urlfotoprincipal || im.urlfotoprincipalm || '',
     fotos: Array.isArray(im.fotos) ? im.fotos.map((x) => x && x.url).filter(Boolean) : [],
     video: im.urlvideo || '',
+    tour360: (() => { const f = im.fotos360; if (typeof f === 'string' && /^https?:/.test(f)) return f; if (Array.isArray(f) && f[0]) return f[0].url || f[0]; return '' })(),
     lat: f(im.latitude),
     lng: f(im.longitude),
     amenidades,

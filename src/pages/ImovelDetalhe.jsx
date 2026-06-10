@@ -15,6 +15,9 @@ import { IconWhats, IconArrow, IconPin, IconShield, ICONS } from './../component
 
 const plural = (n, s, p) => (n > 1 ? p : s)
 
+// URL de vídeo "assistível" (extrai o ID do YouTube e monta /watch)
+const ytWatch = (u) => { const m = String(u || '').match(/(?:embed\/|v=|youtu\.be\/)([\w-]{11})/); return m ? `https://www.youtube.com/watch?v=${m[1]}` : u }
+
 // converte o imóvel vindo da API da Rotina (/api/rotina-imovel) para o formato do site
 function mapApi(a) {
   return {
@@ -26,6 +29,7 @@ function mapApi(a) {
     descricao: a.descricao || '', endereco: a.rua || '',
     img: a.foto || (a.fotos && a.fotos[0]) || '',
     fotos: a.fotos && a.fotos.length ? a.fotos : (a.foto ? [a.foto] : []),
+    video: a.video || '', tour360: a.tour360 || '',
     externo: true,
   }
 }
@@ -271,6 +275,16 @@ export default function ImovelDetalhe() {
                 <IconWhats /> Tenho interesse neste imóvel
               </a>
               <AgendarVisita im={im} />
+
+              {(im.video || im.tour360) && (
+                <div className="det-tour">
+                  <span className="det-tour-tit">Visita virtual</span>
+                  <div className="det-tour-btns">
+                    {im.tour360 && <a className="det-tour-b" href={im.tour360} target="_blank" rel="noopener"><span aria-hidden="true">🔄</span> Tour 360°</a>}
+                    {im.video && <a className="det-tour-b" href={ytWatch(im.video)} target="_blank" rel="noopener"><span aria-hidden="true">▶</span> Ver vídeo do imóvel</a>}
+                  </div>
+                </div>
+              )}
 
               <PerguntasImovel im={im} />
 

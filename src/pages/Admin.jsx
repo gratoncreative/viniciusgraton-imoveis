@@ -240,6 +240,31 @@ function ImoveisPub({ token, onSair }) {
     setSalvo(true); setTimeout(() => setSalvo(false), 1800)
   }
   const moeda = (n) => (n || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })
+  const [pubMsg, setPubMsg] = useState('')
+  const [publicando, setPublicando] = useState(false)
+  const publicar = async () => {
+    const fotos = (reg.campos.fotos || []).filter(Boolean)
+    if (!fotos.length) { setPubMsg('⚠ Esse imóvel não tem fotos para publicar.'); return }
+    const c = reg.campos
+    const linkImovel = `https://viniciusgraton.com.br/imovel/${sel}`
+    const tagBairro = String(c.bairro || base?.bairro || '').toLowerCase().normalize('NFD').replace(/[^a-z0-9]/g, '')
+    const legenda = `${c.tipo || base?.tipo || 'Imóvel'} à venda no ${c.bairro || base?.bairro || 'Uberlândia'}, Uberlândia/MG\n`
+      + [c.quartos && `${c.quartos} quartos`, c.suites && `${c.suites} suíte(s)`, c.vagas && `${c.vagas} vagas`, c.area && `${c.area} m²`].filter(Boolean).join(' · ') + '\n'
+      + (c.preco ? `${moeda(c.preco)}\n` : '')
+      + `\nFale comigo e agende uma visita 👉 ${linkImovel}\n\n#imoveis #uberlandia #imovelavenda${tagBairro ? ' #' + tagBairro : ''} #rotinaimobiliaria #viniciusgraton #consultordeimoveis`
+    if (!window.confirm('Publicar este imóvel no Instagram (carrossel) e na Página do Facebook?')) return
+    setPublicando(true); setPubMsg('')
+    const { status, j } = await api({ action: 'publicar-social', token, codigo: String(sel), fotos, legenda, redes: { ig: true, fb: true } })
+    setPublicando(false)
+    if (status === 401) return onSair()
+    if (j.error === 'config') { setPubMsg('⚠ Configure META_TOKEN + IG_USER_ID + FB_PAGE_ID nas variáveis do Cloudflare.'); return }
+    if (j.error === 'fotos') { setPubMsg('⚠ Sem fotos válidas.'); return }
+    const r = j.resultados || {}
+    const ok = []; const erros = []
+    if (r.instagram) { r.instagram.ok ? ok.push('Instagram') : erros.push('Instagram: ' + r.instagram.erro) }
+    if (r.facebook) { r.facebook.ok ? ok.push('Facebook') : erros.push('Facebook: ' + r.facebook.erro) }
+    setPubMsg((ok.length ? '✓ Publicado em ' + ok.join(' e ') + '. ' : '') + (erros.length ? '⚠ ' + erros.join(' | ') : ''))
+  }
 
   if (sel && reg) {
     const owFone = String(reg.owner.fone || '').replace(/\D/g, '')
@@ -325,10 +350,12 @@ function ImoveisPub({ token, onSair }) {
               </div>
               <p className="calc-nota">A mensagem já vai pronta: me apresento como corretor da Rotina, digo que tenho cliente com interesse de compra e pergunto sobre as chaves (com quem estão, se está ocupado/vago) pra agendar a visita.</p>
             </div>
-            <div style={{ display: 'flex', gap: 10, marginTop: 14, alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: 10, marginTop: 14, alignItems: 'center', flexWrap: 'wrap' }}>
               <button className="btn btn-gold" onClick={salvar}>Salvar alterações</button>
               {salvo && <span className="lead-salvo">✓ salvo</span>}
+              <button className="btn btn-ghost" onClick={publicar} disabled={publicando}>{publicando ? 'Publicando…' : '📣 Publicar nas redes (Insta + Face)'}</button>
             </div>
+            {pubMsg && <p className="painel-meta" style={{ marginTop: 8 }}>{pubMsg}</p>}
           </div>
         </div>
       </section>
