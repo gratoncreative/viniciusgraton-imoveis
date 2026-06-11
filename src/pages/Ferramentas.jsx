@@ -1,5 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { aplicarTema, getTema } from '../tema'
 import Reveal from '../components/Reveal'
 import CampoMoeda from '../components/CampoMoeda'
 import { estaLogado } from '../conta'
@@ -235,6 +236,12 @@ export default function Ferramentas() {
   const [arrastando, setArrastando] = useState(null)
   const [salvo, setSalvo] = useState(false)
   useSEO({ title: 'Ferramentas e calculadoras de imóveis — Uberlândia', description: 'Calculadoras gratuitas: financiamento, FGTS, amortização, ITBI, aluguel x compra, rentabilidade, valor do m², chance de aprovação, checklist de documentos e mais. Por Vinícius Graton.', path: '/ferramentas' })
+
+  useEffect(() => {
+    const temaAnterior = getTema()
+    aplicarTema('escuro')
+    return () => aplicarTema(temaAnterior)
+  }, [])
 
   useEffect(() => {
     setLogado(estaLogado())

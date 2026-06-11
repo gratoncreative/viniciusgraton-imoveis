@@ -362,12 +362,12 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                   {matches.slice(0, 80).map(({ im, m }) => {
                     const cod = String(im.codigo); const on = (sel.sugeridos || []).includes(cod)
                     return (
-                      <label className={`crm-match ${on ? 'on' : ''} ${prevCod === cod ? 'prev' : ''}`} key={cod}
-                        onMouseEnter={() => { if (prevCod !== cod) setPrevSlide(0); setPrevCod(cod) }}>
-                        <input type="checkbox" checked={on} onChange={() => toggleSug(cod)} />
+                      <div className={`crm-match ${on ? 'on' : ''} ${prevCod === cod ? 'prev' : ''}`} key={cod}
+                        onClick={() => { if (prevCod !== cod) { setPrevSlide(0); setPrevCod(cod) } }}>
+                        <input type="checkbox" checked={on} onChange={() => toggleSug(cod)} onClick={(e) => e.stopPropagation()} />
                         <img src={im.img} alt="" loading="lazy" />
                         <span className="crm-match-info"><b>{im.tipo} · {im.bairro}</b><i>{formatPreco(im.preco)} · {im.quartos}q · cód {cod}</i></span>
-                      </label>
+                      </div>
                     )
                   })}
                   {matches.length > 80 && <p className="painel-meta">Mostrando os 80 mais compatíveis de {matches.length}. Refine os filtros (bairro, preço, área) pra afunilar — ou use "Sugerir automático".</p>}
