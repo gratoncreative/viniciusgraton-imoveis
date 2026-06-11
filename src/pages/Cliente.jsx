@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import CardImovel from '../components/CardImovel'
-import { IMOVEIS, getImovel, avaliarMatch, vantagensImovel, formatPreco, linkWhatsApp } from '../data'
+import { IMOVEIS, getImovel, avaliarMatch, vantagensImovel, formatPreco, linkWhatsApp, oportunidade } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconHeart, IconClose } from '../components/icons'
 
@@ -85,8 +85,26 @@ export default function Cliente() {
   const acharImovel = (c) => baseImoveis.find((i) => String(i.codigo) === String(c)) || getImovel(c)
   const curados = (cli.sugeridos || []).map((c) => acharImovel(c)).filter(Boolean)
 
+  // m²/preço: mediana e range da seleção curada (base para gauge e destaque de oportunidade)
+  const m2vals = curados.map((im) => im.preco > 0 && im.area > 0 ? im.preco / im.area : 0).filter((v) => v > 0).sort((a, b) => a - b)
+  const m2med = m2vals.length ? m2vals[Math.floor(m2vals.length / 2)] : 0
+  const m2rMin = m2vals[0] || 0
+  const m2rMax = m2vals[m2vals.length - 1] || 0
+  const m2tagIm = (im) => {
+    if (!m2med || !im.preco || !im.area) return ''
+    const r = im.preco / im.area
+    return r < m2med * 0.85 ? 'bom' : r > m2med * 1.15 ? 'alto' : 'ok'
+  }
+  const isOpor = (im) => {
+    const op = oportunidade(im)
+    return op.abaixoMercado || op.temDesconto || m2tagIm(im) === 'bom'
+  }
+
   const visiveis = curados.filter((im) => feedback[String(im.codigo)] !== 'dislike')
-  visiveis.sort((a, b) => (feedback[String(b.codigo)] === 'like' ? 1 : 0) - (feedback[String(a.codigo)] === 'like' ? 1 : 0))
+  visiveis.sort((a, b) => {
+    const sc = (im) => (isOpor(im) ? 2 : 0) + (feedback[String(im.codigo)] === 'like' ? 1 : 0)
+    return sc(b) - sc(a)
+  })
   const descartados = curados.filter((im) => feedback[String(im.codigo)] === 'dislike')
 
   const waMsg = `Olá Vinícius! Vi a seleção de imóveis que você preparou pra mim${nome ? ' (' + nome + ')' : ''} e quero agendar uma visita.`
@@ -99,6 +117,12 @@ export default function Cliente() {
             <span className="eyebrow">Seleção exclusiva{nome ? ` · ${nome}` : ''}</span>
             <h1 className="section-title">{nome ? `${nome}, ` : ''}essas opções são <em>pensando em você</em></h1>
             <p className="cliente-intro">Selecionei a dedo o que combina com o que você procura. Curte o que gostou e descarta o que não é bem isso — me ajuda a entender ainda melhor o seu gosto. {salvo && <span className="cliente-salvo">✓ salvo</span>}</p>
+            {cli.nota && (
+              <div className="cliente-nota">
+                <span className="cliente-nota-label">💬 O que você procura</span>
+                <p>{cli.nota}</p>
+              </div>
+            )}
             <div className="cliente-assina">
               <img src="/vinicius-graton.jpg" alt="Vinícius Graton" loading="lazy" />
               <div>
@@ -130,10 +154,28 @@ export default function Cliente() {
                 {visiveis.map((im) => {
                   const fb = feedback[String(im.codigo)]
                   const m = avaliarMatch(im, prefs)
+                  const opor = isOpor(im)
+                  const tag = m2tagIm(im)
+                  const m2 = im.preco > 0 && im.area > 0 ? Math.round(im.preco / im.area) : 0
+                  const m2pct = m2 && m2rMin < m2rMax ? Math.round(((im.preco / im.area - m2rMin) / (m2rMax - m2rMin)) * 100) : 50
                   return (
-                    <div className={`cliente-item ${fb === 'like' ? 'curtido' : ''}`} key={im.codigo}>
-                      {fb === 'like' && <span className="cliente-badge-like"><IconHeart filled width={13} height={13} /> Você curtiu</span>}
+                    <div className={`cliente-item ${fb === 'like' ? 'curtido' : ''} ${opor ? 'oport' : ''}`} key={im.codigo}>
+                      {opor && <div className="cliente-badge-oport">🎯 Oportunidade · preço/m² abaixo do mercado nesta região</div>}
+                      {!opor && fb === 'like' && <span className="cliente-badge-like"><IconHeart filled width={13} height={13} /> Você curtiu</span>}
+                      {opor && fb === 'like' && <span className="cliente-badge-like" style={{ marginTop: 6 }}><IconHeart filled width={13} height={13} /> Você curtiu</span>}
                       <CardImovel im={im} />
+                      {m2 > 0 && (
+                        <div className="cliente-m2">
+                          <div className="cliente-m2-bar">
+                            <div className="cliente-m2-track" />
+                            <div className="cliente-m2-dot" style={{ left: `${Math.min(93, Math.max(7, m2pct))}%` }} />
+                          </div>
+                          <div className="cliente-m2-labels"><span>Baixo</span><span>Médio</span><span>Alto</span></div>
+                          <span className={`cliente-m2-val cliente-m2-val--${tag || 'ok'}`}>
+                            {formatPreco(m2)}/m² · {tag === 'bom' ? 'ótimo preço/m²' : tag === 'alto' ? 'acima da média' : 'preço mediano'}
+                          </span>
+                        </div>
+                      )}
                       <div className="cliente-fb">
                         <button type="button" className={`cliente-fb-btn ${fb === 'like' ? 'on-like' : ''}`} onClick={() => setFb(String(im.codigo), 'like')}><IconHeart filled={fb === 'like'} width={16} height={16} /> Gostei</button>
                         <button type="button" className={`cliente-fb-btn ${fb === 'dislike' ? 'on-dislike' : ''}`} onClick={() => setFb(String(im.codigo), 'dislike')}><IconClose width={15} height={15} /> Não é bem isso</button>

@@ -2011,9 +2011,26 @@ html[data-theme="dark"] .nav:not(.scrolled) .nav-links a.nav-destaque { color: #
 .cliente-refino-grupo select { flex: 1; max-width: 280px; padding: 9px 12px; border: 1px solid rgba(22,26,34,0.18); border-radius: 10px; font-size: .92rem; background: #fbf9f4; color: #1a1f29; }
 .cliente-refino-grupo .crm-chips { flex: 1; }
 
+/* nota do cliente (briefing no hero) */
+.cliente-nota { background: rgba(184,134,47,0.08); border-left: 3px solid var(--gold-3); border-radius: 0 8px 8px 0; padding: 11px 15px; margin: 14px 0 0; }
+.cliente-nota-label { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--gold-3); display: block; margin-bottom: 6px; }
+.cliente-nota p { font-size: .92rem; color: #2a3038; line-height: 1.65; margin: 0; }
+/* cards */
 .cliente-item { position: relative; }
 .cliente-item.curtido { }
+.cliente-item.oport { border: 2px solid var(--gold-3); border-radius: 14px; overflow: hidden; }
+.cliente-badge-oport { background: linear-gradient(135deg, #1e6b40, #2e8c57); color: #fff; font-size: .76rem; font-weight: 700; padding: 8px 14px; display: flex; align-items: center; gap: 6px; letter-spacing: .01em; }
 .cliente-badge-like { position: absolute; top: 10px; left: 10px; z-index: 3; display: inline-flex; align-items: center; gap: 6px; background: #fff; color: #c0392b; font-weight: 700; font-size: .76rem; padding: 5px 11px; border-radius: 100px; box-shadow: 0 6px 16px -8px rgba(22,26,34,0.6); border: 1px solid rgba(192,57,43,0.25); }
+/* gauge m²/preço no card do cliente */
+.cliente-m2 { padding: 10px 0 2px; border-top: 1px solid rgba(22,26,34,0.08); margin-top: 8px; }
+.cliente-m2-bar { position: relative; height: 7px; border-radius: 6px; margin-bottom: 4px; }
+.cliente-m2-track { position: absolute; inset: 0; border-radius: 6px; background: linear-gradient(to right, #2e8c57, #c9b020, #b04a4a); }
+.cliente-m2-dot { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 13px; height: 13px; border-radius: 50%; background: #fff; border: 2px solid #1a1e26; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+.cliente-m2-labels { display: flex; justify-content: space-between; font-size: .61rem; color: var(--text-mute); margin-bottom: 5px; }
+.cliente-m2-val { font-size: .73rem; font-weight: 600; padding: 3px 8px; border-radius: 6px; display: inline-block; }
+.cliente-m2-val--bom { background: rgba(46,140,87,0.1); color: #1e6b40; }
+.cliente-m2-val--alto { background: rgba(176,74,74,0.1); color: #8c2e2e; }
+.cliente-m2-val--ok { background: rgba(22,26,34,0.06); color: #4a5260; }
 .cliente-fb { display: flex; gap: 8px; margin-top: 10px; }
 .cliente-fb-btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px; font-family: var(--font-head); font-weight: 600; font-size: .85rem; padding: 9px 10px; border-radius: 10px; cursor: pointer; background: #fff; border: 1px solid rgba(22,26,34,0.16); color: #3a4150; transition: all .18s var(--ease); }
 .cliente-fb-btn:hover { border-color: var(--gold-2); }

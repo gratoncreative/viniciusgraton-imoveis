@@ -5,7 +5,7 @@ import { agruparPorSetor } from '../bairros-setores'
 
 const api = (payload) => fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) }).then((r) => r.json().then((j) => ({ status: r.status, j })))
 
-const VAZIO = { id: '', nome: '', whatsapp: '', finalidade: 'Comprar', tipos: [], bairros: [], precoMin: '', precoMax: '', quartosMin: '', suitesMin: '', vagasMin: '', areaMin: '', obs: '', sugeridos: [] }
+const VAZIO = { id: '', nome: '', whatsapp: '', finalidade: 'Comprar', tipos: [], bairros: [], precoMin: '', precoMax: '', quartosMin: '', suitesMin: '', vagasMin: '', areaMin: '', obs: '', nota: '', sugeridos: [] }
 const waLink = (wa, msg) => { const d = String(wa || '').replace(/\D/g, ''); const full = d.length <= 11 ? '55' + d : d; return `https://wa.me/${full}?text=${encodeURIComponent(msg)}` }
 
 const objToFinal = (o) => { const s = (o || '').toLowerCase(); if (s.includes('alug')) return 'Alugar'; if (s.includes('invest')) return 'Investir'; return 'Comprar' }
@@ -261,7 +261,8 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                 </div>
               ))}
             </div>
-            <label className="admin-field admin-field--full" style={{ marginTop: 12 }}><span>Observações (o que o cliente quer, detalhes)</span><textarea rows="4" value={sel.obs} onChange={(e) => setF('obs', e.target.value)} /></label>
+            <label className="admin-field admin-field--full" style={{ marginTop: 12 }}><span>Observações internas <span className="painel-meta">(só você vê)</span></span><textarea rows="3" value={sel.obs} onChange={(e) => setF('obs', e.target.value)} /></label>
+            <label className="admin-field admin-field--full" style={{ marginTop: 10 }}><span>Contexto para a página do cliente <span className="painel-meta">(aparece como apresentação — escreva livremente)</span></span><textarea rows="3" placeholder="ex: Quer apartamento para investimento e revenda, prefere bairros com boa valorização e liquidez, orçamento até 500k." value={sel.nota} onChange={(e) => setF('nota', e.target.value)} /></label>
 
             <div style={{ display: 'flex', gap: 10, marginTop: 14, alignItems: 'center', flexWrap: 'wrap' }}>
               <button className="btn btn-gold" onClick={salvar}>Salvar cliente</button>
