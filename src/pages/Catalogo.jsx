@@ -194,6 +194,7 @@ export default function Catalogo() {
   }, [temMais, lista.length])
 
   const limpar = () => setParams({}, { replace: true })
+  const [filtrosAbertos, setFiltrosAbertos] = useState(false)
 
   const chips = [
     f.q && { k: 'q', label: `“${f.q}”`, onRemove: () => up('q', '') },
@@ -220,9 +221,30 @@ export default function Catalogo() {
           </div>
         </Reveal>
 
+        {/* botão "Filtros" — só aparece no mobile via CSS */}
+        <button
+          type="button"
+          className={`cat-mob-filtros-btn${chips.length > 0 ? ' tem-filtros' : ''}`}
+          onClick={() => setFiltrosAbertos(true)}
+          aria-haspopup="dialog"
+        >
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+          Filtros{chips.length > 0 && <span className="cat-mob-badge">{chips.length}</span>}
+        </button>
+
+        {/* backdrop mobile */}
+        {filtrosAbertos && <div className="cat-mob-backdrop" onClick={() => setFiltrosAbertos(false)} aria-hidden="true" />}
+
         <div className="cat-layout">
-        <aside className="cat-rail" data-lenis-prevent>
+        <aside className={`cat-rail${filtrosAbertos ? ' cat-rail--aberto' : ''}`} data-lenis-prevent>
         <div className="cat-painel">
+        {/* cabeçalho do drawer mobile — close button */}
+        <div className="cat-mob-header">
+          <span className="cat-mob-titulo">Filtros</span>
+          <button type="button" className="cat-mob-fechar" onClick={() => setFiltrosAbertos(false)} aria-label="Fechar filtros">
+            <IconClose width={18} height={18} />
+          </button>
+        </div>
         {/* buscas rápidas */}
         <div className="cat-rapidas">
           {RAPIDAS.map((r) => (
@@ -260,6 +282,10 @@ export default function Catalogo() {
           <FiltroSelect icon={<FIco n="ordem" />} placeholder="Mais recentes" neutral="recentes" value={f.ordem} onChange={(v) => up('ordem', v)}
             options={[{ value: 'recentes', label: 'Mais recentes' }, { value: 'menor', label: 'Menor preço' }, { value: 'maior', label: 'Maior preço' }, { value: 'area-maior', label: 'Maior área' }, { value: 'area-menor', label: 'Menor área' }]} />
         </div>
+        {/* botão "Ver X imóveis" — só aparece no drawer mobile */}
+        <button type="button" className="cat-mob-aplicar" onClick={() => setFiltrosAbertos(false)}>
+          Ver {lista.length} {lista.length === 1 ? 'imóvel' : 'imóveis'}
+        </button>
         </div>
 
         {chips.length > 0 && (

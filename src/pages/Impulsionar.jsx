@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
-import { linkWhatsApp } from '../data'
+import { linkWhatsApp, getImovel, formatPreco } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow, IconShield } from '../components/icons'
 
@@ -37,6 +37,7 @@ export default function Impulsionar() {
 
   const planoSel = PLANOS.find((p) => p.id === plano)
   const waMsg = `Olá Vinícius! Quero IMPULSIONAR o anúncio do imóvel ${codigo ? `(cód. ${codigo.trim()}) ` : ''}— plano ${planoSel?.nome || ''}. Como faço o pagamento?`
+  const imovelPreview = useMemo(() => getImovel(codigo.trim()), [codigo])
 
   if (status === 'sucesso') {
     return (
@@ -85,6 +86,16 @@ export default function Impulsionar() {
             <span>Código do imóvel a destacar</span>
             <div className="calc-input"><input value={codigo} onChange={(e) => setCodigo(e.target.value)} placeholder="Ex.: 29144" inputMode="numeric" /></div>
           </label>
+          {imovelPreview && (
+            <div className="imp-preview">
+              {imovelPreview.img && <img src={imovelPreview.img} alt={imovelPreview.tipo} className="imp-preview-img" loading="lazy" />}
+              <div className="imp-preview-info">
+                <span className="imp-preview-label">Você está destacando:</span>
+                <b className="imp-preview-nome">{imovelPreview.tipo} no {imovelPreview.bairro}</b>
+                <span className="imp-preview-preco">{formatPreco(imovelPreview.preco)}</span>
+              </div>
+            </div>
+          )}
           {erro && <p className="rt-erro">{erro}</p>}
           {waFallback ? (
             <>
