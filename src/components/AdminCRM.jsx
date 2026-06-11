@@ -399,12 +399,11 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
 
             {sel.id && (
               <div className="admin-owner" style={{ marginTop: 14 }}>
-                <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Página do cliente</h3>
-                <p className="calc-nota">Link exclusivo (privado, não indexado). Os botões abaixo <b>salvam suas alterações automaticamente</b> antes de abrir/enviar.</p>
+                <p className="admin-mini-label" style={{ margin: '0 0 8px', color: 'var(--text-mute)' }}>Página do cliente <span className="painel-meta" style={{ fontWeight: 400 }}>· salva automaticamente antes de enviar</span></p>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                  <button className="admin-btn" disabled={abrindo} onClick={() => comSalvar((c) => window.open(linkCliente(c), '_blank', 'noopener'))}>{abrindo ? '⏳ Salvando…' : 'Salvar e abrir página'}</button>
-                  <button className="admin-btn" disabled={abrindo} onClick={() => comSalvar((c) => { navigator.clipboard?.writeText(linkCliente(c)); setLinkCopiado(true); setTimeout(() => setLinkCopiado(false), 1500) })}>{abrindo ? '⏳ Salvando…' : linkCopiado ? '✓ copiado' : 'Salvar e copiar link'}</button>
-                  <button className="btn btn-gold" disabled={abrindo} onClick={() => comSalvar((c) => window.open(waLink(c.whatsapp, montarMsgCliente(c)), '_blank', 'noopener'))}>{abrindo ? '⏳ Salvando…' : 'Salvar e enviar no WhatsApp'}</button>
+                  <button className="admin-btn" disabled={abrindo} onClick={() => comSalvar((c) => window.open(linkCliente(c), '_blank', 'noopener'))}>{abrindo ? '⏳ Salvando…' : 'Abrir'}</button>
+                  <button className="admin-btn" disabled={abrindo} onClick={() => comSalvar((c) => { navigator.clipboard?.writeText(linkCliente(c)); setLinkCopiado(true); setTimeout(() => setLinkCopiado(false), 1500) })}>{abrindo ? '⏳ Salvando…' : linkCopiado ? '✓ copiado' : 'Copiar link'}</button>
+                  <button className="btn btn-gold" disabled={abrindo} onClick={() => comSalvar((c) => window.open(waLink(c.whatsapp, montarMsgCliente(c)), '_blank', 'noopener'))}>{abrindo ? '⏳ Salvando…' : 'WhatsApp'}</button>
                 </div>
                 {(() => {
                   const bairrosSug = [...new Set(
