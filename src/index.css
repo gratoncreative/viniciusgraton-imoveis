@@ -1870,7 +1870,11 @@ html[data-theme="dark"] .nav:not(.scrolled) .nav-links a.nav-destaque { color: #
 .crm-setor-tit { font-family: var(--font-head); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--gold-3); border-bottom: 1px solid rgba(184,134,47,0.22); padding-bottom: 4px; }
 .crm-setor-chips { display: flex; flex-wrap: wrap; gap: 7px; }
 .crm-matches-wrap { display: flex; flex-direction: column; gap: 8px; }
-.crm-match-list { display: flex; flex-direction: column; gap: 8px; max-height: 420px; overflow: auto; }
+.crm-match-list { display: flex; flex-direction: column; gap: 8px; max-height: 420px; overflow: auto; scrollbar-width: thin; scrollbar-color: rgba(184,134,47,0.55) rgba(255,255,255,0.05); }
+.crm-match-list::-webkit-scrollbar { width: 5px; }
+.crm-match-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
+.crm-match-list::-webkit-scrollbar-thumb { background: rgba(184,134,47,0.55); border-radius: 10px; }
+.crm-match-list::-webkit-scrollbar-thumb:hover { background: var(--gold-3); }
 .crm-match { display: flex; align-items: center; gap: 10px; padding: 6px; border: 1px solid rgba(22,26,34,0.12); border-radius: 10px; cursor: pointer; background: #fff; transition: border-color 0.12s, background 0.12s; }
 .crm-match.on { border-color: var(--gold-3); background: rgba(184,134,47,0.06); }
 .crm-match.prev { border-color: rgba(22,26,34,0.35); background: rgba(22,26,34,0.04); }
