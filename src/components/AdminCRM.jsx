@@ -118,22 +118,23 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
     return vals.length ? vals[Math.floor(vals.length / 2)] : 0
   }, [matches])
 
-  const [tipHover, setTipHover] = useState(null) // { cod, top, elLeft, elRight, slide }
-  const tipTimer = useRef(0)
-  const handleTipEnter = useCallback((cod, e) => {
+  const [tipCod, setTipCod] = useState(null)
+  const [tipRect, setTipRect] = useState({ top: 0, elLeft: 0, elRight: 0 })
+  const [tipSlide, setTipSlide] = useState(0)
+  const tipTimer = useRef(null)
+  const onCardRef = useRef(false)
+
+  const showTip = (cod, rect) => {
     clearTimeout(tipTimer.current)
-    const r = e.currentTarget.getBoundingClientRect()
-    setTipHover(prev => prev && prev.cod === cod ? prev : { cod, top: r.top, elLeft: r.left, elRight: r.right, slide: 0 })
-  }, [])
-  const handleTipLeave = useCallback(() => {
-    tipTimer.current = setTimeout(() => setTipHover(null), 180)
-  }, [])
-  const handleTipCardEnter = useCallback(() => clearTimeout(tipTimer.current), [])
-  const handleTipCardLeave = useCallback(() => {
-    tipTimer.current = setTimeout(() => setTipHover(null), 120)
-  }, [])
-  const tipPrev = useCallback((total) => setTipHover(h => h ? { ...h, slide: (h.slide - 1 + total) % total } : h), [])
-  const tipNext = useCallback((total) => setTipHover(h => h ? { ...h, slide: (h.slide + 1) % total } : h), [])
+    if (cod !== tipCod) setTipSlide(0)
+    setTipCod(cod)
+    setTipRect(rect)
+  }
+  const hideTip = () => {
+    tipTimer.current = setTimeout(() => { if (!onCardRef.current) setTipCod(null) }, 220)
+  }
+  const onCardEnter = () => { onCardRef.current = true; clearTimeout(tipTimer.current) }
+  const onCardLeave = () => { onCardRef.current = false; setTipCod(null) }
 
   const salvar = async () => {
     setErro('')
@@ -314,7 +315,8 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                   const cod = String(im.codigo); const on = (sel.sugeridos || []).includes(cod)
                   return (
                     <label className={`crm-match ${on ? 'on' : ''}`} key={cod}
-                      onMouseEnter={(e) => handleTipEnter(cod, e)} onMouseLeave={handleTipLeave}>
+                      onMouseEnter={(e) => { const r = e.currentTarget.getBoundingClientRect(); showTip(cod, { top: r.top, elLeft: r.left, elRight: r.right }) }}
+                      onMouseLeave={hideTip}>
                       <input type="checkbox" checked={on} onChange={() => toggleSug(cod)} />
                       <img src={im.img} alt="" loading="lazy" />
                       <span className="crm-match-info"><b>{im.tipo} · {im.bairro}</b><i>{formatPreco(im.preco)} · {im.quartos}q · cód {cod}</i></span>
@@ -441,27 +443,27 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
         </div>
       )}
 
-      {tipHover && (() => {
-        const hit = matches.find(({ im }) => String(im.codigo) === tipHover.cod)
+      {tipCod && (() => {
+        const hit = matches.find(({ im }) => String(im.codigo) === tipCod)
         if (!hit) return null
         const { im: tim } = hit
         const fotos = fotosDe(tim)
-        const slide = Math.min(tipHover.slide || 0, fotos.length - 1)
+        const slide = Math.min(tipSlide, fotos.length - 1)
         const m2 = tim.preco > 0 && tim.area > 0 ? Math.round(tim.preco / tim.area) : 0
         const m2tag = m2 && m2mediana ? (m2 < m2mediana * 0.85 ? 'bom' : m2 > m2mediana * 1.15 ? 'alto' : 'ok') : ''
         const specs = [tim.quartos && `${tim.quartos}q`, tim.suites > 0 && `${tim.suites} suíte${tim.suites > 1 ? 's' : ''}`, tim.vagas > 0 && `${tim.vagas} vaga${tim.vagas > 1 ? 's' : ''}`, tim.area > 0 && `${tim.area} m²`].filter(Boolean).join(' · ')
         const m2labels = { bom: '· ótimo preço/m²', alto: '· acima da média', ok: '· preço mediano' }
         const TIP_W = 280
-        const tipLeft = tipHover.elRight + 12 + TIP_W < window.innerWidth ? tipHover.elRight + 12 : tipHover.elLeft - TIP_W - 12
-        const tipTop = Math.max(8, Math.min(tipHover.top, window.innerHeight - 340))
+        const tipLeft = tipRect.elRight + 12 + TIP_W < window.innerWidth ? tipRect.elRight + 12 : tipRect.elLeft - TIP_W - 12
+        const tipTop = Math.max(8, Math.min(tipRect.top, window.innerHeight - 340))
         return (
           <div className="crm-tip" style={{ top: tipTop, left: tipLeft }}
-            onMouseEnter={handleTipCardEnter} onMouseLeave={handleTipCardLeave}>
+            onMouseEnter={onCardEnter} onMouseLeave={onCardLeave}>
             <div className="crm-tip-galeria">
               <img className="crm-tip-foto" src={fotos[slide]} alt="" />
               {fotos.length > 1 && <>
-                <button className="crm-tip-seta crm-tip-seta--prev" onClick={(e) => { e.preventDefault(); tipPrev(fotos.length) }}>‹</button>
-                <button className="crm-tip-seta crm-tip-seta--next" onClick={(e) => { e.preventDefault(); tipNext(fotos.length) }}>›</button>
+                <button className="crm-tip-seta crm-tip-seta--prev" onMouseDown={(e) => { e.preventDefault(); setTipSlide(s => (s - 1 + fotos.length) % fotos.length) }}>‹</button>
+                <button className="crm-tip-seta crm-tip-seta--next" onMouseDown={(e) => { e.preventDefault(); setTipSlide(s => (s + 1) % fotos.length) }}>›</button>
                 <span className="crm-tip-counter">{slide + 1}/{fotos.length}</span>
               </>}
             </div>
