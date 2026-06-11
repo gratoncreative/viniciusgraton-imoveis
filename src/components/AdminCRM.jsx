@@ -118,12 +118,22 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
     return vals.length ? vals[Math.floor(vals.length / 2)] : 0
   }, [matches])
 
-  const [tipHover, setTipHover] = useState(null)
+  const [tipHover, setTipHover] = useState(null) // { cod, top, elLeft, elRight, slide }
+  const tipTimer = useRef(0)
   const handleTipEnter = useCallback((cod, e) => {
+    clearTimeout(tipTimer.current)
     const r = e.currentTarget.getBoundingClientRect()
-    setTipHover({ cod, top: r.top, elLeft: r.left, elRight: r.right })
+    setTipHover(prev => prev && prev.cod === cod ? prev : { cod, top: r.top, elLeft: r.left, elRight: r.right, slide: 0 })
   }, [])
-  const handleTipLeave = useCallback(() => setTipHover(null), [])
+  const handleTipLeave = useCallback(() => {
+    tipTimer.current = setTimeout(() => setTipHover(null), 180)
+  }, [])
+  const handleTipCardEnter = useCallback(() => clearTimeout(tipTimer.current), [])
+  const handleTipCardLeave = useCallback(() => {
+    tipTimer.current = setTimeout(() => setTipHover(null), 120)
+  }, [])
+  const tipPrev = useCallback((total) => setTipHover(h => h ? { ...h, slide: (h.slide - 1 + total) % total } : h), [])
+  const tipNext = useCallback((total) => setTipHover(h => h ? { ...h, slide: (h.slide + 1) % total } : h), [])
 
   const salvar = async () => {
     setErro('')
@@ -436,21 +446,25 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
         if (!hit) return null
         const { im: tim } = hit
         const fotos = fotosDe(tim)
+        const slide = Math.min(tipHover.slide || 0, fotos.length - 1)
         const m2 = tim.preco > 0 && tim.area > 0 ? Math.round(tim.preco / tim.area) : 0
         const m2tag = m2 && m2mediana ? (m2 < m2mediana * 0.85 ? 'bom' : m2 > m2mediana * 1.15 ? 'alto' : 'ok') : ''
         const specs = [tim.quartos && `${tim.quartos}q`, tim.suites > 0 && `${tim.suites} suíte${tim.suites > 1 ? 's' : ''}`, tim.vagas > 0 && `${tim.vagas} vaga${tim.vagas > 1 ? 's' : ''}`, tim.area > 0 && `${tim.area} m²`].filter(Boolean).join(' · ')
         const m2labels = { bom: '· ótimo preço/m²', alto: '· acima da média', ok: '· preço mediano' }
-        const TIP_W = 230
-        const tipLeft = tipHover.elRight + 10 + TIP_W < window.innerWidth ? tipHover.elRight + 10 : tipHover.elLeft - TIP_W - 10
-        const tipTop = Math.max(8, Math.min(tipHover.top, window.innerHeight - 290))
+        const TIP_W = 280
+        const tipLeft = tipHover.elRight + 12 + TIP_W < window.innerWidth ? tipHover.elRight + 12 : tipHover.elLeft - TIP_W - 12
+        const tipTop = Math.max(8, Math.min(tipHover.top, window.innerHeight - 340))
         return (
-          <div className="crm-tip" style={{ top: tipTop, left: tipLeft }}>
-            <img className="crm-tip-foto" src={fotos[0]} alt="" />
-            {fotos.length > 1 && (
-              <div className="crm-tip-strip">
-                {fotos.slice(1, 4).map((f, i) => <img key={i} src={f} alt="" />)}
-              </div>
-            )}
+          <div className="crm-tip" style={{ top: tipTop, left: tipLeft }}
+            onMouseEnter={handleTipCardEnter} onMouseLeave={handleTipCardLeave}>
+            <div className="crm-tip-galeria">
+              <img className="crm-tip-foto" src={fotos[slide]} alt="" />
+              {fotos.length > 1 && <>
+                <button className="crm-tip-seta crm-tip-seta--prev" onClick={(e) => { e.preventDefault(); tipPrev(fotos.length) }}>‹</button>
+                <button className="crm-tip-seta crm-tip-seta--next" onClick={(e) => { e.preventDefault(); tipNext(fotos.length) }}>›</button>
+                <span className="crm-tip-counter">{slide + 1}/{fotos.length}</span>
+              </>}
+            </div>
             <div className="crm-tip-body">
               <b className="crm-tip-tipo">{tim.tipo} · {tim.bairro}</b>
               <span className="crm-tip-preco">{formatPreco(tim.preco)}</span>
