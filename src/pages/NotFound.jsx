@@ -1,13 +1,10 @@
-import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { CONFIG, linkWhatsApp, WA } from '../data'
+import { linkWhatsApp, WA } from '../data'
+import { useSEO } from '../useSEO'
 import { IconArrow, IconWhats } from '../components/icons'
 
 export default function NotFound() {
-  useEffect(() => {
-    document.title = `Página não encontrada | ${CONFIG.nome}`
-    return () => { document.title = CONFIG.marca }
-  }, [])
+  useSEO({ title: 'Página não encontrada | Vinícius Graton', description: 'Esta página não existe ou foi removida. Encontre imóveis à venda em Uberlândia.', path: '/404', noindex: true })
 
   return (
     <main className="section--light det-vazio">

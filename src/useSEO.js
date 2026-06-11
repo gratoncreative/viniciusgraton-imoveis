@@ -19,7 +19,9 @@ function setMeta(attr, key, content) {
 export function useSEO({ title, description, path, noindex, image }) {
   useEffect(() => {
     setMeta('name', 'robots', noindex ? 'noindex, nofollow' : 'index, follow')
-    const fullTitle = title ? `${title} | ${CONFIG.nome}` : CONFIG.marca
+    const fullTitle = title
+      ? (title.includes(CONFIG.nome) ? title : `${title} | ${CONFIG.nome}`)
+      : CONFIG.marca
     document.title = fullTitle
     setMeta('name', 'description', description)
     setMeta('property', 'og:title', title || CONFIG.marca)
