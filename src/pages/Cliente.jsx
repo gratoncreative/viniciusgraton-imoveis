@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import CardImovel from '../components/CardImovel'
-import { IMOVEIS, getImovel, avaliarMatch, vantagensImovel, formatPreco, linkWhatsApp, oportunidade } from '../data'
+import { IMOVEIS, getImovel, avaliarMatch, vantagensImovel, formatPreco, linkWhatsApp, oportunidade, estudoM2 } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconHeart, IconClose } from '../components/icons'
 
@@ -164,18 +164,50 @@ export default function Cliente() {
                       {!opor && fb === 'like' && <span className="cliente-badge-like"><IconHeart filled width={13} height={13} /> Você curtiu</span>}
                       {opor && fb === 'like' && <span className="cliente-badge-like" style={{ marginTop: 6 }}><IconHeart filled width={13} height={13} /> Você curtiu</span>}
                       <CardImovel im={im} />
-                      {m2 > 0 && (
-                        <div className="cliente-m2">
-                          <div className="cliente-m2-bar">
-                            <div className="cliente-m2-track" />
-                            <div className="cliente-m2-dot" style={{ left: `${Math.min(93, Math.max(7, m2pct))}%` }} />
+                      {(() => {
+                        const e = estudoM2(im, baseImoveis)
+                        if (!e.ok) return null
+                        const { precoM2, m2Subj, referencia, valorVenda, campoMin, campoMax, n, nDesc, veredito } = e
+                        const barMin = Math.min(m2Subj, campoMin) * 0.88
+                        const barMax = Math.max(m2Subj, campoMax) * 1.12
+                        const toBar = (v) => Math.max(2, Math.min(97, Math.round(((v - barMin) / (barMax - barMin)) * 100)))
+                        const posImov = toBar(m2Subj)
+                        const posMerc = toBar(referencia)
+                        const posMin = toBar(campoMin)
+                        const posMax = toBar(campoMax)
+                        const verdMap = { abaixo: ['Abaixo do mercado', 'verd--abaixo'], dentro: ['Dentro do mercado', 'verd--dentro'], acima: ['Acima do mercado', 'verd--acima'] }
+                        const [verdLabel, verdCls] = verdMap[veredito] || verdMap.dentro
+                        return (
+                          <div className="cli-estudo">
+                            <div className="cli-estudo-topo">
+                              <span className="cli-estudo-titulo">Estudo do valor do m²</span>
+                              <span className={`cli-estudo-verd ${verdCls}`}>{verdLabel}</span>
+                            </div>
+                            <div className="cli-estudo-m2ref">
+                              <span>Valor de mercado (m²)</span>
+                              <strong>{formatPreco(referencia)}/m²</strong>
+                            </div>
+                            <div className="cli-estudo-cols">
+                              <div><span>Este anúncio</span><b>{formatPreco(Math.round(precoM2))}/m²</b></div>
+                              <div><span>Comparável (s/ vaga)</span><b>{formatPreco(Math.round(m2Subj))}/m²</b></div>
+                              <div><span>Estimativa de venda</span><b>{formatPreco(valorVenda)}/m²</b></div>
+                            </div>
+                            <div className="cli-estudo-barra-wrap">
+                              <div className="cli-estudo-barra">
+                                <div className="cli-estudo-campo" style={{ left: `${posMin}%`, width: `${Math.max(2, posMax - posMin)}%` }} />
+                                <div className="cli-estudo-merc" style={{ left: `${posMerc}%` }} />
+                                <div className="cli-estudo-imov" style={{ left: `${posImov}%` }} />
+                              </div>
+                              <div className="cli-estudo-legenda">
+                                <span><i className="cli-dot cli-dot--verde" /> Este imóvel</span>
+                                <span><i className="cli-dot cli-dot--ouro" /> Mercado ({formatPreco(referencia)}/m²)</span>
+                                <span><i className="cli-dot cli-dot--cinza" /> Campo de arbítrio</span>
+                              </div>
+                            </div>
+                            {n > 0 && <p className="cli-estudo-nota">Campo de arbítrio: {formatPreco(campoMin)}/m² a {formatPreco(campoMax)}/m². Baseado em {n} imóvel(is) do mesmo tipo no {im.bairro}{nDesc > 0 ? ` (${nDesc} descartado(s) no saneamento)` : ''}.</p>}
                           </div>
-                          <div className="cliente-m2-labels"><span>Baixo</span><span>Médio</span><span>Alto</span></div>
-                          <span className={`cliente-m2-val cliente-m2-val--${tag || 'ok'}`}>
-                            {formatPreco(m2)}/m² · {tag === 'bom' ? 'ótimo preço/m²' : tag === 'alto' ? 'acima da média' : 'preço mediano'}
-                          </span>
-                        </div>
-                      )}
+                        )
+                      })()}
                       <div className="cliente-fb">
                         <button type="button" className={`cliente-fb-btn ${fb === 'like' ? 'on-like' : ''}`} onClick={() => setFb(String(im.codigo), 'like')}><IconHeart filled={fb === 'like'} width={16} height={16} /> Gostei</button>
                         <button type="button" className={`cliente-fb-btn ${fb === 'dislike' ? 'on-dislike' : ''}`} onClick={() => setFb(String(im.codigo), 'dislike')}><IconClose width={15} height={15} /> Não é bem isso</button>

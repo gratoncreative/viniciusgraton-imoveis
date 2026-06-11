@@ -295,7 +295,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
               <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Imóveis sugeridos <span className="painel-meta">({(sel.sugeridos || []).length})</span></h3>
               <p className="calc-nota">Marque os imóveis que vão aparecer na página do cliente. Use <b>Sugerir automático</b> pra preencher com os que mais combinam.</p>
               <button className="admin-btn" onClick={sugerirAuto} style={{ marginBottom: 10 }}>✨ Sugerir automático ({matches.length} combinam)</button>
-              <div className="crm-matches-wrap" onMouseLeave={() => setPrevCod(null)}>
+              <div className="crm-matches-wrap">
                 {(() => {
                   const prevHit = prevCod
                     ? matches.find(({ im }) => String(im.codigo) === prevCod)
