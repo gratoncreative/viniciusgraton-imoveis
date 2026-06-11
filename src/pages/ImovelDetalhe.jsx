@@ -423,6 +423,20 @@ export default function ImovelDetalhe() {
               ) : null })()}
               <PrecoGate valor={im.preco} anterior={im.precoAnterior} className="det-preco" tipo="detalhe" />
 
+              {destaques.length > 0 && (
+                <div className="det-dest-mini">
+                  {destaques.slice(0, 4).map((d, i) => {
+                    const Icon = ICONS[d.icon]
+                    return (
+                      <span key={i} className="det-dest-mini-chip">
+                        {Icon && <Icon width={13} height={13} />}
+                        {d.titulo}
+                      </span>
+                    )
+                  })}
+                </div>
+              )}
+
               <div className="det-specs">
                 {specs.map((s, i) => <Spec key={i} {...s} />)}
               </div>

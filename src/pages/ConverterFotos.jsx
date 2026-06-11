@@ -68,10 +68,15 @@ export default function ConverterFotos() {
   const dest = DESTINOS.find((d) => d.mime === destino) || DESTINOS[1]
 
   const adicionar = useCallback((files) => {
-    const novos = [...files]
-      .filter((f) => f.type.startsWith('image/') || /\.(jpe?g|png|webp|avif|gif|bmp|hei[cf])$/i.test(f.name))
-      .map((f) => ({ id: ++contador.current, file: f, url: URL.createObjectURL(f), status: 'pronto', outBlob: null, outUrl: null, outSize: 0, erro: '' }))
-    if (novos.length) setItens((s) => [...s, ...novos])
+    const lista = [...files].filter((f) => f.type.startsWith('image/') || /\.(jpe?g|png|webp|avif|gif|bmp|hei[cf])$/i.test(f.name))
+    const novos = lista.map((f) => ({ id: ++contador.current, file: f, url: URL.createObjectURL(f), status: 'pronto', outBlob: null, outUrl: null, outSize: 0, erro: '' }))
+    if (!novos.length) return
+    setItens((s) => [...s, ...novos])
+    // auto-detecta formato de origem: se todas as novas fotos têm o mesmo tipo, seleciona
+    const tipos = lista.map((f) => (f.type + ' ' + f.name).toLowerCase())
+    const detectado = ORIGENS.slice(1).find((o) => tipos.every((t) => o.match(t)))
+    if (detectado) setOrigem(detectado.id)
+    else setOrigem('auto')
   }, [])
 
   const onInput = (e) => { adicionar(e.target.files); e.target.value = '' }
@@ -128,7 +133,7 @@ export default function ConverterFotos() {
     a.click()
   }
 
-  async function baixarTudo() {
+  async function baixarZip() {
     const prontos = itens.filter((it) => it.status === 'ok' && it.outBlob)
     if (!prontos.length) return
     if (prontos.length === 1) return baixarUm(prontos[0])
@@ -146,6 +151,15 @@ export default function ConverterFotos() {
     const a = document.createElement('a')
     a.href = url; a.download = `fotos-convertidas-${dest.ext}.zip`; a.click()
     setTimeout(() => URL.revokeObjectURL(url), 4000)
+  }
+
+  async function baixarTodosIndividual() {
+    const prontos = itens.filter((it) => it.status === 'ok' && it.outBlob)
+    if (!prontos.length) return
+    for (let i = 0; i < prontos.length; i++) {
+      await new Promise((res) => setTimeout(res, i === 0 ? 0 : 220))
+      baixarUm(prontos[i])
+    }
   }
 
   const prontos = itens.filter((it) => it.status === 'ok')
@@ -218,9 +232,19 @@ export default function ConverterFotos() {
             <button className="btn btn-gold" type="button" disabled={!vaConverter || convertendo} onClick={converterTudo}>
               {convertendo ? 'Convertendo…' : `Converter ${vaConverter || ''} foto${vaConverter === 1 ? '' : 's'}`.trim()}
             </button>
-            {prontos.length > 0 && (
-              <button className="btn btn-ghost" type="button" onClick={baixarTudo}>
-                Baixar tudo{prontos.length > 1 ? ' (ZIP)' : ''}
+            {prontos.length > 1 && (
+              <>
+                <button className="btn btn-ghost" type="button" onClick={baixarZip}>
+                  Baixar tudo (ZIP)
+                </button>
+                <button className="btn btn-ghost" type="button" onClick={baixarTodosIndividual}>
+                  Baixar separados
+                </button>
+              </>
+            )}
+            {prontos.length === 1 && (
+              <button className="btn btn-ghost" type="button" onClick={() => baixarUm(prontos[0])}>
+                Baixar foto
               </button>
             )}
             {itens.length > 0 && <button className="conv-limpar" type="button" onClick={limpar}>Limpar</button>}
@@ -240,7 +264,7 @@ export default function ConverterFotos() {
             {itens.map((it) => (
               <div key={it.id} className={`conv-item conv-item--${it.status}`}>
                 <button className="conv-x" type="button" onClick={() => remover(it.id)} aria-label="Remover">×</button>
-                <div className="conv-thumb"><img src={it.outUrl || it.url} alt={it.file.name} loading="lazy" /></div>
+                <div className="conv-thumb"><img src={it.outUrl || it.url} alt={it.file.name} /></div>
                 <div className="conv-meta">
                   <b title={it.file.name}>{it.file.name}</b>
                   {it.status === 'ok' ? (

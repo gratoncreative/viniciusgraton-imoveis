@@ -246,7 +246,15 @@ export default function Ferramentas() {
 
   const atual = TOOLS.find((t) => t.id === ativa)
   const Ativa = RENDER[ativa]
-  const escolher = (id) => { setAtiva(id); setTimeout(() => painelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60) }
+  const escolher = (id) => {
+    setAtiva(id)
+    setTimeout(() => {
+      if (!painelRef.current) return
+      const navH = (document.querySelector('header')?.offsetHeight || 68) + 12
+      const top = painelRef.current.getBoundingClientRect().top + window.scrollY - navH
+      window.scrollTo({ top, behavior: 'smooth' })
+    }, 60)
+  }
   const grupo = (cat) => TOOLS.filter((t) => t.cat === cat)
   // grupo "voce" na ordem personalizada do cliente
   const voceOrdenado = ordem.map((id) => TOOLS.find((t) => t.id === id)).filter(Boolean)
