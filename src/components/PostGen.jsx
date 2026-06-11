@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { formatPreco, oportunidade } from '../data'
 
-// ——— Estúdio de publicidade: gera artes profissionais do imóvel pra redes ———
-// Vários estilos de design, aplica em todas as fotos, baixa individual ou em lote.
 const fotoProxy = (url) => `/api/foto?u=${encodeURIComponent(url)}`
 const esperar = (ms) => new Promise((r) => setTimeout(r, ms))
 function carregarImagem(src) {
@@ -31,32 +29,170 @@ function specsLinha(im) {
 }
 const precoTxt = (im) => (im.preco > 0 ? formatPreco(im.preco) : 'Sob consulta')
 
-function pillGold(ctx, x, y, txt, fs = 28, h = 54) {
+// ——— Cor ——————————————————————————————————————————————————
+function rgbToHsl(r, g, b) {
+  r /= 255; g /= 255; b /= 255
+  const max = Math.max(r, g, b), min = Math.min(r, g, b)
+  let h, s, l = (max + min) / 2
+  if (max === min) { h = s = 0 }
+  else {
+    const d = max - min
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break
+      case g: h = (b - r) / d + 2; break
+      default: h = (r - g) / d + 4; break
+    }
+    h /= 6
+  }
+  return [h * 360, s * 100, l * 100]
+}
+function hslToRgb(h, s, l) {
+  h /= 360; s /= 100; l /= 100
+  let r, g, b
+  if (s === 0) { r = g = b = l }
+  else {
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q
+    const hue2rgb = (p2, q2, t) => { if (t < 0) t += 1; if (t > 1) t -= 1; if (t < 1 / 6) return p2 + (q2 - p2) * 6 * t; if (t < 1 / 2) return q2; if (t < 2 / 3) return p2 + (q2 - p2) * (2 / 3 - t) * 6; return p2 }
+    r = hue2rgb(p, q, h + 1 / 3); g = hue2rgb(p, q, h); b = hue2rgb(p, q, h - 1 / 3)
+  }
+  return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)]
+}
+function lum(r, g, b) {
+  const c = [r, g, b].map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4) })
+  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
+}
+const txtCima = (r, g, b) => lum(r, g, b) > 0.179 ? '#1b1206' : '#fff'
+const rc = (r, g, b, a) => `rgba(${r},${g},${b},${a})`
+
+// ——— Paleta padrão (fallback antes da foto ser carregada) —
+const PAL_OURO = {
+  id: 'ouro',
+  dark: [8, 10, 16], acc: [224, 181, 86], accTxt: '#1b1206',
+  badge: [179, 38, 30], badgeTxt: '#fff', subAcc: '#ecc869',
+}
+// Representação visual do PAL_OURO como "combo" para o seletor
+const COMBO_OURO = {
+  id: 'ouro', label: 'Padrão da marca',
+  colors: [{ r: 8, g: 10, b: 16, pct: 42 }, { r: 224, g: 181, b: 86, pct: 35 }, { r: 242, g: 236, b: 218, pct: 23 }],
+}
+
+// ——— Extração de cores dominantes da foto ————————————————
+function extrairCores(imgEl) {
+  const C = document.createElement('canvas'); C.width = C.height = 64
+  const X = C.getContext('2d'); X.drawImage(imgEl, 0, 0, 64, 64)
+  const d = X.getImageData(0, 0, 64, 64).data
+  const buckets = {}; let total = 0
+  for (let i = 0; i < d.length; i += 4) {
+    const r = d[i] & 0xd0, g = d[i + 1] & 0xd0, b = d[i + 2] & 0xd0
+    const [, , l] = rgbToHsl(r, g, b)
+    if (l < 6 || l > 94) continue
+    const k = `${r},${g},${b}`; buckets[k] = (buckets[k] || 0) + 1; total++
+  }
+  if (!total) return []
+  const all = Object.entries(buckets)
+    .sort((a, b) => b[1] - a[1])
+    .map(([k, n]) => {
+      const [r, g, b] = k.split(',').map(Number)
+      const [h, s, l] = rgbToHsl(r, g, b)
+      return { r, g, b, h, s, l, pct: n / total * 100 }
+    })
+  // Deduplicar: pular cores perceptualmente muito próximas das já selecionadas
+  const kept = []
+  for (const c of all) {
+    if (kept.length >= 8) break
+    const tooClose = kept.some(k2 => {
+      const dh = Math.min(Math.abs(c.h - k2.h), 360 - Math.abs(c.h - k2.h))
+      return dh < 22 && Math.abs(c.l - k2.l) < 18
+    })
+    if (!tooClose) kept.push(c)
+  }
+  return kept
+}
+
+// ——— Gera 3 combinações de 3 cores a partir das dominantes —
+function gerarCombos(cores) {
+  if (cores.length < 3) return null
+  const norm = (arr) => {
+    const t = arr.reduce((s, c) => s + c.pct, 0)
+    const n = arr.map(c => ({ ...c, pct: Math.round(c.pct / t * 100) }))
+    n[0].pct += 100 - n.reduce((s, c) => s + c.pct, 0)
+    return n
+  }
+  // A — 3 mais frequentes (representativas)
+  const A = norm(cores.slice(0, 3))
+  // B — mais frequente + mais saturada + mais escura (papéis contrastantes)
+  const bySat = [...cores].sort((a, b) => b.s - a.s)
+  const byDark = [...cores].sort((a, b) => a.l - b.l)
+  const Braw = []; const Bseen = new Set()
+  for (const c of [cores[0], bySat[0], byDark[0]]) {
+    const k = `${c.r},${c.g},${c.b}`; if (!Bseen.has(k)) { Bseen.add(k); Braw.push(c) }
+  }
+  for (const c of cores) { if (Braw.length >= 3) break; const k = `${c.r},${c.g},${c.b}`; if (!Bseen.has(k)) { Bseen.add(k); Braw.push(c) } }
+  const B = norm(Braw.slice(0, 3))
+  // C — maximiza distância de matiz (maior diversidade cromática)
+  let bestC = cores.slice(0, 3), bestDist = 0
+  const n = cores.length
+  for (let i = 0; i < n - 2; i++) for (let j = i + 1; j < n - 1; j++) for (let k = j + 1; k < n; k++) {
+    const [a, b2, c2] = [cores[i], cores[j], cores[k]]
+    const dAB = Math.min(Math.abs(a.h - b2.h), 360 - Math.abs(a.h - b2.h))
+    const dBC = Math.min(Math.abs(b2.h - c2.h), 360 - Math.abs(b2.h - c2.h))
+    const dAC = Math.min(Math.abs(a.h - c2.h), 360 - Math.abs(a.h - c2.h))
+    const dist = Math.min(dAB, dBC, dAC)
+    if (dist > bestDist) { bestDist = dist; bestC = [a, b2, c2] }
+  }
+  return [
+    { id: 'A', label: 'Dominante', colors: A },
+    { id: 'B', label: 'Contraste', colors: B },
+    { id: 'C', label: 'Diversidade', colors: norm(bestC) },
+  ]
+}
+
+// ——— Converte combo → paleta para os templates ———————————
+function comboPaleta(combo) {
+  if (combo.id === 'ouro') return PAL_OURO
+  const cs = combo.colors
+  const sorted = [...cs].sort((a, b) => a.l - b.l)
+  const dark = sorted[0]
+  const darkRgb = hslToRgb(dark.h, Math.min(dark.s, 85), Math.min(dark.l, 14))
+  const accentSrc = cs.reduce((best, c) => c.s > best.s ? c : best, cs[0])
+  const accRgb = hslToRgb(accentSrc.h, Math.max(accentSrc.s, 55), Math.min(Math.max(accentSrc.l, 44), 74))
+  const subAccRgb = hslToRgb(accentSrc.h, Math.max(accentSrc.s, 50), Math.min(accentSrc.l * 1.1 + 8, 88))
+  const badgeRgb = hslToRgb(dark.h, Math.min(dark.s + 15, 100), Math.min(dark.l + 18, 38))
+  return {
+    id: `combo-${combo.id}`,
+    dark: darkRgb, acc: accRgb, accTxt: txtCima(...accRgb),
+    badge: badgeRgb, badgeTxt: '#fff',
+    subAcc: `rgb(${subAccRgb.join(',')})`,
+  }
+}
+
+// ——— Helpers de desenho ——————————————————————————————————
+function pillPal(ctx, x, y, txt, pal, fs = 28, h = 54) {
   ctx.font = `700 ${fs}px Arial`
   const padX = h * 0.42, w = ctx.measureText(txt).width + padX * 2
-  rr(ctx, x, y, w, h, h / 2); ctx.fillStyle = 'rgba(224,181,86,0.96)'; ctx.fill()
-  ctx.fillStyle = '#1b1206'; ctx.textBaseline = 'middle'; ctx.textAlign = 'left'
+  rr(ctx, x, y, w, h, h / 2); ctx.fillStyle = rc(...pal.acc, 0.96); ctx.fill()
+  ctx.fillStyle = pal.accTxt; ctx.textBaseline = 'middle'; ctx.textAlign = 'left'
   ctx.fillText(txt, x + padX, y + h / 2 + 1); ctx.textBaseline = 'alphabetic'
 }
-function eyebrowBadge(ctx, W, txt, safe) {
+function eyebrowPal(ctx, W, txt, safe, pal) {
   if (!txt) return
   const t = txt.toUpperCase(), fs = 30, h = 58
   ctx.font = `800 ${fs}px Arial`
   const padX = 26, w = ctx.measureText(t).width + padX * 2, x = W - safe.side - w, y = safe.top
-  rr(ctx, x, y, w, h, 12); ctx.fillStyle = '#b3261e'; ctx.fill()
-  ctx.fillStyle = '#fff'; ctx.textBaseline = 'middle'; ctx.textAlign = 'left'
+  rr(ctx, x, y, w, h, 12); ctx.fillStyle = rc(...pal.badge, 1); ctx.fill()
+  ctx.fillStyle = pal.badgeTxt; ctx.textBaseline = 'middle'; ctx.textAlign = 'left'
   ctx.fillText(t, x + padX, y + h / 2 + 1); ctx.textBaseline = 'alphabetic'
 }
 
-// Zonas seguras do Instagram por formato (px num canvas 1080 de largura).
-// Story/Reels: topo (perfil) e base (barra de resposta/botões) ficam livres.
+// ——— Zonas seguras ———————————————————————————————————————
 const SAFE = {
   feed: { top: 54, bottom: 60, side: 56 },
-  feed45: { top: 150, bottom: 160, side: 60 }, // 4:5 — miolo seguro p/ a grade do perfil (corte 1:1)
+  feed45: { top: 150, bottom: 160, side: 60 },
   story: { top: 264, bottom: 300, side: 64 },
 }
-const dimsDe = (formato) => formato === 'story' ? [1080, 1920] : formato === 'feed45' ? [1080, 1350] : [1080, 1080]
-const safeDe = (formato) => SAFE[formato] || SAFE.feed
+const dimsDe = (fmt) => fmt === 'story' ? [1080, 1920] : fmt === 'feed45' ? [1080, 1350] : [1080, 1080]
+const safeDe = (fmt) => SAFE[fmt] || SAFE.feed
 
 export const TEMPLATES = [
   { id: 'faixa', nome: 'Faixa moderna' },
@@ -66,87 +202,94 @@ export const TEMPLATES = [
   { id: 'gradiente', nome: 'Gradiente' },
 ]
 
-function tplClassico(ctx, W, H, im, eyebrow, safe) {
+function tplClassico(ctx, W, H, im, eyebrow, safe, pal) {
   const bY = H - safe.bottom, gh = Math.min(H * 0.55, bY)
   const g = ctx.createLinearGradient(0, bY - gh, 0, H)
-  g.addColorStop(0, 'rgba(8,11,18,0)'); g.addColorStop(0.6, 'rgba(8,11,18,0.72)'); g.addColorStop(1, 'rgba(8,11,18,0.97)')
+  g.addColorStop(0, rc(...pal.dark, 0)); g.addColorStop(0.6, rc(...pal.dark, 0.72)); g.addColorStop(1, rc(...pal.dark, 0.97))
   ctx.fillStyle = g; ctx.fillRect(0, bY - gh, W, H - (bY - gh))
-  ctx.strokeStyle = 'rgba(224,181,86,0.85)'; ctx.lineWidth = 6
+  ctx.strokeStyle = rc(...pal.acc, 0.85); ctx.lineWidth = 6
   ctx.strokeRect(safe.side - 10, safe.top - 10, W - 2 * (safe.side - 10), (bY - safe.top) + 20)
-  pillGold(ctx, safe.side, safe.top, (im.tipo || 'Imóvel').toUpperCase()); eyebrowBadge(ctx, W, eyebrow, safe)
+  pillPal(ctx, safe.side, safe.top, (im.tipo || 'Imóvel').toUpperCase(), pal)
+  eyebrowPal(ctx, W, eyebrow, safe, pal)
   const pad = safe.side; let y = bY; ctx.textAlign = 'left'
-  ctx.fillStyle = 'rgba(255,255,255,0.82)'; ctx.font = '500 30px Arial'; ctx.fillText(`viniciusgraton.com.br   ·   Cód. ${im.codigo}`, pad, y); y -= 60
-  ctx.fillStyle = '#ecc869'; ctx.font = '600 34px Arial'; ctx.fillText(specsLinha(im), pad, y); y -= 70
+  ctx.fillStyle = 'rgba(255,255,255,0.82)'; ctx.font = '500 30px Arial'; ctx.fillText(`rotina.com.br   ·   Cód. ${im.codigo}`, pad, y); y -= 60
+  ctx.fillStyle = pal.subAcc; ctx.font = '600 34px Arial'; ctx.fillText(specsLinha(im), pad, y); y -= 70
   ctx.fillStyle = 'rgba(255,255,255,0.92)'; ctx.font = '500 42px Arial'; ctx.fillText(`${im.tipo} no ${im.bairro} · ${im.cidade}/${im.uf || 'MG'}`, pad, y); y -= 96
   ctx.fillStyle = '#fff'; ctx.font = '800 96px Arial'; ctx.fillText(precoTxt(im), pad, y); y -= 110
-  ctx.fillStyle = '#ecc869'; ctx.font = '700 30px Arial'; ctx.fillText('VINÍCIUS GRATON  ·  CONSULTOR DE IMÓVEIS', pad, y)
+  ctx.fillStyle = pal.subAcc; ctx.font = '700 30px Arial'; ctx.fillText('ROTINA IMOBILIÁRIA  ·  CONSULTOR DE IMÓVEIS', pad, y)
 }
-function tplFaixa(ctx, W, H, im, eyebrow, safe) {
+function tplFaixa(ctx, W, H, im, eyebrow, safe, pal) {
   const bY = H - safe.bottom, ph = 300, py = bY - ph
-  const g = ctx.createLinearGradient(0, py - 90, 0, py); g.addColorStop(0, 'rgba(10,12,18,0)'); g.addColorStop(1, 'rgba(10,12,18,0.97)')
+  const g = ctx.createLinearGradient(0, py - 90, 0, py)
+  g.addColorStop(0, rc(...pal.dark, 0)); g.addColorStop(1, rc(...pal.dark, 0.97))
   ctx.fillStyle = g; ctx.fillRect(0, py - 90, W, 90)
-  ctx.fillStyle = 'rgba(10,12,18,0.97)'; ctx.fillRect(0, py, W, H - py)
-  ctx.fillStyle = '#e0b556'; ctx.fillRect(0, py, W, 7)
-  pillGold(ctx, safe.side, safe.top, (im.tipo || 'Imóvel').toUpperCase()); eyebrowBadge(ctx, W, eyebrow, safe)
+  ctx.fillStyle = rc(...pal.dark, 0.97); ctx.fillRect(0, py, W, H - py)
+  ctx.fillStyle = rc(...pal.acc, 1); ctx.fillRect(0, py, W, 7)
+  pillPal(ctx, safe.side, safe.top, (im.tipo || 'Imóvel').toUpperCase(), pal)
+  eyebrowPal(ctx, W, eyebrow, safe, pal)
   const pad = safe.side; let y = py + 60; ctx.textAlign = 'left'
-  ctx.fillStyle = '#ecc869'; ctx.font = '700 28px Arial'; ctx.fillText('VINÍCIUS GRATON · CONSULTOR DE IMÓVEIS', pad, y); y += 62
+  ctx.fillStyle = pal.subAcc; ctx.font = '700 28px Arial'; ctx.fillText('ROTINA IMOBILIÁRIA · CONSULTOR DE IMÓVEIS', pad, y); y += 62
   ctx.fillStyle = '#fff'; ctx.font = '800 88px Arial'; ctx.fillText(precoTxt(im), pad, y); y += 54
   ctx.fillStyle = 'rgba(255,255,255,0.92)'; ctx.font = '500 36px Arial'; ctx.fillText(`${im.tipo} no ${im.bairro} · ${im.cidade}/${im.uf || 'MG'}`, pad, y); y += 48
-  ctx.fillStyle = '#ecc869'; ctx.font = '600 31px Arial'; ctx.fillText(specsLinha(im), pad, y)
+  ctx.fillStyle = pal.subAcc; ctx.font = '600 31px Arial'; ctx.fillText(specsLinha(im), pad, y)
 }
-function tplMinimal(ctx, W, H, im, eyebrow, safe) {
+function tplMinimal(ctx, W, H, im, eyebrow, safe, pal) {
   const vg = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.4, W / 2, H / 2, Math.max(W, H) * 0.75)
   vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,0.45)'); ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H)
   ctx.fillStyle = '#fff'; ctx.font = '700 30px Arial'; ctx.textAlign = 'left'; ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 12
-  ctx.fillText('V I N Í C I U S   G R A T O N', safe.side, safe.top + 30); ctx.shadowBlur = 0
-  eyebrowBadge(ctx, W, eyebrow, safe)
+  ctx.fillText('R O T I N A   I M O B I L I Á R I A', safe.side, safe.top + 30); ctx.shadowBlur = 0
+  eyebrowPal(ctx, W, eyebrow, safe, pal)
   const bY = H - safe.bottom, pad = safe.side, ch = 96
   ctx.font = '800 64px Arial'; const pw = ctx.measureText(precoTxt(im)).width
-  rr(ctx, pad, bY - ch, pw + 64, ch, 16); ctx.fillStyle = 'rgba(224,181,86,0.96)'; ctx.fill()
-  ctx.fillStyle = '#1b1206'; ctx.textBaseline = 'middle'; ctx.fillText(precoTxt(im), pad + 32, bY - ch / 2 + 2); ctx.textBaseline = 'alphabetic'
+  rr(ctx, pad, bY - ch, pw + 64, ch, 16); ctx.fillStyle = rc(...pal.acc, 0.96); ctx.fill()
+  ctx.fillStyle = pal.accTxt; ctx.textBaseline = 'middle'; ctx.fillText(precoTxt(im), pad + 32, bY - ch / 2 + 2); ctx.textBaseline = 'alphabetic'
   ctx.fillStyle = '#fff'; ctx.font = '500 36px Arial'; ctx.shadowColor = 'rgba(0,0,0,0.6)'; ctx.shadowBlur = 10
   ctx.fillText(`${im.tipo} no ${im.bairro} · ${specsLinha(im)}`, pad, bY - ch - 28); ctx.shadowBlur = 0
 }
-function tplEditorial(ctx, W, H, im, eyebrow, safe) {
-  const g = ctx.createLinearGradient(0, 0, W * 0.85, 0); g.addColorStop(0, 'rgba(8,10,16,0.92)'); g.addColorStop(1, 'rgba(8,10,16,0)')
+function tplEditorial(ctx, W, H, im, eyebrow, safe, pal) {
+  const g = ctx.createLinearGradient(0, 0, W * 0.85, 0)
+  g.addColorStop(0, rc(...pal.dark, 0.92)); g.addColorStop(1, rc(...pal.dark, 0))
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H)
   const x = safe.side + 26, bY = H - safe.bottom
   let y = Math.max(safe.top + 200, (safe.top + bY) / 2 - 40)
-  ctx.fillStyle = '#e0b556'; ctx.fillRect(safe.side, y - 130, 5, 380)
-  ctx.textAlign = 'left'; ctx.fillStyle = '#ecc869'; ctx.font = '700 28px Georgia, serif'; ctx.fillText('VINÍCIUS GRATON · CONSULTOR DE IMÓVEIS', x, safe.top + 30)
-  eyebrowBadge(ctx, W, eyebrow, safe)
+  ctx.fillStyle = rc(...pal.acc, 1); ctx.fillRect(safe.side, y - 130, 5, 380)
+  ctx.textAlign = 'left'; ctx.fillStyle = pal.subAcc; ctx.font = '700 28px Georgia, serif'
+  ctx.fillText('ROTINA IMOBILIÁRIA · CONSULTOR DE IMÓVEIS', x, safe.top + 30)
+  eyebrowPal(ctx, W, eyebrow, safe, pal)
   ctx.fillStyle = '#fff'; ctx.font = 'italic 600 70px Georgia, serif'
   ctx.fillText(im.tipo || 'Imóvel', x, y); y += 74
   ctx.fillText(`no ${im.bairro}`, x, y); y += 90
-  ctx.fillStyle = '#ecc869'; ctx.font = '700 76px Georgia, serif'; ctx.fillText(precoTxt(im), x, y); y += 56
+  ctx.fillStyle = pal.subAcc; ctx.font = '700 76px Georgia, serif'; ctx.fillText(precoTxt(im), x, y); y += 56
   ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.font = '400 34px Georgia, serif'; ctx.fillText(specsLinha(im), x, y); y += 46
   ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.font = '400 26px Georgia, serif'; ctx.fillText(`${im.cidade}/${im.uf || 'MG'} · Cód. ${im.codigo}`, x, y)
 }
-function tplGradiente(ctx, W, H, im, eyebrow, safe) {
+function tplGradiente(ctx, W, H, im, eyebrow, safe, pal) {
   const g = ctx.createLinearGradient(0, 0, W, H)
-  g.addColorStop(0, 'rgba(184,38,18,0.0)'); g.addColorStop(0.55, 'rgba(20,16,10,0.2)'); g.addColorStop(1, 'rgba(201,150,47,0.78)')
+  g.addColorStop(0, rc(...pal.dark, 0)); g.addColorStop(0.55, rc(...pal.dark, 0.2)); g.addColorStop(1, rc(...pal.acc, 0.78))
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H)
   const bY = H - safe.bottom
-  const bg = ctx.createLinearGradient(0, bY - 360, 0, H); bg.addColorStop(0, 'rgba(8,10,16,0)'); bg.addColorStop(1, 'rgba(8,10,16,0.9)')
+  const bg = ctx.createLinearGradient(0, bY - 360, 0, H)
+  bg.addColorStop(0, rc(...pal.dark, 0)); bg.addColorStop(1, rc(...pal.dark, 0.9))
   ctx.fillStyle = bg; ctx.fillRect(0, bY - 360, W, H - (bY - 360))
-  pillGold(ctx, safe.side, safe.top, (im.tipo || 'Imóvel').toUpperCase()); eyebrowBadge(ctx, W, eyebrow, safe)
+  pillPal(ctx, safe.side, safe.top, (im.tipo || 'Imóvel').toUpperCase(), pal)
+  eyebrowPal(ctx, W, eyebrow, safe, pal)
   const pad = safe.side; let y = bY; ctx.textAlign = 'left'
-  ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.font = '700 30px Arial'; ctx.fillText('VINÍCIUS GRATON · viniciusgraton.com.br', pad, y); y -= 58
+  ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.font = '700 30px Arial'; ctx.fillText('ROTINA IMOBILIÁRIA · rotina.com.br', pad, y); y -= 58
   ctx.fillStyle = '#fff'; ctx.font = '600 38px Arial'; ctx.fillText(specsLinha(im), pad, y); y -= 64
   ctx.fillStyle = '#fff'; ctx.font = '500 42px Arial'; ctx.fillText(`${im.tipo} no ${im.bairro}`, pad, y); y -= 100
   ctx.fillStyle = '#fff'; ctx.font = '900 100px Arial'; ctx.shadowColor = 'rgba(0,0,0,0.35)'; ctx.shadowBlur = 18; ctx.fillText(precoTxt(im), pad, y); ctx.shadowBlur = 0
 }
 
 function desenhar(canvas, img, im, opts) {
-  const { formato, template, eyebrow } = opts
+  const { formato, template, eyebrow, palette } = opts
+  const pal = palette || PAL_OURO
   const [W, H] = dimsDe(formato), safe = safeDe(formato)
   canvas.width = W; canvas.height = H
   const ctx = canvas.getContext('2d')
   coverDraw(ctx, img, 0, 0, W, H)
   const fn = { classico: tplClassico, faixa: tplFaixa, minimal: tplMinimal, editorial: tplEditorial, gradiente: tplGradiente }[template] || tplFaixa
-  fn(ctx, W, H, im, eyebrow, safe)
+  fn(ctx, W, H, im, eyebrow, safe, pal)
 }
-// guias de zona segura — desenhadas SÓ no preview (nunca entram no arquivo exportado)
 function desenharGuias(canvas, formato) {
   const [W, H] = dimsDe(formato), safe = safeDe(formato)
   const ctx = canvas.getContext('2d')
@@ -156,9 +299,7 @@ function desenharGuias(canvas, formato) {
   if (formato === 'story') {
     ctx.fillText('▲ zona do @perfil — evite texto', W / 2, safe.top - 16)
     ctx.fillText('▼ barra de resposta / botões', W / 2, H - safe.bottom + 36)
-  } else {
-    ctx.fillText('margem segura', W / 2, safe.top - 12)
-  }
+  } else { ctx.fillText('margem segura', W / 2, safe.top - 12) }
   ctx.restore()
 }
 
@@ -178,14 +319,34 @@ function montarLegenda(im) {
     `💰 ${precoTxt(im)}`, '',
     specs.join('  ·  '),
     frases ? '\n' + frases : '', '',
-    'Agende sua visita comigo, Vinícius Graton, consultor da Rotina Imobiliária. Te acompanho da primeira conversa à entrega das chaves. 🤝',
+    'Agende sua visita com um consultor da Rotina Imobiliária. Atendimento completo da busca à entrega das chaves. 🤝',
     '📲 WhatsApp (34) 99157-0494',
-    `🔗 viniciusgraton.com.br/imovel/${im.codigo}`, '',
+    '🔗 rotina.com.br', '',
     `#imoveis #uberlandia #uberlandiamg ${tipoTag} ${bairroTag} #imoveisuberlandia #rotinaimobiliaria #consultordeimoveis #imoveldosonhos`,
   ].filter((l) => l !== undefined).join('\n')
 }
 
 const EYEBROWS = ['', 'OPORTUNIDADE', 'NOVO', 'EXCLUSIVO', 'LANÇAMENTO', 'BAIXOU O PREÇO', 'AGENDE JÁ']
+
+// ——— Seletor de paleta (barras proporcionais) —————————————
+function ComboCard({ combo, sel, onSel }) {
+  const id = combo.id === 'ouro' ? 'ouro' : `combo-${combo.id}`
+  return (
+    <button type="button" className={`pg-combo ${sel === id ? 'on' : ''}`} onClick={() => onSel(id)}>
+      <div className="pg-combo-bar">
+        {combo.colors.map((c, i) => (
+          <span key={i} style={{ flex: c.pct, background: `rgb(${c.r},${c.g},${c.b})` }} />
+        ))}
+      </div>
+      <div className="pg-combo-pcts">
+        {combo.colors.map((c, i) => (
+          <span key={i} style={{ flex: c.pct }}>{c.pct}%</span>
+        ))}
+      </div>
+      <div className="pg-combo-label">{combo.label}</div>
+    </button>
+  )
+}
 
 export default function PostGen() {
   const [cod, setCod] = useState('')
@@ -201,15 +362,22 @@ export default function PostGen() {
   const [legenda, setLegenda] = useState('')
   const [copiado, setCopiado] = useState(false)
   const [baixando, setBaixando] = useState('')
+  const [combos, setCombos] = useState(null) // null = foto ainda não carregada
+  const [paletaSel, setPaletaSel] = useState('ouro')
   const canvasRef = useRef(null)
 
   const fotos = im ? (im.fotos && im.fotos.length ? im.fotos : (im.foto ? [im.foto] : [])) : []
-  const opts = { formato, template, eyebrow }
+
+  const getPal = useCallback((combosArr, selId) => {
+    if (selId === 'ouro' || !combosArr) return PAL_OURO
+    const combo = combosArr.find(c => `combo-${c.id}` === selId)
+    return combo ? comboPaleta(combo) : PAL_OURO
+  }, [])
 
   const buscar = async (e) => {
     e && e.preventDefault()
     const c = cod.replace(/\D/g, ''); if (!c) return
-    setCarregando(true); setErro(''); setIm(null)
+    setCarregando(true); setErro(''); setIm(null); setCombos(null); setPaletaSel('ouro')
     try {
       const r = await fetch(`/api/rotina-imovel?codigo=${c}`)
       const j = await r.json()
@@ -217,19 +385,38 @@ export default function PostGen() {
       const imv = j.imovel
       setIm(imv); setFotoIdx(0)
       const fs = imv.fotos && imv.fotos.length ? imv.fotos : (imv.foto ? [imv.foto] : [])
-      setSel(new Set(fs.map((_, i) => i))) // todas selecionadas
+      setSel(new Set(fs.map((_, i) => i)))
       setLegenda(montarLegenda(imv))
       const op = oportunidade(imv)
       setEyebrow(op.abaixoMercado ? 'OPORTUNIDADE' : '')
     } catch { setErro('Não consegui buscar agora. Tente de novo.') } finally { setCarregando(false) }
   }
 
+  // Extrai paletas instantaneamente ao abrir cada foto
+  useEffect(() => {
+    if (!im) { setCombos(null); setPaletaSel('ouro'); return }
+    const url = fotos[fotoIdx] || fotos[0]; if (!url) return
+    let cancelled = false
+    carregarImagem(fotoProxy(url)).then(img => {
+      if (cancelled) return
+      const cores = extrairCores(img)
+      const cs = gerarCombos(cores)
+      setCombos(cs)
+      setPaletaSel(cs ? 'combo-A' : 'ouro')
+    }).catch(() => {})
+    return () => { cancelled = true }
+  }, [im ? im.codigo : null, fotoIdx]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const redesenhar = useCallback(async () => {
     if (!im || !canvasRef.current) return
     const url = fotos[fotoIdx] || fotos[0]; if (!url) return
-    try { const img = await carregarImagem(fotoProxy(url)); desenhar(canvasRef.current, img, im, opts); if (guias) desenharGuias(canvasRef.current, formato) }
-    catch { setErro('Não consegui carregar essa foto. Tente outra.') }
-  }, [im, fotoIdx, formato, template, eyebrow, guias])
+    try {
+      const img = await carregarImagem(fotoProxy(url))
+      const pal = getPal(combos, paletaSel)
+      desenhar(canvasRef.current, img, im, { formato, template, eyebrow, palette: pal })
+      if (guias) desenharGuias(canvasRef.current, formato)
+    } catch { setErro('Não consegui carregar essa foto. Tente outra.') }
+  }, [im, fotoIdx, formato, template, eyebrow, guias, combos, paletaSel, getPal])
   useEffect(() => { redesenhar() }, [redesenhar])
 
   const toggleSel = (i) => setSel((s) => { const n = new Set(s); n.has(i) ? n.delete(i) : n.add(i); return n })
@@ -243,7 +430,12 @@ export default function PostGen() {
       document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 3000); res()
     }, 'image/png')
   })
-  const gerarFoto = async (url) => { const img = await carregarImagem(fotoProxy(url)); const c = document.createElement('canvas'); desenhar(c, img, im, opts); return c }
+  const gerarFoto = async (url) => {
+    const img = await carregarImagem(fotoProxy(url))
+    const c = document.createElement('canvas')
+    desenhar(c, img, im, { formato, template, eyebrow, palette: getPal(combos, paletaSel) })
+    return c
+  }
 
   const baixarUma = async () => {
     setBaixando('uma')
@@ -261,6 +453,11 @@ export default function PostGen() {
   }
 
   const copiarLegenda = async () => { try { await navigator.clipboard.writeText(legenda); setCopiado(true); setTimeout(() => setCopiado(false), 2000) } catch {} }
+
+  // Monta a lista de combos exibida (3 da foto + 1 padrão)
+  const combosVisiveis = combos
+    ? [...combos, COMBO_OURO]
+    : [COMBO_OURO]
 
   return (
     <div className="postgen">
@@ -288,6 +485,18 @@ export default function PostGen() {
               <span className="pg-lbl">Estilo de design</span>
               <div className="mf-filtros">
                 {TEMPLATES.map((t) => <button key={t.id} type="button" className={`mf-filtro ${template === t.id ? 'on' : ''}`} onClick={() => setTemplate(t.id)}>{t.nome}</button>)}
+              </div>
+            </div>
+
+            <div className="pg-bloco">
+              <span className="pg-lbl">
+                Paleta de cores
+                {combos && <span className="pg-pal-sub"> — extraída da foto em destaque</span>}
+              </span>
+              <div className="pg-combos">
+                {combosVisiveis.map(combo => (
+                  <ComboCard key={combo.id} combo={combo} sel={paletaSel} onSel={setPaletaSel} />
+                ))}
               </div>
             </div>
 

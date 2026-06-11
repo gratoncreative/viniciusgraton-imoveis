@@ -55,8 +55,8 @@ const TOOLS = [
   { id: 'checklist', nome: 'Checklist de documentos', desc: 'Tudo que você precisa, por etapa.', icon: 'doc', cat: 'voce' },
   { id: 'comparar', nome: 'Comparar imóveis', desc: 'Veja imóveis lado a lado.', icon: 'compare', cat: 'voce', to: '/comparar' },
   { id: 'mapa', nome: 'Buscar no mapa', desc: 'Explore os imóveis por região.', icon: 'map', cat: 'voce', to: '/mapa' },
+  { id: 'corretor', nome: 'Área do corretor — Rotina', desc: 'Abordagem por código, estúdios de foto e publicidade com IA, comissão, ACM e ficha. Entre com o código da Rotina.', icon: 'chat', cat: 'corretor', to: '/corretor', destaque: true, logoSrc: '/rotina-logo.png' },
   { id: 'converter', nome: 'Conversor de fotos', desc: 'Converte fotos entre JPG, PNG, WebP e AVIF em lote — suba quantas quiser e baixe tudo de uma vez.', icon: 'edit', cat: 'corretor', to: '/ferramentas/converter' },
-  { id: 'corretor', nome: 'Área do corretor — Rotina', desc: 'Abordagem por código, estúdios de foto e publicidade com IA, comissão, ACM e ficha. Entre com o código da Rotina.', icon: 'chat', cat: 'corretor', to: '/corretor', destaque: true },
 ]
 
 function Campo({ label, valor, onChange, sufixo, step = '1', min = '0' }) {
@@ -277,7 +277,7 @@ export default function Ferramentas() {
   const restaurarOrdem = () => { try { localStorage.removeItem(ORDEM_KEY) } catch {}; setOrdem(idsVoce()) }
 
   const Card = (t) => t.to
-    ? <Link key={t.id} className={`ferr-card ${t.destaque ? 'ferr-card--gold' : ''}`} to={t.to}><span className="ferr-ico"><FerrIcon name={t.icon} /></span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></Link>
+    ? <Link key={t.id} className={`ferr-card ${t.destaque ? 'ferr-card--gold' : ''}`} to={t.to}><span className="ferr-ico">{t.logoSrc ? <img src={t.logoSrc} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /> : <FerrIcon name={t.icon} />}</span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></Link>
     : <button key={t.id} className={`ferr-card ${ativa === t.id ? 'on' : ''}`} onClick={() => escolher(t.id)}><span className="ferr-ico"><FerrIcon name={t.icon} /></span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></button>
 
   // versão arrastável (só p/ cliente logado): mesmo card, com handle e eventos de drag

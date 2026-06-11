@@ -8,10 +8,12 @@ import { linkWhatsApp } from '../data'
 // Tudo roda no próprio navegador (as fotos não saem do aparelho do usuário).
 
 const DESTINOS = [
-  { mime: 'image/jpeg', ext: 'jpg', nome: 'JPG', lossy: true, desc: 'menor tamanho, ideal pra anúncio e e-mail' },
-  { mime: 'image/webp', ext: 'webp', nome: 'WebP', lossy: true, desc: 'qualidade alta com arquivo pequeno (web)' },
-  { mime: 'image/avif', ext: 'avif', nome: 'AVIF', lossy: true, desc: 'o mais leve com ótima qualidade (moderno)' },
-  { mime: 'image/png', ext: 'png', nome: 'PNG', lossy: false, desc: 'sem perda, mantém transparência' },
+  { id: 'jpg', mime: 'image/jpeg', ext: 'jpg', nome: 'JPG', lossy: true, desc: 'menor tamanho, ideal pra anúncio e e-mail' },
+  { id: 'webp', mime: 'image/webp', ext: 'webp', nome: 'WebP', lossy: true, desc: 'qualidade alta com arquivo pequeno (web)' },
+  { id: 'avif', mime: 'image/avif', ext: 'avif', nome: 'AVIF', lossy: true, desc: 'o mais leve com ótima qualidade (moderno)' },
+  { id: 'png', mime: 'image/png', ext: 'png', nome: 'PNG', lossy: false, desc: 'sem perda, mantém transparência' },
+  { id: 'webp-sl', mime: 'image/webp', ext: 'webp', nome: 'WebP sem perda', lossy: false, desc: 'WebP lossless — qualidade máxima, mais leve que PNG' },
+  { id: 'jpg-max', mime: 'image/jpeg', ext: 'jpg', nome: 'JPG máxima qualidade', lossy: true, qualFix: 0.99, desc: 'JPEG em qualidade máxima — ideal para impressão' },
 ]
 const ORIGENS = [
   { id: 'auto', nome: 'Detectar automaticamente', match: () => true },
@@ -41,14 +43,14 @@ async function decodificar(file) {
 
 export default function ConverterFotos() {
   useSEO({
-    title: 'Conversor de fotos online — JPG, PNG, WebP e AVIF em lote',
-    description: 'Converta várias fotos de uma vez entre JPG, PNG, WebP e AVIF, direto no navegador, sem instalar nada e sem enviar suas imagens pra lugar nenhum. Ferramenta gratuita do Vinícius Graton.',
+    title: 'Conversor de fotos online — JPG, PNG, WebP, AVIF e mais, em lote',
+    description: 'Converta várias fotos de uma vez entre os 6 principais formatos — JPG, PNG, WebP, AVIF, WebP lossless e JPG máxima — direto no navegador, sem instalar nada e sem enviar suas imagens pra lugar nenhum.',
     path: '/ferramentas/converter',
   })
 
   const [itens, setItens] = useState([]) // {id, file, url, status, outBlob, outUrl, outSize, erro}
   const [origem, setOrigem] = useState('auto')
-  const [destino, setDestino] = useState('image/webp')
+  const [destino, setDestino] = useState('webp')
   const [qualidade, setQualidade] = useState(0.9)
   const [larguraMax, setLarguraMax] = useState('')
   const [convertendo, setConvertendo] = useState(false)
@@ -65,13 +67,18 @@ export default function ConverterFotos() {
     return () => { vivo = false }
   }, [])
 
-  const dest = DESTINOS.find((d) => d.mime === destino) || DESTINOS[1]
+  const dest = DESTINOS.find((d) => d.id === destino) || DESTINOS[1]
 
   const adicionar = useCallback((files) => {
     const lista = [...files].filter((f) => f.type.startsWith('image/') || /\.(jpe?g|png|webp|avif|gif|bmp|hei[cf])$/i.test(f.name))
-    const novos = lista.map((f) => ({ id: ++contador.current, file: f, url: URL.createObjectURL(f), status: 'pronto', outBlob: null, outUrl: null, outSize: 0, erro: '' }))
-    if (!novos.length) return
+    if (!lista.length) return
+    const novos = lista.map((f) => ({ id: ++contador.current, file: f, url: '', status: 'pronto', outBlob: null, outUrl: null, outSize: 0, erro: '' }))
     setItens((s) => [...s, ...novos])
+    novos.forEach((item) => {
+      const reader = new FileReader()
+      reader.onload = (ev) => setItens((s) => s.map((it) => it.id === item.id ? { ...it, url: ev.target.result } : it))
+      reader.readAsDataURL(item.file)
+    })
     // auto-detecta formato de origem: se todas as novas fotos têm o mesmo tipo, seleciona
     const tipos = lista.map((f) => (f.type + ' ' + f.name).toLowerCase())
     const detectado = ORIGENS.slice(1).find((o) => tipos.every((t) => o.match(t)))
@@ -102,7 +109,7 @@ export default function ConverterFotos() {
     ctx.imageSmoothingQuality = 'high'
     ctx.drawImage(img, 0, 0, w, h)
     if (img.close) img.close()
-    const blob = await new Promise((ok) => canvas.toBlob(ok, dest.mime, dest.lossy ? qualidade : undefined))
+    const blob = await new Promise((ok) => canvas.toBlob(ok, dest.mime, dest.lossy ? (dest.qualFix ?? qualidade) : undefined))
     if (!blob) throw new Error('falha ao gerar')
     return blob
   }
@@ -207,7 +214,7 @@ export default function ConverterFotos() {
             <label className="conv-campo">
               <span>Para (destino)</span>
               <select value={destino} onChange={(e) => setDestino(e.target.value)}>
-                {DESTINOS.map((d) => <option key={d.mime} value={d.mime} disabled={d.mime === 'image/avif' && !avifOk}>{d.nome}{d.mime === 'image/avif' && !avifOk ? ' (indisponível neste navegador)' : ''}</option>)}
+                {DESTINOS.map((d) => <option key={d.id} value={d.id} disabled={d.id === 'avif' && !avifOk}>{d.nome}{d.id === 'avif' && !avifOk ? ' (indisponível neste navegador)' : ''}</option>)}
               </select>
             </label>
           </div>
@@ -215,7 +222,7 @@ export default function ConverterFotos() {
 
           {/* opções avançadas */}
           <div className="conv-opcoes">
-            {dest.lossy && (
+            {dest.lossy && !dest.qualFix && (
               <label className="conv-range">
                 <span>Qualidade <b>{Math.round(qualidade * 100)}%</b></span>
                 <input type="range" min="0.4" max="1" step="0.05" value={qualidade} onChange={(e) => setQualidade(+e.target.value)} />
@@ -293,7 +300,7 @@ export default function ConverterFotos() {
 
         <div style={{ marginTop: 28, textAlign: 'center', display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
           <Link className="btn btn-ghost" to="/ferramentas">Outras ferramentas <IconArrow /></Link>
-          <a className="btn btn-gold" href={linkWhatsApp('Olá Vinícius! Usei o conversor de fotos no site e quero sua ajuda.')} target="_blank" rel="noopener"><IconWhats /> Falar com o Vinícius</a>
+          <a className="btn btn-gold" href={linkWhatsApp('Olá! Usei o conversor de fotos no site e tenho uma dúvida.')} target="_blank" rel="noopener"><IconWhats /> Falar pelo WhatsApp</a>
         </div>
       </div>
     </main>

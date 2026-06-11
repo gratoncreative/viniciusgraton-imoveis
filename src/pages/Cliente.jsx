@@ -1,32 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import CardImovel from '../components/CardImovel'
-import { IMOVEIS, getImovel, filtrarParaCliente, avaliarMatch, vantagensImovel, formatPreco, linkWhatsApp, TIPOS_IMOVEL, BAIRROS_IMOVEL } from '../data'
+import { IMOVEIS, getImovel, avaliarMatch, vantagensImovel, formatPreco, linkWhatsApp } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconHeart, IconClose } from '../components/icons'
 
 const primeiroNome = (n) => (n || '').trim().split(/\s+/)[0] || ''
-const FAIXAS = [
-  { v: '', label: 'Qualquer valor' },
-  { v: '0-300000', label: 'Até R$ 300 mil' },
-  { v: '300000-500000', label: 'R$ 300–500 mil' },
-  { v: '500000-800000', label: 'R$ 500–800 mil' },
-  { v: '800000-1200000', label: 'R$ 800 mil – 1,2 mi' },
-  { v: '1200000-0', label: 'Acima de R$ 1,2 mi' },
-]
-const faixaDe = (min, max) => {
-  for (const f of FAIXAS) { if (!f.v) continue; const [a, b] = f.v.split('-').map(Number); if ((min || 0) === a && (max || 0) === b) return f.v }
-  return ''
-}
 
 export default function Cliente() {
   const { token } = useParams()
   const [estado, setEstado] = useState('carregando')
   const [cli, setCli] = useState(null)
   const [feed, setFeed] = useState([])
-  const [prefs, setPrefs] = useState({})
   const [feedback, setFeedback] = useState({})
-  const [mexeu, setMexeu] = useState(false)
   const [salvo, setSalvo] = useState(false)
   const timer = useRef(0)
 
@@ -40,7 +26,6 @@ export default function Cliente() {
         if (!vivo) return
         if (j && j.ok) {
           setCli(j.cliente)
-          setPrefs({ tipos: j.cliente.tipos || [], bairros: j.cliente.bairros || [], precoMin: j.cliente.precoMin || 0, precoMax: j.cliente.precoMax || 0, quartosMin: j.cliente.quartosMin || 0, suitesMin: j.cliente.suitesMin || 0, vagasMin: j.cliente.vagasMin || 0, areaMin: j.cliente.areaMin || 0 })
           setFeedback(j.cliente.feedback || {})
           setEstado('ok')
         } else setEstado('erro')
@@ -49,7 +34,7 @@ export default function Cliente() {
     return () => { vivo = false }
   }, [token])
 
-  // base COMPLETA (espelho de todos os imóveis) p/ resolver as sugestões e filtrar — não só os curados
+  // base COMPLETA (espelho de todos os imóveis) p/ resolver as sugestões
   useEffect(() => {
     let vivo = true
     fetch('/catalogo.json').then((r) => (r.ok ? r.json() : null))
@@ -58,22 +43,19 @@ export default function Cliente() {
     return () => { vivo = false }
   }, [])
 
-  // salva (com pequeno atraso) o ESTADO COMPLETO das escolhas do cliente no
-  // perfil dele — sempre o mapa inteiro, nunca um delta, pra nada se perder.
-  const agendarSalvar = (novosPrefs, novoFb) => {
+  const agendarSalvar = (novoFb) => {
     clearTimeout(timer.current)
     timer.current = setTimeout(() => {
-      fetch('/api/cliente-refina', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ t: token, prefs: novosPrefs, feedback: novoFb }) })
+      fetch('/api/cliente-refina', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ t: token, feedback: novoFb }) })
         .then(() => { setSalvo(true); setTimeout(() => setSalvo(false), 1500) }).catch(() => {})
     }, 700)
   }
-  const mudarPref = (patch) => { const np = { ...prefs, ...patch }; setPrefs(np); setMexeu(true); agendarSalvar(np, feedback) }
-  const toggleArr = (k, val) => { const a = new Set(prefs[k] || []); a.has(val) ? a.delete(val) : a.add(val); mudarPref({ [k]: [...a] }) }
+
   const setFb = (cod, val) => {
     const novo = { ...feedback }
     if (novo[cod] === val) delete novo[cod]; else novo[cod] = val
-    setFeedback(novo); setMexeu(true)
-    agendarSalvar(prefs, novo)
+    setFeedback(novo)
+    agendarSalvar(novo)
   }
 
   if (estado === 'carregando') return <main className="pagina section--light det-vazio"><div className="container" style={{ textAlign: 'center' }}><p className="section-sub">Carregando sua seleção…</p></div></main>
@@ -90,6 +72,9 @@ export default function Cliente() {
   }
 
   const nome = primeiroNome(cli.nome)
+  // prefs do cliente conforme cadastrado pelo corretor (somente leitura, para o avaliarMatch)
+  const prefs = { tipos: cli.tipos || [], bairros: cli.bairros || [], precoMin: +cli.precoMin || 0, precoMax: +cli.precoMax || 0, quartosMin: +cli.quartosMin || 0, suitesMin: +cli.suitesMin || 0, vagasMin: +cli.vagasMin || 0, areaMin: +cli.areaMin || 0 }
+
   // base completa: espelho (catalogo.json) + curados do bundle (estes têm prioridade)
   const baseImoveis = (() => {
     const mapa = new Map()
@@ -99,13 +84,12 @@ export default function Cliente() {
   })()
   const acharImovel = (c) => baseImoveis.find((i) => String(i.codigo) === String(c)) || getImovel(c)
   const curados = (cli.sugeridos || []).map((c) => acharImovel(c)).filter(Boolean)
-  const usarFiltro = mexeu || curados.length === 0
-  const base = usarFiltro ? filtrarParaCliente(prefs, baseImoveis).map((x) => x.im) : curados
-  const visiveis = base.filter((im) => feedback[String(im.codigo)] !== 'dislike')
-  visiveis.sort((a, b) => (feedback[String(b.codigo)] === 'like' ? 1 : 0) - (feedback[String(a.codigo)] === 'like' ? 1 : 0))
-  const descartados = base.filter((im) => feedback[String(im.codigo)] === 'dislike')
 
-  const waMsg = `Olá Vinícius! Vi a seleção de imóveis que você preparou pra mim${nome ? ' (' + nome + ')' : ''} e ajustei o que procuro. Quero agendar uma visita.`
+  const visiveis = curados.filter((im) => feedback[String(im.codigo)] !== 'dislike')
+  visiveis.sort((a, b) => (feedback[String(b.codigo)] === 'like' ? 1 : 0) - (feedback[String(a.codigo)] === 'like' ? 1 : 0))
+  const descartados = curados.filter((im) => feedback[String(im.codigo)] === 'dislike')
+
+  const waMsg = `Olá Vinícius! Vi a seleção de imóveis que você preparou pra mim${nome ? ' (' + nome + ')' : ''} e quero agendar uma visita.`
 
   return (
     <main className="pagina cliente-pg">
@@ -114,7 +98,7 @@ export default function Cliente() {
           <div className="cliente-hero-texto">
             <span className="eyebrow">Seleção exclusiva{nome ? ` · ${nome}` : ''}</span>
             <h1 className="section-title">{nome ? `${nome}, ` : ''}essas opções são <em>pensando em você</em></h1>
-            <p className="cliente-intro">Selecionei a dedo o que combina com o que você procura. E você pode <b>refinar aqui mesmo</b> — curta o que gostou, descarte o que não é bem isso, e ajuste o que importa. Tudo isso me ajuda a achar o imóvel certo pra você. {salvo && <span className="cliente-salvo">✓ salvo</span>}</p>
+            <p className="cliente-intro">Selecionei a dedo o que combina com o que você procura. Curte o que gostou e descarta o que não é bem isso — me ajuda a entender ainda melhor o seu gosto. {salvo && <span className="cliente-salvo">✓ salvo</span>}</p>
             <div className="cliente-assina">
               <img src="/vinicius-graton.jpg" alt="Vinícius Graton" loading="lazy" />
               <div>
@@ -134,38 +118,9 @@ export default function Cliente() {
 
       <section className="section--light">
         <div className="container">
-          {/* Painel de refino */}
-          <div className="cliente-refino">
-            <b className="cliente-refino-tit">Afine o que você procura</b>
-            <div className="cliente-refino-grupo">
-              <span>Tipo</span>
-              <div className="crm-chips">
-                {TIPOS_IMOVEL.map((t) => <button key={t} type="button" className={`crm-chip ${(prefs.tipos || []).includes(t) ? 'on' : ''}`} onClick={() => toggleArr('tipos', t)}>{t}</button>)}
-              </div>
-            </div>
-            <div className="cliente-refino-grupo">
-              <span>Valor</span>
-              <select value={faixaDe(prefs.precoMin, prefs.precoMax)} onChange={(e) => { const [a, b] = (e.target.value || '0-0').split('-').map(Number); mudarPref({ precoMin: a || 0, precoMax: b || 0 }) }}>
-                {FAIXAS.map((f) => <option key={f.v} value={f.v}>{f.label}</option>)}
-              </select>
-            </div>
-            <div className="cliente-refino-grupo">
-              <span>Quartos</span>
-              <div className="crm-chips">
-                {[1, 2, 3, 4].map((n) => <button key={n} type="button" className={`crm-chip ${prefs.quartosMin === n ? 'on' : ''}`} onClick={() => mudarPref({ quartosMin: prefs.quartosMin === n ? 0 : n })}>{n}+</button>)}
-              </div>
-            </div>
-            <div className="cliente-refino-grupo">
-              <span>Bairros</span>
-              <div className="crm-chips crm-chips--bairros">
-                {BAIRROS_IMOVEL.map((b) => <button key={b} type="button" className={`crm-chip ${(prefs.bairros || []).includes(b) ? 'on' : ''}`} onClick={() => toggleArr('bairros', b)}>{b}</button>)}
-              </div>
-            </div>
-          </div>
-
           {visiveis.length === 0 ? (
             <div className="cat-vazio">
-              <p>Com esses ajustes não achei uma opção exata agora.. mas tenho acesso a muito mais na base. Me chama que eu garimpo pra você.</p>
+              <p>Ainda não há imóveis nessa seleção. Me chama que eu garimpei algumas opções especiais pra você.</p>
               <a className="btn btn-gold" href={linkWhatsApp(waMsg)} target="_blank" rel="noopener"><IconWhats /> Falar com o Vinícius</a>
             </div>
           ) : (

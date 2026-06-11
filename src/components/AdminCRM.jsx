@@ -1,5 +1,5 @@
-import { useEffect, useState, useMemo } from 'react'
-import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_TODOS, filtrarParaCliente, formatPreco, getImovel, oportunidade, ehEsquina } from '../data'
+import { useEffect, useState, useMemo, useCallback } from 'react'
+import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_TODOS, filtrarParaCliente, formatPreco, getImovel, oportunidade, ehEsquina, fotosDe } from '../data'
 import InputMoeda from './InputMoeda'
 import { agruparPorSetor } from '../bairros-setores'
 
@@ -112,6 +112,18 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
 
   const sugerirAuto = () => setSel((s) => ({ ...s, sugeridos: matches.slice(0, 9).map((x) => String(x.im.codigo)) }))
   const toggleSug = (cod) => setSel((s) => { const a = new Set(s.sugeridos || []); a.has(cod) ? a.delete(cod) : a.add(cod); return { ...s, sugeridos: [...a] } })
+
+  const m2mediana = useMemo(() => {
+    const vals = matches.slice(0, 80).map(({ im }) => im.preco > 0 && im.area > 0 ? im.preco / im.area : 0).filter(v => v > 0).sort((a, b) => a - b)
+    return vals.length ? vals[Math.floor(vals.length / 2)] : 0
+  }, [matches])
+
+  const [tipHover, setTipHover] = useState(null)
+  const handleTipEnter = useCallback((cod, e) => {
+    const r = e.currentTarget.getBoundingClientRect()
+    setTipHover({ cod, top: r.top, elLeft: r.left, elRight: r.right })
+  }, [])
+  const handleTipLeave = useCallback(() => setTipHover(null), [])
 
   const salvar = async () => {
     setErro('')
@@ -291,7 +303,8 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                 {matches.slice(0, 80).map(({ im, m }) => {
                   const cod = String(im.codigo); const on = (sel.sugeridos || []).includes(cod)
                   return (
-                    <label className={`crm-match ${on ? 'on' : ''}`} key={cod}>
+                    <label className={`crm-match ${on ? 'on' : ''}`} key={cod}
+                      onMouseEnter={(e) => handleTipEnter(cod, e)} onMouseLeave={handleTipLeave}>
                       <input type="checkbox" checked={on} onChange={() => toggleSug(cod)} />
                       <img src={im.img} alt="" loading="lazy" />
                       <span className="crm-match-info"><b>{im.tipo} · {im.bairro}</b><i>{formatPreco(im.preco)} · {im.quartos}q · cód {cod}</i></span>
@@ -417,6 +430,40 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
           </div>
         </div>
       )}
+
+      {tipHover && (() => {
+        const hit = matches.find(({ im }) => String(im.codigo) === tipHover.cod)
+        if (!hit) return null
+        const { im: tim } = hit
+        const fotos = fotosDe(tim)
+        const m2 = tim.preco > 0 && tim.area > 0 ? Math.round(tim.preco / tim.area) : 0
+        const m2tag = m2 && m2mediana ? (m2 < m2mediana * 0.85 ? 'bom' : m2 > m2mediana * 1.15 ? 'alto' : 'ok') : ''
+        const specs = [tim.quartos && `${tim.quartos}q`, tim.suites > 0 && `${tim.suites} suíte${tim.suites > 1 ? 's' : ''}`, tim.vagas > 0 && `${tim.vagas} vaga${tim.vagas > 1 ? 's' : ''}`, tim.area > 0 && `${tim.area} m²`].filter(Boolean).join(' · ')
+        const m2labels = { bom: '· ótimo preço/m²', alto: '· acima da média', ok: '· preço mediano' }
+        const TIP_W = 230
+        const tipLeft = tipHover.elRight + 10 + TIP_W < window.innerWidth ? tipHover.elRight + 10 : tipHover.elLeft - TIP_W - 10
+        const tipTop = Math.max(8, Math.min(tipHover.top, window.innerHeight - 290))
+        return (
+          <div className="crm-tip" style={{ top: tipTop, left: tipLeft }}>
+            <img className="crm-tip-foto" src={fotos[0]} alt="" />
+            {fotos.length > 1 && (
+              <div className="crm-tip-strip">
+                {fotos.slice(1, 4).map((f, i) => <img key={i} src={f} alt="" />)}
+              </div>
+            )}
+            <div className="crm-tip-body">
+              <b className="crm-tip-tipo">{tim.tipo} · {tim.bairro}</b>
+              <span className="crm-tip-preco">{formatPreco(tim.preco)}</span>
+              {specs && <span className="crm-tip-specs">{specs}</span>}
+              {m2 > 0 && (
+                <span className={`crm-tip-m2 ${m2tag ? `crm-tip-m2--${m2tag}` : ''}`}>
+                  {formatPreco(m2)}/m² {m2labels[m2tag] || ''}
+                </span>
+              )}
+            </div>
+          </div>
+        )
+      })()}
     </section>
   )
 }

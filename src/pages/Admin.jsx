@@ -564,7 +564,7 @@ export default function Admin() {
           <div><span className="eyebrow">Painel administrativo</span><h1 className="section-title">Central do <em>Vinícius</em></h1></div>
           <div className="conta-hero-acoes">
             <button className="btn btn-ghost" onClick={carregar} disabled={carregando}>{carregando ? 'Atualizando…' : 'Atualizar'}</button>
-            <button className="btn btn-ghost" onClick={baixarBackup}>⬇ Backup</button>
+            <button className="btn btn-ghost" title="Baixa JSON com todos os leads, anúncios, clientes, newsletter e CRM — arquivo backup-YYYY-MM-DD.json" onClick={baixarBackup}>⬇ Backup</button>
             <button className="btn btn-ghost" onClick={sair}>Sair</button>
           </div>
         </div>

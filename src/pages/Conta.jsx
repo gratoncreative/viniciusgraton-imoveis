@@ -181,10 +181,15 @@ function CadastroView({ onPronto }) {
 }
 
 function PainelView({ conta, onSair }) {
-  const favs = favoritos().map(getImovel).filter(Boolean)
+  const [favs, setFavs] = useState(() => favoritos().map(getImovel).filter(Boolean))
   const hist = getHistorico().map(getImovel).filter(Boolean)
   const [selToken, setSelToken] = useState('')
   const [copiado, setCopiado] = useState(false)
+  useEffect(() => {
+    const ler = () => setFavs(favoritos().map(getImovel).filter(Boolean))
+    window.addEventListener('vg-fav', ler)
+    return () => window.removeEventListener('vg-fav', ler)
+  }, [])
   // garante uma página /cliente salva com a seleção do visitante (favoritos), que ele pode compartilhar
   useEffect(() => {
     if (!conta?.token || !conta?.fone) return

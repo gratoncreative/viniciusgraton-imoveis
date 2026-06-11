@@ -370,9 +370,10 @@ const PLANOS = [
     periodo: 'Mensal',
     preco: 'R$ 49,90',
     sub: '/mês',
+    porDia: 'R$ 1,66/dia',
     detalhe: 'Acesso completo por 30 dias',
     popular: true,
-    economia: 'Melhor custo-benefício',
+    economia: '★ Melhor custo-benefício',
     beneficios: ['Todas as ferramentas liberadas', 'IA sem limite de uso', 'Renovação automática opcional'],
   },
   {
@@ -380,6 +381,7 @@ const PLANOS = [
     periodo: 'Semanal',
     preco: 'R$ 15',
     sub: '/semana',
+    porDia: 'R$ 2,14/dia',
     detalhe: 'Acesso completo por 7 dias',
     popular: false,
     economia: 'Sem compromisso',
@@ -560,6 +562,7 @@ function GateCorretor({ onOk }) {
 
       <div className="corr-form-area">
         {/* Planos */}
+        <p style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-mute)', marginBottom: 10 }}>Escolha seu plano</p>
         <div className="corr-planos-v2">
           {PLANOS.map((p) => (
             <button
@@ -568,13 +571,14 @@ function GateCorretor({ onOk }) {
               className={`corr-plano-v2 ${planoSel === p.id ? 'corr-plano-v2--sel' : ''} ${p.popular ? 'corr-plano-v2--popular' : ''}`}
               onClick={() => setPlanoSel(p.id)}
             >
-              {p.popular && <span className="corr-plano-badge">★ Mais popular</span>}
+              {p.popular && <span className="corr-plano-badge">Mais popular</span>}
               <span className="corr-plano-v2-periodo">{p.periodo}</span>
               <span className="corr-plano-v2-preco">{p.preco}<small>{p.sub}</small></span>
+              <span className="corr-plano-v2-pordia">{p.porDia}</span>
               <span className="corr-plano-v2-detalhe">{p.detalhe}</span>
               <span className="corr-plano-v2-economia">{p.economia}</span>
               <ul className="corr-plano-v2-items">
-                {p.beneficios.map((b, i) => <li key={i}>✓ {b}</li>)}
+                {p.beneficios.map((b, i) => <li key={i}>{b}</li>)}
               </ul>
             </button>
           ))}
@@ -705,7 +709,7 @@ function HubCorretor({ corretor, onSair }) {
 
 export default function Corretor() {
   useSEO({
-    title: 'Área do corretor — Ferramentas profissionais | Vinícius Graton',
+    title: 'Área do corretor — Ferramentas profissionais | Rotina Imobiliária',
     description: 'Área exclusiva para corretores: abordagem por código, estúdio de fotos com IA, publicidade, legenda para portais, script de objeções, checklist de captação e mais.',
     path: '/corretor',
   })

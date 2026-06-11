@@ -491,8 +491,7 @@ export default function MelhorarFotos() {
                     <div className="mf-grupo mf-grupo--ia">
                       <div className="mf-grupo-tit">🪄 Melhoria automática</div>
                       <p className="mf-nota" style={{ marginTop: 0 }}>Analiso a foto e aplico luz, contraste, cor, nitidez, suavização e endireitamento ideais pra ela.</p>
-                      <button className="btn btn-gold" onClick={autoMelhorar}>🪄 Auto-melhorar tudo</button>
-                      <button className="admin-btn admin-btn--mini" onClick={autoMelhorarTodas} style={{ marginTop: 6 }}>🪄 Auto-melhorar TODAS</button>
+                      <button className="btn btn-gold" onClick={autoMelhorarTodas}>🪄 Auto-melhorar tudo</button>
                     </div>
                     <div className="mf-grupo">
                       <div className="mf-grupo-tit">Filtros (clique pra ver na hora)</div>
