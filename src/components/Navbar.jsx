@@ -68,6 +68,7 @@ export default function Navbar() {
   const [favs, setFavs] = useState(0)
   const [conta, setConta] = useState(null)
   const { pathname } = useLocation()
+  const ehAdmin = !!conta?.ehProprietario
 
   useEffect(() => {
     const ler = () => setConta(getConta())
@@ -131,6 +132,12 @@ export default function Navbar() {
               <IconUser width={19} height={19} />
               <span>{conta ? (conta.nome || '').trim().split(' ')[0] || 'Minha área' : 'Entrar'}</span>
             </Link>
+            {ehAdmin && (
+              <Link to="/admin" className="nav-conta nav-admin" aria-label="Painel Admin">
+                <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <span>Admin</span>
+              </Link>
+            )}
             <a className="btn btn-gold" href={linkWhatsApp(WA.navbar)} target="_blank" rel="noopener">
               <IconWhats /> Falar agora
             </a>
@@ -166,6 +173,7 @@ export default function Navbar() {
               <Link className="mm-btn mm-btn--ouro" to="/anunciar" onClick={() => setOpen(false)}>Anunciar meu imóvel</Link>
               <Link className="mm-btn" to="/avaliacao" onClick={() => setOpen(false)}>Quanto vale meu imóvel</Link>
               <Link className="mm-btn" to="/conta" onClick={() => setOpen(false)}>{conta ? 'Minha área' : 'Entrar / criar conta'}</Link>
+              {ehAdmin && <Link className="mm-btn" to="/admin" onClick={() => setOpen(false)}>Painel Admin</Link>}
               <Link className="mm-btn" to="/favoritos" onClick={() => setOpen(false)}>Favoritos{favs > 0 ? ` (${favs})` : ''}</Link>
               <Link className="mm-btn" to="/sobre" onClick={() => setOpen(false)}>Sobre o Vinícius</Link>
               <Link className="mm-btn" to="/contato" onClick={() => setOpen(false)}>Contato</Link>

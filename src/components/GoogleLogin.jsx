@@ -44,6 +44,10 @@ export default function GoogleLogin({ onPronto, onLogin }) {
             })
             const j = await r.json()
             if (j && j.ok && j.perfil && j.perfil.sub) {
+              // se é o proprietário, guarda o token admin imediatamente
+              if (j.adminToken) {
+                try { localStorage.setItem('vg_admin_token', j.adminToken) } catch {}
+              }
               // se o pai quer tratar o login (ex.: pedir o WhatsApp antes), entrega o perfil
               if (onLoginRef.current) {
                 onLoginRef.current(j.perfil)
@@ -54,6 +58,7 @@ export default function GoogleLogin({ onPronto, onLogin }) {
                   email: j.perfil.email,
                   foto: j.perfil.foto,
                   login: 'google',
+                  ...(j.ehProprietario ? { ehProprietario: true } : {}),
                 })
                 onPronto && onPronto()
               }

@@ -13,6 +13,28 @@
 const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } })
 const str = (v, n) => String(v == null ? '' : v).slice(0, n)
 
+// ── helpers para gerar token admin (mesma lógica de admin.js) ─────────────────
+const enc = new TextEncoder()
+const toHex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('')
+async function hmacHex(key, msg) {
+  const k = await crypto.subtle.importKey('raw', enc.encode(key), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
+  return toHex(await crypto.subtle.sign('HMAC', k, enc.encode(msg)))
+}
+const TTL_MS = 12 * 60 * 60 * 1000
+async function makeToken(signKey) {
+  const exp = Date.now() + TTL_MS
+  return `${exp}.${await hmacHex(signKey, String(exp))}`
+}
+async function getSignKey(env) {
+  try {
+    if (env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function') {
+      const auth = await env.ENGAGEMENT.get('admin:auth', 'json')
+      if (auth && auth.tokenKey) return auth.tokenKey
+    }
+  } catch {}
+  return String((env && env.ADMIN_PASS) || '')
+}
+
 export async function onRequestPost({ env, request }) {
   const b = await request.json().catch(() => ({}))
   const credential = String(b.credential || '')
@@ -46,5 +68,13 @@ export async function onRequestPost({ env, request }) {
   }
   if (!perfil.sub) return json({ error: 'sem identificador' }, 401)
 
-  return json({ ok: true, perfil })
+  // se o email do Google bate com ADMIN_GOOGLE_EMAIL, gera token de admin automaticamente
+  const ownerEmail = String((env && env.ADMIN_GOOGLE_EMAIL) || '').trim().toLowerCase()
+  let adminToken = null
+  if (ownerEmail && emailVerificado && perfil.email.toLowerCase() === ownerEmail) {
+    const signKey = await getSignKey(env)
+    if (signKey) adminToken = await makeToken(signKey)
+  }
+
+  return json({ ok: true, perfil, ...(adminToken ? { adminToken, ehProprietario: true } : {}) })
 }
