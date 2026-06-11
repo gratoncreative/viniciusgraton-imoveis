@@ -11,6 +11,7 @@ const primeiroNome = (n) => (n || '').trim().split(/\s+/)[0] || ''
 export default function Cliente() {
   const { token } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
+  const bairroFiltro = searchParams.get('bairro') || ''
   const [estado, setEstado] = useState('carregando')
   const [cli, setCli] = useState(null)
   const [feed, setFeed] = useState([])
@@ -165,22 +166,24 @@ export default function Cliente() {
     return op.abaixoMercado || op.temDesconto || m2tagIm(im) === 'bom'
   }
 
-  const visiveis = curados.filter((im) => feedback[String(im.codigo)] !== 'dislike')
+  const visiveis = curados
+    .filter((im) => feedback[String(im.codigo)] !== 'dislike')
+    .filter((im) => !bairroFiltro || im.bairro === bairroFiltro)
   visiveis.sort((a, b) => {
     const sc = (im) => (isOpor(im) ? 2 : 0) + (feedback[String(im.codigo)] === 'like' ? 1 : 0)
     return sc(b) - sc(a)
   })
   const descartados = curados.filter((im) => feedback[String(im.codigo)] === 'dislike')
 
-  const waMsg = `Olá Vinícius! Vi a seleção de imóveis que você preparou pra mim${nome ? ' (' + nome + ')' : ''} e quero agendar uma visita.`
+  const waMsg = `Olá Vinícius! Vi a seleção de imóveis${bairroFiltro ? ` no ${bairroFiltro}` : ''} que você preparou pra mim${nome ? ' (' + nome + ')' : ''} e quero agendar uma visita.`
 
   return (
     <main className="pagina cliente-pg">
       <header className="cliente-hero">
         <div className={`container ${cli.foto ? 'cliente-hero-grid' : ''}`}>
           <div className="cliente-hero-texto">
-            <span className="eyebrow">Seleção exclusiva{nome ? ` · ${nome}` : ''}</span>
-            <h1 className="section-title">{nome ? `${nome}, ` : ''}essas opções são <em>pensando em você</em></h1>
+            <span className="eyebrow">Seleção exclusiva{bairroFiltro ? ` · ${bairroFiltro}` : ''}{nome ? ` · ${nome}` : ''}</span>
+            <h1 className="section-title">{nome ? `${nome}, ` : ''}essas opções{bairroFiltro ? ` no ${bairroFiltro}` : ''} são <em>pensando em você</em></h1>
             <p className="cliente-intro">Selecionei a dedo o que combina com o que você procura. Curte o que gostou e descarta o que não é bem isso — me ajuda a entender ainda melhor o seu gosto. {salvo && <span className="cliente-salvo">✓ salvo</span>}</p>
             {cli.nota && (
               <div className="cliente-nota">
@@ -209,12 +212,22 @@ export default function Cliente() {
         <div className="container">
           {visiveis.length === 0 ? (
             <div className="cat-vazio">
-              <p>Ainda não há imóveis nessa seleção. Me chama que eu garimpei algumas opções especiais pra você.</p>
-              <a className="btn btn-gold" href={linkWhatsApp(waMsg)} target="_blank" rel="noopener"><IconWhats /> Falar com o Vinícius</a>
+              {bairroFiltro ? (
+                <>
+                  <p>Nenhum imóvel desta seleção está no {bairroFiltro}.</p>
+                  <a className="btn btn-gold" href={`/cliente/${token}`}>← Ver seleção completa</a>
+                </>
+              ) : (
+                <>
+                  <p>Ainda não há imóveis nessa seleção. Me chama que eu garimpei algumas opções especiais pra você.</p>
+                  <a className="btn btn-gold" href={linkWhatsApp(waMsg)} target="_blank" rel="noopener"><IconWhats /> Falar com o Vinícius</a>
+                </>
+              )}
             </div>
           ) : (
             <>
-              <h2 className="det-rel-titulo">{visiveis.length} {visiveis.length === 1 ? 'opção pra você' : 'opções pra você'}</h2>
+              {bairroFiltro && <a href={`/cliente/${token}`} className="cli-bairro-volta">← Toda a seleção</a>}
+              <h2 className="det-rel-titulo">{visiveis.length} {visiveis.length === 1 ? 'opção' : 'opções'}{bairroFiltro ? ` no ${bairroFiltro}` : ' pra você'}</h2>
               <div className="cliente-grid">
                 {visiveis.map((im) => {
                   const fb = feedback[String(im.codigo)]

@@ -3405,6 +3405,13 @@ html[data-theme="dark"] .crm-fu-info i { color: #8a8e9b; }
 /* CRM foto/feedback */
 html[data-theme="dark"] .crm-foto-vazia { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
 html[data-theme="dark"] .crm-fb-lista li { color: #b4b8c5; }
+/* Links por bairro — CRM admin */
+.crm-bairro-link-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; padding: 5px 0; }
+.crm-bairro-link-nome { font-size: .88rem; font-weight: 600; color: var(--text); }
+.crm-bairro-link-acoes { display: flex; gap: 5px; flex-wrap: wrap; }
+/* Bairro filter — página do cliente */
+.cli-bairro-volta { display: inline-flex; align-items: center; gap: 4px; font-size: .82rem; color: var(--text-mute); text-decoration: none; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 1px; }
+.cli-bairro-volta:hover { color: var(--text); border-color: var(--text-mute); }
 /* selo "Destaque do blog": dourado escuro no claro (legível), claro no escuro */
 .section--light .blog-feat-tag { color: var(--gold-3); }
 html[data-theme="dark"] .section--light .blog-feat-tag { color: var(--gold-1); }

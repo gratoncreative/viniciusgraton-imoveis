@@ -406,6 +406,39 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                   <button className="admin-btn" disabled={abrindo} onClick={() => comSalvar((c) => { navigator.clipboard?.writeText(linkCliente(c)); setLinkCopiado(true); setTimeout(() => setLinkCopiado(false), 1500) })}>{abrindo ? '⏳ Salvando…' : linkCopiado ? '✓ copiado' : 'Salvar e copiar link'}</button>
                   <button className="btn btn-gold" disabled={abrindo} onClick={() => comSalvar((c) => window.open(waLink(c.whatsapp, montarMsgCliente(c)), '_blank', 'noopener'))}>{abrindo ? '⏳ Salvando…' : 'Salvar e enviar no WhatsApp'}</button>
                 </div>
+                {(() => {
+                  const bairrosSug = [...new Set(
+                    (sel.sugeridos || []).map(resolverImovel).filter(Boolean).map((im) => im.bairro).filter(Boolean)
+                  )].sort()
+                  if (bairrosSug.length < 2) return null
+                  const lb = (b) => `${linkCliente(sel)}?bairro=${encodeURIComponent(b)}`
+                  const msgBairro = (b) => {
+                    const pNome = sel.nome ? sel.nome.trim().split(' ')[0] : ''
+                    const n = (sel.sugeridos || []).map(resolverImovel).filter((im) => im && im.bairro === b).length
+                    return `Oi${pNome ? ' ' + pNome : ''}! Aqui é o Vinícius, do atendimento da Rotina Imobiliária.\n\nSeparei ${n === 1 ? 'uma opção' : `${n} opções`} especialmente no ${b} pra você.\n\nVeja só.. ${lb(b)}\n\nQualquer que chamar atenção, me avisa que organizo a visita. 🤝`
+                  }
+                  return (
+                    <div style={{ marginTop: 10, borderTop: '1px solid var(--border)', paddingTop: 12 }}>
+                      <p className="admin-mini-label" style={{ margin: '0 0 8px', color: 'var(--text-mute)' }}>Links por bairro <span className="painel-meta">· {bairrosSug.length} bairros nos sugeridos</span></p>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                        {bairrosSug.map((b) => {
+                          const n = (sel.sugeridos || []).map(resolverImovel).filter((im) => im && im.bairro === b).length
+                          return (
+                            <div key={b} className="crm-bairro-link-row">
+                              <span className="crm-bairro-link-nome">{b} <span className="painel-meta">({n})</span></span>
+                              <span className="crm-bairro-link-acoes">
+                                <button className="admin-btn admin-btn--mini" onClick={() => window.open(lb(b), '_blank', 'noopener')}>Abrir</button>
+                                <button className="admin-btn admin-btn--mini" onClick={() => navigator.clipboard?.writeText(lb(b))}>Copiar link</button>
+                                <a className="admin-btn admin-btn--ok admin-btn--mini" href={waLink(sel.whatsapp, msgBairro(b))} target="_blank" rel="noopener">WhatsApp</a>
+                              </span>
+                            </div>
+                          )
+                        })}
+                      </div>
+                      <p className="painel-meta" style={{ marginTop: 6, fontSize: '.72rem' }}>Salve o cliente antes de compartilhar para garantir que os imóveis estejam atualizados.</p>
+                    </div>
+                  )
+                })()}
               </div>
             )}
           </div>
