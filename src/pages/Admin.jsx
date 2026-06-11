@@ -430,7 +430,7 @@ function ImoveisPub({ token, onSair, alvo, onAbriu }) {
 }
 
 export default function Admin() {
-  useSEO({ title: 'Painel administrativo', description: 'Área restrita do Vinícius Graton.', path: '/admin' })
+  useSEO({ title: 'Painel administrativo', description: 'Área restrita do Vinícius Graton.', path: '/admin', noindex: true })
 
   // Admin é sempre escuro — força dark independente da preferência do visitante
   useEffect(() => {

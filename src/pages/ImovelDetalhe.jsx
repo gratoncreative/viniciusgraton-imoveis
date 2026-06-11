@@ -13,6 +13,7 @@ import {
   destaquesImovel, ehCondominio, IMOVEIS, linkWhatsApp, waImovel, CONFIG, BAIRROS, oportunidade, estudoM2,
 } from '../data'
 import { IconWhats, IconArrow, IconPin, IconShield, ICONS } from './../components/icons'
+import { useSEO } from '../useSEO'
 
 const plural = (n, s, p) => (n > 1 ? p : s)
 
@@ -187,6 +188,12 @@ export default function ImovelDetalhe() {
   }, [im])
 
   const fotos = fotosDe(im)
+  useSEO({
+    title: im ? `${im.tipo} no ${im.bairro} — ${formatPreco(im.preco)}` : 'Imóvel em Uberlândia',
+    description: im ? resumoImovel(im) : 'Imóvel à venda em Uberlândia-MG. Consultoria personalizada com Vinícius Graton.',
+    path: `/imovel/${codigo}`,
+    image: fotos[0] || im?.img,
+  })
   const [pdfProc, setPdfProc] = useState(false)
   const [estudoAberto, setEstudoAberto] = useState(false)
   const est = useMemo(() => { try { return estudoM2(im, feed) } catch { return { ok: false } } }, [im, feed])
@@ -228,11 +235,6 @@ export default function ImovelDetalhe() {
     import('../pdfLaudoM2').then((m) => m.gerarPdfLaudoM2(im, est)).catch(() => {})
   }, [laudoLiberado, est, im])
 
-  useEffect(() => {
-    if (im) document.title = `${im.tipo} no ${im.bairro} — ${formatPreco(im.preco)} | ${CONFIG.nome}`
-    return () => { document.title = `${CONFIG.marca}` }
-  }, [im])
-
   // registra a visita no histórico do cliente (área do cliente / recomendações)
   useEffect(() => { if (im) { import('../conta').then((m) => m.registrarVisita(im.codigo)) } }, [im])
 
@@ -250,18 +252,28 @@ export default function ImovelDetalhe() {
     ].filter(Boolean)
     const data = {
       '@context': 'https://schema.org',
-      '@type': 'Product',
-      name: `${im.tipo} no ${im.bairro}, Uberlândia`,
+      '@type': 'RealEstateListing',
+      name: `${im.tipo} no ${im.bairro}, Uberlândia-MG`,
       description: resumoImovel(im),
       image: fotos.map((u) => abs(u.split('?')[0])),
-      category: 'Imóvel à venda',
+      url: `https://viniciusgraton.com.br/imovel/${im.codigo}`,
+      ...(im.area > 0 && { floorSize: { '@type': 'QuantitativeValue', value: im.area, unitCode: 'MTK' } }),
+      ...(im.quartos > 0 && { numberOfRooms: im.quartos }),
+      ...(im.banheiros > 0 && { numberOfBathroomsTotal: im.banheiros }),
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: im.cidade || 'Uberlândia',
+        addressRegion: im.uf || 'MG',
+        addressCountry: 'BR',
+        ...(im.endereco && { streetAddress: im.endereco }),
+      },
       additionalProperty: props,
       offers: {
         '@type': 'Offer',
         price: im.preco,
         priceCurrency: 'BRL',
         availability: 'https://schema.org/InStock',
-        url: window.location.href,
+        url: `https://viniciusgraton.com.br/imovel/${im.codigo}`,
         seller: { '@type': 'RealEstateAgent', name: CONFIG.marca, areaServed: 'Uberlândia - MG' },
       },
     }

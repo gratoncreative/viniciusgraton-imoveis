@@ -11,6 +11,7 @@ export default function Favoritos() {
     title: 'Meus imóveis favoritos',
     description: 'Os imóveis que você salvou no site do Vinícius Graton, consultor de imóveis em Uberlândia.',
     path: '/favoritos',
+    noindex: true,
   })
 
   const [codes, setCodes] = useState([])

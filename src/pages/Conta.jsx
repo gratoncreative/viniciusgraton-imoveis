@@ -261,6 +261,7 @@ export default function Conta() {
     title: 'Minha área — área do cliente | Vinícius Graton',
     description: 'Crie sua conta grátis: favoritos salvos, histórico, seleção exclusiva de imóveis e atendimento prioritário com o consultor Vinícius Graton em Uberlândia.',
     path: '/conta',
+    noindex: true,
   })
   const [logado, setLogado] = useState(estaLogado())
   const [conta, setConta] = useState(getConta())

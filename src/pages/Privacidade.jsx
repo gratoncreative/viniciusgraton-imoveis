@@ -1,13 +1,14 @@
-import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { CONFIG } from '../data'
 import { IconArrow } from '../components/icons'
+import { useSEO } from '../useSEO'
 
 export default function Privacidade() {
-  useEffect(() => {
-    document.title = `Política de Privacidade e Termos de Uso | ${CONFIG.nome}`
-    return () => { document.title = CONFIG.marca }
-  }, [])
+  useSEO({
+    title: 'Política de Privacidade e Termos de Uso',
+    description: 'Política de privacidade e termos de uso do site Vinícius Graton Imóveis em Uberlândia.',
+    path: '/privacidade',
+  })
 
   const email = CONFIG.email
   const cidade = CONFIG.cidade || 'Uberlândia'

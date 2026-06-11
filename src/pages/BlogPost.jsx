@@ -37,6 +37,7 @@ export default function BlogPost() {
     title: p ? `${p.titulo} | Blog Vinícius Graton` : 'Post não encontrado',
     description: p ? p.resumo : 'Post não encontrado.',
     path: `/blog/${slug || ''}`,
+    image: p?.capa || undefined,
   })
 
   useEffect(() => {
