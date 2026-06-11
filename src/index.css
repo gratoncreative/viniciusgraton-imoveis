@@ -1573,6 +1573,8 @@ html[data-theme="dark"] .det-dest-mini-chip { background: rgba(224,181,86,0.1); 
 .calc-input .calc-suf { margin-left: auto; }
 .calc-input input { flex: 1; min-width: 0; border: none; background: transparent; padding: 14px 0; font-size: 1.05rem; font-family: var(--font-head); font-weight: 600; color: #1a1f29; outline: none; }
 .calc-result { background: linear-gradient(155deg, #11151d, #0b0e16); border-radius: 16px; padding: 22px 24px; color: #fff; }
+/* calc-result tem fundo escuro próprio; restaura text-mute do dark-mode para contraste correto */
+.section--light .calc-result { --text-mute: #8b93a3; }
 .calc-result-top { display: flex; flex-direction: column; gap: 4px; padding-bottom: 16px; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.12); }
 .calc-result-top span { font-size: 0.82rem; color: var(--text-mute); }
 .calc-result-top b { font-family: var(--font-head); font-size: 1.9rem; font-weight: 800; background: linear-gradient(135deg, #e7c66e, #c9962f); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
@@ -1745,8 +1747,10 @@ html[data-theme="dark"] .det-dest-mini-chip { background: rgba(224,181,86,0.1); 
 /* link de destaque no menu (Anunciar imóvel) */
 .nav-links a.nav-destaque { color: var(--gold-1); border: 1px solid var(--gold-3); border-radius: 100px; padding: 7px 16px; }
 .nav-links a.nav-destaque:hover, .nav-links a.nav-destaque.is-active { background: var(--gold-grad); color: #20160a; }
-.nav:not(.scrolled) .nav-links a.nav-destaque { color: #fff; border-color: rgba(255,255,255,0.5); }
+/* no modo claro, nav sempre tem fundo branco — destaque deve ser dourado, não branco */
+.nav:not(.scrolled) .nav-links a.nav-destaque { color: var(--gold-3); border-color: var(--gold-3); }
 .nav:not(.scrolled) .nav-links a.nav-destaque:hover { color: #20160a; border-color: transparent; }
+html[data-theme="dark"] .nav:not(.scrolled) .nav-links a.nav-destaque { color: #fff; border-color: rgba(255,255,255,0.5); }
 
 /* ===== Anuncie seu imóvel ===== */
 .anunciar-form { margin-top: 30px; }
@@ -2778,7 +2782,7 @@ html[data-theme="dark"] .det-dest-mini-chip { background: rgba(224,181,86,0.1); 
 .news-erro { color: #e88; font-size: 0.86rem; width: 100%; }
 @media (max-width: 620px) { .news-form { flex-direction: column; } .news-form .btn { justify-content: center; } }
 /* bloco "sua página de seleção" na área do cliente */
-.conta-selo-link { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; background: linear-gradient(120% 120% at 0% 0%, #161a22 0%, #20262f 100%); border: 1px solid rgba(184,134,47,0.4); border-radius: 16px; padding: 20px 22px; margin: 28px 0 8px; }
+.conta-selo-link { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; background: linear-gradient(135deg, #161a22 0%, #20262f 100%); border: 1px solid rgba(184,134,47,0.4); border-radius: 16px; padding: 20px 22px; margin: 28px 0 8px; }
 .conta-selo-link b { display: block; font-family: var(--font-head); color: #fff; font-size: 1.05rem; margin-bottom: 4px; }
 .conta-selo-link span { color: #c3c9d4; font-size: 0.9rem; line-height: 1.5; max-width: 520px; display: block; }
 .conta-selo-acoes { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -3186,6 +3190,7 @@ html[data-theme="dark"] .conta-comp { background: #11161f; border-color: rgba(25
 html[data-theme="dark"] .conta-comp-row { border-top-color: rgba(255,255,255,0.08); }
 html[data-theme="dark"] .conta-comp-rot { color: #dfe3ea; }
 html[data-theme="dark"] .conta-comp-row .conta-comp-com { color: #f1ede4; }
+html[data-theme="dark"] .conta-selo-link { background: linear-gradient(135deg, #16202e 0%, #1d2b3d 100%); border-color: rgba(184,134,47,0.3); }
 
 /* anunciar (passos) */
 html[data-theme="dark"] .anu-passo b { color: #f1ede4; }
