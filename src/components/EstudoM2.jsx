@@ -12,7 +12,7 @@ export default function EstudoM2({ im, est, onClose, onLaudo }) {
     document.body.style.overflow = 'hidden'
     const k = (e) => {
       if (e.key === 'Escape') onClose()
-      if (e.key === 'ArrowRight') setSlide(s => Math.min(s + 1, 3))
+      if (e.key === 'ArrowRight') setSlide(s => Math.min(s + 1, 2))
       if (e.key === 'ArrowLeft') setSlide(s => Math.max(s - 1, 0))
     }
     document.addEventListener('keydown', k)
@@ -31,9 +31,10 @@ export default function EstudoM2({ im, est, onClose, onLaudo }) {
   const msg = `Olá Vinícius! Vi o estudo de valor do m² do imóvel cód. ${im.codigo} (${im.tipo} no ${im.bairro}) e quero entender melhor. Pode me ajudar?`
 
   const SLIDES = [
-    /* 0 — Teaser + Oferta */
-    <div key="oferta" className="em2-slide">
-      <div className="em2-preview-badge">✦ Preview gratuito</div>
+    /* 0 — Dados + Oferta (tudo junto no primeiro slide) */
+    <div key="dados" className="em2-slide">
+      <div className="em2-preview-badge">✦ Preview gratuito · dados reais do bairro</div>
+
       <div className="em2-topo">
         <div className="em2-num">
           <span>Valor de mercado (m²)</span>
@@ -41,44 +42,13 @@ export default function EstudoM2({ im, est, onClose, onLaudo }) {
         </div>
         <div className={`em2-verdito em2-verdito--${cor}`}>{verdito}</div>
       </div>
-      <p className="em2-preview-aviso">
-        Este é um <b>resumo</b> do estudo. O laudo técnico completo contém todos os{' '}
-        <b>{est.baseLabel}</b>, cada cálculo detalhado, o campo de arbítrio e a metodologia
-        ABNT NBR 14653 — entregue em PDF para usar na negociação, financiamento ou precificação.
-      </p>
-      {onLaudo && (
-        <div className="em2-oferta">
-          <div className="em2-oferta-preco">
-            <span className="em2-preco-tag">Oferta de lançamento</span>
-            <div className="em2-preco-row">
-              <span className="em2-preco-de">R$ 49,90</span>
-              <strong className="em2-preco-por">R$ 29,90</strong>
-            </div>
-          </div>
-          <ul className="em2-gatilhos">
-            <li><span className="em2-check">✓</span> PDF entregue em instantes, sem espera</li>
-            <li><span className="em2-check">✓</span> Comparáveis reais do bairro deste imóvel</li>
-            <li><span className="em2-check">✓</span> Metodologia usada em avaliações bancárias</li>
-            <li><span className="em2-check">✓</span> Vale para negociar, financiar ou precificar</li>
-            <li><span className="em2-check">✓</span> Laudo individual — calculado só para este imóvel</li>
-          </ul>
-          <button className="em2-laudo em2-laudo--destaque" onClick={onLaudo}>
-            <span>📄 Quero o laudo completo</span>
-            <em>por apenas R$ 29,90 · entrega imediata em PDF</em>
-          </button>
-          <p className="em2-urgencia">⏳ Preço promocional · válido por tempo limitado</p>
-        </div>
-      )}
-    </div>,
 
-    /* 1 — Comparativo */
-    <div key="comp" className="em2-slide">
-      <h4 className="em2-slide-tit">Comparativo de preço</h4>
       <div className="em2-cards">
         <div className="em2-card"><span>Este anúncio</span><b>{fmtM2(est.precoM2)}</b></div>
         <div className="em2-card"><span>Comparável (s/ vaga)</span><b>{fmtM2(est.m2Subj)}</b></div>
         <div className="em2-card"><span>Estimativa de venda</span><b>{fmtM2(est.valorVenda)}</b></div>
       </div>
+
       <div className="em2-regua" aria-hidden="true">
         <span className="em2-banda" style={{ left: pos(est.campoMin) + '%', width: (pos(est.campoMax) - pos(est.campoMin)) + '%' }} />
         <span className="em2-ref" style={{ left: pos(est.referencia) + '%' }} />
@@ -93,17 +63,31 @@ export default function EstudoM2({ im, est, onClose, onLaudo }) {
         <b>Campo de arbítrio:</b> {fmtM2(est.campoMin)} a {fmtM2(est.campoMax)}.{' '}
         Baseado em <b>{est.baseLabel}</b>{est.nDesc > 0 ? ` (${est.nDesc} descartado(s) no saneamento)` : ''}.
       </p>
-      <div className="em2-slide-cta">
-        {onLaudo && (
-          <button className="em2-laudo" onClick={onLaudo}>
-            <span>📄 Laudo completo em PDF</span>
-            <em>de R$ 49,90 por R$ 29,90 · entrega imediata</em>
+
+      {onLaudo && (
+        <div className="em2-oferta">
+          <div className="em2-oferta-preco">
+            <span className="em2-preco-tag">Laudo completo em PDF · oferta de lançamento</span>
+            <div className="em2-preco-row">
+              <span className="em2-preco-de">R$ 49,90</span>
+              <strong className="em2-preco-por">R$ 29,90</strong>
+            </div>
+          </div>
+          <ul className="em2-gatilhos">
+            <li><span className="em2-check">✓</span> Todos os {est.baseLabel} com os cálculos detalhados</li>
+            <li><span className="em2-check">✓</span> Metodologia bancária NBR 14653 completa</li>
+            <li><span className="em2-check">✓</span> PDF entregue em instantes · vale para negociar e financiar</li>
+          </ul>
+          <button className="em2-laudo em2-laudo--destaque" onClick={onLaudo}>
+            <span>📄 Quero o laudo completo</span>
+            <em>por apenas R$ 29,90 · entrega imediata em PDF</em>
           </button>
-        )}
-      </div>
+          <p className="em2-urgencia">⏳ Preço promocional · válido por tempo limitado</p>
+        </div>
+      )}
     </div>,
 
-    /* 2 — Metodologia */
+    /* 1 — Metodologia */
     <div key="metod" className="em2-slide">
       <h4 className="em2-slide-tit">Como chegamos nesse valor</h4>
       <ul className="em2-fatores-list">
@@ -117,7 +101,7 @@ export default function EstudoM2({ im, est, onClose, onLaudo }) {
       </>)}
     </div>,
 
-    /* 3 — Fontes + CTA */
+    /* 2 — Fontes + CTA */
     <div key="fontes" className="em2-slide">
       <h4 className="em2-slide-tit">Fontes utilizadas</h4>
       <ul className="em2-fatores-list">
@@ -133,53 +117,56 @@ export default function EstudoM2({ im, est, onClose, onLaudo }) {
     </div>,
   ]
 
+  const prev = () => setSlide(s => Math.max(s - 1, 0))
+  const next = () => setSlide(s => Math.min(s + 1, SLIDES.length - 1))
+
   return createPortal(
     <div className="modal-overlay modal-overlay--top" onClick={onClose}>
-      <div className="em2" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="Estudo do valor do m²">
-        <button className="modal-close" onClick={onClose} aria-label="Fechar"><IconClose width={22} height={22} /></button>
+      <div className="em2-wrapper" onClick={(e) => e.stopPropagation()}>
 
-        <span className="eyebrow">Estudo do valor do m² · método NBR 14653</span>
-        <h3 className="em2-tit">{im.tipo} no {im.bairro}</h3>
+        {/* Seta esquerda */}
+        <button
+          className={`em2-arrow em2-arrow--left${slide === 0 ? ' em2-arrow--off' : ''}`}
+          onClick={prev}
+          aria-label="Slide anterior"
+          tabIndex={slide === 0 ? -1 : 0}
+        >
+          ‹
+        </button>
 
-        <div className="em2-progress">
-          {SLIDES.map((_, i) => (
-            <button
-              key={i}
-              className={`em2-pip ${i === slide ? 'em2-pip--ativo' : ''}`}
-              onClick={() => setSlide(i)}
-              aria-label={`Ir para slide ${i + 1}`}
-            />
-          ))}
+        <div className="em2" role="dialog" aria-modal="true" aria-label="Estudo do valor do m²">
+          <button className="modal-close" onClick={onClose} aria-label="Fechar"><IconClose width={22} height={22} /></button>
+
+          <span className="eyebrow">Estudo do valor do m² · método NBR 14653</span>
+          <h3 className="em2-tit">{im.tipo} no {im.bairro}</h3>
+
+          <div className="em2-progress">
+            {SLIDES.map((_, i) => (
+              <button
+                key={i}
+                className={`em2-pip ${i === slide ? 'em2-pip--ativo' : ''}`}
+                onClick={() => setSlide(i)}
+                aria-label={`Ir para slide ${i + 1}`}
+              />
+            ))}
+            <span className="em2-progress-label">{slide + 1} de {SLIDES.length}</span>
+          </div>
+
+          <div className="em2-slides">
+            {SLIDES[slide]}
+          </div>
         </div>
 
-        <div className="em2-slides">
-          {SLIDES[slide]}
-        </div>
+        {/* Seta direita */}
+        <button
+          className={`em2-arrow em2-arrow--right${slide === SLIDES.length - 1 ? ' em2-arrow--off' : ''}`}
+          onClick={next}
+          aria-label="Próximo slide"
+          tabIndex={slide === SLIDES.length - 1 ? -1 : 0}
+        >
+          ›
+        </button>
 
-        <div className="em2-nav">
-          <button
-            className="em2-nav-btn em2-nav-btn--back"
-            onClick={() => setSlide(s => s - 1)}
-            disabled={slide === 0}
-            aria-label="Slide anterior"
-          >
-            ← Anterior
-          </button>
-          <span className="em2-nav-count">{slide + 1} / {SLIDES.length}</span>
-          {slide < SLIDES.length - 1 ? (
-            <button
-              className="em2-nav-btn em2-nav-btn--next"
-              onClick={() => setSlide(s => s + 1)}
-              aria-label="Próximo slide"
-            >
-              Próximo →
-            </button>
-          ) : (
-            <button className="em2-nav-btn em2-nav-btn--next" onClick={onClose}>
-              Fechar ✓
-            </button>
-          )}
-        </div>
       </div>
     </div>,
     document.body
