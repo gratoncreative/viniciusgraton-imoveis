@@ -485,7 +485,8 @@ section { position: relative; padding: clamp(30px, 4.2vw, 56px) 0; }
 
 /* ===== Desktop: filtro e listagem rolam INDEPENDENTES, sem barra visível (estilo Chaves na Mão) ===== */
 @media (min-width: 881px) {
-  .catalogo { height: 100vh; min-height: 0; padding: 108px 0 0; overflow: hidden; display: flex; flex-direction: column; }
+  /* calc(100vh / 0.85): compensa html{zoom:0.85} para o catálogo preencher o viewport físico completo */
+  .catalogo { height: calc(100vh / 0.85); min-height: 0; padding: 108px 0 0; overflow: hidden; display: flex; flex-direction: column; }
   .catalogo > .container { flex: 1; min-height: 0; display: flex; flex-direction: column; width: 100%; }
   .cat-head { flex: none; margin-bottom: 24px; max-width: none; }
   .cat-head .eyebrow { margin-bottom: 9px; }
