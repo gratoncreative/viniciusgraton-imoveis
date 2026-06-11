@@ -31,7 +31,8 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { font-size: 15px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
+html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
+@media (max-width: 768px) { html { zoom: 1; } }
 
 /* Garantias de responsividade: nada ultrapassa a largura da tela em nenhum aparelho */
 img, svg, video, canvas, iframe { max-width: 100%; }
