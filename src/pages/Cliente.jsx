@@ -295,7 +295,7 @@ export default function Cliente() {
           <div className="cliente-recado">
             <img src="/vinicius-graton.jpg" alt="Vinícius Graton" loading="lazy" />
             <div>
-              <p>{nome ? `${nome}, ` : ''}quanto mais você me conta do que gosta, mais eu acerto na mão. Curtiu alguma? Me chama que eu organizo a visita — é o que eu indicaria pra alguém da minha família.</p>
+              <p>{nome ? `${nome}, cada` : 'Cada'} imóvel desta lista passou pela minha análise de preço, localização e oportunidade — só indico o que, de fato, faz sentido para o seu perfil. Se algum chamou sua atenção, me chame e organizamos a visita. É lá que você vai sentir qual é o certo.</p>
               <span className="cliente-recado-assina">Um abraço,<br /><b>Vinícius Graton</b></span>
             </div>
           </div>
