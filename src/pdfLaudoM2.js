@@ -7,7 +7,7 @@ const PW = 595.28, PH = 841.89, M = 46
 const fmtM2 = (v) => 'R$ ' + Math.round(v).toLocaleString('pt-BR') + '/m²'
 const fmtN = (v) => Math.round(v).toLocaleString('pt-BR')
 
-export async function gerarPdfLaudoM2(im, est) {
+export async function gerarPdfLaudoM2(im, est, opcao = 'baixar') {
   const { jsPDF } = await import('jspdf')
   const doc = new jsPDF({ unit: 'pt', format: 'a4', compress: true })
   let y = 0
@@ -152,5 +152,10 @@ export async function gerarPdfLaudoM2(im, est) {
   doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(110, 118, 130)
   doc.text('Consultor de Imóveis · Rotina Imobiliária · Uberlândia/MG · WhatsApp (34) 99157-0494', M, y)
 
+  if (opcao === 'blob') return doc.output('blob')
   doc.save(`laudo-m2-${im.codigo}.pdf`)
+}
+
+export async function gerarPdfLaudoM2Blob(im, est) {
+  return gerarPdfLaudoM2(im, est, 'blob')
 }

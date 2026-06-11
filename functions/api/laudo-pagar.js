@@ -15,14 +15,18 @@ export async function onRequestPost({ env, request }) {
   const codigo = String(b.codigo || '').replace(/[^\w-]/g, '').slice(0, 16)
   if (!codigo) return json({ error: 'codigo' }, 400)
   if (!token) return json({ ok: false, naoConfigurado: true })
+  const origemRaw = String(b.origemUrl || '').replace(/[<>"'\n\r]/g, '').slice(0, 500)
+  const origemOk = origemRaw && (origemRaw.startsWith(SITE) || /^https?:\/\/localhost/.test(origemRaw))
+  const backBase = origemOk ? origemRaw : `${SITE}/imovel/${codigo}`
+  const sep = backBase.includes('?') ? '&' : '?'
   try {
     const pref = {
       items: [{ title: `Laudo técnico do valor do m² — imóvel ${codigo}`, quantity: 1, unit_price: PRECO, currency_id: 'BRL' }],
       external_reference: `laudo|${codigo}`,
       back_urls: {
-        success: `${SITE}/imovel/${codigo}?laudo=1`,
-        pending: `${SITE}/imovel/${codigo}?laudo=1`,
-        failure: `${SITE}/imovel/${codigo}?laudo=falha`,
+        success: `${backBase}${sep}laudo=1`,
+        pending: `${backBase}${sep}laudo=1`,
+        failure: `${backBase}${sep}laudo=falha`,
       },
       auto_return: 'approved',
       statement_descriptor: 'VINICIUS GRATON',

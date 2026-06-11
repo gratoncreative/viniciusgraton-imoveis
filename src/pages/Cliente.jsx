@@ -1,20 +1,30 @@
 import { useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useSearchParams, Link } from 'react-router-dom'
 import CardImovel from '../components/CardImovel'
 import { IMOVEIS, getImovel, avaliarMatch, vantagensImovel, formatPreco, linkWhatsApp, oportunidade, estudoM2 } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconHeart, IconClose } from '../components/icons'
+import { getConta, salvarConta } from '../conta'
 
 const primeiroNome = (n) => (n || '').trim().split(/\s+/)[0] || ''
 
 export default function Cliente() {
   const { token } = useParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [estado, setEstado] = useState('carregando')
   const [cli, setCli] = useState(null)
   const [feed, setFeed] = useState([])
   const [feedback, setFeedback] = useState({})
   const [salvo, setSalvo] = useState(false)
   const timer = useRef(0)
+
+  // laudo m²: modal, autenticação e pagamento
+  const [laudoModal, setLaudoModal] = useState(null)   // { im, est } | null
+  const [conta, setConta] = useState(() => getConta())
+  const [laudoWa, setLaudoWa] = useState('')
+  const [laudoPagando, setLaudoPagando] = useState(false)
+  const [laudoComprado, setLaudoComprado] = useState(() => new Set())
+  const [laudoPendente, setLaudoPendente] = useState(null) // { paymentId, codigo } detectado na URL
 
   useSEO({ title: 'Sua seleção de imóveis · Vinícius Graton', description: 'Imóveis selecionados a dedo para você em Uberlândia.', path: `/cliente/${token || ''}`, noindex: true })
 
@@ -42,6 +52,61 @@ export default function Cliente() {
       .catch(() => {})
     return () => { vivo = false }
   }, [])
+
+  // Detecta retorno do Mercado Pago na URL (laudo=1&collection_id=xxx&codigo=xxx)
+  useEffect(() => {
+    const laudo = searchParams.get('laudo')
+    const paymentId = searchParams.get('collection_id') || searchParams.get('payment_id')
+    const codigoParam = searchParams.get('codigo')
+    if (laudo === '1' && paymentId && codigoParam) {
+      setLaudoPendente({ paymentId, codigo: codigoParam })
+    }
+    if (laudo) {
+      const p = new URLSearchParams(searchParams)
+      ;['laudo','collection_id','payment_id','collection_status','payment_type','merchant_order_id','preference_id'].forEach(k => p.delete(k))
+      setSearchParams(p, { replace: true })
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Processa pagamento pendente quando os dados já estão carregados
+  useEffect(() => {
+    if (!laudoPendente || estado !== 'ok' || feed.length === 0) return
+    const { paymentId, codigo } = laudoPendente
+    setLaudoPendente(null)
+    fetch(`/api/laudo-verificar?payment_id=${encodeURIComponent(paymentId)}&codigo=${encodeURIComponent(codigo)}`)
+      .then(r => r.json())
+      .then(async j => {
+        if (!j.ok) return
+        const im = baseImoveis.find(i => String(i.codigo) === String(codigo)) || getImovel(codigo)
+        if (!im) return
+        const est = estudoM2(im, baseImoveis)
+        if (!est.ok) return
+        setLaudoComprado(prev => new Set([...prev, String(codigo)]))
+        setLaudoModal({ im, est })
+        // Download automático
+        const { gerarPdfLaudoM2Blob } = await import('../pdfLaudoM2')
+        const blob = await gerarPdfLaudoM2Blob(im, est)
+        if (!blob) return
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url; a.download = `laudo-m2-${im.codigo}.pdf`; document.body.appendChild(a); a.click()
+        setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url) }, 1000)
+        // Envia por email (silenciosamente, sem bloquear)
+        const c = getConta()
+        if (c?.email) {
+          const reader = new FileReader()
+          reader.readAsDataURL(blob)
+          reader.onload = () => {
+            const b64 = reader.result.split(',')[1]
+            fetch('/api/laudo-email', {
+              method: 'POST', headers: { 'content-type': 'application/json' },
+              body: JSON.stringify({ email: c.email, nome: c.nome, pdf_b64: b64, filename: `laudo-m2-${im.codigo}.pdf`, codigo: im.codigo }),
+            }).catch(() => {})
+          }
+        }
+      })
+      .catch(() => {})
+  }, [laudoPendente, estado, feed.length]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const agendarSalvar = (novoFb) => {
     clearTimeout(timer.current)
@@ -173,47 +238,21 @@ export default function Cliente() {
                       {opor && fb === 'like' && <span className="cliente-badge-like" style={{ marginTop: 6 }}><IconHeart filled width={13} height={13} /> Você curtiu</span>}
                       <CardImovel im={im} />
                       {(() => {
-                        const e = estudoM2(im, baseImoveis)
-                        if (!e.ok) return null
-                        const { precoM2, m2Subj, referencia, valorVenda, campoMin, campoMax, n, nDesc, veredito } = e
-                        const barMin = Math.min(m2Subj, campoMin) * 0.88
-                        const barMax = Math.max(m2Subj, campoMax) * 1.12
-                        const toBar = (v) => Math.max(2, Math.min(97, Math.round(((v - barMin) / (barMax - barMin)) * 100)))
-                        const posImov = toBar(m2Subj)
-                        const posMerc = toBar(referencia)
-                        const posMin = toBar(campoMin)
-                        const posMax = toBar(campoMax)
-                        const verdMap = { abaixo: ['Abaixo do mercado', 'verd--abaixo'], dentro: ['Dentro do mercado', 'verd--dentro'], acima: ['Acima do mercado', 'verd--acima'] }
-                        const [verdLabel, verdCls] = verdMap[veredito] || verdMap.dentro
+                        const est = estudoM2(im, baseImoveis)
+                        if (!est.ok) return null
+                        const dp = Math.abs(est.diffPct)
+                        const txt = est.veredito === 'abaixo' ? `${dp}% abaixo do mercado` : est.veredito === 'acima' ? `+${dp}% acima da média` : 'Dentro do mercado'
                         return (
-                          <div className="cli-estudo">
-                            <div className="cli-estudo-topo">
-                              <span className="cli-estudo-titulo">Estudo do valor do m²</span>
-                              <span className={`cli-estudo-verd ${verdCls}`}>{verdLabel}</span>
-                            </div>
-                            <div className="cli-estudo-m2ref">
-                              <span>Valor de mercado (m²)</span>
-                              <strong>{formatPreco(referencia)}/m²</strong>
-                            </div>
-                            <div className="cli-estudo-cols">
-                              <div><span>Este anúncio</span><b>{formatPreco(Math.round(precoM2))}/m²</b></div>
-                              <div><span>Comparável (s/ vaga)</span><b>{formatPreco(Math.round(m2Subj))}/m²</b></div>
-                              <div><span>Estimativa de venda</span><b>{formatPreco(valorVenda)}/m²</b></div>
-                            </div>
-                            <div className="cli-estudo-barra-wrap">
-                              <div className="cli-estudo-barra">
-                                <div className="cli-estudo-campo" style={{ left: `${posMin}%`, width: `${Math.max(2, posMax - posMin)}%` }} />
-                                <div className="cli-estudo-merc" style={{ left: `${posMerc}%` }} />
-                                <div className="cli-estudo-imov" style={{ left: `${posImov}%` }} />
-                              </div>
-                              <div className="cli-estudo-legenda">
-                                <span><i className="cli-dot cli-dot--verde" /> Este imóvel</span>
-                                <span><i className="cli-dot cli-dot--ouro" /> Mercado ({formatPreco(referencia)}/m²)</span>
-                                <span><i className="cli-dot cli-dot--cinza" /> Campo de arbítrio</span>
-                              </div>
-                            </div>
-                            {n > 0 && <p className="cli-estudo-nota">Campo de arbítrio: {formatPreco(campoMin)}/m² a {formatPreco(campoMax)}/m². Baseado em {n} imóvel(is) do mesmo tipo no {im.bairro}{nDesc > 0 ? ` (${nDesc} descartado(s) no saneamento)` : ''}.</p>}
-                          </div>
+                          <button type="button" className="cli-laudo-btn" onClick={(ev) => { ev.stopPropagation(); setLaudoModal({ im, est }) }}>
+                            <span className={`cli-laudo-dot cli-laudo-dot--${est.veredito}`} />
+                            <span className={`cli-laudo-txt cli-laudo-txt--${est.veredito}`}>{txt}</span>
+                            <span className="cli-laudo-sep">·</span>
+                            <span className="cli-laudo-sub">
+                              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
+                              {' '}Estudo do m²
+                            </span>
+                            <svg className="cli-laudo-seta" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6" /></svg>
+                          </button>
                         )
                       })()}
                       <div className="cliente-fb">
@@ -270,6 +309,135 @@ export default function Cliente() {
           </div>
         </div>
       </section>
+      {laudoModal && (() => {
+        const { im: mIm, est: mEst } = laudoModal
+        const comprado = laudoComprado.has(String(mIm.codigo))
+        const barMin = Math.min(mEst.m2Subj, mEst.campoMin) * 0.88
+        const barMax = Math.max(mEst.m2Subj, mEst.campoMax) * 1.12
+        const toBar = (v) => Math.max(2, Math.min(97, Math.round(((v - barMin) / (barMax - barMin)) * 100)))
+        const posImov = toBar(mEst.m2Subj)
+        const posMerc = toBar(mEst.referencia)
+        const posMin = toBar(mEst.campoMin)
+        const posMax = toBar(mEst.campoMax)
+        const dp = Math.abs(mEst.diffPct)
+        const verdTxt = mEst.veredito === 'abaixo' ? `Abaixo do mercado · ${dp}% mais barato` : mEst.veredito === 'acima' ? `Acima do mercado · +${dp}%` : 'Dentro do mercado'
+
+        const iniciarPagamento = async () => {
+          setLaudoPagando(true)
+          try {
+            const origemUrl = `${window.location.origin}/cliente/${token}?codigo=${mIm.codigo}`
+            const r = await fetch('/api/laudo-pagar', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ codigo: String(mIm.codigo), origemUrl }) })
+            const j = await r.json()
+            if (j.naoConfigurado) { window.open(linkWhatsApp(`Quero o laudo técnico do m² do imóvel cód. ${mIm.codigo} (R$ 29,90)`), '_blank'); setLaudoPagando(false); return }
+            if (j.ok && j.url) { window.location.href = j.url; return }
+          } catch {}
+          setLaudoPagando(false)
+        }
+
+        const salvarWaEPagar = () => {
+          if (laudoWa.replace(/\D/g, '').length < 8) return
+          salvarConta({ whatsapp: laudoWa })
+          setConta(getConta())
+          iniciarPagamento()
+        }
+
+        const baixarNovamente = async () => {
+          const { gerarPdfLaudoM2 } = await import('../pdfLaudoM2')
+          gerarPdfLaudoM2(mIm, mEst)
+        }
+
+        return (
+          <div className="cli-modal-overlay" onClick={() => setLaudoModal(null)}>
+            <div className="cli-modal" onClick={e => e.stopPropagation()}>
+              <div className="cli-modal-header">
+                <span className="cli-modal-titulo">Estudo do valor do m² · Método NBR 14653</span>
+                <button type="button" className="cli-modal-fechar" onClick={() => setLaudoModal(null)} aria-label="Fechar">✕</button>
+              </div>
+              <div className="cli-modal-body">
+                <h2 className="cli-modal-nome">{mIm.tipo} no {mIm.bairro}</h2>
+
+                {comprado ? (
+                  <div className="cli-modal-success">
+                    <div className="cli-modal-success-ico">✅</div>
+                    <p>Pagamento confirmado! Seu laudo foi baixado automaticamente. Se não apareceu, clique abaixo para baixar de novo.</p>
+                    <button type="button" className="cli-modal-baixar" onClick={baixarNovamente}>⬇ Baixar laudo em PDF</button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="cli-modal-preview-badge">
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                      <span>Preview gratuito · dados reais do bairro</span>
+                    </div>
+
+                    <p className="cli-modal-merc-label">Valor de mercado (m²)</p>
+                    <div className="cli-modal-merc-row">
+                      <span className="cli-modal-merc-val">{formatPreco(mEst.referencia)}/m²</span>
+                      <span className={`cli-modal-verd cli-modal-verd--${mEst.veredito}`}>{verdTxt}</span>
+                    </div>
+
+                    <div className="cli-modal-cols">
+                      <div className="cli-modal-col"><span className="cli-modal-col-label">Este anúncio</span><b className="cli-modal-col-val">{formatPreco(Math.round(mEst.precoM2))}/m²</b></div>
+                      <div className="cli-modal-col"><span className="cli-modal-col-label">Comparável (s/ vaga)</span><b className="cli-modal-col-val">{formatPreco(Math.round(mEst.m2Subj))}/m²</b></div>
+                      <div className="cli-modal-col"><span className="cli-modal-col-label">Estimativa de venda</span><b className="cli-modal-col-val">{formatPreco(mEst.valorVenda)}/m²</b></div>
+                    </div>
+
+                    <div className="cli-modal-barra-wrap">
+                      <div className="cli-modal-barra">
+                        <div className="cli-modal-barra-campo" style={{ left: `${posMin}%`, width: `${Math.max(2, posMax - posMin)}%` }} />
+                        <div className="cli-modal-barra-merc" style={{ left: `${posMerc}%` }} />
+                        <div className={`cli-modal-barra-imov cli-modal-barra-imov--${mEst.veredito}`} style={{ left: `${posImov}%` }} />
+                      </div>
+                      <div className="cli-modal-legenda">
+                        <span><i className="cli-mdot cli-mdot--verde" /> Este imóvel</span>
+                        <span><i className="cli-mdot cli-mdot--ouro" /> Mercado ({formatPreco(mEst.referencia)}/m²)</span>
+                        <span><i className="cli-mdot cli-mdot--cinza" /> Campo de arbítrio</span>
+                      </div>
+                    </div>
+
+                    {mEst.n > 0 && <p className="cli-modal-nota"><b>Campo de arbítrio:</b> {formatPreco(mEst.campoMin)}/m² a {formatPreco(mEst.campoMax)}/m². Baseado em <b>{mEst.n} imóveis do mesmo tipo no {mIm.bairro}</b>, homogeneizados{mEst.nDesc > 0 ? ` (${mEst.nDesc} descartado(s) no saneamento)` : ''}.</p>}
+
+                    <div className="cli-modal-pay">
+                      <p className="cli-modal-pay-label">Laudo completo em PDF · oferta de lançamento</p>
+                      <div className="cli-modal-pay-preco">
+                        <span className="cli-modal-pay-antes">R$ 49,90</span>
+                        <span className="cli-modal-pay-atual">R$ 29,90</span>
+                      </div>
+                      <ul className="cli-modal-pay-items">
+                        {mEst.n > 0 && <li>Todos os {mEst.n} imóveis do mesmo tipo no {mIm.bairro}, homogeneizados com os cálculos detalhados</li>}
+                        <li>Metodologia bancária NBR 14653 completa</li>
+                        <li>PDF entregue em instantes · vale para negociar e financiar</li>
+                      </ul>
+
+                      {!conta ? (
+                        <div className="cli-modal-gate">
+                          <p>Para comprar o laudo, você precisa criar uma conta gratuita ou entrar.</p>
+                          <Link to="/conta" className="cli-modal-gate-btn" onClick={() => setLaudoModal(null)}>Entrar / criar conta gratuita</Link>
+                        </div>
+                      ) : !conta.whatsapp && !laudoWa ? (
+                        <div className="cli-modal-wa-wrap">
+                          <p className="cli-modal-wa-label">Informe seu WhatsApp para receber o laudo:</p>
+                          <input type="tel" className="cli-modal-wa-input" placeholder="(34) 99999-9999" value={laudoWa} onChange={e => setLaudoWa(e.target.value)} />
+                          <button type="button" className="cli-modal-pay-btn" disabled={laudoWa.replace(/\D/g,'').length < 8 || laudoPagando} onClick={salvarWaEPagar}>
+                            <span>📄 Quero o laudo completo</span>
+                            <span className="cli-modal-pay-btn-sub">por apenas R$ 29,90 · entrega imediata em PDF</span>
+                          </button>
+                        </div>
+                      ) : (
+                        <button type="button" className="cli-modal-pay-btn" disabled={laudoPagando} onClick={iniciarPagamento}>
+                          <span>{laudoPagando ? 'Aguarde…' : '📄 Quero o laudo completo'}</span>
+                          <span className="cli-modal-pay-btn-sub">por apenas R$ 29,90 · entrega imediata em PDF</span>
+                        </button>
+                      )}
+
+                      <p className="cli-modal-pay-promo">⏳ Preço promocional · válido por tempo limitado</p>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        )
+      })()}
     </main>
   )
 }
