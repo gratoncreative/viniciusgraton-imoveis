@@ -588,7 +588,14 @@ export default function Admin() {
         </div>
 
         {erro && <p className="anunciar-erro">{erro}</p>}
-        {carregando && !dados && <p className="section-sub">Carregando…</p>}
+        {carregando && !dados && (
+          <div className="admin-carregando">
+            <svg viewBox="0 0 50 50" width="38" height="38" className="admin-spinner-svg" aria-hidden="true">
+              <circle cx="25" cy="25" r="20" fill="none" stroke="#b8862f" strokeWidth="4" strokeLinecap="round" strokeDasharray="82 120" />
+            </svg>
+            <span>Carregando dados do painel…</span>
+          </div>
+        )}
 
         {aba === 'geral' && (
           <section>

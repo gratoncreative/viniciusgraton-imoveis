@@ -65,16 +65,40 @@ export default function ConstrutorasPage() {
 
         <div className="cns-stats">
           <div className="cns-stat">
-            <span className="cns-stat-ico"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 21h6M7.5 21V5M5 5h14.5M8 5L19.5 9.5M16 5v5a1 1 0 0 1-2 0" /></svg></span>
+            <span className="cns-stat-ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 21h6M7.5 21V5M5 5h14.5M8 5L19.5 9.5M16 5v5a1 1 0 0 1-2 0" /></svg></span>
             <b>{CONSTRUTORAS.length}</b><span>construtoras</span>
           </div>
           <div className="cns-stat">
-            <span className="cns-stat-ico"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V6h6v15M13 21V10h6v11M7 9h2M7 13h2M15 14h2M15 17h2" /></svg></span>
+            <span className="cns-stat-ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V6h6v15M13 21V10h6v11M7 9h2M7 13h2M15 14h2M15 17h2" /></svg></span>
             <b>{totalEmp}</b><span>empreendimentos</span>
           </div>
           <div className="cns-stat">
-            <span className="cns-stat-ico"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3zM9 12l2 2 4-4" /></svg></span>
+            <span className="cns-stat-ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3zM9 12l2 2 4-4" /></svg></span>
             <b>100%</b><span>com curadoria</span>
+          </div>
+        </div>
+
+        <div className="cns-diferenciais">
+          <div className="cns-diferencial">
+            <span className="cns-dif-ico"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg></span>
+            <div>
+              <b>Curadoria técnica e independente</b>
+              <p>Cada empreendimento é avaliado com base em histórico de entrega, padrão construtivo e localização — sem influência comercial de nenhuma construtora.</p>
+            </div>
+          </div>
+          <div className="cns-diferencial">
+            <span className="cns-dif-ico"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 12h6M9 16h4"/></svg></span>
+            <div>
+              <b>Documentação e registro verificados</b>
+              <p>Consultamos CNPJ, alvarás e registro de incorporação antes de recomendar qualquer empreendimento — garantindo transparência e segurança jurídica.</p>
+            </div>
+          </div>
+          <div className="cns-diferencial">
+            <span className="cns-dif-ico"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+            <div>
+              <b>Consultoria personalizada até as chaves</b>
+              <p>Orientação profissional na comparação entre lançamento e pronto para morar, análise contratual e acompanhamento integral do processo de compra.</p>
+            </div>
           </div>
         </div>
 

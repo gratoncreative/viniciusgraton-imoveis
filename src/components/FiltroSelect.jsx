@@ -18,12 +18,13 @@ export default function FiltroSelect({ icon, placeholder, options = [], value, m
       const t = ref.current
       if (!t) return
       const r = t.getBoundingClientRect()
-      const abaixo = window.innerHeight - r.bottom - 12
+      const vh = document.documentElement.clientHeight
+      const abaixo = vh - r.bottom - 12
       const acima = r.top - 12
       // se não há espaço suficiente embaixo, abre PRA CIMA (não vaza pra fora da tela)
       const abrirCima = abaixo < 240 && acima > abaixo
       const maxH = Math.max(160, Math.min(360, abrirCima ? acima : abaixo))
-      setPos({ left: r.left, width: r.width, maxH, abrirCima, top: r.bottom + 6, bottom: window.innerHeight - r.top + 6 })
+      setPos({ left: r.left, width: r.width, maxH, abrirCima, top: r.bottom + 6, bottom: vh - r.top + 6 })
     }
     calc()
     const onDoc = (e) => { if (ref.current && !ref.current.contains(e.target) && popRef.current && !popRef.current.contains(e.target)) setOpen(false) }

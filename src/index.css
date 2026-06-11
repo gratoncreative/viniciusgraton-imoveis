@@ -452,6 +452,10 @@ section { position: relative; padding: clamp(30px, 4.2vw, 56px) 0; }
 
 /* ===== Catálogo (/imoveis) ===== */
 .catalogo { padding: 120px 0 110px; min-height: 100vh; }
+/* zona cega 769–880px: zoom ativo mas sem o fix de height fixo (aplica-se só ao desktop completo em ≥881px) */
+@media (min-width: 769px) and (max-width: 880px) {
+  .catalogo { min-height: calc(100vh / 0.85); }
+}
 .cat-head { max-width: 640px; margin-bottom: 32px; }
 .cat-rapidas { display: flex; flex-wrap: wrap; gap: 9px; margin: 22px 0 18px; }
 .cat-rapida { font-family: var(--font-head); font-weight: 600; font-size: 0.84rem; color: var(--text); background: rgba(184,134,47,0.1); border: 1px solid rgba(184,134,47,0.32); padding: 8px 15px; border-radius: 100px; cursor: pointer; transition: background 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.2s var(--ease); }
@@ -621,6 +625,8 @@ section { position: relative; padding: clamp(30px, 4.2vw, 56px) 0; }
 
 /* ===== Detalhe do imóvel (/imovel/:codigo) ===== */
 .det { padding: 110px 0 110px; min-height: 100vh; }
+/* compensa html{zoom:0.85} em todos os viewports desktop onde o zoom está ativo */
+@media (min-width: 769px) { .det { min-height: calc(100vh / 0.85); } }
 .det-vazio { padding: 160px 0 120px; min-height: 70vh; }
 /* tela de carregamento do imóvel (animação + mensagem descontraída) */
 .det-carregando { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
@@ -769,6 +775,11 @@ section { position: relative; padding: clamp(30px, 4.2vw, 56px) 0; }
 .cat-pager-gap { padding: 0 2px; color: #9a8e78; align-self: flex-end; }
 .cat-infinito { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 34px 0 10px; color: #8a8170; font-family: var(--font-head); font-weight: 600; font-size: 0.9rem; }
 .cat-infinito .rota-spinner { width: 22px; height: 22px; }
+
+/* admin spinner de carregamento */
+@keyframes admin-spin { to { transform: rotate(360deg) } }
+.admin-carregando { display: flex; align-items: center; gap: 12px; padding: 36px 0 24px; color: var(--text-mute); font-size: 0.9rem; }
+.admin-spinner-svg { animation: admin-spin 0.9s linear infinite; flex: none; }
 
 /* ===== Painel: Acessos + Newsletter ===== */
 .admin-sec-tit { font-family: var(--font-head); font-weight: 800; font-size: 1.1rem; color: #2a2118; margin: 26px 0 14px; }
@@ -2451,11 +2462,17 @@ html[data-theme="dark"] .mf-sel select { color-scheme: dark; }
 @media (max-width: 820px) { .vender-cta { grid-template-columns: 1fr; } }
 
 /* ===== Construtoras (índice rico) ===== */
-.cns-stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin: 30px 0 36px; }
-.cns-stat { background: #fff; border: 1px solid rgba(22,26,34,0.1); border-radius: 16px; padding: 16px 30px; text-align: center; box-shadow: 0 14px 34px -28px rgba(22,26,34,0.5); }
-.cns-stat-ico { display: inline-flex; color: var(--gold-3); margin-bottom: 4px; }
-.cns-stat b { display: block; font-family: var(--font-head); font-weight: 800; font-size: 1.7rem; background: linear-gradient(135deg, #c9962f, #9a6c1c); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-.cns-stat span { font-size: 0.82rem; color: #6a7280; }
+.cns-stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 24px 0 20px; }
+.cns-stat { background: #fff; border: 1px solid rgba(22,26,34,0.1); border-radius: 14px; padding: 10px 22px; text-align: center; box-shadow: 0 10px 26px -22px rgba(22,26,34,0.5); }
+.cns-stat-ico { display: inline-flex; color: var(--gold-3); margin-bottom: 2px; }
+.cns-stat b { display: block; font-family: var(--font-head); font-weight: 800; font-size: 1.3rem; background: linear-gradient(135deg, #c9962f, #9a6c1c); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.cns-stat span { font-size: 0.78rem; color: #6a7280; }
+/* diferenciais — 3 cards descritivos abaixo dos stats */
+.cns-diferenciais { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; margin: 0 0 36px; }
+.cns-diferencial { display: flex; align-items: flex-start; gap: 14px; background: #fff; border: 1px solid rgba(22,26,34,0.08); border-radius: 14px; padding: 18px 20px; box-shadow: 0 10px 26px -22px rgba(22,26,34,0.4); }
+.cns-dif-ico { flex: none; width: 36px; height: 36px; border-radius: 10px; background: rgba(184,134,47,0.1); display: grid; place-items: center; color: var(--gold-1); margin-top: 1px; }
+.cns-diferencial b { display: block; font-family: var(--font-head); font-weight: 700; font-size: 0.93rem; color: #1a1f29; margin-bottom: 5px; }
+.cns-diferencial p { margin: 0; font-size: 0.82rem; color: #6a7280; line-height: 1.55; }
 .cns-busca-wrap { position: relative; max-width: 620px; margin: 0 auto 30px; }
 .cns-busca-ico { position: absolute; left: 17px; top: 50%; transform: translateY(-50%); color: var(--gold-1); pointer-events: none; }
 .cns-busca { width: 100%; padding: 14px 18px 14px 46px; border-radius: 13px; border: 1px solid rgba(22,26,34,0.18); background: #fff; color: #1a1f29; font-size: 0.98rem; box-shadow: 0 12px 32px -28px rgba(22,26,34,0.5); transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease); }
@@ -3336,6 +3353,10 @@ html[data-theme="dark"] .rt-msg-preview { color: #dfe3ea; }
 html[data-theme="dark"] .rt-bloco b, html[data-theme="dark"] .rt-gancho b, html[data-theme="dark"] .rt-imovel b { color: #f1ede4; }
 
 /* condomínios / construtoras / comparar */
+html[data-theme="dark"] .cns-diferencial { background: #11161f; border-color: rgba(255,255,255,0.1); }
+html[data-theme="dark"] .cns-diferencial b { color: #f1ede4; }
+html[data-theme="dark"] .cns-diferencial p { color: #aab2bf; }
+html[data-theme="dark"] .cns-dif-ico { background: rgba(184,134,47,0.15); }
 html[data-theme="dark"] .condo-card, html[data-theme="dark"] .condo-busca, html[data-theme="dark"] .condo-filtros,
 html[data-theme="dark"] .cns-stat, html[data-theme="dark"] .cns-busca, html[data-theme="dark"] .cns-busca-res,
 html[data-theme="dark"] .cns-card, html[data-theme="dark"] .construtora-stat, html[data-theme="dark"] .proj-card,

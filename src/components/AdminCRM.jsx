@@ -38,12 +38,19 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
   const [sel, setSel] = useState(null) // null = lista; objeto = editando
   const [salvo, setSalvo] = useState(false)
   const [erro, setErro] = useState('')
+  const [erroLista, setErroLista] = useState('')
   const [linkCopiado, setLinkCopiado] = useState(false)
 
   const carregar = async () => {
-    const { status, j } = await api({ action: 'crm-list', token })
-    if (status === 401) return onSair()
-    setClientes(j.clientes || [])
+    setErroLista('')
+    try {
+      const { status, j } = await api({ action: 'crm-list', token })
+      if (status === 401) return onSair()
+      setClientes(j?.clientes || [])
+    } catch {
+      setErroLista('Falha de conexão ao carregar clientes.')
+      setClientes([])
+    }
   }
   useEffect(() => { carregar() }, [])
 
@@ -452,8 +459,10 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
       <div className="admin-barra">
         <button className="btn btn-gold" onClick={() => { setSel({ ...VAZIO }); setErro('') }}>+ Novo cliente</button>
         <span className="painel-meta">{clientes ? `${clientes.length} cliente(s)${clientes.filter((c) => c.novo).length ? ` · ${clientes.filter((c) => c.novo).length} novo(s) do site` : ''}` : 'Carregando…'}</span>
+        {erroLista && <button className="admin-btn admin-btn--mini" onClick={carregar} style={{ marginLeft: 8 }}>↺ Tentar de novo</button>}
       </div>
-      {clientes && clientes.length === 0 && <p className="section-sub">Nenhum cliente cadastrado ainda. Clique em <b>+ Novo cliente</b> para começar.</p>}
+      {erroLista && <p className="anunciar-erro" style={{ marginBottom: 12 }}>{erroLista}</p>}
+      {clientes && clientes.length === 0 && !erroLista && <p className="section-sub">Nenhum cliente cadastrado ainda. Clique em <b>+ Novo cliente</b> para começar.</p>}
 
       {(() => {
         const fu = [...(clientes || [])].map((c) => ({ c, d: diasParado(c) })).map((x) => ({ ...x, s: scoreFollowUp(x.c, x.d) })).filter((x) => x.s > 0).sort((a, b) => b.s - a.s).slice(0, 6)
