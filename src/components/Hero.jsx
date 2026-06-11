@@ -52,7 +52,7 @@ export default function Hero() {
 
         <div className="hero-bio hero-in">
           <div className="hero-bio-head">
-            <img className="hero-avatar" src="/vinicius-graton.jpg" alt="Vinícius Graton, consultor de imóveis em Uberlândia" loading="lazy" />
+            <img className="hero-avatar" src="/vinicius-graton.jpg" alt="Vinícius Graton, consultor de imóveis em Uberlândia" fetchpriority="high" decoding="sync" />
             <div>
               <span className="eyebrow">Quem te atende</span>
               <h2 className="hero-nome">Vinícius Graton</h2>
