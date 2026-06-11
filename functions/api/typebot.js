@@ -48,7 +48,7 @@ export async function onRequestPost({ env, request }) {
       prazo: lim(b.prazo, 40), sugeridos: [], feedback: {},
       obs: 'Veio do Typebot.',
     }
-    await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(reg))
+    await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(reg), { metadata: { novo: true, temNovidade: false } })
     await env.ENGAGEMENT.put('lead:' + ts + '-' + Math.random().toString(36).slice(2, 8), JSON.stringify({
       ts, data: new Date(ts).toISOString(), nome: reg.nome || 'Sem nome', fone: wa,
       bairro: reg.bairros[0] || '', cod: '', origem: 'typebot', crmId: id,

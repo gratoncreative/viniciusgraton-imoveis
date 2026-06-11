@@ -52,7 +52,7 @@ export async function onRequestPost({ env, request }) {
       pedido: lim(b.descricao, 600),
       obs: 'Veio do chat "Encontre seu imóvel" do site.' + (b.descricao ? `\n\nNas palavras do cliente: "${lim(b.descricao, 600)}"` : ''),
     }
-    await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(reg))
+    await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(reg), { metadata: { novo: true, temNovidade: false } })
 
     // espelha como lead na caixa de leads do painel
     const lead = {

@@ -46,6 +46,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
     try {
       const { status, j } = await api({ action: 'crm-list', token })
       if (status === 401) return onSair()
+      if (j?.error) { setErroLista(j.msg || 'Erro ao carregar clientes.'); setClientes([]); return }
       setClientes(j?.clientes || [])
     } catch {
       setErroLista('Falha de conexão ao carregar clientes.')
@@ -154,6 +155,10 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
   const abrir = (c) => {
     if (c.temNovidade) { api({ action: 'crm-visto', token, id: c.id }); setClientes((cs) => (cs || []).map((x) => (x.id === c.id ? { ...x, temNovidade: false } : x))) }
     setSel({ ...VAZIO, ...c })
+    // Load full record (including foto, which is stripped from the list for performance)
+    api({ action: 'crm-get', token, id: c.id })
+      .then(({ j }) => { if (j?.ok && j.cliente) setSel((prev) => prev?.id === c.id ? { ...VAZIO, ...j.cliente } : prev) })
+      .catch(() => {})
   }
   // mudança rápida de status no funil (a partir da lista)
   const mudarStatus = async (c, status) => {

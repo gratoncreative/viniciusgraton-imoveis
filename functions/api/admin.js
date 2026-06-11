@@ -161,11 +161,15 @@ export async function onRequestPost({ env, request }) {
     out.aprovados = []
     const apr = await env.ENGAGEMENT.list({ prefix: 'aprovado:' })
     for (const k of (apr?.keys || [])) out.aprovados.push(k.name.slice('aprovado:'.length))
-    // resumo do CRM (contagem) p/ a Visão geral — a lista completa é carregada na aba
+    // resumo do CRM — usa metadata do KV (sem carregar o valor completo, que pode ter fotos grandes)
     out.crmTotal = 0; out.crmNovos = 0; out.crmNovidades = 0
     const crm = await env.ENGAGEMENT.list({ prefix: 'crm:' })
-    out.crmTotal = (crm?.keys || []).length
-    for (const k of (crm?.keys || [])) { const v = await env.ENGAGEMENT.get(k.name, 'json'); if (v && v.novo) out.crmNovos++; if (v && v.temNovidade) out.crmNovidades++ }
+    const crmKeys = crm?.keys || []
+    out.crmTotal = crmKeys.length
+    for (const k of crmKeys) {
+      if (k.metadata?.novo) out.crmNovos++
+      if (k.metadata?.temNovidade) out.crmNovidades++
+    }
     return json(out)
   }
 
@@ -254,9 +258,22 @@ export async function onRequestPost({ env, request }) {
   if (action === 'crm-list') {
     const out = []
     const lista = await env.ENGAGEMENT.list({ prefix: 'crm:' })
-    for (const k of (lista?.keys || [])) { const v = await env.ENGAGEMENT.get(k.name, 'json'); if (v) out.push(v) }
+    for (const k of (lista?.keys || [])) {
+      const v = await env.ENGAGEMENT.get(k.name, 'json')
+      if (v) {
+        // Strip foto (can be up to 700KB base64) — loaded lazily via crm-get when editing
+        const { foto, ...rest } = v
+        out.push(foto ? { ...rest, temFoto: true } : rest)
+      }
+    }
     out.sort((a, b) => (b.atualizadoEm || 0) - (a.atualizadoEm || 0))
     return json({ ok: true, clientes: out })
+  }
+  if (action === 'crm-get') {
+    const id = String(b.id || '').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)
+    if (!id) return json({ error: 'id' }, 400)
+    const v = await env.ENGAGEMENT.get('crm:' + id, 'json')
+    return json({ ok: true, cliente: v || null })
   }
   if (action === 'crm-save') {
     const c = b.cliente && typeof b.cliente === 'object' ? b.cliente : {}
@@ -288,12 +305,12 @@ export async function onRequestPost({ env, request }) {
       ultimaAcaoEm: reg.ultimaAcaoEm || 0,
       temNovidade: false, // ao salvar, o Vinícius já viu
     }
-    await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(novo))
+    await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(novo), { metadata: { novo: false, temNovidade: false } })
     return json({ ok: true, cliente: novo })
   }
   if (action === 'crm-visto') {
     const id = String(b.id || '').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)
-    if (id) { const r = await env.ENGAGEMENT.get('crm:' + id, 'json'); if (r && r.temNovidade) { r.temNovidade = false; await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(r)) } }
+    if (id) { const r = await env.ENGAGEMENT.get('crm:' + id, 'json'); if (r && r.temNovidade) { r.temNovidade = false; await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(r), { metadata: { novo: !!r.novo, temNovidade: false } }) } }
     return json({ ok: true })
   }
   if (action === 'crm-del') {

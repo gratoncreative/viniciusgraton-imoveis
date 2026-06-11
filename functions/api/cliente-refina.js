@@ -42,7 +42,7 @@ export async function onRequestPost({ env, request }) {
     reg.atualizadoEm = Date.now()
     reg.ultimaAcaoEm = Date.now()
     reg.temNovidade = true // o Vinícius vê um aviso no painel de que o cliente mexeu
-    await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(reg))
+    await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(reg), { metadata: { novo: !!reg.novo, temNovidade: true } })
     return json({ ok: true })
   } catch (e) {
     console.error('cliente-refina:', e)

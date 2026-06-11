@@ -62,7 +62,7 @@ export async function onRequestPost({ env, request }) {
     const sig = JSON.stringify([reg.sugeridos, reg.nome, reg.whatsapp, reg.finalidade, reg.bairros])
     if (!novoRegistro && reg._sig === sig) return json({ ok: true, token: crmId, inalterado: true })
     reg._sig = sig
-    await env.ENGAGEMENT.put('crm:' + crmId, JSON.stringify(reg))
+    await env.ENGAGEMENT.put('crm:' + crmId, JSON.stringify(reg), { metadata: { novo: !!reg.novo, temNovidade: !!reg.temNovidade } })
     if (novoRegistro) await env.ENGAGEMENT.put('contacrm:' + ct, crmId)
     return json({ ok: true, token: crmId })
   } catch (e) {
