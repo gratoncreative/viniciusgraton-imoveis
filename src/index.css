@@ -1877,19 +1877,32 @@ html[data-theme="dark"] .nav:not(.scrolled) .nav-links a.nav-destaque { color: #
 .crm-match-info { display: flex; flex-direction: column; font-size: .82rem; color: #2a3038; }
 .crm-match-info i { color: var(--text-mute); font-style: normal; font-size: .76rem; }
 .crm-prev-panel { border: 1px solid rgba(22,26,34,0.13); border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.crm-prev-empty { min-height: 180px; display: flex; flex-direction: column; }
+.crm-prev-noimg { display: flex; align-items: center; justify-content: center; height: 120px; background: rgba(22,26,34,0.04); font-size: 2.8rem; }
 .crm-prev-galeria { position: relative; }
 .crm-prev-galeria img { width: 100%; height: 200px; object-fit: cover; display: block; }
-.crm-prev-seta { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.45); color: #fff; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1.3rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: background 0.15s; }
-.crm-prev-seta:hover { background: rgba(0,0,0,0.72); }
+.crm-prev-seta { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.45); color: #fff; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1.3rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: background 0.15s, opacity 0.15s; }
+.crm-prev-seta:hover:not(:disabled) { background: rgba(0,0,0,0.72); }
+.crm-prev-seta:disabled { opacity: 0.28; cursor: default; }
 .crm-prev-seta--l { left: 8px; }
 .crm-prev-seta--r { right: 8px; }
 .crm-prev-cnt { position: absolute; bottom: 7px; right: 9px; background: rgba(0,0,0,0.5); color: #fff; font-size: .65rem; font-weight: 700; padding: 2px 7px; border-radius: 8px; pointer-events: none; }
-.crm-prev-body { padding: 10px 13px 14px; display: flex; flex-direction: column; gap: 4px; }
+.crm-prev-body { padding: 10px 13px 14px; display: flex; flex-direction: column; gap: 6px; }
+.crm-prev-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 6px; }
 .crm-prev-tipo { font-size: .75rem; color: #5a6270; font-weight: 500; }
-.crm-prev-preco { font-size: 1.08rem; font-weight: 700; color: #1a1e26; font-family: var(--font-head); }
-.crm-prev-specs { font-size: .77rem; color: #5a6270; }
-.crm-prev-m2 { font-size: .73rem; font-weight: 600; margin-top: 2px; padding: 3px 8px; border-radius: 6px; align-self: flex-start; }
-.crm-prev-hint { font-size: .78rem; color: var(--text-mute); text-align: center; padding: 10px 0 4px; margin: 0; }
+.crm-prev-cod { font-size: .68rem; color: var(--text-mute); white-space: nowrap; flex-shrink: 0; }
+.crm-prev-preco { font-size: 1.12rem; font-weight: 700; color: #1a1e26; font-family: var(--font-head); }
+.crm-prev-infos { display: flex; flex-wrap: wrap; gap: 5px 12px; }
+.crm-prev-info-item { font-size: .77rem; color: #3a4250; display: flex; align-items: center; gap: 3px; }
+.crm-prev-gauge { margin-top: 2px; }
+.crm-prev-gauge-bar { position: relative; height: 8px; border-radius: 6px; margin-bottom: 4px; }
+.crm-prev-gauge-track { position: absolute; inset: 0; border-radius: 6px; background: linear-gradient(to right, #2e8c57, #c9b020, #b04a4a); }
+.crm-prev-gauge-dot { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 2.5px solid #1a1e26; box-shadow: 0 1px 4px rgba(0,0,0,0.25); }
+.crm-prev-gauge-labels { display: flex; justify-content: space-between; font-size: .62rem; color: var(--text-mute); margin-bottom: 5px; }
+.crm-prev-gauge-val { font-size: .73rem; font-weight: 600; padding: 3px 8px; border-radius: 6px; display: inline-block; background: rgba(22,26,34,0.06); color: #4a5260; }
+.crm-prev-gauge-val--bom { background: rgba(46,140,87,0.1); color: #1e6b40; }
+.crm-prev-gauge-val--alto { background: rgba(176,74,74,0.1); color: #8c2e2e; }
+.crm-prev-hint { font-size: .78rem; color: var(--text-mute); text-align: center; padding: 6px 0 2px; margin: 0; }
 /* Resumo ao vivo do filtro do cliente */
 .crm-resumo { margin-bottom: 14px; border-left: 3px solid var(--gold-3); }
 .crm-resumo-num { font-family: var(--font-head); font-size: 1.02rem; color: #2a3038; margin: 6px 0 10px; }

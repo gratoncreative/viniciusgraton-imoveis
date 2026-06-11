@@ -295,38 +295,67 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
               <p className="calc-nota">Marque os imóveis que vão aparecer na página do cliente. Use <b>Sugerir automático</b> pra preencher com os que mais combinam.</p>
               <button className="admin-btn" onClick={sugerirAuto} style={{ marginBottom: 10 }}>✨ Sugerir automático ({matches.length} combinam)</button>
               <div className="crm-matches-wrap" onMouseLeave={() => setPrevCod(null)}>
-                {prevCod && (() => {
-                  const hit = matches.find(({ im }) => String(im.codigo) === prevCod)
-                  if (!hit) return null
-                  const { im: pim } = hit
+                {(() => {
+                  const prevHit = prevCod
+                    ? matches.find(({ im }) => String(im.codigo) === prevCod)
+                    : (matches.length > 0 ? matches[0] : null)
+                  if (!prevHit) return (
+                    <div className="crm-prev-panel crm-prev-empty">
+                      <div className="crm-prev-noimg">🏠</div>
+                      <div className="crm-prev-body"><p className="crm-prev-hint">Preencha os filtros ao lado — os imóveis compatíveis aparecem aqui</p></div>
+                    </div>
+                  )
+                  const { im: pim } = prevHit
                   const fotos = fotosDe(pim)
                   const slide = Math.min(prevSlide, fotos.length - 1)
-                  const m2 = pim.preco > 0 && pim.area > 0 ? Math.round(pim.preco / pim.area) : 0
+                  const m2 = pim.preco > 0 && pim.area > 0 ? pim.preco / pim.area : 0
                   const m2tag = m2 && m2mediana ? (m2 < m2mediana * 0.85 ? 'bom' : m2 > m2mediana * 1.15 ? 'alto' : 'ok') : ''
-                  const specs = [pim.quartos && `${pim.quartos} quarto${pim.quartos > 1 ? 's' : ''}`, pim.suites > 0 && `${pim.suites} suíte${pim.suites > 1 ? 's' : ''}`, pim.vagas > 0 && `${pim.vagas} vaga${pim.vagas > 1 ? 's' : ''}`, pim.area > 0 && `${pim.area} m²`].filter(Boolean).join(' · ')
-                  const m2cor = { bom: '#1e6b40', alto: '#8c2e2e', ok: '#4a5260' }
-                  const m2bg = { bom: 'rgba(46,140,87,0.1)', alto: 'rgba(176,74,74,0.1)', ok: 'rgba(22,26,34,0.07)' }
-                  const m2txt = { bom: 'ótimo preço/m²', alto: 'acima da média', ok: 'preço mediano' }
+                  const m2rMin = matches.slice(0, 80).reduce((mn, { im }) => im.preco > 0 && im.area > 0 ? Math.min(mn, im.preco / im.area) : mn, Infinity)
+                  const m2rMax = matches.slice(0, 80).reduce((mx, { im }) => im.preco > 0 && im.area > 0 ? Math.max(mx, im.preco / im.area) : mx, 0)
+                  const m2pct = m2 && isFinite(m2rMin) && m2rMin < m2rMax ? Math.round(((m2 - m2rMin) / (m2rMax - m2rMin)) * 100) : 50
+                  const infos = [
+                    pim.quartos > 0 && { ic: '🛏', v: `${pim.quartos} quarto${pim.quartos > 1 ? 's' : ''}` },
+                    pim.suites > 0 && { ic: '🛁', v: `${pim.suites} suíte${pim.suites > 1 ? 's' : ''}` },
+                    pim.banheiros > 0 && { ic: '🚿', v: `${pim.banheiros} banheiro${pim.banheiros > 1 ? 's' : ''}` },
+                    pim.vagas > 0 && { ic: '🚗', v: `${pim.vagas} vaga${pim.vagas > 1 ? 's' : ''}` },
+                    pim.area > 0 && { ic: '📐', v: `${pim.area} m²` },
+                    pim.andar > 0 && { ic: '🏢', v: `${pim.andar}º andar` },
+                  ].filter(Boolean)
                   return (
                     <div className="crm-prev-panel">
                       <div className="crm-prev-galeria">
                         <img src={fotos[slide]} alt="" />
-                        {fotos.length > 1 && <>
-                          <button className="crm-prev-seta crm-prev-seta--l" onMouseDown={(e) => { e.preventDefault(); setPrevSlide(s => (s - 1 + fotos.length) % fotos.length) }}>‹</button>
-                          <button className="crm-prev-seta crm-prev-seta--r" onMouseDown={(e) => { e.preventDefault(); setPrevSlide(s => (s + 1) % fotos.length) }}>›</button>
-                          <span className="crm-prev-cnt">{slide + 1} / {fotos.length}</span>
-                        </>}
+                        <button className="crm-prev-seta crm-prev-seta--l" disabled={fotos.length <= 1} onMouseDown={(e) => { e.preventDefault(); setPrevSlide(s => (s - 1 + fotos.length) % fotos.length) }}>‹</button>
+                        <button className="crm-prev-seta crm-prev-seta--r" disabled={fotos.length <= 1} onMouseDown={(e) => { e.preventDefault(); setPrevSlide(s => (s + 1) % fotos.length) }}>›</button>
+                        <span className="crm-prev-cnt">{slide + 1} / {fotos.length}</span>
                       </div>
                       <div className="crm-prev-body">
-                        <span className="crm-prev-tipo">{pim.tipo} · {pim.bairro}</span>
+                        <div className="crm-prev-header">
+                          <span className="crm-prev-tipo">{pim.tipo} · {pim.bairro}</span>
+                          <span className="crm-prev-cod">cód {pim.codigo}</span>
+                        </div>
                         <strong className="crm-prev-preco">{formatPreco(pim.preco)}</strong>
-                        {specs && <span className="crm-prev-specs">{specs}</span>}
-                        {m2 > 0 && m2tag && <span className="crm-prev-m2" style={{ background: m2bg[m2tag], color: m2cor[m2tag] }}>{formatPreco(m2)}/m² · {m2txt[m2tag]}</span>}
+                        {infos.length > 0 && (
+                          <div className="crm-prev-infos">
+                            {infos.map(({ ic, v }) => <span key={v} className="crm-prev-info-item">{ic} {v}</span>)}
+                          </div>
+                        )}
+                        {m2 > 0 && (
+                          <div className="crm-prev-gauge">
+                            <div className="crm-prev-gauge-bar">
+                              <div className="crm-prev-gauge-track" />
+                              <div className="crm-prev-gauge-dot" style={{ left: `${Math.min(93, Math.max(7, m2pct))}%` }} />
+                            </div>
+                            <div className="crm-prev-gauge-labels"><span>Baixo</span><span>Médio</span><span>Alto</span></div>
+                            <span className={`crm-prev-gauge-val crm-prev-gauge-val--${m2tag || 'ok'}`}>
+                              {formatPreco(Math.round(m2))}/m²{m2tag === 'bom' ? ' · ótimo preço' : m2tag === 'alto' ? ' · acima da média' : ' · preço mediano'}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   )
                 })()}
-                {!prevCod && matches.length > 0 && <p className="crm-prev-hint">Passe o mouse sobre um imóvel para ver as fotos</p>}
                 <div className="crm-match-list" data-lenis-prevent>
                   {matches.length === 0 && <p className="painel-meta">Nenhum imóvel publicado combina com esses critérios ainda. Ajuste os filtros.</p>}
                   {matches.slice(0, 80).map(({ im, m }) => {
