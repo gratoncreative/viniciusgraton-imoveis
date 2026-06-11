@@ -326,9 +326,9 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                     <div className="crm-prev-panel">
                       <div className="crm-prev-galeria">
                         <img src={fotos[slide]} alt="" />
-                        <button className="crm-prev-seta crm-prev-seta--l" disabled={fotos.length <= 1} onMouseDown={(e) => { e.preventDefault(); setPrevSlide(s => (s - 1 + fotos.length) % fotos.length) }}>‹</button>
-                        <button className="crm-prev-seta crm-prev-seta--r" disabled={fotos.length <= 1} onMouseDown={(e) => { e.preventDefault(); setPrevSlide(s => (s + 1) % fotos.length) }}>›</button>
-                        <span className="crm-prev-cnt">{slide + 1} / {fotos.length}</span>
+                        {fotos.length > 1 && <button type="button" className="crm-prev-seta crm-prev-seta--l" onClick={(e) => { e.stopPropagation(); setPrevSlide(s => (s - 1 + fotos.length) % fotos.length) }}>‹</button>}
+                        {fotos.length > 1 && <button type="button" className="crm-prev-seta crm-prev-seta--r" onClick={(e) => { e.stopPropagation(); setPrevSlide(s => (s + 1) % fotos.length) }}>›</button>}
+                        {fotos.length > 1 && <span className="crm-prev-cnt">{slide + 1} / {fotos.length}</span>}
                       </div>
                       <div className="crm-prev-body">
                         <div className="crm-prev-header">
