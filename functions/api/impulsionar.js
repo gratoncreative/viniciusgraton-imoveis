@@ -45,8 +45,15 @@ const PLANOS = {
   p30: { nome: 'Super Destaque 30 dias', dias: 30, preco: 89.9 },
 }
 
-async function ativarDestaque(env, codigo, dias) {
+async function ativarDestaque(env, codigo, dias, paymentId) {
   if (!temKV(env)) return
+  // Idempotência: cada pagamento só ativa uma vez
+  if (paymentId) {
+    const ativKey = `imp:ativado:${paymentId}`
+    const jaAtivou = await env.ENGAGEMENT.get(ativKey).catch(() => null)
+    if (jaAtivou) return
+    await env.ENGAGEMENT.put(ativKey, '1', { expirationTtl: 7776000 })
+  }
   const key = 'imovel:' + codigo
   let reg = await env.ENGAGEMENT.get(key, 'json')
   if (!reg || typeof reg !== 'object') reg = { owner: {}, campos: {} }
@@ -79,7 +86,7 @@ export async function onRequestPost({ env, request }) {
       if (pay && pay.status === 'approved' && pay.external_reference) {
         const [codigo, planoId] = String(pay.external_reference).split('|')
         const plano = PLANOS[planoId]
-        if (codigo && plano) await ativarDestaque(env, codigo, plano.dias)
+        if (codigo && plano) await ativarDestaque(env, codigo, plano.dias, payId)
       }
     } catch {}
     return json({ ok: true })
