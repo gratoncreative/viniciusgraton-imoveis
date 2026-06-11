@@ -9,7 +9,7 @@ import AdminCRM from '../components/AdminCRM'
 import InputMoeda from '../components/InputMoeda'
 
 const LSK = 'vg_admin_token'
-const waLink = (fone) => `https://wa.me/55${String(fone || '').replace(/\D/g, '')}`
+const waLink = (fone) => { const d = String(fone || '').replace(/\D/g, ''); const full = d.length <= 11 ? '55' + d : d; return `https://wa.me/${full}` }
 const api = (payload) => fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) }).then((r) => r.json().then((j) => ({ status: r.status, j })))
 const STATUS_LEAD = ['Novo', 'Em conversa', 'Visita marcada', 'Fechado', 'Descartado']
 // célula CSV segura: neutraliza injeção de fórmula (= + - @ tab CR no início) e aspas
