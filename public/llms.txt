@@ -2,23 +2,57 @@
 
 > Consultoria imobiliária em Uberlândia e região (Triângulo Mineiro, MG). Vinícius Graton ajuda compradores a encontrar e comprar casas, apartamentos e imóveis de investimento com segurança — do primeiro contato à entrega das chaves. Lema: "Compre seu imóvel sem medo de errar."
 
-Informações principais:
-- Profissional: Vinícius Graton, consultor de imóveis em Uberlândia/MG
-- Atuação: compra e venda de casas, apartamentos, casas em condomínio, lançamentos, imóveis comerciais e de investimento
-- Região: Uberlândia e Triângulo Mineiro (bairros como Jardim Karaíba, Gávea, Morada da Colina, Granja Marileusa, Santa Mônica, Tabajaras, Cidade Jardim, Tubalina)
-- WhatsApp: +55 34 99157-0494
-- E-mail: contato@viniciusgraton.com.br
-- Instagram: https://www.instagram.com/viniciusgraton.imoveis/
-- Diferenciais: curadoria personalizada, avaliação de preço pelo mercado real, conferência de documentação antes da assinatura, orientação sobre financiamento e FGTS, atendimento direto com o consultor.
+## Sobre o profissional
 
-## Páginas
-- [Início](https://viniciusgraton.com.br/): apresentação, imóveis em destaque e como o atendimento funciona.
-- [Imóveis à venda](https://viniciusgraton.com.br/imoveis): catálogo com busca e filtros por tipo, bairro, preço, quartos e vagas.
-- [Privacidade](https://viniciusgraton.com.br/privacidade): política de privacidade (LGPD).
+- **Nome:** Vinícius Graton, consultor de imóveis em Uberlândia/MG
+- **Empresa:** Rotina Imobiliária (CRECI PJ 132, mais de 5.000 imóveis ativos)
+- **Atuação:** compra e venda de casas, apartamentos, casas em condomínio, lançamentos, imóveis comerciais e de investimento
+- **Região:** Uberlândia e Triângulo Mineiro (bairros como Jardim Karaíba, Gávea, Morada da Colina, Granja Marileusa, Santa Mônica, Tabajaras, Cidade Jardim, Tubalina, Chácaras Tubalina, Saraiva)
+- **WhatsApp:** +55 34 99157-0494
+- **E-mail:** contato@viniciusgraton.com.br
+- **Instagram:** https://www.instagram.com/viniciusgraton.imoveis/
+- **Diferenciais:** curadoria personalizada, avaliação de preço pelo mercado real, conferência de documentação, orientação sobre financiamento e FGTS, atendimento direto com o consultor
+
+## Páginas principais
+
+- [Início](https://viniciusgraton.com.br/): apresentação, imóveis em destaque e como o atendimento funciona
+- [Imóveis à venda](https://viniciusgraton.com.br/imoveis): catálogo com busca e filtros por tipo, bairro, preço, quartos e vagas
+- [Blog](https://viniciusgraton.com.br/blog): artigos sobre mercado imobiliário, financiamento e dicas para compradores
+- [Ferramentas](https://viniciusgraton.com.br/ferramentas): calculadoras gratuitas (financiamento, FGTS, amortização, ITBI, rentabilidade, m², aluguel vs. compra)
+- [Bairros de Uberlândia](https://viniciusgraton.com.br/bairros): guia dos bairros com perfil, imóveis disponíveis e características de cada região
+- [Condomínios](https://viniciusgraton.com.br/condominios): catálogo de condomínios fechados com fotos, localização e imóveis disponíveis
+- [Construtoras](https://viniciusgraton.com.br/construtoras): empreendimentos lançados pelas principais construtoras de Uberlândia
+- [Quem sou](https://viniciusgraton.com.br/quem-sou): história do profissional, formação e valores
+- [Como ajudo](https://viniciusgraton.com.br/como-ajudo): processo de atendimento passo a passo
+- [Diferenciais](https://viniciusgraton.com.br/diferenciais): o que torna o atendimento diferente dos demais
+- [Solicitar avaliação](https://viniciusgraton.com.br/avaliacao): formulário para avaliação gratuita de imóvel
+- [Fale comigo](https://viniciusgraton.com.br/fale-comigo): contato direto via WhatsApp ou e-mail
+- [Privacidade](https://viniciusgraton.com.br/privacidade): política de privacidade (LGPD)
+
+## Ferramentas disponíveis
+
+- **Calculadora de financiamento:** simula parcelas, juros e custo total de financiamento imobiliário
+- **Simulador FGTS:** verifica se o comprador pode usar o fundo na compra
+- **Calculadora de amortização:** compara SAC vs. Price
+- **Cálculo de ITBI:** estima o imposto de transmissão de bens imóveis em Uberlândia
+- **Aluguel vs. compra:** compara os dois caminhos com retorno financeiro
+- **Calculadora de rentabilidade:** retorno de imóvel para investimento
+- **Laudo técnico do m²:** relatório gerado com IA sobre o valor do m² de um imóvel específico (R$ 29 por imóvel)
+- **Comparador de imóveis:** compara até 3 imóveis lado a lado
+- **Mapa de imóveis:** visualização geográfica dos imóveis disponíveis
+- **Melhorar fotos com IA:** melhoria de fotos de imóveis via inteligência artificial (para corretores)
+- **Remover marca d'água:** remoção de logos e marcas d'água de fotos (para corretores)
+- **Converter fotos:** conversão de formato de imagens (JPEG, WebP, AVIF)
+
+## Área do corretor (assinatura)
+
+Ferramentas exclusivas para corretores de imóveis, acessadas via código de assinatura mensal ou semanal. Inclui: ferramentas de IA para fotos, geração de textos com IA, simulações para uso com clientes.
 
 ## Perguntas frequentes
-- Pode usar FGTS na compra do imóvel? Em muitos casos sim (entrada, compra ou abatimento do financiamento), conforme as regras.
-- Como funciona o financiamento imobiliário? O banco financia parte do valor e o comprador paga em parcelas, geralmente com entrada; condições variam por renda, valor e banco.
-- O que são ITBI e escritura? ITBI é o imposto de transmissão pago à prefeitura; a escritura com registro oficializa a transferência em cartório.
-- Em quais regiões atende? Uberlândia e região, em todos os perfis de imóvel.
-- Como começar? Chamar no WhatsApp e contar o que procura; a partir daí é feita a curadoria, sem compromisso.
+
+- **Pode usar FGTS na compra do imóvel?** Em muitos casos sim — para entrada, amortização ou compra à vista — conforme as regras da Caixa Econômica Federal.
+- **Como funciona o financiamento imobiliário?** O banco financia até 80% do valor do imóvel; o comprador paga a diferença como entrada e quita o restante em parcelas mensais.
+- **O que são ITBI e escritura?** ITBI é o imposto de transmissão pago à prefeitura (2% em Uberlândia); a escritura registra a transferência oficialmente em cartório.
+- **Quais bairros de Uberlândia têm imóveis disponíveis?** Jardim Karaíba, Gávea, Morada da Colina, Granja Marileusa, Santa Mônica, Cidade Jardim, Tubalina, Chácaras Tubalina, Saraiva, Tabajaras, Brasil, Martins, Tibery, e muitos outros.
+- **Como começar a busca pelo imóvel?** Entre em contato pelo WhatsApp contando o que procura — a partir daí é feita uma curadoria personalizada, sem compromisso.
+- **Quanto custa a consultoria?** O atendimento é gratuito para compradores. A comissão é paga pelo vendedor, conforme prática do mercado.
