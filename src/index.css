@@ -3422,19 +3422,26 @@ html[data-theme="dark"] .hero-card .eyebrow { color: var(--gold-1); }
 html[data-theme="dark"] .hero-card .eyebrow::before { background: var(--gold-1); }
 
 /* ── Botão compacto "Estudo do m²" no card do cliente ── */
-.cli-laudo-btn { display: flex; align-items: center; gap: 7px; width: 100%; background: var(--surface); border: 1px solid rgba(22,26,34,0.12); border-radius: 10px; padding: 9px 12px; cursor: pointer; text-align: left; font-family: var(--font-body); margin-top: 6px; transition: border-color .17s, background .17s; }
+.cli-laudo-btn { display: flex; align-items: center; gap: 9px; width: 100%; background: var(--surface); border: 1.5px solid rgba(22,26,34,0.12); border-radius: 10px; padding: 10px 13px; cursor: pointer; text-align: left; font-family: var(--font-body); margin-top: 6px; transition: border-color .18s, background .18s, box-shadow .18s; position: relative; overflow: hidden; }
 .cli-laudo-btn:hover { border-color: var(--gold-3); background: rgba(184,134,47,0.06); }
-.cli-laudo-dot { flex: none; width: 8px; height: 8px; border-radius: 50%; }
-.cli-laudo-dot--abaixo { background: #2e8c57; }
+/* Estado "abaixo do mercado" — destaque com animação */
+.cli-laudo-btn--abaixo { background: rgba(46,140,87,0.07); border-color: rgba(46,140,87,0.38); }
+.cli-laudo-btn--abaixo:hover { background: rgba(46,140,87,0.13); border-color: rgba(46,140,87,0.65); box-shadow: 0 0 0 3px rgba(46,140,87,0.12); }
+.cli-laudo-btn--abaixo::before { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 15%, rgba(46,140,87,0.12) 50%, transparent 85%); transform: translateX(-110%); animation: laudoShimmer 3s ease-in-out 0.8s infinite; pointer-events: none; }
+@keyframes laudoShimmer { 0% { transform: translateX(-110%); } 50%, 100% { transform: translateX(220%); } }
+.cli-laudo-body { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.cli-laudo-dot { flex: none; width: 9px; height: 9px; border-radius: 50%; align-self: center; }
+.cli-laudo-dot--abaixo { background: #2e8c57; animation: laudoPulse 1.7s ease-in-out infinite; }
 .cli-laudo-dot--dentro { background: var(--gold-2); }
 .cli-laudo-dot--acima { background: #b04a4a; }
-.cli-laudo-txt { font-size: .72rem; font-weight: 700; }
-.cli-laudo-txt--abaixo { color: #2e8c57; }
+@keyframes laudoPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(46,140,87,0.6); } 55% { box-shadow: 0 0 0 5px rgba(46,140,87,0); } }
+.cli-laudo-txt { font-size: .74rem; font-weight: 700; line-height: 1.2; }
+.cli-laudo-txt--abaixo { color: #1c7041; font-size: .81rem; }
 .cli-laudo-txt--dentro { color: var(--gold-2); }
 .cli-laudo-txt--acima { color: #b04a4a; }
-.cli-laudo-sep { color: var(--text-mute); font-size: .7rem; }
-.cli-laudo-sub { display: flex; align-items: center; gap: 4px; font-size: .68rem; color: var(--text-mute); }
-.cli-laudo-seta { flex: none; color: var(--text-mute); margin-left: auto; }
+.cli-laudo-sub { display: flex; align-items: center; gap: 4px; font-size: .67rem; color: var(--text-mute); }
+.cli-laudo-seta { flex: none; color: var(--text-mute); margin-left: auto; align-self: center; transition: transform .15s; }
+.cli-laudo-btn:hover .cli-laudo-seta { transform: translateX(3px); }
 
 /* ── Modal laudo do m² — sempre dark independente do tema ── */
 .cli-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.76); z-index: 1200; display: flex; align-items: flex-end; justify-content: center; overflow-y: auto; }

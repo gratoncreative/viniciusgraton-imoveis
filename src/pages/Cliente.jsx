@@ -243,14 +243,15 @@ export default function Cliente() {
                         const dp = Math.abs(est.diffPct)
                         const txt = est.veredito === 'abaixo' ? `${dp}% abaixo do mercado` : est.veredito === 'acima' ? `+${dp}% acima da média` : 'Dentro do mercado'
                         return (
-                          <button type="button" className="cli-laudo-btn" onClick={(ev) => { ev.stopPropagation(); setLaudoModal({ im, est }) }}>
+                          <button type="button" className={`cli-laudo-btn cli-laudo-btn--${est.veredito}`} onClick={(ev) => { ev.stopPropagation(); setLaudoModal({ im, est }) }}>
                             <span className={`cli-laudo-dot cli-laudo-dot--${est.veredito}`} />
-                            <span className={`cli-laudo-txt cli-laudo-txt--${est.veredito}`}>{txt}</span>
-                            <span className="cli-laudo-sep">·</span>
-                            <span className="cli-laudo-sub">
-                              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
-                              {' '}Estudo do m²
-                            </span>
+                            <div className="cli-laudo-body">
+                              <span className={`cli-laudo-txt cli-laudo-txt--${est.veredito}`}>{txt}</span>
+                              <span className="cli-laudo-sub">
+                                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
+                                {' '}Ver estudo do valor do m²
+                              </span>
+                            </div>
                             <svg className="cli-laudo-seta" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6" /></svg>
                           </button>
                         )
