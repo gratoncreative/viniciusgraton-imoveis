@@ -54,6 +54,7 @@ export function salvarConta(dados) {
 
 export function logout() {
   try { localStorage.removeItem(KEY) } catch {}
+  try { localStorage.removeItem('vg_admin_token') } catch {}
   try { window.dispatchEvent(new Event('vg-conta')) } catch {}
 }
 

@@ -528,7 +528,7 @@ section { position: relative; padding: clamp(30px, 4.2vw, 56px) 0; }
 .fs--on .fs-label { font-weight: 600; color: #2a2118; }
 .fs-chev { flex: none; color: var(--text-mute); transition: transform 0.2s; }
 .fs--open .fs-chev { transform: rotate(180deg); color: var(--gold-3); }
-.fs-pop { position: fixed; z-index: 60; background: #fff; border: 1px solid rgba(22,26,34,0.14); border-radius: 12px; box-shadow: 0 22px 50px -22px rgba(22,26,34,0.45); padding: 6px; max-height: 360px; overflow-y: auto; scrollbar-width: thin; }
+.fs-pop { position: fixed; z-index: 110; background: #fff; border: 1px solid rgba(22,26,34,0.14); border-radius: 12px; box-shadow: 0 22px 50px -22px rgba(22,26,34,0.45); padding: 6px; max-height: 360px; overflow-y: auto; scrollbar-width: thin; }
 .fs-busca { width: 100%; box-sizing: border-box; padding: 9px 12px; margin-bottom: 6px; border: 1px solid var(--border); border-radius: 9px; font-family: inherit; font-size: 0.88rem; outline: none; }
 .fs-busca:focus { border-color: var(--gold-3); }
 .fs-opts { list-style: none; display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; }
@@ -2756,7 +2756,8 @@ html[data-theme="dark"] .mf-sel select { color-scheme: dark; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * { animation: none !important; transition: none !important; }
+  .dust-p, .scroll-hint .mouse::after, .hsk-luz, .adslot-shine, .hero-in > *,
+  .corr-trial-entrando, .chip, .wa-float::before, .pilar-card, .adbox-item { animation: none !important; transition: none !important; }
   html { scroll-behavior: auto; }
 }
 
@@ -3601,3 +3602,24 @@ html[data-theme="dark"] .hero-card .eyebrow::before { background: var(--gold-1);
 .cli-modal-success p { font-size: .84rem; color: #b0bac8; margin-bottom: 16px; line-height: 1.6; }
 .cli-modal-baixar { display: inline-flex; align-items: center; gap: 8px; background: rgba(46,140,87,0.14); color: #5dc98a; border: 1px solid rgba(46,140,87,0.28); border-radius: 8px; padding: 10px 18px; font-size: .86rem; cursor: pointer; font-family: var(--font-body); transition: background .15s; }
 .cli-modal-baixar:hover { background: rgba(46,140,87,0.22); }
+
+/* ===== keyframes ausentes ===== */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+@media (prefers-reduced-motion: reduce) {
+  .cliente-salvo { animation: none; opacity: 1; }
+  .corr-trial-entrando { animation: none; }
+}
+
+/* ===== dark mode: chat wizard ===== */
+html[data-theme="dark"] .chat-busca { background: #11161f; border-color: rgba(224,181,86,0.3); }
+html[data-theme="dark"] .cb-msg.bot .cb-bubble { background: rgba(255,255,255,0.07); color: var(--text); }
+html[data-theme="dark"] .cb-form input, html[data-theme="dark"] .cb-textarea { background: rgba(255,255,255,0.05); color: var(--text); border-color: rgba(255,255,255,0.14); }
+
+/* ===== dark mode: placa VENDE-SE ===== */
+html[data-theme="dark"] .placa-bloco, html[data-theme="dark"] .placa-card { background: #11161f; border-color: rgba(255,255,255,0.12); color: var(--text); }
+html[data-theme="dark"] .placa-card b { color: #f1ede4; }
+html[data-theme="dark"] .placa-card i { color: #9298a6; }
+
+/* ===== contraste: brand-sub na navbar ===== */
+.nav .brand-sub { color: #6a7280; }

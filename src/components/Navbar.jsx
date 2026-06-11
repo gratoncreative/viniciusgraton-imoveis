@@ -66,7 +66,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const [favs, setFavs] = useState(0)
-  const [conta, setConta] = useState(null)
+  const [conta, setConta] = useState(() => getConta())
   const { pathname } = useLocation()
   const ehAdmin = !!conta?.ehProprietario
 

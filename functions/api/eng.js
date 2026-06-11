@@ -49,77 +49,88 @@ async function getEng(env, cod, preco) {
 }
 
 export async function onRequestGet({ env, request }) {
-  const url = new URL(request.url)
-  // leituras do blog (todas de uma vez): /api/eng?blogviews=1 -> { views: { slug: n } }
-  if (url.searchParams.get('blogviews')) {
-    if (!temKV(env)) return json({ views: {} })
-    const lista = await env.ENGAGEMENT.list({ prefix: 'bview:' })
-    const views = {}
-    for (const k of lista.keys) {
-      const n = parseInt(await env.ENGAGEMENT.get(k.name), 10)
-      if (n) views[k.name.slice(6)] = n
+  try {
+    const url = new URL(request.url)
+    // leituras do blog (todas de uma vez): /api/eng?blogviews=1 -> { views: { slug: n } }
+    if (url.searchParams.get('blogviews')) {
+      if (!temKV(env)) return json({ views: {} })
+      const lista = await env.ENGAGEMENT.list({ prefix: 'bview:' })
+      const views = {}
+      for (const k of (lista?.keys || [])) {
+        const n = parseInt(await env.ENGAGEMENT.get(k.name), 10)
+        if (n) views[k.name.slice(6)] = n
+      }
+      return json({ views })
     }
-    return json({ views })
+    // crescimento diário DESATIVADO: os números agora ficam fixos na faixa 20-90
+    // (ponderados por preço). Mantido só p/ não quebrar a rotina que chama a URL.
+    if (url.searchParams.get('bumpall')) {
+      return json({ ok: true, atualizados: 0, aviso: 'crescimento desativado p/ manter a faixa 20-90' })
+    }
+    const cod = url.searchParams.get('cod')
+    if (!cod) return json({ error: 'cod obrigatorio' }, 400)
+    return json(await getEng(env, cod, url.searchParams.get('p')))
+  } catch (e) {
+    console.error('eng:', e)
+    return json({ error: 'interno' }, 500)
   }
-  // crescimento diário DESATIVADO: os números agora ficam fixos na faixa 20-90
-  // (ponderados por preço). Mantido só p/ não quebrar a rotina que chama a URL.
-  if (url.searchParams.get('bumpall')) {
-    return json({ ok: true, atualizados: 0, aviso: 'crescimento desativado p/ manter a faixa 20-90' })
-  }
-  const cod = url.searchParams.get('cod')
-  if (!cod) return json({ error: 'cod obrigatorio' }, 400)
-  return json(await getEng(env, cod, url.searchParams.get('p')))
 }
 
 export async function onRequestPost({ env, request }) {
-  const body = await request.json().catch(() => ({}))
-  const { cod, tipo } = body
+  try {
+    const body = await request.json().catch(() => ({}))
+    const { cod, tipo } = body
 
-  // leitura de post do blog: incrementa contador real
-  if (tipo === 'view') {
-    const slug = String(cod || '').slice(0, 80)
-    if (!slug) return json({ error: 'cod obrigatorio' }, 400)
-    if (!temKV(env)) return json({ views: 0 })
-    const key = 'bview:' + slug
-    const views = (parseInt(await env.ENGAGEMENT.get(key), 10) || 0) + 1
-    await env.ENGAGEMENT.put(key, String(views))
-    return json({ views })
-  }
-
-  if (tipo === 'lead') {
-    if (body.site) return json({ ok: true }) // honeypot (bot preencheu campo-isca)
-    const nome = String(body.nome || '').slice(0, 80)
-    const fone = String(body.fone || '').slice(0, 30)
-    // basta o NOME pra capturar o lead — telefone é desejável mas não obrigatório
-    // (senão o contato preenchido na Home/contato se perde quando o visitante não abre o WhatsApp)
-    if (!nome) return json({ error: 'dados incompletos' }, 400)
-    if (!temKV(env)) return json({ ok: true, persistido: false }) // sem KV: não grava, mas o WhatsApp do visitante já abre
-    // rate-limit por IP: máx. 8 leads por hora (anti-spam)
-    const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || 'sem-ip'
-    const rlKey = 'rl:lead:' + ip
-    const usos = parseInt(await env.ENGAGEMENT.get(rlKey), 10) || 0
-    if (usos >= 8) return json({ ok: true, limite: true })
-    await env.ENGAGEMENT.put(rlKey, String(usos + 1), { expirationTtl: 3600 })
-    const ts = Date.now()
-    const lead = {
-      ts, nome, fone,
-      cod: String(cod || '').slice(0, 12),
-      bairro: String(body.bairro || '').slice(0, 120),
-      email: String(body.email || '').slice(0, 120),
-      objetivo: String(body.objetivo || '').slice(0, 60),
-      detalhes: String(body.detalhes || '').slice(0, 400),
-      origem: String(body.origem || '').slice(0, 30),
-      data: new Date(ts).toISOString(),
+    // leitura de post do blog: incrementa contador real
+    if (tipo === 'view') {
+      const slug = String(cod || '').slice(0, 80)
+      if (!slug) return json({ error: 'cod obrigatorio' }, 400)
+      if (!/^[a-z0-9-]{3,80}$/.test(slug)) return json({ error: 'slug-invalido' }, 400)
+      if (!temKV(env)) return json({ views: 0 })
+      const key = 'bview:' + slug
+      const views = (parseInt(await env.ENGAGEMENT.get(key), 10) || 0) + 1
+      await env.ENGAGEMENT.put(key, String(views))
+      return json({ views })
     }
-    await env.ENGAGEMENT.put('lead:' + ts + '-' + Math.random().toString(36).slice(2, 8), JSON.stringify(lead))
-    return json({ ok: true, persistido: true })
-  }
 
-  if (!cod || !['like', 'unlike', 'share'].includes(tipo)) return json({ error: 'requisicao invalida' }, 400)
-  const data = await getEng(env, cod, body.p)
-  if (tipo === 'like') data.likes += 1
-  else if (tipo === 'unlike') data.likes = Math.max(0, data.likes - 1)
-  else if (tipo === 'share') data.shares += 1
-  if (temKV(env)) await env.ENGAGEMENT.put('eng:' + cod, JSON.stringify(data))
-  return json(data)
+    if (tipo === 'lead') {
+      if (body.site) return json({ ok: true }) // honeypot (bot preencheu campo-isca)
+      const nome = String(body.nome || '').slice(0, 80)
+      const fone = String(body.fone || '').slice(0, 30)
+      // basta o NOME pra capturar o lead — telefone é desejável mas não obrigatório
+      // (senão o contato preenchido na Home/contato se perde quando o visitante não abre o WhatsApp)
+      if (!nome) return json({ error: 'dados incompletos' }, 400)
+      if (!temKV(env)) return json({ ok: true, persistido: false }) // sem KV: não grava, mas o WhatsApp do visitante já abre
+      // rate-limit por IP: máx. 8 leads por hora (anti-spam)
+      const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || 'sem-ip'
+      const rlKey = 'rl:lead:' + ip
+      const usos = parseInt(await env.ENGAGEMENT.get(rlKey), 10) || 0
+      if (usos >= 8) return json({ ok: true, limite: true })
+      await env.ENGAGEMENT.put(rlKey, String(usos + 1), { expirationTtl: 3600 })
+      const ts = Date.now()
+      const lead = {
+        ts, nome, fone,
+        cod: String(cod || '').slice(0, 12),
+        bairro: String(body.bairro || '').slice(0, 120),
+        email: String(body.email || '').slice(0, 120),
+        objetivo: String(body.objetivo || '').slice(0, 60),
+        detalhes: String(body.detalhes || '').slice(0, 400),
+        origem: String(body.origem || '').slice(0, 30),
+        data: new Date(ts).toISOString(),
+      }
+      await env.ENGAGEMENT.put('lead:' + ts + '-' + Math.random().toString(36).slice(2, 8), JSON.stringify(lead))
+      return json({ ok: true, persistido: true })
+    }
+
+    if (!cod || !['like', 'unlike', 'share'].includes(tipo)) return json({ error: 'requisicao invalida' }, 400)
+    const data = await getEng(env, cod, body.p)
+    if (tipo === 'like') data.likes += 1
+    else if (tipo === 'unlike') data.likes = Math.max(0, data.likes - 1)
+    else if (tipo === 'share') data.shares += 1
+    if (temKV(env)) await env.ENGAGEMENT.put('eng:' + cod, JSON.stringify(data))
+    return json(data)
+  } catch (e) {
+    console.error('eng:', e)
+    return json({ error: 'interno' }, 500)
+  }
 }

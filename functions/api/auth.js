@@ -20,6 +20,7 @@ async function derivar(senha, saltHex) {
 }
 
 export async function onRequestPost({ request, env }) {
+  try {
   const b = await request.json().catch(() => ({}))
   const acao = b.acao === 'cadastrar' ? 'cadastrar' : 'login'
   const email = String(b.email || '').trim().toLowerCase()
@@ -44,12 +45,18 @@ export async function onRequestPost({ request, env }) {
     if (reg) return json({ error: 'ja-existe' })
     const { hash, salt } = await derivar(senha)
     const nome = String(b.nome || '').slice(0, 80)
-    await env.ENGAGEMENT.put(key, JSON.stringify({ hash, salt, nome, email, criadoEm: Date.now() }))
-    return json({ ok: true, token, nome, email })
+    const tokenAleatorio = 'e_' + hex(crypto.getRandomValues(new Uint8Array(20)))
+    await env.ENGAGEMENT.put(key, JSON.stringify({ hash, salt, nome, email, token: tokenAleatorio, criadoEm: Date.now() }))
+    return json({ ok: true, token: tokenAleatorio, nome, email })
   }
 
   if (!reg) return json({ error: 'nao-encontrado' })
   const { hash } = await derivar(senha, reg.salt)
   if (hash !== reg.hash) return json({ error: 'senha-errada' })
-  return json({ ok: true, token, nome: reg.nome || '', email })
+  // backward-compat: contas antigas não têm token aleatório armazenado
+  return json({ ok: true, token: reg.token || token, nome: reg.nome || '', email })
+  } catch (e) {
+    console.error('auth:', e)
+    return json({ error: 'interno' }, 500)
+  }
 }

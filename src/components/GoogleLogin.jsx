@@ -48,18 +48,19 @@ export default function GoogleLogin({ onPronto, onLogin }) {
               if (j.adminToken) {
                 try { localStorage.setItem('vg_admin_token', j.adminToken) } catch {}
               }
+              // sempre salva a conta com ehProprietario antes de notificar o pai
+              salvarConta({
+                token: 'g_' + j.perfil.sub,
+                nome: j.perfil.nome,
+                email: j.perfil.email,
+                foto: j.perfil.foto,
+                login: 'google',
+                ...(j.ehProprietario ? { ehProprietario: true } : {}),
+              })
               // se o pai quer tratar o login (ex.: pedir o WhatsApp antes), entrega o perfil
               if (onLoginRef.current) {
                 onLoginRef.current(j.perfil)
               } else {
-                salvarConta({
-                  token: 'g_' + j.perfil.sub,
-                  nome: j.perfil.nome,
-                  email: j.perfil.email,
-                  foto: j.perfil.foto,
-                  login: 'google',
-                  ...(j.ehProprietario ? { ehProprietario: true } : {}),
-                })
                 onPronto && onPronto()
               }
             }

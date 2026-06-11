@@ -36,6 +36,7 @@ async function getSignKey(env) {
 }
 
 export async function onRequestPost({ env, request }) {
+  try {
   const b = await request.json().catch(() => ({}))
   const credential = String(b.credential || '')
   if (!credential) return json({ error: 'credential obrigatorio' }, 400)
@@ -77,4 +78,8 @@ export async function onRequestPost({ env, request }) {
   }
 
   return json({ ok: true, perfil, ...(adminToken ? { adminToken, ehProprietario: true } : {}) })
+  } catch (e) {
+    console.error('google-login:', e)
+    return json({ error: 'interno' }, 500)
+  }
 }

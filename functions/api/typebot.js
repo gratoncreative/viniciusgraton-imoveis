@@ -25,33 +25,38 @@ const lista = (v, max, n) => {
 const objToFinal = (o) => { const s = (o || '').toLowerCase(); if (s.includes('alug')) return 'Alugar'; if (s.includes('invest')) return 'Investir'; return 'Comprar' }
 
 export async function onRequestPost({ env, request }) {
-  const url = new URL(request.url)
-  const segredo = String((env && env.TYPEBOT_KEY) || '').trim()
-  if (!segredo || !eqStr(url.searchParams.get('k') || '', segredo)) return json({ error: 'nao-autorizado' }, 401)
-  if (!temKV(env)) return json({ ok: true, token: '', persistido: false })
+  try {
+    const url = new URL(request.url)
+    const segredo = String((env && env.TYPEBOT_KEY) || '').trim()
+    if (!segredo || !eqStr(url.searchParams.get('k') || '', segredo)) return json({ error: 'nao-autorizado' }, 401)
+    if (!temKV(env)) return json({ ok: true, token: '', persistido: false })
 
-  const b = await request.json().catch(() => ({}))
-  const wa = lim(b.whatsapp || b.fone || b.telefone, 20).replace(/\D/g, '').slice(0, 15)
-  if (wa.length < 10) return json({ error: 'whatsapp', msg: 'WhatsApp inválido' }, 400)
+    const b = await request.json().catch(() => ({}))
+    const wa = lim(b.whatsapp || b.fone || b.telefone, 20).replace(/\D/g, '').slice(0, 15)
+    if (wa.length < 10) return json({ error: 'whatsapp', msg: 'WhatsApp inválido' }, 400)
 
-  const ts = Date.now()
-  const id = crypto.randomUUID()
-  const reg = {
-    id, criadoEm: ts, atualizadoEm: ts,
-    origem: 'typebot', novo: true, status: 'A revisar',
-    nome: lim(b.nome, 80), whatsapp: wa,
-    finalidade: objToFinal(b.finalidade),
-    tipos: lista(b.tipos, 8, 30), bairros: lista(b.bairros, 20, 40),
-    precoMin: num(b.precoMin), precoMax: num(b.precoMax),
-    quartosMin: num(b.quartosMin), suitesMin: 0, vagasMin: 0, areaMin: 0,
-    prazo: lim(b.prazo, 40), sugeridos: [], feedback: {},
-    obs: 'Veio do Typebot.',
+    const ts = Date.now()
+    const id = crypto.randomUUID()
+    const reg = {
+      id, criadoEm: ts, atualizadoEm: ts,
+      origem: 'typebot', novo: true, status: 'A revisar',
+      nome: lim(b.nome, 80), whatsapp: wa,
+      finalidade: objToFinal(b.finalidade),
+      tipos: lista(b.tipos, 8, 30), bairros: lista(b.bairros, 20, 40),
+      precoMin: num(b.precoMin), precoMax: num(b.precoMax),
+      quartosMin: num(b.quartosMin), suitesMin: 0, vagasMin: 0, areaMin: 0,
+      prazo: lim(b.prazo, 40), sugeridos: [], feedback: {},
+      obs: 'Veio do Typebot.',
+    }
+    await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(reg))
+    await env.ENGAGEMENT.put('lead:' + ts + '-' + Math.random().toString(36).slice(2, 8), JSON.stringify({
+      ts, data: new Date(ts).toISOString(), nome: reg.nome || 'Sem nome', fone: wa,
+      bairro: reg.bairros[0] || '', cod: '', origem: 'typebot', crmId: id,
+      resumo: [reg.finalidade, reg.tipos.join('/'), reg.prazo].filter(Boolean).join(' · '),
+    }))
+    return json({ ok: true, token: id })
+  } catch (e) {
+    console.error('typebot:', e)
+    return json({ error: 'interno' }, 500)
   }
-  await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(reg))
-  await env.ENGAGEMENT.put('lead:' + ts + '-' + Math.random().toString(36).slice(2, 8), JSON.stringify({
-    ts, data: new Date(ts).toISOString(), nome: reg.nome || 'Sem nome', fone: wa,
-    bairro: reg.bairros[0] || '', cod: '', origem: 'typebot', crmId: id,
-    resumo: [reg.finalidade, reg.tipos.join('/'), reg.prazo].filter(Boolean).join(' · '),
-  }))
-  return json({ ok: true, token: id })
 }

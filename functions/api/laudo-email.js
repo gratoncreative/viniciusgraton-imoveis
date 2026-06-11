@@ -8,8 +8,10 @@
  */
 const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } })
 const emailOk = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)
+const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
 
 export async function onRequestPost({ env, request }) {
+  try {
   const key = String((env && env.RESEND_KEY) || '').trim()
   if (!key) return json({ ok: false, semEmail: true })
 
@@ -22,6 +24,24 @@ export async function onRequestPost({ env, request }) {
 
   if (!emailOk(email)) return json({ error: 'email-invalido' }, 400)
   if (!pdf_b64 || pdf_b64.length < 100) return json({ error: 'pdf-vazio' }, 400)
+  if (pdf_b64.length > 10_000_000) return json({ error: 'pdf-grande' }, 413)
+
+  // rate-limit: máx 3 envios por IP/hora + máx 2 para o mesmo destino por dia
+  if (temKV(env)) {
+    const ip = request.headers.get('cf-connecting-ip') || 'sem-ip'
+    const rlIp = 'rl:laudo-ip:' + ip
+    const rlDest = 'rl:laudo-dest:' + email.replace(/[^a-z0-9@.]/g, '')
+    const [usosIp, usosDest] = await Promise.all([
+      env.ENGAGEMENT.get(rlIp).then(v => parseInt(v, 10) || 0),
+      env.ENGAGEMENT.get(rlDest).then(v => parseInt(v, 10) || 0),
+    ])
+    if (usosIp >= 3) return json({ ok: false, erro: 'Muitas tentativas. Tente em 1 hora.' }, 429)
+    if (usosDest >= 2) return json({ ok: false, erro: 'Já enviamos para este e-mail hoje.' }, 429)
+    await Promise.all([
+      env.ENGAGEMENT.put(rlIp, String(usosIp + 1), { expirationTtl: 3600 }),
+      env.ENGAGEMENT.put(rlDest, String(usosDest + 1), { expirationTtl: 86400 }),
+    ])
+  }
 
   const body = {
     from: 'Vinícius Graton <laudo@viniciusgraton.com.br>',
@@ -58,5 +78,9 @@ export async function onRequestPost({ env, request }) {
     return json({ ok: true })
   } catch (e) {
     return json({ ok: false, erro: e.message })
+  }
+  } catch (e) {
+    console.error('laudo-email:', e)
+    return json({ ok: false, erro: 'Erro interno. Tente novamente.' }, 500)
   }
 }

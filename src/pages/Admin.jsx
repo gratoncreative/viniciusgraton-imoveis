@@ -1,12 +1,13 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import { useSEO } from '../useSEO'
 import { CONFIG, IMOVEIS, IMOVEIS_PENDENTES, formatPreco, CONSTRUTORAS } from '../data'
 import { IconShield, IconArrow, IconWhats } from '../components/icons'
-import RemoverMarca from '../components/RemoverMarca'
-import MelhorarFotos from '../components/MelhorarFotos'
-import PostGen from '../components/PostGen'
 import AdminCRM from '../components/AdminCRM'
 import InputMoeda from '../components/InputMoeda'
+
+const RemoverMarca = lazy(() => import('../components/RemoverMarca'))
+const MelhorarFotos = lazy(() => import('../components/MelhorarFotos'))
+const PostGen = lazy(() => import('../components/PostGen'))
 
 const LSK = 'vg_admin_token'
 const waLink = (fone) => { const d = String(fone || '').replace(/\D/g, ''); const full = d.length <= 11 ? '55' + d : d; return `https://wa.me/${full}` }
@@ -847,11 +848,11 @@ export default function Admin() {
           )
         })()}
 
-        {aba === 'post' && <PostGen />}
+        {aba === 'post' && <Suspense fallback={<p className="section-sub">Carregando…</p>}><PostGen /></Suspense>}
 
-        {aba === 'fotos' && <MelhorarFotos />}
+        {aba === 'fotos' && <Suspense fallback={<p className="section-sub">Carregando…</p>}><MelhorarFotos /></Suspense>}
 
-        {aba === 'marca' && <RemoverMarca />}
+        {aba === 'marca' && <Suspense fallback={<p className="section-sub">Carregando…</p>}><RemoverMarca /></Suspense>}
 
         <p className="calc-nota rel-noprint" style={{ marginTop: 22 }}>Painel seguro · sessão de 12h · WhatsApp do site: {CONFIG.telefone || ''}.</p>
       </div>

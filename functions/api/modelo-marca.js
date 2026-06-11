@@ -23,7 +23,7 @@ export async function onRequestGet({ request, waitUntil }) {
     headers: {
       'content-type': 'application/octet-stream',
       'cache-control': 'public, max-age=2592000, immutable',
-      'access-control-allow-origin': '*',
+      'access-control-allow-origin': 'https://viniciusgraton.com.br',
     },
   })
   waitUntil(cache.put(chave, resp.clone()))

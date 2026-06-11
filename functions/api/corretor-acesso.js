@@ -19,6 +19,18 @@ export async function onRequestPost({ request, env }) {
   const codigo = String(body.codigo || '').trim()
   if (!codigo) return json({ ok: false })
 
+  // rate-limit por IP: máx 10 tentativas/hora
+  if (env && env.ENGAGEMENT) {
+    const ip = request.headers.get('cf-connecting-ip') || 'sem-ip'
+    const rlKey = 'rl:acesso:' + ip
+    const usos = parseInt(await env.ENGAGEMENT.get(rlKey).catch(() => null), 10) || 0
+    if (usos >= 10) return json({ ok: false, erro: 'Muitas tentativas. Tente mais tarde.' }, 429)
+    await env.ENGAGEMENT.put(rlKey, String(usos + 1), { expirationTtl: 3600 })
+  }
+
+  // valida formato antes de consultar KV
+  if (!/^(TRIAL-[A-Z0-9]{8}|[A-Z0-9]{4,32})$/.test(codigo)) return json({ ok: false })
+
   // 1. Código dinâmico no KV (pago ou trial)
   if (env && env.ENGAGEMENT) {
     const dado = await env.ENGAGEMENT.get(`corretor:code:${codigo}`, 'json').catch(() => null)
