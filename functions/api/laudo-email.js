@@ -9,6 +9,20 @@
 const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } })
 const emailOk = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)
 const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
+const MP = 'https://api.mercadopago.com'
+
+async function verificarPagamento(env, paymentId, codigo) {
+  const token = String((env && env.MP_ACCESS_TOKEN) || '').trim()
+  if (!token || !paymentId) return false
+  try {
+    const r = await fetch(`${MP}/v1/payments/${paymentId}`, { headers: { authorization: 'Bearer ' + token } })
+    const pay = await r.json()
+    const aprovado = pay && pay.status === 'approved'
+    const valorOk = pay && Number(pay.transaction_amount) >= 29
+    const refOk = !codigo || (pay && String(pay.external_reference || '').includes(codigo))
+    return !!(aprovado && valorOk && refOk)
+  } catch { return false }
+}
 
 export async function onRequestPost({ env, request }) {
   try {
@@ -21,10 +35,15 @@ export async function onRequestPost({ env, request }) {
   const pdf_b64 = String(b.pdf_b64 || '')
   const filename = String(b.filename || 'laudo-m2.pdf').replace(/[^a-z0-9._-]/gi, '').slice(0, 60) || 'laudo-m2.pdf'
   const codigo = String(b.codigo || '').replace(/[^\w-]/g, '').slice(0, 16)
+  const paymentId = String(b.payment_id || '').replace(/\D/g, '')
 
   if (!emailOk(email)) return json({ error: 'email-invalido' }, 400)
   if (!pdf_b64 || pdf_b64.length < 100) return json({ error: 'pdf-vazio' }, 400)
   if (pdf_b64.length > 10_000_000) return json({ error: 'pdf-grande' }, 413)
+
+  // verifica pagamento antes de enviar (evita abuso da API de email)
+  const pago = await verificarPagamento(env, paymentId, codigo)
+  if (!pago) return json({ ok: false, erro: 'pagamento-nao-verificado' }, 402)
 
   // rate-limit: máx 3 envios por IP/hora + máx 2 para o mesmo destino por dia
   if (temKV(env)) {

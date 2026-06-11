@@ -1,9 +1,11 @@
+import { lazy, Suspense } from 'react'
 import Hero from '../components/Hero'
 import Destaque from '../components/Destaque'
-import BlogHome from '../components/BlogHome'
 import VenderCta from '../components/VenderCta'
 import Novidades from '../components/Novidades'
 import { useSEO } from '../useSEO'
+
+const BlogHome = lazy(() => import('../components/BlogHome'))
 
 // Página inicial = VITRINE. Lidera com os imóveis disponíveis; o conteúdo de
 // apoio (como eu te ajudo, sobre, regiões) virou página própria no menu.
@@ -21,7 +23,7 @@ export default function Home() {
       <Novidades />
       <Destaque limite={9} />
       <VenderCta />
-      <BlogHome />
+      <Suspense fallback={null}><BlogHome /></Suspense>
     </main>
   )
 }

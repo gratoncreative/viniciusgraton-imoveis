@@ -175,7 +175,7 @@ export default function ImovelDetalhe() {
   // se NADA carregou ainda, tenta de novo sozinho a cada 5s (até 3x) — nunca fica preso
   useEffect(() => {
     if (im || tentativa >= 3) return
-    const t = setTimeout(() => setTentativa((n) => n + 1), 5000)
+    const t = setTimeout(() => setTentativa((n) => n + 1), 3000)
     return () => clearTimeout(t)
   }, [im, tentativa])
 
@@ -295,7 +295,12 @@ export default function ImovelDetalhe() {
               <span className="det-load-anel" />
             </div>
             <p className="det-load-msg">{MSG_LOAD[msgIdx % MSG_LOAD.length]}</p>
-            <p className="det-load-sub">Se a internet estiver lenta, a gente tenta de novo sozinho em alguns segundos. 😉</p>
+            <p className="det-load-sub">Se a internet estiver lenta, a gente tenta de novo sozinho em alguns segundos.</p>
+            {tentativa > 0 && (
+              <button className="btn btn-ghost" style={{ marginTop: 16 }} onClick={() => setTentativa(0)}>
+                Tentar novamente
+              </button>
+            )}
           </div>
         </main>
       )

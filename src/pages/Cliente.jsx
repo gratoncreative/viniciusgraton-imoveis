@@ -101,7 +101,7 @@ export default function Cliente() {
             const b64 = reader.result.split(',')[1]
             fetch('/api/laudo-email', {
               method: 'POST', headers: { 'content-type': 'application/json' },
-              body: JSON.stringify({ email: c.email, nome: c.nome, pdf_b64: b64, filename: `laudo-m2-${im.codigo}.pdf`, codigo: im.codigo }),
+              body: JSON.stringify({ email: c.email, nome: c.nome, pdf_b64: b64, filename: `laudo-m2-${im.codigo}.pdf`, codigo: im.codigo, payment_id: paymentId }),
             }).catch(() => {})
           }
         }
