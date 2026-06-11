@@ -129,11 +129,14 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
     setSel(j.cliente); setSalvo(true); setTimeout(() => setSalvo(false), 1800); carregar()
     return j.cliente
   }
-  // Salva ANTES de abrir/enviar — garante que a página do cliente reflita as alterações
+  // Salva ANTES de abrir/enviar — aguarda propagação do Cloudflare KV (pode levar até ~2s)
+  const [abrindo, setAbrindo] = useState(false)
   const comSalvar = async (acao) => {
+    setAbrindo(true)
     const c = await salvar()
-    if (!c || !c.id) return
-    await new Promise((r) => setTimeout(r, 700)) // pequena espera p/ o banco propagar
+    if (!c || !c.id) { setAbrindo(false); return }
+    await new Promise((r) => setTimeout(r, 2500))
+    setAbrindo(false)
     acao(c)
   }
   const excluir = async (id) => {
@@ -399,9 +402,9 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                 <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Página do cliente</h3>
                 <p className="calc-nota">Link exclusivo (privado, não indexado). Os botões abaixo <b>salvam suas alterações automaticamente</b> antes de abrir/enviar.</p>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                  <button className="admin-btn" onClick={() => comSalvar((c) => window.open(linkCliente(c), '_blank', 'noopener'))}>Salvar e abrir página</button>
-                  <button className="admin-btn" onClick={() => comSalvar((c) => { navigator.clipboard?.writeText(linkCliente(c)); setLinkCopiado(true); setTimeout(() => setLinkCopiado(false), 1500) })}>{linkCopiado ? '✓ copiado' : 'Salvar e copiar link'}</button>
-                  <button className="btn btn-gold" onClick={() => comSalvar((c) => window.open(waLink(c.whatsapp, montarMsgCliente(c)), '_blank', 'noopener'))}>Salvar e enviar no WhatsApp</button>
+                  <button className="admin-btn" disabled={abrindo} onClick={() => comSalvar((c) => window.open(linkCliente(c), '_blank', 'noopener'))}>{abrindo ? '⏳ Salvando…' : 'Salvar e abrir página'}</button>
+                  <button className="admin-btn" disabled={abrindo} onClick={() => comSalvar((c) => { navigator.clipboard?.writeText(linkCliente(c)); setLinkCopiado(true); setTimeout(() => setLinkCopiado(false), 1500) })}>{abrindo ? '⏳ Salvando…' : linkCopiado ? '✓ copiado' : 'Salvar e copiar link'}</button>
+                  <button className="btn btn-gold" disabled={abrindo} onClick={() => comSalvar((c) => window.open(waLink(c.whatsapp, montarMsgCliente(c)), '_blank', 'noopener'))}>{abrindo ? '⏳ Salvando…' : 'Salvar e enviar no WhatsApp'}</button>
                 </div>
               </div>
             )}

@@ -30,7 +30,7 @@ export default function Cliente() {
 
   useEffect(() => {
     let vivo = true
-    fetch('/api/cliente?t=' + encodeURIComponent(token || ''))
+    fetch('/api/cliente?t=' + encodeURIComponent(token || ''), { cache: 'no-store' })
       .then((r) => r.json())
       .then((j) => {
         if (!vivo) return
