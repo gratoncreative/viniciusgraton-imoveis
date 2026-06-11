@@ -58,6 +58,14 @@ export default function BlogPost() {
     if (faqBloco && (faqBloco.perguntas || []).length) {
       grafo.push({ '@type': 'FAQPage', mainEntity: faqBloco.perguntas.map((q) => ({ '@type': 'Question', name: q.q, acceptedAnswer: { '@type': 'Answer', text: q.a } })) })
     }
+    grafo.push({
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://viniciusgraton.com.br/' },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://viniciusgraton.com.br/blog' },
+        { '@type': 'ListItem', position: 3, name: p.titulo, item: url },
+      ],
+    })
     el.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': grafo })
     document.head.appendChild(el)
     return () => { document.getElementById('post-jsonld')?.remove() }

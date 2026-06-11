@@ -277,10 +277,19 @@ export default function ImovelDetalhe() {
         seller: { '@type': 'RealEstateAgent', name: CONFIG.marca, areaServed: 'Uberlândia - MG' },
       },
     }
+    const breadcrumb = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://viniciusgraton.com.br/' },
+        { '@type': 'ListItem', position: 2, name: 'Imóveis', item: 'https://viniciusgraton.com.br/imoveis' },
+        { '@type': 'ListItem', position: 3, name: `${im.tipo} no ${im.bairro}`, item: `https://viniciusgraton.com.br/imovel/${im.codigo}` },
+      ],
+    }
     const el = document.createElement('script')
     el.type = 'application/ld+json'
     el.id = 'ld-imovel'
-    el.text = JSON.stringify(data)
+    el.text = JSON.stringify({ '@context': 'https://schema.org', '@graph': [data, breadcrumb] })
     document.head.appendChild(el)
     return () => { document.getElementById('ld-imovel')?.remove() }
   }, [im, fotos])
