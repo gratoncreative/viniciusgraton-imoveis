@@ -75,6 +75,7 @@ export async function onRequestPost({ request, env }) {
         failure: `${SITE}/corretor?pg_falha=1`,
       },
       auto_return: 'approved',
+      notification_url: `${SITE}/api/corretor-webhook?evento=mp`,
       statement_descriptor: 'VINIC GRATON',
       metadata: { tipo: 'corretor-assinatura', plano, tempId },
     }

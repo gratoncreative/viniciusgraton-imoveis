@@ -405,15 +405,25 @@ function GateCorretor({ onOk }) {
   const setA = (k) => (e) => setFAcesso(p => ({ ...p, [k]: k === 'fone' ? mascaraFone(e.target.value) : e.target.value }))
   const setC = (k) => (e) => setFCheckout(p => ({ ...p, [k]: k === 'fone' ? mascaraFone(e.target.value) : e.target.value }))
 
-  // Detecta retorno do Mercado Pago com payment_id aprovado
+  // Detecta retorno do Mercado Pago
   useEffect(() => {
     const sp = new URLSearchParams(window.location.search)
     const payId = sp.get('payment_id')
     const extRef = sp.get('external_reference')
     const status = sp.get('status')
+    const pgPendente = sp.get('pg_pendente')
+    const pgFalha = sp.get('pg_falha')
+    window.history.replaceState({}, '', '/corretor')
+    if (pgFalha) {
+      setErro('O pagamento não foi concluído. Você pode tentar novamente ou entrar pelo WhatsApp.')
+      return
+    }
+    if (pgPendente) {
+      setErro('Seu pagamento está em análise (PIX ou boleto). Assim que confirmado, o código de acesso chega automaticamente. Se já pagou e está aguardando, volte em alguns minutos.')
+      return
+    }
     if (payId && extRef && status === 'approved') {
       setAtivandoMP(true)
-      window.history.replaceState({}, '', '/corretor')
       fetch('/api/corretor-ativar', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
