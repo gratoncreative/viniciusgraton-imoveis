@@ -8,6 +8,7 @@
  */
 const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } })
 const emailOk = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)
+const escHtml = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
 const MP = 'https://api.mercadopago.com'
 
@@ -72,7 +73,7 @@ export async function onRequestPost({ env, request }) {
     <p style="color:#a8aebb;font-size:11px;margin:4px 0 0">Rotina Imobiliária · Uberlândia/MG</p>
   </div>
   <div style="background:#f7f5f0;padding:24px;border-radius:0 0 12px 12px">
-    <p style="font-size:16px;font-weight:700;margin:0 0 12px">Olá${nome ? ', ' + nome.split(' ')[0] : ''}!</p>
+    <p style="font-size:16px;font-weight:700;margin:0 0 12px">Olá${nome ? ', ' + escHtml(nome.split(' ')[0]) : ''}!</p>
     <p style="color:#3a404c;line-height:1.6;margin:0 0 14px">Segue em anexo o <b>laudo técnico do valor do m²</b> referente ao imóvel de código <b>${codigo}</b>, elaborado com a metodologia <b>ABNT NBR 14653</b>.</p>
     <p style="color:#3a404c;line-height:1.6;margin:0 0 14px">Este documento pode ser usado como referência para negociação de preço e financiamento bancário.</p>
     <p style="color:#3a404c;line-height:1.6;margin:0 0 20px">Qualquer dúvida, é só me chamar pelo WhatsApp.</p>
