@@ -12,6 +12,32 @@ const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'f
 const SITE = 'https://viniciusgraton.com.br'
 const MP = 'https://api.mercadopago.com'
 
+// Verificação de assinatura HMAC-SHA256 do Mercado Pago
+// Docs: https://www.mercadopago.com.br/developers/pt/docs/your-integrations/notifications/webhooks
+async function verificarAssinatura(request, env, dataId) {
+  const secret = String(env.MP_WEBHOOK_SECRET || '').trim()
+  if (!secret) return true // sem segredo configurado: passa (backward compat)
+  const xSig = request.headers.get('x-signature') || ''
+  const xReqId = request.headers.get('x-request-id') || ''
+  const ts = (xSig.match(/ts=([^,]+)/) || [])[1]
+  const v1 = (xSig.match(/v1=([^,]+)/) || [])[1]
+  if (!ts || !v1) return false // header ausente → rejeitar
+  // Manifesto canônico: partes não-vazias separadas por ';', terminado por ';'
+  const partes = []
+  if (dataId) partes.push('id:' + dataId)
+  if (xReqId) partes.push('request-id:' + xReqId)
+  partes.push('ts:' + ts)
+  const manifesto = partes.join(';') + ';'
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
+  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(manifesto))
+  const computed = [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, '0')).join('')
+  // Comparação em tempo constante (evita timing attack)
+  if (computed.length !== v1.length) return false
+  let diff = 0
+  for (let i = 0; i < computed.length; i++) diff |= computed.charCodeAt(i) ^ v1.charCodeAt(i)
+  return diff === 0
+}
+
 // planos (autoritativos no servidor)
 const PLANOS = {
   p7: { nome: 'Destaque 7 dias', dias: 7, preco: 29.9 },
@@ -39,8 +65,14 @@ export async function onRequestPost({ env, request }) {
   if (url.searchParams.get('evento') === 'mp' || url.searchParams.get('type') === 'payment' || url.searchParams.get('topic') === 'payment') {
     if (!token) return json({ ok: true })
     let payId = url.searchParams.get('data.id') || url.searchParams.get('id')
-    if (!payId) { const b = await request.json().catch(() => ({})); payId = (b && (b.data?.id || b.id)) || null }
+    let body = null
+    if (!payId) { body = await request.json().catch(() => ({})); payId = (body && (body.data?.id || body.id)) || null }
     if (!payId) return json({ ok: true })
+    // Verifica assinatura HMAC antes de processar
+    if (!(await verificarAssinatura(request, env, payId))) {
+      console.error('impulsionar: assinatura inválida, rejeitando webhook')
+      return json({ error: 'assinatura' }, 403)
+    }
     try {
       const r = await fetch(`${MP}/v1/payments/${payId}`, { headers: { authorization: 'Bearer ' + token } })
       const pay = await r.json()
