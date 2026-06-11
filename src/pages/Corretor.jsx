@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, lazy, Suspense } from 'react'
+﻿import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
 import { getCorretor, salvarCorretor, sairCorretor } from '../corretor'
@@ -7,7 +7,6 @@ import { CalcComissao, CalcACM, FichaAvaliacao } from './Ferramentas'
 import FerramentaRotina from '../components/FerramentaRotina'
 import { IconShield, IconArrow } from '../components/icons'
 
-// Estúdios pesados (IA) só carregam quando o corretor abre — mantém a página leve
 const MelhorarFotos = lazy(() => import('../components/MelhorarFotos'))
 const PostGen = lazy(() => import('../components/PostGen'))
 const RemoverMarca = lazy(() => import('../components/RemoverMarca'))
@@ -20,6 +19,7 @@ const mascaraFone = (s) => {
   if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`
   return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`
 }
+const fmtData = (ts) => new Date(ts).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
 
 const ICN = {
   chat: 'M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2zM8 9h8M8 13h5',
@@ -32,57 +32,516 @@ const ICN = {
   swap: 'M16 3h5v5M21 3l-7 7M8 21H3v-5M3 21l7-7',
   foguete: 'M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09zM12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2zM9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5',
   painel: 'M3 3h18v18H3zM3 9h18M9 21V9',
+  doc: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8',
+  list: 'M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 0 2-2h2a2 2 0 0 0 2 2m-6 9 2 2 4-4',
+  msg: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.97-4.03 9-9 9a9.86 9.86 0 0 1-4.29-.97L3 21l1.97-4.71A8.96 8.96 0 0 1 3 12C3 7.03 7.03 3 12 3s9 4.03 9 9z',
+  video: 'M23 7 16 12 23 17zM1 5h15a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H1a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z',
+  calc: 'M4 7h4M4 12h4M4 17h4M14 7h6M14 12h6M14 17h6',
+  clock: 'M12 22c5.52 0 10-4.48 10-10S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10zM12 6v6l4 2',
 }
 const Ico = ({ name, size = 22 }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={ICN[name]} /></svg>
 )
 
-// ferramentas internas (renderizam aqui) e atalhos (vão pra outra página)
+// ─── ferramentas ────────────────────────────────────────────────────────────
 const TOOLS = [
-  { id: 'rotina', nome: 'Abordagem por código', desc: 'Cole o código do imóvel e gere a mensagem de 1º contato com gatilhos + benefícios da região.', icon: 'chat' },
-  { id: 'fotos', nome: 'Estúdio de fotos', desc: 'Endireitar, filtros, super-resolução com IA, marca d’água e vídeo do imóvel.', icon: 'camera' },
-  { id: 'post', nome: 'Estúdio de publicidade', desc: 'Posts prontos pra Story e Feed com 5 estilos de design, em lote.', icon: 'megafone' },
-  { id: 'marca', nome: 'Remover marca d’água', desc: 'Limpa marcas das fotos com IA, direto no navegador.', icon: 'varinha' },
-  { id: 'comissao', nome: 'Calculadora de comissão', desc: 'Comissão e repasse de uma venda.', icon: 'percent' },
-  { id: 'acm', nome: 'Análise de mercado (ACM)', desc: 'Sugere o preço do imóvel pelo m² do bairro.', icon: 'chart' },
-  { id: 'ficha', nome: 'Ficha de avaliação rápida', desc: 'Gera um resumo do imóvel pra enviar.', icon: 'edit' },
+  { id: 'rotina',   nome: 'Abordagem por código',      desc: 'Mensagem de 1º contato com gatilhos e benefícios da região.',             icon: 'chat'     },
+  { id: 'legenda',  nome: 'Legenda para portais',       desc: 'Gera descrição profissional para OLX, ZAP e VivaReal em segundos.',       icon: 'doc'      },
+  { id: 'objecoes', nome: 'Script de objeções',         desc: 'Respostas prontas para as objeções mais comuns no WhatsApp.',             icon: 'msg'      },
+  { id: 'captacao', nome: 'Checklist de captação',      desc: 'Lista completa do que verificar na captação de um novo imóvel.',          icon: 'list'     },
+  { id: 'fotos',    nome: 'Estúdio de fotos',           desc: 'Endireitar, filtros, super-resolução com IA e sem marca.',              icon: 'camera'   },
+  { id: 'post',     nome: 'Estúdio de publicidade',     desc: 'Posts para Story e Feed com 5 estilos de design, em lote.',              icon: 'megafone' },
+  { id: 'roteiro',  nome: 'Roteiro de vídeo',           desc: 'Gera roteiro completo para gravar o vídeo do imóvel de forma profissional.', icon: 'video' },
+  { id: 'marca',    nome: 'Remover marcas das fotos',   desc: 'Remove logotipos e marcas com IA, direto no navegador.',               icon: 'varinha'  },
+  { id: 'comissao', nome: 'Calculadora de comissão',    desc: 'Comissão, repasse e líquido de uma venda.',                              icon: 'percent'  },
+  { id: 'acm',      nome: 'Análise de mercado (ACM)',   desc: 'Sugere o preço pelo m² do bairro com base nos imóveis do catálogo.',     icon: 'chart'    },
+  { id: 'ficha',    nome: 'Ficha de avaliação',         desc: 'Resumo formatado do imóvel para enviar ao cliente.',                     icon: 'edit'     },
+  { id: 'agenda',   nome: 'Planner de visitas',         desc: 'Organize sua agenda de visitas do dia com horários e observações.',      icon: 'clock'    },
 ]
 const ATALHOS = [
-  { to: '/ferramentas/converter', nome: 'Conversor de fotos', desc: 'JPG, PNG, WebP e AVIF em lote.', icon: 'swap' },
-  { to: '/impulsionar', nome: 'Impulsionar anúncio', desc: 'Destaque pago pro seu imóvel.', icon: 'foguete' },
+  { to: '/ferramentas/converter', nome: 'Conversor de fotos',  desc: 'JPG, PNG, WebP e AVIF em lote.',              icon: 'swap'    },
+  { to: '/impulsionar',           nome: 'Impulsionar anúncio', desc: 'Destaque pago para o seu imóvel nos buscadores.', icon: 'foguete' },
 ]
 
-const RENDER = { rotina: FerramentaRotina, comissao: CalcComissao, acm: CalcACM, ficha: FichaAvaliacao, fotos: MelhorarFotos, post: PostGen, marca: RemoverMarca }
+// ─── componentes internos ────────────────────────────────────────────────────
 
-// ---------- porta de entrada: valida o código da Rotina no servidor ----------
-function GateCorretor({ onOk }) {
-  const [f, setF] = useState({ nome: '', creci: '', fone: '', email: '', codigo: '' })
-  const [erro, setErro] = useState('')
-  const [enviando, setEnviando] = useState(false)
-  const set = (k) => (e) => setF({ ...f, [k]: k === 'fone' ? mascaraFone(e.target.value) : e.target.value })
+function LegendaPortais() {
+  const [f, setF] = useState({ tipo: 'Apartamento', quartos: '', suites: '', vagas: '', area: '', bairro: '', preco: '', diferenciais: '', disponivel: '' })
+  const [texto, setTexto] = useState('')
+  const [copiado, setCopiado] = useState(false)
+  const set = (k) => (e) => setF(p => ({ ...p, [k]: e.target.value }))
 
-  const enviar = async (e) => {
-    e.preventDefault()
-    const nome = f.nome.trim()
-    if (nome.length < 3) { setErro('Informe seu nome completo.'); return }
-    if (soNum(f.fone).length < 10) { setErro('Informe um WhatsApp válido com DDD.'); return }
-    if (!f.codigo.trim()) { setErro('Digite o código de acesso enviado após o seu cadastro.'); return }
-    setErro(''); setEnviando(true)
-    let res = { ok: false }
-    try {
-      const r = await fetch('/api/corretor-acesso', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ codigo: f.codigo.trim() }) })
-      res = await r.json()
-    } catch { setErro('Falha de conexão. Tente de novo.'); setEnviando(false); return }
-    if (res.naoConfigurado) { setErro('Acesso ainda não liberado. Aguarde a confirmação do seu cadastro ou entre em contato.'); setEnviando(false); return }
-    if (!res.ok) { setErro('Código inválido. Verifique o código recebido após a confirmação do seu cadastro.'); setEnviando(false); return }
-    const c = salvarCorretor({ nome, creci: f.creci.trim(), imobiliaria: f.email.trim() ? '' : 'Rotina Imobiliária', rotina: true, fone: f.fone.trim(), email: f.email.trim() })
-    try {
-      registrarLead({ cod: 'corretor-pro', nome, fone: f.fone.trim(), email: f.email.trim(), bairro: `Corretor Pro${f.creci.trim() ? ' · CRECI ' + f.creci.trim() : ''}`.slice(0, 120) })
-    } catch {}
-    onOk(c)
+  const gerar = () => {
+    const { tipo, quartos, suites, vagas, area, bairro, preco, diferenciais, disponivel } = f
+    const linhas = []
+    linhas.push(`🏠 ${tipo}${bairro ? ' no ' + bairro : ''} — oportunidade imperdível!`)
+    linhas.push('')
+    if (quartos) linhas.push(`🛏 ${quartos} quarto${quartos > 1 ? 's' : ''}${suites ? ` (${suites} suíte${suites > 1 ? 's' : ''})` : ''}`)
+    if (vagas) linhas.push(`🚗 ${vagas} vaga${vagas > 1 ? 's' : ''} de garagem`)
+    if (area) linhas.push(`📐 ${area} m² de área`)
+    if (bairro) linhas.push(`📍 ${bairro} — Uberlândia/MG`)
+    if (preco) linhas.push(`💰 R$ ${preco}`)
+    if (diferenciais) {
+      linhas.push('')
+      linhas.push('✅ Diferenciais:')
+      diferenciais.split('\n').filter(Boolean).forEach(d => linhas.push(`• ${d.trim()}`))
+    }
+    linhas.push('')
+    linhas.push('📲 Quer saber mais? Me chama no WhatsApp!')
+    if (disponivel) linhas.push(`📅 Disponível a partir de: ${disponivel}`)
+    setTexto(linhas.join('\n'))
+    setCopiado(false)
   }
 
-  const msgCadastro = 'Olá Vinícius! Tenho interesse em assinar a Área do Corretor. Pode me explicar como funciona o cadastro e o pagamento?'
+  const copiar = () => {
+    navigator.clipboard.writeText(texto).then(() => { setCopiado(true); setTimeout(() => setCopiado(false), 2000) })
+  }
+
+  return (
+    <div className="corr-ferr">
+      <div className="corr-ferr-grade">
+        <label><span>Tipo de imóvel</span>
+          <select value={f.tipo} onChange={set('tipo')}>
+            {['Apartamento','Casa','Sobrado','Cobertura','Lote','Sala comercial','Galpão','Chácara'].map(t => <option key={t}>{t}</option>)}
+          </select>
+        </label>
+        <label><span>Bairro</span><input value={f.bairro} onChange={set('bairro')} placeholder="Tabajaras" /></label>
+        <label><span>Área (m²)</span><input type="number" value={f.area} onChange={set('area')} placeholder="120" /></label>
+        <label><span>Preço (ex: 550.000,00)</span><input value={f.preco} onChange={set('preco')} placeholder="550.000,00" /></label>
+        <label><span>Quartos</span><input type="number" value={f.quartos} onChange={set('quartos')} placeholder="3" /></label>
+        <label><span>Suítes</span><input type="number" value={f.suites} onChange={set('suites')} placeholder="1" /></label>
+        <label><span>Vagas</span><input type="number" value={f.vagas} onChange={set('vagas')} placeholder="2" /></label>
+        <label><span>Disponível a partir de</span><input value={f.disponivel} onChange={set('disponivel')} placeholder="Imediata" /></label>
+      </div>
+      <label><span>Diferenciais (um por linha)</span><textarea rows={3} value={f.diferenciais} onChange={set('diferenciais')} placeholder="Varanda gourmet&#10;Piscina&#10;Academia no condomínio" /></label>
+      <button className="btn btn-gold" style={{ marginTop: 10 }} onClick={gerar}>Gerar legenda</button>
+      {texto && (
+        <div className="corr-ferr-resultado">
+          <pre>{texto}</pre>
+          <button className="btn btn-ghost" onClick={copiar}>{copiado ? '✓ Copiado!' : 'Copiar texto'}</button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function ScriptObjecoes() {
+  const [aberto, setAberto] = useState(null)
+  const [copiado, setCopiado] = useState(null)
+
+  const copiar = (idx, txt) => {
+    navigator.clipboard.writeText(txt).then(() => { setCopiado(idx); setTimeout(() => setCopiado(null), 2000) })
+  }
+
+  const OBJECOES = [
+    {
+      objecao: '"Tá caro, achei mais barato em outro lugar."',
+      resposta: 'Entendo! Mas o preço de anúncio não é o preço real, né? Condomínio, IPTU, taxa de cartório e ITBI entram no custo total. Posso montar a conta cheia dos dois pra você comparar de verdade. Faz sentido?',
+    },
+    {
+      objecao: '"Vou pensar e te dou um retorno."',
+      resposta: 'Claro, sem pressão! Me ajuda só a entender o que travou — é o valor, o bairro, a parte do financiamento ou outra coisa? Pergunto porque às vezes é uma dúvida que resolve em 5 minutos e não precisa esperar.',
+    },
+    {
+      objecao: '"Não fui aprovado no financiamento."',
+      resposta: 'Isso é mais comum do que parece e quase sempre tem solução. Me conta o motivo que te informaram — renda, score ou restrição? A gente trabalha com vários bancos e dependendo do caso tem caminho alternativo.',
+    },
+    {
+      objecao: '"Prefiro alugar do que comprar agora."',
+      resposta: 'Faz sentido dependendo do momento. Mas posso te mostrar uma simulação rápida: qual seria sua parcela de financiamento vs. o aluguel que você pagaria no mesmo imóvel. Muita gente se surpreende com a diferença.',
+    },
+    {
+      objecao: '"Você é novo, não tem experiência."',
+      resposta: 'Verdade, estou em formação — e isso significa que você tem atenção total de alguém que quer mostrar resultado. E tenho o suporte completo de uma equipe com mais de 30 anos no mercado de Uberlândia. Melhor dos dois mundos.',
+    },
+    {
+      objecao: '"Vou ver com outro corretor também."',
+      resposta: 'Ótimo, comparar é sempre inteligente. Só lembra que tenho acesso ao mesmo catálogo que os outros corretores daqui. Se quiser, te mando uma lista com as opções que mais combinam com o seu perfil e você compara direto.',
+    },
+    {
+      objecao: '"Não tenho entrada."',
+      resposta: 'Vamos ver o que você tem disponível de FGTS — muita gente tem mais do que imagina parado lá. E dependendo do imóvel, o Minha Casa Minha Vida financia com entrada reduzida. Quanto você tem no FGTS aproximadamente?',
+    },
+    {
+      objecao: '"O imóvel não tem o que preciso."',
+      resposta: 'Me conta o que tava faltando — um cômodo, localização, tamanho? Com isso na mão consigo filtrar o catálogo e te mandar 3 opções que batem com exatamente o que você quer. Tem algum inegociável pra você?',
+    },
+  ]
+
+  return (
+    <div className="corr-ferr">
+      <p style={{ fontSize: '0.88rem', color: 'var(--text-soft)', marginBottom: 16 }}>Clique em uma objeção para ver a resposta e copiar.</p>
+      <div className="corr-objecoes">
+        {OBJECOES.map((o, i) => (
+          <div key={i} className={`corr-objcard ${aberto === i ? 'corr-objcard--open' : ''}`}>
+            <button className="corr-objcard-q" onClick={() => setAberto(aberto === i ? null : i)}>
+              <span>{o.objecao}</span>
+              <span className="corr-objcard-arr">{aberto === i ? '↑' : '↓'}</span>
+            </button>
+            {aberto === i && (
+              <div className="corr-objcard-r">
+                <p>{o.resposta}</p>
+                <button className="btn btn-ghost" style={{ marginTop: 8, fontSize: '0.8rem', padding: '6px 14px' }} onClick={() => copiar(i, o.resposta)}>
+                  {copiado === i ? '✓ Copiado!' : 'Copiar resposta'}
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function ChecklistCaptacao() {
+  const GRUPOS = [
+    { titulo: 'Documentação', itens: ['RG/CPF do proprietário', 'Escritura ou contrato de compra', 'Certidão de matrícula atualizada (< 30 dias)', 'IPTU do ano corrente', 'Habite-se (construções novas)', 'Declaração de inexistência de débitos condominiais', 'Procuração (se representado)'] },
+    { titulo: 'Vistoria do imóvel', itens: ['Metragem real conferida', 'Infiltrações/umidade nas paredes', 'Estado elétrico (quadro de energia)', 'Estado hidráulico (pressão, vedações)', 'Estrutura do telhado/laje', 'Janelas e portas em bom estado', 'Instalação de gás verificada', 'Ventilação e iluminação natural'] },
+    { titulo: 'Fotos e material', itens: ['Mínimo de 15 fotos de qualidade', 'Foto da fachada com boa luz', 'Todos os cômodos fotografados', 'Área externa/garagem/varanda', 'Área de lazer do condomínio', 'Vista do andar (se apartamento)', 'Vídeo de tour completo (opcional)'] },
+    { titulo: 'Dados para anúncio', itens: ['Endereço completo e CEP', 'Valor solicitado e margem de negociação', 'Condomínio e IPTU mensais', 'Aceita financiamento?', 'Aceita FGTS?', 'Aceita permuta?', 'Prazo para desocupação', 'Mobília inclusa (o quê?)'] },
+  ]
+
+  const [checks, setChecks] = useState({})
+  const toggle = (key) => setChecks(p => ({ ...p, [key]: !p[key] }))
+  const total = GRUPOS.flatMap(g => g.itens).length
+  const feitos = Object.values(checks).filter(Boolean).length
+
+  return (
+    <div className="corr-ferr">
+      <div className="corr-check-prog">
+        <div className="corr-check-barra"><div style={{ width: `${(feitos / total) * 100}%` }} /></div>
+        <span>{feitos} de {total} itens verificados</span>
+        {feitos === total && <span className="corr-check-ok">✓ Captação completa!</span>}
+      </div>
+      {GRUPOS.map((g, gi) => (
+        <div key={gi} className="corr-check-grupo">
+          <h5>{g.titulo}</h5>
+          <ul>
+            {g.itens.map((item, ii) => {
+              const key = `${gi}-${ii}`
+              return (
+                <li key={key} className={checks[key] ? 'checked' : ''} onClick={() => toggle(key)}>
+                  <span className="corr-check-box">{checks[key] ? '✓' : ''}</span>
+                  {item}
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      ))}
+      <button className="btn btn-ghost" style={{ marginTop: 12, fontSize: '0.8rem' }} onClick={() => setChecks({})}>Limpar checklist</button>
+    </div>
+  )
+}
+
+function RoteirVideo() {
+  const [f, setF] = useState({ tipo: 'Apartamento', quartos: '', area: '', bairro: '', destaque: '', publico: 'Família' })
+  const [roteiro, setRoteiro] = useState('')
+  const [copiado, setCopiado] = useState(false)
+  const set = (k) => (e) => setF(p => ({ ...p, [k]: e.target.value }))
+
+  const gerar = () => {
+    const { tipo, quartos, area, bairro, destaque, publico } = f
+    const desc = `${tipo}${quartos ? ' com ' + quartos + ' quartos' : ''}${area ? ' de ' + area + ' m²' : ''}${bairro ? ' no ' + bairro : ''}`
+    setRoteiro(`🎬 ROTEIRO DE VÍDEO — ${desc.toUpperCase()}
+
+▶ ABERTURA (0:00–0:10)
+Câmera na fachada. Fala:
+"Oi! Aqui é o [seu nome], e hoje vou te mostrar um ${tipo.toLowerCase()} incrível${bairro ? ' no ' + bairro : ''} que pode ser exatamente o que você está procurando${publico === 'Investidor' ? ' pra investir' : publico === 'Família' ? ' pra morar com a família' : ''}. Vem comigo!"
+
+▶ ENTRADA (0:10–0:25)
+Mostrar corredor/hall de entrada.
+"Olha que entrada bem pensada — já dá pra sentir a qualidade do imóvel desde aqui."
+
+▶ SALA (0:25–0:50)
+Panorâmica lenta da sala.
+"Aqui é a sala de estar${area ? ' — ' + area + ' m² no total' : ''}. Repara no espaço, na iluminação natural... perfeito para ${publico === 'Família' ? 'reunir a família' : 'receber clientes ou alugar'}."
+
+▶ COZINHA (0:50–1:10)
+Câmera passando pela cozinha.
+"A cozinha é bem funcional — [descreva o que viu: armários, bancada, área de serviço integrada etc.]."
+
+▶ QUARTOS (1:10–1:45)
+${quartos ? 'Mostrar cada quarto.' : 'Mostrar os ambientes.'}
+"${quartos ? `São ${quartos} quartos — ` : ''}[comentar sobre tamanho, armários embutidos, ventilação]."
+
+▶ ÁREA EXTERNA / GARAGEM / LAZER (1:45–2:10)
+"Olha que diferencial: [citar área de lazer, garagem, varanda, vista]."
+
+▶ DESTAQUE PRINCIPAL (2:10–2:25)
+${destaque ? `"Mas o que realmente se destaca aqui é ${destaque}. Isso é raro de encontrar no bairro."` : '"[Cite o maior diferencial do imóvel aqui.]"'}
+
+▶ FECHAMENTO (2:25–2:40)
+"Se você se interessou, me chama no WhatsApp — o link tá aqui embaixo. Atendo você pessoalmente e agendo a visita. Te vejo em breve!"
+
+💡 DICAS DE GRAVAÇÃO:
+• Use luz natural — grave entre 9h e 15h
+• Câmera no modo paisagem (horizontal)
+• Caminhe devagar e com movimentos suaves
+• Grave cada cômodo 3x e use a melhor tomada
+• Fundo musical leve (sem direitos autorais)`)
+    setCopiado(false)
+  }
+
+  const copiar = () => {
+    navigator.clipboard.writeText(roteiro).then(() => { setCopiado(true); setTimeout(() => setCopiado(false), 2000) })
+  }
+
+  return (
+    <div className="corr-ferr">
+      <div className="corr-ferr-grade">
+        <label><span>Tipo de imóvel</span>
+          <select value={f.tipo} onChange={set('tipo')}>
+            {['Apartamento','Casa','Sobrado','Cobertura','Lote','Sala comercial'].map(t => <option key={t}>{t}</option>)}
+          </select>
+        </label>
+        <label><span>Público-alvo</span>
+          <select value={f.publico} onChange={set('publico')}>
+            {['Família','Casal sem filhos','Investidor','Primeiro imóvel','Idosos'].map(t => <option key={t}>{t}</option>)}
+          </select>
+        </label>
+        <label><span>Quartos</span><input type="number" value={f.quartos} onChange={set('quartos')} placeholder="3" /></label>
+        <label><span>Área (m²)</span><input type="number" value={f.area} onChange={set('area')} placeholder="120" /></label>
+        <label><span>Bairro</span><input value={f.bairro} onChange={set('bairro')} placeholder="Tabajaras" /></label>
+      </div>
+      <label><span>Principal diferencial (será destacado no vídeo)</span><input value={f.destaque} onChange={set('destaque')} placeholder="varanda gourmet com churrasqueira" /></label>
+      <button className="btn btn-gold" style={{ marginTop: 10 }} onClick={gerar}>Gerar roteiro</button>
+      {roteiro && (
+        <div className="corr-ferr-resultado">
+          <pre>{roteiro}</pre>
+          <button className="btn btn-ghost" onClick={copiar}>{copiado ? '✓ Copiado!' : 'Copiar roteiro'}</button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function PlannerAgenda() {
+  const [visitas, setVisitas] = useState([{ hora: '', imovel: '', cliente: '', obs: '', feita: false }])
+  const addVisita = () => setVisitas(p => [...p, { hora: '', imovel: '', cliente: '', obs: '', feita: false }])
+  const rem = (i) => setVisitas(p => p.filter((_, j) => j !== i))
+  const upd = (i, k, v) => setVisitas(p => p.map((v2, j) => j === i ? { ...v2, [k]: v } : v2))
+  const feitas = visitas.filter(v => v.feita).length
+
+  return (
+    <div className="corr-ferr">
+      <div className="corr-agenda-header">
+        <span className="corr-agenda-prog">{feitas}/{visitas.length} visitas concluídas</span>
+        <button className="btn btn-ghost" style={{ fontSize: '0.8rem', padding: '6px 14px' }} onClick={addVisita}>+ Adicionar visita</button>
+      </div>
+      <div className="corr-agenda-lista">
+        {visitas.map((v, i) => (
+          <div key={i} className={`corr-agenda-item ${v.feita ? 'corr-agenda-item--feita' : ''}`}>
+            <button className="corr-agenda-check" onClick={() => upd(i, 'feita', !v.feita)}>{v.feita ? '✓' : ''}</button>
+            <div className="corr-agenda-campos">
+              <input value={v.hora} onChange={e => upd(i, 'hora', e.target.value)} placeholder="09:00" style={{ width: 70 }} />
+              <input value={v.imovel} onChange={e => upd(i, 'imovel', e.target.value)} placeholder="Imóvel (cód. ou endereço)" style={{ flex: 2 }} />
+              <input value={v.cliente} onChange={e => upd(i, 'cliente', e.target.value)} placeholder="Cliente" style={{ flex: 1 }} />
+              <input value={v.obs} onChange={e => upd(i, 'obs', e.target.value)} placeholder="Obs." style={{ flex: 1 }} />
+            </div>
+            <button className="corr-agenda-rem" onClick={() => rem(i)} title="Remover">×</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+const RENDER = {
+  rotina: FerramentaRotina,
+  comissao: CalcComissao,
+  acm: CalcACM,
+  ficha: FichaAvaliacao,
+  fotos: MelhorarFotos,
+  post: PostGen,
+  marca: RemoverMarca,
+  legenda: LegendaPortais,
+  objecoes: ScriptObjecoes,
+  captacao: ChecklistCaptacao,
+  roteiro: RoteirVideo,
+  agenda: PlannerAgenda,
+}
+
+// ─── gate de acesso ──────────────────────────────────────────────────────────
+
+const PLANOS = [
+  {
+    id: 'mensal',
+    periodo: 'Mensal',
+    preco: 'R$ 49,90',
+    sub: '/mês',
+    detalhe: 'Acesso completo por 30 dias',
+    popular: true,
+    economia: 'Melhor custo-benefício',
+    beneficios: ['Todas as ferramentas liberadas', 'IA sem limite de uso', 'Renovação automática opcional'],
+  },
+  {
+    id: 'semanal',
+    periodo: 'Semanal',
+    preco: 'R$ 15',
+    sub: '/semana',
+    detalhe: 'Acesso completo por 7 dias',
+    popular: false,
+    economia: 'Sem compromisso',
+    beneficios: ['Todas as ferramentas liberadas', 'Ideal para testar o fluxo', 'Renove quando quiser'],
+  },
+]
+
+function GateCorretor({ onOk }) {
+  const [aba, setAba] = useState('teste')
+  const [fTeste, setFTeste] = useState({ nome: '', fone: '' })
+  const [fAcesso, setFAcesso] = useState({ nome: '', fone: '', creci: '', email: '', codigo: '' })
+  const [fCheckout, setFCheckout] = useState({ nome: '', fone: '', email: '', creci: '' })
+  const [planoSel, setPlanoSel] = useState('mensal')
+  const [erro, setErro] = useState('')
+  const [enviando, setEnviando] = useState(false)
+  const [trialOk, setTrialOk] = useState(null)
+  const [ativandoMP, setAtivandoMP] = useState(false)
+  const [codigoAtivado, setCodigoAtivado] = useState(null) // { codigo, expiresAt, nome, plano }
+
+  const setT = (k) => (e) => setFTeste(p => ({ ...p, [k]: k === 'fone' ? mascaraFone(e.target.value) : e.target.value }))
+  const setA = (k) => (e) => setFAcesso(p => ({ ...p, [k]: k === 'fone' ? mascaraFone(e.target.value) : e.target.value }))
+  const setC = (k) => (e) => setFCheckout(p => ({ ...p, [k]: k === 'fone' ? mascaraFone(e.target.value) : e.target.value }))
+
+  // Detecta retorno do Mercado Pago com payment_id aprovado
+  useEffect(() => {
+    const sp = new URLSearchParams(window.location.search)
+    const payId = sp.get('payment_id')
+    const extRef = sp.get('external_reference')
+    const status = sp.get('status')
+    if (payId && extRef && status === 'approved') {
+      setAtivandoMP(true)
+      window.history.replaceState({}, '', '/corretor')
+      fetch('/api/corretor-ativar', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ payment_id: payId, external_reference: extRef }),
+      })
+        .then(r => r.json())
+        .then(res => {
+          if (res.ok) {
+            setCodigoAtivado(res)
+            salvarCorretor({ nome: res.nome || '', creci: '', rotina: true, fone: '', email: '' })
+          } else {
+            setErro(res.erro || 'Pagamento aprovado, mas não foi possível gerar o código. Entre em contato pelo WhatsApp com o ID: ' + payId)
+            setAtivandoMP(false)
+          }
+        })
+        .catch(() => { setErro('Falha ao ativar após pagamento. Guarde seu Payment ID: ' + payId + ' e entre em contato.'); setAtivandoMP(false) })
+    }
+  }, [])
+
+  const ativarTeste = async (e) => {
+    e.preventDefault()
+    const nome = fTeste.nome.trim()
+    if (nome.length < 3) { setErro('Informe seu nome completo.'); return }
+    if (soNum(fTeste.fone).length < 10) { setErro('WhatsApp inválido.'); return }
+    setErro(''); setEnviando(true)
+    try {
+      const r = await fetch('/api/corretor-trial', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ nome, fone: soNum(fTeste.fone) }) })
+      const res = await r.json()
+      if (res.expirado) { setErro('Seu período de teste de 24h já foi utilizado. Assine um plano para continuar.'); setEnviando(false); setAba('acesso'); return }
+      if (!res.ok) { setErro(res.erro || 'Não foi possível ativar o teste. Tente novamente.'); setEnviando(false); return }
+      // Auto-login com o código gerado
+      const r2 = await fetch('/api/corretor-acesso', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ codigo: res.codigo }) })
+      const res2 = await r2.json()
+      if (res2.ok) {
+        const c = salvarCorretor({ nome, creci: '', rotina: true, fone: soNum(fTeste.fone), email: '' })
+        setTrialOk({ codigo: res.codigo, expiresAt: res.expiresAt, ativo: res.ativo })
+        setTimeout(() => onOk(c), 1800)
+      } else {
+        setErro('Erro ao ativar. Tente novamente.')
+      }
+    } catch { setErro('Falha de conexão.') }
+    setEnviando(false)
+  }
+
+  const entrarComCodigo = async (e) => {
+    e.preventDefault()
+    const nome = fAcesso.nome.trim()
+    if (nome.length < 3) { setErro('Informe seu nome.'); return }
+    if (soNum(fAcesso.fone).length < 10) { setErro('WhatsApp inválido.'); return }
+    if (!fAcesso.codigo.trim()) { setErro('Digite o código de acesso.'); return }
+    setErro(''); setEnviando(true)
+    try {
+      const r = await fetch('/api/corretor-acesso', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ codigo: fAcesso.codigo.trim() }) })
+      const res = await r.json()
+      if (res.expirado) { setErro('Seu código expirou. Renove sua assinatura para continuar.'); setEnviando(false); return }
+      if (!res.ok) { setErro('Código inválido. Verifique o código recebido.'); setEnviando(false); return }
+      const c = salvarCorretor({ nome, creci: fAcesso.creci.trim(), rotina: true, fone: soNum(fAcesso.fone), email: fAcesso.email.trim() })
+      try { registrarLead({ cod: 'corretor-pro', nome, fone: soNum(fAcesso.fone), email: fAcesso.email.trim(), bairro: `Corretor Pro${fAcesso.creci ? ' · CRECI ' + fAcesso.creci : ''}` }) } catch {}
+      onOk(c)
+    } catch { setErro('Falha de conexão.') }
+    setEnviando(false)
+  }
+
+  const irParaCheckout = async (e) => {
+    e.preventDefault()
+    const nome = fCheckout.nome.trim()
+    if (nome.length < 3) { setErro('Informe seu nome completo.'); return }
+    if (soNum(fCheckout.fone).length < 10) { setErro('WhatsApp inválido.'); return }
+    setErro(''); setEnviando(true)
+    try {
+      const r = await fetch('/api/corretor-checkout', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ nome, fone: soNum(fCheckout.fone), email: fCheckout.email.trim(), creci: fCheckout.creci.trim(), plano: planoSel }),
+      })
+      const res = await r.json()
+      if (!res.ok) { setErro(res.erro || 'Não foi possível criar o pagamento.'); setEnviando(false); return }
+      window.location.href = res.url
+    } catch { setErro('Falha de conexão. Tente novamente.') }
+    setEnviando(false)
+  }
+
+  if (ativandoMP) {
+    return (
+      <div className="corr-gate-wrap">
+        <div className="corr-trial-ok">
+          <div className="corr-trial-ok-ico" style={{ fontSize: '1.2rem' }}>⏳</div>
+          <h2>Ativando seu acesso…</h2>
+          <p>Verificando o pagamento no Mercado Pago. Aguarde um momento.</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (codigoAtivado) {
+    const planoNome = codigoAtivado.plano === 'semanal' ? 'Semanal (7 dias)' : codigoAtivado.plano === 'mensal' ? 'Mensal (30 dias)' : codigoAtivado.plano
+    return (
+      <div className="corr-gate-wrap">
+        <div className="corr-trial-ok">
+          <div className="corr-trial-ok-ico">✓</div>
+          <h2>Pagamento aprovado!</h2>
+          <p>Seu código de acesso foi gerado. Guarde-o em local seguro — ele libera todas as ferramentas pelo período contratado.</p>
+          <div className="corr-codigo-box">
+            <span className="corr-codigo-label">Seu código de acesso</span>
+            <strong className="corr-codigo-val">{codigoAtivado.codigo}</strong>
+            <span className="corr-codigo-plano">{planoNome}</span>
+            {codigoAtivado.expiresAt && <span className="corr-trial-expira">Válido até {fmtData(codigoAtivado.expiresAt)}</span>}
+          </div>
+          <button className="btn btn-gold" style={{ marginTop: 20 }} onClick={() => onOk(getCorretor())}>
+            Entrar na área agora <IconArrow />
+          </button>
+          <p style={{ fontSize: '0.78rem', color: 'var(--text-mute)', marginTop: 12 }}>O código foi salvo para login rápido. Na próxima vez, use-o na aba "Já tenho código".</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (trialOk) {
+    return (
+      <div className="corr-gate-wrap">
+        <div className="corr-trial-ok">
+          <div className="corr-trial-ok-ico">✓</div>
+          <h2>Teste ativado com sucesso!</h2>
+          <p>Você tem <b>24 horas</b> de acesso completo a todas as ferramentas.</p>
+          {trialOk.expiresAt && <p className="corr-trial-expira">Acesso válido até {fmtData(trialOk.expiresAt)}</p>}
+          <p className="corr-trial-entrando">Entrando na área do corretor…</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="corr-gate-wrap">
@@ -90,7 +549,7 @@ function GateCorretor({ onOk }) {
         <span className="eyebrow">Ferramentas exclusivas para corretores</span>
         <h1 className="section-title">Área do <em>corretor</em></h1>
         <p className="section-sub" style={{ marginTop: 12 }}>
-          Todas as ferramentas de trabalho num lugar só — feitas pra você captar, divulgar e vender mais rápido.
+          Tudo que você precisa para captar, divulgar e vender mais rápido — num lugar só.
         </p>
         <ul className="corr-lista">
           {TOOLS.map((t) => (
@@ -99,43 +558,98 @@ function GateCorretor({ onOk }) {
         </ul>
       </div>
 
-      <form className="lead-form conta-form corr-form" onSubmit={enviar}>
-        <span className="conta-form-selo">Área profissional</span>
-        <h3>Entrar na área do corretor</h3>
-        <div className="corr-planos">
-          <div className="corr-plano">
-            <span className="corr-plano-periodo">Mensal</span>
-            <strong className="corr-plano-preco">R$ 49,90</strong>
-            <span className="corr-plano-detalhe">/mês · acesso completo</span>
-          </div>
-          <div className="corr-plano-sep">ou</div>
-          <div className="corr-plano">
-            <span className="corr-plano-periodo">Semanal</span>
-            <strong className="corr-plano-preco">R$ 15</strong>
-            <span className="corr-plano-detalhe">/semana · sem compromisso</span>
-          </div>
+      <div className="corr-form-area">
+        {/* Planos */}
+        <div className="corr-planos-v2">
+          {PLANOS.map((p) => (
+            <button
+              key={p.id}
+              type="button"
+              className={`corr-plano-v2 ${planoSel === p.id ? 'corr-plano-v2--sel' : ''} ${p.popular ? 'corr-plano-v2--popular' : ''}`}
+              onClick={() => setPlanoSel(p.id)}
+            >
+              {p.popular && <span className="corr-plano-badge">★ Mais popular</span>}
+              <span className="corr-plano-v2-periodo">{p.periodo}</span>
+              <span className="corr-plano-v2-preco">{p.preco}<small>{p.sub}</small></span>
+              <span className="corr-plano-v2-detalhe">{p.detalhe}</span>
+              <span className="corr-plano-v2-economia">{p.economia}</span>
+              <ul className="corr-plano-v2-items">
+                {p.beneficios.map((b, i) => <li key={i}>✓ {b}</li>)}
+              </ul>
+            </button>
+          ))}
         </div>
-        <p className="conta-form-promessa">
-          Após o pagamento, você recebe o <b>código de acesso</b> para liberar todas as ferramentas imediatamente.
-          Ainda não tem cadastro?{' '}
-          <a href={`https://wa.me/5534991570494?text=${encodeURIComponent(msgCadastro)}`} target="_blank" rel="noopener"><b>Fale com o Vinícius.</b></a>
-        </p>
-        <label><span>Código de acesso *</span><input value={f.codigo} onChange={set('codigo')} placeholder="Código recebido após o pagamento" autoComplete="off" required /></label>
-        <label><span>Nome completo *</span><input value={f.nome} onChange={set('nome')} required /></label>
-        <div className="conta-form-row">
-          <label><span>CRECI <i>(se tiver)</i></span><input value={f.creci} onChange={set('creci')} placeholder="MG-00000" /></label>
-          <label><span>WhatsApp *</span><input type="tel" inputMode="tel" value={f.fone} onChange={set('fone')} placeholder="(34) 99999-9999" required /></label>
+
+        {/* Tabs */}
+        <div className="corr-tabs" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr' }}>
+          <button className={`corr-tab ${aba === 'teste' ? 'corr-tab--ativo' : ''}`} onClick={() => { setAba('teste'); setErro('') }}>
+            🎁 Testar grátis
+          </button>
+          <button className={`corr-tab ${aba === 'assinar' ? 'corr-tab--ativo' : ''}`} onClick={() => { setAba('assinar'); setErro('') }} style={{ borderLeft: '1px solid var(--border)', borderRight: '1px solid var(--border)' }}>
+            Assinar plano
+          </button>
+          <button className={`corr-tab ${aba === 'acesso' ? 'corr-tab--ativo' : ''}`} onClick={() => { setAba('acesso'); setErro('') }}>
+            Já tenho código
+          </button>
         </div>
-        <label><span>E-mail <i>(opcional)</i></span><input type="email" value={f.email} onChange={set('email')} placeholder="voce@email.com" /></label>
-        {erro && <p className="lead-erro">{erro}</p>}
-        <button type="submit" className="btn btn-gold lead-submit" disabled={enviando}><IconShield width={18} height={18} /> {enviando ? 'Validando…' : 'Entrar na área'} <IconArrow /></button>
-        <p className="lead-note">Acesso liberado conforme o cadastro. Seus dados ficam protegidos e são usados apenas para autenticação.</p>
-      </form>
+
+        {aba === 'teste' && (
+          <form className="lead-form conta-form corr-form" onSubmit={ativarTeste}>
+            <h3>Ativar teste gratuito</h3>
+            <p className="conta-form-promessa">Sem cartão. Sem cobrança. Acesso total por <b>24 horas</b> — só precisamos do seu nome e WhatsApp.</p>
+            <label><span>Nome completo *</span><input value={fTeste.nome} onChange={setT('nome')} required placeholder="Seu nome" /></label>
+            <label><span>WhatsApp *</span><input type="tel" inputMode="tel" value={fTeste.fone} onChange={setT('fone')} required placeholder="(34) 99999-9999" /></label>
+            {erro && <p className="lead-erro">{erro}</p>}
+            <button type="submit" className="btn btn-gold lead-submit" disabled={enviando}>
+              <IconShield width={18} height={18} /> {enviando ? 'Ativando…' : 'Ativar 24h grátis'} <IconArrow />
+            </button>
+            <p className="lead-note">Uma vez por número de WhatsApp. Após as 24h, escolha um plano para continuar.</p>
+          </form>
+        )}
+
+        {aba === 'assinar' && (
+          <form className="lead-form conta-form corr-form" onSubmit={irParaCheckout}>
+            <h3>Assinar — plano {PLANOS.find(p => p.id === planoSel)?.periodo}</h3>
+            <p className="conta-form-promessa">Você será redirecionado ao Mercado Pago. Após o pagamento, o código chega automaticamente.</p>
+            <label><span>Nome completo *</span><input value={fCheckout.nome} onChange={setC('nome')} required placeholder="Seu nome" /></label>
+            <div className="conta-form-row">
+              <label><span>WhatsApp *</span><input type="tel" inputMode="tel" value={fCheckout.fone} onChange={setC('fone')} required placeholder="(34) 99999-9999" /></label>
+              <label><span>CRECI <i>(se tiver)</i></span><input value={fCheckout.creci} onChange={setC('creci')} placeholder="MG-00000" /></label>
+            </div>
+            <label><span>E-mail <i>(para receber o código)</i></span><input type="email" value={fCheckout.email} onChange={setC('email')} placeholder="voce@email.com" /></label>
+            {erro && <p className="lead-erro">{erro}</p>}
+            <button type="submit" className="btn btn-gold lead-submit" disabled={enviando}>
+              {enviando ? 'Redirecionando…' : `Pagar ${PLANOS.find(p => p.id === planoSel)?.preco} no Mercado Pago`} <IconArrow />
+            </button>
+            <p className="lead-note">Pix, cartão de crédito e boleto. Código gerado automaticamente após aprovação.</p>
+          </form>
+        )}
+
+        {aba === 'acesso' && (
+          <form className="lead-form conta-form corr-form" onSubmit={entrarComCodigo}>
+            <h3>Entrar com código</h3>
+            <p className="conta-form-promessa">Digite o código recebido após o pagamento para liberar o acesso.</p>
+            <label><span>Código de acesso *</span><input value={fAcesso.codigo} onChange={setA('codigo')} placeholder="Código recebido por e-mail ou WhatsApp" autoComplete="off" required /></label>
+            <label><span>Nome completo *</span><input value={fAcesso.nome} onChange={setA('nome')} required /></label>
+            <div className="conta-form-row">
+              <label><span>CRECI <i>(se tiver)</i></span><input value={fAcesso.creci} onChange={setA('creci')} placeholder="MG-00000" /></label>
+              <label><span>WhatsApp *</span><input type="tel" inputMode="tel" value={fAcesso.fone} onChange={setA('fone')} placeholder="(34) 99999-9999" required /></label>
+            </div>
+            <label><span>E-mail <i>(opcional)</i></span><input type="email" value={fAcesso.email} onChange={setA('email')} placeholder="voce@email.com" /></label>
+            {erro && <p className="lead-erro">{erro}</p>}
+            <button type="submit" className="btn btn-gold lead-submit" disabled={enviando}>
+              <IconShield width={18} height={18} /> {enviando ? 'Validando…' : 'Entrar na área'} <IconArrow />
+            </button>
+            <p className="lead-note">Acesso liberado conforme o cadastro. Dados protegidos.</p>
+          </form>
+        )}
+      </div>
     </div>
   )
 }
 
-// ---------- hub logado: todas as ferramentas ----------
+// ─── hub logado ──────────────────────────────────────────────────────────────
+
 function HubCorretor({ corretor, onSair }) {
   const [ativa, setAtiva] = useState('rotina')
   const painelRef = useRef(null)
@@ -148,7 +662,7 @@ function HubCorretor({ corretor, onSair }) {
     <>
       <header className="corr-hero">
         <div>
-          <span className="eyebrow">Área do corretor · Rotina Imobiliária</span>
+          <span className="eyebrow">Área do corretor · ferramentas profissionais</span>
           <h1 className="section-title">Olá, <em>{primeiro || 'corretor'}</em></h1>
           <p className="section-sub" style={{ marginTop: 8 }}>Suas ferramentas de captação, divulgação e venda — tudo num lugar só.</p>
         </div>
@@ -173,13 +687,13 @@ function HubCorretor({ corretor, onSair }) {
         ))}
         <Link className="ferr-card ferr-card--gold" to="/admin">
           <span className="ferr-ico"><Ico name="painel" /></span>
-          <span className="ferr-txt"><b>Painel administrativo</b><i>Imóveis, leads e clientes — acesso restrito (login próprio).</i></span>
+          <span className="ferr-txt"><b>Painel administrativo</b><i>Imóveis, leads e clientes.</i></span>
         </Link>
       </div>
 
       <div className="calc-painel corr-painel" ref={painelRef} style={{ marginTop: 30 }}>
         <h3 className="calc-painel-tit"><span className="calc-tit-ico"><Ico name={atual.icon} size={20} /></span>{atual.nome}</h3>
-        <Suspense fallback={<p className="section-sub" style={{ padding: '24px 0' }}>Carregando a ferramenta…</p>}>
+        <Suspense fallback={<p className="section-sub" style={{ padding: '24px 0' }}>Carregando…</p>}>
           <Ativa />
         </Suspense>
       </div>
@@ -187,10 +701,12 @@ function HubCorretor({ corretor, onSair }) {
   )
 }
 
+// ─── página ──────────────────────────────────────────────────────────────────
+
 export default function Corretor() {
   useSEO({
-    title: 'Área do corretor — Rotina Imobiliária | Vinícius Graton',
-    description: 'Área exclusiva para corretores da Rotina Imobiliária: abordagem por código, estúdio de fotos com IA, publicidade, comissão, ACM e ficha de avaliação.',
+    title: 'Área do corretor — Ferramentas profissionais | Vinícius Graton',
+    description: 'Área exclusiva para corretores: abordagem por código, estúdio de fotos com IA, publicidade, legenda para portais, script de objeções, checklist de captação e mais.',
     path: '/corretor',
   })
   const [corretor, setCorretor] = useState(() => getCorretor())
