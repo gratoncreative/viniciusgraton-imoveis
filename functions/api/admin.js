@@ -57,6 +57,7 @@ async function getAuth(env) {
 }
 
 export async function onRequestPost({ env, request }) {
+  try {
   const email = String(env.ADMIN_EMAIL || ADMIN_EMAIL_DEFAULT).trim().toLowerCase()
   const b = await request.json().catch(() => ({}))
   const action = b.action
@@ -148,7 +149,7 @@ export async function onRequestPost({ env, request }) {
     const fontes = [['anuncio:', 'anuncios'], ['lead:', 'leads'], ['conta:', 'clientes'], ['news:', 'news']]
     for (const [prefix, arr] of fontes) {
       const lista = await env.ENGAGEMENT.list({ prefix })
-      for (const k of lista.keys) {
+      for (const k of (lista?.keys || [])) {
         const v = await env.ENGAGEMENT.get(k.name, 'json')
         if (v) { v._key = k.name; out[arr].push(v) }
       }
@@ -159,12 +160,12 @@ export async function onRequestPost({ env, request }) {
     out.news.sort((a, b) => (b.ts || 0) - (a.ts || 0))
     out.aprovados = []
     const apr = await env.ENGAGEMENT.list({ prefix: 'aprovado:' })
-    for (const k of apr.keys) out.aprovados.push(k.name.slice('aprovado:'.length))
+    for (const k of (apr?.keys || [])) out.aprovados.push(k.name.slice('aprovado:'.length))
     // resumo do CRM (contagem) p/ a Visão geral — a lista completa é carregada na aba
     out.crmTotal = 0; out.crmNovos = 0; out.crmNovidades = 0
     const crm = await env.ENGAGEMENT.list({ prefix: 'crm:' })
-    out.crmTotal = crm.keys.length
-    for (const k of crm.keys) { const v = await env.ENGAGEMENT.get(k.name, 'json'); if (v && v.novo) out.crmNovos++; if (v && v.temNovidade) out.crmNovidades++ }
+    out.crmTotal = (crm?.keys || []).length
+    for (const k of (crm?.keys || [])) { const v = await env.ENGAGEMENT.get(k.name, 'json'); if (v && v.novo) out.crmNovos++; if (v && v.temNovidade) out.crmNovidades++ }
     return json(out)
   }
 
@@ -253,7 +254,7 @@ export async function onRequestPost({ env, request }) {
   if (action === 'crm-list') {
     const out = []
     const lista = await env.ENGAGEMENT.list({ prefix: 'crm:' })
-    for (const k of lista.keys) { const v = await env.ENGAGEMENT.get(k.name, 'json'); if (v) out.push(v) }
+    for (const k of (lista?.keys || [])) { const v = await env.ENGAGEMENT.get(k.name, 'json'); if (v) out.push(v) }
     out.sort((a, b) => (b.atualizadoEm || 0) - (a.atualizadoEm || 0))
     return json({ ok: true, clientes: out })
   }
@@ -302,4 +303,7 @@ export async function onRequestPost({ env, request }) {
   }
 
   return json({ error: 'acao desconhecida' }, 400)
+  } catch (e) {
+    return json({ error: 'interno', msg: 'Erro interno no servidor. Tente novamente.', detalhe: String(e && e.message || e) }, 500)
+  }
 }
