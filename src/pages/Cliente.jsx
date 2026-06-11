@@ -160,7 +160,15 @@ export default function Cliente() {
                   const m2pct = m2 && m2rMin < m2rMax ? Math.round(((im.preco / im.area - m2rMin) / (m2rMax - m2rMin)) * 100) : 50
                   return (
                     <div className={`cliente-item ${fb === 'like' ? 'curtido' : ''} ${opor ? 'oport' : ''}`} key={im.codigo}>
-                      {opor && <div className="cliente-badge-oport">🎯 Oportunidade · preço/m² abaixo do mercado nesta região</div>}
+                      {opor && (
+                        <div className="cliente-badge-oport">
+                          <svg className="cliente-badge-oport-ico" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
+                          <div>
+                            <span className="cliente-badge-oport-tag">Oportunidade</span>
+                            <span className="cliente-badge-oport-desc">Preço/m² abaixo do mercado nesta região</span>
+                          </div>
+                        </div>
+                      )}
                       {!opor && fb === 'like' && <span className="cliente-badge-like"><IconHeart filled width={13} height={13} /> Você curtiu</span>}
                       {opor && fb === 'like' && <span className="cliente-badge-like" style={{ marginTop: 6 }}><IconHeart filled width={13} height={13} /> Você curtiu</span>}
                       <CardImovel im={im} />

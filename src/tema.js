@@ -5,8 +5,8 @@ const KEY = 'vg-tema'
 export function getTema() {
   try {
     const t = localStorage.getItem(KEY)
-    return t === 'escuro' ? 'escuro' : 'claro'
-  } catch { return 'claro' }
+    return t === 'claro' ? 'claro' : 'escuro'
+  } catch { return 'escuro' }
 }
 
 export function aplicarTema(t) {
