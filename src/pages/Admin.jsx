@@ -430,6 +430,18 @@ function ImoveisPub({ token, onSair, alvo, onAbriu }) {
 
 export default function Admin() {
   useSEO({ title: 'Painel administrativo', description: 'Área restrita do Vinícius Graton.', path: '/admin' })
+
+  // Admin é sempre escuro — força dark independente da preferência do visitante
+  useEffect(() => {
+    const html = document.documentElement
+    const prev = html.getAttribute('data-theme')
+    html.setAttribute('data-theme', 'dark')
+    return () => {
+      const pref = (() => { try { return localStorage.getItem('vg-tema') } catch { return null } })()
+      html.setAttribute('data-theme', pref === 'claro' ? 'light' : 'dark')
+    }
+  }, [])
+
   const [token, setToken] = useState(() => { try { return localStorage.getItem(LSK) || '' } catch { return '' } })
   const [dados, setDados] = useState(null)
   const [blogViews, setBlogViews] = useState(null)

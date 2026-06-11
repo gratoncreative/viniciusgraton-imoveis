@@ -1882,11 +1882,11 @@ html[data-theme="dark"] .nav:not(.scrolled) .nav-links a.nav-destaque { color: #
 .crm-prev-noimg { display: flex; align-items: center; justify-content: center; height: 120px; background: rgba(22,26,34,0.04); font-size: 2.8rem; }
 .crm-prev-galeria { position: relative; }
 .crm-prev-galeria img { width: 100%; height: 200px; object-fit: cover; display: block; }
-.crm-prev-seta { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.45); color: #fff; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1.3rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: background 0.15s, opacity 0.15s; }
-.crm-prev-seta:hover:not(:disabled) { background: rgba(0,0,0,0.72); }
+.crm-prev-seta { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.54); color: #fff; border: none; border-radius: 50%; width: 42px; height: 42px; font-size: 1.65rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: background 0.15s, transform 0.15s; }
+.crm-prev-seta:hover:not(:disabled) { background: rgba(0,0,0,0.8); transform: translateY(-50%) scale(1.1); }
 .crm-prev-seta:disabled { opacity: 0.28; cursor: default; }
-.crm-prev-seta--l { left: 8px; }
-.crm-prev-seta--r { right: 8px; }
+.crm-prev-seta--l { left: 10px; }
+.crm-prev-seta--r { right: 10px; }
 .crm-prev-cnt { position: absolute; bottom: 7px; right: 9px; background: rgba(0,0,0,0.5); color: #fff; font-size: .65rem; font-weight: 700; padding: 2px 7px; border-radius: 8px; pointer-events: none; }
 .crm-prev-ver { position: absolute; bottom: 7px; left: 9px; background: rgba(0,0,0,0.52); color: #fff; font-size: .62rem; font-weight: 600; padding: 3px 9px; border-radius: 8px; text-decoration: none; transition: background .15s; white-space: nowrap; }
 .crm-prev-ver:hover { background: rgba(0,0,0,0.8); }
@@ -3343,7 +3343,7 @@ html[data-theme="dark"] .cb-chip, html[data-theme="dark"] .cb-trilha-chip,
 html[data-theme="dark"] .cb-widget-panel, html[data-theme="dark"] .cb-link-box { background: #11161f; border-color: rgba(255,255,255,0.12); color: #dfe3ea; }
 html[data-theme="dark"] .cb-form input, html[data-theme="dark"] .cb-textarea, html[data-theme="dark"] .cb-busca, html[data-theme="dark"] .cb-link-box input { background: #0c111b; border-color: rgba(255,255,255,0.14); color: #eef0f4; }
 
-/* admin (painel do Vinícius) */
+/* admin (painel do Vinícius) — dark mode completo */
 html[data-theme="dark"] .admin-card, html[data-theme="dark"] .admin-stat, html[data-theme="dark"] .admin-im-card,
 html[data-theme="dark"] .crm-card, html[data-theme="dark"] .aprovar-banner, html[data-theme="dark"] .cliente-refino,
 html[data-theme="dark"] .marca-lista, html[data-theme="dark"] .admin-owner { background: #11161f; border-color: rgba(255,255,255,0.1); color: #dfe3ea; }
@@ -3352,6 +3352,55 @@ html[data-theme="dark"] .admin-busca input, html[data-theme="dark"] .admin-busca
 html[data-theme="dark"] .admin-sec-tit { color: #f1ede4; }
 html[data-theme="dark"] .admin-rank li a, html[data-theme="dark"] .admin-info-box p, html[data-theme="dark"] .admin-news-info b { color: #dfe3ea; }
 html[data-theme="dark"] .condo-chip { color: #d6dae2; background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.16); }
+/* painel cards, meta, campos */
+html[data-theme="dark"] .painel-card { background: #11161f; border-color: rgba(255,255,255,0.1); }
+html[data-theme="dark"] .painel-card b { color: #f1ede4; }
+html[data-theme="dark"] .painel-meta { color: #8a8e9b; }
+html[data-theme="dark"] .admin-field span { color: #9096a4; }
+html[data-theme="dark"] .admin-stat-rot { color: #d4d8e2; }
+html[data-theme="dark"] .admin-stat-sub { color: #7a7e8b; }
+html[data-theme="dark"] .admin-card-top b { color: #f1ede4; }
+html[data-theme="dark"] .admin-card-specs { color: #d4d8e2; }
+html[data-theme="dark"] .admin-card-end, html[data-theme="dark"] .admin-card-desc { color: #9a9daa; }
+html[data-theme="dark"] .admin-editar { color: #8a8e9b; }
+html[data-theme="dark"] .admin-news-data { color: #7a7e8b; }
+html[data-theme="dark"] .admin-rank li b { color: var(--gold-1); }
+html[data-theme="dark"] .admin-info-box { background: rgba(184,134,47,0.08); border-color: rgba(184,134,47,0.2); }
+html[data-theme="dark"] .admin-owner-tag { color: #ecc869; background: rgba(184,134,47,0.15); border-color: rgba(184,134,47,0.3); }
+html[data-theme="dark"] .admin-owner-acoes { border-color: rgba(184,134,47,0.18); }
+/* CRM chips e bairros */
+html[data-theme="dark"] .crm-chip { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.14); color: #c8cdd8; }
+html[data-theme="dark"] .crm-chips--bairros { background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.1); }
+/* CRM match list */
+html[data-theme="dark"] .crm-match { background: #151a26; border-color: rgba(255,255,255,0.09); }
+html[data-theme="dark"] .crm-match.prev { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.22); }
+html[data-theme="dark"] .crm-match-info { color: #d8dce6; }
+html[data-theme="dark"] .crm-match-info b { color: #f1ede4; }
+/* CRM preview panel */
+html[data-theme="dark"] .crm-prev-panel { background: #11161f; border-color: rgba(255,255,255,0.1); }
+html[data-theme="dark"] .crm-prev-noimg { background: rgba(255,255,255,0.04); }
+html[data-theme="dark"] .crm-prev-tipo { color: #8a8e9b; }
+html[data-theme="dark"] .crm-prev-preco { color: #f1ede4; }
+html[data-theme="dark"] .crm-prev-info-item { color: #b4b8c5; }
+html[data-theme="dark"] .crm-prev-gauge-dot { border-color: #edf0f6; }
+html[data-theme="dark"] .crm-prev-gauge-val { background: rgba(255,255,255,0.07); color: #b4b8c5; }
+html[data-theme="dark"] .crm-prev-gauge-val--bom { background: rgba(46,140,87,0.18); color: #52c87e; }
+html[data-theme="dark"] .crm-prev-gauge-val--alto { background: rgba(176,74,74,0.18); color: #e87878; }
+/* CRM resumo ao vivo */
+html[data-theme="dark"] .crm-resumo-num { color: #d4d8e2; }
+html[data-theme="dark"] .crm-resumo-lista li { color: #b4b8c5; }
+/* CRM card extra */
+html[data-theme="dark"] .crm-card-crit { color: #9a9daa; }
+html[data-theme="dark"] .crm-status-sel { background: #151a26; color: #c8cdd8; border-color: rgba(255,255,255,0.14); color-scheme: dark; }
+/* CRM follow-up */
+html[data-theme="dark"] .crm-followup { background: #0f1320; border-color: rgba(184,134,47,0.3); }
+html[data-theme="dark"] .crm-fu-tit { color: #f1ede4; }
+html[data-theme="dark"] .crm-fu-item { background: #151a26; border-color: rgba(255,255,255,0.08); }
+html[data-theme="dark"] .crm-fu-info b { color: #f1ede4; }
+html[data-theme="dark"] .crm-fu-info i { color: #8a8e9b; }
+/* CRM foto/feedback */
+html[data-theme="dark"] .crm-foto-vazia { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
+html[data-theme="dark"] .crm-fb-lista li { color: #b4b8c5; }
 /* selo "Destaque do blog": dourado escuro no claro (legível), claro no escuro */
 .section--light .blog-feat-tag { color: var(--gold-3); }
 html[data-theme="dark"] .section--light .blog-feat-tag { color: var(--gold-1); }
