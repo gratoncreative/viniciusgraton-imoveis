@@ -48,7 +48,7 @@ function CadastroView({ onPronto }) {
   // confirmação na prática: abre o WhatsApp do cliente com a mensagem pronta pra ELE te enviar.
   // Quando ele manda, você recebe do número real → confirma que o número é dele e já inicia a conversa.
   const confirmarNoWhats = (nome) => {
-    const msg = `Olá Vinícius! Sou ${nome || ''} e acabei de criar minha conta no seu site. Quero receber em primeira mão os imóveis com a minha cara. Esse é o meu WhatsApp 🤝`
+    const msg = `Olá Vinícius! Acabo de criar minha conta no seu site e preciso confirmar para liberar meu acesso. Código de ativação: #VG${Math.floor(1000 + Math.random() * 9000)} — ${nome || ''}`
     try { window.open(linkWhatsApp(msg), '_blank', 'noopener') } catch { /* ok */ }
   }
   const enviar = (e) => {
@@ -131,7 +131,7 @@ function CadastroView({ onPronto }) {
           {gErro && <p className="lead-erro">{gErro}</p>}
           <label><span>O que você busca?</span>
             <select value={gObj} onChange={(e) => setGObj(e.target.value)}>
-              <option>Comprar para morar</option><option>Comprar para investir</option><option>Alugar</option><option>Vender meu imóvel</option>
+              <option>Comprar para morar</option><option>Comprar para investir</option><option>Alugar</option><option>Vender meu imóvel</option><option>Só pesquisar / usar ferramentas</option>
             </select>
           </label>
           <button type="submit" className="btn btn-gold lead-submit"><IconWhats width={18} height={18} /> Concluir e confirmar no WhatsApp <IconArrow /></button>
@@ -154,7 +154,7 @@ function CadastroView({ onPronto }) {
         </div>
         <label><span>O que você busca?</span>
           <select value={f.objetivo} onChange={set('objetivo')}>
-            <option>Comprar para morar</option><option>Comprar para investir</option><option>Alugar</option><option>Vender meu imóvel</option>
+            <option>Comprar para morar</option><option>Comprar para investir</option><option>Alugar</option><option>Vender meu imóvel</option><option>Só pesquisar / usar ferramentas</option>
           </select>
         </label>
         <label><span>Bairros de interesse <i>(opcional)</i></span>
