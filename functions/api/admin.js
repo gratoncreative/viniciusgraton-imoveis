@@ -18,6 +18,8 @@
  */
 const ADMIN_EMAIL_DEFAULT = 'contato@viniciusgraton.com.br'
 const TTL_MS = 12 * 60 * 60 * 1000
+const ORIGIN = 'https://viniciusgraton.com.br'
+const originOk = (req) => { const o = req.headers.get('origin'); return !o || o === ORIGIN }
 
 const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } })
 const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
@@ -58,6 +60,7 @@ async function getAuth(env) {
 
 export async function onRequestPost({ env, request }) {
   try {
+  if (!originOk(request)) return json({ error: 'origem' }, 403)
   const email = String(env.ADMIN_EMAIL || ADMIN_EMAIL_DEFAULT).trim().toLowerCase()
   const b = await request.json().catch(() => ({}))
   const action = b.action

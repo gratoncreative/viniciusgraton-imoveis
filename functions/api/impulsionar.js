@@ -16,7 +16,7 @@ const MP = 'https://api.mercadopago.com'
 // Docs: https://www.mercadopago.com.br/developers/pt/docs/your-integrations/notifications/webhooks
 async function verificarAssinatura(request, env, dataId) {
   const secret = String(env.MP_WEBHOOK_SECRET || '').trim()
-  if (!secret) return true // sem segredo configurado: passa (backward compat)
+  if (!secret) return false // segredo obrigatório: rejeitar se não configurado
   const xSig = request.headers.get('x-signature') || ''
   const xReqId = request.headers.get('x-request-id') || ''
   const ts = (xSig.match(/ts=([^,]+)/) || [])[1]

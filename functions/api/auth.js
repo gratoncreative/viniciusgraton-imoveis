@@ -8,6 +8,8 @@
  */
 const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } })
 const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
+const ORIGIN = 'https://viniciusgraton.com.br'
+const originOk = (req) => { const o = req.headers.get('origin'); return !o || o === ORIGIN }
 const hex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('')
 const hexBuf = (h) => new Uint8Array((h.match(/.{2}/g) || []).map((x) => parseInt(x, 16)))
 const sha256 = async (s) => hex(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)))
@@ -21,6 +23,7 @@ async function derivar(senha, saltHex) {
 
 export async function onRequestPost({ request, env }) {
   try {
+  if (!originOk(request)) return json({ error: 'origem' }, 403)
   const b = await request.json().catch(() => ({}))
   const acao = b.acao === 'cadastrar' ? 'cadastrar' : 'login'
   const email = String(b.email || '').trim().toLowerCase()
@@ -53,8 +56,8 @@ export async function onRequestPost({ request, env }) {
   if (!reg) return json({ error: 'nao-encontrado' })
   const { hash } = await derivar(senha, reg.salt)
   if (hash !== reg.hash) return json({ error: 'senha-errada' })
-  // backward-compat: contas antigas não têm token aleatório armazenado
-  return json({ ok: true, token: reg.token || token, nome: reg.nome || '', email })
+  if (!reg.token) return json({ error: 'relogin-necessario', msg: 'Por segurança, recadastre sua senha para ativar a sessão segura.' })
+  return json({ ok: true, token: reg.token, nome: reg.nome || '', email })
   } catch (e) {
     console.error('auth:', e)
     return json({ error: 'interno' }, 500)

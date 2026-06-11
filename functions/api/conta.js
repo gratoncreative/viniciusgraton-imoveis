@@ -12,9 +12,12 @@
 const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
 const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } })
 const str = (v, n) => String(v == null ? '' : v).slice(0, n)
+const ORIGIN = 'https://viniciusgraton.com.br'
+const originOk = (req) => { const o = req.headers.get('origin'); return !o || o === ORIGIN }
 
 export async function onRequestPost({ env, request }) {
   try {
+    if (!originOk(request)) return json({ error: 'origem' }, 403)
     const b = await request.json().catch(() => ({}))
     const token = str(b.token, 60)
     if (!token) return json({ error: 'token obrigatorio' }, 400)
@@ -34,7 +37,13 @@ export async function onRequestPost({ env, request }) {
       favoritos: Array.isArray(b.favoritos) ? b.favoritos.slice(0, 100).map((x) => str(x, 16)) : [],
       historico: Array.isArray(b.historico) ? b.historico.slice(0, 30).map((x) => str(x, 16)) : [],
     }
-    if (temKV(env)) await env.ENGAGEMENT.put('conta:' + token, JSON.stringify(conta))
+    if (temKV(env)) {
+      const existente = await env.ENGAGEMENT.get('conta:' + token, 'json').catch(() => null)
+      if (existente && existente.email && conta.email && existente.email !== conta.email) {
+        return json({ error: 'token-invalido' }, 403)
+      }
+      await env.ENGAGEMENT.put('conta:' + token, JSON.stringify(conta))
+    }
     return json({ ok: true, persistido: temKV(env) })
   } catch (e) {
     console.error('conta:', e)

@@ -12,6 +12,8 @@
  */
 const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } })
 const str = (v, n) => String(v == null ? '' : v).slice(0, n)
+const ORIGIN = 'https://viniciusgraton.com.br'
+const originOk = (req) => { const o = req.headers.get('origin'); return !o || o === ORIGIN }
 
 // ── helpers para gerar token admin (mesma lógica de admin.js) ─────────────────
 const enc = new TextEncoder()
@@ -37,6 +39,7 @@ async function getSignKey(env) {
 
 export async function onRequestPost({ env, request }) {
   try {
+  if (!originOk(request)) return json({ error: 'origem' }, 403)
   const b = await request.json().catch(() => ({}))
   const credential = String(b.credential || '')
   if (!credential) return json({ error: 'credential obrigatorio' }, 400)
