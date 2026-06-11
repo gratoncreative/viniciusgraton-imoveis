@@ -329,6 +329,9 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                         {fotos.length > 1 && <button type="button" className="crm-prev-seta crm-prev-seta--l" onClick={(e) => { e.stopPropagation(); setPrevSlide(s => (s - 1 + fotos.length) % fotos.length) }}>‹</button>}
                         {fotos.length > 1 && <button type="button" className="crm-prev-seta crm-prev-seta--r" onClick={(e) => { e.stopPropagation(); setPrevSlide(s => (s + 1) % fotos.length) }}>›</button>}
                         {fotos.length > 1 && <span className="crm-prev-cnt">{slide + 1} / {fotos.length}</span>}
+                        <a className="crm-prev-ver" href={`/imovel/${pim.codigo}`} target="_blank" rel="noopener" title="Abrir imóvel completo com todas as fotos">
+                          {fotos.length <= 1 ? '🔗 Ver todas as fotos' : `🔗 Página do imóvel`}
+                        </a>
                       </div>
                       <div className="crm-prev-body">
                         <div className="crm-prev-header">

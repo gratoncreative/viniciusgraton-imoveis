@@ -1888,6 +1888,8 @@ html[data-theme="dark"] .nav:not(.scrolled) .nav-links a.nav-destaque { color: #
 .crm-prev-seta--l { left: 8px; }
 .crm-prev-seta--r { right: 8px; }
 .crm-prev-cnt { position: absolute; bottom: 7px; right: 9px; background: rgba(0,0,0,0.5); color: #fff; font-size: .65rem; font-weight: 700; padding: 2px 7px; border-radius: 8px; pointer-events: none; }
+.crm-prev-ver { position: absolute; bottom: 7px; left: 9px; background: rgba(0,0,0,0.52); color: #fff; font-size: .62rem; font-weight: 600; padding: 3px 9px; border-radius: 8px; text-decoration: none; transition: background .15s; white-space: nowrap; }
+.crm-prev-ver:hover { background: rgba(0,0,0,0.8); }
 .crm-prev-body { padding: 10px 13px 14px; display: flex; flex-direction: column; gap: 6px; }
 .crm-prev-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 6px; }
 .crm-prev-tipo { font-size: .75rem; color: #5a6270; font-weight: 500; }
