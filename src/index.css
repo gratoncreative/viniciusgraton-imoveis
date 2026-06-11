@@ -3374,6 +3374,7 @@ html[data-theme="dark"] .admin-owner-tag { color: #ecc869; background: rgba(184,
 html[data-theme="dark"] .admin-owner-acoes { border-color: rgba(184,134,47,0.18); }
 /* CRM chips e bairros */
 html[data-theme="dark"] .crm-chip { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.14); color: #c8cdd8; }
+html[data-theme="dark"] .crm-chip.on { background: var(--gold-grad); color: #20160a; border-color: transparent; }
 html[data-theme="dark"] .crm-chips--bairros { background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.1); }
 /* CRM match list */
 html[data-theme="dark"] .crm-match { background: #151a26; border-color: rgba(255,255,255,0.09); }
