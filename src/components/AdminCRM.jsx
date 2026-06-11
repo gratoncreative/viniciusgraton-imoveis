@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback, useRef } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_TODOS, filtrarParaCliente, formatPreco, getImovel, oportunidade, ehEsquina, fotosDe } from '../data'
 import InputMoeda from './InputMoeda'
 import { agruparPorSetor } from '../bairros-setores'
@@ -118,23 +118,8 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
     return vals.length ? vals[Math.floor(vals.length / 2)] : 0
   }, [matches])
 
-  const [tipCod, setTipCod] = useState(null)
-  const [tipRect, setTipRect] = useState({ top: 0, elLeft: 0, elRight: 0 })
-  const [tipSlide, setTipSlide] = useState(0)
-  const tipTimer = useRef(null)
-  const onCardRef = useRef(false)
-
-  const showTip = (cod, rect) => {
-    clearTimeout(tipTimer.current)
-    if (cod !== tipCod) setTipSlide(0)
-    setTipCod(cod)
-    setTipRect(rect)
-  }
-  const hideTip = () => {
-    tipTimer.current = setTimeout(() => { if (!onCardRef.current) setTipCod(null) }, 220)
-  }
-  const onCardEnter = () => { onCardRef.current = true; clearTimeout(tipTimer.current) }
-  const onCardLeave = () => { onCardRef.current = false; setTipCod(null) }
+  const [prevCod, setPrevCod] = useState(null)
+  const [prevSlide, setPrevSlide] = useState(0)
 
   const salvar = async () => {
     setErro('')
@@ -309,21 +294,54 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
               <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Imóveis sugeridos <span className="painel-meta">({(sel.sugeridos || []).length})</span></h3>
               <p className="calc-nota">Marque os imóveis que vão aparecer na página do cliente. Use <b>Sugerir automático</b> pra preencher com os que mais combinam.</p>
               <button className="admin-btn" onClick={sugerirAuto} style={{ marginBottom: 10 }}>✨ Sugerir automático ({matches.length} combinam)</button>
-              <div className="crm-match-list" data-lenis-prevent>
-                {matches.length === 0 && <p className="painel-meta">Nenhum imóvel publicado combina com esses critérios ainda. Ajuste os filtros.</p>}
-                {matches.slice(0, 80).map(({ im, m }) => {
-                  const cod = String(im.codigo); const on = (sel.sugeridos || []).includes(cod)
+              <div className="crm-matches-wrap" onMouseLeave={() => setPrevCod(null)}>
+                {prevCod && (() => {
+                  const hit = matches.find(({ im }) => String(im.codigo) === prevCod)
+                  if (!hit) return null
+                  const { im: pim } = hit
+                  const fotos = fotosDe(pim)
+                  const slide = Math.min(prevSlide, fotos.length - 1)
+                  const m2 = pim.preco > 0 && pim.area > 0 ? Math.round(pim.preco / pim.area) : 0
+                  const m2tag = m2 && m2mediana ? (m2 < m2mediana * 0.85 ? 'bom' : m2 > m2mediana * 1.15 ? 'alto' : 'ok') : ''
+                  const specs = [pim.quartos && `${pim.quartos} quarto${pim.quartos > 1 ? 's' : ''}`, pim.suites > 0 && `${pim.suites} suíte${pim.suites > 1 ? 's' : ''}`, pim.vagas > 0 && `${pim.vagas} vaga${pim.vagas > 1 ? 's' : ''}`, pim.area > 0 && `${pim.area} m²`].filter(Boolean).join(' · ')
+                  const m2cor = { bom: '#1e6b40', alto: '#8c2e2e', ok: '#4a5260' }
+                  const m2bg = { bom: 'rgba(46,140,87,0.1)', alto: 'rgba(176,74,74,0.1)', ok: 'rgba(22,26,34,0.07)' }
+                  const m2txt = { bom: 'ótimo preço/m²', alto: 'acima da média', ok: 'preço mediano' }
                   return (
-                    <label className={`crm-match ${on ? 'on' : ''}`} key={cod}
-                      onMouseEnter={(e) => { const r = e.currentTarget.getBoundingClientRect(); showTip(cod, { top: r.top, elLeft: r.left, elRight: r.right }) }}
-                      onMouseLeave={hideTip}>
-                      <input type="checkbox" checked={on} onChange={() => toggleSug(cod)} />
-                      <img src={im.img} alt="" loading="lazy" />
-                      <span className="crm-match-info"><b>{im.tipo} · {im.bairro}</b><i>{formatPreco(im.preco)} · {im.quartos}q · cód {cod}</i></span>
-                    </label>
+                    <div className="crm-prev-panel">
+                      <div className="crm-prev-galeria">
+                        <img src={fotos[slide]} alt="" />
+                        {fotos.length > 1 && <>
+                          <button className="crm-prev-seta crm-prev-seta--l" onMouseDown={(e) => { e.preventDefault(); setPrevSlide(s => (s - 1 + fotos.length) % fotos.length) }}>‹</button>
+                          <button className="crm-prev-seta crm-prev-seta--r" onMouseDown={(e) => { e.preventDefault(); setPrevSlide(s => (s + 1) % fotos.length) }}>›</button>
+                          <span className="crm-prev-cnt">{slide + 1} / {fotos.length}</span>
+                        </>}
+                      </div>
+                      <div className="crm-prev-body">
+                        <span className="crm-prev-tipo">{pim.tipo} · {pim.bairro}</span>
+                        <strong className="crm-prev-preco">{formatPreco(pim.preco)}</strong>
+                        {specs && <span className="crm-prev-specs">{specs}</span>}
+                        {m2 > 0 && m2tag && <span className="crm-prev-m2" style={{ background: m2bg[m2tag], color: m2cor[m2tag] }}>{formatPreco(m2)}/m² · {m2txt[m2tag]}</span>}
+                      </div>
+                    </div>
                   )
-                })}
-                {matches.length > 80 && <p className="painel-meta">Mostrando os 80 mais compatíveis de {matches.length}. Refine os filtros (bairro, preço, área) pra afunilar — ou use “Sugerir automático”.</p>}
+                })()}
+                {!prevCod && matches.length > 0 && <p className="crm-prev-hint">Passe o mouse sobre um imóvel para ver as fotos</p>}
+                <div className="crm-match-list" data-lenis-prevent>
+                  {matches.length === 0 && <p className="painel-meta">Nenhum imóvel publicado combina com esses critérios ainda. Ajuste os filtros.</p>}
+                  {matches.slice(0, 80).map(({ im, m }) => {
+                    const cod = String(im.codigo); const on = (sel.sugeridos || []).includes(cod)
+                    return (
+                      <label className={`crm-match ${on ? 'on' : ''} ${prevCod === cod ? 'prev' : ''}`} key={cod}
+                        onMouseEnter={() => { if (prevCod !== cod) setPrevSlide(0); setPrevCod(cod) }}>
+                        <input type="checkbox" checked={on} onChange={() => toggleSug(cod)} />
+                        <img src={im.img} alt="" loading="lazy" />
+                        <span className="crm-match-info"><b>{im.tipo} · {im.bairro}</b><i>{formatPreco(im.preco)} · {im.quartos}q · cód {cod}</i></span>
+                      </label>
+                    )
+                  })}
+                  {matches.length > 80 && <p className="painel-meta">Mostrando os 80 mais compatíveis de {matches.length}. Refine os filtros (bairro, preço, área) pra afunilar — ou use "Sugerir automático".</p>}
+                </div>
               </div>
             </div>
 
@@ -443,43 +461,6 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
         </div>
       )}
 
-      {tipCod && (() => {
-        const hit = matches.find(({ im }) => String(im.codigo) === tipCod)
-        if (!hit) return null
-        const { im: tim } = hit
-        const fotos = fotosDe(tim)
-        const slide = Math.min(tipSlide, fotos.length - 1)
-        const m2 = tim.preco > 0 && tim.area > 0 ? Math.round(tim.preco / tim.area) : 0
-        const m2tag = m2 && m2mediana ? (m2 < m2mediana * 0.85 ? 'bom' : m2 > m2mediana * 1.15 ? 'alto' : 'ok') : ''
-        const specs = [tim.quartos && `${tim.quartos}q`, tim.suites > 0 && `${tim.suites} suíte${tim.suites > 1 ? 's' : ''}`, tim.vagas > 0 && `${tim.vagas} vaga${tim.vagas > 1 ? 's' : ''}`, tim.area > 0 && `${tim.area} m²`].filter(Boolean).join(' · ')
-        const m2labels = { bom: '· ótimo preço/m²', alto: '· acima da média', ok: '· preço mediano' }
-        const TIP_W = 280
-        const tipLeft = tipRect.elRight + 12 + TIP_W < window.innerWidth ? tipRect.elRight + 12 : tipRect.elLeft - TIP_W - 12
-        const tipTop = Math.max(8, Math.min(tipRect.top, window.innerHeight - 340))
-        return (
-          <div className="crm-tip" style={{ top: tipTop, left: tipLeft }}
-            onMouseEnter={onCardEnter} onMouseLeave={onCardLeave}>
-            <div className="crm-tip-galeria">
-              <img className="crm-tip-foto" src={fotos[slide]} alt="" />
-              {fotos.length > 1 && <>
-                <button className="crm-tip-seta crm-tip-seta--prev" onMouseDown={(e) => { e.preventDefault(); setTipSlide(s => (s - 1 + fotos.length) % fotos.length) }}>‹</button>
-                <button className="crm-tip-seta crm-tip-seta--next" onMouseDown={(e) => { e.preventDefault(); setTipSlide(s => (s + 1) % fotos.length) }}>›</button>
-                <span className="crm-tip-counter">{slide + 1}/{fotos.length}</span>
-              </>}
-            </div>
-            <div className="crm-tip-body">
-              <b className="crm-tip-tipo">{tim.tipo} · {tim.bairro}</b>
-              <span className="crm-tip-preco">{formatPreco(tim.preco)}</span>
-              {specs && <span className="crm-tip-specs">{specs}</span>}
-              {m2 > 0 && (
-                <span className={`crm-tip-m2 ${m2tag ? `crm-tip-m2--${m2tag}` : ''}`}>
-                  {formatPreco(m2)}/m² {m2labels[m2tag] || ''}
-                </span>
-              )}
-            </div>
-          </div>
-        )
-      })()}
     </section>
   )
 }
