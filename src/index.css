@@ -3712,16 +3712,17 @@ html[data-theme="dark"] .hero-card .eyebrow::before { background: var(--gold-1);
 .ferr-card3:hover .ferr-card3-ico, .ferr-card3.on .ferr-card3-ico { background: rgba(184,134,47,0.18); border-color: rgba(184,134,47,0.3); color: var(--gold-1); }
 .ferr-card3.locked .ferr-card3-ico { color: #7a8494; background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
 .ferr-card3-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
-.ferr-card3-body b { font-family: var(--font-head); font-size: 0.93rem; color: #e8ecf4; line-height: 1.25; }
+.ferr-card3-tit { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.ferr-card3-tit b { font-family: var(--font-head); font-size: 0.93rem; color: #e8ecf4; line-height: 1.25; }
 .ferr-card3-body i { font-style: normal; font-size: 0.8rem; color: #a8b2c4; line-height: 1.45; }
-.ferr-card3.locked .ferr-card3-body b { color: #b0bac8; }
+.ferr-card3.locked .ferr-card3-tit b { color: #b0bac8; }
 .ferr-card3.locked .ferr-card3-body i { color: #8a94a6; }
 .ferr-card3-arrow { flex: none; color: #6a7488; align-self: center; transition: transform 0.18s, color 0.18s; }
 .ferr-card3:hover .ferr-card3-arrow { transform: translateX(3px); color: var(--gold-1); }
 
-/* badges nos cards */
-.ferr-badge-popular { position: absolute; top: 10px; right: 10px; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; background: rgba(46,140,87,0.18); color: #52c87e; border: 1px solid rgba(46,140,87,0.3); padding: 2px 8px; border-radius: 100px; }
-.ferr-badge-pro-sm { position: absolute; top: 10px; right: 10px; font-size: 0.58rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; background: rgba(184,134,47,0.15); color: var(--gold-2); border: 1px solid rgba(184,134,47,0.25); padding: 2px 8px; border-radius: 100px; }
+/* badges nos cards — inline no fluxo do título, sem sobreposição */
+.ferr-badge-popular { display: inline-flex; align-items: center; flex-shrink: 0; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; background: rgba(46,140,87,0.18); color: #52c87e; border: 1px solid rgba(46,140,87,0.3); padding: 2px 8px; border-radius: 100px; }
+.ferr-badge-pro-sm { display: inline-flex; align-items: center; flex-shrink: 0; font-size: 0.56rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; background: rgba(184,134,47,0.15); color: var(--gold-2); border: 1px solid rgba(184,134,47,0.25); padding: 2px 8px; border-radius: 100px; }
 .ferr-lock-msg { display: block; font-size: 0.74rem; color: var(--gold-2); font-style: normal; margin-top: 4px; animation: fadeIn 0.2s ease; }
 
 /* painel ativo */

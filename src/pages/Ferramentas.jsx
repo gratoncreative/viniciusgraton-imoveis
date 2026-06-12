@@ -413,10 +413,12 @@ export default function Ferramentas() {
                       <Link key={tool.id} className="ferr-card3" to={tool.to}>
                         <span className="ferr-card3-ico"><FI name={tool.icon} /></span>
                         <span className="ferr-card3-body">
-                          <b>{tool.nome}</b>
+                          <span className="ferr-card3-tit">
+                            <b>{tool.nome}</b>
+                            {tool.popular && <span className="ferr-badge-popular">Popular</span>}
+                          </span>
                           <i>{tool.desc}</i>
                         </span>
-                        {tool.popular && <span className="ferr-badge-popular">Popular</span>}
                         <span className="ferr-card3-arrow"><IconArrow /></span>
                       </Link>
                     )
@@ -434,14 +436,16 @@ export default function Ferramentas() {
                         {locked ? <FI name="lock" /> : <FI name={tool.icon} />}
                       </span>
                       <span className="ferr-card3-body">
-                        <b>{tool.nome}</b>
+                        <span className="ferr-card3-tit">
+                          <b>{tool.nome}</b>
+                          {tool.popular && !locked && <span className="ferr-badge-popular">Popular</span>}
+                          {tool.pro && <span className="ferr-badge-pro-sm">PRO</span>}
+                        </span>
                         <i>{tool.desc}</i>
                         {isLockMsgOn && (
                           <span className="ferr-lock-msg">Assine a Área do Corretor para desbloquear.</span>
                         )}
                       </span>
-                      {tool.popular && !locked && <span className="ferr-badge-popular">Popular</span>}
-                      {tool.pro && <span className="ferr-badge-pro-sm">PRO</span>}
                     </button>
                   )
                 })}
