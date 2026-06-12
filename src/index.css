@@ -587,6 +587,32 @@ section { position: relative; padding: clamp(20px, 3vw, 40px) 0; }
 .im-linha-rodape { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: auto; padding-top: 8px; flex-wrap: wrap; }
 .im-linha-preco { font-family: var(--font-head); font-weight: 800; font-size: 1.42rem; color: #1c2230; letter-spacing: -0.01em; }
 @media (max-width: 620px) { .im-linha { grid-template-columns: 1fr; } .im-linha-media { min-height: 170px; } }
+
+/* Novidades: destaque para 1–2 imóveis — aproveita toda a largura disponível */
+.nov-destaque { display: flex; flex-direction: column; gap: 20px; }
+.nov-destaque .im-linha { min-height: 240px; }
+/* Único imóvel: foto ocupa metade, conteúdo ocupa metade, tudo muito maior */
+.nov-destaque--1 .im-linha { grid-template-columns: 1fr 1fr; min-height: 400px; }
+.nov-destaque--1 .im-linha-media { min-height: 400px; }
+.nov-destaque--1 .im-linha-body { padding: 40px 48px; gap: 18px; justify-content: center; }
+.nov-destaque--1 .im-linha-tipo { font-size: 0.85rem; letter-spacing: 0.08em; margin-bottom: 4px; }
+.nov-destaque--1 .im-linha .im-bairro { font-size: 2.1rem; line-height: 1.2; }
+.nov-destaque--1 .im-linha .im-local { font-size: 1rem; margin-top: 2px; }
+.nov-destaque--1 .im-specs--min { gap: 22px; margin-top: 16px; padding-top: 16px; }
+.nov-destaque--1 .im-specs--min .im-spec { font-size: 0.98rem; }
+.nov-destaque--1 .im-linha-preco { font-size: 2rem; }
+.nov-destaque--1 .im-linha-rodape { padding-top: 20px; }
+.nov-destaque--1 .im-actions { gap: 12px; }
+.nov-destaque--1 .im-ver { padding: 12px 22px; font-size: 0.9rem; }
+.nov-destaque--1 .im-cta { padding: 12px 22px; font-size: 0.9rem; }
+@media (max-width: 620px) {
+  .nov-destaque--1 .im-linha { grid-template-columns: 1fr; }
+  .nov-destaque--1 .im-linha-media { min-height: 220px; }
+  .nov-destaque--1 .im-linha-body { padding: 24px 20px; }
+  .nov-destaque--1 .im-linha .im-bairro { font-size: 1.5rem; }
+  .nov-destaque--1 .im-linha-preco { font-size: 1.5rem; }
+}
+
 .cat-filtros { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
 .cat-filtros input, .cat-filtros select {
   font-family: var(--font-body); font-size: 0.9rem; color: var(--text);

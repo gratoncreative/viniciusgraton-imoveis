@@ -20,11 +20,7 @@ export default function Novidades() {
   const Bloco = ({ eyebrow, titulo, em, sub, itens, top }) => {
     const slice = itens.slice(0, 6)
     const n = slice.length
-    const gridStyle = {
-      perspective: '1400px',
-      ...(n === 1 && { gridTemplateColumns: '1fr', maxWidth: 400, margin: '0 auto' }),
-      ...(n === 2 && { gridTemplateColumns: 'repeat(2, 1fr)', maxWidth: 860, margin: '0 auto' }),
-    }
+    const usaLinha = n <= 2
     return (
       <>
         <Reveal>
@@ -34,11 +30,19 @@ export default function Novidades() {
             <p className="section-sub" style={{ marginTop: 12 }}>{sub}</p>
           </div>
         </Reveal>
-        <div className="im-grid" style={gridStyle}>
-          {slice.map((im, i) => (
-            <Reveal key={im.codigo} delay={(i % 3) * 0.08}><CardImovel im={im} /></Reveal>
-          ))}
-        </div>
+        {usaLinha ? (
+          <div className={`nov-destaque${n === 1 ? ' nov-destaque--1' : ''}`}>
+            {slice.map((im, i) => (
+              <Reveal key={im.codigo} delay={i * 0.08}><CardImovel im={im} variante="linha" /></Reveal>
+            ))}
+          </div>
+        ) : (
+          <div className="im-grid" style={{ perspective: '1400px' }}>
+            {slice.map((im, i) => (
+              <Reveal key={im.codigo} delay={(i % 3) * 0.08}><CardImovel im={im} /></Reveal>
+            ))}
+          </div>
+        )}
       </>
     )
   }
