@@ -322,6 +322,70 @@ export async function onRequestPost({ env, request }) {
     return json({ ok: true })
   }
 
+  // Busca dados do PROPRIETÁRIO: KV primeiro, depois API do Imoview (se configurada)
+  if (action === 'owner-fetch') {
+    const cod = String(b.codigo || '').replace(/[^\w]/g, '').slice(0, 12)
+    if (!cod) return json({ error: 'codigo' }, 400)
+
+    // 1. Verifica KV primeiro
+    const saved = await env.ENGAGEMENT.get('imovel:' + cod, 'json')
+    if (saved && saved.owner && (saved.owner.nome || saved.owner.fone)) {
+      return json({ ok: true, owner: saved.owner, source: 'saved' })
+    }
+
+    // 2. Tenta API autenticada do Imoview (precisa de IMOVIEW_BASE_URL + IMOVIEW_LOGIN + IMOVIEW_SENHA no Cloudflare)
+    const imoviewBase = (env.IMOVIEW_BASE_URL || '').trim().replace(/\/$/, '')
+    const imoviewLogin = (env.IMOVIEW_LOGIN || '').trim()
+    const imoviewSenha = (env.IMOVIEW_SENHA || '').trim()
+    if (imoviewBase && imoviewLogin && imoviewSenha) {
+      try {
+        const authR = await fetch(`${imoviewBase}/api/v1/authenticate`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', 'user-agent': 'ViniciusGratonImoveis/1.0' },
+          body: JSON.stringify({ login: imoviewLogin, password: imoviewSenha }),
+          signal: AbortSignal.timeout(8000),
+        })
+        const authJ = authR.ok ? await authR.json() : null
+        const tok = authJ && (authJ.token || authJ.access_token || authJ.accessToken)
+        if (tok) {
+          const propR = await fetch(`${imoviewBase}/api/v1/imoveis/${cod}`, {
+            headers: { authorization: `Bearer ${tok}`, 'user-agent': 'ViniciusGratonImoveis/1.0' },
+            signal: AbortSignal.timeout(8000),
+          })
+          const raw = propR.ok ? ((await propR.json().catch(() => null)) || {}) : {}
+          const d = raw.imovel || raw.data || raw
+          const owner = {
+            nome: String(d.proprietario_nome || d.proprietarioNome || d.captador_nome || d.captadorNome || d.nomePropietario || '').trim().slice(0, 120),
+            email: String(d.proprietario_email || d.proprietarioEmail || d.captador_email || d.captadorEmail || d.emailProprietario || '').trim().slice(0, 160),
+            fone: String(d.proprietario_fone || d.proprietarioFone || d.proprietario_celular || d.celularProprietario || d.captador_fone || d.foneProprietario || '').trim().slice(0, 40),
+          }
+          if (owner.nome || owner.fone) {
+            const base = saved || {}
+            await env.ENGAGEMENT.put('imovel:' + cod, JSON.stringify({ ...base, owner, atualizadoEm: Date.now() }))
+            return json({ ok: true, owner, source: 'imoview' })
+          }
+        }
+      } catch { /* sem credenciais ou API indisponível — segue para "none" */ }
+    }
+
+    return json({ ok: true, owner: { nome: '', email: '', fone: '' }, source: 'none' })
+  }
+
+  // Salva apenas o proprietário preservando campos existentes do imóvel
+  if (action === 'owner-save') {
+    const cod = String(b.codigo || '').replace(/[^\w]/g, '').slice(0, 12)
+    if (!cod) return json({ error: 'codigo' }, 400)
+    const o = b.owner && typeof b.owner === 'object' ? b.owner : {}
+    const owner = {
+      nome: String(o.nome || '').slice(0, 120),
+      email: String(o.email || '').slice(0, 160),
+      fone: String(o.fone || '').replace(/[^\d+\s().-]/g, '').slice(0, 40),
+    }
+    const existing = await env.ENGAGEMENT.get('imovel:' + cod, 'json') || {}
+    await env.ENGAGEMENT.put('imovel:' + cod, JSON.stringify({ ...existing, owner, atualizadoEm: Date.now() }))
+    return json({ ok: true, owner })
+  }
+
   return json({ error: 'acao desconhecida' }, 400)
   } catch (e) {
     console.error('admin.js catch:', e)

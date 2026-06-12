@@ -14,6 +14,7 @@ import {
 } from '../data'
 import { IconWhats, IconArrow, IconPin, IconShield, ICONS } from './../components/icons'
 import { useSEO } from '../useSEO'
+import AdminImovelBar from '../components/AdminImovelBar'
 
 const plural = (n, s, p) => (n > 1 ? p : s)
 
@@ -402,6 +403,8 @@ export default function ImovelDetalhe() {
     .map((x) => x.i)
 
   return (
+    <>
+    <AdminImovelBar im={im} />
     <main className="section--light det imovel-pg">
       <div className="container">
         <nav className="det-bread">
@@ -612,5 +615,6 @@ export default function ImovelDetalhe() {
       </div>
       {estudoAberto && est?.ok && <EstudoM2 im={im} est={est} onClose={() => setEstudoAberto(false)} onLaudo={comprarLaudo} />}
     </main>
+    </>
   )
 }
