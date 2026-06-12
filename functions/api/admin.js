@@ -348,7 +348,7 @@ export async function onRequestPost({ env, request }) {
   }
 
   // Busca dados do PROPRIETÁRIO via sessão web Imoview (4 passos):
-  //   1) login  2) GET /Imovel/Detalhes → botão .loadPessoas[data-codigos]
+  //   1) login  2) GET /Imovel/Detalhes → data-codigos da pessoa
   //   3) GET /PessoaF/Detalhes/{pessoaCode}  4) parse nome/fone/email do HTML
   if (action === 'owner-fetch') {
     const cod = String(b.codigo || '').replace(/[^\w]/g, '').slice(0, 12)
@@ -374,6 +374,17 @@ export async function onRequestPost({ env, request }) {
       return Object.entries(jar).filter(([k])=>k).map(([k,v])=>`${k}=${v}`).join('; ')
     }
 
+    const extractCsrf = (html) => {
+      // Tenta múltiplos padrões de atributos (qualquer ordem)
+      const inputM = html.match(/<input[^>]*__RequestVerificationToken[^>]*>/i)
+      if (inputM) { const v = inputM[0].match(/value=["']([^"']+)["']/); if (v) return v[1] }
+      const m1 = html.match(/name="__RequestVerificationToken"[^>]*value="([^"]+)"/)
+      if (m1) return m1[1]
+      const m2 = html.match(/value="([^"]+)"[^>]*name="__RequestVerificationToken"/)
+      if (m2) return m2[1]
+      return ''
+    }
+
     if (imoviewEmail && imoviewSenha) {
       let dbg = {}
       try {
@@ -382,10 +393,11 @@ export async function onRequestPost({ env, request }) {
         dbg.pgStatus = pgR.status
         let cookies = mergeCookies('', pgR.headers.get('set-cookie') || '')
         const pgHtml = await pgR.text()
-        const csrfM  = pgHtml.match(/name="__RequestVerificationToken"[^>]*value="([^"]+)"/) || pgHtml.match(/value="([^"]+)"[^>]*name="__RequestVerificationToken"/)
-        const csrf   = csrfM ? csrfM[1] : ''
-        const fieldNames = (pgHtml.match(/name="(\w+)"/g)||[]).map(m=>m.slice(6,-1))
+        const csrf = extractCsrf(pgHtml)
+        const fieldNames = (pgHtml.match(/name=["'](\w+)["']/g)||[]).map(m=>m.replace(/^name=["']/,'').replace(/["']$/,''))
         dbg.csrf = csrf ? 'sim' : 'nao'
+        dbg.fieldNames = fieldNames.slice(0, 12)
+        if (isDebug) dbg.pgSnippet = pgHtml.slice(0, 600)
 
         // Passo 2: POST /Login/Autenticar → session cookie
         const form = new URLSearchParams()
@@ -405,22 +417,44 @@ export async function onRequestPost({ env, request }) {
         dbg.loginLocation = loginR.headers.get('location') || ''
         cookies = mergeCookies(cookies, loginR.headers.get('set-cookie') || '')
         dbg.hasCookies = cookies.length > 10
-        const loginOk = loginR.status === 302 || loginR.status === 301 || (loginR.status === 200 && !/\/Login/i.test(loginR.headers.get('location') || ''))
-        dbg.loginOk = loginOk
+        dbg.cookieStr = cookies.slice(0, 120)
 
-        if (loginOk || dbg.hasCookies) {
-          // Passo 3: GET /Imovel/Detalhes/{cod} → extrai código da pessoa do botão .loadPessoas[data-codigos]
+        // Login bem-sucedido = 302/301 para fora do /Login
+        const loginRedirOk = (loginR.status === 302 || loginR.status === 301) && !/\/Login/i.test(dbg.loginLocation)
+        // Verificação via corpo: lê a resposta e checa se contém "Sair" (autenticado) ou formulário de login (falhou)
+        const loginBody = loginRedirOk ? '' : await loginR.text()
+        const loginBodyOk = loginBody.includes('Sair') || loginBody.includes('sair') || loginBody.includes('logout')
+        const loginOk = loginRedirOk || loginBodyOk
+        dbg.loginOk = loginOk
+        if (isDebug) dbg.loginBodySnippet = loginBody.slice(0, 600)
+
+        // Se houve redirect, segue uma vez para consolidar cookies de sessão
+        if (loginRedirOk && dbg.loginLocation) {
+          const loc = dbg.loginLocation.startsWith('http') ? dbg.loginLocation : `${WEB}${dbg.loginLocation}`
+          const rr = await fetch(loc, { headers:{ cookie:cookies, 'user-agent':UA }, redirect:'manual', signal:AbortSignal.timeout(8000) })
+          cookies = mergeCookies(cookies, rr.headers.get('set-cookie') || '')
+        }
+
+        if (loginOk) {
+          // Passo 3: GET /Imovel/Detalhes/{cod} → extrai código da pessoa
           const imovelR = await fetch(`${WEB}/Imovel/Detalhes/${cod}`, {
-            headers:{ cookie:cookies, 'user-agent':UA, accept:'text/html' },
+            headers:{ cookie:cookies, 'user-agent':UA, accept:'text/html', 'x-requested-with':'XMLHttpRequest' },
             redirect:'follow', signal:AbortSignal.timeout(12000),
           })
           dbg.imovelStatus = imovelR.status
           const imovelHtml = await imovelR.text()
 
-          // O botão tem class="... loadPessoas ..." data-codigos="65777" data-imovel="99349"
-          const loadPessoasEl = imovelHtml.match(/<[^>]*loadPessoas[^>]*>/)
-          const pessoaCode = loadPessoasEl ? ((loadPessoasEl[0].match(/data-codigos="(\d+)"/) || [])[1] || '') : ''
+          // Busca data-codigos com aspas simples ou duplas, em qualquer elemento
+          let pessoaCode = ''
+          const dcM = imovelHtml.match(/data-codigos=["'](\d+)["']/)
+          if (dcM) pessoaCode = dcM[1]
+          if (!pessoaCode) {
+            // Fallback: procura loadPessoas e extrai data-codigos
+            const lpEl = imovelHtml.match(/<[^>]*loadPessoas[^>]*>/)
+            if (lpEl) { const dc2 = lpEl[0].match(/data-codigos=["']?(\d+)["']?/); if (dc2) pessoaCode = dc2[1] }
+          }
           dbg.pessoaCode = pessoaCode
+          if (isDebug) dbg.imovelSnippet = imovelHtml.slice(0, 2000)
 
           if (pessoaCode) {
             // Passo 4: GET /PessoaF/Detalhes/{pessoaCode} → parse nome, fone, email do HTML
@@ -431,11 +465,11 @@ export async function onRequestPost({ env, request }) {
             dbg.pessoaStatus = pessoaR.status
             const pessoaHtml = await pessoaR.text()
 
-            // Nome: <title>Detalhes: Pessoa física 65777 | NOME DA PESSOA</title>
+            // Nome: <title>... | NOME DA PESSOA</title>
             const nomeM = pessoaHtml.match(/<title>[^|<]+\|\s*([^<]+)<\/title>/)
             const nome  = nomeM ? nomeM[1].trim() : ''
 
-            // Celular: link WhatsApp embutido na página → api.whatsapp.com/send?phone=55XXXXXXXXXX
+            // Celular: link WhatsApp embutido → api.whatsapp.com/send?phone=55XXXXXXXXXX
             const waM = pessoaHtml.match(/api\.whatsapp\.com\/send\?phone=55(\d{10,11})/)
             let fone = ''
             if (waM) {
@@ -444,7 +478,6 @@ export async function onRequestPost({ env, request }) {
                 ? `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`
                 : `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`
             } else {
-              // fallback: primeiro número de telefone brasileiro da página
               const foneM = pessoaHtml.match(/\((\d{2})\)\s*(\d{4,5}[-.\s]?\d{4})/)
               if (foneM) fone = `(${foneM[1]}) ${foneM[2].replace(/[-.\s]/g,'').replace(/(\d{4,5})(\d{4})$/,'$1-$2')}`
             }
@@ -463,9 +496,9 @@ export async function onRequestPost({ env, request }) {
               await env.ENGAGEMENT.put('imovel:'+cod, JSON.stringify({...(saved||{}), owner, atualizadoEm:Date.now()}))
               return json({ ok:true, owner, source:'imoview-web', ...(isDebug?{dbg}:{}) })
             }
-            if (isDebug) return json({ ok:false, source:'parse-falhou', dbg, pessoaSnippet:pessoaHtml.slice(0,800) })
+            if (isDebug) return json({ ok:false, source:'parse-falhou', dbg, pessoaSnippet:pessoaHtml.slice(0,1000) })
           } else {
-            if (isDebug) return json({ ok:false, source:'pessoa-code-nao-encontrado', dbg, imovelSnippet:imovelHtml.slice(0,600) })
+            if (isDebug) return json({ ok:false, source:'pessoa-code-nao-encontrado', dbg, imovelSnippet:imovelHtml.slice(0,2000) })
           }
         } else {
           if (isDebug) return json({ ok:false, source:'login-falhou', dbg })
