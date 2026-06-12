@@ -388,27 +388,26 @@ export async function onRequestPost({ env, request }) {
     if (imoviewEmail && imoviewSenha) {
       let dbg = {}
       try {
-        // Passo 1: GET /Login → cookie inicial + CSRF token
-        const pgR = await fetch(`${WEB}/Login`, { headers:{'user-agent':UA}, redirect:'follow', signal:AbortSignal.timeout(10000) })
+        // Passo 1: GET /Login/LogOn → cookie inicial
+        const LOGIN_URL = `${WEB}/Login/LogOn?ReturnUrl=%2f`
+        const pgR = await fetch(LOGIN_URL, { headers:{'user-agent':UA}, redirect:'follow', signal:AbortSignal.timeout(10000) })
         dbg.pgStatus = pgR.status
         let cookies = mergeCookies('', pgR.headers.get('set-cookie') || '')
         const pgHtml = await pgR.text()
-        const csrf = extractCsrf(pgHtml)
+        // Imoview não usa __RequestVerificationToken; inclui campos hidden urlReturn e rota
         const fieldNames = (pgHtml.match(/name=["'](\w+)["']/g)||[]).map(m=>m.replace(/^name=["']/,'').replace(/["']$/,''))
-        dbg.csrf = csrf ? 'sim' : 'nao'
         dbg.fieldNames = fieldNames.slice(0, 12)
         if (isDebug) dbg.pgSnippet = pgHtml.slice(0, 600)
 
-        // Passo 2: POST /Login/Autenticar → session cookie
+        // Passo 2: POST /Login/LogOn → session cookie (mesmo endpoint do formulário)
         const form = new URLSearchParams()
-        const loginField = fieldNames.find(n=>/login|usuario|email|user/i.test(n)) || 'login'
-        const senhaField = fieldNames.find(n=>/senha|password|pass/i.test(n))     || 'senha'
-        form.append(loginField, imoviewEmail)
-        form.append(senhaField, imoviewSenha)
-        if (csrf) form.append('__RequestVerificationToken', csrf)
-        const loginR = await fetch(`${WEB}/Login/Autenticar`, {
+        form.append('login',     imoviewEmail)
+        form.append('senha',     imoviewSenha)
+        form.append('urlReturn', '')
+        form.append('rota',      '')
+        const loginR = await fetch(LOGIN_URL, {
           method:'POST',
-          headers:{ 'content-type':'application/x-www-form-urlencoded', cookie:cookies, 'user-agent':UA, referer:`${WEB}/Login`, origin:WEB },
+          headers:{ 'content-type':'application/x-www-form-urlencoded', cookie:cookies, 'user-agent':UA, referer:LOGIN_URL, origin:WEB },
           body: form.toString(),
           redirect:'manual',
           signal: AbortSignal.timeout(10000),
