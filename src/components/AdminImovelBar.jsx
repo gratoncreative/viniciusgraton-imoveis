@@ -43,7 +43,7 @@ export default function AdminImovelBar({ im }) {
         const temDados = !!(o.nome || o.fone)
         setOwner(temDados ? o : null)
         setForm(o)
-        if (j.source === 'imoview') setMsg('✓ Captado do Imoview e salvo automaticamente')
+        if (j.source && j.source.startsWith('imoview')) setMsg('✓ Captado do Imoview e salvo automaticamente')
         else if (j.source === 'saved') setMsg('✓ Dados já cadastrados neste imóvel')
         else { setMsg('Nenhum dado encontrado. Preencha os campos abaixo.'); setEditing(true) }
       } else {
