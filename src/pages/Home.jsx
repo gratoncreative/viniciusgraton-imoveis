@@ -1,14 +1,15 @@
 import { lazy, Suspense } from 'react'
 import Hero from '../components/Hero'
+import ParaVoce from '../components/ParaVoce'
 import Destaque from '../components/Destaque'
-import VenderCta from '../components/VenderCta'
 import Novidades from '../components/Novidades'
+import FerramentasHome from '../components/FerramentasHome'
+import CorretorBanner from '../components/CorretorBanner'
+import VenderCta from '../components/VenderCta'
 import { useSEO } from '../useSEO'
 
 const BlogHome = lazy(() => import('../components/BlogHome'))
 
-// Página inicial = VITRINE. Lidera com os imóveis disponíveis; o conteúdo de
-// apoio (como eu te ajudo, sobre, regiões) virou página própria no menu.
 export default function Home() {
   useSEO({
     title: 'Consultor de Imóveis em Uberlândia',
@@ -20,8 +21,11 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <ParaVoce />
       <Novidades />
       <Destaque limite={9} />
+      <FerramentasHome />
+      <CorretorBanner />
       <VenderCta />
       <Suspense fallback={null}><BlogHome /></Suspense>
     </main>
