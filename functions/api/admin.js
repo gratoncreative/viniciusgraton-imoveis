@@ -337,35 +337,57 @@ export async function onRequestPost({ env, request }) {
     const imoviewBase = (env.IMOVIEW_BASE_URL || '').trim().replace(/\/$/, '')
     const imoviewLogin = (env.IMOVIEW_LOGIN || '').trim()
     const imoviewSenha = (env.IMOVIEW_SENHA || '').trim()
+    const isDebug = b.debug === true
     if (imoviewBase && imoviewLogin && imoviewSenha) {
+      let dbg = {}
       try {
+        dbg.authUrl = `${imoviewBase}/api/v1/authenticate`
         const authR = await fetch(`${imoviewBase}/api/v1/authenticate`, {
           method: 'POST',
           headers: { 'content-type': 'application/json', 'user-agent': 'ViniciusGratonImoveis/1.0' },
           body: JSON.stringify({ login: imoviewLogin, password: imoviewSenha }),
           signal: AbortSignal.timeout(8000),
         })
-        const authJ = authR.ok ? await authR.json() : null
-        const tok = authJ && (authJ.token || authJ.access_token || authJ.accessToken)
+        dbg.authStatus = authR.status
+        const authText = await authR.text()
+        dbg.authBody = authText.slice(0, 400)
+        let authJ = null
+        try { authJ = JSON.parse(authText) } catch { authJ = null }
+        const tok = authJ && (authJ.token || authJ.access_token || authJ.accessToken || authJ.Token || authJ.jwt)
+        dbg.tok = tok ? 'obtido' : 'ausente'
+        dbg.authKeys = authJ ? Object.keys(authJ) : []
         if (tok) {
+          dbg.propUrl = `${imoviewBase}/api/v1/imoveis/${cod}`
           const propR = await fetch(`${imoviewBase}/api/v1/imoveis/${cod}`, {
             headers: { authorization: `Bearer ${tok}`, 'user-agent': 'ViniciusGratonImoveis/1.0' },
             signal: AbortSignal.timeout(8000),
           })
-          const raw = propR.ok ? ((await propR.json().catch(() => null)) || {}) : {}
-          const d = raw.imovel || raw.data || raw
+          dbg.propStatus = propR.status
+          const propText = await propR.text()
+          dbg.propBody = propText.slice(0, 800)
+          let raw = null
+          try { raw = JSON.parse(propText) } catch { raw = null }
+          const d = (raw && (raw.imovel || raw.data || raw)) || {}
+          dbg.propKeys = d ? Object.keys(d).slice(0, 30) : []
           const owner = {
-            nome: String(d.proprietario_nome || d.proprietarioNome || d.captador_nome || d.captadorNome || d.nomePropietario || '').trim().slice(0, 120),
+            nome: String(d.proprietario_nome || d.proprietarioNome || d.captador_nome || d.captadorNome || d.nomePropietario || d.nomeProprietario || '').trim().slice(0, 120),
             email: String(d.proprietario_email || d.proprietarioEmail || d.captador_email || d.captadorEmail || d.emailProprietario || '').trim().slice(0, 160),
             fone: String(d.proprietario_fone || d.proprietarioFone || d.proprietario_celular || d.celularProprietario || d.captador_fone || d.foneProprietario || '').trim().slice(0, 40),
           }
           if (owner.nome || owner.fone) {
             const base = saved || {}
             await env.ENGAGEMENT.put('imovel:' + cod, JSON.stringify({ ...base, owner, atualizadoEm: Date.now() }))
-            return json({ ok: true, owner, source: 'imoview' })
+            return json({ ok: true, owner, source: 'imoview', ...(isDebug ? { dbg } : {}) })
           }
+          if (isDebug) return json({ ok: false, source: 'imoview-sem-owner', dbg })
+        } else {
+          if (isDebug) return json({ ok: false, source: 'imoview-sem-token', dbg })
         }
-      } catch { /* sem credenciais ou API indisponível — segue para "none" */ }
+      } catch (e) {
+        if (isDebug) return json({ ok: false, source: 'imoview-erro', dbg, erro: String(e) })
+      }
+    } else {
+      if (isDebug) return json({ ok: false, source: 'imoview-nao-config', hasBase: !!imoviewBase, hasLogin: !!imoviewLogin, hasSenha: !!imoviewSenha })
     }
 
     return json({ ok: true, owner: { nome: '', email: '', fone: '' }, source: 'none' })
