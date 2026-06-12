@@ -3638,7 +3638,10 @@ html[data-theme="dark"] .hero-card .eyebrow::before { background: var(--gold-1);
 .pv-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
 .pv-card { display: flex; flex-direction: column; gap: 8px; padding: 24px 20px 20px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--surface); text-decoration: none; transition: transform .18s, box-shadow .2s, border-color .18s; }
 .pv-card:hover { transform: translateY(-4px); box-shadow: 0 14px 36px -10px rgba(22,26,34,0.13); }
-.pv-ico { font-size: 1.9rem; line-height: 1; }
+.pv-ico { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 11px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.11); color: var(--text-soft); flex: none; }
+.pv-card:hover .pv-ico { background: rgba(255,255,255,0.11); border-color: rgba(255,255,255,0.2); color: var(--text); }
+.pv-card--gold .pv-ico { background: rgba(184,134,47,0.15); border-color: rgba(184,134,47,0.3); color: var(--gold-1); }
+.pv-card--gold:hover .pv-ico { background: rgba(184,134,47,0.22); border-color: rgba(184,134,47,0.45); }
 .pv-nome { font-family: var(--font-head); font-size: 1rem; font-weight: 700; color: var(--text); display: block; }
 .pv-sub { font-size: 0.82rem; color: var(--text-soft); line-height: 1.55; flex: 1; display: block; }
 .pv-seta { font-size: 1.05rem; color: var(--text-mute); margin-top: 6px; display: block; transition: transform .18s, color .18s; }
