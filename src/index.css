@@ -3662,15 +3662,37 @@ html[data-theme="dark"] .hero-card .eyebrow::before { background: var(--gold-1);
 
 /* cabeçalho de seção */
 .ferr-section { animation: fadeIn 0.3s ease; }
-.ferr-section--pro { position: relative; }
+.ferr-section--pro {
+  position: relative;
+  background: linear-gradient(145deg, rgba(184,134,47,0.07) 0%, rgba(184,134,47,0.03) 60%, transparent 100%);
+  border: 1px solid rgba(184,134,47,0.22);
+  border-radius: 22px;
+  padding: 28px;
+  box-shadow: 0 0 60px -20px rgba(184,134,47,0.12), inset 0 1px 0 rgba(184,134,47,0.1);
+}
+.ferr-section--pro::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 23px;
+  background: linear-gradient(145deg, rgba(184,134,47,0.25) 0%, transparent 50%);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+  padding: 1px;
+  pointer-events: none;
+}
 .ferr-sec-hd { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 24px; }
-.ferr-sec-hd--pro { border-left: 3px solid var(--gold-3); padding-left: 16px; }
+.ferr-sec-hd--pro { border-left: none; padding-left: 0; }
 .ferr-sec-ico { flex: none; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16); color: #c0c8d8; }
-.ferr-sec-hd--pro .ferr-sec-ico { background: rgba(184,134,47,0.15); border-color: rgba(184,134,47,0.3); color: var(--gold-1); }
+.ferr-sec-hd--pro .ferr-sec-ico { width: 46px; height: 46px; background: rgba(184,134,47,0.18); border-color: rgba(184,134,47,0.35); color: var(--gold-1); }
 .ferr-sec-info { flex: 1; }
 .ferr-sec-titulo { font-family: var(--font-head); font-size: 1.25rem; font-weight: 700; color: #f1ede4; margin: 0 0 4px; display: flex; align-items: center; gap: 10px; }
+.ferr-sec-hd--pro .ferr-sec-titulo { font-size: 1.45rem; color: var(--gold-1); }
 .ferr-sec-sub { font-size: 0.85rem; color: #a8b2c4; margin: 0; }
+.ferr-sec-hd--pro .ferr-sec-sub { color: #c0a84a; }
 .ferr-sec-count { flex: none; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16); border-radius: 100px; padding: 3px 12px; font-size: 0.74rem; color: #a8b2c4; white-space: nowrap; align-self: center; }
+.ferr-sec-hd--pro .ferr-sec-count { background: rgba(184,134,47,0.12); border-color: rgba(184,134,47,0.28); color: var(--gold-2); }
 
 /* badge PRO na seção */
 .ferr-badge-pro { display: inline-flex; align-items: center; gap: 4px; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; background: var(--gold-grad); color: #14100a; padding: 3px 9px; border-radius: 5px; vertical-align: middle; }

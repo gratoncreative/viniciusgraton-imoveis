@@ -50,10 +50,10 @@ const FI = ({ name, size = 22 }) => (
 // ─── seções e ferramentas ────────────────────────────────────────────────────
 const SECOES = [
   { id: 'comprador',     titulo: 'Para compradores',       sub: 'Simule, planeje e calcule antes de fechar',         icon: 'home'  },
+  { id: 'pro',           titulo: 'Área do Corretor',        sub: 'Ferramentas exclusivas para profissionais do mercado imobiliário', icon: 'star', pro: true },
   { id: 'investidor',    titulo: 'Para investidores',       sub: 'Analise rentabilidade, retorno e ganho de capital', icon: 'trend' },
   { id: 'financiamento', titulo: 'Financiamento e FGTS',    sub: 'Simule o uso do fundo e amortize com precisão',     icon: 'bank'  },
   { id: 'explorar',      titulo: 'Explorar o mercado',      sub: 'Compare imóveis e explore o mercado visual',       icon: 'map'   },
-  { id: 'pro',           titulo: 'Área do Corretor',        sub: 'Ferramentas exclusivas para profissionais',         icon: 'star', pro: true },
 ]
 
 const TOOLS = [
