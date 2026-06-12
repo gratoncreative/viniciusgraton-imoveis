@@ -3676,7 +3676,7 @@ html[data-theme="dark"] .hero-card .eyebrow::before { background: var(--gold-1);
 .pv-header { margin-bottom: 16px; }
 .pv-titulo { font-family: var(--font-head); font-size: clamp(1.2rem,2.2vw,1.5rem); font-weight: 700; color: var(--text); margin-top: 5px; }
 .pv-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
-.pv-card { display: flex; flex-direction: row; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px; border: 1.5px solid var(--border); background: var(--surface); text-decoration: none; transition: transform .18s, box-shadow .2s, border-color .18s; }
+.pv-card { display: flex; flex-direction: row; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px; border: 1.5px solid var(--border); background: var(--surface); text-decoration: none; transition: transform .18s, box-shadow .2s, border-color .18s; min-width: 0; overflow: hidden; }
 .pv-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px -8px rgba(22,26,34,0.15); }
 .pv-ico { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 12px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.11); color: var(--text-soft); flex: none; transition: background .22s, border-color .22s, color .22s; }
 .pv-card:hover .pv-ico { background: rgba(184,134,47,0.2); border-color: rgba(184,134,47,0.5); color: var(--gold-1); }
