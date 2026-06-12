@@ -1095,8 +1095,9 @@ html[data-theme="dark"] .det-dest-mini-chip { background: rgba(224,181,86,0.1); 
 .det-spec { display: flex; align-items: center; gap: 10px; }
 .det-spec-ico { width: 34px; height: 34px; border-radius: 9px; background: rgba(224,181,86,0.1); border: 1px solid var(--gold-3); display: grid; place-items: center; color: var(--gold-1); flex: none; }
 .det-spec-ico svg { width: 17px; height: 17px; }
-.det-spec b { display: block; font-family: var(--font-head); font-size: 0.94rem; font-weight: 700; line-height: 1.2; }
-.det-spec span { font-size: 0.76rem; color: var(--text-soft); }
+.det-spec > div { display: flex; flex-direction: column; gap: 1px; }
+.det-spec b { display: block; font-family: var(--font-head); font-size: 0.94rem; font-weight: 700; line-height: 1.1; }
+.det-spec span { font-size: 0.76rem; color: var(--text-soft); line-height: 1.2; }
 .det-desc { color: var(--text-soft); line-height: 1.7; margin: 22px 0; font-size: 0.98rem; }
 /* ===== Página do imóvel — enriquecida (subtítulo, confiança, destaques, sobre) ===== */
 .det-local { display: inline-flex; align-items: center; gap: 6px; }
