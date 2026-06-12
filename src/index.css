@@ -3669,7 +3669,7 @@ html[data-theme="dark"] .hero-card .eyebrow::before { background: var(--gold-1);
 /* ============================================================
    PARA VOCÊ — seletor de audiência na home
    ============================================================ */
-.para-voce { position: relative; padding: clamp(44px,6vw,72px) 0; background: linear-gradient(180deg, #0e1321 0%, #0a0d18 100%); }
+.para-voce { position: relative; padding: clamp(20px,2.5vw,28px) 0; background: linear-gradient(180deg, #0e1321 0%, #0a0d18 100%); }
 .para-voce::before, .para-voce::after { content: ''; position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(184,134,47,0.18) 20%, rgba(184,134,47,0.38) 50%, rgba(184,134,47,0.18) 80%, transparent 100%); pointer-events: none; }
 .para-voce::before { top: 0; }
 .para-voce::after { bottom: 0; }
