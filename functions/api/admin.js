@@ -16,6 +16,31 @@
  *   POST /api/admin { action:'patch', token, key, patch }       -> { ok }
  *   POST /api/admin { action:'set-password', token, novaSenha } -> { ok }
  */
+// MD5 compacto — necessário para autenticação Imoview (SubtleCrypto não suporta MD5)
+function md5hex(s) {
+  const r=[7,12,17,22,7,12,17,22,7,12,17,22,7,12,17,22,5,9,14,20,5,9,14,20,5,9,14,20,5,9,14,20,4,11,16,23,4,11,16,23,4,11,16,23,4,11,16,23,6,10,15,21,6,10,15,21,6,10,15,21,6,10,15,21]
+  const K=Array.from({length:64},(_,i)=>Math.floor(Math.abs(Math.sin(i+1))*4294967296))
+  const bytes=new TextEncoder().encode(s),len=bytes.length
+  const pad=len%64<56?56-len%64:120-len%64
+  const buf=new Uint8Array(len+pad+8);buf.set(bytes);buf[len]=0x80
+  const dv=new DataView(buf.buffer)
+  dv.setUint32(buf.length-8,(len*8)>>>0,true);dv.setUint32(buf.length-4,Math.floor(len/536870912),true)
+  let a=0x67452301,b=0xEFCDAB89|0,c=0x98BADCFE|0,d=0x10325476
+  for(let i=0;i<buf.length;i+=64){
+    const W=Array.from({length:16},(_,j)=>dv.getInt32(i+j*4,true))
+    let A=a,B=b,C=c,D=d
+    for(let j=0;j<64;j++){
+      let f,g
+      if(j<16){f=(B&C)|(~B&D);g=j}else if(j<32){f=(D&B)|(~D&C);g=(5*j+1)%16}else if(j<48){f=B^C^D;g=(3*j+5)%16}else{f=C^(B|~D);g=(7*j)%16}
+      const t=D;D=C;C=B;const x=(A+f+K[j]+W[g])|0;B=(B+((x<<r[j])|(x>>>(32-r[j]))))|0;A=t
+    }
+    a=(a+A)|0;b=(b+B)|0;c=(c+C)|0;d=(d+D)|0
+  }
+  const out=new Uint8Array(16),ov=new DataView(out.buffer)
+  ov.setInt32(0,a,true);ov.setInt32(4,b,true);ov.setInt32(8,c,true);ov.setInt32(12,d,true)
+  return[...out].map(x=>x.toString(16).padStart(2,'0')).join('')
+}
+
 const ADMIN_EMAIL_DEFAULT = 'contato@viniciusgraton.com.br'
 const TTL_MS = 12 * 60 * 60 * 1000
 const ORIGIN = 'https://viniciusgraton.com.br'
@@ -333,46 +358,64 @@ export async function onRequestPost({ env, request }) {
       return json({ ok: true, owner: saved.owner, source: 'saved' })
     }
 
-    // 2. Tenta API autenticada do Imoview (precisa de IMOVIEW_BASE_URL + IMOVIEW_LOGIN + IMOVIEW_SENHA no Cloudflare)
-    const imoviewBase = (env.IMOVIEW_BASE_URL || '').trim().replace(/\/$/, '')
-    const imoviewLogin = (env.IMOVIEW_LOGIN || '').trim()
-    const imoviewSenha = (env.IMOVIEW_SENHA || '').trim()
+    // 2. Tenta API do Imoview
+    // Variáveis necessárias no Cloudflare:
+    //   IMOVIEW_BASE_URL = https://api.imoview.com.br
+    //   IMOVIEW_LOGIN    = email de acesso
+    //   IMOVIEW_SENHA    = senha (enviada como MD5)
+    //   IMOVIEW_CHAVE    = chave de API fornecida pela Universal Software / suporte@unsoft.com.br
+    const imoviewBase  = (env.IMOVIEW_BASE_URL || '').trim().replace(/\/$/, '')
+    const imoviewEmail = (env.IMOVIEW_LOGIN   || '').trim()
+    const imoviewSenha = (env.IMOVIEW_SENHA   || '').trim()
+    const imoviewChave = (env.IMOVIEW_CHAVE   || '').trim()
     const isDebug = b.debug === true
-    if (imoviewBase && imoviewLogin && imoviewSenha) {
+
+    if (imoviewBase && imoviewEmail && imoviewSenha && imoviewChave) {
       let dbg = {}
       try {
-        dbg.authUrl = `${imoviewBase}/api/v1/authenticate`
-        const authR = await fetch(`${imoviewBase}/api/v1/authenticate`, {
-          method: 'POST',
-          headers: { 'content-type': 'application/json', 'user-agent': 'ViniciusGratonImoveis/1.0' },
-          body: JSON.stringify({ login: imoviewLogin, password: imoviewSenha }),
+        // Auth: GET /Usuario/App_ValidarAcesso?email=...&senha=MD5(senha)
+        const authUrl = `${imoviewBase}/Usuario/App_ValidarAcesso?email=${encodeURIComponent(imoviewEmail)}&senha=${md5hex(imoviewSenha)}`
+        dbg.authUrl = `${imoviewBase}/Usuario/App_ValidarAcesso` // sem credenciais no log
+        const authR = await fetch(authUrl, {
+          headers: { chave: imoviewChave, 'user-agent': 'ViniciusGratonImoveis/1.0' },
           signal: AbortSignal.timeout(8000),
         })
         dbg.authStatus = authR.status
         const authText = await authR.text()
-        dbg.authBody = authText.slice(0, 400)
+        dbg.authBody = authText.slice(0, 500)
         let authJ = null
-        try { authJ = JSON.parse(authText) } catch { authJ = null }
-        const tok = authJ && (authJ.token || authJ.access_token || authJ.accessToken || authJ.Token || authJ.jwt)
-        dbg.tok = tok ? 'obtido' : 'ausente'
+        try { authJ = JSON.parse(authText) } catch {}
         dbg.authKeys = authJ ? Object.keys(authJ) : []
-        if (tok) {
-          dbg.propUrl = `${imoviewBase}/api/v1/imoveis/${cod}`
-          const propR = await fetch(`${imoviewBase}/api/v1/imoveis/${cod}`, {
-            headers: { authorization: `Bearer ${tok}`, 'user-agent': 'ViniciusGratonImoveis/1.0' },
+
+        const codigoAcesso  = authJ && String(authJ.codigoacesso  || authJ.CodigoAcesso  || authJ.codigo_acesso  || authJ.accessCode || '').trim()
+        const codigoUsuario = authJ && String(authJ.codigousuario || authJ.CodigoUsuario || authJ.codigo_usuario || authJ.userId     || authJ.id || '').trim()
+        dbg.codigoAcesso  = codigoAcesso  ? 'obtido' : 'ausente'
+        dbg.codigoUsuario = codigoUsuario ? 'obtido' : 'ausente'
+
+        if (codigoAcesso) {
+          // Busca imóvel: GET /Imovel/App_RetornarDetalhesImovel?codigoImovel=...&codigoUsuario=...
+          const propUrl = `${imoviewBase}/Imovel/App_RetornarDetalhesImovel?codigoImovel=${encodeURIComponent(cod)}&codigoUsuario=${encodeURIComponent(codigoUsuario)}`
+          dbg.propUrl = propUrl
+          const propR = await fetch(propUrl, {
+            headers: { chave: imoviewChave, codigoacesso: codigoAcesso, 'user-agent': 'ViniciusGratonImoveis/1.0' },
             signal: AbortSignal.timeout(8000),
           })
           dbg.propStatus = propR.status
           const propText = await propR.text()
           dbg.propBody = propText.slice(0, 800)
-          let raw = null
-          try { raw = JSON.parse(propText) } catch { raw = null }
-          const d = (raw && (raw.imovel || raw.data || raw)) || {}
-          dbg.propKeys = d ? Object.keys(d).slice(0, 30) : []
+          let propJ = null
+          try { propJ = JSON.parse(propText) } catch {}
+          const d = (propJ && (propJ.imovel || propJ.data || propJ)) || {}
+          dbg.propKeys = Object.keys(d).slice(0, 40)
+
+          // Proprietário vem em array proprietarios[]
+          const props = Array.isArray(d.proprietarios) ? d.proprietarios : (d.Proprietarios && Array.isArray(d.Proprietarios) ? d.Proprietarios : [])
+          const p = props[0] || {}
+          dbg.propPropKeys = Object.keys(p)
           const owner = {
-            nome: String(d.proprietario_nome || d.proprietarioNome || d.captador_nome || d.captadorNome || d.nomePropietario || d.nomeProprietario || '').trim().slice(0, 120),
-            email: String(d.proprietario_email || d.proprietarioEmail || d.captador_email || d.captadorEmail || d.emailProprietario || '').trim().slice(0, 160),
-            fone: String(d.proprietario_fone || d.proprietarioFone || d.proprietario_celular || d.celularProprietario || d.captador_fone || d.foneProprietario || '').trim().slice(0, 40),
+            nome:  String(p.nome  || p.Nome  || d.proprietario_nome  || d.proprietarioNome  || '').trim().slice(0, 120),
+            email: String(p.email || p.Email || d.proprietario_email || d.proprietarioEmail || '').trim().slice(0, 160),
+            fone:  String(p.celular || p.telefone || p.Celular || p.Telefone || d.proprietario_fone || d.proprietarioFone || d.proprietario_celular || '').trim().slice(0, 40),
           }
           if (owner.nome || owner.fone) {
             const base = saved || {}
@@ -381,13 +424,13 @@ export async function onRequestPost({ env, request }) {
           }
           if (isDebug) return json({ ok: false, source: 'imoview-sem-owner', dbg })
         } else {
-          if (isDebug) return json({ ok: false, source: 'imoview-sem-token', dbg })
+          if (isDebug) return json({ ok: false, source: 'imoview-sem-acesso', dbg })
         }
       } catch (e) {
         if (isDebug) return json({ ok: false, source: 'imoview-erro', dbg, erro: String(e) })
       }
     } else {
-      if (isDebug) return json({ ok: false, source: 'imoview-nao-config', hasBase: !!imoviewBase, hasLogin: !!imoviewLogin, hasSenha: !!imoviewSenha })
+      if (isDebug) return json({ ok: false, source: 'imoview-nao-config', hasBase: !!imoviewBase, hasEmail: !!imoviewEmail, hasSenha: !!imoviewSenha, hasChave: !!imoviewChave })
     }
 
     return json({ ok: true, owner: { nome: '', email: '', fone: '' }, source: 'none' })
