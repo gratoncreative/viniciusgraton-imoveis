@@ -3669,7 +3669,10 @@ html[data-theme="dark"] .hero-card .eyebrow::before { background: var(--gold-1);
 /* ============================================================
    PARA VOCÊ — seletor de audiência na home
    ============================================================ */
-.para-voce { padding: clamp(20px,3vw,40px) 0; }
+.para-voce { position: relative; padding: clamp(44px,6vw,72px) 0; background: linear-gradient(180deg, #0e1321 0%, #0a0d18 100%); }
+.para-voce::before, .para-voce::after { content: ''; position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(184,134,47,0.18) 20%, rgba(184,134,47,0.38) 50%, rgba(184,134,47,0.18) 80%, transparent 100%); pointer-events: none; }
+.para-voce::before { top: 0; }
+.para-voce::after { bottom: 0; }
 .pv-header { margin-bottom: 16px; }
 .pv-titulo { font-family: var(--font-head); font-size: clamp(1.2rem,2.2vw,1.5rem); font-weight: 700; color: var(--text); margin-top: 5px; }
 .pv-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
@@ -3699,7 +3702,10 @@ html[data-theme="dark"] .pv-sub { color: #8a96a8; }
 /* ============================================================
    FERRAMENTAS HOME — preview de calculadoras
    ============================================================ */
-.ferr-home-sec { padding: clamp(20px,3vw,40px) 0; }
+.ferr-home-sec { position: relative; padding: clamp(44px,6vw,72px) 0; background: linear-gradient(180deg, #0e1321 0%, #0a0d18 100%); }
+.ferr-home-sec::before, .ferr-home-sec::after { content: ''; position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(184,134,47,0.18) 20%, rgba(184,134,47,0.38) 50%, rgba(184,134,47,0.18) 80%, transparent 100%); pointer-events: none; }
+.ferr-home-sec::before { top: 0; }
+.ferr-home-sec::after { bottom: 0; }
 .ferr-home-hdr { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
 .ferr-home-h2 { margin-top: 4px !important; }
 .ferr-home-ver { flex-shrink: 0; }
