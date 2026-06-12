@@ -1,5 +1,6 @@
 import { useMemo, useState, useEffect, useRef } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
+import Fuse from 'fuse.js'
 import Reveal from '../components/Reveal'
 import CardImovel from '../components/CardImovel'
 import AviseMe from '../components/AviseMe'
@@ -132,6 +133,25 @@ export default function Catalogo() {
     setParams(p, { replace: true })
   }
 
+  // Fuse.js: busca fuzzy com tolerância a erros de digitação e acentuação
+  const fuse = useMemo(() => new Fuse(TODOS, {
+    keys: [
+      { name: 'tipo', weight: 0.3 },
+      { name: 'bairro', weight: 0.4 },
+      { name: 'codigo', weight: 0.2 },
+      { name: 'cidade', weight: 0.1 },
+    ],
+    threshold: 0.35,
+    ignoreLocation: true,
+    useExtendedSearch: false,
+  }), [TODOS])
+
+  const fuseIds = useMemo(() => {
+    if (!f.q) return null
+    const res = fuse.search(f.q)
+    return new Set(res.map((r) => String(r.item.codigo)))
+  }, [fuse, f.q])
+
   const lista = useMemo(() => {
     let r = TODOS.filter((im) => {
       if (f.tipo && im.tipo !== f.tipo) return false
@@ -146,10 +166,7 @@ export default function Catalogo() {
         const faixa = FAIXAS_PRECO[f.faixa]
         if (im.preco < faixa.min || im.preco >= faixa.max) return false
       }
-      if (f.q) {
-        const alvo = `${im.tipo} ${im.bairro} ${im.codigo} ${im.cidade}`.toLowerCase()
-        if (!alvo.includes(f.q.toLowerCase())) return false
-      }
+      if (f.q && fuseIds && !fuseIds.has(String(im.codigo))) return false
       return true
     })
     // "Mais recentes" (padrão): imóveis recém-chegados (com data de 1ª aparição) primeiro

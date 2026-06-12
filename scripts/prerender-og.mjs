@@ -24,11 +24,11 @@ const bundleCods = new Set(imoveis.map((im) => String(im.codigo)))
 const feed = feedAll.filter((im) => im && im.codigo && !bundleCods.has(String(im.codigo)))
 const construtoras = JSON.parse(readFileSync(resolve(ROOT, 'src/construtoras.json'), 'utf8')).construtoras || []
 const condominios = JSON.parse(readFileSync(resolve(ROOT, 'src/condominios.json'), 'utf8')).condominios || []
-// posts do blog (extrai os slugs do src/blog.js sem precisar de bundler)
-const blogSrc = readFileSync(resolve(ROOT, 'src/blog.js'), 'utf8')
-const blogSlugsBase = [...blogSrc.matchAll(/slug:\s*'([^']+)'/g)].map((m) => m[1])
+// posts do blog — agora lê blog-base.json diretamente (sem precisar de bundler)
+const blogBase = JSON.parse(readFileSync(resolve(ROOT, 'src/blog-base.json'), 'utf8'))
 const blogExtra = JSON.parse(readFileSync(resolve(ROOT, 'src/blog-extra.json'), 'utf8'))
-const blogSlugs = [...new Set([...blogSlugsBase, ...blogExtra.map((p) => p.slug)])]
+const blogTodos = [...blogBase, ...blogExtra].filter((p) => p && p.slug && p.capa)
+const blogSlugs = [...new Set(blogTodos.map((p) => p.slug))]
 const lastmod = (dados.geradoEm || '').slice(0, 10) || '2026-06-04'
 
 const formatPreco = (v) => {
@@ -283,6 +283,22 @@ function renderEmpre(c, p) {
     .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${esc(image)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
     .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
+    .replace('<div id="root"></div>', `<div id="root">${empreBodySeo(c, p)}</div>`)
+}
+
+function empreBodySeo(c, p) {
+  const specs = [
+    p.area > 0 && `Área privativa a partir de ${p.area} m²`,
+    p.quartos > 0 && `${p.quartos}+ quartos`,
+    p.vagas > 0 && `${p.vagas}+ vagas`,
+    p.unidades > 0 && `${p.unidades} unidades`,
+    p.entrega && `Previsão de entrega: ${esc(p.entrega)}`,
+  ].filter(Boolean)
+  return `<main class="pre-seo"><h1>${esc(p.nome)} — ${esc(c.nome)}, Uberlândia</h1>` +
+    `<p>${esc(p.descricao || `Conheça o ${p.nome}, empreendimento da ${c.nome} em ${p.bairro || 'Uberlândia'}.`)}</p>` +
+    (specs.length ? `<ul>${specs.map((s) => `<li>${s}</li>`).join('')}</ul>` : '') +
+    `<p>Atendimento com Vinícius Graton, consultor credenciado da Rotina Imobiliária — agende uma visita e tire suas dúvidas.</p>` +
+    `<p><a href="/construtoras/${esc(c.slug)}">Ver todos os empreendimentos da ${esc(c.nome)}</a> · <a href="/construtoras">Construtoras em Uberlândia</a></p></main>`
 }
 
 let nemp = 0
@@ -296,8 +312,41 @@ for (const c of construtoras) {
 }
 console.log(`✓ prerender empreendimentos: ${nemp} páginas em dist/construtoras/{construtora}/{empreendimento}/`)
 
-// ===== posts do blog (blog-extra.json) — HTML estático com OG + JSON-LD (Article + FAQ) =====
-const blogExtraPosts = JSON.parse(readFileSync(resolve(ROOT, 'src/blog-extra.json'), 'utf8'))
+// ===== posts do blog — HTML estático com OG + JSON-LD + corpo COMPLETO do post =====
+
+// Converte markdown bold **texto** → <strong>texto</strong>
+const md = (s) => esc(s).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+
+// Renderiza todos os blocos de conteúdo como HTML estático para o Google
+function blogBodySeo(post) {
+  const blocos = (post.conteudo || []).map((b) => {
+    if (b.tipo === 'p') return `<p>${md(b.txt || '')}</p>`
+    if (b.tipo === 'h' || b.tipo === 'h2') return `<h2>${esc(b.txt || '')}</h2>`
+    if (b.tipo === 'h3') return `<h3>${esc(b.txt || '')}</h3>`
+    if (b.tipo === 'lista') return `<ul>${(b.itens || []).map((i) => `<li>${md(String(i))}</li>`).join('')}</ul>`
+    if (b.tipo === 'destaque') return `<blockquote><p>${md(b.txt || '')}</p></blockquote>`
+    if (b.tipo === 'tabela' && b.cols && b.linhas) {
+      const thead = `<thead><tr>${b.cols.map((c) => `<th>${esc(c)}</th>`).join('')}</tr></thead>`
+      const tbody = `<tbody>${b.linhas.map((l) => `<tr>${l.map((c) => `<td>${md(String(c))}</td>`).join('')}</tr>`).join('')}</tbody>`
+      return `<table>${thead}${tbody}</table>`
+    }
+    if (b.tipo === 'faq' && b.perguntas) {
+      return `<section><h2>Perguntas frequentes</h2>${b.perguntas.map((qa) => `<h3>${esc(qa.q)}</h3><p>${md(qa.a)}</p>`).join('')}</section>`
+    }
+    if (b.tipo === 'cta') return `<p>${md(b.txt || '')}</p>`
+    return ''
+  }).join('\n')
+
+  const categoria = post.categoria ? `<span>${esc(post.categoria)}</span> · ` : ''
+  const leitura = post.leitura ? `<span>Leitura: ${esc(post.leitura)}</span>` : ''
+  return `<article class="pre-seo"><h1>${esc(post.titulo)}</h1>` +
+    `<p><em>${categoria}${leitura}</em></p>` +
+    `<p>${esc(post.resumo || '')}</p>` +
+    blocos +
+    `<p>Por <strong>Vinícius Graton</strong> — Consultor de imóveis em Uberlândia, Rotina Imobiliária.</p>` +
+    `<nav><a href="/blog">← Voltar ao blog</a> · <a href="/imoveis">Ver imóveis em Uberlândia</a></nav></article>`
+}
+
 function renderPost(post) {
   const url = `${SITE}/blog/${post.slug}`
   const titulo = `${post.titulo} | Vinícius Graton`
@@ -330,16 +379,17 @@ function renderPost(post) {
     .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${esc(image)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
     .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
+    .replace('<div id="root"></div>', `<div id="root">${blogBodySeo(post)}</div>`)
 }
 let np2 = 0
-for (const post of blogExtraPosts) {
+for (const post of blogTodos) {
   if (!post || !post.slug) continue
   const dir = resolve(DIST, 'blog', post.slug)
   mkdirSync(dir, { recursive: true })
   writeFileSync(resolve(dir, 'index.html'), renderPost(post))
   np2++
 }
-console.log(`✓ prerender blog: ${np2} posts em dist/blog/{slug}/index.html`)
+console.log(`✓ prerender blog: ${np2} posts (base + extra) em dist/blog/{slug}/index.html`)
 
 // páginas fixas com capa/OG própria (não a foto do Vinícius)
 const PAGINAS_FIXAS = [
@@ -349,10 +399,61 @@ const PAGINAS_FIXAS = [
     desc: 'Responda algumas perguntas rápidas e receba uma seleção de imóveis em Uberlândia feita sob medida pra você, com a curadoria do Vinícius Graton.',
     image: `${SITE}/og/encontrar.png`, w: 1280, h: 720,
   },
+  {
+    rota: 'imoveis',
+    titulo: 'Imóveis à venda em Uberlândia — Catálogo completo',
+    desc: `Mais de ${[...imoveis, ...feed].length} imóveis à venda em Uberlândia, com o atendimento pessoal do Vinícius Graton, consultor da Rotina Imobiliária.`,
+    image: `${SITE}/vinicius-graton.jpg`, w: 1200, h: 900,
+    body: `<main class="pre-seo"><h1>Imóveis à venda em Uberlândia</h1>` +
+      `<p>Catálogo completo com mais de ${[...imoveis, ...feed].length} imóveis à venda em Uberlândia - MG, com o atendimento pessoal do Vinícius Graton, consultor credenciado da Rotina Imobiliária. Casas, apartamentos, terrenos, salas comerciais e lançamentos.</p>` +
+      `<nav><h2>Principais bairros</h2>${bairrosSeo.slice(0, 20).map((b) => `<a href="/imoveis/uberlandia/${b.slug}">${esc(b.nome)}</a>`).join(' · ')}</nav>` +
+      `</main>`,
+  },
+  {
+    rota: 'blog',
+    titulo: 'Blog Imobiliário — Guias e dicas de compra em Uberlândia',
+    desc: 'Artigos práticos sobre financiamento, FGTS, ITBI, bairros e mercado imobiliário em Uberlândia. Escrito por Vinícius Graton, consultor da Rotina Imobiliária.',
+    image: `${SITE}/vinicius-graton.jpg`, w: 1200, h: 900,
+    body: `<main class="pre-seo"><h1>Blog Imobiliário — Guias de compra em Uberlândia</h1>` +
+      `<p>Artigos práticos sobre financiamento, FGTS, ITBI, bairros e mercado imobiliário em Uberlândia. Escrito por Vinícius Graton, consultor da Rotina Imobiliária.</p>` +
+      `<ul>${blogTodos.slice(0, 30).map((p) => `<li><a href="/blog/${esc(p.slug)}">${esc(p.titulo)}</a></li>`).join('')}</ul>` +
+      `</main>`,
+  },
+  {
+    rota: 'sobre',
+    titulo: 'Sobre Vinícius Graton — Consultor de Imóveis em Uberlândia',
+    desc: 'Conheça o Vinícius Graton, consultor credenciado da Rotina Imobiliária. Curadoria de imóveis em Uberlândia com acompanhamento do primeiro contato à entrega das chaves.',
+    image: `${SITE}/vinicius-graton.jpg`, w: 1200, h: 900,
+    body: `<main class="pre-seo"><h1>Vinícius Graton — Consultor de Imóveis em Uberlândia</h1>` +
+      `<p>Consultor credenciado da Rotina Imobiliária em Uberlândia - MG. Ajudo você a comprar, vender e investir com segurança — da busca à entrega das chaves.</p>` +
+      `<p>Atendimento pessoal, curadoria criteriosa e acompanhamento em todas as etapas: busca, visitas, negociação, financiamento, documentação e registro.</p>` +
+      `<p>WhatsApp: (34) 99157-0494 · <a href="/">viniciusgraton.com.br</a></p>` +
+      `</main>`,
+  },
+  {
+    rota: 'ferramentas',
+    titulo: 'Calculadoras de Imóveis — Uberlândia',
+    desc: 'Calculadoras gratuitas: financiamento, FGTS, ITBI, comparador de imóveis, ROI de investimento. Ferramentas para quem quer comprar ou investir em Uberlândia.',
+    image: `${SITE}/vinicius-graton.jpg`, w: 1200, h: 900,
+    body: `<main class="pre-seo"><h1>Calculadoras de Imóveis — Uberlândia</h1>` +
+      `<p>Ferramentas gratuitas para quem está comprando ou investindo em imóveis em Uberlândia: simulador de financiamento, calculadora de ITBI e custos de cartório, calculadora de ROI, comparador de imóveis.</p>` +
+      `<p>Desenvolvidas por Vinícius Graton, consultor da Rotina Imobiliária.</p>` +
+      `</main>`,
+  },
+  {
+    rota: 'regioes',
+    titulo: 'Regiões de Uberlândia — Zona Norte, Sul, Leste e Oeste',
+    desc: 'Guia completo das regiões de Uberlândia: Zona Sul (Karaíba, Finotti, Cidade Jardim), Zona Norte, Zona Leste e Zona Oeste. Compare perfil, infraestrutura e preço médio.',
+    image: `${SITE}/vinicius-graton.jpg`, w: 1200, h: 900,
+    body: `<main class="pre-seo"><h1>Regiões de Uberlândia — Guia completo</h1>` +
+      `<p>Conheça as principais regiões de Uberlândia: Zona Sul (Jardim Karaíba, Finotti, Cidade Jardim, Gávea, Granja Marileusa), Zona Norte, Zona Leste e Zona Oeste. Compare infraestrutura, perfil e preço médio do m².</p>` +
+      `<nav>${bairrosSeo.map((b) => `<a href="/imoveis/uberlandia/${b.slug}">${esc(b.nome)}</a>`).join(' · ')}</nav>` +
+      `</main>`,
+  },
 ]
 function renderFixa(p) {
   const url = `${SITE}/${p.rota}`
-  return baseHtml
+  let html = baseHtml
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(p.titulo)} | Vinícius Graton</title>`)
     .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(p.desc)}$2`)
     .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(p.titulo)}$2`)
@@ -366,6 +467,8 @@ function renderFixa(p) {
     .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${esc(p.desc)}$2`)
     .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${esc(p.image)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
+  if (p.body) html = html.replace('<div id="root"></div>', `<div id="root">${p.body}</div>`)
+  return html
 }
 for (const p of PAGINAS_FIXAS) {
   const dir = resolve(DIST, p.rota)
