@@ -38,15 +38,6 @@ const FIco = ({ n }) => (
 const AREAS = [50, 80, 100, 150, 200, 250, 300, 400, 500, 750, 1000]
 const CARACS = ['Piscina', 'Churrasqueira', 'Varanda gourmet', 'Academia', 'Portaria 24h', 'Closet', 'Energia solar']
 
-// atalhos temáticos (buscas rápidas) → catálogo pré-filtrado
-const RAPIDAS = [
-  { label: 'Casas em condomínio', params: { tipo: 'Casa em condomínio' } },
-  { label: 'Apartamentos', params: { tipo: 'Apartamento' } },
-  { label: 'Alto padrão', params: { faixa: 4 } },
-  { label: 'Com piscina', params: { carac: 'Piscina' } },
-  { label: 'Até R$ 600 mil', params: { faixa: 1 } },
-  { label: '3+ suítes', params: { suites: 3 } },
-]
 
 const blobDe = (im) => {
   const c = im.caracteristicas || {}
@@ -141,13 +132,6 @@ export default function Catalogo() {
     setParams(p, { replace: true })
   }
 
-  // aplica um conjunto de filtros (buscas rápidas), limpando o resto
-  const aplicarRapida = (novos) => {
-    const p = new URLSearchParams()
-    Object.entries(novos).forEach(([k, v]) => p.set(k, v))
-    setParams(p, { replace: true })
-  }
-
   const lista = useMemo(() => {
     let r = TODOS.filter((im) => {
       if (f.tipo && im.tipo !== f.tipo) return false
@@ -193,6 +177,16 @@ export default function Catalogo() {
     return () => obs.disconnect()
   }, [temMais, lista.length])
 
+  // imóveis novos de hoje (para destaque no topo quando sem filtros)
+  const [novosHoje, setNovosHoje] = useState([])
+  useEffect(() => {
+    fetch('/novidades.json').then(r => r.ok ? r.json() : null).then(d => {
+      if (d && d.novos) setNovosHoje(d.novos.slice(0, 4))
+    }).catch(() => {})
+  }, [])
+
+  const diaLabel = new Date().toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' })
+
   const limpar = () => setParams({}, { replace: true })
   const [filtrosAbertos, setFiltrosAbertos] = useState(false)
 
@@ -207,6 +201,8 @@ export default function Catalogo() {
     f.area > 0 && { k: 'area', label: `${f.area}+ m²`, onRemove: () => up('area', 0) },
     f.carac && { k: 'carac', label: f.carac, onRemove: () => up('carac', '') },
   ].filter(Boolean)
+
+  const semFiltros = chips.length === 0
 
   return (
     <main className="section--light catalogo">
@@ -245,13 +241,6 @@ export default function Catalogo() {
             <IconClose width={18} height={18} />
           </button>
         </div>
-        {/* buscas rápidas */}
-        <div className="cat-rapidas">
-          {RAPIDAS.map((r) => (
-            <button key={r.label} className="cat-rapida" onClick={() => aplicarRapida(r.params)}>{r.label}</button>
-          ))}
-        </div>
-
         {/* Campo de busca em destaque */}
         <div className="cat-busca-box">
           <span className="cat-busca-ico"><FIco n="search" /></span>
@@ -309,6 +298,19 @@ export default function Catalogo() {
             </button>
           ))}
         </div>
+
+        {semFiltros && novosHoje.length > 0 && (
+          <div className="cat-hoje">
+            <div className="cat-hoje-head">
+              <span className="eyebrow">Atualizado hoje</span>
+              <h2 className="cat-hoje-h2">Chegaram em <em>{diaLabel}</em></h2>
+            </div>
+            <div className="cat-lista">
+              {novosHoje.map((im) => <CardImovel key={im.codigo} im={im} variante="linha" />)}
+            </div>
+            <div className="cat-hoje-sep"><span>Todos os imóveis</span></div>
+          </div>
+        )}
 
         <p className="cat-count">{carregandoFeed && !feed.length ? 'Carregando imóveis da Rotina…' : `${lista.length} ${lista.length === 1 ? 'imóvel encontrado' : 'imóveis encontrados'}`}</p>
 
