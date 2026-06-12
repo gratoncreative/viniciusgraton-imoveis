@@ -388,27 +388,38 @@ export async function onRequestPost({ env, request }) {
     if (imoviewEmail && imoviewSenha) {
       let dbg = {}
       try {
-        // Passo 1: GET /Login/LogOn → cookie inicial
+        // Passo 0: GET /Login/RetornarConvenios → codigoConvenio e rota da Rotina
+        const convR = await fetch(`${WEB}/Login/RetornarConvenios?email=${encodeURIComponent(imoviewEmail)}`, {
+          headers:{'user-agent':UA, accept:'application/json'}, redirect:'follow', signal:AbortSignal.timeout(8000),
+        })
+        const convJson = await convR.json().catch(() => ({}))
+        const convItem = (convJson.lista || [])[0] || {}
+        const codigoConvenio = convItem.codigo || ''
+        const rota = convItem.rota || ''
+        dbg.codigoConvenio = codigoConvenio
+        dbg.rota = rota
+
+        // Passo 1: GET /Login/LogOn → cookie inicial de sessão
         const LOGIN_URL = `${WEB}/Login/LogOn?ReturnUrl=%2f`
         const pgR = await fetch(LOGIN_URL, { headers:{'user-agent':UA}, redirect:'follow', signal:AbortSignal.timeout(10000) })
         dbg.pgStatus = pgR.status
         let cookies = mergeCookies('', pgR.headers.get('set-cookie') || '')
-        const pgHtml = await pgR.text()
-        // Imoview não usa __RequestVerificationToken; inclui campos hidden urlReturn e rota
-        const fieldNames = (pgHtml.match(/name=["'](\w+)["']/g)||[]).map(m=>m.replace(/^name=["']/,'').replace(/["']$/,''))
-        dbg.fieldNames = fieldNames.slice(0, 12)
-        if (isDebug) dbg.pgSnippet = pgHtml.slice(0, 600)
+        await pgR.text() // descarta body mas consome o stream
 
-        // Passo 2: POST /Login/LogOn → session cookie (mesmo endpoint do formulário)
-        const form = new URLSearchParams()
-        form.append('login',     imoviewEmail)
-        form.append('senha',     imoviewSenha)
-        form.append('urlReturn', '')
-        form.append('rota',      '')
+        // Passo 2: POST /Login/LogOn (JSON) → session cookie
+        // Imoview usa application/json, não form-encoded (confirmado via Logon.js)
+        const loginBody2 = JSON.stringify({
+          codigoConvenio,
+          rota,
+          login: imoviewEmail,
+          senha: imoviewSenha,
+          gRecaptcha: '',
+          urlReturn: '',
+        })
         const loginR = await fetch(LOGIN_URL, {
           method:'POST',
-          headers:{ 'content-type':'application/x-www-form-urlencoded', cookie:cookies, 'user-agent':UA, referer:LOGIN_URL, origin:WEB },
-          body: form.toString(),
+          headers:{ 'content-type':'application/json; charset=utf-8', cookie:cookies, 'user-agent':UA, referer:LOGIN_URL, origin:WEB, 'x-requested-with':'XMLHttpRequest' },
+          body: loginBody2,
           redirect:'manual',
           signal: AbortSignal.timeout(10000),
         })
@@ -418,18 +429,17 @@ export async function onRequestPost({ env, request }) {
         dbg.hasCookies = cookies.length > 10
         dbg.cookieStr = cookies.slice(0, 120)
 
-        // Login bem-sucedido = 302/301 para fora do /Login
-        const loginRedirOk = (loginR.status === 302 || loginR.status === 301) && !/\/Login/i.test(dbg.loginLocation)
-        // Verificação via corpo: lê a resposta e checa se contém "Sair" (autenticado) ou formulário de login (falhou)
-        const loginBody = loginRedirOk ? '' : await loginR.text()
-        const loginBodyOk = loginBody.includes('Sair') || loginBody.includes('sair') || loginBody.includes('logout')
-        const loginOk = loginRedirOk || loginBodyOk
+        // Resposta é JSON: {"Autorizado":true/false,"Url":"...","Mensagem":"..."}
+        const loginBodyTxt = await loginR.text()
+        let loginJson = {}
+        try { loginJson = JSON.parse(loginBodyTxt) } catch(e) {}
+        const loginOk = loginJson.Autorizado === true
         dbg.loginOk = loginOk
-        if (isDebug) dbg.loginBodySnippet = loginBody.slice(0, 600)
+        if (isDebug) dbg.loginBodySnippet = loginBodyTxt.slice(0, 400)
 
-        // Se houve redirect, segue uma vez para consolidar cookies de sessão
-        if (loginRedirOk && dbg.loginLocation) {
-          const loc = dbg.loginLocation.startsWith('http') ? dbg.loginLocation : `${WEB}${dbg.loginLocation}`
+        // Se autenticado, segue o Url retornado para consolidar cookies de sessão
+        if (loginOk && loginJson.Url) {
+          const loc = loginJson.Url.startsWith('http') ? loginJson.Url : `${WEB}${loginJson.Url}`
           const rr = await fetch(loc, { headers:{ cookie:cookies, 'user-agent':UA }, redirect:'manual', signal:AbortSignal.timeout(8000) })
           cookies = mergeCookies(cookies, rr.headers.get('set-cookie') || '')
         }
