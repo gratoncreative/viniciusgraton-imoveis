@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
 import { CONFIG, linkWhatsApp, WA } from '../data'
 import { favoritos } from '../engajamento'
 import { getConta } from '../conta'
@@ -148,42 +147,37 @@ export default function Navbar() {
         </div>
       </nav>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            className="mobile-menu"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-          >
-            <div className="mm-top">
-              <Brand />
-              <div className="mm-top-acoes">
-                {!pathname.startsWith('/ferramentas') && <TemaToggle />}
-                <button className="mm-close" onClick={() => setOpen(false)} aria-label="Fechar menu"><IconClose width={24} height={24} /></button>
-              </div>
+      {open && (
+        <div className="mobile-menu">
+          <div className="mm-top">
+            <Brand />
+            <div className="mm-top-acoes">
+              {!pathname.startsWith('/ferramentas') && <TemaToggle />}
+              <button className="mm-close" onClick={() => setOpen(false)} aria-label="Fechar menu"><IconClose width={24} height={24} /></button>
             </div>
-            <div className="mm-grid">
-              {MENU_CARDS.map((l) => (
-                <Link key={l.to} className="mm-card" to={l.to} onClick={() => setOpen(false)}>
-                  <span className="mm-ico"><MMIcon name={l.icon} /></span>
-                  <b>{l.label}</b><i>{l.sub}</i>
-                </Link>
-              ))}
-            </div>
-            <div className="mm-acoes">
-              <Link className="mm-btn mm-btn--ouro" to="/anunciar" onClick={() => setOpen(false)}>Anunciar meu imóvel</Link>
-              <Link className="mm-btn" to="/avaliacao" onClick={() => setOpen(false)}>Quanto vale meu imóvel</Link>
-              <Link className="mm-btn" to="/conta" onClick={() => setOpen(false)}>{conta ? 'Minha área' : 'Entrar / criar conta'}</Link>
-              {ehAdmin && <Link className="mm-btn" to="/admin" onClick={() => setOpen(false)}>Painel Admin</Link>}
-              <Link className="mm-btn" to="/favoritos" onClick={() => setOpen(false)}>Favoritos{favs > 0 ? ` (${favs})` : ''}</Link>
-              <Link className="mm-btn" to="/sobre" onClick={() => setOpen(false)}>Sobre o Vinícius</Link>
-              <Link className="mm-btn" to="/contato" onClick={() => setOpen(false)}>Contato</Link>
-            </div>
-            <a className="mm-wa" href={linkWhatsApp(WA.navbar)} target="_blank" rel="noopener" onClick={() => setOpen(false)}>
-              <IconWhats width={20} height={20} /> Falar no WhatsApp
-            </a>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+          <div className="mm-grid">
+            {MENU_CARDS.map((l) => (
+              <Link key={l.to} className="mm-card" to={l.to} onClick={() => setOpen(false)}>
+                <span className="mm-ico"><MMIcon name={l.icon} /></span>
+                <b>{l.label}</b><i>{l.sub}</i>
+              </Link>
+            ))}
+          </div>
+          <div className="mm-acoes">
+            <Link className="mm-btn mm-btn--ouro" to="/anunciar" onClick={() => setOpen(false)}>Anunciar meu imóvel</Link>
+            <Link className="mm-btn" to="/avaliacao" onClick={() => setOpen(false)}>Quanto vale meu imóvel</Link>
+            <Link className="mm-btn" to="/conta" onClick={() => setOpen(false)}>{conta ? 'Minha área' : 'Entrar / criar conta'}</Link>
+            {ehAdmin && <Link className="mm-btn" to="/admin" onClick={() => setOpen(false)}>Painel Admin</Link>}
+            <Link className="mm-btn" to="/favoritos" onClick={() => setOpen(false)}>Favoritos{favs > 0 ? ` (${favs})` : ''}</Link>
+            <Link className="mm-btn" to="/sobre" onClick={() => setOpen(false)}>Sobre o Vinícius</Link>
+            <Link className="mm-btn" to="/contato" onClick={() => setOpen(false)}>Contato</Link>
+          </div>
+          <a className="mm-wa" href={linkWhatsApp(WA.navbar)} target="_blank" rel="noopener" onClick={() => setOpen(false)}>
+            <IconWhats width={20} height={20} /> Falar no WhatsApp
+          </a>
+        </div>
+      )}
     </>
   )
 }

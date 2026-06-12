@@ -14,7 +14,6 @@ export default defineConfig({
         manualChunks: {
           react: ['react', 'react-dom'],
           router: ['react-router-dom'],
-          motion: ['framer-motion'],
           lenis: ['lenis'],
           pdf: ['jspdf'],
           zip: ['jszip'],
