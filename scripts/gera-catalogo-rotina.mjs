@@ -96,7 +96,14 @@ try {
     } else {
       // já existia: preserva a data de primeira aparição (se já tínhamos)
       if (a.visto) r.visto = a.visto
-      if (a.preco && r.preco && r.preco < a.preco) baixaram.push({ ...r, precoAnterior: a.preco })
+      if (a.preco && r.preco && r.preco < a.preco) {
+        r.baixouEm = geradoEm
+        r.precoAnterior = a.preco
+        baixaram.push({ ...r })
+      } else {
+        if (a.baixouEm) r.baixouEm = a.baixouEm
+        if (a.precoAnterior) r.precoAnterior = a.precoAnterior
+      }
     }
   }
   console.log(`Novidades: ${novos.length} novos · ${baixaram.length} baixaram de preço`)

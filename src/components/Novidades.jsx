@@ -50,10 +50,15 @@ export default function Novidades() {
   return (
     <section className="section--light">
       <div className="container">
-        {baixaram.length > 0 && (
-          <Bloco eyebrow="Oportunidade real" titulo="Baixaram de" em="preço" itens={baixaram}
-            sub="Imóveis que tiveram o preço reduzido. Oportunidade boa não espera — corre comigo." />
-        )}
+        {baixaram.length > 0 && (() => {
+          const datas = [...new Set(baixaram.slice(0,6).map(im => im.baixouEm).filter(Boolean))]
+          const subBaixaram = datas.length === 1
+            ? `Preço reduzido em ${new Date(datas[0]).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}. Oportunidade boa não espera — corre comigo.`
+            : 'Imóveis que tiveram o preço reduzido recentemente. Oportunidade boa não espera — corre comigo.'
+          return (
+            <Bloco eyebrow="Oportunidade real" titulo="Baixaram de" em="preço" itens={baixaram} sub={subBaixaram} />
+          )
+        })()}
         {novos.length > 0 && (
           <Bloco eyebrow="Atualizado hoje" titulo="Chegaram em" em={diaLabel} itens={novos} top={baixaram.length > 0}
             sub="Imóveis que acabaram de entrar na carteira da Rotina — com o meu atendimento pessoal." />

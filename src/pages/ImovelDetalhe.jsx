@@ -451,6 +451,11 @@ export default function ImovelDetalhe() {
                 </div>
               ) : null })()}
               <PrecoGate valor={im.preco} anterior={im.precoAnterior} className="det-preco" tipo="detalhe" />
+              {im.baixouEm && (
+                <p className="det-baixou-em">
+                  Preço reduzido em {new Date(im.baixouEm).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                </p>
+              )}
 
               {destaques.length > 0 && (
                 <div className="det-dest-mini">

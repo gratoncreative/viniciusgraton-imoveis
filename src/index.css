@@ -588,6 +588,15 @@ section { position: relative; padding: clamp(20px, 3vw, 40px) 0; }
 .im-linha-preco { font-family: var(--font-head); font-weight: 800; font-size: 1.42rem; color: #1c2230; letter-spacing: -0.01em; }
 @media (max-width: 620px) { .im-linha { grid-template-columns: 1fr; } .im-linha-media { min-height: 170px; } }
 
+/* Data de redução de preço — aparece no card linha e no card normal */
+.im-baixou-em { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 600; color: #1f8a4c; letter-spacing: 0.01em; }
+.im-baixou-em::before { content: '↓'; font-size: 0.9em; }
+.im-baixou-em--card { display: block; margin: 4px 0 2px; font-size: 0.76rem; }
+html[data-theme="dark"] .im-baixou-em { color: #4ade80; }
+.det-baixou-em { margin: 6px 0 0; font-size: 0.85rem; font-weight: 600; color: #1f8a4c; display: flex; align-items: center; gap: 5px; }
+.det-baixou-em::before { content: '↓'; }
+html[data-theme="dark"] .det-baixou-em { color: #4ade80; }
+
 /* Novidades: destaque para 1–2 imóveis — aproveita toda a largura disponível */
 .nov-destaque { display: flex; flex-direction: column; gap: 20px; }
 .nov-destaque .im-linha { min-height: 240px; }

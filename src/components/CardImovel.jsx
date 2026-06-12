@@ -117,6 +117,11 @@ export default function CardImovel({ im, variante }) {
               im.vagas > 0 && { icon: 'car', valor: im.vagas, label: plural(im.vagas, 'vaga', 'vagas') },
             ].filter(Boolean).map((s, i) => <Spec key={i} {...s} />)}
           </div>
+          {im.baixouEm && (
+            <span className="im-baixou-em">
+              Preço reduzido em {new Date(im.baixouEm).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}
+            </span>
+          )}
           <div className="im-linha-rodape">
             <div className="im-linha-precobloco">
               <PrecoGate valor={im.preco} anterior={im.precoAnterior} className="im-linha-preco" tipo="linha" />
@@ -155,6 +160,11 @@ export default function CardImovel({ im, variante }) {
         <h3 className="im-bairro">{im.bairro}</h3>
         <p className="im-local">{im.cidade} — {im.uf} · Cód. {im.codigo}</p>
         <p className="im-desc">{truncar(resumoImovel(im), 150)}</p>
+        {im.baixouEm && (
+          <span className="im-baixou-em im-baixou-em--card">
+            Reduzido em {new Date(im.baixouEm).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', year: 'numeric' })}
+          </span>
+        )}
         <div className="im-specs">
           {specs.map((s, i) => <Spec key={i} {...s} />)}
         </div>
