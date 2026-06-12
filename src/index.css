@@ -3669,12 +3669,12 @@ html[data-theme="dark"] .hero-card .eyebrow::before { background: var(--gold-1);
 /* ============================================================
    PARA VOCÊ — seletor de audiência na home
    ============================================================ */
-.para-voce { position: relative; padding: clamp(20px,2.5vw,28px) 0; background: linear-gradient(180deg, #0e1321 0%, #0a0d18 100%); }
-.para-voce::before, .para-voce::after { content: ''; position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(184,134,47,0.18) 20%, rgba(184,134,47,0.38) 50%, rgba(184,134,47,0.18) 80%, transparent 100%); pointer-events: none; }
+.para-voce { position: relative; padding: clamp(28px,3.5vw,44px) 0; background: linear-gradient(180deg, #141d30 0%, #0f1523 100%); }
+.para-voce::before, .para-voce::after { content: ''; position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(184,134,47,0.28) 20%, rgba(184,134,47,0.55) 50%, rgba(184,134,47,0.28) 80%, transparent 100%); pointer-events: none; }
 .para-voce::before { top: 0; }
 .para-voce::after { bottom: 0; }
-.pv-header { margin-bottom: 16px; }
-.pv-titulo { font-family: var(--font-head); font-size: clamp(1.2rem,2.2vw,1.5rem); font-weight: 700; color: var(--text); margin-top: 5px; }
+.pv-header { margin-bottom: 20px; }
+.pv-titulo { font-family: var(--font-head); font-size: clamp(1.5rem,2.8vw,2rem); font-weight: 700; color: var(--text); margin-top: 6px; }
 .pv-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
 .pv-card { display: flex; flex-direction: row; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px; border: 1.5px solid var(--border); background: var(--surface); text-decoration: none; transition: transform .18s, box-shadow .2s, border-color .18s; min-width: 0; overflow: hidden; }
 .pv-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px -8px rgba(22,26,34,0.15); }
@@ -3692,9 +3692,10 @@ html[data-theme="dark"] .hero-card .eyebrow::before { background: var(--gold-1);
 .pv-card--gold .pv-nome { color: var(--gold-2); }
 @media (max-width:860px) { .pv-grid { grid-template-columns: 1fr 1fr; gap: 10px; } }
 @media (max-width:480px) { .pv-grid { grid-template-columns: 1fr; gap: 8px; } }
-html[data-theme="dark"] .pv-card { background: #11161f; border-color: rgba(255,255,255,0.07); }
-html[data-theme="dark"] .pv-card:hover { border-color: rgba(255,255,255,0.13); }
-html[data-theme="dark"] .pv-card--gold { background: linear-gradient(160deg, rgba(184,134,47,0.11) 0%, #11161f 65%); border-color: rgba(184,134,47,0.32); }
+html[data-theme="dark"] .pv-card { background: #18203a; border-color: rgba(255,255,255,0.08); }
+html[data-theme="dark"] .pv-card:hover { border-color: rgba(184,134,47,0.38); box-shadow: 0 10px 28px -6px rgba(184,134,47,0.12); }
+html[data-theme="dark"] .pv-card--gold { background: linear-gradient(160deg, rgba(184,134,47,0.13) 0%, #18203a 65%); border-color: rgba(184,134,47,0.38); }
+html[data-theme="dark"] .pv-card--gold:hover { border-color: rgba(184,134,47,0.7); box-shadow: 0 10px 32px -6px rgba(184,134,47,0.22); }
 html[data-theme="dark"] .pv-nome { color: #dce2ec; }
 html[data-theme="dark"] .pv-card--gold .pv-nome { color: var(--gold-1); }
 html[data-theme="dark"] .pv-sub { color: #8a96a8; }
