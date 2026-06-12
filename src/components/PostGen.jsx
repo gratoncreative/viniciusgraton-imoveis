@@ -454,6 +454,26 @@ export default function PostGen() {
 
   const copiarLegenda = async () => { try { await navigator.clipboard.writeText(legenda); setCopiado(true); setTimeout(() => setCopiado(false), 2000) } catch {} }
 
+  const [pubStatus, setPubStatus] = useState('')
+  const publicarInstagram = async () => {
+    if (!canvasRef.current || !im) return
+    setPubStatus('enviando')
+    try {
+      const blob = await new Promise((res) => canvasRef.current.toBlob(res, 'image/png'))
+      const reader = new FileReader()
+      const base64 = await new Promise((res, rej) => { reader.onload = () => res(reader.result); reader.onerror = rej; reader.readAsDataURL(blob) })
+      const token = localStorage.getItem('vg_admin_token') || ''
+      const r = await fetch('/api/instagram-publish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, imageData: base64, caption: legenda }),
+      })
+      const j = await r.json()
+      if (j.ok) { setPubStatus('ok'); setTimeout(() => setPubStatus(''), 4000) }
+      else { setPubStatus(`erro: ${j.error}`); setTimeout(() => setPubStatus(''), 6000) }
+    } catch (e) { setPubStatus(`erro: ${e.message}`); setTimeout(() => setPubStatus(''), 6000) }
+  }
+
   // Monta a lista de combos exibida (3 da foto + 1 padrão)
   const combosVisiveis = combos
     ? [...combos, COMBO_OURO]
@@ -535,6 +555,9 @@ export default function PostGen() {
             <div className="pg-bloco-acoes">
               <button type="button" className="admin-btn" onClick={baixarUma} disabled={!!baixando}>{baixando === 'uma' ? 'Gerando…' : '⬇ Baixar esta'}</button>
               <button type="button" className="btn btn-gold" onClick={baixarSelecionadas} disabled={!!baixando || !sel.size}>{baixando.startsWith('lote') ? `Baixando ${baixando.replace('lote', '').trim()}…` : `⬇ Baixar selecionadas (${sel.size})`}</button>
+              <button type="button" className={`admin-btn pg-insta-btn${pubStatus === 'ok' ? ' pg-insta-ok' : pubStatus.startsWith('erro') ? ' pg-insta-err' : ''}`} onClick={publicarInstagram} disabled={pubStatus === 'enviando'} title="Publicar imagem atual + legenda no Instagram Business">
+                {pubStatus === 'enviando' ? '⏳ Publicando…' : pubStatus === 'ok' ? '✓ Publicado!' : pubStatus.startsWith('erro') ? '✗ ' + pubStatus.slice(6, 60) : '📸 Publicar no Instagram'}
+              </button>
             </div>
 
             <label className="postgen-legenda-lbl">Legenda (editável)</label>

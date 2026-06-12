@@ -159,7 +159,10 @@ section { position: relative; padding: clamp(20px, 3vw, 40px) 0; }
 .section--light .cat-filtros input::placeholder { color: var(--text-mute); }
 
 /* variantes escuras para criar ritmo (evitar fundos iguais) */
-.section--panel { background: linear-gradient(180deg, #0d121d 0%, #090d15 100%); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.section--panel { position: relative; background: linear-gradient(180deg, #0d121d 0%, #090d15 100%); }
+.section--panel::before, .section--panel::after { content: ''; position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(184,134,47,0.18) 20%, rgba(184,134,47,0.48) 50%, rgba(184,134,47,0.18) 80%, transparent 100%); pointer-events: none; }
+.section--panel::before { top: 0; }
+.section--panel::after { bottom: 0; }
 .section--glow { background: radial-gradient(760px 420px at 50% -10%, rgba(224,181,86,0.10), transparent 62%), #0a0e16; }
 .section--glow-blue { background: radial-gradient(720px 420px at 80% -10%, rgba(74,108,255,0.10), transparent 60%), #090d16; }
 
@@ -1353,7 +1356,10 @@ html[data-theme="dark"] .det-dest-mini-chip { background: rgba(224,181,86,0.1); 
 
 /* ---------- SOBRE ---------- */
 /* ===== SOBRE — banner full-width (você à direita, texto à esquerda) ===== */
-.sobre-banner { position: relative; overflow: hidden; padding: 92px 0; min-height: 560px; display: flex; align-items: center; background: #0a0e16; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.sobre-banner { position: relative; overflow: hidden; padding: 92px 0; min-height: 560px; display: flex; align-items: center; background: #0a0e16; }
+.sobre-banner::before, .sobre-banner::after { content: ''; position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(184,134,47,0.18) 20%, rgba(184,134,47,0.48) 50%, rgba(184,134,47,0.18) 80%, transparent 100%); pointer-events: none; z-index: 3; }
+.sobre-banner::before { top: 0; }
+.sobre-banner::after { bottom: 0; }
 /* foto do escritório preenchendo a largura toda (nítida, o Vinícius já está nela) */
 .sobre-cenario { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: right center; filter: brightness(0.96); }
 /* escurece a esquerda (legibilidade do texto) e deixa a direita limpa (onde ele aparece) */
@@ -1767,6 +1773,15 @@ html[data-theme="dark"] .det-dest-mini-chip { background: rgba(224,181,86,0.1); 
 .mapa-frame { border-radius: 18px; overflow: hidden; border: 1px solid rgba(22,26,34,0.12); box-shadow: 0 18px 44px -30px rgba(22,26,34,0.5); aspect-ratio: 16/8; }
 .mapa-frame iframe { width: 100%; height: 100%; border: 0; }
 @media (max-width: 700px) { .mapa-frame { aspect-ratio: 4/5; } }
+/* MapLibre */
+.mapa-frame-ml { height: 520px; border-radius: 18px; overflow: hidden; border: 1px solid rgba(184,134,47,0.22); box-shadow: 0 18px 44px -24px rgba(0,0,0,0.6); margin-top: 28px; }
+.mapa-dica { text-align: center; color: #6a7484; font-size: 0.9rem; margin: 14px 0 0; }
+.maplibregl-ctrl-group { background: #131924 !important; border: 1px solid rgba(184,134,47,0.22) !important; box-shadow: none !important; }
+.maplibregl-ctrl-group button { background: transparent !important; border-bottom-color: rgba(255,255,255,0.08) !important; }
+.maplibregl-ctrl-group button:hover { background: rgba(184,134,47,0.14) !important; }
+.maplibregl-ctrl-group button .maplibregl-ctrl-icon { filter: invert(1) sepia(1) saturate(0.6) hue-rotate(5deg); }
+.maplibregl-attrib-empty, .maplibregl-ctrl-attrib { font-size: 10px !important; opacity: 0.55 !important; }
+@media (max-width: 700px) { .mapa-frame-ml { height: 380px; } }
 @media (max-width: 760px) { .calc-grid { grid-template-columns: 1fr; gap: 22px; } }
 
 /* ===== Condomínios fechados ===== */
@@ -2245,6 +2260,10 @@ html[data-theme="dark"] .nav:not(.scrolled) .nav-links a.nav-destaque { color: #
 .login-senha .btn { justify-content: center; }
 .login-senha-dica { font-size: 0.78rem; color: var(--text-mute); margin: 2px 0 0; }
 .pg-bloco-acoes { display: flex; gap: 8px; flex-wrap: wrap; }
+.pg-insta-btn { border-color: rgba(131,58,180,0.4) !important; color: #c97be8 !important; }
+.pg-insta-btn:hover:not(:disabled) { background: rgba(131,58,180,0.14) !important; border-color: rgba(131,58,180,0.65) !important; }
+.pg-insta-ok { background: rgba(37,180,80,0.14) !important; border-color: rgba(37,180,80,0.5) !important; color: #4ae085 !important; }
+.pg-insta-err { background: rgba(220,38,38,0.1) !important; border-color: rgba(220,38,38,0.45) !important; color: #f87171 !important; font-size: 0.82rem !important; }
 .pg-combos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
 .pg-combo { border: 2px solid var(--border); border-radius: 10px; padding: 0; overflow: hidden; cursor: pointer; background: var(--surface); text-align: left; transition: border-color 0.15s, box-shadow 0.15s; width: 100%; }
 .pg-combo:hover { border-color: var(--gold-2); }
