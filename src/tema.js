@@ -1,5 +1,5 @@
-// Tema do site: 'claro' (padrão, leve) ou 'escuro' (tudo escuro).
-// O cliente escolhe na hora pelo toggle da navbar; fica salvo no aparelho.
+// Tema do site. BASE = 'escuro' (padrão para todos os visitantes).
+// Se o visitante alternar para 'claro', a escolha fica salva no aparelho dele.
 const KEY = 'vg-tema'
 
 export function getTema() {
