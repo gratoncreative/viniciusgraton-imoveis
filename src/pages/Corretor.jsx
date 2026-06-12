@@ -415,7 +415,8 @@ function GateCorretor({ onOk }) {
     const pgFalha = sp.get('pg_falha')
     window.history.replaceState({}, '', '/corretor')
     if (pgFalha) {
-      setErro('O pagamento não foi concluído. Você pode tentar novamente ou entrar pelo WhatsApp.')
+      setAba('assinar')
+      setErro(<>Pagamento não concluído. Tente novamente ou <a href="https://wa.me/5534991570494?text=Ol%C3%A1%21+Tive+problema+no+pagamento+da+%C3%81rea+do+Corretor." target="_blank" rel="noreferrer" className="corr-erro-link">fale pelo WhatsApp</a>.</>)
       return
     }
     if (pgPendente) {
@@ -458,7 +459,7 @@ function GateCorretor({ onOk }) {
       const r2 = await fetch('/api/corretor-acesso', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ codigo: res.codigo }) })
       const res2 = await r2.json()
       if (res2.ok) {
-        const c = salvarCorretor({ nome, creci: '', rotina: true, fone: soNum(fTeste.fone), email: '' })
+        const c = salvarCorretor({ nome, creci: '', rotina: true, fone: soNum(fTeste.fone), email: '', expiresAt: res.expiresAt, tipo: 'trial' })
         setTrialOk({ codigo: res.codigo, expiresAt: res.expiresAt, ativo: res.ativo })
         setTimeout(() => onOk(c), 1800)
       } else {
@@ -556,6 +557,13 @@ function GateCorretor({ onOk }) {
   }
 
   return (
+    <>
+    <div className="corr-trust-bar">
+      <span><b>✓</b> 24h grátis</span>
+      <span><b>✓</b> Sem cartão</span>
+      <span><b>✓</b> Acesso imediato</span>
+      <span><b>✓</b> 12 ferramentas</span>
+    </div>
     <div className="corr-gate-wrap">
       <div className="corr-pitch">
         <span className="eyebrow">Ferramentas exclusivas para corretores</span>
@@ -659,10 +667,54 @@ function GateCorretor({ onOk }) {
         )}
       </div>
     </div>
+    <div className="corr-como-funciona">
+      <p className="corr-como-titulo">Como funciona</p>
+      <div className="corr-como-steps">
+        <div className="corr-como-step">
+          <span className="corr-como-num">1</span>
+          <b>Ative o teste grátis</b>
+          <span>Só nome e WhatsApp — sem cartão, sem cobrança automática.</span>
+        </div>
+        <span className="corr-como-arr">→</span>
+        <div className="corr-como-step">
+          <span className="corr-como-num">2</span>
+          <b>Explore por 24 horas</b>
+          <span>Acesso completo às 12 ferramentas profissionais.</span>
+        </div>
+        <span className="corr-como-arr">→</span>
+        <div className="corr-como-step">
+          <span className="corr-como-num">3</span>
+          <b>Continue se gostar</b>
+          <span>Plano mensal por menos de R$ 2/dia — cancele quando quiser.</span>
+        </div>
+      </div>
+    </div>
+    </>
   )
 }
 
 // ─── hub logado ──────────────────────────────────────────────────────────────
+
+function TrialCountdownBanner({ corretor, onAssinar }) {
+  const [rem, setRem] = useState(() => {
+    if (corretor.tipo !== 'trial' || !corretor.expiresAt) return null
+    return corretor.expiresAt - Date.now()
+  })
+  useEffect(() => {
+    if (!corretor.expiresAt || corretor.tipo !== 'trial') return
+    const t = setInterval(() => setRem(corretor.expiresAt - Date.now()), 60000)
+    return () => clearInterval(t)
+  }, [corretor.expiresAt, corretor.tipo])
+  if (rem === null || rem <= 0 || rem > 12 * 3600000) return null
+  const h = Math.floor(rem / 3600000)
+  const m = Math.floor((rem % 3600000) / 60000)
+  return (
+    <div className={`corr-countdown-banner${rem < 2 * 3600000 ? ' corr-countdown-urgente' : ''}`}>
+      <span>⏰ Teste expira em <b>{h ? `${h}h ` : ''}{m}min</b> — assine para não perder o acesso.</span>
+      <button type="button" className="corr-countdown-btn" onClick={onAssinar}>Assinar plano →</button>
+    </div>
+  )
+}
 
 function HubCorretor({ corretor, onSair }) {
   const [ativa, setAtiva] = useState('rotina')
@@ -671,6 +723,14 @@ function HubCorretor({ corretor, onSair }) {
   const Ativa = RENDER[ativa]
   const escolher = (id) => { setAtiva(id); setTimeout(() => painelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60) }
   const primeiro = (corretor.nome || '').trim().split(' ')[0]
+
+  useEffect(() => {
+    if (corretor.tipo !== 'trial' || !corretor.expiresAt) return
+    const remaining = corretor.expiresAt - Date.now()
+    if (remaining <= 0) { onSair(); return }
+    const t = setTimeout(onSair, remaining)
+    return () => clearTimeout(t)
+  }, [corretor, onSair])
 
   return (
     <>
@@ -685,6 +745,7 @@ function HubCorretor({ corretor, onSair }) {
           <button className="btn btn-ghost" type="button" onClick={onSair}>Sair</button>
         </div>
       </header>
+      <TrialCountdownBanner corretor={corretor} onAssinar={onSair} />
 
       <div className="ferr-grid corr-grid">
         {TOOLS.map((t) => (

@@ -3273,10 +3273,40 @@ html[data-theme="dark"] .corr-agenda-item { background: #11161f; }
 html[data-theme="dark"] .corr-ferr input, html[data-theme="dark"] .corr-ferr select, html[data-theme="dark"] .corr-ferr textarea { background: #11161f; }
 html[data-theme="dark"] .corr-ferr-resultado { background: #11161f; }
 
+/* trust bar — gate corretor */
+.corr-trust-bar { display:flex; flex-wrap:wrap; gap:6px 22px; justify-content:center; margin-bottom:22px; padding-bottom:18px; border-bottom:1px solid var(--border); }
+.corr-trust-bar span { font-size:0.82rem; color:var(--text-soft); font-weight:500; }
+.corr-trust-bar span b { color:var(--gold-2); margin-right:3px; font-weight:700; }
+
+/* como funciona — gate corretor */
+.corr-como-funciona { margin-top:38px; padding-top:26px; border-top:1px solid var(--border); text-align:center; }
+.corr-como-titulo { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-mute); margin:0 0 20px; }
+.corr-como-steps { display:flex; align-items:flex-start; justify-content:center; gap:10px; max-width:620px; margin:0 auto; }
+.corr-como-step { flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; }
+.corr-como-num { width:34px; height:34px; border-radius:50%; background:var(--gold-grad); color:#1a1200; font-family:var(--font-head); font-weight:800; font-size:0.85rem; display:grid; place-items:center; margin-bottom:4px; flex-shrink:0; }
+.corr-como-step b { font-family:var(--font-head); font-size:0.87rem; font-weight:700; color:var(--text); }
+.corr-como-step span { font-size:0.77rem; color:var(--text-soft); line-height:1.5; }
+.corr-como-arr { font-size:1.1rem; color:var(--text-mute); margin-top:11px; flex-shrink:0; }
+@media (max-width:560px) { .corr-como-steps { flex-direction:column; align-items:center; } .corr-como-arr { transform:rotate(90deg); margin:0; } }
+
+/* trial countdown banner — hub */
+.corr-countdown-banner { display:flex; align-items:center; justify-content:space-between; gap:12px; background:rgba(224,181,86,0.09); border:1px solid rgba(224,181,86,0.3); border-radius:12px; padding:12px 18px; margin-bottom:20px; font-size:0.86rem; color:var(--text-soft); flex-wrap:wrap; }
+.corr-countdown-urgente { background:rgba(220,60,0,0.07); border-color:rgba(220,60,0,0.3); color:var(--text); }
+.corr-countdown-btn { background:var(--gold-grad); color:#1a1200; border:none; border-radius:8px; padding:7px 16px; font-weight:700; font-size:0.82rem; cursor:pointer; white-space:nowrap; }
+
+/* error link */
+.corr-erro-link { color:var(--gold-3); font-weight:600; text-decoration:underline; }
+
 /* área do corretor no modo escuro */
 html[data-theme="dark"] .corr-lista li { background: #11161f; border-color: rgba(255,255,255,0.1); }
 html[data-theme="dark"] .corr-lista-ico { color: var(--gold-1); background: rgba(224,181,86,0.14); }
 html[data-theme="dark"] .corr-chip { color: var(--gold-1); border-color: rgba(224,181,86,0.4); background: rgba(224,181,86,0.1); }
+html[data-theme="dark"] .corr-trust-bar span { color: #8a96a8; }
+html[data-theme="dark"] .corr-trust-bar span b { color: var(--gold-1); }
+html[data-theme="dark"] .corr-como-step b { color: #dce2ec; }
+html[data-theme="dark"] .corr-como-step span { color: #8a96a8; }
+html[data-theme="dark"] .corr-countdown-banner { background: rgba(224,181,86,0.07); border-color: rgba(224,181,86,0.25); color: #9aa8bc; }
+html[data-theme="dark"] .corr-countdown-urgente { background: rgba(220,60,0,0.1); border-color: rgba(220,60,0,0.35); color: #dce2ec; }
 
 /* ============================================================
    MODO ESCURO — varredura completa: fundo escuro => letra clara
