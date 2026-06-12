@@ -44,10 +44,9 @@ export default function FerramentasHome() {
           </div>
           <div className="ferr-home-grid">
             {PREV.map((f) => (
-              <Link key={f.nome} to="/ferramentas" className="ferr-home-card">
+              <Link key={f.nome} to="/ferramentas" className="ferr-home-card" title={f.desc}>
                 <span className="ferr-home-ico"><FhIcon d={f.ico} /></span>
                 <b className="ferr-home-nome">{f.nome}</b>
-                <span className="ferr-home-desc">{f.desc}</span>
               </Link>
             ))}
           </div>

@@ -123,7 +123,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 .text-gold { background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
-section { position: relative; padding: clamp(30px, 4.2vw, 56px) 0; }
+section { position: relative; padding: clamp(20px, 3vw, 40px) 0; }
 
 /* ---------- seções com fundo claro (leveza, cores invertidas) ---------- */
 #destaque.section--light, #contato.section--light, .imovel-pg.section--light { background: #fff; }
@@ -355,7 +355,7 @@ section { position: relative; padding: clamp(30px, 4.2vw, 56px) 0; }
 /* ---------- STATS / faixa ---------- */
 .stats { padding: 50px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.015); }
 /* pilares com foto real */
-.stats-fotos { padding: clamp(34px, 5vw, 64px) 0; }
+.stats-fotos { padding: clamp(20px, 3vw, 40px) 0; }
 .stats-fotos .stats-grid { align-items: stretch; }
 .pilar-card { position: relative; height: 230px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease); }
 .pilar-card:hover { transform: translateY(-6px); box-shadow: 0 26px 50px -26px rgba(0,0,0,0.8); }
@@ -3634,25 +3634,26 @@ html[data-theme="dark"] .hero-card .eyebrow::before { background: var(--gold-1);
 /* ============================================================
    PARA VOCÊ — seletor de audiência na home
    ============================================================ */
-.para-voce { padding: clamp(36px,5vw,64px) 0; }
-.pv-header { margin-bottom: 28px; }
+.para-voce { padding: clamp(20px,3vw,40px) 0; }
+.pv-header { margin-bottom: 16px; }
 .pv-titulo { font-family: var(--font-head); font-size: clamp(1.2rem,2.2vw,1.5rem); font-weight: 700; color: var(--text); margin-top: 5px; }
-.pv-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
-.pv-card { display: flex; flex-direction: column; gap: 8px; padding: 24px 20px 20px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--surface); text-decoration: none; transition: transform .18s, box-shadow .2s, border-color .18s; }
-.pv-card:hover { transform: translateY(-4px); box-shadow: 0 14px 36px -10px rgba(22,26,34,0.13); }
-.pv-ico { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 11px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.11); color: var(--text-soft); flex: none; transition: background .22s, border-color .22s, color .22s; }
+.pv-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+.pv-card { display: flex; flex-direction: row; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px; border: 1.5px solid var(--border); background: var(--surface); text-decoration: none; transition: transform .18s, box-shadow .2s, border-color .18s; }
+.pv-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px -8px rgba(22,26,34,0.15); }
+.pv-ico { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 12px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.11); color: var(--text-soft); flex: none; transition: background .22s, border-color .22s, color .22s; }
 .pv-card:hover .pv-ico { background: rgba(184,134,47,0.2); border-color: rgba(184,134,47,0.5); color: var(--gold-1); }
 .pv-card--gold .pv-ico { background: rgba(184,134,47,0.15); border-color: rgba(184,134,47,0.3); color: var(--gold-1); }
 .pv-card--gold:hover .pv-ico { background: rgba(184,134,47,0.28); border-color: rgba(184,134,47,0.6); }
-.pv-nome { font-family: var(--font-head); font-size: 1rem; font-weight: 700; color: var(--text); display: block; }
-.pv-sub { font-size: 0.82rem; color: var(--text-soft); line-height: 1.55; flex: 1; display: block; }
-.pv-seta { font-size: 1.05rem; color: var(--text-mute); margin-top: 6px; display: block; transition: transform .18s, color .18s; }
-.pv-card:hover .pv-seta { transform: translateX(5px); color: var(--gold-2); }
+.pv-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.pv-nome { font-family: var(--font-head); font-size: 0.95rem; font-weight: 700; color: var(--text); display: block; }
+.pv-sub { font-size: 0.78rem; color: var(--text-soft); line-height: 1.4; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pv-seta { font-size: 1rem; color: var(--text-mute); flex: none; transition: transform .18s, color .18s; }
+.pv-card:hover .pv-seta { transform: translateX(4px); color: var(--gold-2); }
 .pv-card--gold { border-color: rgba(184,134,47,0.38); background: linear-gradient(160deg, rgba(184,134,47,0.08) 0%, transparent 65%); }
-.pv-card--gold:hover { border-color: rgba(184,134,47,0.65); box-shadow: 0 14px 36px -8px rgba(184,134,47,0.2); }
+.pv-card--gold:hover { border-color: rgba(184,134,47,0.65); box-shadow: 0 10px 28px -6px rgba(184,134,47,0.2); }
 .pv-card--gold .pv-nome { color: var(--gold-2); }
-@media (max-width:820px) { .pv-grid { grid-template-columns: 1fr 1fr; gap: 12px; } }
-@media (max-width:460px) { .pv-grid { grid-template-columns: 1fr; gap: 10px; } }
+@media (max-width:860px) { .pv-grid { grid-template-columns: 1fr 1fr; gap: 10px; } }
+@media (max-width:480px) { .pv-grid { grid-template-columns: 1fr; gap: 8px; } }
 html[data-theme="dark"] .pv-card { background: #11161f; border-color: rgba(255,255,255,0.07); }
 html[data-theme="dark"] .pv-card:hover { border-color: rgba(255,255,255,0.13); }
 html[data-theme="dark"] .pv-card--gold { background: linear-gradient(160deg, rgba(184,134,47,0.11) 0%, #11161f 65%); border-color: rgba(184,134,47,0.32); }
@@ -3663,29 +3664,27 @@ html[data-theme="dark"] .pv-sub { color: #8a96a8; }
 /* ============================================================
    FERRAMENTAS HOME — preview de calculadoras
    ============================================================ */
-.ferr-home-sec { padding: clamp(36px,5vw,64px) 0; }
-.ferr-home-hdr { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 26px; flex-wrap: wrap; }
+.ferr-home-sec { padding: clamp(20px,3vw,40px) 0; }
+.ferr-home-hdr { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
 .ferr-home-h2 { margin-top: 4px !important; }
 .ferr-home-ver { flex-shrink: 0; }
-.ferr-home-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
-.ferr-home-card { display: flex; flex-direction: column; gap: 9px; padding: 22px 18px 20px; border-radius: 18px; border: 1px solid var(--border); background: var(--surface); text-decoration: none; transition: transform .18s, box-shadow .2s, border-color .18s; }
+.ferr-home-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+.ferr-home-card { position: relative; display: flex; flex-direction: row; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); text-decoration: none; transition: transform .18s, box-shadow .2s, border-color .18s; }
 .ferr-home-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px -8px rgba(22,26,34,0.1); border-color: rgba(184,134,47,0.4); }
-.ferr-home-ico { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.11); color: var(--text-soft); flex: none; transition: background .22s, border-color .22s, color .22s; }
+.ferr-home-ico { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 10px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.11); color: var(--text-soft); flex: none; transition: background .22s, border-color .22s, color .22s; }
 .ferr-home-card:hover .ferr-home-ico { background: rgba(184,134,47,0.2); border-color: rgba(184,134,47,0.5); color: var(--gold-1); }
-.ferr-home-nome { font-family: var(--font-head); font-size: 0.9rem; font-weight: 700; color: var(--text); display: block; }
-.ferr-home-desc { font-size: 0.79rem; color: var(--text-soft); line-height: 1.55; display: block; }
-.ferr-home-cta-mob { display: none; margin-top: 20px; text-align: center; }
-@media (max-width:820px) { .ferr-home-grid { grid-template-columns: 1fr 1fr; gap: 12px; } .ferr-home-ver { display: none; } .ferr-home-cta-mob { display: block; } }
+.ferr-home-nome { font-family: var(--font-head); font-size: 0.88rem; font-weight: 700; color: var(--text); display: block; flex: 1; min-width: 0; }
+.ferr-home-cta-mob { display: none; margin-top: 16px; text-align: center; }
+@media (max-width:820px) { .ferr-home-grid { grid-template-columns: 1fr 1fr; gap: 10px; } .ferr-home-ver { display: none; } .ferr-home-cta-mob { display: block; } }
 @media (max-width:460px) { .ferr-home-grid { grid-template-columns: 1fr; } }
 html[data-theme="dark"] .ferr-home-card { background: #11161f; border-color: rgba(255,255,255,0.07); }
 html[data-theme="dark"] .ferr-home-card:hover { border-color: rgba(184,134,47,0.38); }
 html[data-theme="dark"] .ferr-home-nome { color: #dce2ec; }
-html[data-theme="dark"] .ferr-home-desc { color: #8a96a8; }
 
 /* ============================================================
    CORRETOR BANNER HOME — seção PRO dourada
    ============================================================ */
-.corrbn-sec { padding: clamp(36px,5vw,64px) 0; }
+.corrbn-sec { padding: clamp(20px,3vw,40px) 0; }
 .corrbn { display: grid; grid-template-columns: 1fr 220px; gap: clamp(28px,5vw,60px); align-items: center; background: linear-gradient(140deg, rgba(184,134,47,0.09) 0%, rgba(184,134,47,0.03) 55%, transparent 100%); border: 1.5px solid rgba(184,134,47,0.32); border-radius: 28px; padding: clamp(28px,4vw,52px); }
 .corrbn-eyebrow { color: var(--gold-3) !important; }
 .corrbn-h2 { margin-top: 4px !important; }
