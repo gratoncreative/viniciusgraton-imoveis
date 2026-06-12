@@ -15,6 +15,8 @@ export default function Novidades() {
   const baixaram = (nov && nov.baixaram) || []
   if (!novos.length && !baixaram.length) return null
 
+  const diaLabel = new Date().toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' })
+
   const Bloco = ({ eyebrow, titulo, em, sub, itens, top }) => (
     <>
       <Reveal>
@@ -40,7 +42,7 @@ export default function Novidades() {
             sub="Imóveis que tiveram o preço reduzido. Oportunidade boa não espera — corre comigo." />
         )}
         {novos.length > 0 && (
-          <Bloco eyebrow="Atualizado hoje" titulo="Chegaram" em="agora" itens={novos} top={baixaram.length > 0}
+          <Bloco eyebrow="Atualizado hoje" titulo="Chegaram em" em={diaLabel} itens={novos} top={baixaram.length > 0}
             sub="Imóveis que acabaram de entrar na carteira da Rotina — com o meu atendimento pessoal." />
         )}
       </div>
