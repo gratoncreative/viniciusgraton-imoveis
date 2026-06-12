@@ -386,6 +386,75 @@ export async function onRequestPost({ env, request }) {
     return json({ ok: true, owner })
   }
 
+  // Cria um laudo técnico temporário (vinculado ao cliente CRM)
+  if (action === 'laudo-criar') {
+    const lim = (s, n) => String(s == null ? '' : s).slice(0, n)
+    const arrN = (a, max) => (Array.isArray(a) ? a.slice(0, max) : [])
+    const ttlDias = [30, 60, 90].includes(Number(b.ttlDias)) ? Number(b.ttlDias) : 30
+    const ttlSec = ttlDias * 24 * 3600
+    const id = crypto.randomUUID().replace(/-/g, '').slice(0, 20)
+    const payload = {
+      id,
+      criadoEm: Date.now(),
+      expiraEm: Date.now() + ttlSec * 1000,
+      ttlDias,
+      clienteId: lim(b.clienteId, 40),
+      clienteNome: lim(b.clienteNome, 100),
+      perfil: {
+        finalidade: lim(b.perfil?.finalidade, 40),
+        tipos: arrN(b.perfil?.tipos, 10).map((x) => lim(x, 40)),
+        bairros: arrN(b.perfil?.bairros, 20).map((x) => lim(x, 60)),
+        precoMin: Number(b.perfil?.precoMin) || 0,
+        precoMax: Number(b.perfil?.precoMax) || 0,
+        quartosMin: Number(b.perfil?.quartosMin) || 0,
+        suitesMin: Number(b.perfil?.suitesMin) || 0,
+        vagasMin: Number(b.perfil?.vagasMin) || 0,
+        areaMin: Number(b.perfil?.areaMin) || 0,
+        nota: lim(b.perfil?.nota, 600),
+      },
+      mercado: {
+        totalCompativel: Number(b.mercado?.totalCompativel) || 0,
+        precoMin: Number(b.mercado?.precoMin) || 0,
+        precoMax: Number(b.mercado?.precoMax) || 0,
+        areaMin: Number(b.mercado?.areaMin) || 0,
+        areaMax: Number(b.mercado?.areaMax) || 0,
+        m2Mediana: Number(b.mercado?.m2Mediana) || 0,
+        tipos: arrN(b.mercado?.tipos, 10).map((x) => lim(x, 40)),
+        bairros: arrN(b.mercado?.bairros, 20).map((x) => lim(x, 60)),
+      },
+      top3: arrN(b.top3, 3).map((item) => ({
+        codigo: lim(item.codigo, 20),
+        tipo: lim(item.tipo, 60),
+        bairro: lim(item.bairro, 80),
+        preco: Number(item.preco) || 0,
+        precoAnterior: Number(item.precoAnterior) || 0,
+        area: Number(item.area) || 0,
+        quartos: Number(item.quartos) || 0,
+        suites: Number(item.suites) || 0,
+        banheiros: Number(item.banheiros) || 0,
+        vagas: Number(item.vagas) || 0,
+        andar: Number(item.andar) || 0,
+        img: lim(item.img, 400),
+        fotos: arrN(item.fotos, 12).map((x) => lim(x, 400)),
+        descricao: lim(item.descricao, 1000),
+        aceitaFinanciamento: !!item.aceitaFinanciamento,
+        aceitaFgts: !!item.aceitaFgts,
+        score: Number(item.score) || 0,
+        m2: Number(item.m2) || 0,
+        m2Mediana: Number(item.m2Mediana) || 0,
+        diffPct: Number(item.diffPct) || 0,
+        abaixoMercado: !!item.abaixoMercado,
+        temDesconto: !!item.temDesconto,
+        pctDesconto: Number(item.pctDesconto) || 0,
+        pctAbaixo: Number(item.pctAbaixo) || 0,
+        melhorDeTodas: !!item.melhorDeTodas,
+      })),
+      obs: lim(b.obs, 1000),
+    }
+    await env.ENGAGEMENT.put('laudo:' + id, JSON.stringify(payload), { expirationTtl: ttlSec })
+    return json({ ok: true, id })
+  }
+
   return json({ error: 'acao desconhecida' }, 400)
   } catch (e) {
     console.error('admin.js catch:', e)

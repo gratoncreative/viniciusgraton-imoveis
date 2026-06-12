@@ -3,6 +3,36 @@ import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_TODOS, filtrarParaCliente, formatPreco, 
 import InputMoeda from './InputMoeda'
 import { agruparPorSetor } from '../bairros-setores'
 
+// Pontuação técnica de custo-benefício: m² vs mercado é o principal fator
+function calcularTop3(matchesList, m2Mediana) {
+  return matchesList
+    .filter(({ im }) => im.preco > 0 && im.area > 0)
+    .map(({ im }) => {
+      const m2 = im.preco / im.area
+      let score = 0
+      if (m2Mediana > 0) {
+        const ratio = m2 / m2Mediana
+        if (ratio < 0.75) score += 45
+        else if (ratio < 0.85) score += 30
+        else if (ratio < 0.92) score += 18
+        else if (ratio < 1.0) score += 8
+        else if (ratio > 1.2) score -= 12
+        else if (ratio > 1.1) score -= 5
+      }
+      const op = oportunidade(im)
+      if (op.abaixoMercado) score += 22
+      if (op.temDesconto) score += 10
+      if ((im.quartos || 0) >= 3) score += 7
+      if ((im.suites || 0) >= 1) score += 6
+      if ((im.vagas || 0) >= 2) score += 5
+      if ((im.area || 0) >= 100) score += 8
+      if (im.aceitaFinanciamento) score += 4
+      return { im, score, m2, op }
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+}
+
 const api = (payload) => fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) }).then((r) => r.json().then((j) => ({ status: r.status, j })))
 
 const VAZIO = { id: '', nome: '', whatsapp: '', finalidade: 'Comprar', tipos: [], bairros: [], precoMin: '', precoMax: '', quartosMin: '', suitesMin: '', vagasMin: '', areaMin: '', obs: '', nota: '', sugeridos: [] }
@@ -40,6 +70,12 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
   const [erro, setErro] = useState('')
   const [erroLista, setErroLista] = useState('')
   const [linkCopiado, setLinkCopiado] = useState(false)
+  const [laudoModal, setLaudoModal] = useState(false)
+  const [laudoTtl, setLaudoTtl] = useState(30)
+  const [laudoObs, setLaudoObs] = useState('')
+  const [laudoCriando, setLaudoCriando] = useState(false)
+  const [laudoLink, setLaudoLink] = useState('')
+  const [laudoCopiado, setLaudoCopiado] = useState(false)
 
   const carregar = async () => {
     setErroLista('')
@@ -125,6 +161,68 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
     const vals = matches.slice(0, 80).map(({ im }) => im.preco > 0 && im.area > 0 ? im.preco / im.area : 0).filter(v => v > 0).sort((a, b) => a - b)
     return vals.length ? vals[Math.floor(vals.length / 2)] : 0
   }, [matches])
+
+  const top3 = useMemo(() => sel ? calcularTop3(matches, m2mediana) : [], [matches, m2mediana, sel])
+
+  const criarLaudo = async () => {
+    setLaudoCriando(true)
+    setLaudoLink('')
+    try {
+      const c = await salvar()
+      if (!c || !c.id) { setLaudoCriando(false); return }
+      const precos = matches.map((x) => x.im.preco).filter((p) => p > 0)
+      const areas = matches.map((x) => x.im.area).filter((a) => a > 0)
+      const top3data = top3.map((item, i) => {
+        const { im, m2, op } = item
+        const fotos = fotosDe(im)
+        return {
+          codigo: String(im.codigo), tipo: im.tipo, bairro: im.bairro,
+          preco: im.preco, precoAnterior: im.precoAnterior || 0,
+          area: im.area, quartos: im.quartos || 0, suites: im.suites || 0,
+          banheiros: im.banheiros || 0, vagas: im.vagas || 0, andar: im.andar || 0,
+          img: im.img || '', fotos,
+          descricao: im.descricao || '',
+          aceitaFinanciamento: !!im.aceitaFinanciamento, aceitaFgts: !!im.aceitaFgts,
+          score: item.score, m2, m2Mediana: m2mediana,
+          diffPct: m2mediana > 0 ? Math.round((m2 / m2mediana - 1) * 100) : 0,
+          abaixoMercado: op.abaixoMercado, temDesconto: op.temDesconto,
+          pctDesconto: op.pctDesconto || 0, pctAbaixo: op.pctAbaixo || 0,
+          melhorDeTodas: i === 0,
+        }
+      })
+      const { j } = await api({
+        action: 'laudo-criar', token,
+        clienteId: c.id, clienteNome: c.nome || '',
+        ttlDias: laudoTtl,
+        perfil: {
+          finalidade: sel.finalidade, tipos: sel.tipos, bairros: sel.bairros,
+          precoMin: +sel.precoMin || 0, precoMax: +sel.precoMax || 0,
+          quartosMin: +sel.quartosMin || 0, suitesMin: +sel.suitesMin || 0,
+          vagasMin: +sel.vagasMin || 0, areaMin: +sel.areaMin || 0,
+          nota: sel.nota || '',
+        },
+        mercado: {
+          totalCompativel: matches.length,
+          precoMin: precos.length ? Math.min(...precos) : 0,
+          precoMax: precos.length ? Math.max(...precos) : 0,
+          areaMin: areas.length ? Math.min(...areas) : 0,
+          areaMax: areas.length ? Math.max(...areas) : 0,
+          m2Mediana: m2mediana,
+          tipos: [...new Set(matches.map((x) => x.im.tipo).filter(Boolean))],
+          bairros: [...new Set(matches.map((x) => x.im.bairro).filter(Boolean))],
+        },
+        top3: top3data,
+        obs: laudoObs,
+      })
+      if (j?.ok && j.id) {
+        const link = `${window.location.origin}/laudo/${j.id}`
+        setLaudoLink(link)
+      }
+    } catch {
+      // falha silenciosa; o usuário pode tentar de novo
+    }
+    setLaudoCriando(false)
+  }
 
   const [prevCod, setPrevCod] = useState(null)
   const [prevSlide, setPrevSlide] = useState(0)
@@ -305,6 +403,96 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                 </>
               )}
             </div>
+
+            {top3.length > 0 && (
+              <div className="admin-owner crm-top3-wrap" style={{ marginTop: 14 }}>
+                <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>TOP 3 · Melhor custo-benefício <span className="painel-meta">· análise técnica</span></h3>
+                <p className="calc-nota">Seleção automática por m² vs. mercado, specs e oportunidades reais na carteira.</p>
+                <div className="crm-top3-list">
+                  {top3.map(({ im, score, m2, op }, i) => {
+                    const isM = i === 0
+                    const diffPct = m2mediana > 0 ? Math.round((m2 / m2mediana - 1) * 100) : null
+                    const cod = String(im.codigo)
+                    const jaIncluido = (sel.sugeridos || []).includes(cod)
+                    return (
+                      <div key={cod} className={`crm-top3-item ${isM ? 'crm-top3-item--melhor' : ''}`}>
+                        <div className="crm-top3-rank">#{i + 1}</div>
+                        {im.img && <img className="crm-top3-img" src={im.img} alt="" />}
+                        <div className="crm-top3-info">
+                          <b className="crm-top3-nome">{im.tipo} · {im.bairro}</b>
+                          <span className="crm-top3-preco">{formatPreco(im.preco)}</span>
+                          {m2 > 0 && (
+                            <span className={`crm-top3-m2 ${diffPct !== null && diffPct <= -10 ? 'crm-top3-m2--bom' : diffPct !== null && diffPct >= 10 ? 'crm-top3-m2--alto' : ''}`}>
+                              {formatPreco(Math.round(m2))}/m²
+                              {diffPct !== null && ` · ${diffPct > 0 ? '+' : ''}${diffPct}% vs. mercado`}
+                            </span>
+                          )}
+                          <div className="crm-top3-flags">
+                            {isM && <span className="crm-top3-melhor-tag">⭐ Melhor de todas</span>}
+                            {op.abaixoMercado && <span className="crm-top3-flag-op">↓ Abaixo do mercado</span>}
+                            {op.temDesconto && <span className="crm-top3-flag-op">↓ Desconto {op.pctDesconto}%</span>}
+                          </div>
+                        </div>
+                        <div className="crm-top3-acoes">
+                          <button className={`admin-btn admin-btn--mini ${jaIncluido ? 'admin-btn--ok' : ''}`} onClick={() => toggleSug(cod)}>
+                            {jaIncluido ? '✓ Incluído' : '+ Incluir'}
+                          </button>
+                          <a className="admin-btn admin-btn--mini" href={`/imovel/${cod}`} target="_blank" rel="noopener">Ver</a>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+                <div style={{ marginTop: 12, display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+                  <button className="btn btn-gold" onClick={() => { setLaudoModal(true); setLaudoLink('') }}>
+                    📄 Gerar Laudo PDF
+                  </button>
+                  <span className="painel-meta">Cria link temporário com análise completa para o cliente</span>
+                </div>
+              </div>
+            )}
+
+            {laudoModal && (
+              <div className="crm-laudo-modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) setLaudoModal(false) }}>
+                <div className="crm-laudo-modal">
+                  <button className="crm-laudo-modal-close" onClick={() => setLaudoModal(false)}>×</button>
+                  <h3 style={{ marginTop: 0 }}>Gerar Laudo de Seleção</h3>
+                  <p className="calc-nota">Cria um link temporário com análise completa: perfil, mercado, TOP 3, comparativo e custos estimados.</p>
+
+                  <p className="admin-mini-label" style={{ marginBottom: 8 }}>Validade do laudo</p>
+                  <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
+                    {[30, 60, 90].map((d) => (
+                      <button key={d} className={`admin-btn ${laudoTtl === d ? 'admin-btn--ok' : ''}`} onClick={() => setLaudoTtl(d)}>{d} dias</button>
+                    ))}
+                  </div>
+
+                  <label className="admin-field admin-field--full">
+                    <span>Considerações do consultor <span className="painel-meta">(opcional — aparece no rodapé do laudo)</span></span>
+                    <textarea rows="3" value={laudoObs} onChange={(e) => setLaudoObs(e.target.value)} placeholder="Ex: Recomendo começar pelo #1 — ótimo custo-benefício e localização consolidada. O #2 é interessante para quem prioriza área maior…" />
+                  </label>
+
+                  <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+                    <button className="btn btn-gold" disabled={laudoCriando} onClick={criarLaudo}>
+                      {laudoCriando ? '⏳ Gerando…' : '📄 Gerar laudo'}
+                    </button>
+                    {laudoLink && (
+                      <>
+                        <button className="admin-btn admin-btn--ok" onClick={() => { navigator.clipboard?.writeText(laudoLink); setLaudoCopiado(true); setTimeout(() => setLaudoCopiado(false), 1500) }}>
+                          {laudoCopiado ? '✓ Copiado!' : 'Copiar link'}
+                        </button>
+                        <button className="admin-btn" onClick={() => window.open(laudoLink, '_blank', 'noopener')}>Abrir laudo</button>
+                      </>
+                    )}
+                  </div>
+                  {laudoLink && (
+                    <div className="crm-laudo-link-box">
+                      <span>{laudoLink}</span>
+                      <p className="painel-meta" style={{ marginTop: 4 }}>Válido por {laudoTtl} dias. Envie pelo WhatsApp para o cliente.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
             <div className="admin-owner">
               <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Imóveis sugeridos <span className="painel-meta">({(sel.sugeridos || []).length})</span></h3>
