@@ -347,7 +347,9 @@ export async function onRequestPost({ env, request }) {
     return json({ ok: true })
   }
 
-  // Busca dados do PROPRIETÁRIO: KV → sessão web Imoview → none
+  // Busca dados do PROPRIETÁRIO via sessão web Imoview (4 passos):
+  //   1) login  2) GET /Imovel/Detalhes → botão .loadPessoas[data-codigos]
+  //   3) GET /PessoaF/Detalhes/{pessoaCode}  4) parse nome/fone/email do HTML
   if (action === 'owner-fetch') {
     const cod = String(b.codigo || '').replace(/[^\w]/g, '').slice(0, 12)
     if (!cod) return json({ error: 'codigo' }, 400)
@@ -359,13 +361,11 @@ export async function onRequestPost({ env, request }) {
       return json({ ok: true, owner: saved.owner, source: 'saved' })
     }
 
-    // 2. Sessão web do Imoview — login normal com usuario/senha, sem chave de API
     const imoviewEmail = (env.IMOVIEW_LOGIN || '').trim()
     const imoviewSenha = (env.IMOVIEW_SENHA || '').trim()
     const WEB = 'https://app.imoview.com.br'
     const UA  = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
 
-    // helper: consolida Set-Cookie em string para enviar no próximo request
     const mergeCookies = (existing, setCookieHeader) => {
       const jar = {}
       const parse = (s) => { if (!s) return; s.split(';')[0].trim().split(',').forEach(c => { const [k,...v]=c.trim().split('='); if(k) jar[k.trim()]=v.join('=') }) }
@@ -377,21 +377,18 @@ export async function onRequestPost({ env, request }) {
     if (imoviewEmail && imoviewSenha) {
       let dbg = {}
       try {
-        // 2a. GET página de login — pega cookie inicial e CSRF token
+        // Passo 1: GET /Login → cookie inicial + CSRF token
         const pgR = await fetch(`${WEB}/Login`, { headers:{'user-agent':UA}, redirect:'follow', signal:AbortSignal.timeout(10000) })
         dbg.pgStatus = pgR.status
         let cookies = mergeCookies('', pgR.headers.get('set-cookie') || '')
         const pgHtml = await pgR.text()
         const csrfM  = pgHtml.match(/name="__RequestVerificationToken"[^>]*value="([^"]+)"/) || pgHtml.match(/value="([^"]+)"[^>]*name="__RequestVerificationToken"/)
         const csrf   = csrfM ? csrfM[1] : ''
-        // descobre nomes reais dos campos do form de login
         const fieldNames = (pgHtml.match(/name="(\w+)"/g)||[]).map(m=>m.slice(6,-1))
-        dbg.csrf       = csrf ? 'sim' : 'nao'
-        dbg.fieldNames = fieldNames
+        dbg.csrf = csrf ? 'sim' : 'nao'
 
-        // 2b. POST login
+        // Passo 2: POST /Login/Autenticar → session cookie
         const form = new URLSearchParams()
-        // tenta nomes comuns de campo; os encontrados no HTML têm prioridade
         const loginField = fieldNames.find(n=>/login|usuario|email|user/i.test(n)) || 'login'
         const senhaField = fieldNames.find(n=>/senha|password|pass/i.test(n))     || 'senha'
         form.append(loginField, imoviewEmail)
@@ -408,53 +405,73 @@ export async function onRequestPost({ env, request }) {
         dbg.loginLocation = loginR.headers.get('location') || ''
         cookies = mergeCookies(cookies, loginR.headers.get('set-cookie') || '')
         dbg.hasCookies = cookies.length > 10
-
-        const loginOk = loginR.status === 302 || loginR.status === 301 || (loginR.status === 200 && !/login/i.test(loginR.headers.get('location') || ''))
+        const loginOk = loginR.status === 302 || loginR.status === 301 || (loginR.status === 200 && !/\/Login/i.test(loginR.headers.get('location') || ''))
         dbg.loginOk = loginOk
 
         if (loginOk || dbg.hasCookies) {
-          // 2c. Tenta endpoints AJAX internos do Imoview para dados do imóvel/proprietário
-          // Experimenta vários padrões comuns de .NET MVC + URLs vistas no Swagger
-          const candidates = [
-            `${WEB}/Captacao/RetornarDadosProprietario?codigo=${cod}`,
-            `${WEB}/Captacao/RetornarProprietario?codigoImovel=${cod}`,
-            `${WEB}/Imovel/RetornarProprietarios?codigo=${cod}`,
-            `${WEB}/Imovel/RetornarDados?codigo=${cod}`,
-            `${WEB}/api/imovel/${cod}`,
-            `${WEB}/api/captacao/${cod}`,
-          ]
-          dbg.candidates = []
-          for (const url of candidates) {
-            const r = await fetch(url, {
-              headers:{ cookie:cookies, 'user-agent':UA, 'x-requested-with':'XMLHttpRequest', accept:'application/json, text/javascript, */*' },
-              redirect:'follow', signal:AbortSignal.timeout(8000),
+          // Passo 3: GET /Imovel/Detalhes/{cod} → extrai código da pessoa do botão .loadPessoas[data-codigos]
+          const imovelR = await fetch(`${WEB}/Imovel/Detalhes/${cod}`, {
+            headers:{ cookie:cookies, 'user-agent':UA, accept:'text/html' },
+            redirect:'follow', signal:AbortSignal.timeout(12000),
+          })
+          dbg.imovelStatus = imovelR.status
+          const imovelHtml = await imovelR.text()
+
+          // O botão tem class="... loadPessoas ..." data-codigos="65777" data-imovel="99349"
+          const loadPessoasEl = imovelHtml.match(/<[^>]*loadPessoas[^>]*>/)
+          const pessoaCode = loadPessoasEl ? ((loadPessoasEl[0].match(/data-codigos="(\d+)"/) || [])[1] || '') : ''
+          dbg.pessoaCode = pessoaCode
+
+          if (pessoaCode) {
+            // Passo 4: GET /PessoaF/Detalhes/{pessoaCode} → parse nome, fone, email do HTML
+            const pessoaR = await fetch(`${WEB}/PessoaF/Detalhes/${pessoaCode}`, {
+              headers:{ cookie:cookies, 'user-agent':UA, accept:'text/html' },
+              redirect:'follow', signal:AbortSignal.timeout(12000),
             })
-            const txt = await r.text()
-            dbg.candidates.push({ url, status:r.status, body:txt.slice(0,300) })
-            if (r.status === 200 && txt.trim().startsWith('{')) {
-              let j = null; try { j = JSON.parse(txt) } catch {}
-              if (j) {
-                const d = j.imovel || j.data || j
-                const props = Array.isArray(d.proprietarios||d.Proprietarios) ? (d.proprietarios||d.Proprietarios) : []
-                const p = props[0] || {}
-                const owner = {
-                  nome:  String(p.nome||p.Nome||d.proprietario_nome||d.proprietarioNome||d.nomeProprietario||'').trim().slice(0,120),
-                  email: String(p.email||p.Email||d.proprietario_email||d.proprietarioEmail||'').trim().slice(0,160),
-                  fone:  String(p.celular||p.telefone||p.Celular||p.Telefone||d.proprietario_fone||d.proprietarioFone||d.proprietario_celular||d.celularProprietario||'').trim().slice(0,40),
-                }
-                if (owner.nome || owner.fone) {
-                  await env.ENGAGEMENT.put('imovel:'+cod, JSON.stringify({...(saved||{}),owner,atualizadoEm:Date.now()}))
-                  return json({ ok:true, owner, source:'imoview-web', ...(isDebug?{dbg}:{}) })
-                }
-              }
+            dbg.pessoaStatus = pessoaR.status
+            const pessoaHtml = await pessoaR.text()
+
+            // Nome: <title>Detalhes: Pessoa física 65777 | NOME DA PESSOA</title>
+            const nomeM = pessoaHtml.match(/<title>[^|<]+\|\s*([^<]+)<\/title>/)
+            const nome  = nomeM ? nomeM[1].trim() : ''
+
+            // Celular: link WhatsApp embutido na página → api.whatsapp.com/send?phone=55XXXXXXXXXX
+            const waM = pessoaHtml.match(/api\.whatsapp\.com\/send\?phone=55(\d{10,11})/)
+            let fone = ''
+            if (waM) {
+              const d = waM[1]
+              fone = d.length === 11
+                ? `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`
+                : `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`
+            } else {
+              // fallback: primeiro número de telefone brasileiro da página
+              const foneM = pessoaHtml.match(/\((\d{2})\)\s*(\d{4,5}[-.\s]?\d{4})/)
+              if (foneM) fone = `(${foneM[1]}) ${foneM[2].replace(/[-.\s]/g,'').replace(/(\d{4,5})(\d{4})$/,'$1-$2')}`
             }
+
+            // Email: primeiro endereço de e-mail da página
+            const emailM = pessoaHtml.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,6}/)
+            const email  = emailM ? emailM[0] : ''
+
+            const owner = {
+              nome:  nome.slice(0,120),
+              email: email.slice(0,160),
+              fone:  fone.slice(0,40),
+            }
+
+            if (owner.nome || owner.fone) {
+              await env.ENGAGEMENT.put('imovel:'+cod, JSON.stringify({...(saved||{}), owner, atualizadoEm:Date.now()}))
+              return json({ ok:true, owner, source:'imoview-web', ...(isDebug?{dbg}:{}) })
+            }
+            if (isDebug) return json({ ok:false, source:'parse-falhou', dbg, pessoaSnippet:pessoaHtml.slice(0,800) })
+          } else {
+            if (isDebug) return json({ ok:false, source:'pessoa-code-nao-encontrado', dbg, imovelSnippet:imovelHtml.slice(0,600) })
           }
-          if (isDebug) return json({ ok:false, source:'imoview-web-sem-owner', dbg })
         } else {
-          if (isDebug) return json({ ok:false, source:'imoview-web-login-falhou', dbg })
+          if (isDebug) return json({ ok:false, source:'login-falhou', dbg })
         }
       } catch(e) {
-        if (isDebug) return json({ ok:false, source:'imoview-web-erro', dbg, erro:String(e) })
+        if (isDebug) return json({ ok:false, source:'erro', dbg, erro:String(e) })
       }
     }
 
