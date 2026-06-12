@@ -347,90 +347,115 @@ export async function onRequestPost({ env, request }) {
     return json({ ok: true })
   }
 
-  // Busca dados do PROPRIETÁRIO: KV primeiro, depois API do Imoview (se configurada)
+  // Busca dados do PROPRIETÁRIO: KV → sessão web Imoview → none
   if (action === 'owner-fetch') {
     const cod = String(b.codigo || '').replace(/[^\w]/g, '').slice(0, 12)
     if (!cod) return json({ error: 'codigo' }, 400)
+    const isDebug = b.debug === true
 
-    // 1. Verifica KV primeiro
+    // 1. KV cache
     const saved = await env.ENGAGEMENT.get('imovel:' + cod, 'json')
     if (saved && saved.owner && (saved.owner.nome || saved.owner.fone)) {
       return json({ ok: true, owner: saved.owner, source: 'saved' })
     }
 
-    // 2. Tenta API do Imoview
-    // Variáveis necessárias no Cloudflare:
-    //   IMOVIEW_BASE_URL = https://api.imoview.com.br
-    //   IMOVIEW_LOGIN    = email de acesso
-    //   IMOVIEW_SENHA    = senha (enviada como MD5)
-    //   IMOVIEW_CHAVE    = chave de API fornecida pela Universal Software / suporte@unsoft.com.br
-    const imoviewBase  = (env.IMOVIEW_BASE_URL || '').trim().replace(/\/$/, '')
-    const imoviewEmail = (env.IMOVIEW_LOGIN   || '').trim()
-    const imoviewSenha = (env.IMOVIEW_SENHA   || '').trim()
-    const imoviewChave = (env.IMOVIEW_CHAVE   || '').trim()
-    const isDebug = b.debug === true
+    // 2. Sessão web do Imoview — login normal com usuario/senha, sem chave de API
+    const imoviewEmail = (env.IMOVIEW_LOGIN || '').trim()
+    const imoviewSenha = (env.IMOVIEW_SENHA || '').trim()
+    const WEB = 'https://app.imoview.com.br'
+    const UA  = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
 
-    if (imoviewBase && imoviewEmail && imoviewSenha && imoviewChave) {
+    // helper: consolida Set-Cookie em string para enviar no próximo request
+    const mergeCookies = (existing, setCookieHeader) => {
+      const jar = {}
+      const parse = (s) => { if (!s) return; s.split(';')[0].trim().split(',').forEach(c => { const [k,...v]=c.trim().split('='); if(k) jar[k.trim()]=v.join('=') }) }
+      existing.split(';').forEach(c => { const [k,...v]=c.trim().split('='); if(k) jar[k.trim()]=v.join('=') })
+      ;(setCookieHeader || '').split(/,(?=[^;]+=[^;]+;)/).forEach(c => parse(c))
+      return Object.entries(jar).filter(([k])=>k).map(([k,v])=>`${k}=${v}`).join('; ')
+    }
+
+    if (imoviewEmail && imoviewSenha) {
       let dbg = {}
       try {
-        // Auth: GET /Usuario/App_ValidarAcesso?email=...&senha=MD5(senha)
-        const authUrl = `${imoviewBase}/Usuario/App_ValidarAcesso?email=${encodeURIComponent(imoviewEmail)}&senha=${md5hex(imoviewSenha)}`
-        dbg.authUrl = `${imoviewBase}/Usuario/App_ValidarAcesso` // sem credenciais no log
-        const authR = await fetch(authUrl, {
-          headers: { chave: imoviewChave, 'user-agent': 'ViniciusGratonImoveis/1.0' },
-          signal: AbortSignal.timeout(8000),
+        // 2a. GET página de login — pega cookie inicial e CSRF token
+        const pgR = await fetch(`${WEB}/Login`, { headers:{'user-agent':UA}, redirect:'follow', signal:AbortSignal.timeout(10000) })
+        dbg.pgStatus = pgR.status
+        let cookies = mergeCookies('', pgR.headers.get('set-cookie') || '')
+        const pgHtml = await pgR.text()
+        const csrfM  = pgHtml.match(/name="__RequestVerificationToken"[^>]*value="([^"]+)"/) || pgHtml.match(/value="([^"]+)"[^>]*name="__RequestVerificationToken"/)
+        const csrf   = csrfM ? csrfM[1] : ''
+        // descobre nomes reais dos campos do form de login
+        const fieldNames = (pgHtml.match(/name="(\w+)"/g)||[]).map(m=>m.slice(6,-1))
+        dbg.csrf       = csrf ? 'sim' : 'nao'
+        dbg.fieldNames = fieldNames
+
+        // 2b. POST login
+        const form = new URLSearchParams()
+        // tenta nomes comuns de campo; os encontrados no HTML têm prioridade
+        const loginField = fieldNames.find(n=>/login|usuario|email|user/i.test(n)) || 'login'
+        const senhaField = fieldNames.find(n=>/senha|password|pass/i.test(n))     || 'senha'
+        form.append(loginField, imoviewEmail)
+        form.append(senhaField, imoviewSenha)
+        if (csrf) form.append('__RequestVerificationToken', csrf)
+        const loginR = await fetch(`${WEB}/Login/Autenticar`, {
+          method:'POST',
+          headers:{ 'content-type':'application/x-www-form-urlencoded', cookie:cookies, 'user-agent':UA, referer:`${WEB}/Login`, origin:WEB },
+          body: form.toString(),
+          redirect:'manual',
+          signal: AbortSignal.timeout(10000),
         })
-        dbg.authStatus = authR.status
-        const authText = await authR.text()
-        dbg.authBody = authText.slice(0, 500)
-        let authJ = null
-        try { authJ = JSON.parse(authText) } catch {}
-        dbg.authKeys = authJ ? Object.keys(authJ) : []
+        dbg.loginStatus   = loginR.status
+        dbg.loginLocation = loginR.headers.get('location') || ''
+        cookies = mergeCookies(cookies, loginR.headers.get('set-cookie') || '')
+        dbg.hasCookies = cookies.length > 10
 
-        const codigoAcesso  = authJ && String(authJ.codigoacesso  || authJ.CodigoAcesso  || authJ.codigo_acesso  || authJ.accessCode || '').trim()
-        const codigoUsuario = authJ && String(authJ.codigousuario || authJ.CodigoUsuario || authJ.codigo_usuario || authJ.userId     || authJ.id || '').trim()
-        dbg.codigoAcesso  = codigoAcesso  ? 'obtido' : 'ausente'
-        dbg.codigoUsuario = codigoUsuario ? 'obtido' : 'ausente'
+        const loginOk = loginR.status === 302 || loginR.status === 301 || (loginR.status === 200 && !/login/i.test(loginR.headers.get('location') || ''))
+        dbg.loginOk = loginOk
 
-        if (codigoAcesso) {
-          // Busca imóvel: GET /Imovel/App_RetornarDetalhesImovel?codigoImovel=...&codigoUsuario=...
-          const propUrl = `${imoviewBase}/Imovel/App_RetornarDetalhesImovel?codigoImovel=${encodeURIComponent(cod)}&codigoUsuario=${encodeURIComponent(codigoUsuario)}`
-          dbg.propUrl = propUrl
-          const propR = await fetch(propUrl, {
-            headers: { chave: imoviewChave, codigoacesso: codigoAcesso, 'user-agent': 'ViniciusGratonImoveis/1.0' },
-            signal: AbortSignal.timeout(8000),
-          })
-          dbg.propStatus = propR.status
-          const propText = await propR.text()
-          dbg.propBody = propText.slice(0, 800)
-          let propJ = null
-          try { propJ = JSON.parse(propText) } catch {}
-          const d = (propJ && (propJ.imovel || propJ.data || propJ)) || {}
-          dbg.propKeys = Object.keys(d).slice(0, 40)
-
-          // Proprietário vem em array proprietarios[]
-          const props = Array.isArray(d.proprietarios) ? d.proprietarios : (d.Proprietarios && Array.isArray(d.Proprietarios) ? d.Proprietarios : [])
-          const p = props[0] || {}
-          dbg.propPropKeys = Object.keys(p)
-          const owner = {
-            nome:  String(p.nome  || p.Nome  || d.proprietario_nome  || d.proprietarioNome  || '').trim().slice(0, 120),
-            email: String(p.email || p.Email || d.proprietario_email || d.proprietarioEmail || '').trim().slice(0, 160),
-            fone:  String(p.celular || p.telefone || p.Celular || p.Telefone || d.proprietario_fone || d.proprietarioFone || d.proprietario_celular || '').trim().slice(0, 40),
+        if (loginOk || dbg.hasCookies) {
+          // 2c. Tenta endpoints AJAX internos do Imoview para dados do imóvel/proprietário
+          // Experimenta vários padrões comuns de .NET MVC + URLs vistas no Swagger
+          const candidates = [
+            `${WEB}/Captacao/RetornarDadosProprietario?codigo=${cod}`,
+            `${WEB}/Captacao/RetornarProprietario?codigoImovel=${cod}`,
+            `${WEB}/Imovel/RetornarProprietarios?codigo=${cod}`,
+            `${WEB}/Imovel/RetornarDados?codigo=${cod}`,
+            `${WEB}/api/imovel/${cod}`,
+            `${WEB}/api/captacao/${cod}`,
+          ]
+          dbg.candidates = []
+          for (const url of candidates) {
+            const r = await fetch(url, {
+              headers:{ cookie:cookies, 'user-agent':UA, 'x-requested-with':'XMLHttpRequest', accept:'application/json, text/javascript, */*' },
+              redirect:'follow', signal:AbortSignal.timeout(8000),
+            })
+            const txt = await r.text()
+            dbg.candidates.push({ url, status:r.status, body:txt.slice(0,300) })
+            if (r.status === 200 && txt.trim().startsWith('{')) {
+              let j = null; try { j = JSON.parse(txt) } catch {}
+              if (j) {
+                const d = j.imovel || j.data || j
+                const props = Array.isArray(d.proprietarios||d.Proprietarios) ? (d.proprietarios||d.Proprietarios) : []
+                const p = props[0] || {}
+                const owner = {
+                  nome:  String(p.nome||p.Nome||d.proprietario_nome||d.proprietarioNome||d.nomeProprietario||'').trim().slice(0,120),
+                  email: String(p.email||p.Email||d.proprietario_email||d.proprietarioEmail||'').trim().slice(0,160),
+                  fone:  String(p.celular||p.telefone||p.Celular||p.Telefone||d.proprietario_fone||d.proprietarioFone||d.proprietario_celular||d.celularProprietario||'').trim().slice(0,40),
+                }
+                if (owner.nome || owner.fone) {
+                  await env.ENGAGEMENT.put('imovel:'+cod, JSON.stringify({...(saved||{}),owner,atualizadoEm:Date.now()}))
+                  return json({ ok:true, owner, source:'imoview-web', ...(isDebug?{dbg}:{}) })
+                }
+              }
+            }
           }
-          if (owner.nome || owner.fone) {
-            const base = saved || {}
-            await env.ENGAGEMENT.put('imovel:' + cod, JSON.stringify({ ...base, owner, atualizadoEm: Date.now() }))
-            return json({ ok: true, owner, source: 'imoview', ...(isDebug ? { dbg } : {}) })
-          }
-          if (isDebug) return json({ ok: false, source: 'imoview-sem-owner', dbg })
+          if (isDebug) return json({ ok:false, source:'imoview-web-sem-owner', dbg })
         } else {
-          if (isDebug) return json({ ok: false, source: 'imoview-sem-acesso', dbg })
+          if (isDebug) return json({ ok:false, source:'imoview-web-login-falhou', dbg })
         }
-      } catch (e) {
-        if (isDebug) return json({ ok: false, source: 'imoview-erro', dbg, erro: String(e) })
+      } catch(e) {
+        if (isDebug) return json({ ok:false, source:'imoview-web-erro', dbg, erro:String(e) })
       }
-    } else {
-      if (isDebug) return json({ ok: false, source: 'imoview-nao-config', hasBase: !!imoviewBase, hasEmail: !!imoviewEmail, hasSenha: !!imoviewSenha, hasChave: !!imoviewChave })
     }
 
     return json({ ok: true, owner: { nome: '', email: '', fone: '' }, source: 'none' })
