@@ -3764,10 +3764,10 @@ html[data-theme="dark"] .corrbn-nota { color: #6a7485; }
 .ferr-pill--pro.on { background: var(--gold-grad); color: #14100a; border-color: transparent; }
 
 /* corpo das seções */
-.ferr-body { display: flex; flex-direction: column; gap: 64px; padding-top: 56px; }
+.ferr-body { display: flex; flex-direction: column; gap: 24px; padding-top: 28px; }
 
 /* cabeçalho de seção */
-.ferr-section { animation: fadeIn 0.3s ease; }
+.ferr-section { animation: fadeIn 0.3s ease; border: 1px solid rgba(255,255,255,0.09); border-radius: 16px; padding: 22px; background: rgba(255,255,255,0.025); }
 .ferr-section--pro {
   position: relative;
   background: linear-gradient(145deg, rgba(184,134,47,0.07) 0%, rgba(184,134,47,0.03) 60%, transparent 100%);
@@ -3897,7 +3897,7 @@ html[data-theme="dark"] .corrbn-nota { color: #6a7485; }
 @media (max-width: 640px) {
   .ferr-hero { padding: 40px 0 0; }
   .ferr-hero .container { gap: 18px; }
-  .ferr-body { gap: 48px; padding-top: 40px; }
+  .ferr-body { gap: 16px; padding-top: 20px; }
   .ferr-grid-3 { grid-template-columns: 1fr 1fr; }
   .ferr-painel-ativo { padding: 20px 16px; }
   .ferr-pro-banner { padding: 18px; }
