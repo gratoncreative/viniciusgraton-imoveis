@@ -1,65 +1,102 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { aplicarTema, getTema } from '../tema'
-import Reveal from '../components/Reveal'
 import CampoMoeda from '../components/CampoMoeda'
-import { estaLogado } from '../conta'
-import { IMOVEIS, BAIRROS_IMOVEL, linkWhatsApp } from '../data'
+import { BAIRROS_IMOVEL, linkWhatsApp } from '../data'
 import BAIRROS_M2 from '../bairros-m2.json'
 import { formatBRL } from '../extenso'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow } from '../components/icons'
 
-const brl = (n) => (isFinite(n) ? n : 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })
+// ─── helpers numéricos ──────────────────────────────────────────────────────
+const brl  = (n) => (isFinite(n) ? n : 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })
 const brl2 = (n) => (isFinite(n) ? n : 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 })
-const pct = (n) => `${(isFinite(n) ? n : 0).toFixed(2).replace('.', ',')}%`
-
-// ícones de linha monocromáticos (sóbrios, institucionais) — sem emojis
-const ICN = {
-  bank: 'M3 21h18M4 21V10l8-5 8 5v11M9 21v-6h6v6M7 10h.01M17 10h.01',
-  chart: 'M4 20V4M4 20h16M8 20v-7M13 20V9M18 20v-4',
-  wallet: 'M3 7a2 2 0 0 1 2-2h12v3M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-3M3 7h17a1 1 0 0 1 1 1v3m0 0h-4a2 2 0 0 0 0 4h4',
-  calc: 'M6 3h12a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01',
-  receipt: 'M6 2v20l2-1.5L10 22l2-1.5L14 22l2-1.5L18 22V2l-2 1.5L14 2l-2 1.5L10 2 8 3.5 6 2zM9 7h6M9 11h6M9 15h4',
-  scale: 'M12 3v18M7 21h10M5 7h14l-3 7H8L5 7zM12 7l-7 0m7 0 7 0M5 7l-2 5h4l-2-5zm14 0-2 5h4l-2-5z',
-  trend: 'M3 17l6-6 4 4 8-8M15 7h6v6',
-  coins: 'M8 8m-5 0a5 3 0 1 0 10 0a5 3 0 1 0-10 0M3 8v5c0 1.66 2.24 3 5 3M13 12.5c0 1.66 2.24 3 5 3s5-1.34 5-3M16 13.5m-5 0a5 3 0 1 0 10 0a5 3 0 1 0-10 0M11 13.5v5c0 1.66 2.24 3 5 3s5-1.34 5-3v-5',
-  home: 'M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10',
-  gauge: 'M12 14l4-4M4 20a8 8 0 1 1 16 0M7.5 13.5h.01M16.5 13.5h.01M9 9.5h.01',
-  doc: 'M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM14 3v5h5M9 13l2 2 4-4',
-  compare: 'M5 4h5v16H5zM14 4h5v16h-5zM12 2v20',
-  map: 'M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14',
-  percent: 'M19 5 5 19M7.5 7.5h.01M16.5 16.5h.01M6 7.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0M15 16.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0',
-  edit: 'M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z',
-  bell: 'M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0',
-  chat: 'M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2zM8 9h8M8 13h5',
+const pct  = (n) => `${(isFinite(n) ? n : 0).toFixed(2).replace('.', ',')}%`
+const mesesRestantes = (saldo, parcela, jurosAa) => {
+  const i = jurosAa / 100 / 12
+  if (parcela <= saldo * i) return Infinity
+  return Math.ceil(-Math.log(1 - (i * saldo) / parcela) / Math.log(1 + i))
 }
-const FerrIcon = ({ name, size = 22 }) => (
-  <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={ICN[name] || ICN.calc} /></svg>
+
+// ─── ícones SVG de linha ────────────────────────────────────────────────────
+const ICN = {
+  bank:    'M3 21h18M4 21V10l8-5 8 5v11M9 21v-6h6v6M7 10h.01M17 10h.01',
+  chart:   'M4 20V4M4 20h16M8 20v-7M13 20V9M18 20v-4',
+  wallet:  'M3 7a2 2 0 0 1 2-2h12v3M3 7v10a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-3M3 7h17a1 1 0 0 1 1 1v3m0 0h-4a2 2 0 0 0 0 4h4',
+  calc:    'M6 3h12a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01',
+  receipt: 'M6 2v20l2-1.5L10 22l2-1.5L14 22l2-1.5L18 22V2l-2 1.5L14 2l-2 1.5L10 2 8 3.5 6 2zM9 7h6M9 11h6M9 15h4',
+  scale:   'M12 3v18M7 21h10M5 7h14l-3 7H8L5 7zM12 7l-7 0m7 0 7 0M5 7l-2 5h4l-2-5zm14 0-2 5h4l-2-5z',
+  trend:   'M3 17l6-6 4 4 8-8M15 7h6v6',
+  coins:   'M8 8m-5 0a5 3 0 1 0 10 0a5 3 0 1 0-10 0M3 8v5c0 1.66 2.24 3 5 3M13 12.5c0 1.66 2.24 3 5 3s5-1.34 5-3M16 13.5m-5 0a5 3 0 1 0 10 0a5 3 0 1 0-10 0M11 13.5v5c0 1.66 2.24 3 5 3s5-1.34 5-3v-5',
+  home:    'M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10',
+  gauge:   'M12 14l4-4M4 20a8 8 0 1 1 16 0M7.5 13.5h.01M16.5 13.5h.01M9 9.5h.01',
+  doc:     'M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM14 3v5h5M9 13l2 2 4-4',
+  compare: 'M5 4h5v16H5zM14 4h5v16h-5zM12 2v20',
+  map:     'M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14',
+  percent: 'M19 5 5 19M7.5 7.5h.01M16.5 16.5h.01M6 7.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0M15 16.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0',
+  edit:    'M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z',
+  bell:    'M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0',
+  star:    'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
+  lock:    'M18 11H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2zM12 17v-2M8 11V7a4 4 0 0 1 8 0v4',
+  camera:  'M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',
+  rocket:  'M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09zm3.95.95-1.41-1.41 4.82-4.82A6 6 0 0 0 13 7a6 6 0 0 1 4 4 6 6 0 0 0-4.55 1.86zM14 11.5l-3 3',
+}
+const FI = ({ name, size = 22 }) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d={ICN[name] || ICN.calc} />
+  </svg>
 )
 
-const TOOLS = [
-  // ordem: das MAIS usadas para as menos usadas (padrão; o cliente logado pode reordenar arrastando)
-  { id: 'financiamento', nome: 'Simulador de financiamento', desc: 'Parcela e total a pagar (SAC e Price).', icon: 'bank', cat: 'voce' },
-  { id: 'capacidade', nome: 'Quanto consigo financiar?', desc: 'O valor do imóvel que cabe na sua renda.', icon: 'chart', cat: 'voce' },
-  { id: 'valorm2', nome: 'Quanto vale o m² do bairro', desc: 'Preço médio por m² por bairro de Uberlândia.', icon: 'home', cat: 'voce' },
-  { id: 'custos', nome: 'Custos de compra (ITBI + cartório)', desc: 'Quanto reservar além do preço, em Uberlândia.', icon: 'receipt', cat: 'voce' },
-  { id: 'renda', nome: 'Renda necessária pra financiar', desc: 'Qual renda o banco exige pro imóvel que você quer.', icon: 'wallet', cat: 'voce' },
-  { id: 'fgts', nome: 'Simulador de FGTS', desc: 'Quanto o seu saldo abate na entrada e na parcela.', icon: 'wallet', cat: 'voce' },
-  { id: 'score', nome: 'Chance de aprovação', desc: 'Estimativa da sua chance no banco.', icon: 'gauge', cat: 'voce' },
-  { id: 'entrada', nome: 'Quanto juntar pra entrada', desc: 'Quanto guardar por mês pra dar a entrada.', icon: 'coins', cat: 'voce' },
-  { id: 'amortizacao', nome: 'Amortização com FGTS', desc: 'Quanto o FGTS encurta o seu financiamento.', icon: 'calc', cat: 'voce' },
-  { id: 'aluguel', nome: 'Alugar ou financiar?', desc: 'Compare o aluguel com a parcela.', icon: 'scale', cat: 'voce' },
-  { id: 'rentabilidade', nome: 'Rentabilidade do aluguel', desc: 'Quanto um imóvel rende de aluguel por ano.', icon: 'trend', cat: 'voce' },
-  { id: 'ganho', nome: 'IR na venda do imóvel', desc: 'Imposto sobre o lucro (ganho de capital) e isenções.', icon: 'receipt', cat: 'voce' },
-  { id: 'investir', nome: 'Imóvel x CDI/poupança', desc: 'Vale mais comprar pra alugar ou aplicar?', icon: 'coins', cat: 'voce' },
-  { id: 'checklist', nome: 'Checklist de documentos', desc: 'Tudo que você precisa, por etapa.', icon: 'doc', cat: 'voce' },
-  { id: 'comparar', nome: 'Comparar imóveis', desc: 'Veja imóveis lado a lado.', icon: 'compare', cat: 'voce', to: '/comparar' },
-  { id: 'mapa', nome: 'Buscar no mapa', desc: 'Explore os imóveis por região.', icon: 'map', cat: 'voce', to: '/mapa' },
-  { id: 'corretor', nome: 'Área do corretor — Rotina', desc: 'Abordagem por código, estúdios de foto e publicidade com IA, comissão, ACM e ficha. Entre com o código da Rotina.', icon: 'chat', cat: 'corretor', to: '/corretor', destaque: true, logoSrc: '/rotina-logo.png' },
-  { id: 'converter', nome: 'Conversor de fotos', desc: 'Converte fotos entre JPG, PNG, WebP e AVIF em lote — suba quantas quiser e baixe tudo de uma vez.', icon: 'edit', cat: 'corretor', to: '/ferramentas/converter' },
+// ─── seções e ferramentas ────────────────────────────────────────────────────
+const SECOES = [
+  { id: 'comprador',     titulo: 'Para compradores',       sub: 'Simule, planeje e calcule antes de fechar',         icon: 'home'  },
+  { id: 'investidor',    titulo: 'Para investidores',       sub: 'Analise rentabilidade, retorno e ganho de capital', icon: 'trend' },
+  { id: 'financiamento', titulo: 'Financiamento e FGTS',    sub: 'Simule o uso do fundo e amortize com precisão',     icon: 'bank'  },
+  { id: 'explorar',      titulo: 'Explorar o mercado',      sub: 'Compare imóveis e explore o mercado visual',       icon: 'map'   },
+  { id: 'pro',           titulo: 'Área do Corretor',        sub: 'Ferramentas exclusivas para profissionais',         icon: 'star', pro: true },
 ]
 
+const TOOLS = [
+  // comprador
+  { id: 'financiamento', nome: 'Simulador de financiamento', desc: 'Parcela e custo total — SAC e Price.',        icon: 'bank',    sec: 'comprador',     popular: true },
+  { id: 'capacidade',    nome: 'Quanto consigo financiar?',  desc: 'O imóvel que cabe na sua renda.',             icon: 'chart',   sec: 'comprador',     popular: true },
+  { id: 'renda',         nome: 'Renda necessária',           desc: 'Qual renda o banco exige para esse imóvel.',  icon: 'wallet',  sec: 'comprador'  },
+  { id: 'custos',        nome: 'ITBI e cartório',            desc: 'Quanto reservar além do preço em Uberlândia.', icon: 'receipt', sec: 'comprador'  },
+  { id: 'entrada',       nome: 'Plano para a entrada',       desc: 'Quanto guardar por mês para dar a entrada.',  icon: 'coins',   sec: 'comprador'  },
+  { id: 'score',         nome: 'Chance de aprovação',        desc: 'Estimativa do seu perfil de crédito.',        icon: 'gauge',   sec: 'comprador'  },
+  { id: 'checklist',     nome: 'Checklist de documentos',    desc: 'Tudo que você precisa reunir, por etapa.',    icon: 'doc',     sec: 'comprador'  },
+  // investidor
+  { id: 'valorm2',       nome: 'Valor do m² por bairro',    desc: 'Preço médio de venda por bairro de Uberlândia.', icon: 'home',  sec: 'investidor' },
+  { id: 'rentabilidade', nome: 'Rentabilidade do aluguel',  desc: 'Quanto um imóvel rende ao ano.',              icon: 'trend',   sec: 'investidor', popular: true },
+  { id: 'investir',      nome: 'Imóvel × CDI / Poupança',  desc: 'Vale comprar para alugar ou aplicar?',         icon: 'coins',   sec: 'investidor' },
+  { id: 'aluguel',       nome: 'Alugar ou financiar?',      desc: 'Compare a parcela com o aluguel atual.',       icon: 'scale',   sec: 'investidor' },
+  { id: 'ganho',         nome: 'IR na venda do imóvel',     desc: 'Ganho de capital e isenções em lei.',          icon: 'percent', sec: 'investidor' },
+  // financiamento
+  { id: 'fgts',          nome: 'Simulador de FGTS',         desc: 'Como o FGTS reduz a entrada e a parcela.',    icon: 'wallet',  sec: 'financiamento' },
+  { id: 'amortizacao',   nome: 'Amortização com FGTS',      desc: 'Quanto o FGTS encurta o financiamento.',      icon: 'calc',    sec: 'financiamento' },
+  // explorar
+  { id: 'comparar',      nome: 'Comparar imóveis',          desc: 'Compare até 3 imóveis lado a lado.',          icon: 'compare', sec: 'explorar', to: '/comparar' },
+  { id: 'mapa',          nome: 'Mapa de imóveis',           desc: 'Explore imóveis por região de Uberlândia.',   icon: 'map',     sec: 'explorar', to: '/mapa'     },
+  { id: 'converter',     nome: 'Conversor de fotos',        desc: 'JPG · PNG · WebP · AVIF em lote.',            icon: 'edit',    sec: 'explorar', to: '/ferramentas/converter' },
+  // pro
+  { id: 'acm',           nome: 'ACM — Avaliação de imóvel', desc: 'Faixa de preço pelo m² do bairro.',           icon: 'home',    sec: 'pro', pro: true },
+  { id: 'comissao',      nome: 'Calculadora de comissão',   desc: 'Comissão e divisão corretor / imobiliária.',  icon: 'coins',   sec: 'pro', pro: true },
+  { id: 'ficha',         nome: 'Ficha de avaliação',        desc: 'Resumo do imóvel pronto para compartilhar.',  icon: 'doc',     sec: 'pro', pro: true },
+  { id: 'melhorar',      nome: 'Melhorar fotos com IA',     desc: 'HDR, contraste e nitidez automáticos.',       icon: 'camera',  sec: 'pro', pro: true, toPro: true },
+  { id: 'remover',       nome: 'Remover marca d\'água',     desc: 'Remove logos e marcas de fotos em lote.',     icon: 'edit',    sec: 'pro', pro: true, toPro: true },
+  { id: 'impulsionar',   nome: 'Impulsionar anúncio',       desc: 'Destaque seu imóvel por 7, 15 ou 30 dias.',   icon: 'rocket',  sec: 'pro', pro: true, to: '/impulsionar' },
+]
+
+const PILLS = [
+  { id: 'todos',         label: 'Todas'           },
+  { id: 'comprador',     label: 'Comprador'        },
+  { id: 'investidor',    label: 'Investidor'       },
+  { id: 'financiamento', label: 'Financiamento'    },
+  { id: 'explorar',      label: 'Explorar'         },
+  { id: 'pro',           label: '✦ Corretor PRO'  },
+]
+
+// ─── componentes de campo ────────────────────────────────────────────────────
 function Campo({ label, valor, onChange, sufixo, step = '1', min = '0' }) {
   return (
     <label className="calc-campo">
@@ -75,7 +112,11 @@ function Select({ label, valor, onChange, opcoes }) {
   return (
     <label className="calc-campo">
       <span>{label}</span>
-      <div className="calc-input"><select value={valor} onChange={(e) => onChange(e.target.value)} style={{ border: 'none', background: 'transparent', width: '100%', font: 'inherit', color: 'inherit', padding: '14px 0' }}>{opcoes.map((o) => <option key={o.v ?? o} value={o.v ?? o}>{o.t ?? o}</option>)}</select></div>
+      <div className="calc-input">
+        <select value={valor} onChange={(e) => onChange(e.target.value)} style={{ border: 'none', background: 'transparent', width: '100%', font: 'inherit', color: 'inherit', padding: '14px 0' }}>
+          {opcoes.map((o) => <option key={o.v ?? o} value={o.v ?? o}>{o.t ?? o}</option>)}
+        </select>
+      </div>
     </label>
   )
 }
@@ -89,13 +130,7 @@ function Resultado({ itens, destaque }) {
 }
 const nota = (t) => <p className="calc-nota">{t}</p>
 
-// nº de meses restantes de um financiamento (Price) dado saldo, parcela e juros a.a.
-const mesesRestantes = (saldo, parcela, jurosAa) => {
-  const i = jurosAa / 100 / 12
-  if (parcela <= saldo * i) return Infinity
-  return Math.ceil(-Math.log(1 - (i * saldo) / parcela) / Math.log(1 + i))
-}
-
+// ─── calculadoras ────────────────────────────────────────────────────────────
 function CalcFinanciamento() {
   const [valor, setValor] = useState(500000); const [entrada, setEntrada] = useState(100000); const [anos, setAnos] = useState('30'); const [juros, setJuros] = useState('11.5')
   const r = useMemo(() => { const P = Math.max(0, valor - entrada); const n = Math.max(1, Math.round((+anos || 0) * 12)); const i = (+juros || 0) / 100 / 12; const price = i > 0 ? (P * i) / (1 - Math.pow(1 + i, -n)) : P / n; const amort = P / n; return { P, price, totalPrice: price * n, sacPrimeira: amort + P * i, sacUltima: amort + amort * i, totalSac: P + i * P * (n + 1) / 2 } }, [valor, entrada, anos, juros])
@@ -109,13 +144,13 @@ function CalcCapacidade() {
 function CalcFGTS() {
   const [valor, setValor] = useState(400000); const [entrada, setEntrada] = useState(40000); const [fgts, setFgts] = useState(60000); const [anos, setAnos] = useState('30'); const [juros, setJuros] = useState('11.5')
   const r = useMemo(() => { const entradaTotal = entrada + fgts; const fin = Math.max(0, valor - entradaTotal); const n = Math.max(1, Math.round((+anos || 0) * 12)); const i = (+juros || 0) / 100 / 12; const parcela = i > 0 ? (fin * i) / (1 - Math.pow(1 + i, -n)) : fin / n; const finSemFgts = Math.max(0, valor - entrada); const parcelaSem = i > 0 ? (finSemFgts * i) / (1 - Math.pow(1 + i, -n)) : finSemFgts / n; return { entradaTotal, fin, parcela, parcelaSem, pctEntrada: valor > 0 ? (entradaTotal / valor) * 100 : 0, economiaParcela: parcelaSem - parcela } }, [valor, entrada, fgts, anos, juros])
-  return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor do imóvel" valor={valor} onChange={setValor} /><CampoMoeda label="Entrada própria (sem FGTS)" valor={entrada} onChange={setEntrada} /><CampoMoeda label="Saldo do seu FGTS" valor={fgts} onChange={setFgts} /><Campo label="Prazo" sufixo="anos" valor={anos} onChange={setAnos} min="1" /><Campo label="Juros (ao ano)" sufixo="% a.a." valor={juros} onChange={setJuros} step="0.1" /></div><div><Resultado destaque={{ rotulo: 'Entrada total com o FGTS', valor: brl(r.entradaTotal) }} itens={[{ rotulo: 'Equivale a', valor: `${pct(r.pctEntrada)} do imóvel` }, { rotulo: 'Valor financiado', valor: brl(r.fin) }, { rotulo: 'Parcela (Price)', valor: brl2(r.parcela) }, { rotulo: 'Sua parcela diminui em', valor: brl2(Math.max(0, r.economiaParcela)) }]} />{nota('O FGTS pode entrar na entrada (reduzindo o financiamento e a parcela) se você atender às regras: 3+ anos de FGTS, imóvel residencial urbano e sem outro imóvel/financiamento SFH na região. Eu confirmo se você se enquadra.')}</div></div>)
+  return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor do imóvel" valor={valor} onChange={setValor} /><CampoMoeda label="Entrada própria (sem FGTS)" valor={entrada} onChange={setEntrada} /><CampoMoeda label="Saldo do seu FGTS" valor={fgts} onChange={setFgts} /><Campo label="Prazo" sufixo="anos" valor={anos} onChange={setAnos} min="1" /><Campo label="Juros (ao ano)" sufixo="% a.a." valor={juros} onChange={setJuros} step="0.1" /></div><div><Resultado destaque={{ rotulo: 'Entrada total com o FGTS', valor: brl(r.entradaTotal) }} itens={[{ rotulo: 'Equivale a', valor: `${pct(r.pctEntrada)} do imóvel` }, { rotulo: 'Valor financiado', valor: brl(r.fin) }, { rotulo: 'Parcela (Price)', valor: brl2(r.parcela) }, { rotulo: 'Sua parcela diminui em', valor: brl2(Math.max(0, r.economiaParcela)) }]} />{nota('O FGTS pode entrar na entrada se você atender às regras: 3+ anos de FGTS, imóvel residencial urbano e sem outro imóvel/financiamento SFH na região. Eu confirmo se você se enquadra.')}</div></div>)
 }
 function CalcAmortizacao() {
   const [saldo, setSaldo] = useState(300000); const [parcela, setParcela] = useState(3200); const [juros, setJuros] = useState('11.5'); const [fgts, setFgts] = useState(50000)
   const r = useMemo(() => { const j = +juros || 0; const n0 = mesesRestantes(saldo, parcela, j); const n1 = mesesRestantes(Math.max(0, saldo - fgts), parcela, j); const econ = (isFinite(n0) && isFinite(n1)) ? n0 - n1 : 0; return { n0, n1, econ } }, [saldo, parcela, juros, fgts])
   const meses = (m) => isFinite(m) ? `${m} meses (~${(m / 12).toFixed(1).replace('.', ',')} anos)` : 'parcela não cobre os juros'
-  return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Saldo devedor atual" valor={saldo} onChange={setSaldo} /><CampoMoeda label="Parcela atual" valor={parcela} onChange={setParcela} /><Campo label="Juros (ao ano)" sufixo="% a.a." valor={juros} onChange={setJuros} step="0.1" /><CampoMoeda label="FGTS para amortizar" valor={fgts} onChange={setFgts} /></div><div><Resultado destaque={{ rotulo: r.econ > 0 ? 'Você encurta o financiamento em' : 'Simule os valores' , valor: r.econ > 0 ? `${r.econ} meses (~${(r.econ / 12).toFixed(1).replace('.', ',')} anos)` : '—' }} itens={[{ rotulo: 'Faltam hoje', valor: meses(r.n0) }, { rotulo: 'Após amortizar com o FGTS', valor: meses(r.n1) }, { rotulo: 'Novo saldo devedor', valor: brl(Math.max(0, saldo - fgts)) }]} />{nota('Amortizar reduzindo o PRAZO (mantendo a parcela) é o que mais economiza juros. O FGTS pode ser usado p/ amortizar em geral a cada 2 anos. Estimativa — confirme as regras com o banco.')}</div></div>)
+  return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Saldo devedor atual" valor={saldo} onChange={setSaldo} /><CampoMoeda label="Parcela atual" valor={parcela} onChange={setParcela} /><Campo label="Juros (ao ano)" sufixo="% a.a." valor={juros} onChange={setJuros} step="0.1" /><CampoMoeda label="FGTS para amortizar" valor={fgts} onChange={setFgts} /></div><div><Resultado destaque={{ rotulo: r.econ > 0 ? 'Você encurta o financiamento em' : 'Simule os valores', valor: r.econ > 0 ? `${r.econ} meses (~${(r.econ / 12).toFixed(1).replace('.', ',')} anos)` : '—' }} itens={[{ rotulo: 'Faltam hoje', valor: meses(r.n0) }, { rotulo: 'Após amortizar com o FGTS', valor: meses(r.n1) }, { rotulo: 'Novo saldo devedor', valor: brl(Math.max(0, saldo - fgts)) }]} />{nota('Amortizar reduzindo o PRAZO é o que mais economiza juros. O FGTS pode ser usado para amortizar em geral a cada 2 anos. Confirme as regras com o banco.')}</div></div>)
 }
 function CalcCustos() {
   const [valor, setValor] = useState(500000)
@@ -135,14 +170,14 @@ function CalcRentabilidade() {
 function CalcInvestir() {
   const [valor, setValor] = useState(500000); const [aluguel, setAluguel] = useState(2500); const [taxa, setTaxa] = useState('10.5')
   const r = useMemo(() => { const yAl = valor > 0 ? (aluguel * 12 / valor) * 100 : 0; const aplic = valor * ((+taxa || 0) / 100); const aluguelAno = aluguel * 12; return { yAl, aplic, aluguelAno, dif: aluguelAno - aplic } }, [valor, aluguel, taxa])
-  return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor do imóvel" valor={valor} onChange={setValor} /><CampoMoeda label="Aluguel mensal que renderia" valor={aluguel} onChange={setAluguel} /><Campo label="Rendimento da aplicação (a.a.)" sufixo="% a.a." valor={taxa} onChange={setTaxa} step="0.1" /></div><div><Resultado destaque={{ rotulo: r.dif >= 0 ? 'O aluguel rende mais por ano' : 'A aplicação rende mais por ano', valor: brl(Math.abs(r.dif)) }} itens={[{ rotulo: 'Aluguel em 12 meses', valor: brl(r.aluguelAno) }, { rotulo: `Aplicando ${formatBRL(valor)} a ${pct(+taxa || 0)} a.a.`, valor: brl(r.aplic) }, { rotulo: 'Rentabilidade do aluguel', valor: `${pct(r.yAl)} a.a.` }]} />{nota('Comparação simplificada (bruta). O imóvel ainda costuma VALORIZAR ao longo do tempo, o que não entra na conta da aplicação. CDI ~10–11% a.a.; poupança ~6–7% a.a. — confirme as taxas atuais.')}</div></div>)
+  return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor do imóvel" valor={valor} onChange={setValor} /><CampoMoeda label="Aluguel mensal que renderia" valor={aluguel} onChange={setAluguel} /><Campo label="Rendimento da aplicação (a.a.)" sufixo="% a.a." valor={taxa} onChange={setTaxa} step="0.1" /></div><div><Resultado destaque={{ rotulo: r.dif >= 0 ? 'O aluguel rende mais por ano' : 'A aplicação rende mais por ano', valor: brl(Math.abs(r.dif)) }} itens={[{ rotulo: 'Aluguel em 12 meses', valor: brl(r.aluguelAno) }, { rotulo: `Aplicando ${formatBRL(valor)} a ${pct(+taxa || 0)} a.a.`, valor: brl(r.aplic) }, { rotulo: 'Rentabilidade do aluguel', valor: `${pct(r.yAl)} a.a.` }]} />{nota('Comparação simplificada (bruta). O imóvel costuma VALORIZAR ao longo do tempo, o que não entra na conta da aplicação. CDI ~10–11% a.a. — confirme as taxas atuais.')}</div></div>)
 }
 const M2_ORDENADO = [...BAIRROS_M2].sort((a, b) => a.bairro.localeCompare(b.bairro, 'pt-BR'))
 function CalcValorM2() {
   const [bairro, setBairro] = useState(M2_ORDENADO[0]?.bairro || ''); const [area, setArea] = useState('100')
   const d = M2_ORDENADO.find((x) => x.bairro === bairro)
   const est = (d?.m2 || 0) * (+area || 0)
-  return (<div className="calc-grid"><div className="calc-form"><Select label="Bairro" valor={bairro} onChange={setBairro} opcoes={M2_ORDENADO.map((x) => x.bairro)} /><Campo label="Área (m²)" sufixo="m²" valor={area} onChange={setArea} /></div><div>{d && d.m2 ? <Resultado destaque={{ rotulo: `Estimativa para ${area} m² no ${bairro}`, valor: brl(est) }} itens={[{ rotulo: 'Preço médio do m² no bairro', valor: brl(d.m2) }, { rotulo: 'Fonte', valor: `${d.fonte} · ${d.ref}` }]} /> : <p className="section-sub">Ainda não tenho um valor de referência <b>oficial confirmado</b> para <b>{bairro}</b>. Me chama que eu faço a <b>avaliação real</b> desse bairro pra você — sem custo.</p>}{nota('Valor médio de REFERÊNCIA por bairro (venda), de fontes públicas (Proprietário Direto/IPD e ZAP). O preço real varia com padrão, estado, andar e localização exata. Para um número preciso do SEU imóvel, eu faço a avaliação — é grátis.')}</div></div>)
+  return (<div className="calc-grid"><div className="calc-form"><Select label="Bairro" valor={bairro} onChange={setBairro} opcoes={M2_ORDENADO.map((x) => x.bairro)} /><Campo label="Área (m²)" sufixo="m²" valor={area} onChange={setArea} /></div><div>{d && d.m2 ? <Resultado destaque={{ rotulo: `Estimativa para ${area} m² no ${bairro}`, valor: brl(est) }} itens={[{ rotulo: 'Preço médio do m² no bairro', valor: brl(d.m2) }, { rotulo: 'Fonte', valor: `${d.fonte} · ${d.ref}` }]} /> : <p className="section-sub">Ainda não tenho um valor de referência <b>oficial confirmado</b> para <b>{bairro}</b>. Me chama que eu faço a <b>avaliação real</b> desse bairro para você — sem custo.</p>}{nota('Valor médio de REFERÊNCIA por bairro (venda), de fontes públicas (Proprietário Direto/IPD e ZAP). O preço real varia com padrão, estado, andar e localização exata.')}</div></div>)
 }
 function CalcScore() {
   const [renda, setRenda] = useState(8000); const [parcela, setParcela] = useState(2400); const [score, setScore] = useState('bom'); const [nome, setNome] = useState('limpo'); const [tipo, setTipo] = useState('clt')
@@ -161,6 +196,8 @@ function Checklist() {
   const feitos = Object.values(marcados).filter(Boolean).length
   return (<div><div className="check-progress"><div className="check-bar"><span style={{ width: `${(feitos / total) * 100}%` }} /></div><b>{feitos}/{total}</b></div><div className="check-cols">{CHECKLIST.map(([grupo, itens]) => (<div className="check-grupo" key={grupo}><h4>{grupo}</h4>{itens.map((it) => { const k = grupo + '|' + it; return (<label className={`check-item ${marcados[k] ? 'on' : ''}`} key={k}><input type="checkbox" checked={!!marcados[k]} onChange={() => toggle(k)} /><span>{it}</span></label>) })}</div>))}</div>{nota('Marque conforme for reunindo — fica salvo no seu navegador. Lista geral; no seu caso eu envio a relação exata que o banco/cartório vai pedir.')}</div>)
 }
+
+// ─── ferramentas PRO ─────────────────────────────────────────────────────────
 export function CalcComissao() {
   const [valor, setValor] = useState(500000); const [com, setCom] = useState('6'); const [corretor, setCorretor] = useState('50')
   const r = useMemo(() => { const total = valor * ((+com || 0) / 100); const parteCorretor = total * ((+corretor || 0) / 100); return { total, parteCorretor, parteImob: total - parteCorretor } }, [valor, com, corretor])
@@ -171,7 +208,17 @@ export function FichaAvaliacao() {
   const set = (k) => (e) => setF((s) => ({ ...s, [k]: e.target.value }))
   const texto = `${f.tipo}${f.bairro ? ` no ${f.bairro}` : ''} — Uberlândia\n${[f.area && `${f.area} m²`, f.quartos && `${f.quartos} quartos`, f.suites && `${f.suites} suíte(s)`, f.vagas && `${f.vagas} vagas`].filter(Boolean).join(' · ')}\nEstado: ${f.estado}${f.preco ? `\nValor: ${formatBRL(f.preco)}` : ''}${f.dif ? `\nDiferenciais: ${f.dif}` : ''}\n\nFale com Vinícius Graton — Consultor de Imóveis em Uberlândia.`
   const copiar = () => { try { navigator.clipboard.writeText(texto) } catch {} }
-  return (<div className="calc-grid"><div className="calc-form"><Select label="Tipo" valor={f.tipo} onChange={set('tipo')} opcoes={['Casa', 'Apartamento', 'Casa em condomínio', 'Terreno', 'Comercial']} /><label className="calc-campo"><span>Bairro</span><div className="calc-input"><input value={f.bairro} onChange={set('bairro')} list="bf" /><datalist id="bf">{BAIRROS_IMOVEL.map((b) => <option key={b} value={b} />)}</datalist></div></label><div className="calc-form" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}><Campo label="Área (m²)" valor={f.area} onChange={set('area')} /><Campo label="Quartos" valor={f.quartos} onChange={set('quartos')} /><Campo label="Suítes" valor={f.suites} onChange={set('suites')} /><Campo label="Vagas" valor={f.vagas} onChange={set('vagas')} /></div><CampoMoeda label="Preço pretendido" valor={f.preco} onChange={(v) => setF((s) => ({ ...s, preco: v }))} /><label className="calc-campo"><span>Diferenciais</span><div className="calc-input"><input value={f.dif} onChange={set('dif')} placeholder="Reforma, sol da manhã, andar alto..." /></div></label></div><div><div className="ficha-preview">{texto}</div><div style={{ display: 'flex', gap: 10, marginTop: 12, flexWrap: 'wrap' }}><button className="btn btn-gold" type="button" onClick={copiar}>Copiar resumo</button><a className="btn btn-ghost" href={`https://wa.me/?text=${encodeURIComponent(texto)}`} target="_blank" rel="noopener">Enviar no WhatsApp</a></div>{nota('Gera um resumo pronto pra divulgar o imóvel. Ferramenta de apoio ao corretor.')}</div></div>)
+  return (<div className="calc-grid"><div className="calc-form"><Select label="Tipo" valor={f.tipo} onChange={set('tipo')} opcoes={['Casa', 'Apartamento', 'Casa em condomínio', 'Terreno', 'Comercial']} /><label className="calc-campo"><span>Bairro</span><div className="calc-input"><input value={f.bairro} onChange={set('bairro')} list="bf" /><datalist id="bf">{BAIRROS_IMOVEL.map((b) => <option key={b} value={b} />)}</datalist></div></label><div className="calc-form" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}><Campo label="Área (m²)" valor={f.area} onChange={set('area')} /><Campo label="Quartos" valor={f.quartos} onChange={set('quartos')} /><Campo label="Suítes" valor={f.suites} onChange={set('suites')} /><Campo label="Vagas" valor={f.vagas} onChange={set('vagas')} /></div><CampoMoeda label="Preço pretendido" valor={f.preco} onChange={(v) => setF((s) => ({ ...s, preco: v }))} /><label className="calc-campo"><span>Diferenciais</span><div className="calc-input"><input value={f.dif} onChange={set('dif')} placeholder="Reforma, sol da manhã, andar alto..." /></div></label></div><div><div className="ficha-preview">{texto}</div><div style={{ display: 'flex', gap: 10, marginTop: 12, flexWrap: 'wrap' }}><button className="btn btn-gold" type="button" onClick={copiar}>Copiar resumo</button><a className="btn btn-ghost" href={`https://wa.me/?text=${encodeURIComponent(texto)}`} target="_blank" rel="noopener">Enviar no WhatsApp</a></div>{nota('Gera um resumo pronto para divulgar o imóvel. Ferramenta de apoio ao corretor.')}</div></div>)
+}
+export function CalcACM() {
+  const ord = useMemo(() => [...BAIRROS_M2].sort((a, b) => a.bairro.localeCompare(b.bairro, 'pt-BR')), [])
+  const [bairro, setBairro] = useState(ord[0]?.bairro || ''); const [area, setArea] = useState('120'); const [estado, setEstado] = useState('0')
+  const r = useMemo(() => {
+    const reg = BAIRROS_M2.find((x) => x.bairro === bairro); const m2 = reg?.m2 || 0
+    const central = m2 * (+area || 0) * (1 + (+estado / 100))
+    return { m2, central, min: central * 0.93, max: central * 1.07, fonte: reg?.fonte, ref: reg?.ref }
+  }, [bairro, area, estado])
+  return (<div className="calc-grid"><div className="calc-form"><Select label="Bairro" valor={bairro} onChange={setBairro} opcoes={ord.map((x) => x.bairro)} /><Campo label="Área privativa" sufixo="m²" valor={area} onChange={setArea} /><Select label="Estado do imóvel" valor={estado} onChange={setEstado} opcoes={[{ v: '8', t: 'Novo / lançamento' }, { v: '4', t: 'Reformado' }, { v: '0', t: 'Bem conservado' }, { v: '-10', t: 'Precisa de reforma' }]} /></div><div>{r.m2 ? <Resultado destaque={{ rotulo: 'Preço sugerido', valor: brl(r.central) }} itens={[{ rotulo: 'Faixa de mercado', valor: `${brl(r.min)} a ${brl(r.max)}` }, { rotulo: `m² médio em ${bairro}`, valor: brl(r.m2) }, { rotulo: 'Fonte do m²', valor: `${r.fonte || '—'}${r.ref ? ` (${r.ref})` : ''}` }]} /> : <p className="section-sub">Ainda não há um valor de referência <b>oficial confirmado</b> para <b>{bairro}</b>. Para esse bairro, faça uma <b>avaliação presencial</b>.</p>}{nota('Estimativa pela mediana do bairro × área, ajustada pelo estado, de fontes públicas (IPD e ZAP). É um ponto de partida — a avaliação presencial fecha o preço.')}</div></div>)
 }
 
 function CalcRenda() {
@@ -182,7 +229,7 @@ function CalcRenda() {
     const renda = (+comp > 0) ? parcela / (+comp / 100) : 0
     return { fin, parcela, renda }
   }, [valor, entrada, prazo, juros, comp])
-  return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor do imóvel" valor={valor} onChange={setValor} /><CampoMoeda label="Entrada" valor={entrada} onChange={setEntrada} /><Campo label="Prazo" sufixo="anos" valor={prazo} onChange={setPrazo} /><Campo label="Juros (a.a.)" sufixo="%" valor={juros} onChange={setJuros} step="0.1" /><Campo label="Comprometimento de renda" sufixo="%" valor={comp} onChange={setComp} step="5" /></div><div><Resultado destaque={{ rotulo: 'Renda necessária', valor: brl(r.renda) }} itens={[{ rotulo: 'Valor financiado', valor: brl(r.fin) }, { rotulo: '1ª parcela (Price)', valor: brl2(r.parcela) }]} />{nota('Os bancos costumam limitar a parcela a ~30% da renda familiar bruta. A taxa e o limite variam por banco e perfil — vale simular a aprovação antes de fechar.')}</div></div>)
+  return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor do imóvel" valor={valor} onChange={setValor} /><CampoMoeda label="Entrada" valor={entrada} onChange={setEntrada} /><Campo label="Prazo" sufixo="anos" valor={prazo} onChange={setPrazo} /><Campo label="Juros (a.a.)" sufixo="%" valor={juros} onChange={setJuros} step="0.1" /><Campo label="Comprometimento de renda" sufixo="%" valor={comp} onChange={setComp} step="5" /></div><div><Resultado destaque={{ rotulo: 'Renda necessária', valor: brl(r.renda) }} itens={[{ rotulo: 'Valor financiado', valor: brl(r.fin) }, { rotulo: '1ª parcela (Price)', valor: brl2(r.parcela) }]} />{nota('Os bancos costumam limitar a parcela a ~30% da renda familiar bruta. A taxa e o limite variam por banco e perfil.')}</div></div>)
 }
 function CalcEntrada() {
   const [valor, setValor] = useState(500000); const [perc, setPerc] = useState('20'); const [meses, setMeses] = useState('24'); const [rend, setRend] = useState('0.6')
@@ -192,7 +239,7 @@ function CalcEntrada() {
     const aportado = pmt * n; const rendimento = Math.max(0, meta - aportado)
     return { meta, pmt, aportado, rendimento }
   }, [valor, perc, meses, rend])
-  return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor do imóvel" valor={valor} onChange={setValor} /><Campo label="Entrada desejada" sufixo="%" valor={perc} onChange={setPerc} step="5" /><Campo label="Prazo pra juntar" sufixo="meses" valor={meses} onChange={setMeses} /><Campo label="Rendimento (a.m.)" sufixo="%" valor={rend} onChange={setRend} step="0.1" /></div><div><Resultado destaque={{ rotulo: 'Guardar por mês', valor: brl2(r.pmt) }} itens={[{ rotulo: 'Meta de entrada', valor: brl(r.meta) }, { rotulo: 'Total que você aporta', valor: brl(r.aportado) }, { rotulo: 'Rendimento no período', valor: brl(r.rendimento) }]} />{nota('Estimativa por juros compostos. ~0,6% a.m. é uma referência conservadora de aplicação de baixo risco — o rendimento real varia. Não considera inflação nem mudança no preço do imóvel.')}</div></div>)
+  return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor do imóvel" valor={valor} onChange={setValor} /><Campo label="Entrada desejada" sufixo="%" valor={perc} onChange={setPerc} step="5" /><Campo label="Prazo para juntar" sufixo="meses" valor={meses} onChange={setMeses} /><Campo label="Rendimento (a.m.)" sufixo="%" valor={rend} onChange={setRend} step="0.1" /></div><div><Resultado destaque={{ rotulo: 'Guardar por mês', valor: brl2(r.pmt) }} itens={[{ rotulo: 'Meta de entrada', valor: brl(r.meta) }, { rotulo: 'Total que você aporta', valor: brl(r.aportado) }, { rotulo: 'Rendimento no período', valor: brl(r.rendimento) }]} />{nota('Estimativa por juros compostos. ~0,6% a.m. é uma referência conservadora de aplicação de baixo risco.')}</div></div>)
 }
 function CalcGanho() {
   const [venda, setVenda] = useState(600000); const [compra, setCompra] = useState(400000); const [unico, setUnico] = useState(false); const [reinveste, setReinveste] = useState(false)
@@ -201,41 +248,31 @@ function CalcGanho() {
     const ir = isento ? 0 : lucro * 0.15
     return { lucro, ir, liquido: venda - ir, isento, isentoUnico }
   }, [venda, compra, unico, reinveste])
-  return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor de venda" valor={venda} onChange={setVenda} /><CampoMoeda label="Valor de compra (custo)" valor={compra} onChange={setCompra} /><label className="calc-check"><input type="checkbox" checked={unico} onChange={(e) => setUnico(e.target.checked)} /><span>É meu único imóvel e a venda é de até R$ 440 mil</span></label><label className="calc-check"><input type="checkbox" checked={reinveste} onChange={(e) => setReinveste(e.target.checked)} /><span>Vou comprar outro imóvel residencial em até 180 dias</span></label></div><div><Resultado destaque={{ rotulo: r.isento ? 'Imposto (isento)' : 'Imposto estimado (IR)', valor: brl(r.ir) }} itens={[{ rotulo: 'Lucro (ganho de capital)', valor: brl(r.lucro) }, { rotulo: 'Você recebe (líquido)', valor: brl(r.liquido) }, { rotulo: 'Situação', valor: r.isento ? (r.isentoUnico ? 'Isento · único ≤ 440 mil' : 'Isento · reinvestimento') : 'Tributável · 15%' }]} />{nota('Regra geral: 15% sobre o lucro na venda. Isenções em lei: único imóvel vendido por até R$ 440 mil (1x a cada 5 anos) e reinvestimento em residencial em 180 dias. Existem fatores de redução por tempo de posse — confirme com um contador antes de declarar.')}</div></div>)
-}
-export function CalcACM() {
-  const ord = useMemo(() => [...BAIRROS_M2].sort((a, b) => a.bairro.localeCompare(b.bairro, 'pt-BR')), [])
-  const [bairro, setBairro] = useState(ord[0]?.bairro || ''); const [area, setArea] = useState('120'); const [estado, setEstado] = useState('0')
-  const r = useMemo(() => {
-    const reg = BAIRROS_M2.find((x) => x.bairro === bairro); const m2 = reg?.m2 || 0
-    const central = m2 * (+area || 0) * (1 + (+estado / 100))
-    return { m2, central, min: central * 0.93, max: central * 1.07, fonte: reg?.fonte, ref: reg?.ref }
-  }, [bairro, area, estado])
-  return (<div className="calc-grid"><div className="calc-form"><Select label="Bairro" valor={bairro} onChange={setBairro} opcoes={ord.map((x) => x.bairro)} /><Campo label="Área privativa" sufixo="m²" valor={area} onChange={setArea} /><Select label="Estado do imóvel" valor={estado} onChange={setEstado} opcoes={[{ v: '8', t: 'Novo / lançamento' }, { v: '4', t: 'Reformado' }, { v: '0', t: 'Bem conservado' }, { v: '-10', t: 'Precisa de reforma' }]} /></div><div>{r.m2 ? <Resultado destaque={{ rotulo: 'Preço sugerido', valor: brl(r.central) }} itens={[{ rotulo: 'Faixa de mercado', valor: `${brl(r.min)} a ${brl(r.max)}` }, { rotulo: `m² médio em ${bairro}`, valor: brl(r.m2) }, { rotulo: 'Fonte do m²', valor: `${r.fonte || '—'}${r.ref ? ` (${r.ref})` : ''}` }]} /> : <p className="section-sub">Ainda não há um valor de referência <b>oficial confirmado</b> para <b>{bairro}</b> nas fontes públicas. Para esse bairro, faça uma <b>avaliação presencial</b> (posição, padrão e estado definem o preço real).</p>}{nota('Estimativa pela mediana de venda do bairro × área, ajustada pelo estado, de fontes públicas (Proprietário Direto/IPD e ZAP). É um ponto de partida — posição, andar, vista e acabamento ajustam o valor final. A avaliação presencial é o que fecha o preço.')}</div></div>)
+  return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor de venda" valor={venda} onChange={setVenda} /><CampoMoeda label="Valor de compra (custo)" valor={compra} onChange={setCompra} /><label className="calc-check"><input type="checkbox" checked={unico} onChange={(e) => setUnico(e.target.checked)} /><span>É meu único imóvel e a venda é de até R$ 440 mil</span></label><label className="calc-check"><input type="checkbox" checked={reinveste} onChange={(e) => setReinveste(e.target.checked)} /><span>Vou comprar outro imóvel residencial em até 180 dias</span></label></div><div><Resultado destaque={{ rotulo: r.isento ? 'Imposto (isento)' : 'Imposto estimado (IR)', valor: brl(r.ir) }} itens={[{ rotulo: 'Lucro (ganho de capital)', valor: brl(r.lucro) }, { rotulo: 'Você recebe (líquido)', valor: brl(r.liquido) }, { rotulo: 'Situação', valor: r.isento ? (r.isentoUnico ? 'Isento · único ≤ 440 mil' : 'Isento · reinvestimento') : 'Tributável · 15%' }]} />{nota('Regra geral: 15% sobre o lucro. Isenções: único imóvel vendido por até R$ 440 mil (1x a cada 5 anos) e reinvestimento em residencial em 180 dias.')}</div></div>)
 }
 
-const RENDER = { financiamento: CalcFinanciamento, capacidade: CalcCapacidade, renda: CalcRenda, fgts: CalcFGTS, amortizacao: CalcAmortizacao, custos: CalcCustos, aluguel: CalcAluguel, rentabilidade: CalcRentabilidade, investir: CalcInvestir, entrada: CalcEntrada, ganho: CalcGanho, valorm2: CalcValorM2, score: CalcScore, checklist: Checklist }
-
-const ORDEM_KEY = 'vg_ferr_ordem'
-const idsVoce = () => TOOLS.filter((t) => t.cat === 'voce').map((t) => t.id)
-// ordem salva do cliente, completada com ferramentas novas que ainda não estavam na lista
-function lerOrdem() {
-  const base = idsVoce()
-  try {
-    const salvo = JSON.parse(localStorage.getItem(ORDEM_KEY) || '[]')
-    const validos = salvo.filter((id) => base.includes(id))
-    return [...validos, ...base.filter((id) => !validos.includes(id))]
-  } catch { return base }
+// ─── mapa de renders ─────────────────────────────────────────────────────────
+const RENDER = {
+  financiamento: CalcFinanciamento, capacidade: CalcCapacidade, renda: CalcRenda,
+  fgts: CalcFGTS, amortizacao: CalcAmortizacao, custos: CalcCustos,
+  aluguel: CalcAluguel, rentabilidade: CalcRentabilidade, investir: CalcInvestir,
+  entrada: CalcEntrada, ganho: CalcGanho, valorm2: CalcValorM2, score: CalcScore,
+  checklist: Checklist, acm: CalcACM, comissao: CalcComissao, ficha: FichaAvaliacao,
 }
 
+// ─── componente principal ────────────────────────────────────────────────────
 export default function Ferramentas() {
-  const [ativa, setAtiva] = useState('financiamento')
+  const [filtro, setFiltro]   = useState('todos')
+  const [ativa, setAtiva]     = useState(null)
+  const [isCorretor, setIsCorretor] = useState(false)
+  const [lockMsg, setLockMsg] = useState(null)
   const painelRef = useRef(null)
-  const [logado, setLogado] = useState(false)
-  const [ordem, setOrdem] = useState(idsVoce)
-  const [arrastando, setArrastando] = useState(null)
-  const [salvo, setSalvo] = useState(false)
-  useSEO({ title: 'Ferramentas e calculadoras de imóveis — Uberlândia', description: 'Calculadoras gratuitas: financiamento, FGTS, amortização, ITBI, aluguel x compra, rentabilidade, valor do m², chance de aprovação, checklist de documentos e mais. Por Vinícius Graton.', path: '/ferramentas' })
+
+  useSEO({
+    title: 'Ferramentas e calculadoras de imóveis — Uberlândia',
+    description: 'Portal completo: simulador de financiamento, FGTS, rentabilidade, ITBI, comparador de imóveis e ferramentas exclusivas para corretores. Grátis, sem cadastro.',
+    path: '/ferramentas',
+  })
 
   useEffect(() => {
     const temaAnterior = getTema()
@@ -244,107 +281,200 @@ export default function Ferramentas() {
   }, [])
 
   useEffect(() => {
-    setLogado(estaLogado())
-    setOrdem(lerOrdem())
-    const ler = () => setLogado(estaLogado())
-    window.addEventListener('vg-conta', ler)
-    return () => window.removeEventListener('vg-conta', ler)
+    try { setIsCorretor(!!localStorage.getItem('vg_corretor')) } catch {}
   }, [])
 
-  const atual = TOOLS.find((t) => t.id === ativa)
-  const Ativa = RENDER[ativa]
-  const escolher = (id) => {
-    setAtiva(id)
+  const atual = ativa ? TOOLS.find((t) => t.id === ativa) : null
+  const Ativa  = ativa ? RENDER[ativa] : null
+
+  const escolher = (tool) => {
+    if (tool.to) return
+    if (tool.toPro) {
+      if (isCorretor) {
+        window.location.href = '/corretor'
+        return
+      }
+      setLockMsg(tool.id)
+      setTimeout(() => {
+        document.getElementById('ferr-pro-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 60)
+      return
+    }
+    if (tool.pro && !isCorretor) {
+      setLockMsg(tool.id)
+      setTimeout(() => {
+        document.getElementById('ferr-pro-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 60)
+      return
+    }
+    setLockMsg(null)
+    setAtiva(tool.id)
     setTimeout(() => {
       if (!painelRef.current) return
-      const navH = (document.querySelector('header')?.offsetHeight || 68) + 12
+      const navH = (document.querySelector('header')?.offsetHeight || 68) + 16
       const top = painelRef.current.getBoundingClientRect().top + window.scrollY - navH
       window.scrollTo({ top, behavior: 'smooth' })
     }, 60)
   }
-  const grupo = (cat) => TOOLS.filter((t) => t.cat === cat)
-  // grupo "voce" na ordem personalizada do cliente
-  const voceOrdenado = ordem.map((id) => TOOLS.find((t) => t.id === id)).filter(Boolean)
 
-  const salvarOrdem = (nova) => {
-    setOrdem(nova)
-    try { localStorage.setItem(ORDEM_KEY, JSON.stringify(nova)) } catch {}
-    setSalvo(true); setTimeout(() => setSalvo(false), 1600)
-  }
-  const aoSoltar = (alvoId) => {
-    if (!arrastando || arrastando === alvoId) return
-    const nova = [...ordem]
-    const de = nova.indexOf(arrastando)
-    const para = nova.indexOf(alvoId)
-    if (de < 0 || para < 0) return
-    nova.splice(de, 1)
-    nova.splice(para, 0, arrastando)
-    salvarOrdem(nova)
-  }
-  const restaurarOrdem = () => { try { localStorage.removeItem(ORDEM_KEY) } catch {}; setOrdem(idsVoce()) }
-
-  const Card = (t) => t.to
-    ? <Link key={t.id} className={`ferr-card ${t.destaque ? 'ferr-card--gold' : ''}`} to={t.to}><span className="ferr-ico">{t.logoSrc ? <img src={t.logoSrc} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /> : <FerrIcon name={t.icon} />}</span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></Link>
-    : <button key={t.id} className={`ferr-card ${ativa === t.id ? 'on' : ''}`} onClick={() => escolher(t.id)}><span className="ferr-ico"><FerrIcon name={t.icon} /></span><span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span></button>
-
-  // versão arrastável (só p/ cliente logado): mesmo card, com handle e eventos de drag
-  const CardDrag = (t) => {
-    const inner = (
-      <>
-        <span className="ferr-drag-handle" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
-        <span className="ferr-ico"><FerrIcon name={t.icon} /></span>
-        <span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span>
-      </>
-    )
-    const common = {
-      key: t.id,
-      className: `ferr-card ferr-card--drag ${ativa === t.id ? 'on' : ''} ${arrastando === t.id ? 'is-dragging' : ''}`,
-      draggable: true,
-      onDragStart: (e) => { setArrastando(t.id); e.dataTransfer.effectAllowed = 'move' },
-      onDragEnd: () => setArrastando(null),
-      onDragOver: (e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move' },
-      onDrop: (e) => { e.preventDefault(); aoSoltar(t.id) },
-    }
-    return t.to
-      ? <Link {...common} to={t.to} onClick={(e) => { if (arrastando) e.preventDefault() }}>{inner}</Link>
-      : <button {...common} type="button" onClick={() => escolher(t.id)}>{inner}</button>
-  }
+  const secoesFiltradas = filtro === 'todos' ? SECOES : SECOES.filter((s) => s.id === filtro)
 
   return (
-    <main className="pagina section--light det ferramentas-pg">
-      <div className="container">
-        <Reveal>
-          <div style={{ textAlign: 'center', maxWidth: 720, margin: '0 auto 8px' }}>
-            <h1 className="sr-only">Ferramentas e calculadoras de imóveis em Uberlândia</h1>
-            <span className="eyebrow" style={{ justifyContent: 'center' }}>Ferramentas grátis</span>
-            <h2 className="section-title">Tudo que você precisa <br className="quebra-tit" /><em>calcular e decidir</em></h2>
-            <p className="section-sub" style={{ marginTop: 14 }}>Escolha uma ferramenta, informe os dados e veja o resultado na hora — sem cadastro.</p>
+    <main className="pagina ferramentas-pg">
+
+      {/* ── HERO ── */}
+      <div className="ferr-hero">
+        <div className="container">
+          <div className="ferr-hero-txt">
+            <span className="ferr-hero-eyebrow">
+              <FI name="star" size={13} />
+              Portal de ferramentas
+            </span>
+            <h1 className="ferr-hero-titulo">Calcule, compare e <em>decida com segurança</em></h1>
+            <p className="ferr-hero-sub">{TOOLS.filter(t => !t.pro).length} ferramentas gratuitas · {TOOLS.filter(t => t.pro).length} exclusivas para corretores</p>
           </div>
-        </Reveal>
-
-        <div className="ferr-cat-head">
-          <h3 className="ferr-cat">Para você — comprador e investidor</h3>
-          {logado ? (
-            <span className="ferr-ordenar-dica">{salvo ? '✓ ordem salva' : '✦ arraste os cards pra montar do seu jeito'}<button type="button" className="ferr-restaurar" onClick={restaurarOrdem}>restaurar padrão</button></span>
-          ) : (
-            <Link to="/conta" className="ferr-ordenar-dica ferr-ordenar-dica--link">Entre na sua conta pra personalizar e salvar esta ordem →</Link>
-          )}
+          <nav className="ferr-pills" aria-label="Filtrar ferramentas por categoria">
+            {PILLS.map((p) => (
+              <button
+                key={p.id}
+                type="button"
+                className={`ferr-pill${filtro === p.id ? ' on' : ''}${p.id === 'pro' ? ' ferr-pill--pro' : ''}`}
+                onClick={() => { setFiltro(p.id); setLockMsg(null); setAtiva(null) }}
+              >
+                {p.label}
+              </button>
+            ))}
+          </nav>
         </div>
-        <div className="ferr-grid">{(logado ? voceOrdenado.map(CardDrag) : voceOrdenado.map(Card))}</div>
+      </div>
 
-        <h3 className="ferr-cat">Para o corretor</h3>
-        <div className="ferr-grid">{grupo('corretor').map(Card)}</div>
+      {/* ── SEÇÕES ── */}
+      <div className="ferr-body container">
+        {secoesFiltradas.map((sec) => {
+          const tools = TOOLS.filter((t) => t.sec === sec.id)
+          return (
+            <section key={sec.id} id={sec.id === 'pro' ? 'ferr-pro-section' : undefined} className={`ferr-section${sec.pro ? ' ferr-section--pro' : ''}`}>
 
-        <div className="calc-painel" ref={painelRef} style={{ marginTop: 30 }}>
-          <h3 className="calc-painel-tit"><span className="calc-tit-ico"><FerrIcon name={atual.icon} size={20} /></span>{atual.nome}</h3>
-          <Ativa />
-          <div className="calc-cta">
-            <span>Quer que eu faça essa conta com os números reais e te mostre as melhores opções?</span>
-            <a className="btn btn-gold" href={linkWhatsApp('Olá Vinícius! Usei as ferramentas no site e quero sua ajuda.')} target="_blank" rel="noopener"><IconWhats /> Falar com o Vinícius</a>
+              {/* cabeçalho da seção */}
+              <div className={`ferr-sec-hd${sec.pro ? ' ferr-sec-hd--pro' : ''}`}>
+                <span className="ferr-sec-ico"><FI name={sec.icon} size={20} /></span>
+                <div className="ferr-sec-info">
+                  <h2 className="ferr-sec-titulo">
+                    {sec.pro && <span className="ferr-badge-pro">PRO</span>}
+                    {sec.titulo}
+                  </h2>
+                  <p className="ferr-sec-sub">{sec.sub}</p>
+                </div>
+                <span className="ferr-sec-count">{tools.length} ferramenta{tools.length !== 1 ? 's' : ''}</span>
+              </div>
+
+              {/* banner de assinatura (PRO não assinante) */}
+              {sec.pro && !isCorretor && (
+                <div className="ferr-pro-banner">
+                  <div className="ferr-pro-banner-txt">
+                    <b>Ferramentas exclusivas para corretores</b>
+                    <span>Assine a Área do Corretor e desbloqueie ACM, comissão, ficha, IA de fotos e muito mais.</span>
+                  </div>
+                  <div className="ferr-pro-banner-planos">
+                    <div className="ferr-pro-plano">
+                      <span className="ferr-pro-plano-nome">Semanal</span>
+                      <b className="ferr-pro-plano-preco">R$ 15</b>
+                      <span className="ferr-pro-plano-per">/ 7 dias</span>
+                    </div>
+                    <div className="ferr-pro-plano ferr-pro-plano--dest">
+                      <span className="ferr-pro-plano-badge">Mais popular</span>
+                      <span className="ferr-pro-plano-nome">Mensal</span>
+                      <b className="ferr-pro-plano-preco">R$ 49,90</b>
+                      <span className="ferr-pro-plano-per">/ 30 dias</span>
+                    </div>
+                  </div>
+                  <Link className="btn btn-gold ferr-pro-btn" to="/corretor">Assinar e desbloquear <IconArrow /></Link>
+                </div>
+              )}
+
+              {/* banner para assinante */}
+              {sec.pro && isCorretor && (
+                <div className="ferr-pro-ativo">
+                  <FI name="star" size={16} />
+                  <span>Você tem acesso à Área do Corretor.</span>
+                  <Link to="/corretor" className="ferr-pro-ativo-link">Ir para o painel completo →</Link>
+                </div>
+              )}
+
+              {/* grade de cards */}
+              <div className="ferr-grid-3">
+                {tools.map((tool) => {
+                  const locked  = tool.pro && !isCorretor
+                  const isOn    = ativa === tool.id
+                  const isLockMsgOn = lockMsg === tool.id
+
+                  if (tool.to && !locked) {
+                    return (
+                      <Link key={tool.id} className="ferr-card3" to={tool.to}>
+                        <span className="ferr-card3-ico"><FI name={tool.icon} /></span>
+                        <span className="ferr-card3-body">
+                          <b>{tool.nome}</b>
+                          <i>{tool.desc}</i>
+                        </span>
+                        {tool.popular && <span className="ferr-badge-popular">Popular</span>}
+                        <span className="ferr-card3-arrow"><IconArrow /></span>
+                      </Link>
+                    )
+                  }
+
+                  return (
+                    <button
+                      key={tool.id}
+                      type="button"
+                      className={`ferr-card3${isOn ? ' on' : ''}${locked ? ' locked' : ''}${isLockMsgOn ? ' lock-pulse' : ''}`}
+                      onClick={() => escolher(tool)}
+                      aria-label={locked ? `${tool.nome} — exclusivo para assinantes` : tool.nome}
+                    >
+                      <span className="ferr-card3-ico">
+                        {locked ? <FI name="lock" /> : <FI name={tool.icon} />}
+                      </span>
+                      <span className="ferr-card3-body">
+                        <b>{tool.nome}</b>
+                        <i>{tool.desc}</i>
+                        {isLockMsgOn && (
+                          <span className="ferr-lock-msg">Assine a Área do Corretor para desbloquear.</span>
+                        )}
+                      </span>
+                      {tool.popular && !locked && <span className="ferr-badge-popular">Popular</span>}
+                      {tool.pro && <span className="ferr-badge-pro-sm">PRO</span>}
+                    </button>
+                  )
+                })}
+              </div>
+            </section>
+          )
+        })}
+
+        {/* ── PAINEL DA CALCULADORA ATIVA ── */}
+        {ativa && Ativa && atual && (
+          <div className="calc-painel ferr-painel-ativo" ref={painelRef}>
+            <div className="ferr-painel-hd">
+              <span className="ferr-painel-ico"><FI name={atual.icon} size={20} /></span>
+              <h3 className="calc-painel-tit">{atual.nome}</h3>
+              <button className="ferr-painel-fechar" type="button" onClick={() => setAtiva(null)} aria-label="Fechar calculadora">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
+              </button>
+            </div>
+            <Ativa />
+            <div className="calc-cta">
+              <span>Quer que eu faça essa conta com os números reais e te mostre as melhores opções?</span>
+              <a className="btn btn-gold" href={linkWhatsApp('Olá Vinícius! Usei as ferramentas no site e quero sua ajuda.')} target="_blank" rel="noopener">
+                <IconWhats /> Falar com o Vinícius
+              </a>
+            </div>
           </div>
-        </div>
+        )}
 
-        <div style={{ marginTop: 40, textAlign: 'center' }}><Link className="btn btn-ghost" to="/imoveis">Ver imóveis disponíveis <IconArrow /></Link></div>
+        {/* ── RODAPÉ DA PÁGINA ── */}
+        <div className="ferr-footer-links">
+          <Link className="btn btn-ghost" to="/imoveis">Ver imóveis disponíveis <IconArrow /></Link>
+          <Link className="btn btn-ghost" to="/avaliacao">Avaliação gratuita do meu imóvel <IconArrow /></Link>
+        </div>
       </div>
     </main>
   )
