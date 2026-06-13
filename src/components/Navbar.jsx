@@ -15,7 +15,7 @@ const IconUser = (p) => (
 // Menu principal (desktop) — enxuto e com ícones, referência Chaves na Mão
 const LINKS = [
   { to: '/imoveis', label: 'Imóveis', d: 'M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10' },
-  { to: '/construtoras', label: 'Construtoras', d: 'M4.5 21h6M7.5 21V5M5 5h14.5M8 5L19.5 9.5M16 5v5a1 1 0 0 1-2 0' },
+  { to: '/lancamentos', label: 'Lançamentos', d: 'M4.5 21h6M7.5 21V5M5 5h14.5M8 5L19.5 9.5M16 5v5a1 1 0 0 1-2 0' },
   { to: '/condominios', label: 'Condomínios', d: 'M3 21h18M5 21V6h6v15M13 21V10h6v11M7 9h2M7 13h2M7 17h2M15 14h2M15 17h2' },
   { to: '/ferramentas', label: 'Ferramentas', d: 'M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.3 2.3-2-2 2.3-2.3z' },
   { to: '/anunciar', label: 'Anunciar', d: 'M3 11v2a1 1 0 0 0 1 1h2l4 4V6L6 10H4a1 1 0 0 0-1 1zM15 8a5 5 0 0 1 0 8' },
@@ -43,7 +43,7 @@ const MMIcon = ({ name }) => (
 const MENU_CARDS = [
   { to: '/imoveis', label: 'Imóveis', sub: 'À venda em Uberlândia', icon: 'home' },
   { to: '/condominios', label: 'Condomínios', sub: 'Fechados e lançamentos', icon: 'building' },
-  { to: '/construtoras', label: 'Construtoras', sub: 'Empreendimentos', icon: 'crane' },
+  { to: '/lancamentos', label: 'Lançamentos', sub: 'Empreendimentos', icon: 'crane' },
   { to: '/ferramentas', label: 'Ferramentas', sub: 'Simuladores grátis', icon: 'tools' },
   { to: '/blog', label: 'Blog', sub: 'Guias e dicas', icon: 'doc' },
   { to: '/regioes', label: 'Uberlândia', sub: 'Bairros e regiões', icon: 'pin' },

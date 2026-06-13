@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, lazy, Suspense } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
 import ScrollProgress from './components/ScrollProgress'
 import ErrorBoundary from './components/ErrorBoundary'
@@ -35,6 +35,10 @@ const CondominioDetalhe = lazy(() => import('./pages/CondominioDetalhe'))
 const ConstrutorasPage = lazy(() => import('./pages/Construtoras'))
 const ConstrutoraDetalhe = lazy(() => import('./pages/ConstrutoraDetalhe'))
 const EmpreendimentoDetalhe = lazy(() => import('./pages/EmpreendimentoDetalhe'))
+const PortalLancamentosHome = lazy(() => import('./pages/PortalLancamentosHome'))
+const CatalogoLancamentos = lazy(() => import('./pages/CatalogoLancamentos'))
+const LancamentoGuia = lazy(() => import('./pages/LancamentoGuia'))
+const LancamentoBairro = lazy(() => import('./pages/LancamentoBairro'))
 const Bairro = lazy(() => import('./pages/Bairro'))
 const Favoritos = lazy(() => import('./pages/Favoritos'))
 const Cliente = lazy(() => import('./pages/Cliente'))
@@ -131,7 +135,11 @@ export default function App() {
               <Route path="/como-funciona" element={<ComoAjudo />} />
               <Route path="/sobre" element={<QuemSou />} />
               <Route path="/regioes" element={<Regioes />} />
-              <Route path="/construtoras" element={<ConstrutorasPage />} />
+              <Route path="/lancamentos" element={<PortalLancamentosHome />} />
+              <Route path="/lancamentos/catalogo" element={<CatalogoLancamentos />} />
+              <Route path="/lancamentos/guia" element={<LancamentoGuia />} />
+              <Route path="/lancamentos/bairros/:slug" element={<LancamentoBairro />} />
+              <Route path="/construtoras" element={<Navigate to="/lancamentos" replace />} />
               <Route path="/construtoras/:slug" element={<ConstrutoraDetalhe />} />
               <Route path="/construtoras/:slug/:projeto" element={<EmpreendimentoDetalhe />} />
               <Route path="/ferramentas" element={<Ferramentas />} />

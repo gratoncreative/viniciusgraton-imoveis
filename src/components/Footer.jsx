@@ -5,7 +5,7 @@ import Newsletter from './Newsletter'
 
 const LINKS = [
   { to: '/imoveis', label: 'Imóveis' },
-  { to: '/construtoras', label: 'Construtoras' },
+  { to: '/lancamentos', label: 'Lançamentos' },
   { to: '/condominios', label: 'Condomínios' },
   { to: '/ferramentas', label: 'Ferramentas' },
   { to: '/blog', label: 'Blog' },
