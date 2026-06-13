@@ -63,6 +63,33 @@ export default function Catalogo() {
     path: '/imoveis',
   })
 
+  useEffect(() => {
+    const el = document.createElement('script')
+    el.type = 'application/ld+json'
+    el.id = 'catalogo-jsonld'
+    el.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'CollectionPage',
+          url: 'https://viniciusgraton.com.br/imoveis',
+          name: 'Imóveis à venda em Uberlândia',
+          description: 'Casas, apartamentos e imóveis de alto padrão à venda em Uberlândia-MG. Filtre por bairro, preço e características.',
+          publisher: { '@type': 'RealEstateAgent', name: 'Vinícius Graton Imóveis', url: 'https://viniciusgraton.com.br' },
+        },
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://viniciusgraton.com.br/' },
+            { '@type': 'ListItem', position: 2, name: 'Imóveis à venda', item: 'https://viniciusgraton.com.br/imoveis' },
+          ],
+        },
+      ],
+    })
+    document.head.appendChild(el)
+    return () => { document.getElementById('catalogo-jsonld')?.remove() }
+  }, [])
+
   // Espelho de TODOS os imóveis à venda da Rotina — feed leve carregado em runtime (não vai no bundle).
   const [feed, setFeed] = useState([])
   const [carregandoFeed, setCarregandoFeed] = useState(true)

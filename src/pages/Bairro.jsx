@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import CardImovel from '../components/CardImovel'
@@ -19,6 +20,37 @@ export default function Bairro() {
       : 'Bairro não encontrado.',
     path: `/imoveis/uberlandia/${slug || ''}`,
   })
+
+  useEffect(() => {
+    if (!b) return
+    const url = `https://viniciusgraton.com.br/imoveis/uberlandia/${slug}`
+    const el = document.createElement('script')
+    el.type = 'application/ld+json'
+    el.id = 'bairro-jsonld'
+    el.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'CollectionPage',
+          url,
+          name: `Imóveis à venda em ${b.nome}, Uberlândia`,
+          description: ed ? ed.intro.slice(0, 200) : b.desc,
+          about: { '@type': 'Place', name: b.nome, containedInPlace: { '@type': 'City', name: 'Uberlândia', addressRegion: 'MG', addressCountry: 'BR' } },
+          publisher: { '@type': 'RealEstateAgent', name: 'Vinícius Graton Imóveis', url: 'https://viniciusgraton.com.br' },
+        },
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://viniciusgraton.com.br/' },
+            { '@type': 'ListItem', position: 2, name: 'Imóveis', item: 'https://viniciusgraton.com.br/imoveis' },
+            { '@type': 'ListItem', position: 3, name: b.nome, item: url },
+          ],
+        },
+      ],
+    })
+    document.head.appendChild(el)
+    return () => { document.getElementById('bairro-jsonld')?.remove() }
+  }, [b, slug, ed])
 
   if (!b) {
     return (

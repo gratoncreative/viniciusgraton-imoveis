@@ -30,6 +30,36 @@ export default function Blog() {
     description: 'Conteúdo prático sobre comprar imóvel em Uberlândia: FGTS, financiamento, ITBI, bairros e mercado. Por Vinícius Graton, consultor de imóveis.',
     path: '/blog',
   })
+
+  useEffect(() => {
+    const el = document.createElement('script')
+    el.type = 'application/ld+json'
+    el.id = 'blog-index-jsonld'
+    el.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'CollectionPage',
+          '@id': 'https://viniciusgraton.com.br/blog',
+          url: 'https://viniciusgraton.com.br/blog',
+          name: 'Blog — Guias de Compra de Imóveis em Uberlândia',
+          description: 'Conteúdo prático sobre comprar imóvel em Uberlândia: FGTS, financiamento, ITBI, bairros e mercado.',
+          inLanguage: 'pt-BR',
+          publisher: { '@type': 'RealEstateAgent', name: 'Vinícius Graton Imóveis', url: 'https://viniciusgraton.com.br' },
+        },
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://viniciusgraton.com.br/' },
+            { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://viniciusgraton.com.br/blog' },
+          ],
+        },
+      ],
+    })
+    document.head.appendChild(el)
+    return () => { document.getElementById('blog-index-jsonld')?.remove() }
+  }, [])
+
   const [cat, setCat] = useState('Todos')
   const [views, setViews] = useState({})
   const [mostrar, setMostrar] = useState(12)
