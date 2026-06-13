@@ -1,6 +1,5 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { aplicarTema, getTema } from '../tema'
 import CampoMoeda from '../components/CampoMoeda'
 import { BAIRROS_IMOVEL, linkWhatsApp } from '../data'
 import BAIRROS_M2 from '../bairros-m2.json'
@@ -49,51 +48,57 @@ const FI = ({ name, size = 22 }) => (
 
 // ─── seções e ferramentas ────────────────────────────────────────────────────
 const SECOES = [
-  { id: 'comprador',     titulo: 'Para compradores',       sub: 'Simule, planeje e calcule antes de fechar',         icon: 'home'  },
+  { id: 'comprador',     titulo: 'Para compradores',       sub: 'Simule, planeje e calcule antes de fechar',         icon: 'home'   },
   { id: 'pro',           titulo: 'Área do Corretor',        sub: 'Ferramentas exclusivas para profissionais do mercado imobiliário', icon: 'star', pro: true },
-  { id: 'investidor',    titulo: 'Para investidores',       sub: 'Analise rentabilidade, retorno e ganho de capital', icon: 'trend' },
-  { id: 'financiamento', titulo: 'Financiamento e FGTS',    sub: 'Simule o uso do fundo e amortize com precisão',     icon: 'bank'  },
-  { id: 'explorar',      titulo: 'Explorar o mercado',      sub: 'Compare imóveis e explore o mercado visual',       icon: 'map'   },
+  { id: 'investidor',    titulo: 'Para investidores',       sub: 'Analise rentabilidade, retorno e ganho de capital', icon: 'trend'  },
+  { id: 'financiamento', titulo: 'Financiamento e FGTS',    sub: 'Simule o uso do fundo e amortize com precisão',     icon: 'bank'   },
+  { id: 'fotos',         titulo: 'Fotos e imagens',         sub: 'Endireite, marque e converta fotos sem sair do navegador', icon: 'camera' },
+  { id: 'explorar',      titulo: 'Explorar o mercado',      sub: 'Compare imóveis e explore o mercado visual',        icon: 'map'    },
 ]
 
 const TOOLS = [
   // comprador
-  { id: 'financiamento', nome: 'Simulador de financiamento', desc: 'Parcela e custo total — SAC e Price.',        icon: 'bank',    sec: 'comprador',     popular: true },
-  { id: 'capacidade',    nome: 'Quanto consigo financiar?',  desc: 'O imóvel que cabe na sua renda.',             icon: 'chart',   sec: 'comprador',     popular: true },
-  { id: 'renda',         nome: 'Renda necessária',           desc: 'Qual renda o banco exige para esse imóvel.',  icon: 'wallet',  sec: 'comprador'  },
+  { id: 'financiamento', nome: 'Simulador de financiamento', desc: 'Parcela e custo total — SAC e Price.',         icon: 'bank',    sec: 'comprador',     popular: true },
+  { id: 'capacidade',    nome: 'Quanto consigo financiar?',  desc: 'O imóvel que cabe na sua renda.',              icon: 'chart',   sec: 'comprador',     popular: true },
+  { id: 'renda',         nome: 'Renda necessária',           desc: 'Qual renda o banco exige para esse imóvel.',   icon: 'wallet',  sec: 'comprador'  },
   { id: 'custos',        nome: 'ITBI e cartório',            desc: 'Quanto reservar além do preço em Uberlândia.', icon: 'receipt', sec: 'comprador'  },
-  { id: 'entrada',       nome: 'Plano para a entrada',       desc: 'Quanto guardar por mês para dar a entrada.',  icon: 'coins',   sec: 'comprador'  },
-  { id: 'score',         nome: 'Chance de aprovação',        desc: 'Estimativa do seu perfil de crédito.',        icon: 'gauge',   sec: 'comprador'  },
-  { id: 'checklist',     nome: 'Checklist de documentos',    desc: 'Tudo que você precisa reunir, por etapa.',    icon: 'doc',     sec: 'comprador'  },
+  { id: 'entrada',       nome: 'Plano para a entrada',       desc: 'Quanto guardar por mês para dar a entrada.',   icon: 'coins',   sec: 'comprador'  },
+  { id: 'score',         nome: 'Chance de aprovação',        desc: 'Estimativa do seu perfil de crédito.',         icon: 'gauge',   sec: 'comprador'  },
+  { id: 'checklist',     nome: 'Checklist de documentos',    desc: 'Tudo que você precisa reunir, por etapa.',     icon: 'doc',     sec: 'comprador'  },
   // investidor
   { id: 'valorm2',       nome: 'Valor do m² por bairro',    desc: 'Preço médio de venda por bairro de Uberlândia.', icon: 'home',  sec: 'investidor' },
-  { id: 'rentabilidade', nome: 'Rentabilidade do aluguel',  desc: 'Quanto um imóvel rende ao ano.',              icon: 'trend',   sec: 'investidor', popular: true },
-  { id: 'investir',      nome: 'Imóvel × CDI / Poupança',  desc: 'Vale comprar para alugar ou aplicar?',         icon: 'coins',   sec: 'investidor' },
-  { id: 'aluguel',       nome: 'Alugar ou financiar?',      desc: 'Compare a parcela com o aluguel atual.',       icon: 'scale',   sec: 'investidor' },
-  { id: 'ganho',         nome: 'IR na venda do imóvel',     desc: 'Ganho de capital e isenções em lei.',          icon: 'percent', sec: 'investidor' },
+  { id: 'rentabilidade', nome: 'Rentabilidade do aluguel',  desc: 'Quanto um imóvel rende ao ano.',               icon: 'trend',   sec: 'investidor', popular: true },
+  { id: 'investir',      nome: 'Imóvel × CDI / Poupança',  desc: 'Vale comprar para alugar ou aplicar?',          icon: 'coins',   sec: 'investidor' },
+  { id: 'aluguel',       nome: 'Alugar ou financiar?',      desc: 'Compare a parcela com o aluguel atual.',        icon: 'scale',   sec: 'investidor' },
+  { id: 'ganho',         nome: 'IR na venda do imóvel',     desc: 'Ganho de capital e isenções em lei.',           icon: 'percent', sec: 'investidor' },
   // financiamento
-  { id: 'fgts',          nome: 'Simulador de FGTS',         desc: 'Como o FGTS reduz a entrada e a parcela.',    icon: 'wallet',  sec: 'financiamento' },
-  { id: 'amortizacao',   nome: 'Amortização com FGTS',      desc: 'Quanto o FGTS encurta o financiamento.',      icon: 'calc',    sec: 'financiamento' },
+  { id: 'fgts',          nome: 'Simulador de FGTS',         desc: 'Como o FGTS reduz a entrada e a parcela.',     icon: 'wallet',  sec: 'financiamento' },
+  { id: 'amortizacao',   nome: 'Amortização com FGTS',      desc: 'Quanto o FGTS encurta o financiamento.',       icon: 'calc',    sec: 'financiamento' },
+  // fotos e imagens
+  { id: 'endireitar',    nome: 'Endireitar foto',           desc: 'Corrija a inclinação e a rotação de fotos.',   icon: 'camera',  sec: 'fotos' },
+  { id: 'marca-agua',    nome: "Marca d'água em fotos",     desc: 'Adicione seu logo ou texto em cada foto.',     icon: 'edit',    sec: 'fotos' },
+  { id: 'redimensionar', nome: 'Redimensionar foto',        desc: 'Reduza o tamanho para WhatsApp ou portal.',    icon: 'edit',    sec: 'fotos' },
+  { id: 'converter',     nome: 'Conversor de fotos',        desc: 'JPG · PNG · WebP · AVIF em lote.',             icon: 'edit',    sec: 'fotos', to: '/ferramentas/converter' },
   // explorar
-  { id: 'comparar',      nome: 'Comparar imóveis',          desc: 'Compare até 3 imóveis lado a lado.',          icon: 'compare', sec: 'explorar', to: '/comparar' },
-  { id: 'mapa',          nome: 'Mapa de imóveis',           desc: 'Explore imóveis por região de Uberlândia.',   icon: 'map',     sec: 'explorar', to: '/mapa'     },
-  { id: 'converter',     nome: 'Conversor de fotos',        desc: 'JPG · PNG · WebP · AVIF em lote.',            icon: 'edit',    sec: 'explorar', to: '/ferramentas/converter' },
+  { id: 'comparar',      nome: 'Comparar imóveis',          desc: 'Compare até 3 imóveis lado a lado.',           icon: 'compare', sec: 'explorar', to: '/comparar' },
+  { id: 'mapa',          nome: 'Mapa de imóveis',           desc: 'Explore imóveis por região de Uberlândia.',    icon: 'map',     sec: 'explorar', to: '/mapa'     },
   // pro
-  { id: 'acm',           nome: 'ACM — Avaliação de imóvel', desc: 'Faixa de preço pelo m² do bairro.',           icon: 'home',    sec: 'pro', pro: true },
-  { id: 'comissao',      nome: 'Calculadora de comissão',   desc: 'Comissão e divisão corretor / imobiliária.',  icon: 'coins',   sec: 'pro', pro: true },
-  { id: 'ficha',         nome: 'Ficha de avaliação',        desc: 'Resumo do imóvel pronto para compartilhar.',  icon: 'doc',     sec: 'pro', pro: true },
-  { id: 'melhorar',      nome: 'Melhorar fotos com IA',     desc: 'HDR, contraste e nitidez automáticos.',       icon: 'camera',  sec: 'pro', pro: true, toPro: true },
-  { id: 'remover',       nome: 'Remover marca d\'água',     desc: 'Remove logos e marcas de fotos em lote.',     icon: 'edit',    sec: 'pro', pro: true, toPro: true },
-  { id: 'impulsionar',   nome: 'Impulsionar anúncio',       desc: 'Destaque seu imóvel por 7, 15 ou 30 dias.',   icon: 'rocket',  sec: 'pro', pro: true, to: '/impulsionar' },
+  { id: 'acm',           nome: 'ACM — Avaliação de imóvel', desc: 'Faixa de preço pelo m² do bairro.',            icon: 'home',    sec: 'pro', pro: true },
+  { id: 'comissao',      nome: 'Calculadora de comissão',   desc: 'Comissão e divisão corretor / imobiliária.',   icon: 'coins',   sec: 'pro', pro: true },
+  { id: 'ficha',         nome: 'Ficha de avaliação',        desc: 'Resumo do imóvel pronto para compartilhar.',   icon: 'doc',     sec: 'pro', pro: true },
+  { id: 'melhorar',      nome: 'Melhorar fotos com IA',     desc: 'HDR, contraste e nitidez automáticos.',        icon: 'camera',  sec: 'pro', pro: true, toPro: true },
+  { id: 'remover',       nome: 'Remover marca d\'água com IA', desc: 'Remove logos e marcas de fotos em lote.',   icon: 'edit',    sec: 'pro', pro: true, toPro: true },
+  { id: 'impulsionar',   nome: 'Impulsionar anúncio',       desc: 'Destaque seu imóvel por 7, 15 ou 30 dias.',    icon: 'rocket',  sec: 'pro', pro: true, to: '/impulsionar' },
 ]
 
 const PILLS = [
-  { id: 'todos',         label: 'Todas'           },
-  { id: 'comprador',     label: 'Comprador'        },
-  { id: 'investidor',    label: 'Investidor'       },
-  { id: 'financiamento', label: 'Financiamento'    },
-  { id: 'explorar',      label: 'Explorar'         },
-  { id: 'pro',           label: '✦ Corretor PRO'  },
+  { id: 'todos',         label: 'Todas'          },
+  { id: 'comprador',     label: 'Comprador'       },
+  { id: 'investidor',    label: 'Investidor'      },
+  { id: 'financiamento', label: 'Financiamento'   },
+  { id: 'fotos',         label: 'Fotos'           },
+  { id: 'explorar',      label: 'Explorar'        },
+  { id: 'pro',           label: '✦ Corretor PRO' },
 ]
 
 // ─── componentes de campo ────────────────────────────────────────────────────
@@ -259,6 +264,245 @@ function CalcGanho() {
   return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor de venda" valor={venda} onChange={setVenda} /><CampoMoeda label="Valor de compra (custo)" valor={compra} onChange={setCompra} /><label className="calc-check"><input type="checkbox" checked={unico} onChange={(e) => setUnico(e.target.checked)} /><span>É meu único imóvel e a venda é de até R$ 440 mil</span></label><label className="calc-check"><input type="checkbox" checked={reinveste} onChange={(e) => setReinveste(e.target.checked)} /><span>Vou comprar outro imóvel residencial em até 180 dias</span></label></div><div><Resultado destaque={{ rotulo: r.isento ? 'Imposto (isento)' : 'Imposto estimado (IR)', valor: brl(r.ir) }} itens={[{ rotulo: 'Lucro (ganho de capital)', valor: brl(r.lucro) }, { rotulo: 'Você recebe (líquido)', valor: brl(r.liquido) }, { rotulo: 'Situação', valor: r.isento ? (r.isentoUnico ? 'Isento · único ≤ 440 mil' : 'Isento · reinvestimento') : 'Tributável · 15%' }]} />{nota('Regra geral: 15% sobre o lucro. Isenções: único imóvel vendido por até R$ 440 mil (1x a cada 5 anos) e reinvestimento em residencial em 180 dias.')}</div></div>)
 }
 
+// ─── ferramentas de foto (canvas, client-side) ──────────────────────────────
+function EndireitarFoto() {
+  const [src, setSrc] = useState(null)
+  const [rot, setRot] = useState(0)
+  const canRef = useRef(null)
+  const imgObj = useRef(null)
+
+  const desenhar = (img, graus) => {
+    if (!canRef.current || !img) return
+    const c = canRef.current
+    const ctx = c.getContext('2d')
+    const rad = (graus * Math.PI) / 180
+    const cos = Math.abs(Math.cos(rad)), sin = Math.abs(Math.sin(rad))
+    c.width  = Math.round(img.naturalWidth * cos + img.naturalHeight * sin)
+    c.height = Math.round(img.naturalWidth * sin + img.naturalHeight * cos)
+    ctx.clearRect(0, 0, c.width, c.height)
+    ctx.save()
+    ctx.translate(c.width / 2, c.height / 2)
+    ctx.rotate(rad)
+    ctx.drawImage(img, -img.naturalWidth / 2, -img.naturalHeight / 2)
+    ctx.restore()
+  }
+
+  useEffect(() => {
+    if (!src) return
+    const img = new Image()
+    img.onload = () => { imgObj.current = img; desenhar(img, rot) }
+    img.src = src
+  }, [src])
+
+  useEffect(() => { if (imgObj.current) desenhar(imgObj.current, rot) }, [rot])
+
+  const load = (e) => {
+    const f = e.target.files[0]; if (!f) return
+    const r = new FileReader()
+    r.onload = (ev) => { setSrc(ev.target.result); setRot(0) }
+    r.readAsDataURL(f)
+  }
+
+  const baixar = () => {
+    const a = document.createElement('a')
+    a.download = 'foto-endireitada.jpg'
+    a.href = canRef.current.toDataURL('image/jpeg', 0.93)
+    a.click()
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <label className="calc-campo" style={{ cursor: 'pointer' }}>
+        <span>Selecionar foto</span>
+        <div className="calc-input" style={{ cursor: 'pointer' }}><input type="file" accept="image/*" onChange={load} /></div>
+      </label>
+      {src && (
+        <>
+          <label className="calc-campo">
+            <span>Rotação: {rot}°</span>
+            <div className="calc-input" style={{ padding: '8px 16px' }}>
+              <input type="range" min="-180" max="180" step="0.5" value={rot}
+                onChange={e => setRot(+e.target.value)}
+                style={{ width: '100%', accentColor: 'var(--gold-2)' }} />
+            </div>
+          </label>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button className="btn btn-ghost" style={{ flex: 1 }} type="button" onClick={() => setRot(r => +(r - 90).toFixed(1))}>↺ −90°</button>
+            <button className="btn btn-ghost" style={{ flex: 1 }} type="button" onClick={() => setRot(0)}>Zerar</button>
+            <button className="btn btn-ghost" style={{ flex: 1 }} type="button" onClick={() => setRot(r => +(r + 90).toFixed(1))}>↻ +90°</button>
+          </div>
+          <canvas ref={canRef} style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid var(--border)' }} />
+          <button className="btn btn-gold" type="button" onClick={baixar}>⬇ Baixar foto corrigida</button>
+        </>
+      )}
+      {nota('Processamento 100% no seu navegador — a foto não é enviada a nenhum servidor.')}
+    </div>
+  )
+}
+
+function MarcaDAguaFoto() {
+  const [src, setSrc] = useState(null)
+  const [texto, setTexto] = useState('@viniciusgraton.imoveis')
+  const [pos, setPos] = useState('br')
+  const [opac, setOpac] = useState(75)
+  const [tam, setTam] = useState(28)
+  const canRef = useRef(null)
+  const imgObj = useRef(null)
+
+  const desenhar = (img) => {
+    if (!canRef.current || !img) return
+    const c = canRef.current
+    c.width  = img.naturalWidth  || img.width
+    c.height = img.naturalHeight || img.height
+    const ctx = c.getContext('2d')
+    ctx.drawImage(img, 0, 0)
+    if (!texto.trim()) return
+    ctx.save()
+    ctx.globalAlpha = opac / 100
+    const fontSize = Math.max(18, Math.round((c.width / 900) * tam))
+    ctx.font = `bold ${fontSize}px Arial, sans-serif`
+    ctx.lineWidth = Math.max(2, fontSize * 0.06)
+    ctx.strokeStyle = 'rgba(0,0,0,0.75)'
+    ctx.fillStyle = '#ffffff'
+    const margin = fontSize * 0.9
+    let x, y
+    if (pos === 'tl')      { x = margin;           y = fontSize + margin; ctx.textAlign = 'left';   ctx.textBaseline = 'bottom' }
+    else if (pos === 'tr') { x = c.width - margin;  y = fontSize + margin; ctx.textAlign = 'right';  ctx.textBaseline = 'bottom' }
+    else if (pos === 'bl') { x = margin;            y = c.height - margin; ctx.textAlign = 'left';   ctx.textBaseline = 'bottom' }
+    else if (pos === 'br') { x = c.width - margin;  y = c.height - margin; ctx.textAlign = 'right';  ctx.textBaseline = 'bottom' }
+    else                   { x = c.width / 2;       y = c.height / 2;      ctx.textAlign = 'center'; ctx.textBaseline = 'middle' }
+    ctx.strokeText(texto, x, y)
+    ctx.fillText(texto, x, y)
+    ctx.restore()
+  }
+
+  useEffect(() => {
+    if (!src) return
+    const img = new Image()
+    img.onload = () => { imgObj.current = img; desenhar(img) }
+    img.src = src
+  }, [src])
+
+  useEffect(() => { if (imgObj.current) desenhar(imgObj.current) }, [texto, pos, opac, tam])
+
+  const load = (e) => {
+    const f = e.target.files[0]; if (!f) return
+    const r = new FileReader()
+    r.onload = (ev) => setSrc(ev.target.result)
+    r.readAsDataURL(f)
+  }
+
+  const baixar = () => {
+    const a = document.createElement('a')
+    a.download = 'foto-com-marca.jpg'
+    a.href = canRef.current.toDataURL('image/jpeg', 0.93)
+    a.click()
+  }
+
+  const POS = [
+    { v: 'tl', t: 'Canto superior esquerdo' }, { v: 'tr', t: 'Canto superior direito' },
+    { v: 'bl', t: 'Canto inferior esquerdo' }, { v: 'br', t: 'Canto inferior direito' },
+    { v: 'center', t: 'Centro' },
+  ]
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <label className="calc-campo" style={{ cursor: 'pointer' }}>
+        <span>Selecionar foto</span>
+        <div className="calc-input" style={{ cursor: 'pointer' }}><input type="file" accept="image/*" onChange={load} /></div>
+      </label>
+      <label className="calc-campo">
+        <span>Texto da marca d'água</span>
+        <div className="calc-input"><input value={texto} onChange={e => setTexto(e.target.value)} placeholder="@viniciusgraton.imoveis" /></div>
+      </label>
+      <Select label="Posição" valor={pos} onChange={setPos} opcoes={POS} />
+      <label className="calc-campo">
+        <span>Opacidade: {opac}%</span>
+        <div className="calc-input" style={{ padding: '8px 16px' }}>
+          <input type="range" min="20" max="100" value={opac}
+            onChange={e => setOpac(+e.target.value)}
+            style={{ width: '100%', accentColor: 'var(--gold-2)' }} />
+        </div>
+      </label>
+      <label className="calc-campo">
+        <span>Tamanho: {tam}px</span>
+        <div className="calc-input" style={{ padding: '8px 16px' }}>
+          <input type="range" min="12" max="60" value={tam}
+            onChange={e => setTam(+e.target.value)}
+            style={{ width: '100%', accentColor: 'var(--gold-2)' }} />
+        </div>
+      </label>
+      {src && (
+        <>
+          <canvas ref={canRef} style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid var(--border)' }} />
+          <button className="btn btn-gold" type="button" onClick={baixar}>⬇ Baixar com marca d'água</button>
+        </>
+      )}
+      {nota('Tudo no seu navegador — a foto não é enviada a nenhum servidor.')}
+    </div>
+  )
+}
+
+function RedimensionarFoto() {
+  const [src, setSrc] = useState(null)
+  const [origW, setOrigW] = useState(0)
+  const [origH, setOrigH] = useState(0)
+  const [novaW, setNovaW] = useState('')
+  const [proporcional, setProporcional] = useState(true)
+  const canRef = useRef(null)
+  const imgObj = useRef(null)
+
+  useEffect(() => {
+    if (!src) return
+    const img = new Image()
+    img.onload = () => { imgObj.current = img; setOrigW(img.naturalWidth); setOrigH(img.naturalHeight); setNovaW(String(img.naturalWidth)) }
+    img.src = src
+  }, [src])
+
+  const novaH = proporcional && origW && novaW ? Math.round((+novaW / origW) * origH) : origH
+
+  const load = (e) => {
+    const f = e.target.files[0]; if (!f) return
+    const r = new FileReader()
+    r.onload = (ev) => setSrc(ev.target.result)
+    r.readAsDataURL(f)
+  }
+
+  const baixar = () => {
+    if (!imgObj.current || !canRef.current) return
+    const c = canRef.current
+    c.width = +novaW || origW
+    c.height = novaH
+    c.getContext('2d').drawImage(imgObj.current, 0, 0, c.width, c.height)
+    const a = document.createElement('a')
+    a.download = `foto-${c.width}x${c.height}.jpg`
+    a.href = c.toDataURL('image/jpeg', 0.93)
+    a.click()
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <label className="calc-campo" style={{ cursor: 'pointer' }}>
+        <span>Selecionar foto</span>
+        <div className="calc-input" style={{ cursor: 'pointer' }}><input type="file" accept="image/*" onChange={load} /></div>
+      </label>
+      {src && origW > 0 && (
+        <>
+          <p className="calc-nota" style={{ margin: 0 }}>Original: {origW} × {origH} px</p>
+          <Campo label="Nova largura (px)" valor={novaW} onChange={setNovaW} />
+          <label className="calc-check">
+            <input type="checkbox" checked={proporcional} onChange={e => setProporcional(e.target.checked)} />
+            <span>Manter proporção — altura resultante: {novaH} px</span>
+          </label>
+          <canvas ref={canRef} style={{ display: 'none' }} />
+          <button className="btn btn-gold" type="button" onClick={baixar}>⬇ Redimensionar e baixar</button>
+        </>
+      )}
+      {nota('Ideal para reduzir fotos antes de enviar pelo WhatsApp ou publicar no portal.')}
+    </div>
+  )
+}
+
 // ─── mapa de renders ─────────────────────────────────────────────────────────
 const RENDER = {
   financiamento: CalcFinanciamento, capacidade: CalcCapacidade, renda: CalcRenda,
@@ -266,6 +510,7 @@ const RENDER = {
   aluguel: CalcAluguel, rentabilidade: CalcRentabilidade, investir: CalcInvestir,
   entrada: CalcEntrada, ganho: CalcGanho, valorm2: CalcValorM2, score: CalcScore,
   checklist: Checklist, acm: CalcACM, comissao: CalcComissao, ficha: FichaAvaliacao,
+  endireitar: EndireitarFoto, 'marca-agua': MarcaDAguaFoto, redimensionar: RedimensionarFoto,
 }
 
 // ─── componente principal ────────────────────────────────────────────────────
@@ -282,12 +527,6 @@ export default function Ferramentas() {
     description: 'Portal completo: simulador de financiamento, FGTS, rentabilidade, ITBI, comparador de imóveis e ferramentas exclusivas para corretores. Grátis, sem cadastro.',
     path: '/ferramentas',
   })
-
-  useEffect(() => {
-    const temaAnterior = getTema()
-    aplicarTema('escuro')
-    return () => aplicarTema(temaAnterior)
-  }, [])
 
   useEffect(() => {
     try { setIsCorretor(!!localStorage.getItem('vg_corretor')) } catch {}

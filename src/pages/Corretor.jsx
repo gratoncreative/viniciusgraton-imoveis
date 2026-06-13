@@ -593,7 +593,7 @@ function GateCorretor({ onOk }) {
 
       <div className="corr-form-area">
         {/* Planos */}
-        <p style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-mute)', marginBottom: 10 }}>Escolha seu plano</p>
+        <p style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-mute)', marginBottom: 10, marginTop: 28 }}>Escolha seu plano</p>
         <div className="corr-planos-v2">
           {PLANOS.map((p) => (
             <button
