@@ -5,7 +5,7 @@
  */
 
 const SITE = 'https://viniciusgraton.com.br'
-const TODAY = '2026-06-12'
+const TODAY = new Date().toISOString().slice(0, 10)
 
 const STATIC = [
   { loc: '/', changefreq: 'weekly', priority: '1.0', lastmod: TODAY },

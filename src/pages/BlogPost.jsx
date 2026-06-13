@@ -49,11 +49,13 @@ export default function BlogPost() {
     const faqBloco = (p.conteudo || []).find((b) => b.tipo === 'faq')
     const grafo = [{
       '@type': 'Article',
+      '@id': `${url}#article`,
       headline: p.titulo, description: p.resumo, datePublished: p.data, dateModified: p.atualizado || p.data, articleSection: p.categoria,
-      ...(p.capa ? { image: `https://viniciusgraton.com.br${p.capa}` } : {}),
-      author: { '@type': 'Person', name: 'Vinícius Graton', jobTitle: 'Consultor de Imóveis', worksFor: 'Rotina Imobiliária' },
-      publisher: { '@type': 'Organization', name: 'Vinícius Graton Imóveis' },
-      mainEntityOfPage: url,
+      url,
+      ...(p.capa ? { image: { '@type': 'ImageObject', url: `https://viniciusgraton.com.br${p.capa}`, contentUrl: `https://viniciusgraton.com.br${p.capa}` } } : {}),
+      author: { '@type': 'Person', name: 'Vinícius Graton', jobTitle: 'Consultor de Imóveis', worksFor: { '@type': 'Organization', name: 'Rotina Imobiliária', url: 'https://www.rotina.com.br/' } },
+      publisher: { '@type': 'Organization', name: 'Vinícius Graton Imóveis', url: 'https://viniciusgraton.com.br', logo: { '@type': 'ImageObject', url: 'https://viniciusgraton.com.br/icon-512.png', width: 512, height: 512 }},
+      mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     }]
     if (faqBloco && (faqBloco.perguntas || []).length) {
       grafo.push({ '@type': 'FAQPage', mainEntity: faqBloco.perguntas.map((q) => ({ '@type': 'Question', name: q.q, acceptedAnswer: { '@type': 'Answer', text: q.a } })) })
