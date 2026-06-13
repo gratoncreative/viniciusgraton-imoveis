@@ -4475,28 +4475,28 @@ html[data-theme="dark"] .placa-card i { color: #9298a6; }
 .cat-pagina { min-height:100vh; }
 .cat-header { padding:60px 0 28px; border-bottom:1px solid var(--border); }
 .cat-titulo { font-family:var(--font-head); font-size:clamp(1.5rem,3vw,2rem); font-weight:900; color:var(--text); margin:8px 0 0; display:flex; align-items:center; flex-wrap:wrap; gap:14px; }
-.cat-limpar { font-size:0.78rem; font-weight:600; color:var(--gold-2); background:var(--gold-1); border:1px solid rgba(184,134,47,.3); border-radius:20px; padding:5px 14px; cursor:pointer; flex-shrink:0; }
+.cat-pagina .cat-limpar { font-size:0.78rem; font-weight:600; color:var(--gold-2); background:var(--gold-1); border:1px solid rgba(184,134,47,.3); border-radius:20px; padding:5px 14px; cursor:pointer; flex-shrink:0; }
 .cat-busca-wrap { position:relative; margin-top:20px; max-width:480px; }
 .cat-busca-ico { position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--text-mute); pointer-events:none; }
 .cat-busca { width:100%; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:11px 40px 11px 42px; font-size:0.9rem; color:var(--text); transition:border-color .18s; box-sizing:border-box; }
 .cat-busca:focus { outline:none; border-color:var(--gold-2); }
 .cat-busca-clear { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-mute); cursor:pointer; font-size:1.1rem; padding:4px; }
 
-/* Layout */
-.cat-layout { display:grid; grid-template-columns:220px 1fr; gap:32px; padding:36px 0 72px; align-items:start; }
-@media (max-width:820px) { .cat-layout { grid-template-columns:1fr; } }
+/* Layout — escopo .cat-pagina para não colidir com .cat-layout do /imoveis */
+.cat-pagina .cat-layout { display:grid; grid-template-columns:220px 1fr; gap:32px; padding:36px 0 72px; align-items:start; }
+@media (max-width:820px) { .cat-pagina .cat-layout { grid-template-columns:1fr; } }
 
-/* Filtros */
-.cat-filtros { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:20px; position:sticky; top:76px; }
-@media (max-width:820px) { .cat-filtros { position:static; } }
-.cat-filtro-titulo { font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:.07em; color:var(--text-mute); margin-bottom:8px; }
-.cat-chips { display:flex; flex-wrap:wrap; gap:7px; }
-.cat-chips--col { flex-direction:column; flex-wrap:nowrap; }
-.cat-chips--scroll { max-height:220px; overflow-y:auto; }
-.cat-chip { background:transparent; border:1px solid var(--border); border-radius:8px; padding:5px 12px; font-size:0.78rem; color:var(--text-soft); cursor:pointer; text-align:left; transition:background .15s, border-color .15s, color .15s; }
-.cat-chip:hover { border-color:var(--gold-2); color:var(--text); }
-.cat-chip--ativo { background:var(--gold-2); border-color:var(--gold-2); color:#fff; font-weight:700; }
-.cat-btn-limpar { width:100%; margin-top:4px; font-size:0.8rem; }
+/* Filtros — escopo .cat-pagina para não colidir com .cat-filtros do /imoveis */
+.cat-pagina .cat-filtros { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:20px; position:sticky; top:76px; }
+@media (max-width:820px) { .cat-pagina .cat-filtros { position:static; } }
+.cat-pagina .cat-filtro-titulo { font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:.07em; color:var(--text-mute); margin-bottom:8px; }
+.cat-pagina .cat-chips { display:flex; flex-wrap:wrap; gap:7px; }
+.cat-pagina .cat-chips--col { flex-direction:column; flex-wrap:nowrap; }
+.cat-pagina .cat-chips--scroll { max-height:220px; overflow-y:auto; }
+.cat-pagina .cat-chip { background:transparent; border:1px solid var(--border); border-radius:8px; padding:5px 12px; font-size:0.78rem; color:var(--text-soft); cursor:pointer; text-align:left; transition:background .15s, border-color .15s, color .15s; }
+.cat-pagina .cat-chip:hover { border-color:var(--gold-2); color:var(--text); }
+.cat-pagina .cat-chip--ativo { background:var(--gold-2); border-color:var(--gold-2); color:#fff; font-weight:700; }
+.cat-pagina .cat-btn-limpar { width:100%; margin-top:4px; font-size:0.8rem; }
 
 /* Resultado */
 .cat-resultado { display:flex; flex-direction:column; gap:24px; }

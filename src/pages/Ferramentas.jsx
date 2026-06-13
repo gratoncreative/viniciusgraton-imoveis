@@ -629,14 +629,14 @@ export default function Ferramentas() {
                   <div className="ferr-pro-banner-planos">
                     <Link to="/corretor" className="ferr-pro-plano">
                       <span className="ferr-pro-plano-nome">Semanal</span>
-                      <b className="ferr-pro-plano-preco">R$ 15</b>
+                      <b className="ferr-pro-plano-preco">R$ 49,90</b>
                       <span className="ferr-pro-plano-per">/ 7 dias</span>
                       <span className="ferr-pro-plano-cta">Assinar agora</span>
                     </Link>
                     <Link to="/corretor" className="ferr-pro-plano ferr-pro-plano--dest">
                       <span className="ferr-pro-plano-badge">Mais popular</span>
                       <span className="ferr-pro-plano-nome">Mensal</span>
-                      <b className="ferr-pro-plano-preco">R$ 49,90</b>
+                      <b className="ferr-pro-plano-preco">R$ 150</b>
                       <span className="ferr-pro-plano-per">/ 30 dias</span>
                       <span className="ferr-pro-plano-cta">Assinar agora</span>
                     </Link>

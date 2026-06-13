@@ -67,22 +67,22 @@ export default function EstudoM2({ im, est, onClose, onLaudo }) {
       {onLaudo && (
         <div className="em2-oferta">
           <div className="em2-oferta-preco">
-            <span className="em2-preco-tag">Laudo completo em PDF · oferta de lançamento</span>
+            <span className="em2-preco-tag">Laudo técnico em PDF · metodologia bancária NBR 14653</span>
             <div className="em2-preco-row">
-              <span className="em2-preco-de">R$ 49,90</span>
-              <strong className="em2-preco-por">R$ 29,90</strong>
+              <span className="em2-preco-de">R$ 399</span>
+              <strong className="em2-preco-por">R$ 250</strong>
             </div>
           </div>
           <ul className="em2-gatilhos">
-            <li><span className="em2-check">✓</span> Todos os {est.baseLabel} com os cálculos detalhados</li>
-            <li><span className="em2-check">✓</span> Metodologia bancária NBR 14653 completa</li>
-            <li><span className="em2-check">✓</span> PDF entregue em instantes · vale para negociar e financiar</li>
+            <li><span className="em2-check">✓</span> Todos os {est.baseLabel} com preço, área e homogeneização detalhada</li>
+            <li><span className="em2-check">✓</span> Metodologia NBR 14653 — a mesma que bancos usam para aprovar financiamento</li>
+            <li><span className="em2-check">✓</span> PDF em minutos · argumento técnico na hora de negociar o preço</li>
           </ul>
           <button className="em2-laudo em2-laudo--destaque" onClick={onLaudo}>
-            <span>📄 Quero o laudo completo</span>
-            <em>por apenas R$ 29,90 · entrega imediata em PDF</em>
+            <span>📄 Quero o laudo e entrar na negociação com dados</span>
+            <em>R$ 250 · entrega imediata · minha decisão precisa de dados reais</em>
           </button>
-          <p className="em2-urgencia">⏳ Preço promocional · válido por tempo limitado</p>
+          <p className="em2-urgencia">Você está prestes a investir centenas de milhares de reais. Saber se o preço está justo por R$ 250 é a decisão mais inteligente antes de assinar qualquer coisa.</p>
         </div>
       )}
     </div>,
