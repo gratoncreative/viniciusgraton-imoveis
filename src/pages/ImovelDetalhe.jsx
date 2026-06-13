@@ -197,6 +197,21 @@ export default function ImovelDetalhe() {
   })
   const [pdfProc, setPdfProc] = useState(false)
   const [estudoAberto, setEstudoAberto] = useState(false)
+  const [copiado, setCopiado] = useState(false)
+  const compartilhar = async () => {
+    if (!im) return
+    const url = `https://viniciusgraton.com.br/imovel/${im.codigo}`
+    const title = `${im.tipo} no ${im.bairro} — ${formatPreco(im.preco)}`
+    if (navigator.share) {
+      try { await navigator.share({ title, url, text: resumoImovel(im) }) } catch {}
+    } else {
+      try {
+        await navigator.clipboard.writeText(url)
+        setCopiado(true)
+        setTimeout(() => setCopiado(false), 2500)
+      } catch {}
+    }
+  }
   const est = useMemo(() => { try { return estudoM2(im, feed) } catch { return { ok: false } } }, [im, feed])
   const baixarPdf = async () => {
     if (!im) return
@@ -244,23 +259,31 @@ export default function ImovelDetalhe() {
     if (!im) return
     const origin = window.location.origin
     const abs = (u) => (u && u.startsWith('http') ? u : origin + u)
-    const props = [
-      im.quartos > 0 && { '@type': 'PropertyValue', name: 'Quartos', value: im.quartos },
-      im.suites > 0 && { '@type': 'PropertyValue', name: 'Suítes', value: im.suites },
-      im.banheiros > 0 && { '@type': 'PropertyValue', name: 'Banheiros', value: im.banheiros },
-      im.vagas > 0 && { '@type': 'PropertyValue', name: 'Vagas', value: im.vagas },
-      im.area > 0 && { '@type': 'PropertyValue', name: 'Área', value: im.area, unitText: 'm²' },
-    ].filter(Boolean)
+    const agente = {
+      '@type': 'RealEstateAgent',
+      name: CONFIG.marca,
+      url: 'https://viniciusgraton.com.br',
+      telephone: '+55-34-99157-0494',
+      areaServed: { '@type': 'City', name: 'Uberlândia', addressRegion: 'MG', addressCountry: 'BR' },
+    }
+    const todasAmenidades = [
+      ...((im.caracteristicas?.internas) || []),
+      ...((im.caracteristicas?.externas) || []),
+      ...((im.caracteristicas?.extras) || []),
+      ...((im.amenidades) || []),
+    ]
+    const videoOk = im.video && !/NnAmly9Gb9s/.test(im.video) ? im.video : ''
     const data = {
-      '@context': 'https://schema.org',
       '@type': 'RealEstateListing',
+      '@id': `https://viniciusgraton.com.br/imovel/${im.codigo}`,
       name: `${im.tipo} no ${im.bairro}, Uberlândia-MG`,
       description: resumoImovel(im),
-      image: fotos.map((u) => abs(u.split('?')[0])),
+      image: fotos.filter(Boolean).map((u) => abs(u.split('?')[0])),
       url: `https://viniciusgraton.com.br/imovel/${im.codigo}`,
       ...(im.area > 0 && { floorSize: { '@type': 'QuantitativeValue', value: im.area, unitCode: 'MTK' } }),
-      ...(im.quartos > 0 && { numberOfRooms: im.quartos }),
+      ...(im.quartos > 0 && { numberOfRooms: im.quartos, numberOfBedrooms: im.quartos }),
       ...(im.banheiros > 0 && { numberOfBathroomsTotal: im.banheiros }),
+      ...(im.vagas > 0 && { numberOfParkingSpaces: im.vagas }),
       address: {
         '@type': 'PostalAddress',
         addressLocality: im.cidade || 'Uberlândia',
@@ -268,18 +291,32 @@ export default function ImovelDetalhe() {
         addressCountry: 'BR',
         ...(im.endereco && { streetAddress: im.endereco }),
       },
-      additionalProperty: props,
+      ...(todasAmenidades.length > 0 && {
+        amenityFeature: todasAmenidades.slice(0, 20).map((a) => ({
+          '@type': 'LocationFeatureSpecification',
+          name: String(a),
+          value: true,
+        })),
+      }),
+      ...(videoOk && {
+        video: {
+          '@type': 'VideoObject',
+          name: `Vídeo do ${im.tipo} no ${im.bairro}`,
+          url: ytWatch(videoOk),
+          thumbnailUrl: fotos[0] ? abs(fotos[0]) : undefined,
+        },
+      }),
+      broker: agente,
       offers: {
         '@type': 'Offer',
         price: im.preco,
         priceCurrency: 'BRL',
         availability: 'https://schema.org/InStock',
         url: `https://viniciusgraton.com.br/imovel/${im.codigo}`,
-        seller: { '@type': 'RealEstateAgent', name: CONFIG.marca, areaServed: 'Uberlândia - MG' },
+        seller: agente,
       },
     }
     const breadcrumb = {
-      '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://viniciusgraton.com.br/' },
@@ -290,7 +327,7 @@ export default function ImovelDetalhe() {
     const el = document.createElement('script')
     el.type = 'application/ld+json'
     el.id = 'ld-imovel'
-    el.text = JSON.stringify({ '@context': 'https://schema.org', '@graph': [data, breadcrumb] })
+    el.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': [data, breadcrumb] })
     document.head.appendChild(el)
     return () => { document.getElementById('ld-imovel')?.remove() }
   }, [im, fotos])
@@ -481,6 +518,10 @@ export default function ImovelDetalhe() {
               <AgendarVisita im={im} />
 
               <div className="det-ferramentas">
+                <button className={`det-ferr-btn ${copiado ? 'det-ferr-btn--ok' : ''}`} onClick={compartilhar}>
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                  {copiado ? 'Link copiado!' : 'Compartilhar'}
+                </button>
                 <button className={`det-ferr-btn ${pdfProc ? 'det-ferr-btn--proc' : ''}`} onClick={baixarPdf} disabled={pdfProc}>
                   {pdfProc ? (
                     <span className="pdfgen" role="status" aria-label="Gerando o PDF">

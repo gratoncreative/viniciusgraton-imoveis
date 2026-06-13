@@ -64,6 +64,9 @@ export default function Galeria({ fotos = [], alt = '' }) {
             src={fotos[i]}
             alt={alt}
             referrerPolicy="no-referrer"
+            fetchPriority={i === 0 ? 'high' : 'auto'}
+            loading="eager"
+            decoding="async"
             onError={onImgError}
             onClick={() => setAberto(true)}
             initial={{ opacity: 0, scale: 1.0 }}
