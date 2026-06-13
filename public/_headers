@@ -40,6 +40,14 @@
 /catalogo.json
   Cache-Control: public, max-age=1800, stale-while-revalidate=3600
 
+# Preview de posts do blog: 1h, serve stale 2h (regenerado só em build)
+/blog-preview.json
+  Cache-Control: public, max-age=3600, stale-while-revalidate=7200
+
+# Novidades do dia: 30 min (sync diário às 05h)
+/novidades.json
+  Cache-Control: public, max-age=1800, stale-while-revalidate=3600
+
 # Imagens e ícones estáticos na raiz
 /*.svg
   Cache-Control: public, max-age=31536000, immutable
