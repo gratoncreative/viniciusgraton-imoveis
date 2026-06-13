@@ -1,38 +1,144 @@
+# ============================================================
 # Vinícius Graton Imóveis — Uberlândia/MG
-# Buscadores e assistentes de IA são bem-vindos a ler e indexar o site.
+# Política de acesso a robôs: permite buscadores e assistentes
+# de pesquisa que trazem clientes; bloqueia bots de treinamento.
+# Referência: https://github.com/ai-robots-txt/ai.robots.txt
+# ============================================================
 
+# ─── Regras gerais ───────────────────────────────────────────
 User-agent: *
 Allow: /
-# Áreas privadas / administrativas — fora dos buscadores
 Disallow: /admin
 Disallow: /painel
 Disallow: /api/
 Disallow: /conta
 Disallow: /favoritos
+Disallow: /catalogo.json
+Disallow: /novidades.json
 
-# Assistentes / crawlers de IA (descoberta em ChatGPT, Gemini, Claude, Perplexity, etc.)
-User-agent: GPTBot
-Allow: /
+# ─── Buscadores e assistentes de pesquisa ────────────────────
+# Estes bots são úteis: citam o site e trazem clientes.
 
+# OAI-SearchBot → indexa para buscas no ChatGPT (traz tráfego)
 User-agent: OAI-SearchBot
 Allow: /
 
+# ChatGPT-User → usuário do ChatGPT buscando imóveis em tempo real
 User-agent: ChatGPT-User
 Allow: /
 
-User-agent: Google-Extended
+# Claude-SearchBot / Claude-User → busca e fetch sob demanda do Claude
+User-agent: Claude-SearchBot
 Allow: /
 
-User-agent: ClaudeBot
+User-agent: Claude-User
 Allow: /
 
-User-agent: anthropic-ai
-Allow: /
-
+# PerplexityBot / Perplexity-User → Perplexity Search (cita fontes)
 User-agent: PerplexityBot
 Allow: /
 
-User-agent: CCBot
+User-agent: Perplexity-User
 Allow: /
 
+# ─── Bots de TREINAMENTO de IA — bloqueados ──────────────────
+# Estes bots copiam conteúdo para treinar modelos; não trazem clientes.
+
+# GPTBot → OpenAI coleta dados para treinar modelos (não traz clientes)
+User-agent: GPTBot
+Disallow: /
+
+# ClaudeBot → Anthropic coleta dados para treinar modelos Claude
+User-agent: ClaudeBot
+Disallow: /
+
+# anthropic-ai → crawler legado da Anthropic (treinamento)
+User-agent: anthropic-ai
+Disallow: /
+
+# Google-Extended → alimenta Gemini AI (treinamento de modelos Google)
+User-agent: Google-Extended
+Disallow: /
+
+# CCBot → Common Crawl, base de dados para treinamento de todos os LLMs
+User-agent: CCBot
+Disallow: /
+
+# Applebot-Extended → Apple Intelligence AI training
+User-agent: Applebot-Extended
+Disallow: /
+
+# Meta-ExternalAgent → treinamento dos modelos Llama / Meta AI
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+# Meta-ExternalFetcher → crawler auxiliar da Meta para treinamento
+User-agent: Meta-ExternalFetcher
+Disallow: /
+
+# Amazonbot → Amazon AI training (Alexa, Rufus)
+User-agent: Amazonbot
+Disallow: /
+
+# Bytespider → TikTok/ByteDance (viola robots.txt sistematicamente)
+User-agent: Bytespider
+Disallow: /
+
+# Diffbot → extrai dados estruturados para alimentar modelos de IA
+User-agent: Diffbot
+Disallow: /
+
+# cohere-ai → Cohere AI training crawler
+User-agent: cohere-ai
+Disallow: /
+
+# PetalBot → Huawei search / AI training
+User-agent: PetalBot
+Disallow: /
+
+# AI2Bot → Allen Institute for AI (Semantic Scholar training)
+User-agent: AI2Bot
+Disallow: /
+
+# DataForSeoBot → coleta dados de SEO para revenda e treinamento
+User-agent: DataForSeoBot
+Disallow: /
+
+# TurnitinBot → copia conteúdo para base de detecção de plágio
+User-agent: TurnitinBot
+Disallow: /
+
+# Omgilibot → extração de conteúdo para treinamento e análise
+User-agent: Omgilibot
+Disallow: /
+
+# Timpibot → scraper de conteúdo para IA
+User-agent: Timpibot
+Disallow: /
+
+# FacebookBot → Meta crawler para treinamento de modelos
+User-agent: FacebookBot
+Disallow: /
+
+# SemrushBot → copia estrutura e conteúdo para ferramenta de concorrência
+User-agent: SemrushBot
+Disallow: /
+
+# AhrefsBot → ferramenta de análise de backlinks (copia conteúdo)
+User-agent: AhrefsBot
+Disallow: /
+
+# MJ12bot → Majestic SEO crawler (coleta de dados)
+User-agent: MJ12bot
+Disallow: /
+
+# DotBot → Moz scraper
+User-agent: DotBot
+Disallow: /
+
+# img2dataset → crawler de imagens para datasets de treino
+User-agent: img2dataset
+Disallow: /
+
+# Sitemap
 Sitemap: https://viniciusgraton.com.br/sitemap.xml

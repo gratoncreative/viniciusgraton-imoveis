@@ -348,8 +348,8 @@ export default function CatalogoLancamentos() {
         <div className="cat-resultado">
           {resultado.length > 0 ? (
             <div className="lan-grid lan-grid--cat">
-              {resultado.map((e) => (
-                <CardEmpLan key={`${e.construtoraSlug}--${e.slug}`} e={e} />
+              {resultado.map((e, idx) => (
+                <CardEmpLan key={e.blowId || `${e.construtoraSlug}--${e.slug}--${idx}`} e={e} />
               ))}
             </div>
           ) : (

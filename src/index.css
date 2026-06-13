@@ -4722,24 +4722,35 @@ html[data-theme="dark"] .placa-card i { color: #9298a6; }
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  padding: 14px 20px;
-  flex: 1;
-  min-width: 80px;
+  padding: 14px 16px;
+  flex: 1 1 0;
+  min-width: 0;
   border-right: 1px solid var(--border);
+  overflow: hidden;
 }
 .empd-spec:last-child { border-right: none; }
-.empd-spec-ico { color: var(--gold-2); display: flex; }
+.empd-spec-ico { color: var(--gold-2); display: flex; flex-shrink: 0; }
 .empd-spec-val {
-  font-size: 1.05rem;
+  font-size: 0.98rem;
   font-weight: 700;
   color: var(--text);
-  line-height: 1;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  text-align: center;
 }
 .empd-spec-lbl {
-  font-size: 0.72rem;
+  font-size: 0.65rem;
   color: var(--text-muted, #999);
   text-transform: uppercase;
   letter-spacing: .04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  text-align: center;
 }
 
 /* ─── urgência ──────────────────────────────────────── */
@@ -5209,6 +5220,13 @@ html[data-theme="dark"] .placa-card i { color: #9298a6; }
   .empd-plantas-grid { grid-template-columns: 1fr 1fr; }
   .empd-parc-row { flex-direction: column; }
   .empd-hero { height: 200px; }
+}
+
+@media (max-width: 480px) {
+  /* specs bar: 2 por linha em telas muito pequenas */
+  .empd-spec { flex: 0 0 50%; min-width: 0; }
+  .empd-spec:nth-child(2n) { border-right: none; }
+  .empd-spec:nth-child(n+3) { border-top: 1px solid var(--border); }
 }
 
 @media (max-width: 380px) {
