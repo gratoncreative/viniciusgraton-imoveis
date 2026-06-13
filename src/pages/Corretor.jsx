@@ -45,18 +45,18 @@ const Ico = ({ name, size = 22 }) => (
 
 // ─── ferramentas ────────────────────────────────────────────────────────────
 const TOOLS = [
-  { id: 'rotina',   nome: 'Abordagem por código',      desc: 'Mensagem de 1º contato com gatilhos e benefícios da região.',             icon: 'chat'     },
-  { id: 'legenda',  nome: 'Legenda para portais',       desc: 'Gera descrição profissional para OLX, ZAP e VivaReal em segundos.',       icon: 'doc'      },
-  { id: 'objecoes', nome: 'Script de objeções',         desc: 'Respostas prontas para as objeções mais comuns no WhatsApp.',             icon: 'msg'      },
-  { id: 'captacao', nome: 'Checklist de captação',      desc: 'Lista completa do que verificar na captação de um novo imóvel.',          icon: 'list'     },
-  { id: 'fotos',    nome: 'Estúdio de fotos',           desc: 'Endireitar, filtros, super-resolução com IA e sem marca.',              icon: 'camera'   },
-  { id: 'post',     nome: 'Estúdio de publicidade',     desc: 'Posts para Story e Feed com 5 estilos de design, em lote.',              icon: 'megafone' },
-  { id: 'roteiro',  nome: 'Roteiro de vídeo',           desc: 'Gera roteiro completo para gravar o vídeo do imóvel de forma profissional.', icon: 'video' },
-  { id: 'marca',    nome: 'Remover marcas das fotos',   desc: 'Remove logotipos e marcas com IA, direto no navegador.',               icon: 'varinha'  },
-  { id: 'comissao', nome: 'Calculadora de comissão',    desc: 'Comissão, repasse e líquido de uma venda.',                              icon: 'percent'  },
-  { id: 'acm',      nome: 'Análise de mercado (ACM)',   desc: 'Sugere o preço pelo m² do bairro com base nos imóveis do catálogo.',     icon: 'chart'    },
-  { id: 'ficha',    nome: 'Ficha de avaliação',         desc: 'Resumo formatado do imóvel para enviar ao cliente.',                     icon: 'edit'     },
-  { id: 'agenda',   nome: 'Planner de visitas',         desc: 'Organize sua agenda de visitas do dia com horários e observações.',      icon: 'clock'    },
+  { id: 'rotina',   nome: 'Abordagem por código',    desc: 'Mensagem de 1º contato com gatilhos e benefícios da região.',                 icon: 'chat',    dor: 'Cada hora sem resposta é um lead que o concorrente está capturando. Com o código de abordagem, você envia em 30 segundos uma mensagem personalizada para o bairro e o perfil do cliente — enquanto ele ainda está com o imóvel na cabeça.' },
+  { id: 'legenda',  nome: 'Legenda para portais',    desc: 'Gera descrição profissional para OLX, ZAP e VivaReal em segundos.',           icon: 'doc',     dor: 'Você gasta quanto tempo descrevendo o mesmo imóvel em três portais? Aqui você gera uma legenda completa e profissional em segundos — e adapta para cada portal sem digitar nada de novo.' },
+  { id: 'objecoes', nome: 'Script de objeções',      desc: 'Respostas prontas para as objeções mais comuns no WhatsApp.',                 icon: 'msg',     dor: '"Vou pensar." "Tá caro." "Não é a hora." Essas frases travam a maioria dos corretores. O script dá a você a resposta certa, no tom certo, para cada objeção — sem parecer forçado e sem perder o cliente.' },
+  { id: 'captacao', nome: 'Checklist de captação',   desc: 'Lista completa do que verificar na captação de um novo imóvel.',              icon: 'list',    dor: 'Já perdeu uma captação porque chegou sem as perguntas certas ou esqueceu de verificar a documentação? O checklist garante que você não deixa nenhum detalhe de lado — e demonstra profissionalismo desde a primeira visita.' },
+  { id: 'fotos',    nome: 'Estúdio de fotos',        desc: 'Endireitar, filtros, super-resolução com IA e sem marca.',                   icon: 'camera',  dor: 'Foto torta ou escura mata o anúncio antes de o cliente clicar. Com IA, você endireita, melhora o contraste e aumenta a resolução direto no navegador — sem Photoshop, sem precisar enviar para edição.' },
+  { id: 'post',     nome: 'Estúdio de publicidade',  desc: 'Posts para Story e Feed com 5 estilos de design, em lote.',                  icon: 'megafone', dor: 'Fazer um post profissional para Instagram leva horas se feito manualmente. A ferramenta gera posts para Story e Feed em 5 estilos diferentes, em lote, em menos de 1 minuto — você fica ativo nas redes sem abrir o Canva.' },
+  { id: 'roteiro',  nome: 'Roteiro de vídeo',        desc: 'Gera roteiro completo para gravar o vídeo do imóvel de forma profissional.', icon: 'video',   dor: 'Vídeo amador espanta comprador. Um roteiro profissional guia você pelos cômodos na ordem certa, destaca os pontos fortes do imóvel e termina com um CTA que converte — sem improviso, sem editar depois.' },
+  { id: 'marca',    nome: 'Remover marcas das fotos', desc: 'Remove logotipos e marcas com IA, direto no navegador.',                    icon: 'varinha', dor: 'Recebeu uma boa foto do imóvel que veio com o logo da imobiliária concorrente? Com IA, a marca sai em segundos — foto limpa, pronta para usar nos seus anúncios sem precisar tirar foto nova.' },
+  { id: 'comissao', nome: 'Calculadora de comissão', desc: 'Comissão, repasse e líquido de uma venda.',                                  icon: 'percent', dor: 'Saber exatamente quanto você vai receber antes de fechar muda a negociação. Calcule comissão total, repasse para a imobiliária e seu líquido em segundos — sem improvisação na hora de assinar.' },
+  { id: 'acm',      nome: 'Análise de mercado (ACM)', desc: 'Sugere o preço pelo m² do bairro com base nos imóveis do catálogo.',       icon: 'chart',   dor: 'Proprietário acha que o imóvel vale mais do que o mercado paga? Com a ACM, você apresenta o preço baseado no m² real do bairro — dado concreto, com fonte, sem discussão subjetiva.' },
+  { id: 'ficha',    nome: 'Ficha de avaliação',      desc: 'Resumo formatado do imóvel para enviar ao cliente.',                         icon: 'edit',    dor: 'Passar as informações do imóvel via WhatsApp em texto corrido parece amador. A ficha gera um resumo profissional formatado, pronto para enviar ao cliente em segundos — você chega na frente.' },
+  { id: 'agenda',   nome: 'Planner de visitas',      desc: 'Organize sua agenda de visitas do dia com horários e observações.',           icon: 'clock',   dor: 'Confusão de horário é uma das maiores causas de cancelamento de visita. O planner organiza seu dia com horários, endereços e observações de cada cliente — você vai a cada visita preparado e no horário.' },
 ]
 const ATALHOS = [
   { to: '/ferramentas/converter', nome: 'Conversor de fotos',  desc: 'JPG, PNG, WebP e AVIF em lote.',              icon: 'swap'    },
@@ -400,6 +400,7 @@ function GateCorretor({ onOk }) {
   const [trialOk, setTrialOk] = useState(null)
   const [ativandoMP, setAtivandoMP] = useState(false)
   const [codigoAtivado, setCodigoAtivado] = useState(null) // { codigo, expiresAt, nome, plano }
+  const [hoverTool, setHoverTool] = useState(null)
 
   const setT = (k) => (e) => setFTeste(p => ({ ...p, [k]: k === 'fone' ? mascaraFone(e.target.value) : e.target.value }))
   const setA = (k) => (e) => setFAcesso(p => ({ ...p, [k]: k === 'fone' ? mascaraFone(e.target.value) : e.target.value }))
@@ -573,7 +574,19 @@ function GateCorretor({ onOk }) {
         </p>
         <ul className="corr-lista">
           {TOOLS.map((t) => (
-            <li key={t.id}><span className="corr-lista-ico"><Ico name={t.icon} size={18} /></span><div><b>{t.nome}</b><span>{t.desc}</span></div></li>
+            <li
+              key={t.id}
+              className={hoverTool === t.id ? 'corr-lista-li--hover' : ''}
+              onMouseEnter={() => setHoverTool(t.id)}
+              onMouseLeave={() => setHoverTool(null)}
+            >
+              <span className="corr-lista-ico"><Ico name={t.icon} size={18} /></span>
+              <div>
+                <b>{t.nome}</b>
+                <span>{t.desc}</span>
+                {hoverTool === t.id && <p className="corr-lista-dor">{t.dor}</p>}
+              </div>
+            </li>
           ))}
         </ul>
       </div>
