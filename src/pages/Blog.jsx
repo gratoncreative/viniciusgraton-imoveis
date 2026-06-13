@@ -1,11 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import Reveal from '../components/Reveal'
 import CardPost from '../components/CardPost'
-import { POSTS } from '../blog'
 import { lerBlogViews } from '../engajamento'
 import { useSEO } from '../useSEO'
-
-const CATEGORIAS = ['Todos', ...Array.from(new Set(POSTS.map((p) => p.categoria)))]
 
 export default function Blog() {
   useSEO({
@@ -43,16 +40,28 @@ export default function Blog() {
     return () => { document.getElementById('blog-index-jsonld')?.remove() }
   }, [])
 
+  const [posts, setPosts] = useState(null)
   const [cat, setCat] = useState('Todos')
   const [views, setViews] = useState({})
   const [mostrar, setMostrar] = useState(12)
   const sentinela = useRef(null)
-  useEffect(() => { lerBlogViews().then(setViews) }, [])
-  const ordenados = [...POSTS].sort((a, b) => String(b.data || '').localeCompare(String(a.data || '')))
+
+  useEffect(() => {
+    fetch('/blog-preview.json')
+      .then((r) => (r.ok ? r.json() : []))
+      .then(setPosts)
+      .catch(() => setPosts([]))
+    lerBlogViews().then(setViews)
+  }, [])
+
+  useEffect(() => { setMostrar(12) }, [cat])
+
+  const categorias = posts ? ['Todos', ...Array.from(new Set(posts.map((p) => p.categoria)))] : ['Todos']
+  const ordenados = posts ? [...posts].sort((a, b) => String(b.data || '').localeCompare(String(a.data || ''))) : []
   const lista = cat === 'Todos' ? ordenados : ordenados.filter((p) => p.categoria === cat)
   const visiveis = lista.slice(0, mostrar)
   const temMais = mostrar < lista.length
-  useEffect(() => { setMostrar(12) }, [cat])
+
   useEffect(() => {
     if (!temMais) return
     const el = sentinela.current; if (!el) return
@@ -73,16 +82,22 @@ export default function Blog() {
           </div>
         </Reveal>
 
-        <div className="condo-chips" style={{ justifyContent: 'center', margin: '26px 0 30px' }}>
-          {CATEGORIAS.map((c) => (
-            <button key={c} className={`condo-chip ${cat === c ? 'on' : ''}`} onClick={() => setCat(c)}>{c}</button>
-          ))}
-        </div>
+        {posts === null ? (
+          <div className="cat-infinito" aria-busy="true"><span className="rota-spinner" /></div>
+        ) : (
+          <>
+            <div className="condo-chips" style={{ justifyContent: 'center', margin: '26px 0 30px' }}>
+              {categorias.map((c) => (
+                <button key={c} className={`condo-chip ${cat === c ? 'on' : ''}`} onClick={() => setCat(c)}>{c}</button>
+              ))}
+            </div>
 
-        <div className="post-grid">
-          {visiveis.map((p) => <CardPost key={p.slug} p={p} views={views[p.slug] || 0} />)}
-        </div>
-        {temMais && <div ref={sentinela} className="cat-infinito" aria-hidden="true"><span className="rota-spinner" /> Carregando mais artigos…</div>}
+            <div className="post-grid">
+              {visiveis.map((p) => <CardPost key={p.slug} p={p} views={views[p.slug] || 0} />)}
+            </div>
+            {temMais && <div ref={sentinela} className="cat-infinito" aria-hidden="true"><span className="rota-spinner" /> Carregando mais artigos…</div>}
+          </>
+        )}
       </div>
     </main>
   )
