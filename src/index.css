@@ -4579,3 +4579,598 @@ html[data-theme="dark"] .placa-card i { color: #9298a6; }
   .ldr-galeria-img { max-height:200px; }
   .ldr-passos-wa { display:none; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   BLOW EMPREENDIMENTO DETALHE — .empd-*
+═══════════════════════════════════════════════════════ */
+
+.empd-pagina { padding-bottom: 60px; }
+.empd-pagina .container { max-width: 1140px; }
+
+/* ─── hero ─────────────────────────────────────────── */
+.empd-hero {
+  position: relative;
+  width: 100%;
+  height: 440px;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 28px;
+  background: var(--surface);
+}
+.empd-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.empd-hero-badges {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.empd-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 6px;
+  letter-spacing: .03em;
+  backdrop-filter: blur(4px);
+}
+.empd-badge--pronto    { background: rgba(34,197,94,.85);  color: #fff; }
+.empd-badge--lancamento{ background: rgba(59,130,246,.85); color: #fff; }
+.empd-badge--obras     { background: rgba(245,158,11,.85); color: #000; }
+.empd-badge--urgente   { background: rgba(239,68,68,.9);   color: #fff; }
+.empd-badge--aviso     { background: rgba(245,158,11,.9);  color: #000; }
+.empd-badge--unid      { background: rgba(0,0,0,.6);       color: #fff; }
+
+/* ─── grid 2 col ───────────────────────────────────── */
+.empd-grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 32px;
+  align-items: start;
+}
+.empd-main { min-width: 0; }
+
+/* ─── header ───────────────────────────────────────── */
+.empd-titulo {
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 8px;
+  line-height: 1.2;
+}
+.empd-meta {
+  font-size: 0.88rem;
+  color: var(--text-muted, #aaa);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 10px;
+}
+.empd-sep { color: var(--border); margin: 0 2px; }
+.empd-meta svg { flex-shrink: 0; color: var(--gold-2); }
+.empd-entrega {
+  display: inline-block;
+  font-size: 0.82rem;
+  color: var(--gold-1);
+  background: rgba(244,217,138,.08);
+  border: 1px solid rgba(244,217,138,.2);
+  padding: 3px 10px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+}
+
+/* ─── specs bar ─────────────────────────────────────── */
+.empd-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 18px 0;
+}
+.empd-spec {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 14px 20px;
+  flex: 1;
+  min-width: 80px;
+  border-right: 1px solid var(--border);
+}
+.empd-spec:last-child { border-right: none; }
+.empd-spec-ico { color: var(--gold-2); display: flex; }
+.empd-spec-val {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+.empd-spec-lbl {
+  font-size: 0.72rem;
+  color: var(--text-muted, #999);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+/* ─── urgência ──────────────────────────────────────── */
+.empd-urgencia {
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 0 0 24px;
+  border: 1px solid var(--border);
+}
+.empd-urgencia--alta   { background: rgba(239,68,68,.08);  border-color: rgba(239,68,68,.25); }
+.empd-urgencia--media  { background: rgba(245,158,11,.08); border-color: rgba(245,158,11,.25); }
+.empd-urgencia--baixa  { background: var(--surface); }
+
+.empd-urg-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.empd-urg-txt { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+.empd-urg-sub { font-size: 0.78rem; color: var(--text-muted, #aaa); }
+.empd-urg-barra {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,.1);
+  overflow: hidden;
+}
+.empd-urg-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--gold-2), var(--gold-1));
+  transition: width .6s ease;
+}
+.empd-urgencia--alta .empd-urg-fill   { background: linear-gradient(90deg, #ef4444, #f97316); }
+.empd-urgencia--media .empd-urg-fill  { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+
+/* ─── seção genérica ────────────────────────────────── */
+.empd-secao { margin-bottom: 36px; }
+.empd-secao-titulo {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ─── unidades ──────────────────────────────────────── */
+.empd-unid-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.empd-unid-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.empd-unid-card:hover {
+  border-color: var(--gold-3);
+  box-shadow: 0 4px 16px rgba(0,0,0,.25);
+}
+.empd-unid-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.empd-unid-ap   { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+.empd-unid-badge {
+  font-size: 0.68rem;
+  background: var(--gold-1);
+  color: #000;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+.empd-unid-tipo {
+  font-size: 0.78rem;
+  color: var(--text-muted, #999);
+}
+.empd-unid-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 0.76rem;
+  color: var(--text-muted, #aaa);
+}
+.empd-unid-valor {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--gold-1);
+  margin-top: 2px;
+}
+.empd-unid-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-muted, #aaa);
+  text-decoration: none;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 6px 10px;
+  margin-top: 4px;
+  transition: background .15s, color .15s;
+}
+.empd-unid-btn:hover { background: rgba(244,217,138,.1); color: var(--gold-1); }
+.empd-ver-mais-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted, #aaa);
+  font-size: 0.84rem;
+  padding: 9px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+}
+.empd-ver-mais-btn:hover { border-color: var(--gold-2); color: var(--text); }
+
+/* ─── parcelamentos ─────────────────────────────────── */
+.empd-parc-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.empd-parc-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  min-width: 120px;
+  flex: 1;
+  text-align: center;
+}
+.empd-parc-nome    { font-size: 0.78rem; color: var(--text-muted, #aaa); margin-bottom: 4px; }
+.empd-parc-pct     { font-size: 1.25rem; font-weight: 800; color: var(--gold-1); }
+.empd-parc-detalhe { font-size: 0.75rem; color: var(--text-muted, #999); margin-top: 2px; }
+
+/* ─── fotos com legenda ─────────────────────────────── */
+.empd-fotos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+.empd-foto-item {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: zoom-in;
+  aspect-ratio: 4/3;
+  background: var(--surface);
+}
+.empd-foto-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .3s;
+}
+.empd-foto-item:hover .empd-foto-img { transform: scale(1.04); }
+.empd-foto-legenda {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,.72));
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 18px 8px 8px;
+  letter-spacing: .02em;
+}
+
+/* ─── descrição ─────────────────────────────────────── */
+.empd-desc-texto {
+  font-size: 0.92rem;
+  color: var(--text-muted, #ccc);
+  line-height: 1.7;
+  white-space: pre-line;
+  margin: 0 0 8px;
+}
+.empd-desc-toggle {
+  background: none;
+  border: none;
+  color: var(--gold-2);
+  cursor: pointer;
+  font-size: 0.82rem;
+  padding: 0;
+}
+.empd-desc-toggle:hover { color: var(--gold-1); }
+
+/* ─── plantas ───────────────────────────────────────── */
+.empd-plantas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.empd-planta-item {
+  cursor: zoom-in;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.empd-planta-img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  display: block;
+  padding: 8px;
+  background: #fff;
+}
+.empd-planta-leg {
+  font-size: 0.75rem;
+  color: var(--text-muted, #999);
+  text-align: center;
+  padding: 6px 8px 8px;
+  border-top: 1px solid var(--border);
+}
+
+/* ─── comodidades ───────────────────────────────────── */
+.empd-comods { display: flex; flex-direction: column; gap: 18px; }
+.empd-comod-grupo {}
+.empd-comod-cat {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--gold-2);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 8px;
+}
+.empd-comod-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.empd-comod-tag {
+  font-size: 0.78rem;
+  color: var(--text-muted, #ccc);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 11px;
+}
+
+/* ─── ficha técnica ─────────────────────────────────── */
+.empd-ficha { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.empd-ficha-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.empd-ficha-row:last-child { border-bottom: none; }
+.empd-ficha-key { font-size: 0.85rem; color: var(--text-muted, #aaa); }
+.empd-ficha-val { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+
+/* ─── vídeo ─────────────────────────────────────────── */
+.empd-video {
+  position: relative;
+  padding-top: 56.25%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+}
+.empd-video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ─── mapa ──────────────────────────────────────────── */
+.empd-mapa-end {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--text-muted, #aaa);
+  margin-bottom: 12px;
+}
+.empd-mapa-end svg { color: var(--gold-2); flex-shrink: 0; }
+.empd-mapa-frame {
+  border-radius: 12px;
+  overflow: hidden;
+  height: 300px;
+  border: 1px solid var(--border);
+}
+.empd-mapa-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* ─── construtora ───────────────────────────────────── */
+.empd-const-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+.empd-const-logo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #fff;
+  padding: 4px;
+  flex-shrink: 0;
+}
+.empd-const-nome { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.empd-const-link { font-size: 0.8rem; color: var(--gold-2); text-decoration: none; }
+.empd-const-link:hover { color: var(--gold-1); }
+
+/* ─── aside ─────────────────────────────────────────── */
+.empd-aside { position: sticky; top: 80px; }
+.empd-aside-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.empd-aside-from {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.empd-aside-from-label { font-size: 0.75rem; color: var(--text-muted, #aaa); text-transform: uppercase; letter-spacing: .05em; }
+.empd-aside-from-val   { font-size: 1.5rem; font-weight: 800; color: var(--gold-1); }
+
+.empd-aside-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 12px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+}
+.empd-aside-ghost {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  padding: 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted, #ccc);
+  background: transparent;
+  transition: border-color .2s, color .2s;
+}
+.empd-aside-ghost:hover { border-color: var(--gold-2); color: var(--text); }
+
+.empd-aside-pdfs {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.empd-aside-pdf-btn {
+  display: block;
+  text-decoration: none;
+  font-size: 0.78rem;
+  color: var(--text-muted, #ccc);
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  transition: color .2s, border-color .2s;
+}
+.empd-aside-pdf-btn:hover { color: var(--gold-1); border-color: var(--gold-3); }
+
+.empd-trust {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(244,217,138,.06);
+  border: 1px solid rgba(244,217,138,.15);
+  border-radius: 10px;
+  padding: 12px;
+}
+.empd-trust svg { color: var(--gold-2); flex-shrink: 0; margin-top: 2px; }
+.empd-trust p {
+  font-size: 0.76rem;
+  color: var(--text-muted, #aaa);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ─── lightbox ──────────────────────────────────────── */
+.empd-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.9);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  cursor: zoom-out;
+}
+.empd-lightbox-img {
+  max-width: 90vw;
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: 8px;
+  cursor: default;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+}
+.empd-lightbox-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: rgba(255,255,255,.12);
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s;
+}
+.empd-lightbox-close:hover { background: rgba(255,255,255,.25); }
+
+/* ─── vazio ─────────────────────────────────────────── */
+.det-vazio { display: flex; align-items: center; justify-content: center; min-height: 50vh; }
+
+/* ─── responsive ─────────────────────────────────────── */
+@media (max-width: 860px) {
+  .empd-grid { grid-template-columns: 1fr; }
+  .empd-aside { position: static; order: -1; }
+  .empd-aside-card { border-radius: 10px; }
+  .empd-hero { height: 260px; border-radius: 10px; }
+  .empd-spec { padding: 10px 12px; }
+}
+
+@media (max-width: 540px) {
+  .empd-unid-grid { grid-template-columns: 1fr; }
+  .empd-fotos-grid { grid-template-columns: 1fr 1fr; }
+  .empd-plantas-grid { grid-template-columns: 1fr 1fr; }
+  .empd-parc-row { flex-direction: column; }
+  .empd-hero { height: 200px; }
+}
+
+@media (max-width: 380px) {
+  .empd-fotos-grid { grid-template-columns: 1fr; }
+  .empd-plantas-grid { grid-template-columns: 1fr; }
+}
