@@ -7,6 +7,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import BackToTop from './components/BackToTop'
 import CadastroGate from './components/CadastroGate'
+import LancGate from './components/LancGate'
 import Home from './pages/Home'
 import { CONFIG, linkWhatsApp, WA, aplicarOverridesImoveis } from './data'
 import { IconWhats } from './components/icons'
@@ -179,6 +180,7 @@ export default function App() {
 
       <BackToTop />
       <CadastroGate />
+      <LancGate />
     </>
   )
 }

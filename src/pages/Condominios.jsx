@@ -105,37 +105,52 @@ export default function Condominios() {
           </span>
         </div>
 
-        <div className="condo-filtros">
-          <div className="condo-filtro-grupo">
-            <span className="condo-filtro-rot">Região</span>
+        <div className="condo-filtros condo-filtros-v2">
+          <div className="condo-filtro-grupo condo-filtro-grupo-v2">
+            <span className="condo-filtro-rot">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Região
+            </span>
             <div className="condo-chips">
               <button className={`condo-chip ${!zona ? 'on' : ''}`} onClick={() => setZona('')}>Todas</button>
               {ZONAS.map((z) => <button key={z} className={`condo-chip ${zona === z ? 'on' : ''}`} onClick={() => setZona(z)}>{z}</button>)}
             </div>
           </div>
-          <div className="condo-filtro-grupo">
-            <span className="condo-filtro-rot">Tipo</span>
+          <div className="condo-filtro-grupo condo-filtro-grupo-v2">
+            <span className="condo-filtro-rot">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              Tipo
+            </span>
             <div className="condo-chips">
               <button className={`condo-chip ${!tipo ? 'on' : ''}`} onClick={() => setTipo('')}>Todos</button>
               {TIPOS.map((t) => <button key={t} className={`condo-chip ${tipo === t ? 'on' : ''}`} onClick={() => setTipo(t)}>{t}</button>)}
             </div>
           </div>
-          <div className="condo-filtro-grupo">
-            <span className="condo-filtro-rot">Padrão</span>
+          <div className="condo-filtro-grupo condo-filtro-grupo-v2">
+            <span className="condo-filtro-rot">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Padrão
+            </span>
             <div className="condo-chips">
               <button className={`condo-chip ${!seg ? 'on' : ''}`} onClick={() => setSeg('')}>Todos</button>
               {SEGMENTOS.map((s) => <button key={s} className={`condo-chip ${seg === s ? 'on' : ''}`} onClick={() => setSeg(s)}>{s}</button>)}
             </div>
           </div>
-          <div className="condo-filtro-grupo">
-            <span className="condo-filtro-rot">Situação</span>
+          <div className="condo-filtro-grupo condo-filtro-grupo-v2">
+            <span className="condo-filtro-rot">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              Situação
+            </span>
             <div className="condo-chips">
               <button className={`condo-chip ${!status ? 'on' : ''}`} onClick={() => setStatus('')}>Todas</button>
               {STATUS.map((s) => <button key={s} className={`condo-chip ${status === s ? 'on' : ''}`} onClick={() => setStatus(s)}>{s}</button>)}
             </div>
           </div>
-          <div className="condo-filtro-grupo condo-filtro-grupo--full">
-            <span className="condo-filtro-rot">Destaques</span>
+          <div className="condo-filtro-grupo condo-filtro-grupo-v2 condo-filtro-grupo--full">
+            <span className="condo-filtro-rot">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><path d="m3 11 8.5-8.5L21 12v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5"/><path d="M9 21v-9h6v4"/></svg>
+              Destaques e diferenciais
+            </span>
             <div className="condo-chips">
               <button className={`condo-chip ${!dest ? 'on' : ''}`} onClick={() => setDest('')}>Todos</button>
               {DESTAQUES.map(([label]) => <button key={label} className={`condo-chip ${dest === label ? 'on' : ''}`} onClick={() => setDest(label)}>{label}</button>)}

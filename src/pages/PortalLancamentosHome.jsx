@@ -1,20 +1,39 @@
 import { useState, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useSEO } from '../useSEO'
 import { todosEmpreendimentosTodos, bairrosComEmpreendimentos, linkWhatsApp, CONSTRUTORAS, BLOW_EMPREENDIMENTOS } from '../data'
 import { onImgError } from '../img'
 import Reveal from '../components/Reveal'
 import { IconWhats, IconArrow, IconPin, IconShield, IconBuilding } from '../components/icons'
+import { isLancLivre, getLancVistos, markLancVisto, LANC_LIMIT } from '../components/LancGate'
 
 const WA_PORTAL = 'Olá Vinícius! Acessei o portal de lançamentos e gostaria de saber mais sobre os empreendimentos disponíveis em Uberlândia.'
 
-const STATUS_COR = { 'Lançamento': 'var(--gold-2)', 'Em obras': '#4fa3e0', 'Pronto': '#56c27d' }
+const STATUS_COR = { 'Lançamento': '#4fa3e0', 'Em obras': '#f59e0b', 'Pronto': '#56c27d' }
+const STATUS_TAB_COR = { 'todos': null, 'Lançamento': '#4fa3e0', 'Em obras': '#f59e0b', 'Pronto': '#56c27d' }
 
 export function CardEmpLan({ e }) {
+  const nav = useNavigate()
+  const url = `/construtoras/${e.construtoraSlug}/${e.slug}`
+  const key = `${e.construtoraSlug}--${e.slug}`
   const tip = e.tipologias && e.tipologias.length > 0 ? e.tipologias[0] : null
   const tipCurt = tip ? (tip.length > 64 ? tip.slice(0, 64) + '…' : tip) : null
+
+  const handleClick = (ev) => {
+    ev.preventDefault()
+    if (isLancLivre()) { markLancVisto(key); nav(url); return }
+    const vistos = getLancVistos()
+    if (vistos.has(key)) { nav(url); return }
+    if (vistos.size >= LANC_LIMIT) {
+      window.dispatchEvent(new CustomEvent('vg-lanc-gate', { detail: { url, key } }))
+      return
+    }
+    markLancVisto(key)
+    nav(url)
+  }
+
   return (
-    <Link to={`/construtoras/${e.construtoraSlug}/${e.slug}`} className="lan-card">
+    <Link to={url} className="lan-card" onClick={handleClick}>
       <div className="lan-card-capa">
         {e.capa
           ? <img src={e.capa} alt={`${e.nome} — ${e.bairro || 'Uberlândia'}`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
@@ -66,6 +85,8 @@ export default function PortalLancamentosHome() {
   const slugBairro = (b) =>
     b.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, '-')
 
+  const totalConstrutoras = CONSTRUTORAS.length + new Set(BLOW_EMPREENDIMENTOS.map((e) => e.construtoraSlug)).size
+
   return (
     <main className="pagina lan-portal">
       {/* Hero */}
@@ -73,14 +94,14 @@ export default function PortalLancamentosHome() {
         <div className="container lan-hero-inner">
           <Reveal>
             <span className="eyebrow" style={{ justifyContent: 'center', color: 'var(--gold-2)' }}>
-              Portal de Lançamentos .. Uberlândia
+              Portal de Lançamentos · Uberlândia
             </span>
             <h1 className="lan-hero-title">
               Lançamentos de Uberlândia<br />
               <em>com curadoria de consultor</em>
             </h1>
             <p className="lan-hero-sub">
-              Acompanho mais de {Math.floor((CONSTRUTORAS.length + new Set(BLOW_EMPREENDIMENTOS.map(e => e.construtoraSlug)).size) / 5) * 5} construtoras — comparo, filtro e indico só o que faz sentido para o seu perfil, com análise independente e sem viés de incorporadora.
+              Acompanho mais de {Math.floor(totalConstrutoras / 5) * 5} construtoras — comparo, filtro e indico só o que faz sentido para o seu perfil, com análise independente e sem viés de incorporadora.
             </p>
             <div className="lan-hero-ctas">
               <Link to="/lancamentos/catalogo" className="btn btn-gold">
@@ -94,16 +115,51 @@ export default function PortalLancamentosHome() {
         </div>
       </section>
 
-      {/* Stats bar */}
-      <div className="lan-stats-bar">
-        <div className="container lan-stats-inner">
-          <div className="lan-stat"><b>{CONSTRUTORAS.length + new Set(BLOW_EMPREENDIMENTOS.map(e => e.construtoraSlug)).size}</b><span>construtoras</span></div>
-          <div className="lan-stat-sep" />
-          <div className="lan-stat"><b>{todos.length}</b><span>empreendimentos</span></div>
-          <div className="lan-stat-sep" />
-          <div className="lan-stat"><b>{bairros.length}</b><span>bairros cobertos</span></div>
-          <div className="lan-stat-sep" />
-          <div className="lan-stat"><b>100%</b><span>com curadoria</span></div>
+      {/* Stats bar — dark cards */}
+      <div className="lan-stats-bar lan-stats-bar--v2">
+        <div className="container lan-stats-inner lan-stats-inner--v2">
+          <div className="lan-stat-v2">
+            <span className="lan-stat-v2-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+              </svg>
+            </span>
+            <div className="lan-stat-v2-txt">
+              <b>{totalConstrutoras}</b>
+              <span>construtoras</span>
+            </div>
+          </div>
+          <div className="lan-stat-v2">
+            <span className="lan-stat-v2-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+            </span>
+            <div className="lan-stat-v2-txt">
+              <b>{todos.length}</b>
+              <span>empreendimentos</span>
+            </div>
+          </div>
+          <div className="lan-stat-v2">
+            <span className="lan-stat-v2-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+              </svg>
+            </span>
+            <div className="lan-stat-v2-txt">
+              <b>{bairros.length}</b>
+              <span>bairros cobertos</span>
+            </div>
+          </div>
+          <div className="lan-stat-v2">
+            <span className="lan-stat-v2-ico" aria-hidden="true">
+              <IconShield width={22} height={22} />
+            </span>
+            <div className="lan-stat-v2-txt">
+              <b>100%</b>
+              <span>com curadoria</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -120,17 +176,22 @@ export default function PortalLancamentosHome() {
             </Link>
           </div>
 
-          <div className="lan-tabs">
-            {STATUS_TABS.map((t) => (
-              <button
-                key={t.key}
-                className={`lan-tab${filtroStatus === t.key ? ' lan-tab--ativo' : ''}`}
-                onClick={() => setFiltroStatus(t.key)}
-              >
-                {t.label}
-                <span className="lan-tab-count">{contPorStatus(t.key)}</span>
-              </button>
-            ))}
+          {/* Tabs V2 */}
+          <div className="lan-tabs lan-tabs--v2">
+            {STATUS_TABS.map((t) => {
+              const cor = STATUS_TAB_COR[t.key]
+              return (
+                <button
+                  key={t.key}
+                  className={`lan-tab lan-tab-v2${filtroStatus === t.key ? ' lan-tab-v2--ativo' : ''}`}
+                  onClick={() => setFiltroStatus(t.key)}
+                >
+                  {cor && <span className="lan-tab-v2-dot" style={{ background: cor }} />}
+                  {t.label}
+                  <span className="lan-tab-v2-count">{contPorStatus(t.key)}</span>
+                </button>
+              )
+            })}
           </div>
 
           {vitrine.length > 0 ? (
