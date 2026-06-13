@@ -266,6 +266,7 @@ export default function Ferramentas() {
   const [ativa, setAtiva]     = useState(null)
   const [isCorretor, setIsCorretor] = useState(false)
   const [lockMsg, setLockMsg] = useState(null)
+  const [modalAtiva, setModalAtiva] = useState(null)
   const painelRef = useRef(null)
 
   useSEO({
@@ -284,8 +285,16 @@ export default function Ferramentas() {
     try { setIsCorretor(!!localStorage.getItem('vg_corretor')) } catch {}
   }, [])
 
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') setModalAtiva(null) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   const atual = ativa ? TOOLS.find((t) => t.id === ativa) : null
   const Ativa  = ativa ? RENDER[ativa] : null
+  const modalAtual = modalAtiva ? TOOLS.find((t) => t.id === modalAtiva) : null
+  const ModalAtiva = modalAtiva ? RENDER[modalAtiva] : null
 
   const escolher = (tool) => {
     if (tool.to) return
@@ -308,7 +317,13 @@ export default function Ferramentas() {
       return
     }
     setLockMsg(null)
+    if (tool.sec === 'investidor') {
+      setModalAtiva(tool.id)
+      setAtiva(null)
+      return
+    }
     setAtiva(tool.id)
+    setModalAtiva(null)
     setTimeout(() => {
       if (!painelRef.current) return
       const navH = (document.querySelector('header')?.offsetHeight || 68) + 16
@@ -376,17 +391,19 @@ export default function Ferramentas() {
                     <span>Assine a Área do Corretor e desbloqueie ACM, comissão, ficha, IA de fotos e muito mais.</span>
                   </div>
                   <div className="ferr-pro-banner-planos">
-                    <div className="ferr-pro-plano">
+                    <Link to="/corretor" className="ferr-pro-plano">
                       <span className="ferr-pro-plano-nome">Semanal</span>
                       <b className="ferr-pro-plano-preco">R$ 15</b>
                       <span className="ferr-pro-plano-per">/ 7 dias</span>
-                    </div>
-                    <div className="ferr-pro-plano ferr-pro-plano--dest">
+                      <span className="ferr-pro-plano-cta">Assinar agora</span>
+                    </Link>
+                    <Link to="/corretor" className="ferr-pro-plano ferr-pro-plano--dest">
                       <span className="ferr-pro-plano-badge">Mais popular</span>
                       <span className="ferr-pro-plano-nome">Mensal</span>
                       <b className="ferr-pro-plano-preco">R$ 49,90</b>
                       <span className="ferr-pro-plano-per">/ 30 dias</span>
-                    </div>
+                      <span className="ferr-pro-plano-cta">Assinar agora</span>
+                    </Link>
                   </div>
                   <Link className="btn btn-gold ferr-pro-btn" to="/corretor">Assinar e desbloquear <IconArrow /></Link>
                 </div>
@@ -428,17 +445,17 @@ export default function Ferramentas() {
                     <button
                       key={tool.id}
                       type="button"
-                      className={`ferr-card3${isOn ? ' on' : ''}${locked ? ' locked' : ''}${isLockMsgOn ? ' lock-pulse' : ''}`}
+                      className={`ferr-card3${isOn ? ' on' : ''}${isLockMsgOn ? ' lock-pulse' : ''}`}
                       onClick={() => escolher(tool)}
-                      aria-label={locked ? `${tool.nome} — exclusivo para assinantes` : tool.nome}
+                      aria-label={tool.nome}
                     >
                       <span className="ferr-card3-ico">
-                        {locked ? <FI name="lock" /> : <FI name={tool.icon} />}
+                        <FI name={tool.icon} />
                       </span>
                       <span className="ferr-card3-body">
                         <span className="ferr-card3-tit">
                           <b>{tool.nome}</b>
-                          {tool.popular && !locked && <span className="ferr-badge-popular">Popular</span>}
+                          {tool.popular && <span className="ferr-badge-popular">Popular</span>}
                           {tool.pro && <span className="ferr-badge-pro-sm">PRO</span>}
                         </span>
                         <i>{tool.desc}</i>
@@ -470,6 +487,30 @@ export default function Ferramentas() {
               <a className="btn btn-gold" href={linkWhatsApp('Olá Vinícius! Usei as ferramentas no site e quero sua ajuda.')} target="_blank" rel="noopener">
                 <IconWhats /> Falar com o Vinícius
               </a>
+            </div>
+          </div>
+        )}
+
+        {/* ── MODAL DE CALCULADORA (investidor) ── */}
+        {modalAtiva && ModalAtiva && modalAtual && (
+          <div className="ferr-modal-backdrop" onClick={() => setModalAtiva(null)}>
+            <div className="ferr-modal" onClick={(e) => e.stopPropagation()}>
+              <div className="ferr-modal-hd">
+                <span className="ferr-modal-ico"><FI name={modalAtual.icon} size={20} /></span>
+                <h3 className="ferr-modal-tit">{modalAtual.nome}</h3>
+                <button className="ferr-modal-fechar" type="button" onClick={() => setModalAtiva(null)} aria-label="Fechar calculadora">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
+                </button>
+              </div>
+              <div className="ferr-modal-body">
+                <ModalAtiva />
+              </div>
+              <div className="calc-cta ferr-modal-cta">
+                <span>Quer que eu faça essa conta com os números reais e te mostre as melhores opções?</span>
+                <a className="btn btn-gold" href={linkWhatsApp('Olá Vinícius! Usei as ferramentas no site e quero sua ajuda.')} target="_blank" rel="noopener">
+                  <IconWhats /> Falar com o Vinícius
+                </a>
+              </div>
             </div>
           </div>
         )}
