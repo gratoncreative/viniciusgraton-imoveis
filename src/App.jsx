@@ -35,6 +35,7 @@ const CondominioDetalhe = lazy(() => import('./pages/CondominioDetalhe'))
 const ConstrutorasPage = lazy(() => import('./pages/Construtoras'))
 const ConstrutoraDetalhe = lazy(() => import('./pages/ConstrutoraDetalhe'))
 const EmpreendimentoDetalhe = lazy(() => import('./pages/EmpreendimentoDetalhe'))
+const BlowEmpreendimentoDetalhe = lazy(() => import('./pages/BlowEmpreendimentoDetalhe'))
 const PortalLancamentosHome = lazy(() => import('./pages/PortalLancamentosHome'))
 const CatalogoLancamentos = lazy(() => import('./pages/CatalogoLancamentos'))
 const LancamentoGuia = lazy(() => import('./pages/LancamentoGuia'))
@@ -142,6 +143,7 @@ export default function App() {
               <Route path="/construtoras" element={<Navigate to="/lancamentos" replace />} />
               <Route path="/construtoras/:slug" element={<ConstrutoraDetalhe />} />
               <Route path="/construtoras/:slug/:projeto" element={<EmpreendimentoDetalhe />} />
+              <Route path="/lancamentos/empreendimento/blow/:slug" element={<BlowEmpreendimentoDetalhe />} />
               <Route path="/ferramentas" element={<Ferramentas />} />
               <Route path="/ferramentas/converter" element={<ConverterFotos />} />
               <Route path="/corretor" element={<Corretor />} />

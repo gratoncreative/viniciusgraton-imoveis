@@ -69,6 +69,7 @@ import destaqueData from './imoveis-destaque.json'
 import construtorasData from './construtoras.json'
 import condominiosData from './condominios.json'
 import bairrosM2 from './bairros-m2.json'
+import blowData from './blow_empreendimentos.json'
 
 const TODOS_IMOVEIS = destaqueData.imoveis || []
 // Imóveis importados entram como `pendente` e ficam FORA do site até o Vinícius aprovar.
@@ -163,8 +164,32 @@ export const todosEmpreendimentos = () =>
     })
   )
 
+// Empreendimentos da Blow (sincronizados diariamente)
+export const BLOW_EMPREENDIMENTOS = blowData.empreendimentos || []
+export const getBlowEmpreendimento = (slug) =>
+  BLOW_EMPREENDIMENTOS.find((e) => e.slug === slug) || null
+export const BLOW_GERADO_EM = blowData.geradoEm || null
+
+const _blowToCard = (e) => ({
+  ...e,
+  galeria: e.fotos,
+  amenidades: e.comodidades,
+  video: e.youtube,
+  quartosMin: e.quartosMin,
+  quartosMax: e.quartosMax,
+  url: `/lancamentos/empreendimento/blow/${e.slug}`,
+  origem: 'blow',
+})
+
+export const todosEmpreendimentosBlow = () => BLOW_EMPREENDIMENTOS.map(_blowToCard)
+
+export const todosEmpreendimentosTodos = () => [
+  ...todosEmpreendimentos(),
+  ...todosEmpreendimentosBlow(),
+]
+
 export const bairrosComEmpreendimentos = () => {
-  const todos = todosEmpreendimentos()
+  const todos = todosEmpreendimentosTodos()
   const mapa = {}
   todos.forEach(e => {
     if (!e.bairro) return

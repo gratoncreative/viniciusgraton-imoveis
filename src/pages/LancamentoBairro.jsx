@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useSEO } from '../useSEO'
-import { todosEmpreendimentos, bairrosComEmpreendimentos, linkWhatsApp } from '../data'
+import { todosEmpreendimentosTodos, bairrosComEmpreendimentos, linkWhatsApp } from '../data'
 import { BAIRROS_EDITORIAL } from '../bairros-editorial'
 import Reveal from '../components/Reveal'
 import { IconArrow, IconWhats, IconPin } from '../components/icons'
@@ -20,7 +20,7 @@ export default function LancamentoBairro() {
   const { slug } = useParams()
   const bairroNome = useMemo(() => deSlugify(slug), [slug])
   const empreendimentos = useMemo(
-    () => todosEmpreendimentos().filter((e) => e.bairro && slugify(e.bairro) === slug),
+    () => todosEmpreendimentosTodos().filter((e) => e.bairro && slugify(e.bairro) === slug),
     [slug]
   )
   const editorial = bairroNome ? BAIRROS_EDITORIAL[bairroNome] : null

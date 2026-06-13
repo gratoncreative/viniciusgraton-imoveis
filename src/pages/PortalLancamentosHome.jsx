@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
-import { todosEmpreendimentos, bairrosComEmpreendimentos, linkWhatsApp, CONSTRUTORAS } from '../data'
+import { todosEmpreendimentosTodos, bairrosComEmpreendimentos, linkWhatsApp, CONSTRUTORAS, BLOW_EMPREENDIMENTOS } from '../data'
 import { onImgError } from '../img'
 import Reveal from '../components/Reveal'
 import { IconWhats, IconArrow, IconPin, IconShield, IconBuilding } from '../components/icons'
@@ -41,7 +41,7 @@ export default function PortalLancamentosHome() {
     path: '/lancamentos',
   })
 
-  const todos = useMemo(() => todosEmpreendimentos(), [])
+  const todos = useMemo(() => todosEmpreendimentosTodos(), [])
   const bairros = useMemo(() => bairrosComEmpreendimentos(), [])
   const [filtroStatus, setFiltroStatus] = useState('todos')
 
@@ -80,7 +80,7 @@ export default function PortalLancamentosHome() {
               <em>com curadoria de consultor</em>
             </h1>
             <p className="lan-hero-sub">
-              Acompanho {CONSTRUTORAS.length} construtoras — comparo, filtro e indico só o que faz sentido para o seu perfil, com análise independente e sem viés de incorporadora.
+              Acompanho mais de {Math.floor((CONSTRUTORAS.length + new Set(BLOW_EMPREENDIMENTOS.map(e => e.construtoraSlug)).size) / 5) * 5} construtoras — comparo, filtro e indico só o que faz sentido para o seu perfil, com análise independente e sem viés de incorporadora.
             </p>
             <div className="lan-hero-ctas">
               <Link to="/lancamentos/catalogo" className="btn btn-gold">
@@ -97,7 +97,7 @@ export default function PortalLancamentosHome() {
       {/* Stats bar */}
       <div className="lan-stats-bar">
         <div className="container lan-stats-inner">
-          <div className="lan-stat"><b>{CONSTRUTORAS.length}</b><span>construtoras</span></div>
+          <div className="lan-stat"><b>{CONSTRUTORAS.length + new Set(BLOW_EMPREENDIMENTOS.map(e => e.construtoraSlug)).size}</b><span>construtoras</span></div>
           <div className="lan-stat-sep" />
           <div className="lan-stat"><b>{todos.length}</b><span>empreendimentos</span></div>
           <div className="lan-stat-sep" />

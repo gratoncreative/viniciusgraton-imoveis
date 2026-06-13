@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
-import { todosEmpreendimentos, bairrosComEmpreendimentos, linkWhatsApp } from '../data'
+import { todosEmpreendimentosTodos, bairrosComEmpreendimentos, linkWhatsApp } from '../data'
 import Reveal from '../components/Reveal'
 import { IconArrow, IconWhats } from '../components/icons'
 import { CardEmpLan } from './PortalLancamentosHome'
@@ -29,7 +29,7 @@ export default function CatalogoLancamentos() {
     path: '/lancamentos/catalogo',
   })
 
-  const todos = useMemo(() => todosEmpreendimentos(), [])
+  const todos = useMemo(() => todosEmpreendimentosTodos(), [])
   const bairros = useMemo(() => bairrosComEmpreendimentos().map((b) => b.bairro), [])
 
   const [busca, setBusca] = useState('')

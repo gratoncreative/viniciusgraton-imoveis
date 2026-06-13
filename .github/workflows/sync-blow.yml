@@ -1,0 +1,57 @@
+name: Sincronizar Blow — Uberlândia
+
+# Roda diariamente de madrugada (3h BRT = 06:00 UTC) e atualiza os
+# empreendimentos da Blow. Novidades sobem automaticamente; com mais de
+# 1 ano saem. O push dispara o rebuild no Cloudflare Pages.
+# Roda também na mão pelo botão "Run workflow".
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # 03:00 BRT = 06:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-blow
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Sincronizar empreendimentos Blow
+        id: sync
+        continue-on-error: true
+        run: node scripts/sync-blow.mjs
+
+      - name: Commit e push (só se mudou)
+        id: commit
+        run: |
+          if git diff --quiet -- src/blow_empreendimentos.json; then
+            echo "Sem mudanças — nada a fazer."
+            echo "mudou=nao" >> "$GITHUB_OUTPUT"
+          else
+            git config user.name "blow-sync-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add src/blow_empreendimentos.json
+            git commit -m "chore: sincroniza empreendimentos Blow (automático)"
+            git push
+            echo "mudou=sim" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Avisar o Vinícius no WhatsApp
+        if: always()
+        continue-on-error: true
+        env:
+          CALLMEBOT_KEY: ${{ secrets.CALLMEBOT_KEY }}
+        run: node scripts/avisa-whatsapp.mjs "${{ steps.sync.outcome }}" "${{ steps.commit.outputs.mudou }}"
