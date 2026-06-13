@@ -3997,8 +3997,8 @@ html[data-theme="dark"] .corrbn-nota { color: #6a7485; }
 .ferr-footer-links .btn-ghost:hover { color: #f1ede4; border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.06); }
 
 /* modal de calculadora (investidor) */
-.ferr-modal-backdrop { position: fixed; inset: 0; z-index: 1000; background: rgba(5,8,16,0.78); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 24px 16px; animation: fadeIn 0.2s var(--ease); }
-.ferr-modal { width: min(640px, 94vw); max-height: 90vh; overflow-y: auto; background: #141820; border: 1.5px solid var(--gold-3); border-radius: 18px; box-shadow: 0 32px 80px -20px rgba(0,0,0,0.7), 0 0 0 1px rgba(184,134,47,0.08); animation: painelEntra 0.28s var(--ease) both; }
+.ferr-modal-backdrop { position: fixed; inset: 0; z-index: 1000; background: rgba(5,8,16,0.78); backdrop-filter: blur(4px); display: flex; align-items: flex-start; justify-content: center; padding: 32px 16px 40px; overflow-y: auto; animation: fadeIn 0.2s var(--ease); }
+.ferr-modal { width: min(640px, 94vw); background: #141820; border: 1.5px solid var(--gold-3); border-radius: 18px; box-shadow: 0 32px 80px -20px rgba(0,0,0,0.7), 0 0 0 1px rgba(184,134,47,0.08); animation: painelEntra 0.28s var(--ease) both; flex-shrink: 0; }
 .ferr-modal-hd { display: flex; align-items: center; gap: 12px; padding: 20px 24px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
 .ferr-modal-ico { flex: none; width: 38px; height: 38px; display: grid; place-items: center; border-radius: 9px; background: rgba(184,134,47,0.12); border: 1px solid rgba(184,134,47,0.22); color: var(--gold-2); }
 .ferr-modal-tit { flex: 1; font-family: var(--font-head); font-size: 1.05rem; font-weight: 700; margin: 0; color: #f1ede4; }
@@ -4020,6 +4020,9 @@ html[data-theme="dark"] .corrbn-nota { color: #6a7485; }
 .ferr-modal-body .calc-result ul li b { color: #e8ecf4; }
 .ferr-modal-body .calc-nota { color: #8a94a6; }
 .ferr-modal-body .section-sub { color: #a8b2c4; }
+.ferr-modal-body .calc-grid { gap: 20px; }
+.ferr-modal-body .calc-grid > * { min-width: 0; }
+.ferr-modal-body .calc-result li b { overflow-wrap: break-word; white-space: normal; }
 
 /* responsive */
 @media (max-width: 640px) {

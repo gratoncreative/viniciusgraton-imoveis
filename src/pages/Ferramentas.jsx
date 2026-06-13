@@ -317,19 +317,8 @@ export default function Ferramentas() {
       return
     }
     setLockMsg(null)
-    if (tool.sec === 'investidor') {
-      setModalAtiva(tool.id)
-      setAtiva(null)
-      return
-    }
-    setAtiva(tool.id)
-    setModalAtiva(null)
-    setTimeout(() => {
-      if (!painelRef.current) return
-      const navH = (document.querySelector('header')?.offsetHeight || 68) + 16
-      const top = painelRef.current.getBoundingClientRect().top + window.scrollY - navH
-      window.scrollTo({ top, behavior: 'smooth' })
-    }, 60)
+    setModalAtiva(tool.id)
+    setAtiva(null)
   }
 
   const secoesFiltradas = filtro === 'todos' ? SECOES : SECOES.filter((s) => s.id === filtro)
