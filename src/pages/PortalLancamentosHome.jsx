@@ -76,11 +76,11 @@ export default function PortalLancamentosHome() {
               Portal de Lançamentos .. Uberlândia
             </span>
             <h1 className="lan-hero-title">
-              Os lançamentos de Uberlândia<br />
+              Lançamentos de Uberlândia<br />
               <em>com curadoria de consultor</em>
             </h1>
             <p className="lan-hero-sub">
-              Acompanho os empreendimentos de {CONSTRUTORAS.length} construtoras. Comparo, filtro e indico o que faz sentido para o seu perfil, com análise independente e sem viés de incorporadora.
+              Acompanho {CONSTRUTORAS.length} construtoras — comparo, filtro e indico só o que faz sentido para o seu perfil, com análise independente e sem viés de incorporadora.
             </p>
             <div className="lan-hero-ctas">
               <Link to="/lancamentos/catalogo" className="btn btn-gold">
