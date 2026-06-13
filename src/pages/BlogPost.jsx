@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { getPost, POSTS } from '../blog'
-import { CardPost } from './Blog'
+import CardPost from '../components/CardPost'
 import { linkWhatsApp } from '../data'
 import { registrarView } from '../engajamento'
 import { useSEO } from '../useSEO'

@@ -1,19 +1,28 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Reveal from './Reveal'
-import { CardPost } from '../pages/Blog'
-import { POSTS } from '../blog'
+import CardPost from './CardPost'
 import { lerBlogViews } from '../engajamento'
 import { IconArrow } from './icons'
 
 export default function BlogHome() {
+  const [posts, setPosts] = useState(null)
   const [views, setViews] = useState(null)
-  useEffect(() => { lerBlogViews().then(setViews) }, [])
+
+  useEffect(() => {
+    fetch('/blog-preview.json')
+      .then((r) => (r.ok ? r.json() : null))
+      .then(setPosts)
+      .catch(() => setPosts([]))
+    lerBlogViews().then(setViews)
+  }, [])
+
+  if (!posts || posts.length < 4) return null
+
   const totalViews = views ? Object.values(views).reduce((a, b) => a + b, 0) : 0
-  // mais lidos (views reais) ou, sem leituras ainda, os mais recentes
   const fonte = views && totalViews > 0
-    ? [...POSTS].sort((a, b) => (views[b.slug] || 0) - (views[a.slug] || 0))
-    : [...POSTS].sort((a, b) => String(b.data || '').localeCompare(String(a.data || '')))
+    ? [...posts].sort((a, b) => (views[b.slug] || 0) - (views[a.slug] || 0))
+    : [...posts].sort((a, b) => String(b.data || '').localeCompare(String(a.data || '')))
   const sel = fonte.slice(0, 7)
   if (sel.length < 4) return null
   const feat = sel[0]
@@ -51,7 +60,7 @@ export default function BlogHome() {
         </div>
 
         <div style={{ textAlign: 'center', marginTop: 40 }}>
-          <Link className="btn btn-gold" to="/blog">Ver todos os {POSTS.length} artigos <IconArrow /></Link>
+          <Link className="btn btn-gold" to="/blog">Ver todos os {posts.length} artigos <IconArrow /></Link>
         </div>
       </div>
     </section>
