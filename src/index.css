@@ -3909,7 +3909,7 @@ html[data-theme="dark"] .corrbn-nota { color: #6a7485; }
 .ferr-pro-banner-txt b { font-family: var(--font-head); font-size: 1.1rem; color: #f1ede4; }
 .ferr-pro-banner-txt span { font-size: 0.85rem; color: #b8c0d0; line-height: 1.55; }
 .ferr-pro-banner-planos { display: flex; gap: 10px; align-items: stretch; }
-.ferr-pro-plano { display: flex; flex-direction: column; align-items: center; gap: 3px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 14px 22px 12px; position: relative; text-decoration: none; cursor: pointer; min-width: 130px; transition: transform 0.18s var(--ease), border-color 0.18s, background 0.18s, box-shadow 0.18s; }
+.ferr-pro-plano { display: flex; flex-direction: column; align-items: center; gap: 3px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 14px 22px 12px; position: relative; text-decoration: none; cursor: pointer; flex: 1; transition: transform 0.18s var(--ease), border-color 0.18s, background 0.18s, box-shadow 0.18s; }
 .ferr-pro-plano:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.38); background: rgba(255,255,255,0.11); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
 .ferr-pro-plano--dest { background: rgba(184,134,47,0.14); border-color: rgba(184,134,47,0.45); }
 .ferr-pro-plano--dest:hover { background: rgba(184,134,47,0.24); border-color: var(--gold-2); box-shadow: 0 10px 30px -10px rgba(184,134,47,0.4); }
