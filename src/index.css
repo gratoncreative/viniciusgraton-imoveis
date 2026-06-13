@@ -3904,24 +3904,24 @@ html[data-theme="dark"] .corrbn-nota { color: #6a7485; }
 
 /* banner de assinatura */
 .ferr-pro-banner { background: linear-gradient(135deg, rgba(184,134,47,0.1) 0%, rgba(184,134,47,0.05) 100%); border: 1px solid rgba(184,134,47,0.3); border-radius: 18px; padding: 24px 24px 20px; margin-bottom: 24px; display: flex; flex-direction: column; gap: 20px; }
-@media (min-width: 768px) { .ferr-pro-banner { flex-direction: row; align-items: center; } }
-.ferr-pro-banner-txt { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+@media (min-width: 860px) { .ferr-pro-banner { flex-direction: row; align-items: center; } }
+.ferr-pro-banner-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
 .ferr-pro-banner-txt b { font-family: var(--font-head); font-size: 1.1rem; color: #f1ede4; }
 .ferr-pro-banner-txt span { font-size: 0.85rem; color: #b8c0d0; line-height: 1.55; }
-.ferr-pro-banner-planos { display: flex; gap: 10px; align-items: stretch; }
-.ferr-pro-plano { display: flex; flex-direction: column; align-items: center; gap: 3px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 14px 22px 12px; position: relative; text-decoration: none; cursor: pointer; flex: 1; transition: transform 0.18s var(--ease), border-color 0.18s, background 0.18s, box-shadow 0.18s; }
+.ferr-pro-banner-planos { display: flex; gap: 10px; align-items: stretch; flex-shrink: 0; }
+.ferr-pro-plano { display: flex; flex-direction: column; align-items: center; gap: 3px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 14px 22px 12px; position: relative; text-decoration: none; cursor: pointer; flex: 1; min-width: 130px; transition: transform 0.18s var(--ease), border-color 0.18s, background 0.18s, box-shadow 0.18s; }
 .ferr-pro-plano:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.38); background: rgba(255,255,255,0.11); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
 .ferr-pro-plano--dest { background: rgba(184,134,47,0.14); border-color: rgba(184,134,47,0.45); }
 .ferr-pro-plano--dest:hover { background: rgba(184,134,47,0.24); border-color: var(--gold-2); box-shadow: 0 10px 30px -10px rgba(184,134,47,0.4); }
 .ferr-pro-plano-badge { position: absolute; top: -9px; font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; background: var(--gold-grad); color: #14100a; padding: 2px 9px; border-radius: 100px; }
 .ferr-pro-plano-nome { font-size: 0.72rem; color: #b0bac8; margin-top: 4px; }
-.ferr-pro-plano-preco { font-family: var(--font-head); font-size: 1.5rem; font-weight: 800; color: #f1ede4; }
+.ferr-pro-plano-preco { font-family: var(--font-head); font-size: 1.5rem; font-weight: 800; color: #f1ede4; white-space: nowrap; }
 .ferr-pro-plano--dest .ferr-pro-plano-preco { color: var(--gold-1); }
 .ferr-pro-plano-per { font-size: 0.68rem; color: #b0bac8; }
 .ferr-pro-plano-cta { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--gold-2); margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; text-align: center; }
 .ferr-pro-plano--dest .ferr-pro-plano-cta { color: var(--gold-1); border-top-color: rgba(184,134,47,0.25); }
 .ferr-pro-btn { align-self: flex-start; }
-@media (min-width: 768px) { .ferr-pro-btn { align-self: center; } }
+@media (min-width: 860px) { .ferr-pro-btn { align-self: center; } }
 
 /* banner ativo (assinante) */
 .ferr-pro-ativo { display: flex; align-items: center; gap: 10px; background: rgba(184,134,47,0.07); border: 1px solid rgba(184,134,47,0.18); border-radius: 10px; padding: 10px 16px; margin-bottom: 20px; color: var(--gold-2); font-size: 0.85rem; }
