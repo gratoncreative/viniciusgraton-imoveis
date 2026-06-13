@@ -1,6 +1,5 @@
 import { lazy, Suspense } from 'react'
 import Hero from '../components/Hero'
-import ParaVoce from '../components/ParaVoce'
 import { useSEO } from '../useSEO'
 
 const Novidades = lazy(() => import('../components/Novidades'))
@@ -21,7 +20,6 @@ export default function Home() {
   return (
     <main>
       <Hero />
-      <ParaVoce />
       <Suspense fallback={null}>
         <Novidades />
         <Destaque limite={9} />

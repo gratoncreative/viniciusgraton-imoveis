@@ -4,8 +4,8 @@
    ============================================================ */
 
 :root {
-  --bg: #070a11;
-  --bg-2: #0b1019;
+  --bg: #080d18;
+  --bg-2: #0c1220;
   --surface: rgba(255, 255, 255, 0.035);
   --surface-2: rgba(255, 255, 255, 0.06);
   --border: rgba(255, 255, 255, 0.09);
@@ -159,12 +159,12 @@ section { position: relative; padding: clamp(20px, 3vw, 40px) 0; }
 .section--light .cat-filtros input::placeholder { color: var(--text-mute); }
 
 /* variantes escuras para criar ritmo (evitar fundos iguais) */
-.section--panel { position: relative; background: linear-gradient(180deg, #0d121d 0%, #090d15 100%); }
+.section--panel { position: relative; background: linear-gradient(180deg, #0e1528 0%, #0b1120 100%); }
 .section--panel::before, .section--panel::after { content: ''; position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(184,134,47,0.18) 20%, rgba(184,134,47,0.48) 50%, rgba(184,134,47,0.18) 80%, transparent 100%); pointer-events: none; }
 .section--panel::before { top: 0; }
 .section--panel::after { bottom: 0; }
-.section--glow { background: radial-gradient(760px 420px at 50% -10%, rgba(224,181,86,0.10), transparent 62%), #0a0e16; }
-.section--glow-blue { background: radial-gradient(720px 420px at 80% -10%, rgba(74,108,255,0.10), transparent 60%), #090d16; }
+.section--glow { background: radial-gradient(760px 420px at 50% -10%, rgba(224,181,86,0.10), transparent 62%), #0b1120; }
+.section--glow-blue { background: radial-gradient(720px 420px at 80% -10%, rgba(74,108,255,0.14), transparent 60%), #0a1020; }
 
 /* ---------- botões ---------- */
 .btn {
@@ -473,13 +473,13 @@ section { position: relative; padding: clamp(20px, 3vw, 40px) 0; }
 .anunciar-beneficios li i { font-style: normal; color: #5a6370; font-size: 0.86rem; line-height: 1.45; }
 .cat-painel { background: #fff; border: 1px solid rgba(22,26,34,0.1); border-radius: 18px; padding: clamp(16px, 2.5vw, 24px); margin-bottom: 24px; box-shadow: 0 18px 44px -34px rgba(22,26,34,0.5); }
 /* catálogo em fundo escuro luxuoso */
-.catalogo--dark { background: radial-gradient(760px 480px at 86% 1%, rgba(224,181,86,0.12), transparent 64%), radial-gradient(560px 440px at 3% 99%, rgba(184,134,47,0.07), transparent 70%), linear-gradient(180deg, #0b0f17 0%, #080b12 100%); }
+.catalogo--dark { background: radial-gradient(760px 480px at 86% 1%, rgba(224,181,86,0.12), transparent 64%), radial-gradient(560px 440px at 3% 99%, rgba(184,134,47,0.07), transparent 70%), linear-gradient(180deg, #0c1122 0%, #090e1a 100%); }
 .catalogo--dark .cat-painel { background: rgba(255,255,255,0.035); border: 1px solid rgba(224,181,86,0.22); box-shadow: 0 20px 50px -36px rgba(0,0,0,0.7); }
 .catalogo--dark .im-linha { background: rgba(255,255,255,0.03); border: 1px solid rgba(224,181,86,0.18); box-shadow: 0 18px 44px -32px rgba(0,0,0,0.7); }
 .catalogo--dark .im-linha:hover { border-color: rgba(224,181,86,0.5); box-shadow: 0 28px 60px -32px rgba(0,0,0,0.8); }
 .catalogo--dark .im-linha-media { background: #1a1f29; }
 /* página do imóvel em fundo escuro luxuoso */
-.det--dark { background: radial-gradient(820px 520px at 84% 0%, rgba(224,181,86,0.12), transparent 62%), radial-gradient(620px 480px at 4% 100%, rgba(184,134,47,0.07), transparent 70%), linear-gradient(180deg, #0b0f17 0%, #080b12 100%); }
+.det--dark { background: radial-gradient(820px 520px at 84% 0%, rgba(224,181,86,0.12), transparent 62%), radial-gradient(620px 480px at 4% 100%, rgba(184,134,47,0.07), transparent 70%), linear-gradient(180deg, #0c1122 0%, #090e1a 100%); }
 .det--dark .det-trust { background: rgba(224,181,86,0.07); border-color: rgba(224,181,86,0.22); }
 .cat-painel .cat-filtros { margin-bottom: 0; }
 
@@ -506,7 +506,7 @@ section { position: relative; padding: clamp(20px, 3vw, 40px) 0; }
   .cat-rail::-webkit-scrollbar, .cat-main::-webkit-scrollbar { width: 0; height: 0; display: none; }
   /* no catálogo, a página não rola e o rodapé não aparece — só as duas colunas rolam */
   body.rota-catalogo { overflow: hidden; background: #f5f2ea; }
-  html[data-theme="dark"] body.rota-catalogo { background: #0c111b; }
+  html[data-theme="dark"] body.rota-catalogo { background: #0c1222; }
   body.rota-catalogo .footer { display: none; }
   /* AviseMe fica no fim de cat-main; no desktop com lista curta aparece imediatamente como barra escura — ocultar */
   .catalogo .aviseme { display: none; }
@@ -3104,7 +3104,10 @@ html[data-theme="dark"] .nav .nav-conta { color: #e7eaf0; }
 html[data-theme="dark"] .tema-track { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.16); }
 
 /* footer já é escuro; placa rotina mantém leitura */
-html[data-theme="dark"] .hero-rotina-logo { background: rgba(255,255,255,0.92); }
+html[data-theme="dark"] .hero-rotina-logo { background: transparent; box-shadow: none; padding: 0; border-radius: 0; }
+html[data-theme="dark"] .hero-rotina-logo img { filter: brightness(0) invert(1); }
+html[data-theme="dark"] .hero-card-rodape img { filter: brightness(0) invert(1); }
+html[data-theme="dark"] .apres-rotina img { background: transparent; filter: brightness(0) invert(1); }
 
 /* ============================================================
    CONVERSOR DE FOTOS (ferramenta pública)
