@@ -46,7 +46,7 @@ function Spec({ icon, valor, label }) {
   )
 }
 
-export default function CardImovel({ im, variante }) {
+export default function CardImovel({ im, variante, overlayLabel }) {
   const ref = useRef(null)
   const raf = useRef(0)
   const navigate = useNavigate()
@@ -95,6 +95,12 @@ export default function CardImovel({ im, variante }) {
       <article className={`im-linha card-clickable ${im.impulsionado ? 'im-pub-on' : ''}`} onClick={irParaImovel}>
         <div className="im-linha-media">
           <img src={im.img} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} loading="lazy" decoding="async" onError={onImgError} />
+          {overlayLabel && (
+            <div className="im-linha-lbl">
+              <span className="im-linha-lbl-eye">{overlayLabel.eyebrow}</span>
+              <strong className="im-linha-lbl-tit">{overlayLabel.titulo} <em>{overlayLabel.em}</em></strong>
+            </div>
+          )}
           <span className="im-tag">{im.tipo}{ehEsquina(im) && <em className="im-tag-esq">· Esquina</em>}</span>
           {im.novo && <span className="im-novo">Novo</span>}
           <SeloPublicidade im={im} />

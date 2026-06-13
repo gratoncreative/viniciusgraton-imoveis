@@ -625,6 +625,31 @@ html[data-theme="dark"] .det-baixou-em { color: #4ade80; }
   .nov-destaque--1 .im-linha-preco { font-size: 1.5rem; }
 }
 
+/* Overlay de título de seção sobre a foto do card linha */
+.im-linha-lbl {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 3;
+  padding: 14px 16px 52px;
+  background: linear-gradient(180deg, rgba(5,8,16,.78) 0%, transparent 100%);
+  display: flex; flex-direction: column; gap: 2px; pointer-events: none;
+}
+.im-linha-lbl-eye {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.13em;
+  text-transform: uppercase; color: var(--gold-3);
+}
+.im-linha-lbl-tit {
+  font-family: var(--font-head); font-weight: 800;
+  font-size: 1.15rem; line-height: 1.2; color: #f1ede4;
+}
+.im-linha-lbl-tit em { color: var(--gold-3); font-style: italic; font-weight: 800; }
+.im-linha-lbl ~ .im-tag { top: 62px; }
+.nov-destaque--1 .im-linha-lbl { padding: 20px 24px 80px; }
+.nov-destaque--1 .im-linha-lbl-tit { font-size: 1.65rem; }
+.nov-destaque--1 .im-linha-lbl ~ .im-tag { top: 82px; }
+@media (max-width: 620px) {
+  .nov-destaque--1 .im-linha-lbl-tit { font-size: 1.2rem; }
+  .im-linha-lbl { padding: 12px 14px 44px; }
+}
+
 .cat-filtros { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
 .cat-filtros input, .cat-filtros select {
   font-family: var(--font-body); font-size: 0.9rem; color: var(--text);
