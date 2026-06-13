@@ -76,6 +76,27 @@ export const IconTarget = (p) => (
 export const IconSparkle = (p) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/></svg>
 )
+export const IconPool = (p) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><rect x="2" y="5" width="20" height="15" rx="2"/><path d="M2 15.5c2.5-3 5-3 7.5 0s5 3 7.5 0"/><path d="M18 5V2M20 5V2M18 2h2"/></svg>
+)
+export const IconGrill = (p) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M4 10h16"/><path d="M5 6h14l1 4H4z"/><path d="M8 10v7M16 10v7"/><path d="M6 17h12"/><path d="M9 21v-4M15 21v-4"/><path d="M10 4.5c.2-.8.3-1.5 0-2.5M14 4.5c.2-.8.3-1.5 0-2.5"/></svg>
+)
+export const IconSolar = (p) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><circle cx="12" cy="12" r="5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"/></svg>
+)
+export const IconCloset = (p) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><rect x="2" y="3" width="20" height="18" rx="1.5"/><path d="M12 3v18"/><path d="M7 11l2 1-2 1"/><path d="M17 11l-2 1 2 1"/></svg>
+)
+export const IconGym = (p) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M6.5 8v8M17.5 8v8"/><path d="M3.5 10.5v3M20.5 10.5v3"/><path d="M6.5 12h11"/></svg>
+)
+export const IconParty = (p) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M5.5 20.5L9 7l9.5 9.5-13 4z"/><path d="M9 7l4 4"/><circle cx="19" cy="5" r="1.5"/><path d="M15 3.5l1.5 2M19 2.5v2M22 5l-2 1"/></svg>
+)
+export const IconBalcony = (p) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M2 9h20"/><path d="M5 9v11M19 9v11"/><path d="M8 9v7M11 9v7M14 9v7M17 9v7"/><path d="M2 20h20"/></svg>
+)
 
 export const IconEye = (p) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -114,4 +135,11 @@ export const ICONS = {
   area: IconArea,
   elevator: IconElevator,
   floor: IconFloor,
+  pool: IconPool,
+  grill: IconGrill,
+  solar: IconSolar,
+  closet: IconCloset,
+  gym: IconGym,
+  party: IconParty,
+  balcony: IconBalcony,
 }
