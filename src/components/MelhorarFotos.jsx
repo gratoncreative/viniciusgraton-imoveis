@@ -152,27 +152,47 @@ function processar(img, s, maxLado) {
   if (s.vinheta > 0) aplicarVinheta(ctx, W, H, s.vinheta)
   return c
 }
-// desenha a marca d'água de texto na posição escolhida (sobre a foto exportada/preview)
-function aplicarMarca(canvas, wm) {
-  if (!wm || !wm.on || !wm.texto) return canvas
+// desenha a marca d'água (texto, logo ou ambos) na posição escolhida
+function aplicarMarca(canvas, wm, logoImg) {
+  if (!wm || !wm.on) return canvas
+  const modo = wm.modo || 'texto'
+  const hasTxt = (modo === 'texto' || modo === 'ambos') && wm.texto
+  const hasLogo = (modo === 'logo' || modo === 'ambos') && logoImg
+  if (!hasTxt && !hasLogo) return canvas
+
   const ctx = canvas.getContext('2d'), W = canvas.width, H = canvas.height
   const fs = Math.max(13, Math.round(Math.min(W, H) * (wm.tam / 100)))
   const pad = Math.round(fs * 0.8)
-  ctx.save()
-  ctx.font = `600 ${fs}px Georgia, "Times New Roman", serif`
-  ctx.globalAlpha = clamp(wm.opac, 0.05, 1)
-  ctx.fillStyle = '#fff'
-  ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = fs * 0.3
   const p = wm.pos || 'inf-dir'
-  if (p.includes('dir')) { ctx.textAlign = 'right'; }
-  else if (p.includes('esq')) { ctx.textAlign = 'left'; }
-  else { ctx.textAlign = 'center'; }
   const x = p.includes('dir') ? W - pad : p.includes('esq') ? pad : W / 2
-  let y
-  if (p.includes('sup')) { ctx.textBaseline = 'top'; y = pad }
-  else if (p === 'centro') { ctx.textBaseline = 'middle'; y = H / 2 }
-  else { ctx.textBaseline = 'alphabetic'; y = H - pad }
-  ctx.fillText(wm.texto, x, y)
+  const alignH = p.includes('dir') ? 'right' : p.includes('esq') ? 'left' : 'center'
+  const isSup = p.includes('sup'), isCentro = p === 'centro'
+
+  ctx.save()
+  ctx.globalAlpha = clamp(wm.opac, 0.05, 1)
+  ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = fs * 0.3
+
+  let offsetY = isSup ? pad : isCentro ? H / 2 : H - pad
+
+  if (hasLogo) {
+    const lh = Math.round(fs * 2.2)
+    const lw = Math.round(lh * (logoImg.naturalWidth || logoImg.width) / (logoImg.naturalHeight || logoImg.height))
+    const lx = alignH === 'right' ? x - lw : alignH === 'left' ? x : x - lw / 2
+    const ly = isSup ? offsetY : isCentro ? offsetY - lh / 2 : offsetY - lh
+    ctx.drawImage(logoImg, lx, ly, lw, lh)
+    if (isSup) offsetY += lh + Math.round(fs * 0.35)
+    else if (!isCentro) offsetY -= lh + Math.round(fs * 0.35)
+  }
+
+  if (hasTxt) {
+    ctx.font = `600 ${fs}px Georgia, "Times New Roman", serif`
+    ctx.fillStyle = '#fff'
+    ctx.textAlign = alignH
+    if (isSup) { ctx.textBaseline = 'top'; ctx.fillText(wm.texto, x, offsetY) }
+    else if (isCentro) { ctx.textBaseline = 'middle'; ctx.fillText(wm.texto, x, offsetY) }
+    else { ctx.textBaseline = 'alphabetic'; ctx.fillText(wm.texto, x, offsetY) }
+  }
+
   ctx.restore()
   return canvas
 }
@@ -251,10 +271,12 @@ export default function MelhorarFotos() {
   const [durSeg, setDurSeg] = useState(3)
   const [videoFmt, setVideoFmt] = useState('vertical')
   const [video, setVideo] = useState(null) // {fase:'gravando'|'pronto'|'erro', pct, msg}
-  const [wm, setWm] = useState({ on: false, texto: 'Vinícius Graton', pos: 'inf-dir', tam: 4, opac: 0.85 })
+  const [wm, setWm] = useState({ on: false, texto: 'Vinícius Graton', pos: 'inf-dir', tam: 4, opac: 0.85, modo: 'texto', logoUrl: '' })
+  const [trilha, setTrilha] = useState(null)
   const [ia, setIa] = useState(null) // {fase, msg}
   const [aba, setAba] = useState('ajustes')
   const previewRef = useRef(null)
+  const wmLogoRef = useRef(null)
   const fotosRef = useRef(fotos); fotosRef.current = fotos
 
   const subir = (e) => {
@@ -292,7 +314,7 @@ export default function MelhorarFotos() {
       cv.width = W; cv.height = H; ctx.drawImage(foto.img, 0, 0, W, H)
     } else {
       const c = processar(foto.img, foto.s, PREVIEW_MAX)
-      if (wm.on) aplicarMarca(c, wm)
+      if (wm.on) aplicarMarca(c, wm, wmLogoRef.current)
       cv.width = c.width; cv.height = c.height
       ctx.drawImage(c, 0, 0)
     }
@@ -361,10 +383,29 @@ export default function MelhorarFotos() {
         if (!slides[i]) slides[i] = montarSlide(processar(fotos[i].img, fotos[i].s, 1280), W, H)
         return slides[i]
       }
-      const mime = ['video/mp4;codecs=avc1.42E01E', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm']
-        .find((m) => MediaRecorder.isTypeSupported(m)) || 'video/webm'
+      // prefer webm when audio is present (broader audio codec support)
+      const mime = trilha
+        ? (['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'].find(m => MediaRecorder.isTypeSupported(m)) || 'video/webm')
+        : (['video/mp4;codecs=avc1.42E01E', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm'].find(m => MediaRecorder.isTypeSupported(m)) || 'video/webm')
       const stream = cv.captureStream(FPS)
-      const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 8000000 })
+      let finalStream = stream
+      let audioCtx = null, audioSrc = null
+      if (trilha) {
+        try {
+          const arrBuf = await trilha.arrayBuffer()
+          audioCtx = new AudioContext()
+          const audioBuf = await audioCtx.decodeAudioData(arrBuf)
+          const dest = audioCtx.createMediaStreamDestination()
+          audioSrc = audioCtx.createBufferSource()
+          audioSrc.buffer = audioBuf
+          audioSrc.loop = true
+          audioSrc.connect(dest)
+          audioSrc.start(0)
+          const audioTrack = dest.stream.getAudioTracks()[0]
+          if (audioTrack) finalStream = new MediaStream([...stream.getTracks(), audioTrack])
+        } catch { /* fallback: vídeo sem áudio */ }
+      }
+      const rec = new MediaRecorder(finalStream, { mimeType: mime, videoBitsPerSecond: 8000000 })
       const chunks = []
       rec.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data) }
       const parou = new Promise((res) => { rec.onstop = res })
@@ -389,13 +430,15 @@ export default function MelhorarFotos() {
             if (a1) { ctx.globalAlpha = a; ctx.drawImage(a1, 0, 0); ctx.globalAlpha = 1 }
           }
           // mesma marca d'água das fotos (texto/posição/tamanho/opacidade), constante no vídeo
-          if (wm.on) aplicarMarca(cv, wm)
+          if (wm.on) aplicarMarca(cv, wm, wmLogoRef.current)
           setVideo({ fase: 'gravando', pct: Math.round((t / total) * 100) })
           requestAnimationFrame(frame)
         }
         requestAnimationFrame(frame)
       })
       rec.stop(); await parou
+      if (audioSrc) { try { audioSrc.stop() } catch {} }
+      if (audioCtx) { try { audioCtx.close() } catch {} }
       const blob = new Blob(chunks, { type: mime })
       const ext = mime.includes('mp4') ? 'mp4' : 'webm'
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `apresentacao-imoveis.${ext}`
@@ -412,7 +455,7 @@ export default function MelhorarFotos() {
   const remover = (i) => { setFotos((fs) => fs.filter((_, k) => k !== i)); setAtual((a) => (a >= fotos.length - 1 ? fotos.length - 2 : a)) }
 
   const baixarCanvas = async (canvas, nome) => {
-    if (wm.on) aplicarMarca(canvas, wm)
+    if (wm.on) aplicarMarca(canvas, wm, wmLogoRef.current)
     const blob = await canvasParaBlob(canvas, formato)
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${nome}.${EXT[formato]}`
     document.body.appendChild(a); a.click(); a.remove()
@@ -545,9 +588,34 @@ export default function MelhorarFotos() {
                     <label className="mf-check"><input type="checkbox" checked={wm.on} onChange={(e) => setWm({ ...wm, on: e.target.checked })} /> Inserir marca d'água nas fotos</label>
                     {wm.on && (
                       <>
-                        <label className="mf-campo"><span>Texto</span>
-                          <input type="text" value={wm.texto} onChange={(e) => setWm({ ...wm, texto: e.target.value })} placeholder="Ex.: Vinícius Graton" />
+                        <label className="mf-sel"><span>Modo</span>
+                          <select value={wm.modo} onChange={(e) => setWm({ ...wm, modo: e.target.value })}>
+                            <option value="texto">Só texto</option>
+                            <option value="logo">Só logomarca</option>
+                            <option value="ambos">Texto + logomarca</option>
+                          </select>
                         </label>
+                        {(wm.modo === 'texto' || wm.modo === 'ambos') && (
+                          <label className="mf-campo"><span>Texto</span>
+                            <input type="text" value={wm.texto} onChange={(e) => setWm({ ...wm, texto: e.target.value })} placeholder="Ex.: Vinícius Graton" />
+                          </label>
+                        )}
+                        {(wm.modo === 'logo' || wm.modo === 'ambos') && (
+                          <div>
+                            <label className="mf-check" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: 6 }}>
+                              <span style={{ fontSize: '0.8rem', color: 'var(--text-mute)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Logomarca (PNG com fundo transparente)</span>
+                              <input type="file" accept="image/png,image/svg+xml,image/webp" onChange={(e) => {
+                                const file = e.target.files?.[0]
+                                if (!file) return
+                                const url = URL.createObjectURL(file)
+                                const img = new Image()
+                                img.onload = () => { wmLogoRef.current = img; setWm(w => ({ ...w, logoUrl: url })) }
+                                img.src = url
+                              }} />
+                            </label>
+                            {wm.logoUrl && <img src={wm.logoUrl} alt="logo" style={{ height: 40, marginTop: 6, borderRadius: 4, background: 'rgba(255,255,255,0.08)', padding: '4px 8px' }} />}
+                          </div>
+                        )}
                         <label className="mf-sel"><span>Posição</span>
                           <select value={wm.pos} onChange={(e) => setWm({ ...wm, pos: e.target.value })}>
                             <option value="inf-dir">Inferior direita</option>
@@ -604,6 +672,12 @@ export default function MelhorarFotos() {
                         <option value={4}>4 segundos</option>
                       </select>
                     </label>
+                    <div>
+                      <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-mute)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 6 }}>🎵 Trilha sonora <span style={{ fontWeight: 400, textTransform: 'none' }}>(opcional — use uma trilha livre de direitos)</span></div>
+                      <input type="file" accept="audio/*" disabled={!!video} onChange={(e) => { const f = e.target.files?.[0]; setTrilha(f || null) }} style={{ fontSize: '0.85rem' }} />
+                      {trilha && <p className="mf-nota" style={{ marginTop: 4 }}>✓ {trilha.name} — será mixada no vídeo (saída em WebM para compatibilidade com áudio).</p>}
+                      {trilha && <button type="button" className="admin-btn admin-btn--mini" style={{ marginTop: 4 }} onClick={() => setTrilha(null)}>✕ Remover trilha</button>}
+                    </div>
                     <button className="btn btn-gold" onClick={gerarVideo} disabled={!!video}>
                       {video ? (video.fase === 'gravando' ? `Montando seu vídeo… ${video.pct}%` : video.fase === 'pronto' ? '✓ Vídeo pronto!' : 'Tentar de novo') : '🎬 Baixar como vídeo'}
                     </button>
@@ -616,7 +690,7 @@ export default function MelhorarFotos() {
                         </div>
                       </div>
                     )}
-                    <p className="mf-nota">Slideshow com transição bem suave (dissolve esmaecendo). Usa a <b>mesma marca d'água das fotos</b> ({wm.on ? `"${wm.texto}"` : 'ative na aba 💧 Marca'}) e o realce de cada foto. Gera em tempo real (~{Math.round(fotos.length * durSeg)}s). Sai em MP4 (ou WebM, conforme o navegador).</p>
+                    <p className="mf-nota">Slideshow com transição bem suave (dissolve esmaecendo). Usa a <b>mesma marca d'água</b> ({wm.on ? `modo ${wm.modo}` : 'ative na aba 💧 Marca'}) e o realce de cada foto. Gera em tempo real (~{Math.round(fotos.length * durSeg)}s). {trilha ? 'Com trilha sonora — sai em WebM.' : 'Sai em MP4 (ou WebM, conforme o navegador).'}</p>
                     {video?.fase === 'erro' && <p className="lead-erro">{video.msg}</p>}
                   </div>
                 )}

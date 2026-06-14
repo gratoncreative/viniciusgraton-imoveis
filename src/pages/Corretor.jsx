@@ -186,9 +186,26 @@ function LegendaPortais() {
 function ScriptObjecoes() {
   const [aberto, setAberto] = useState(null)
   const [copiado, setCopiado] = useState(null)
+  const [objecaoCustom, setObjecaoCustom] = useState('')
+  const [respostaIA, setRespostaIA] = useState('')
+  const [gerando, setGerando] = useState(false)
+  const [copiadoIA, setCopiadoIA] = useState(false)
 
   const copiar = (idx, txt) => {
     navigator.clipboard.writeText(txt).then(() => { setCopiado(idx); setTimeout(() => setCopiado(null), 2000) })
+  }
+
+  const gerarResposta = () => {
+    if (!objecaoCustom.trim() || gerando) return
+    setRespostaIA('')
+    setGerando(true)
+    gerarComIA(
+      'objecoes',
+      { objecao: objecaoCustom.trim() },
+      (delta) => setRespostaIA(t => t + delta),
+      () => setGerando(false),
+      () => setGerando(false)
+    )
   }
 
   const OBJECOES = [
@@ -228,7 +245,30 @@ function ScriptObjecoes() {
 
   return (
     <div className="corr-ferr">
-      <p style={{ fontSize: '0.88rem', color: 'var(--text-soft)', marginBottom: 16 }}>Clique em uma objeção para ver a resposta e copiar.</p>
+      <div style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: 12, padding: '16px', marginBottom: 20 }}>
+        <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-mute)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>🤖 IA — responda qualquer objeção</div>
+        <textarea
+          rows={3}
+          value={objecaoCustom}
+          onChange={e => setObjecaoCustom(e.target.value)}
+          placeholder={`Digite a objeção do cliente...\nEx.: "Vou pensar e te dou um retorno quando decidir."`}
+          style={{ marginBottom: 8 }}
+        />
+        <button className="btn btn-gold" onClick={gerarResposta} disabled={gerando || !objecaoCustom.trim()} style={{ fontSize: '0.88rem' }}>
+          {gerando ? 'Gerando…' : '✨ Gerar resposta com IA'}
+        </button>
+        {respostaIA && (
+          <div className="corr-ferr-resultado" style={{ marginTop: 12 }}>
+            <pre>{respostaIA}</pre>
+            {!gerando && (
+              <button className="btn btn-ghost" style={{ fontSize: '0.8rem', padding: '6px 14px' }} onClick={() => { navigator.clipboard.writeText(respostaIA).then(() => { setCopiadoIA(true); setTimeout(() => setCopiadoIA(false), 2000) }) }}>
+                {copiadoIA ? '✓ Copiado!' : 'Copiar resposta'}
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+      <p style={{ fontSize: '0.88rem', color: 'var(--text-soft)', marginBottom: 16 }}>Ou clique em uma objeção comum abaixo para ver a resposta e copiar.</p>
       <div className="corr-objecoes">
         {OBJECOES.map((o, i) => (
           <div key={i} className={`corr-objcard ${aberto === i ? 'corr-objcard--open' : ''}`}>
@@ -809,11 +849,39 @@ function TrialCountdownBanner({ corretor, onAssinar }) {
 function HubCorretor({ corretor, onSair }) {
   const [ativa, setAtiva] = useState('rotina')
   const [modoGate, setModoGate] = useState(false)
+  const [dragIdx, setDragIdx] = useState(null)
+  const [toolOrder, setToolOrder] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('vg_corretor_tools_order') || 'null')
+      if (Array.isArray(saved) && saved.length) return saved
+    } catch {}
+    return TOOLS.map(t => t.id)
+  })
   const painelRef = useRef(null)
   const atual = TOOLS.find((t) => t.id === ativa)
   const Ativa = RENDER[ativa]
   const escolher = (id) => { setAtiva(id); setTimeout(() => painelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60) }
   const primeiro = (corretor.nome || '').trim().split(' ')[0]
+
+  const orderedTools = (() => {
+    const ordered = toolOrder.map(id => TOOLS.find(t => t.id === id)).filter(Boolean)
+    const missing = TOOLS.filter(t => !toolOrder.includes(t.id))
+    return [...ordered, ...missing]
+  })()
+
+  const onDragStart = (e, idx) => { setDragIdx(idx); e.dataTransfer.effectAllowed = 'move' }
+  const onDragOver = (e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move' }
+  const onDrop = (e, idx) => {
+    e.preventDefault()
+    if (dragIdx === null || dragIdx === idx) { setDragIdx(null); return }
+    const newOrder = orderedTools.map(t => t.id)
+    const [moved] = newOrder.splice(dragIdx, 1)
+    newOrder.splice(idx, 0, moved)
+    setToolOrder(newOrder)
+    try { localStorage.setItem('vg_corretor_tools_order', JSON.stringify(newOrder)) } catch {}
+    setDragIdx(null)
+  }
+  const onDragEnd = () => setDragIdx(null)
 
   useEffect(() => {
     if (corretor.tipo !== 'trial' || !corretor.expiresAt) return
@@ -852,8 +920,19 @@ function HubCorretor({ corretor, onSair }) {
       <TrialCountdownBanner corretor={corretor} onAssinar={onSair} />
 
       <div className="ferr-grid corr-grid">
-        {TOOLS.map((t) => (
-          <button key={t.id} className={`ferr-card ${ativa === t.id ? 'on' : ''}`} onClick={() => escolher(t.id)}>
+        {orderedTools.map((t, idx) => (
+          <button
+            key={t.id}
+            className={`ferr-card ${ativa === t.id ? 'on' : ''}`}
+            onClick={() => escolher(t.id)}
+            draggable
+            onDragStart={(e) => onDragStart(e, idx)}
+            onDragOver={onDragOver}
+            onDrop={(e) => onDrop(e, idx)}
+            onDragEnd={onDragEnd}
+            style={{ opacity: dragIdx === idx ? 0.4 : 1, cursor: 'grab' }}
+            title="Arraste para reordenar"
+          >
             <span className="ferr-ico"><Ico name={t.icon} /></span>
             <span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span>
           </button>

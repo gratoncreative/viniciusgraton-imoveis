@@ -22,6 +22,17 @@ Benefícios do bairro a destacar: ${beneficios?.join(', ')}.
 Escreva a mensagem completa pronta para copiar e colar no WhatsApp. Tom consultivo, sem emoji excessivo. Use ".." como pontuação em vez de ":" no meio das frases. Máximo 200 palavras.`
   }
 
+  if (tool === 'objecoes') {
+    const { objecao } = campos
+    return `Você é um especialista em vendas imobiliárias consultivas. Um cliente disse ao corretor: "${objecao}".
+Escreva UMA resposta curta e empática para o corretor enviar por WhatsApp. Regras:
+- Tom consultivo, sem pressão, sem parecer forçado
+- Use ".." no lugar de ":" no meio de frases
+- Máximo 80 palavras
+- Termine com uma pergunta aberta para manter o diálogo
+- Texto direto, pronto para copiar e colar no WhatsApp`
+  }
+
   return null
 }
 
