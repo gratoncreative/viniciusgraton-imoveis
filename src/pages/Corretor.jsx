@@ -963,14 +963,20 @@ function HubCorretor({ corretor, onSair }) {
             style={{ opacity: dragIdx === idx ? 0.4 : 1, cursor: 'grab' }}
             title="Arraste para reordenar"
           >
-            <span className="ferr-ico"><Ico name={t.icon} /></span>
-            <span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span>
+            <span className="ferr-capa" aria-hidden="true"><Ico name={t.icon} size={54} /></span>
+            <span className="ferr-corpo">
+              <span className="ferr-ico"><Ico name={t.icon} /></span>
+              <span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span>
+            </span>
           </button>
         ))}
         {ATALHOS.map((t) => (
           <Link key={t.to} className="ferr-card" to={t.to}>
-            <span className="ferr-ico"><Ico name={t.icon} /></span>
-            <span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span>
+            <span className="ferr-capa" aria-hidden="true"><Ico name={t.icon} size={54} /></span>
+            <span className="ferr-corpo">
+              <span className="ferr-ico"><Ico name={t.icon} /></span>
+              <span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span>
+            </span>
           </Link>
         ))}
         <Link className="ferr-card ferr-card--gold" to="/admin">
@@ -999,7 +1005,7 @@ function HubCorretor({ corretor, onSair }) {
                 <h3 className="corr-modal-tit">{t.nome}</h3>
                 <button className="corr-modal-close" type="button" onClick={fecharModal}>×</button>
               </div>
-              <div className="corr-modal-body">
+              <div className="corr-modal-body" data-lenis-prevent>
                 <Suspense fallback={<p className="section-sub" style={{ padding: '24px 0' }}>Carregando…</p>}>
                   <Comp />
                 </Suspense>
