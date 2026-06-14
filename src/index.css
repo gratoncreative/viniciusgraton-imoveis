@@ -2424,8 +2424,8 @@ html[data-theme="dark"] .nav:not(.scrolled) .nav-links a.nav-destaque { color: #
 .mf-slider span b { color: var(--text); float: right; font-family: var(--font-head); }
 .mf-slider input[type=range] { width: 100%; accent-color: var(--gold-2); }
 .mf-sel { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.88rem; color: var(--text-soft); }
-.mf-sel select { padding: 8px 10px; border-radius: 9px; background: var(--surface); border: 1px solid var(--border); color: var(--text); flex: 1; min-width: 0; max-width: 72%; }
-html[data-theme="dark"] .mf-sel select { color-scheme: dark; }
+.mf-sel select { padding: 8px 10px; border-radius: 9px; background: var(--surface); border: 1px solid var(--border); color: var(--text); flex: 1; min-width: 0; max-width: 72%; color-scheme: dark; }
+.mf-sel select option { background: #1a1f29; color: #e8eaf0; }
 .mf-nota { font-size: 0.78rem; color: var(--text-mute); line-height: 1.4; margin: 2px 0 0; }
 .mf-nota.mf-erro { color: #e06b5a; }
 .mf-botoes { display: flex; flex-wrap: wrap; gap: 8px; }
