@@ -856,6 +856,7 @@ function HubCorretor({ corretor, onSair }) {
   const navigate = useNavigate()
   const [modoGate, setModoGate] = useState(false)
   const [dragIdx, setDragIdx] = useState(null)
+  const [pressionando, setPressionando] = useState(false)
   const [toolOrder, setToolOrder] = useState(() => {
     try {
       const saved = JSON.parse(localStorage.getItem('vg_corretor_tools_order') || 'null')
@@ -883,7 +884,13 @@ function HubCorretor({ corretor, onSair }) {
     try { localStorage.setItem('vg_corretor_tools_order', JSON.stringify(newOrder)) } catch {}
     setDragIdx(null)
   }
-  const onDragEnd = () => setDragIdx(null)
+  const onDragEnd = () => { setDragIdx(null); setPressionando(false) }
+
+  useEffect(() => {
+    const onUp = () => setPressionando(false)
+    document.addEventListener('mouseup', onUp)
+    return () => document.removeEventListener('mouseup', onUp)
+  }, [])
 
   useEffect(() => {
     if (corretor.tipo !== 'trial' || !corretor.expiresAt) return
@@ -921,13 +928,14 @@ function HubCorretor({ corretor, onSair }) {
       </header>
       <TrialCountdownBanner corretor={corretor} onAssinar={onSair} />
 
-      <div className="ferr-grid corr-grid">
+      <div className={`ferr-grid corr-grid${pressionando || dragIdx !== null ? ' corr-grid--drag' : ''}`}>
         {orderedTools.map((t, idx) => (
           <button
             key={t.id}
             className="ferr-card"
             onClick={() => navigate(`/corretor/${t.id}`)}
             draggable
+            onMouseDown={() => setPressionando(true)}
             onDragStart={(e) => onDragStart(e, idx)}
             onDragOver={onDragOver}
             onDrop={(e) => onDrop(e, idx)}

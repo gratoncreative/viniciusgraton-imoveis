@@ -3366,7 +3366,8 @@ html[data-theme="dark"] .ferr-drag-handle { color: rgba(255,255,255,0.3); }
 .corr-hero { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: 26px; }
 .corr-hero-acoes { display: flex; align-items: center; gap: 12px; }
 .corr-chip { font-family: var(--font-head); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.03em; color: var(--gold-3); border: 1px solid rgba(184,134,47,0.4); background: rgba(184,134,47,0.08); padding: 7px 13px; border-radius: 100px; }
-.corr-grid { margin-top: 6px; }
+.corr-grid { margin-top: 6px; border-radius: 18px; outline: 2px solid transparent; transition: outline-color .18s, box-shadow .18s; }
+.corr-grid--drag { outline-color: rgba(184,134,47,0.45); box-shadow: 0 0 0 8px rgba(184,134,47,0.07), 0 0 40px rgba(184,134,47,0.06); background-image: linear-gradient(rgba(22,26,34,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(22,26,34,0.07) 1px, transparent 1px); background-size: 26px 26px; }
 @media (max-width: 860px) { .corr-gate-wrap { grid-template-columns: 1fr; } .corr-form { margin: 0 auto; } }
 /* ─── página de ferramenta individual ───────────────────────────────────────── */
 .corr-ferr-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
