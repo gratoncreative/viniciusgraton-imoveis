@@ -85,10 +85,10 @@ export default function AdminImovelBar({ im }) {
     const texto = [
       `Olá${primeiroNome ? ', ' + primeiroNome : ''}!`,
       `Aqui é o Vinícius Graton, da Rotina Imobiliária.`,
-      `Tenho um cliente com interesse no seu ${tipo}${area} no ${bairro} (código ${codigo}).`,
-      `Pode confirmar: o imóvel ainda está disponível para ${finalidade}?`,
-      `E o valor de ${preco} ainda se mantém? Meu cliente gostou muito e estamos em bom momento para avançar.`,
-      `Aguardo seu retorno!`,
+      `Tenho um cliente com grande interesse no seu ${tipo}${area} no ${bairro} (código ${codigo}).`,
+      `Pode confirmar que o imóvel ainda está disponível para ${finalidade}?`,
+      `Já confirmei ao meu cliente o valor de ${preco} conforme anunciado. Por gentileza, confirme se esse valor se mantém para que possamos avançar com a visita.`,
+      `Aguardo seu retorno, obrigado!`,
     ].join('\n\n')
     const fone = (owner?.fone || '').replace(/\D/g, '')
     const num = fone ? (fone.startsWith('55') ? fone : '55' + fone) : ''
