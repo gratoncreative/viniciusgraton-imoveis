@@ -685,9 +685,15 @@ export default function ImovelDetalhe() {
                   </a>
                 )}
                 {est?.ok && (
-                  <button className="det-btn-acao det-btn-acao--wide" onClick={() => setEstudoAberto(true)}>
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18M7 14l4-4 3 3 5-6" /></svg>
-                    Estudo do valor do m² neste bairro
+                  <button className="det-estudo-cta" onClick={() => setEstudoAberto(true)}>
+                    <div className="det-estudo-cta-ico" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18M7 14l4-4 3 3 5-6" /></svg>
+                    </div>
+                    <div className="det-estudo-cta-txt">
+                      <strong>Estudo do valor do m²</strong>
+                      <span>Veja se o preço pedido está justo para este bairro</span>
+                    </div>
+                    <svg className="det-estudo-cta-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </button>
                 )}
               </div>

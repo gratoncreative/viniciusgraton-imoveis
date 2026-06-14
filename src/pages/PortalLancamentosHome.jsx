@@ -101,7 +101,7 @@ export default function PortalLancamentosHome() {
               <em>com curadoria de consultor</em>
             </h1>
             <p className="lan-hero-sub">
-              Acompanho mais de {Math.floor(totalConstrutoras / 5) * 5} construtoras — comparo, filtro e indico só o que faz sentido para o seu perfil, com análise independente e sem viés de incorporadora.
+              Acompanho mais de {Math.floor(totalConstrutoras / 5) * 5} construtoras — filtro, comparo e indico só o que faz sentido para o seu perfil, com análise independente.
             </p>
             <div className="lan-hero-ctas">
               <Link to="/lancamentos/catalogo" className="btn btn-gold">
@@ -272,42 +272,6 @@ export default function PortalLancamentosHome() {
         </div>
       </section>
 
-      {/* Guia CTA */}
-      <section className="lan-guia-cta">
-        <div className="container lan-guia-cta-inner">
-          <Reveal>
-            <h2 className="section-title">Primeira vez comprando na planta?</h2>
-            <p className="section-sub">
-              Leia o guia completo antes de assinar qualquer contrato. Documentação, financiamento, INCC, prazo de entrega.. tudo que você precisa saber para comprar com segurança.
-            </p>
-            <Link to="/lancamentos/guia" className="btn btn-gold" style={{ marginTop: 24 }}>
-              Ler o guia gratuito <IconArrow width={14} height={14} />
-            </Link>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* CTA WhatsApp */}
-      <section className="lan-wa-cta">
-        <div className="container" style={{ textAlign: 'center' }}>
-          <h2 className="section-title">Não encontrou o que procura?</h2>
-          <p className="section-sub" style={{ maxWidth: 520, margin: '12px auto 0' }}>
-            Informe o bairro, a faixa de preço e o número de dormitórios. Faço a curadoria personalizada para o seu perfil entre todos os lançamentos ativos em Uberlândia.
-          </p>
-          <a
-            href={linkWhatsApp(WA_PORTAL)}
-            className="btn btn-gold"
-            target="_blank"
-            rel="noopener"
-            style={{ marginTop: 28, display: 'inline-flex', gap: 8 }}
-          >
-            <IconWhats width={17} height={17} /> Falar com Vinícius Graton
-          </a>
-          <p className="lan-wa-creci">
-            Consultor da Rotina Imobiliária · CRECI PJ 132 · (34) 99157-0494
-          </p>
-        </div>
-      </section>
     </main>
   )
 }
