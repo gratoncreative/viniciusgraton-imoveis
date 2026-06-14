@@ -599,6 +599,9 @@ html[data-theme="dark"] .im-baixou-em { color: #4ade80; }
 .det-baixou-em { margin: 6px 0 0; font-size: 0.85rem; font-weight: 600; color: #1f8a4c; display: flex; align-items: center; gap: 5px; }
 .det-baixou-em::before { content: '↓'; }
 html[data-theme="dark"] .det-baixou-em { color: #4ade80; }
+.det-novo-tag { color: #2563eb; }
+.det-novo-tag::before { content: '✦'; }
+html[data-theme="dark"] .det-novo-tag { color: #60a5fa; }
 
 /* Novidades: destaque para 1–2 imóveis — aproveita toda a largura disponível */
 .nov-destaque { display: flex; flex-direction: column; gap: 20px; }

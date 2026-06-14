@@ -224,18 +224,23 @@ function publicar(codigosArg) {
     if (existsSync(src)) copyFileSync(src, resolve(IMG_DIR, `${im.codigo}.jpg`))
   }
 
+  // MESCLA com os já existentes (não sobrescreve imóveis adicionados/aprovados antes)
+  let existentes = []
+  try { existentes = JSON.parse(readFileSync(OUT_JSON, 'utf8')).imoveis || [] } catch {}
+  const mapaExistentes = new Map(existentes.map((im) => [String(im.codigo), im]))
+  const agora = new Date().toISOString()
+
   // remove campos internos e monta a galeria (capa hospedada + demais fotos do CDN público) + descrição real
   const limpos = selecao.map(({ tipoRaw, capaUrl, ...rest }, i) => {
     // extras = galeria em alta, sem o avatar e sem repetir a foto que já virou capa
     const extras = (galerias[rest.codigo] || []).filter((u) => u && !/avatar\.jpg/i.test(u) && u !== capaUrl)
     const fotos = [rest.img, ...extras]
     const descricao = limparDesc(descricoes[rest.codigo])
+    // preserva a data da primeira aparição; novo imóvel recebe a data atual
+    const visto = mapaExistentes.get(String(rest.codigo))?.visto || agora
     // REGRA: imóvel importado entra como PENDENTE — só vai pro site após o Vinícius aprovar no /admin.
-    return { ...rest, descricao, fotos, novo: i < 2, pendente: true }
+    return { ...rest, descricao, fotos, novo: i < 2, pendente: true, visto }
   })
-  // MESCLA com os já existentes (não sobrescreve imóveis adicionados/aprovados antes)
-  let existentes = []
-  try { existentes = JSON.parse(readFileSync(OUT_JSON, 'utf8')).imoveis || [] } catch {}
   const codsNovos = new Set(limpos.map((n) => String(n.codigo)))
   const mantidos = existentes.filter((im) => !codsNovos.has(String(im.codigo)))
   const out = {

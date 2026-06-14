@@ -614,6 +614,15 @@ export default function ImovelDetalhe() {
                 </div>
               ) : null })()}
               <PrecoGate valor={im.preco} anterior={im.precoAnterior} className="det-preco" tipo="detalhe" />
+              {im.visto && (() => {
+                const dias = Math.floor((Date.now() - new Date(im.visto).getTime()) / 86400000)
+                if (dias > 60) return null
+                const txt = dias === 0 ? 'Adicionado hoje' : dias === 1 ? 'Adicionado há 1 dia' : `Adicionado há ${dias} dias`
+                return <p className="det-baixou-em det-novo-tag">{txt}</p>
+              })()}
+              {!im.visto && im.novo && (
+                <p className="det-baixou-em det-novo-tag">Adicionado recentemente</p>
+              )}
               {im.baixouEm && (
                 <p className="det-baixou-em">
                   Preço reduzido em {new Date(im.baixouEm).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}

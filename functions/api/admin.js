@@ -586,6 +586,25 @@ export async function onRequestPost({ env, request }) {
     if (force && saved && saved.owner) {
       await env.ENGAGEMENT.put('imovel:'+cod, JSON.stringify({...(saved||{}), owner:null, atualizadoEm:Date.now()}))
     }
+
+    // Alerta por email quando todas as estratégias de busca falham
+    const resendKey = String(env.RESEND_KEY || '').trim()
+    if (resendKey && !isDebug) {
+      const adminEmail = String(env.ADMIN_EMAIL || 'viniciusgraton1985@gmail.com').trim()
+      try {
+        await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { authorization: 'Bearer ' + resendKey, 'content-type': 'application/json' },
+          body: JSON.stringify({
+            from: 'Vinícius Graton <laudo@viniciusgraton.com.br>',
+            to: [adminEmail],
+            subject: `⚠️ Proprietário não encontrado — imóvel ${cod}`,
+            html: `<p>A busca automática de proprietário para o imóvel <b>${cod}</b> não retornou dados no Imoview.</p><p>Verifique o login/sessão do Imoview ou consulte o proprietário manualmente no painel.</p>`
+          })
+        })
+      } catch {}
+    }
+
     return json({ ok: true, owner: { nome: '', email: '', fone: '' }, source: 'none' })
   }
 
