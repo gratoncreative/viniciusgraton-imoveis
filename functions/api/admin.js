@@ -428,7 +428,6 @@ export async function onRequestPost({ env, request }) {
         dbg.loginLocation = loginR.headers.get('location') || ''
         cookies = mergeCookies(cookies, loginR.headers.get('set-cookie') || '')
         dbg.hasCookies = cookies.length > 10
-        dbg.cookieStr = cookies.slice(0, 120)
 
         // Resposta é JSON: {"Autorizado":true/false,"Url":"...","Mensagem":"..."}
         const loginBodyTxt = await loginR.text()
@@ -446,71 +445,135 @@ export async function onRequestPost({ env, request }) {
         }
 
         if (loginOk) {
-          // Passo 3: GET /Imovel/Detalhes/{cod} → extrai código da pessoa
+          // Passo 3: GET /Imovel/Detalhes/{cod}
           const imovelR = await fetch(`${WEB}/Imovel/Detalhes/${cod}`, {
             headers:{ cookie:cookies, 'user-agent':UA, accept:'text/html', 'x-requested-with':'XMLHttpRequest' },
             redirect:'follow', signal:AbortSignal.timeout(12000),
           })
           dbg.imovelStatus = imovelR.status
           const imovelHtml = await imovelR.text()
-
-          // Prioridade: elemento loadPessoas (botão de proprietários) — evita pegar captador
-          let pessoaCode = ''
-          const lpEl = imovelHtml.match(/<[^>]*loadPessoas[^>]*>/i)
-          if (lpEl) { const dc = lpEl[0].match(/data-codigos=["']?(\d+)["']?/); if (dc) pessoaCode = dc[1] }
-          if (!pessoaCode) {
-            // Fallback: qualquer data-codigos na página
-            const dcM = imovelHtml.match(/data-codigos=["'](\d+)["']/)
-            if (dcM) pessoaCode = dcM[1]
-          }
-          dbg.pessoaCode = pessoaCode
           if (isDebug) dbg.imovelSnippet = imovelHtml.slice(0, 2000)
 
-          if (pessoaCode) {
-            // Passo 4: tenta PessoaF (física) e depois PessoaJ (jurídica/empresa)
-            let owner = { nome: '', email: '', fone: '' }
-            for (const tipo of ['PessoaF', 'PessoaJ']) {
-              const pessoaR = await fetch(`${WEB}/${tipo}/Detalhes/${pessoaCode}`, {
-                headers:{ cookie:cookies, 'user-agent':UA, accept:'text/html' },
-                redirect:'follow', signal:AbortSignal.timeout(12000),
-              })
-              dbg[`${tipo}Status`] = pessoaR.status
-              const pessoaHtml = await pessoaR.text()
-
-              const nomeM = pessoaHtml.match(/<title>[^|<]+\|\s*([^<]+)<\/title>/)
-              const nome  = nomeM ? nomeM[1].trim() : ''
-
-              const waM = pessoaHtml.match(/api\.whatsapp\.com\/send\?phone=55(\d{10,11})/)
-              let fone = ''
-              if (waM) {
-                const d = waM[1]
-                fone = d.length === 11
-                  ? `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`
-                  : `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`
-              } else {
-                const foneM = pessoaHtml.match(/\((\d{2})\)\s*(\d{4,5}[-.\s]?\d{4})/)
-                if (foneM) fone = `(${foneM[1]}) ${foneM[2].replace(/[-.\s]/g,'').replace(/(\d{4,5})(\d{4})$/,'$1-$2')}`
-              }
-
-              const emailM = pessoaHtml.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,6}/)
-              const email  = emailM ? emailM[0] : ''
-
-              if (nome || fone) {
-                owner = { nome: nome.slice(0,120), email: email.slice(0,160), fone: fone.slice(0,40) }
-                if (isDebug) dbg.tipoUsado = tipo
-                break
-              }
-              if (isDebug) dbg[`${tipo}Snippet`] = pessoaHtml.slice(0,400)
-            }
-
-            if (owner.nome || owner.fone) {
-              await env.ENGAGEMENT.put('imovel:'+cod, JSON.stringify({...(saved||{}), owner, atualizadoEm:Date.now()}))
-              return json({ ok:true, owner, source:'imoview-web', ...(isDebug?{dbg}:{}) })
-            }
-            if (isDebug) return json({ ok:false, source:'parse-falhou', dbg })
-          } else {
-            if (isDebug) return json({ ok:false, source:'pessoa-code-nao-encontrado', dbg, imovelSnippet:imovelHtml.slice(0,2000) })
+          // === ESTRATÉGIA 1: Lista de Proprietários (endpoint AJAX dedicado) ===
+          // Busca URL do endpoint diretamente no HTML (href, data-url, JS string)
+          const propHrefM = imovelHtml.match(/(?:href|data-url|data-href|data-action|data-load)\s*=\s*["']([^"']*[Pp]roprietar[^"']*)["']/i)
+            || imovelHtml.match(/['"]([^'"]*\/[Pp]roprietar[^'"]*\?[^'"]{3,100})['"]/i)
+          const propHref = propHrefM ? propHrefM[1] : null
+          if (isDebug) {
+            dbg.propHref = propHref
+            // Trecho do HTML em volta da 1ª menção a "proprietar" — para diagnóstico da URL correta
+            const pi2 = imovelHtml.toLowerCase().indexOf('proprietar')
+            dbg.propSection = pi2 >= 0 ? imovelHtml.slice(Math.max(0, pi2 - 80), pi2 + 500) : 'não encontrado'
           }
+
+          const propCandidates = [
+            ...(propHref ? [propHref.startsWith('http') ? propHref : `${WEB}${propHref}`] : []),
+            `${WEB}/Proprietario/ListarProprietariosPorImovel?imovelCodigo=${cod}`,
+            `${WEB}/Imovel/RetornarProprietarios?imovelCodigo=${cod}`,
+          ]
+
+          let owner = { nome: '', email: '', fone: '' }
+
+          for (let pi = 0; pi < propCandidates.length; pi++) {
+            const endpt = propCandidates[pi]
+            try {
+              const propR = await fetch(endpt, {
+                headers:{ cookie:cookies, 'user-agent':UA, accept:'application/json,text/html,*/*', 'x-requested-with':'XMLHttpRequest' },
+                redirect:'follow', signal:AbortSignal.timeout(7000),
+              })
+              if (isDebug) dbg[`propStatus${pi}`] = `${propR.status} ${endpt.replace(WEB,'').slice(0,60)}`
+              if (!propR.ok) continue
+              const propBody = await propR.text()
+
+              // Tenta JSON
+              try {
+                const j = JSON.parse(propBody)
+                const lista = Array.isArray(j) ? j : (j.lista || j.dados || j.proprietarios || j.Proprietarios || j.Data || j.data || [])
+                if (Array.isArray(lista) && lista.length > 0) {
+                  const p = lista.find(x => /J/i.test(x.tipo || x.Tipo || x.TipoProprietario || '')) || lista[0]
+                  const n = String(p.nome || p.Nome || p.nomeCompleto || p.NomeProprietario || p.nomeProprietario || '').trim()
+                  const f = String(p.telefone || p.Telefone || p.celular || p.Celular || p.TelefoneResidencial || p.TelefoneCelular || '').trim()
+                  const e = String(p.email || p.Email || '').trim()
+                  if (n || f) { owner = { nome:n.slice(0,120), email:e.slice(0,160), fone:f.slice(0,40) }; break }
+                }
+              } catch {}
+
+              // Tenta HTML com tabela de proprietários
+              if (!owner.nome && !owner.fone) {
+                const rows = [...propBody.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/gi)]
+                for (const rm of rows) {
+                  const cells = [...rm[1].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/gi)].map(m => m[1].replace(/<[^>]+>/g,'').trim())
+                  if (cells.length >= 2) {
+                    const nome = (cells[1] || cells[0]).trim()
+                    if (nome && nome.length > 2 && !/^(?:nome|cód|código|tipo|email|telefone|percentual|ações)$/i.test(nome)) {
+                      const foneCell = cells.find(c => /\(\d{2}\)/.test(c) || /\d{4,5}-\d{4}/.test(c)) || ''
+                      const emailCell = cells.find(c => c.includes('@')) || ''
+                      owner = { nome:nome.slice(0,120), email:emailCell.slice(0,160), fone:foneCell.slice(0,40) }
+                      break
+                    }
+                  }
+                }
+                if (isDebug && !owner.nome) dbg[`propBody${pi}`] = propBody.slice(0, 400)
+              }
+              if (owner.nome || owner.fone) { if (isDebug) dbg.ownerStrategy = `lista-prop-${pi}`; break }
+            } catch(e2) {
+              if (isDebug) dbg[`propErr${pi}`] = String(e2).slice(0, 80)
+            }
+          }
+
+          // === ESTRATÉGIA 2: PessoaF/PessoaJ via loadPessoas (fallback) ===
+          if (!owner.nome && !owner.fone) {
+            let pessoaCode = ''
+            const lpEl = imovelHtml.match(/<[^>]*loadPessoas[^>]*>/i)
+            if (lpEl) { const dc = lpEl[0].match(/data-codigos=["']?(\d+)["']?/); if (dc) pessoaCode = dc[1] }
+            if (!pessoaCode) {
+              const dcM = imovelHtml.match(/data-codigos=["'](\d+)["']/)
+              if (dcM) pessoaCode = dcM[1]
+            }
+            dbg.pessoaCode = pessoaCode
+
+            if (pessoaCode) {
+              for (const tipo of ['PessoaF', 'PessoaJ']) {
+                const pessoaR = await fetch(`${WEB}/${tipo}/Detalhes/${pessoaCode}`, {
+                  headers:{ cookie:cookies, 'user-agent':UA, accept:'text/html' },
+                  redirect:'follow', signal:AbortSignal.timeout(12000),
+                })
+                dbg[`${tipo}Status`] = pessoaR.status
+                const pessoaHtml = await pessoaR.text()
+
+                const nomeM = pessoaHtml.match(/<title>[^|<]+\|\s*([^<]+)<\/title>/)
+                const nome  = nomeM ? nomeM[1].trim() : ''
+
+                const waM = pessoaHtml.match(/api\.whatsapp\.com\/send\?phone=55(\d{10,11})/)
+                let fone = ''
+                if (waM) {
+                  const d = waM[1]
+                  fone = d.length === 11
+                    ? `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`
+                    : `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`
+                } else {
+                  const foneM = pessoaHtml.match(/\((\d{2})\)\s*(\d{4,5}[-.\s]?\d{4})/)
+                  if (foneM) fone = `(${foneM[1]}) ${foneM[2].replace(/[-.\s]/g,'').replace(/(\d{4,5})(\d{4})$/,'$1-$2')}`
+                }
+
+                const emailM = pessoaHtml.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,6}/)
+                const email  = emailM ? emailM[0] : ''
+
+                if (nome || fone) {
+                  owner = { nome:nome.slice(0,120), email:email.slice(0,160), fone:fone.slice(0,40) }
+                  if (isDebug) { dbg.tipoUsado = tipo; dbg.ownerStrategy = `pessoa-${tipo}` }
+                  break
+                }
+                if (isDebug) dbg[`${tipo}Snippet`] = pessoaHtml.slice(0,400)
+              }
+            }
+          }
+
+          if (owner.nome || owner.fone) {
+            await env.ENGAGEMENT.put('imovel:'+cod, JSON.stringify({...(saved||{}), owner, atualizadoEm:Date.now()}))
+            return json({ ok:true, owner, source:'imoview-web', ...(isDebug?{dbg}:{}) })
+          }
+          if (isDebug) return json({ ok:false, source:'parse-falhou', dbg })
         } else {
           if (isDebug) return json({ ok:false, source:'login-falhou', dbg })
         }
