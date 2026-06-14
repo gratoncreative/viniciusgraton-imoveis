@@ -3334,6 +3334,17 @@ html[data-theme="dark"] .ferr-drag-handle { color: rgba(255,255,255,0.3); }
 .corr-chip { font-family: var(--font-head); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.03em; color: var(--gold-3); border: 1px solid rgba(184,134,47,0.4); background: rgba(184,134,47,0.08); padding: 7px 13px; border-radius: 100px; }
 .corr-grid { margin-top: 6px; }
 @media (max-width: 860px) { .corr-gate-wrap { grid-template-columns: 1fr; } .corr-form { margin: 0 auto; } }
+/* ─── modal de ferramentas ─────────────────────────────────────────────────── */
+.corr-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 900; display: flex; align-items: flex-start; justify-content: center; padding: 32px 16px 48px; overflow-y: auto; backdrop-filter: blur(3px); animation: fadeIn .18s ease; }
+.corr-modal { background: var(--bg); border: 1px solid var(--border); border-radius: 18px; width: 100%; max-width: 980px; position: relative; box-shadow: 0 32px 80px rgba(0,0,0,0.6); animation: slideUp .22s cubic-bezier(.22,1,.36,1); }
+.corr-modal-head { display: flex; align-items: center; gap: 12px; padding: 18px 20px 16px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 1; border-radius: 18px 18px 0 0; }
+.corr-modal-ico { color: var(--gold-2); flex-shrink: 0; }
+.corr-modal-tit { flex: 1; font-family: var(--font-head); font-size: 1.05rem; font-weight: 700; color: var(--text); margin: 0; }
+.corr-modal-close { width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.07); border: 1px solid var(--border); color: var(--text-mute); font-size: 1.3rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .15s, color .15s; flex-shrink: 0; }
+.corr-modal-close:hover { background: rgba(255,255,255,0.14); color: var(--text); }
+.corr-modal-body { padding: 22px 20px 28px; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 /* planos v2 — cards selecionáveis */
 .corr-planos-v2 { display: flex; gap: 14px; margin-bottom: 20px; padding-top: 18px; }

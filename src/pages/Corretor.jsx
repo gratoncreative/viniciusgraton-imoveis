@@ -847,7 +847,7 @@ function TrialCountdownBanner({ corretor, onAssinar }) {
 }
 
 function HubCorretor({ corretor, onSair }) {
-  const [ativa, setAtiva] = useState('rotina')
+  const [modal, setModal] = useState(null)
   const [modoGate, setModoGate] = useState(false)
   const [dragIdx, setDragIdx] = useState(null)
   const [toolOrder, setToolOrder] = useState(() => {
@@ -857,10 +857,6 @@ function HubCorretor({ corretor, onSair }) {
     } catch {}
     return TOOLS.map(t => t.id)
   })
-  const painelRef = useRef(null)
-  const atual = TOOLS.find((t) => t.id === ativa)
-  const Ativa = RENDER[ativa]
-  const escolher = (id) => { setAtiva(id); setTimeout(() => painelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60) }
   const primeiro = (corretor.nome || '').trim().split(' ')[0]
 
   const orderedTools = (() => {
@@ -890,6 +886,12 @@ function HubCorretor({ corretor, onSair }) {
     const t = setTimeout(onSair, remaining)
     return () => clearTimeout(t)
   }, [corretor, onSair])
+
+  useEffect(() => {
+    const handler = (e) => { if (e.key === 'Escape') setModal(null) }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [])
 
   if (modoGate) return (
     <>
@@ -923,8 +925,8 @@ function HubCorretor({ corretor, onSair }) {
         {orderedTools.map((t, idx) => (
           <button
             key={t.id}
-            className={`ferr-card ${ativa === t.id ? 'on' : ''}`}
-            onClick={() => escolher(t.id)}
+            className="ferr-card"
+            onClick={() => setModal(t.id)}
             draggable
             onDragStart={(e) => onDragStart(e, idx)}
             onDragOver={onDragOver}
@@ -949,12 +951,27 @@ function HubCorretor({ corretor, onSair }) {
         </Link>
       </div>
 
-      <div className="calc-painel corr-painel" ref={painelRef} style={{ marginTop: 30 }}>
-        <h3 className="calc-painel-tit"><span className="calc-tit-ico"><Ico name={atual.icon} size={20} /></span>{atual.nome}</h3>
-        <Suspense fallback={<p className="section-sub" style={{ padding: '24px 0' }}>Carregando…</p>}>
-          <Ativa />
-        </Suspense>
-      </div>
+      {modal && (() => {
+        const t = TOOLS.find(t => t.id === modal)
+        const Comp = RENDER[modal]
+        if (!t || !Comp) return null
+        return (
+          <div className="corr-modal-overlay" onClick={() => setModal(null)}>
+            <div className="corr-modal" onClick={e => e.stopPropagation()}>
+              <div className="corr-modal-head">
+                <span className="corr-modal-ico"><Ico name={t.icon} size={20} /></span>
+                <h3 className="corr-modal-tit">{t.nome}</h3>
+                <button className="corr-modal-close" type="button" onClick={() => setModal(null)}>×</button>
+              </div>
+              <div className="corr-modal-body">
+                <Suspense fallback={<p className="section-sub" style={{ padding: '24px 0' }}>Carregando…</p>}>
+                  <Comp />
+                </Suspense>
+              </div>
+            </div>
+          </div>
+        )
+      })()}
     </>
   )
 }
