@@ -175,9 +175,16 @@ export default function Catalogo() {
 
   const fuseIds = useMemo(() => {
     if (!f.q) return null
-    const res = fuse.search(f.q)
+    const q = f.q.trim()
+    // Busca só por dígitos → match direto no código (sem fuzzy, sem falsos positivos)
+    if (/^\d+$/.test(q)) {
+      const exact = TODOS.filter(im => String(im.codigo) === q)
+      const matches = exact.length ? exact : TODOS.filter(im => String(im.codigo).startsWith(q))
+      return new Set(matches.map(im => String(im.codigo)))
+    }
+    const res = fuse.search(q)
     return new Set(res.map((r) => String(r.item.codigo)))
-  }, [fuse, f.q])
+  }, [fuse, f.q, TODOS])
 
   const lista = useMemo(() => {
     let r = TODOS.filter((im) => {
