@@ -119,7 +119,7 @@ function Destaque({ icon, titulo, sub }) {
   const Icon = ICONS[icon]
   return (
     <div className="det-dest">
-      <span className="det-dest-ico">{Icon && <Icon width={24} height={24} />}</span>
+      <span className="det-dest-ico">{Icon && <Icon width={28} height={28} />}</span>
       <div>
         <b>{titulo}</b>
         <span>{sub}</span>
@@ -584,7 +584,10 @@ export default function ImovelDetalhe() {
                   <>
                     <span className="det-apre-sub">Descrição do imóvel</span>
                     <div className="det-apre-desc">
-                      {paragrafos.map((p, i) => <p key={i}>{p}</p>)}
+                      {paragrafos.map((p, i) => {
+                        const isTopico = p.length < 70 && !/\.\s*$/.test(p.trim()) && !p.trim().endsWith(':') && (p.match(/,/g) || []).length < 2
+                        return <p key={i} className={isTopico ? 'det-apre-topico' : ''}>{isTopico ? `— ${p}` : p}</p>
+                      })}
                     </div>
                   </>
                 )}
