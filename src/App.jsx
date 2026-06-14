@@ -149,6 +149,7 @@ export default function App() {
               <Route path="/ferramentas" element={<Ferramentas />} />
               <Route path="/ferramentas/converter" element={<ConverterFotos />} />
               <Route path="/corretor" element={<Corretor />} />
+              <Route path="/corretor/:toolId" element={<Corretor />} />
               <Route path="/condominios" element={<Condominios />} />
               <Route path="/condominios/:slug" element={<CondominioDetalhe />} />
               <Route path="/anunciar" element={<Anunciar />} />

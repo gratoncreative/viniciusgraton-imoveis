@@ -1,6 +1,6 @@
 ﻿import { useState, useEffect, useRef, lazy, Suspense, useCallback } from 'react'
 import { gerarComIA } from '../useFerramentaIA'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useParams, Navigate } from 'react-router-dom'
 import { useSEO } from '../useSEO'
 import { getCorretor, salvarCorretor, sairCorretor } from '../corretor'
 import { registrarLead } from '../engajamento'
@@ -853,9 +853,7 @@ function TrialCountdownBanner({ corretor, onAssinar }) {
 }
 
 function HubCorretor({ corretor, onSair }) {
-  const [modal, setModal] = useState(null)
-  const [mSize, setMSize] = useState({ w: null, h: null })
-  const mRef = useRef(null)
+  const navigate = useNavigate()
   const [modoGate, setModoGate] = useState(false)
   const [dragIdx, setDragIdx] = useState(null)
   const [toolOrder, setToolOrder] = useState(() => {
@@ -895,32 +893,6 @@ function HubCorretor({ corretor, onSair }) {
     return () => clearTimeout(t)
   }, [corretor, onSair])
 
-  useEffect(() => {
-    const handler = (e) => { if (e.key === 'Escape') { setModal(null); setMSize({ w: null, h: null }) } }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [])
-
-  const fecharModal = useCallback(() => { setModal(null); setMSize({ w: null, h: null }) }, [])
-
-  const startResize = useCallback((e, dir) => {
-    e.preventDefault(); e.stopPropagation()
-    const el = mRef.current
-    if (!el) return
-    const r0 = el.getBoundingClientRect()
-    const x0 = e.clientX, y0 = e.clientY
-    const onMove = (ev) => {
-      const dx = ev.clientX - x0, dy = ev.clientY - y0
-      setMSize(prev => ({
-        w: dir.includes('e') ? Math.max(420, r0.width + dx) : prev.w,
-        h: dir.includes('s') ? Math.max(280, r0.height + dy) : prev.h,
-      }))
-    }
-    const onUp = () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp) }
-    window.addEventListener('mousemove', onMove)
-    window.addEventListener('mouseup', onUp)
-  }, [])
-
   if (modoGate) return (
     <>
       <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, padding: '10px 18px', marginBottom: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, fontSize: '0.84rem', color: 'var(--text-soft)' }}>
@@ -954,7 +926,7 @@ function HubCorretor({ corretor, onSair }) {
           <button
             key={t.id}
             className="ferr-card"
-            onClick={() => setModal(t.id)}
+            onClick={() => navigate(`/corretor/${t.id}`)}
             draggable
             onDragStart={(e) => onDragStart(e, idx)}
             onDragOver={onDragOver}
@@ -980,43 +952,13 @@ function HubCorretor({ corretor, onSair }) {
           </Link>
         ))}
         <Link className="ferr-card ferr-card--gold" to="/admin">
-          <span className="ferr-ico"><Ico name="painel" /></span>
-          <span className="ferr-txt"><b>Painel administrativo</b><i>Imóveis, leads e clientes.</i></span>
+          <span className="ferr-capa" aria-hidden="true"><Ico name="painel" size={54} /></span>
+          <span className="ferr-corpo">
+            <span className="ferr-ico"><Ico name="painel" /></span>
+            <span className="ferr-txt"><b>Painel administrativo</b><i>Imóveis, leads e clientes.</i></span>
+          </span>
         </Link>
       </div>
-
-      {modal && (() => {
-        const t = TOOLS.find(t => t.id === modal)
-        const Comp = RENDER[modal]
-        if (!t || !Comp) return null
-        return (
-          <div className="corr-modal-overlay" onClick={fecharModal}>
-            <div
-              ref={mRef}
-              className="corr-modal"
-              onClick={e => e.stopPropagation()}
-              style={{
-                ...(mSize.w && { width: mSize.w + 'px', maxWidth: 'none' }),
-                ...(mSize.h && { height: mSize.h + 'px' }),
-              }}
-            >
-              <div className="corr-modal-head">
-                <span className="corr-modal-ico"><Ico name={t.icon} size={20} /></span>
-                <h3 className="corr-modal-tit">{t.nome}</h3>
-                <button className="corr-modal-close" type="button" onClick={fecharModal}>×</button>
-              </div>
-              <div className="corr-modal-body" data-lenis-prevent>
-                <Suspense fallback={<p className="section-sub" style={{ padding: '24px 0' }}>Carregando…</p>}>
-                  <Comp />
-                </Suspense>
-              </div>
-              <div className="corr-rh corr-rh-e"  onMouseDown={e => startResize(e, 'e')} />
-              <div className="corr-rh corr-rh-s"  onMouseDown={e => startResize(e, 's')} />
-              <div className="corr-rh corr-rh-se" onMouseDown={e => startResize(e, 'se')} />
-            </div>
-          </div>
-        )
-      })()}
     </>
   )
 }
@@ -1034,12 +976,59 @@ const getCorretorOuAdmin = () => {
   return null
 }
 
+// ─── página de ferramenta individual ─────────────────────────────────────────
+
+function ToolPage({ corretor, toolId, onSair }) {
+  const navigate = useNavigate()
+  const t = TOOLS.find(t => t.id === toolId)
+  const Comp = t ? RENDER[t.id] : null
+
+  if (!t || !Comp) return <Navigate to="/corretor" replace />
+
+  return (
+    <main className="pagina section--light corretor-pg">
+      <div className="container">
+        <nav className="corr-ferr-nav">
+          <button type="button" className="btn btn-ghost corr-ferr-back" onClick={() => navigate('/corretor')}>
+            ← Hub de ferramentas
+          </button>
+          <div className="corr-hero-acoes">
+            {corretor.creci && <span className="corr-chip">CRECI {corretor.creci}</span>}
+            <button type="button" className="btn btn-ghost" onClick={onSair}>Sair</button>
+          </div>
+        </nav>
+        <header className="corr-ferr-header">
+          <span className="corr-ferr-header-ico"><Ico name={t.icon} size={30} /></span>
+          <div>
+            <span className="eyebrow">Área do corretor</span>
+            <h1 className="section-title" style={{ marginTop: 4 }}>{t.nome}</h1>
+            <p className="section-sub" style={{ marginTop: 6 }}>{t.desc}</p>
+          </div>
+        </header>
+        <Suspense fallback={<p className="section-sub" style={{ padding: '40px 0' }}>Carregando…</p>}>
+          <Comp />
+        </Suspense>
+      </div>
+    </main>
+  )
+}
+
+// ─── página principal ─────────────────────────────────────────────────────────
+
 export default function Corretor() {
+  const { toolId } = useParams()
+  const toolData = toolId ? TOOLS.find(t => t.id === toolId) : null
+
   useSEO({
-    title: 'Área do corretor — Ferramentas profissionais | Rotina Imobiliária',
-    description: 'Área exclusiva para corretores: abordagem por código, estúdio de fotos com IA, publicidade, legenda para portais, script de objeções, checklist de captação e mais.',
-    path: '/corretor',
+    title: toolData
+      ? `${toolData.nome} — Área do corretor | Rotina Imobiliária`
+      : 'Área do corretor — Ferramentas profissionais | Rotina Imobiliária',
+    description: toolData
+      ? toolData.desc
+      : 'Área exclusiva para corretores: abordagem por código, estúdio de fotos com IA, publicidade, legenda para portais, script de objeções, checklist de captação e mais.',
+    path: toolId ? `/corretor/${toolId}` : '/corretor',
   })
+
   const [corretor, setCorretor] = useState(() => getCorretorOuAdmin())
   useEffect(() => {
     const ler = () => setCorretor(getCorretorOuAdmin())
@@ -1047,12 +1036,26 @@ export default function Corretor() {
     return () => window.removeEventListener('vg-corretor', ler)
   }, [])
 
+  const handleSair = useCallback(() => sairCorretor(), [])
+
+  if (!corretor) {
+    return (
+      <main className="pagina section--light det corretor-pg">
+        <div className="container">
+          <GateCorretor onOk={setCorretor} />
+        </div>
+      </main>
+    )
+  }
+
+  if (toolId) {
+    return <ToolPage corretor={corretor} toolId={toolId} onSair={handleSair} />
+  }
+
   return (
     <main className="pagina section--light det corretor-pg">
       <div className="container">
-        {corretor
-          ? <HubCorretor corretor={corretor} onSair={() => { sairCorretor() }} />
-          : <GateCorretor onOk={setCorretor} />}
+        <HubCorretor corretor={corretor} onSair={handleSair} />
       </div>
     </main>
   )
