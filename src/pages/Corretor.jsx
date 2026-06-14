@@ -830,15 +830,26 @@ function HubCorretor({ corretor, onSair }) {
 
 // ─── página ──────────────────────────────────────────────────────────────────
 
+// Se o usuário está logado como admin, entra na área do corretor sem gate.
+const getCorretorOuAdmin = () => {
+  const c = getCorretor()
+  if (c) return c
+  try {
+    const admToken = localStorage.getItem('vg_admin_token')
+    if (admToken) return { nome: 'Vinícius Graton', creci: 'CRECI MG', tipo: 'admin', rotina: true, expiresAt: null }
+  } catch {}
+  return null
+}
+
 export default function Corretor() {
   useSEO({
     title: 'Área do corretor — Ferramentas profissionais | Rotina Imobiliária',
     description: 'Área exclusiva para corretores: abordagem por código, estúdio de fotos com IA, publicidade, legenda para portais, script de objeções, checklist de captação e mais.',
     path: '/corretor',
   })
-  const [corretor, setCorretor] = useState(() => getCorretor())
+  const [corretor, setCorretor] = useState(() => getCorretorOuAdmin())
   useEffect(() => {
-    const ler = () => setCorretor(getCorretor())
+    const ler = () => setCorretor(getCorretorOuAdmin())
     window.addEventListener('vg-corretor', ler)
     return () => window.removeEventListener('vg-corretor', ler)
   }, [])
