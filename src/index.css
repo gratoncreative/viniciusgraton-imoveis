@@ -3404,6 +3404,13 @@ html[data-theme="dark"] .ferr-drag-handle { color: rgba(255,255,255,0.3); }
 
 /* ferramentas genérico */
 .corr-ferr { display: flex; flex-direction: column; gap: 10px; }
+.corr-ferr-cod { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.corr-ferr-cod-label { font-size: 0.78rem; font-weight: 600; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.04em; }
+.corr-ferr-cod-label em { text-transform: none; font-style: normal; font-weight: 400; color: var(--text-mute); }
+.corr-ferr-cod-row { display: flex; gap: 8px; align-items: center; }
+.corr-ferr-cod-row input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 11px; font-size: 0.9rem; color: var(--text); font-family: inherit; max-width: 180px; }
+.corr-ferr-cod-msg { font-size: 0.82rem; color: var(--text-soft); margin: 0; }
+.corr-ferr-cod-msg.ok { color: #4caf82; }
 .corr-ferr label { display: flex; flex-direction: column; gap: 4px; }
 .corr-ferr label span { font-size: 0.78rem; font-weight: 600; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.04em; }
 .corr-ferr input, .corr-ferr select, .corr-ferr textarea { width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: 9px; padding: 9px 12px; font-size: 0.9rem; color: var(--text); font-family: inherit; resize: vertical; }

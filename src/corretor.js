@@ -16,3 +16,13 @@ export function sairCorretor() {
   try { localStorage.removeItem(KEY) } catch {}
   try { window.dispatchEvent(new Event('vg-corretor')) } catch {}
 }
+
+export function getCorretorOuAdmin() {
+  const c = getCorretor()
+  if (c) return c
+  try {
+    if (localStorage.getItem('vg_admin_token'))
+      return { nome: 'Vinícius Graton', creci: 'CRECI MG', tipo: 'admin', rotina: true, expiresAt: null }
+  } catch {}
+  return null
+}

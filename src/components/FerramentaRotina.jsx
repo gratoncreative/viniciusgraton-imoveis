@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { IconWhats, IconShield } from './icons'
-import { getCorretor, salvarCorretor } from '../corretor'
+import { getCorretorOuAdmin, salvarCorretor } from '../corretor'
 import { registrarLead } from '../engajamento'
 
 const soNum = (s) => String(s || '').replace(/\D/g, '')
@@ -126,7 +126,7 @@ function CadastroCorretor({ onOk }) {
 }
 
 export default function FerramentaRotina() {
-  const [corretor, setCorretor] = useState(() => getCorretor())
+  const [corretor, setCorretor] = useState(() => getCorretorOuAdmin())
   const [nome, setNome] = useState('')
   const [fone, setFone] = useState('')
   const [codigo, setCodigo] = useState('')

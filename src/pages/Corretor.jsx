@@ -72,6 +72,36 @@ function LegendaPortais() {
   const [copiado, setCopiado] = useState(false)
   const [gerando, setGerando] = useState(false)
   const set = (k) => (e) => setF(p => ({ ...p, [k]: e.target.value }))
+  const [codImovel, setCodImovel] = useState('')
+  const [buscandoCod, setBuscandoCod] = useState(false)
+  const [codMsg, setCodMsg] = useState('')
+
+  const buscarCod = useCallback(async () => {
+    const cod = codImovel.trim().replace(/\D/g, '')
+    if (!cod) return
+    setBuscandoCod(true); setCodMsg('')
+    try {
+      const r = await fetch(`/api/rotina-imovel?codigo=${cod}`)
+      const j = await r.json()
+      if (!r.ok || j.erro) { setCodMsg('⚠ ' + (j.erro || 'Imóvel não encontrado.')); setBuscandoCod(false); return }
+      const im = j.imovel
+      const TIPOS = ['Apartamento','Casa','Sobrado','Cobertura','Lote','Sala comercial','Galpão','Chácara']
+      const tipoNorm = TIPOS.find(t => t.toLowerCase() === (im.tipo || '').toLowerCase()) || im.tipo
+      setF(prev => ({
+        ...prev,
+        ...(tipoNorm && { tipo: tipoNorm }),
+        ...(im.bairro && { bairro: im.bairro }),
+        ...(im.areaNum && { area: String(Math.round(im.areaNum)) }),
+        ...(im.valorNum && { preco: im.valorNum.toLocaleString('pt-BR') }),
+        ...(im.quartos && { quartos: String(im.quartos) }),
+        ...(im.suites && { suites: String(im.suites) }),
+        ...(im.vagas && { vagas: String(im.vagas) }),
+        ...(im.amenidades?.length && { diferenciais: im.amenidades.join('\n') }),
+      }))
+      setCodMsg(`✓ Imóvel ${im.codigo} — ${im.tipo} no ${im.bairro}. Edite se precisar.`)
+    } catch { setCodMsg('⚠ Falha de conexão.') }
+    setBuscandoCod(false)
+  }, [codImovel])
 
   const gerarEstatico = useCallback(() => {
     const { tipo, quartos, suites, vagas, area, bairro, preco, diferenciais, disponivel } = f
@@ -117,6 +147,14 @@ function LegendaPortais() {
 
   return (
     <div className="corr-ferr">
+      <div className="corr-ferr-cod">
+        <span className="corr-ferr-cod-label">Código do imóvel <em>(opcional — preenche automaticamente)</em></span>
+        <div className="corr-ferr-cod-row">
+          <input value={codImovel} onChange={e => setCodImovel(e.target.value)} onKeyDown={e => e.key === 'Enter' && buscarCod()} placeholder="Ex: 1601" inputMode="numeric" />
+          <button type="button" className="btn btn-ghost" onClick={buscarCod} disabled={buscandoCod}>{buscandoCod ? 'Buscando…' : 'Buscar'}</button>
+        </div>
+        {codMsg && <p className={`corr-ferr-cod-msg${codMsg.startsWith('✓') ? ' ok' : ''}`}>{codMsg}</p>}
+      </div>
       <div className="corr-ferr-grade">
         <label><span>Tipo de imóvel</span>
           <select value={f.tipo} onChange={set('tipo')}>
@@ -770,6 +808,7 @@ function TrialCountdownBanner({ corretor, onAssinar }) {
 
 function HubCorretor({ corretor, onSair }) {
   const [ativa, setAtiva] = useState('rotina')
+  const [modoGate, setModoGate] = useState(false)
   const painelRef = useRef(null)
   const atual = TOOLS.find((t) => t.id === ativa)
   const Ativa = RENDER[ativa]
@@ -784,6 +823,16 @@ function HubCorretor({ corretor, onSair }) {
     return () => clearTimeout(t)
   }, [corretor, onSair])
 
+  if (modoGate) return (
+    <>
+      <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, padding: '10px 18px', marginBottom: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, fontSize: '0.84rem', color: 'var(--text-soft)' }}>
+        <span>👁 Prévia — visualizando a tela de entrada como um corretor sem acesso veria.</span>
+        <button type="button" className="btn btn-ghost" onClick={() => setModoGate(false)}>← Voltar ao hub</button>
+      </div>
+      <GateCorretor onOk={() => setModoGate(false)} />
+    </>
+  )
+
   return (
     <>
       <header className="corr-hero">
@@ -794,6 +843,9 @@ function HubCorretor({ corretor, onSair }) {
         </div>
         <div className="corr-hero-acoes">
           {corretor.creci && <span className="corr-chip">CRECI {corretor.creci}</span>}
+          {corretor.tipo === 'admin' && (
+            <button className="btn btn-ghost" type="button" onClick={() => setModoGate(true)} style={{ fontSize: '0.8rem' }}>👁 Prévia da entrada</button>
+          )}
           <button className="btn btn-ghost" type="button" onClick={onSair}>Sair</button>
         </div>
       </header>

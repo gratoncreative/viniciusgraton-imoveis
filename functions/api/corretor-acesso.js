@@ -25,7 +25,7 @@ export async function onRequestPost({ request, env }) {
     const rlKey = 'rl:acesso:' + ip
     const usos = parseInt(await env.ENGAGEMENT.get(rlKey).catch(() => null), 10) || 0
     if (usos >= 10) return json({ ok: false, erro: 'Muitas tentativas. Tente mais tarde.' }, 429)
-    await env.ENGAGEMENT.put(rlKey, String(usos + 1), { expirationTtl: 3600 })
+    await env.ENGAGEMENT.put(rlKey, String(usos + 1), { expirationTtl: 3600 }).catch(() => {})
   }
 
   // valida formato antes de consultar KV
