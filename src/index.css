@@ -5352,3 +5352,18 @@ html[data-theme="dark"] .condo-filtro-grupo-v2 { background:var(--surface); bord
 .mercado-faixa { font-size: 0.78rem; color: var(--text-mute); }
 .mercado-nota { font-size: 0.82rem; color: var(--text-mute); margin-top: 24px; text-align: center; line-height: 1.6; }
 @media (max-width: 600px) { .mercado-table th:nth-child(5), .mercado-table td:nth-child(5), .mercado-table th:nth-child(6), .mercado-table td:nth-child(6) { display: none; } }
+/* Gráfico de calor (ranking R$/m²) */
+.mercado-chart { margin: 8px 0 40px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px 24px 20px; }
+.mercado-chart-hd { margin-bottom: 20px; }
+.mercado-chart-titulo { font-family: var(--font-head); font-size: 1.05rem; font-weight: 700; color: var(--text); margin: 0 0 4px; }
+.mercado-chart-sub { font-size: 0.82rem; color: var(--text-mute); margin: 0; }
+.mercado-chart-lista { display: flex; flex-direction: column; gap: 5px; }
+.mercado-chart-row { display: grid; grid-template-columns: 26px 160px 1fr 86px; align-items: center; gap: 10px; text-decoration: none; padding: 3px 0; border-radius: 6px; transition: background 0.15s; }
+.mercado-chart-row:hover { background: rgba(184,134,47,0.06); }
+.mercado-chart-pos { font-size: 0.72rem; color: var(--text-mute); text-align: right; font-variant-numeric: tabular-nums; }
+.mercado-chart-nome { font-size: 0.84rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+.mercado-chart-row:hover .mercado-chart-nome { color: var(--gold-3); }
+.mercado-chart-bwrap { background: var(--bg2); border-radius: 4px; height: 16px; overflow: hidden; }
+.mercado-chart-barra { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.mercado-chart-val { font-size: 0.78rem; font-weight: 600; color: var(--text-mute); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+@media (max-width: 600px) { .mercado-chart-row { grid-template-columns: 22px 110px 1fr 64px; gap: 6px; } .mercado-chart-nome { font-size: 0.78rem; } .mercado-chart-val { font-size: 0.72rem; } .mercado-chart { padding: 16px; } }

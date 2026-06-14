@@ -2,6 +2,46 @@ import { useState, useEffect, useMemo } from 'react'
 import { useSEO } from '../useSEO'
 
 const fmt = (n) => 'R$ ' + Number(n).toLocaleString('pt-BR')
+const fmtK = (n) => n >= 1000 ? `R$ ${Math.round(n / 1000)}k` : fmt(n)
+
+const slug = (nome) => nome.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, '-')
+
+function GraficoBairros({ linhas }) {
+  const top = useMemo(() =>
+    [...linhas].filter(l => l.mediana_m2 > 0).sort((a, b) => b.mediana_m2 - a.mediana_m2).slice(0, 20)
+  , [linhas])
+  const max = top[0]?.mediana_m2 || 1
+  const cor = (i, total) => {
+    const t = i / Math.max(total - 1, 1)
+    const h = Math.round(215 - t * 180)
+    const s = Math.round(65 + t * 20)
+    const l = Math.round(50 - t * 8)
+    return `hsl(${h},${s}%,${l}%)`
+  }
+  if (!top.length) return null
+  return (
+    <div className="mercado-chart">
+      <div className="mercado-chart-hd">
+        <div>
+          <h2 className="mercado-chart-titulo">Mapa de calor — R$/m² por bairro</h2>
+          <p className="mercado-chart-sub">Top 20 bairros mais valorizados por metro quadrado</p>
+        </div>
+      </div>
+      <div className="mercado-chart-lista">
+        {top.map((l, i) => (
+          <a key={l.nome} className="mercado-chart-row" href={`/imoveis/uberlandia/${slug(l.nome)}`}>
+            <span className="mercado-chart-pos">{i + 1}</span>
+            <span className="mercado-chart-nome">{l.nome}</span>
+            <div className="mercado-chart-bwrap">
+              <div className="mercado-chart-barra" style={{ width: `${(l.mediana_m2 / max) * 100}%`, background: cor(i, top.length) }} />
+            </div>
+            <span className="mercado-chart-val">{fmtK(l.mediana_m2)}/m²</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 const COLS = [
   { key: 'nome',          label: 'Bairro',          numeric: false },
@@ -114,6 +154,8 @@ export default function Mercado() {
             </div>
           </div>
         )}
+
+        {linhas.length > 0 && <GraficoBairros linhas={linhas} />}
 
         {dados && (
           <>
