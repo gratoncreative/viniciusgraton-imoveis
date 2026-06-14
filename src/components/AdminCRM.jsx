@@ -67,6 +67,7 @@ const motivoFollowUp = (c, d) => {
 
 export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadastro }) {
   const [clientes, setClientes] = useState(null)
+  const [busca, setBusca] = useState('')
   const [sel, setSel] = useState(null) // null = lista; objeto = editando
   const [salvo, setSalvo] = useState(false)
   const [erro, setErro] = useState('')
@@ -231,11 +232,16 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
 
   const salvar = async () => {
     setErro('')
-    const { status, j } = await api({ action: 'crm-save', token, cliente: sel })
-    if (status === 401) { onSair(); return null }
-    if (!j.ok) { setErro(j.msg || 'Não consegui salvar.'); return null }
-    setSel(j.cliente); setSalvo(true); setTimeout(() => setSalvo(false), 1800); carregar()
-    return j.cliente
+    try {
+      const { status, j } = await api({ action: 'crm-save', token, cliente: sel })
+      if (status === 401) { onSair(); return null }
+      if (!j.ok) { setErro(j.msg || 'Não consegui salvar.'); return null }
+      setSel(j.cliente); setSalvo(true); setTimeout(() => setSalvo(false), 1800); carregar()
+      return j.cliente
+    } catch {
+      setErro('Falha de conexão. Tente de novo.')
+      return null
+    }
   }
   // Salva ANTES de abrir/enviar — aguarda propagação do Cloudflare KV (pode levar até ~2s)
   const [abrindo, setAbrindo] = useState(false)
@@ -648,6 +654,17 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
     )
   }
 
+  const clientesFiltrados = useMemo(() => {
+    const lista = clientes || []
+    if (!busca.trim()) return lista
+    const b = busca.trim().toLowerCase()
+    const bNum = busca.replace(/\D/g, '')
+    return lista.filter((c) =>
+      (c.nome && c.nome.toLowerCase().includes(b)) ||
+      (bNum && c.whatsapp && c.whatsapp.replace(/\D/g, '').includes(bNum))
+    )
+  }, [clientes, busca])
+
   // ——— LISTA ———
   return (
     <section>
@@ -656,8 +673,19 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
         <span className="painel-meta">{clientes ? `${clientes.length} cliente(s)${clientes.filter((c) => c.novo).length ? ` · ${clientes.filter((c) => c.novo).length} novo(s) do site` : ''}` : 'Carregando…'}</span>
         {erroLista && <button className="admin-btn admin-btn--mini" onClick={carregar} style={{ marginLeft: 8 }}>↺ Tentar de novo</button>}
       </div>
+      <div className="crm-busca-wrap">
+        <input
+          className="crm-busca"
+          type="search"
+          placeholder="Buscar por nome ou telefone…"
+          value={busca}
+          onChange={(e) => setBusca(e.target.value)}
+        />
+        {busca && <button className="crm-busca-clear" onClick={() => setBusca('')} aria-label="Limpar busca">×</button>}
+      </div>
       {erroLista && <p className="anunciar-erro" style={{ marginBottom: 12 }}>{erroLista}</p>}
       {clientes && clientes.length === 0 && !erroLista && <p className="section-sub">Nenhum cliente cadastrado ainda. Clique em <b>+ Novo cliente</b> para começar.</p>}
+      {busca && clientesFiltrados.length === 0 && <p className="painel-meta" style={{ marginBottom: 12 }}>Nenhum cliente encontrado para "{busca}".</p>}
 
       {(() => {
         const fu = [...(clientes || [])].map((c) => ({ c, d: diasParado(c) })).map((x) => ({ ...x, s: scoreFollowUp(x.c, x.d) })).filter((x) => x.s > 0).sort((a, b) => b.s - a.s).slice(0, 6)
@@ -681,7 +709,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
       })()}
 
       <div className="crm-lista">
-        {[...(clientes || [])].sort((a, b) => (b.temNovidade ? 1 : 0) - (a.temNovidade ? 1 : 0)).map((c) => {
+        {[...clientesFiltrados].sort((a, b) => (b.temNovidade ? 1 : 0) - (a.temNovidade ? 1 : 0)).map((c) => {
           const nm = novosMatch(c)
           return (
           <div className={`crm-card ${c.novo ? 'crm-card--novo' : ''} ${c.temNovidade ? 'crm-card--mexeu' : ''}`} key={c.id}>

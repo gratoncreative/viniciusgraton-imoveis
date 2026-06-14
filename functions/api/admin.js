@@ -309,20 +309,26 @@ export async function onRequestPost({ env, request }) {
     if (wa.length < 10) return json({ error: 'whatsapp', msg: 'Informe o WhatsApp com DDD (obrigatório).' }, 400)
     let id = String(c.id || '').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)
     let reg = {}
-    if (id) reg = (await env.ENGAGEMENT.get('crm:' + id, 'json')) || {}
-    else id = crypto.randomUUID()
+    try {
+      if (id) reg = (await env.ENGAGEMENT.get('crm:' + id, 'json')) || {}
+      else id = crypto.randomUUID()
+    } catch (e) {
+      return json({ error: 'interno', msg: 'Erro ao ler cadastro existente. Tente de novo.' }, 500)
+    }
     const lim = (s, n) => String(s == null ? '' : s).slice(0, n)
     const arrStr = (a, max, n) => (Array.isArray(a) ? a.filter((x) => typeof x === 'string').slice(0, max).map((x) => lim(x, n)) : [])
+    // sugeridos: tolera códigos numéricos (converte pra string antes de filtrar)
+    const arrCod = (a, max) => (Array.isArray(a) ? a.map((x) => String(x)).filter((x) => x && x.length <= 20).slice(0, max) : [])
     const novo = {
       id, criadoEm: reg.criadoEm || Date.now(), atualizadoEm: Date.now(),
       nome: lim(c.nome, 80), whatsapp: wa, finalidade: lim(c.finalidade, 20),
-      tipos: arrStr(c.tipos, 8, 30), bairros: arrStr(c.bairros, 20, 40),
+      tipos: arrStr(c.tipos, 8, 30), bairros: arrStr(c.bairros, 40, 60),
       precoMin: Number(c.precoMin) || 0, precoMax: Number(c.precoMax) || 0,
       quartosMin: Number(c.quartosMin) || 0, suitesMin: Number(c.suitesMin) || 0,
       vagasMin: Number(c.vagasMin) || 0, areaMin: Number(c.areaMin) || 0,
-      obs: lim(c.obs, 1500), sugeridos: arrStr(c.sugeridos, 40, 12),
+      obs: lim(c.obs, 1500), sugeridos: arrCod(c.sugeridos, 60),
       nota: lim(c.nota, 1000), status: lim(c.status, 24),
-      foto: lim(c.foto, 700000), // dataURL da foto do cliente (JPEG ~480px)
+      foto: lim(c.foto, 200000), // dataURL da foto do cliente (JPEG ~480px, ≈150KB base64)
       // preserva o que o PRÓPRIO cliente refinou na página dele (nunca sobrescrever no save do admin)
       feedback: reg.feedback && typeof reg.feedback === 'object' ? reg.feedback : {},
       refinadoEm: reg.refinadoEm || 0,
@@ -333,7 +339,12 @@ export async function onRequestPost({ env, request }) {
       ultimaAcaoEm: reg.ultimaAcaoEm || 0,
       temNovidade: false, // ao salvar, o Vinícius já viu
     }
-    await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(novo), { metadata: { novo: false, temNovidade: false } })
+    try {
+      const valorJson = JSON.stringify(novo)
+      await env.ENGAGEMENT.put('crm:' + id, valorJson, { metadata: { novo: false, temNovidade: false } })
+    } catch (e) {
+      return json({ error: 'interno', msg: 'Erro ao gravar cliente (KV): ' + String(e).slice(0, 120) }, 500)
+    }
     return json({ ok: true, cliente: novo })
   }
   if (action === 'crm-visto') {

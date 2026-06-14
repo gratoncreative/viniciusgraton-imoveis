@@ -9,11 +9,13 @@ export default function Galeria({ fotos = [], alt = '' }) {
   const [i, setI] = useState(0)
   const [aberto, setAberto] = useState(false)
   const [tour, setTour] = useState(false)
+  const [loaded, setLoaded] = useState(false)
   const touchX = useRef(null)
 
   const total = fotos.length
   // se a lista de fotos mudar (troca de imóvel) e o índice ficar fora, volta ao começo
   useEffect(() => { if (i >= total && total > 0) setI(0) }, [total, i])
+  useEffect(() => { setLoaded(false) }, [i])
   const ir = useCallback((n) => setI(() => (n + total) % total), [total])
   const prox = useCallback(() => ir(i + 1), [ir, i])
   const ant = useCallback(() => ir(i - 1), [ir, i])
@@ -58,6 +60,7 @@ export default function Galeria({ fotos = [], alt = '' }) {
     <div className="gal">
       <div className={`gal-main ${tour ? 'gal-playing' : ''}`}>
         <AnimatePresence initial={false}>
+          {!loaded && <span className="gal-img-loading" aria-hidden="true" />}
           <motion.img
             key={i}
             className="gal-slide"
@@ -67,7 +70,8 @@ export default function Galeria({ fotos = [], alt = '' }) {
             fetchPriority={i === 0 ? 'high' : 'auto'}
             loading="eager"
             decoding="async"
-            onError={onImgError}
+            onError={(e) => { onImgError(e); setLoaded(true) }}
+            onLoad={() => setLoaded(true)}
             onClick={() => setAberto(true)}
             initial={{ opacity: 0, scale: 1.0 }}
             animate={{ opacity: 1, scale: tour ? 1.1 : 1.0 }}

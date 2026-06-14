@@ -128,6 +128,58 @@ function Destaque({ icon, titulo, sub }) {
   )
 }
 
+// Leitura em voz alta do imóvel (acessibilidade)
+function OuvirImovel({ im }) {
+  const [estado, setEstado] = useState('parado')
+  const [ok, setOk] = useState(false)
+  useEffect(() => {
+    setOk(typeof window !== 'undefined' && 'speechSynthesis' in window)
+    return () => { try { window.speechSynthesis.cancel() } catch {} }
+  }, [])
+  useEffect(() => { try { window.speechSynthesis.cancel() } catch {} setEstado('parado') }, [im?.codigo])
+
+  const tocar = () => {
+    const synth = window.speechSynthesis
+    if (estado === 'tocando') { synth.pause(); setEstado('pausado'); return }
+    if (estado === 'pausado') { synth.resume(); setEstado('tocando'); return }
+    synth.cancel()
+    const partes = [
+      `${im.tipo} no bairro ${im.bairro}, ${im.cidade || 'Uberlândia'}, Minas Gerais`,
+      im.preco > 0 && `Preço: ${formatPreco(im.preco)}`,
+      im.area > 0 && `Área de ${im.area} metros quadrados`,
+      im.quartos > 0 && `${im.quartos} ${im.quartos === 1 ? 'quarto' : 'quartos'}`,
+      im.suites > 0 && `${im.suites === 1 ? 'uma suíte' : im.suites + ' suítes'}`,
+      im.banheiros > 0 && `${im.banheiros === 1 ? 'um banheiro' : im.banheiros + ' banheiros'}`,
+      im.vagas > 0 && `${im.vagas === 1 ? 'uma vaga' : im.vagas + ' vagas'} de garagem`,
+      im.descricao && im.descricao.trim().slice(0, 800),
+      'Para saber mais, entre em contato com Vinícius Graton pelo WhatsApp.',
+    ].filter(Boolean).join('. ')
+    const u = new SpeechSynthesisUtterance(partes)
+    u.lang = 'pt-BR'; u.rate = 0.95; u.pitch = 1
+    const vs = synth.getVoices() || []
+    const voz = vs.find((v) => /pt[-_]?BR/i.test(v.lang)) || vs.find((v) => /^pt/i.test(v.lang))
+    if (voz) u.voice = voz
+    u.onend = () => setEstado('parado')
+    u.onerror = () => setEstado('parado')
+    synth.speak(u)
+    setEstado('tocando')
+  }
+  const parar = () => { try { window.speechSynthesis.cancel() } catch {} setEstado('parado') }
+
+  if (!ok) return null
+  return (
+    <div className="imovel-ouvir">
+      <button type="button" className="imovel-ouvir-btn" onClick={tocar} aria-label="Ouvir descrição do imóvel">
+        {estado === 'tocando' ? '⏸ Pausar leitura' : estado === 'pausado' ? '▶ Continuar' : '🔊 Ouvir este imóvel'}
+      </button>
+      {estado !== 'parado' && (
+        <button type="button" className="imovel-ouvir-btn imovel-ouvir-btn--stop" onClick={parar} aria-label="Parar">⏹</button>
+      )}
+      {estado === 'tocando' && <span className="imovel-ouvir-ondas" aria-hidden="true" />}
+    </div>
+  )
+}
+
 // mensagens descontraídas que giram enquanto o imóvel carrega
 const MSG_LOAD = [
   'Pegando as chaves desse imóvel… 🔑',
@@ -576,6 +628,7 @@ export default function ImovelDetalhe() {
           <div className="det-galeria">
             <span className="det-tag">{im.tipo}</span>
             <Galeria fotos={fotos} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} />
+            <OuvirImovel im={im} />
             {(() => { const ap = apresentacao(im); return (
               <div className="det-apresenta">
                 <h2 className="det-apresenta-tit">Por que esse imóvel vale a sua visita</h2>
