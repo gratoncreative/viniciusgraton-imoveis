@@ -52,7 +52,7 @@ export async function onRequestPost(ctx) {
 
   let stream
   try {
-    stream = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
+    stream = await env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
       messages: [
         { role: 'system', content: 'Você é um especialista imobiliário brasileiro. Responda sempre em português do Brasil. Seja direto e profissional.' },
         { role: 'user', content: prompt },
