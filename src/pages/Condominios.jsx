@@ -27,6 +27,12 @@ const DESTAQUES = [
   ['Campo de futebol', /futebol|society|futsal/],
 ]
 
+const IcoChevron = () => (
+  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M6 9l6 6 6-6"/>
+  </svg>
+)
+
 function CardCondo({ c }) {
   return (
     <Link className="condo-card" to={`/condominios/${c.slug}`}>
@@ -78,21 +84,24 @@ export default function Condominios() {
   const temFiltro = busca || zona || tipo || seg || status || dest
 
   return (
-    <main className="pagina section--light det condos-pg">
-      <div className="container">
-        <Reveal>
-          <h1 className="sr-only">Condomínios fechados em Uberlândia</h1>
-          <div style={{ textAlign: 'center', maxWidth: 720, margin: '0 auto 8px' }}>
-            <span className="eyebrow" style={{ justifyContent: 'center' }}>Morar em condomínio fechado</span>
-            <h2 className="section-title">Os condomínios fechados de <em>Uberlândia</em></h2>
-            <p className="section-sub" style={{ marginTop: 14 }}>
-              Reuni os principais condomínios horizontais da cidade — casas, lotes e chácaras. Busque pelo nome, filtre pelo seu perfil e escolha onde você sonha em morar; eu faço a curadoria e levanto os terrenos e imóveis disponíveis pra você.
-            </p>
-          </div>
-        </Reveal>
+    <main className="pagina condos-pg">
+      <h1 className="sr-only">Condomínios fechados em Uberlândia</h1>
 
-        <div className="condo-busca-wrap">
-          <span className="condo-busca">
+      {/* ── Hero com imagem de fundo ── */}
+      <section className="condos-hero">
+        <div className="container condos-hero-inner">
+          <Reveal>
+            <span className="condos-hero-eyebrow">Morar em condomínio fechado</span>
+            <h2 className="condos-hero-title">Os condomínios fechados de <em>Uberlândia</em></h2>
+            <p className="condos-hero-desc">
+              Reuni os principais condomínios horizontais da cidade — casas, lotes e chácaras. Busque
+              pelo nome, filtre pelo seu perfil e escolha onde você sonha em morar; eu faço a curadoria e
+              levanto os terrenos e imóveis disponíveis pra você.
+            </p>
+          </Reveal>
+
+          {/* Busca */}
+          <div className="condos-hero-search">
             <IconSearch width={18} height={18} />
             <input
               type="search"
@@ -101,66 +110,62 @@ export default function Condominios() {
               placeholder="Buscar condomínio pelo nome (ex.: Alphaville, Jardins, Tamboré...)"
               aria-label="Buscar condomínio pelo nome"
             />
-            {busca && <button className="condo-busca-x" onClick={() => setBusca('')} aria-label="Limpar busca">✕</button>}
-          </span>
-        </div>
+            {busca && <button className="condos-search-x" onClick={() => setBusca('')} aria-label="Limpar busca">✕</button>}
+          </div>
 
-        <div className="condo-filtros condo-filtros-v2">
-          <div className="condo-filtro-grupo condo-filtro-grupo-v2">
-            <span className="condo-filtro-rot">
-              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Região
-            </span>
-            <div className="condo-chips">
-              <button className={`condo-chip ${!zona ? 'on' : ''}`} onClick={() => setZona('')}>Todas</button>
-              {ZONAS.map((z) => <button key={z} className={`condo-chip ${zona === z ? 'on' : ''}`} onClick={() => setZona(z)}>{z}</button>)}
+          {/* Filtros — dropdowns */}
+          <div className="condos-hero-filtros">
+            <div className="condos-hf">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <select value={zona} onChange={(e) => setZona(e.target.value)} aria-label="Filtrar por região">
+                <option value="">Região</option>
+                {ZONAS.map((z) => <option key={z} value={z}>{z}</option>)}
+              </select>
+              <IcoChevron />
             </div>
-          </div>
-          <div className="condo-filtro-grupo condo-filtro-grupo-v2">
-            <span className="condo-filtro-rot">
-              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-              Tipo
-            </span>
-            <div className="condo-chips">
-              <button className={`condo-chip ${!tipo ? 'on' : ''}`} onClick={() => setTipo('')}>Todos</button>
-              {TIPOS.map((t) => <button key={t} className={`condo-chip ${tipo === t ? 'on' : ''}`} onClick={() => setTipo(t)}>{t}</button>)}
+            <div className="condos-hf">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              <select value={tipo} onChange={(e) => setTipo(e.target.value)} aria-label="Filtrar por tipo">
+                <option value="">Tipo</option>
+                {TIPOS.map((t) => <option key={t} value={t}>{t}</option>)}
+              </select>
+              <IcoChevron />
             </div>
-          </div>
-          <div className="condo-filtro-grupo condo-filtro-grupo-v2">
-            <span className="condo-filtro-rot">
-              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              Padrão
-            </span>
-            <div className="condo-chips">
-              <button className={`condo-chip ${!seg ? 'on' : ''}`} onClick={() => setSeg('')}>Todos</button>
-              {SEGMENTOS.map((s) => <button key={s} className={`condo-chip ${seg === s ? 'on' : ''}`} onClick={() => setSeg(s)}>{s}</button>)}
+            <div className="condos-hf">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <select value={seg} onChange={(e) => setSeg(e.target.value)} aria-label="Filtrar por padrão">
+                <option value="">Padrão</option>
+                {SEGMENTOS.map((s) => <option key={s} value={s}>{s}</option>)}
+              </select>
+              <IcoChevron />
             </div>
-          </div>
-          <div className="condo-filtro-grupo condo-filtro-grupo-v2">
-            <span className="condo-filtro-rot">
-              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-              Situação
-            </span>
-            <div className="condo-chips">
-              <button className={`condo-chip ${!status ? 'on' : ''}`} onClick={() => setStatus('')}>Todas</button>
-              {STATUS.map((s) => <button key={s} className={`condo-chip ${status === s ? 'on' : ''}`} onClick={() => setStatus(s)}>{s}</button>)}
+            <div className="condos-hf">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <select value={status} onChange={(e) => setStatus(e.target.value)} aria-label="Filtrar por situação">
+                <option value="">Situação</option>
+                {STATUS.map((s) => <option key={s} value={s}>{s}</option>)}
+              </select>
+              <IcoChevron />
             </div>
-          </div>
-          <div className="condo-filtro-grupo condo-filtro-grupo-v2 condo-filtro-grupo--full">
-            <span className="condo-filtro-rot">
-              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><path d="m3 11 8.5-8.5L21 12v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5"/><path d="M9 21v-9h6v4"/></svg>
-              Destaques e diferenciais
-            </span>
-            <div className="condo-chips">
-              <button className={`condo-chip ${!dest ? 'on' : ''}`} onClick={() => setDest('')}>Todos</button>
-              {DESTAQUES.map(([label]) => <button key={label} className={`condo-chip ${dest === label ? 'on' : ''}`} onClick={() => setDest(label)}>{label}</button>)}
+            <div className="condos-hf condos-hf--wide">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="m3 11 8.5-8.5L21 12v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5"/><path d="M9 21v-9h6v4"/></svg>
+              <select value={dest} onChange={(e) => setDest(e.target.value)} aria-label="Filtrar por destaques e diferenciais">
+                <option value="">Destaques e Diferenciais</option>
+                {DESTAQUES.map(([label]) => <option key={label} value={label}>{label}</option>)}
+              </select>
+              <IcoChevron />
             </div>
+            {temFiltro && (
+              <button className="condos-hf-limpar" onClick={limpar}>Limpar</button>
+            )}
           </div>
         </div>
+      </section>
 
+      {/* ── Lista de condomínios ── */}
+      <div className="container condos-lista">
         <div className="condo-contagem">
           <span>{lista.length} {lista.length === 1 ? 'condomínio' : 'condomínios'}</span>
-          {temFiltro && <button className="condo-limpar" onClick={limpar}>Limpar filtros ✕</button>}
         </div>
 
         {lista.length ? (
@@ -169,7 +174,9 @@ export default function Condominios() {
           </div>
         ) : (
           <p className="section-sub" style={{ textAlign: 'center', padding: '30px 0' }}>
-            Nenhum condomínio com esses filtros. <button className="condo-limpar" onClick={limpar}>Ver todos</button> ou me chame no WhatsApp que eu busco pra você.
+            Nenhum condomínio com esses filtros.{' '}
+            <button className="condo-limpar" onClick={limpar}>Ver todos</button>{' '}
+            ou me chame no WhatsApp que eu busco pra você.
           </p>
         )}
 
