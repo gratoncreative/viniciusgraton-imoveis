@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-06-13T21:04:31.284Z",
+  "geradoEm": "2026-06-14T09:54:35.230Z",
   "fonte": "blow",
   "empreendimentos": [
     {
@@ -5851,7 +5851,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 297900
+          "valor": 299900
         },
         {
           "ap": "504",
@@ -5861,7 +5861,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 301900
+          "valor": 303900
         },
         {
           "ap": "604",
@@ -5871,7 +5871,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 303900
+          "valor": 305900
         },
         {
           "ap": "704",
@@ -5881,7 +5881,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 305900
+          "valor": 307900
         },
         {
           "ap": "507",
@@ -5891,7 +5891,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 305900
+          "valor": 307900
         },
         {
           "ap": "105",
@@ -5901,7 +5901,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 306900
+          "valor": 308900
         },
         {
           "ap": "102",
@@ -5911,7 +5911,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 306900
+          "valor": 308900
         },
         {
           "ap": "607",
@@ -5921,7 +5921,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 307900
+          "valor": 309900
         },
         {
           "ap": "604",
@@ -5931,7 +5931,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 307900
+          "valor": 309900
         },
         {
           "ap": "1104",
@@ -5941,7 +5941,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 307900
+          "valor": 309900
         },
         {
           "ap": "1107",
@@ -5951,7 +5951,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 307900
+          "valor": 309900
         },
         {
           "ap": "202",
@@ -5961,17 +5961,17 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 308900
+          "valor": 310900
         }
       ],
       "valorCondominio": null,
       "quantAndares": 15,
       "quantElevadores": 3,
-      "fracaoVendida": 0.32,
+      "fracaoVendida": 0.33,
       "dataEntrega": "2028-06-30T03:00:00Z",
       "aquecimento": "Elétrico",
       "arCondicionado": "Previsão de Ar Condicionado",
-      "unidadesDisponiveis": 174,
+      "unidadesDisponiveis": 170,
       "totalUnidades": 256,
       "lat": -18.96296439263714,
       "lng": -48.25370729356859,
