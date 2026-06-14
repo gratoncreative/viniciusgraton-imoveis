@@ -1,7 +1,9 @@
 import { useEffect, useState, useMemo } from 'react'
-import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_TODOS, filtrarParaCliente, formatPreco, getImovel, oportunidade, ehEsquina, fotosDe } from '../data'
+import { IMOVEIS, BAIRROS_TODOS, filtrarParaCliente, formatPreco, getImovel, oportunidade, ehEsquina, fotosDe } from '../data'
 import InputMoeda from './InputMoeda'
 import { agruparPorSetor } from '../bairros-setores'
+
+const TIPOS_CRM = ['Apartamento', 'Casa', 'Casa em condomínio', 'Chácara', 'Cobertura', 'Galpão', 'Kitnet/Studio', 'Lote', 'Sala comercial', 'Terreno']
 
 // Pontuação técnica de custo-benefício: m² vs mercado é o principal fator
 function calcularTop3(matchesList, m2Mediana) {
@@ -361,7 +363,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
 
             <p className="admin-mini-label">Tipo de imóvel</p>
             <div className="crm-chips">
-              {TIPOS_IMOVEL.map((t) => <button type="button" key={t} className={`crm-chip ${(sel.tipos || []).includes(t) ? 'on' : ''}`} onClick={() => toggleArr('tipos', t)}>{t}</button>)}
+              {TIPOS_CRM.map((t) => <button type="button" key={t} className={`crm-chip ${(sel.tipos || []).includes(t) ? 'on' : ''}`} onClick={() => toggleArr('tipos', t)}>{t}</button>)}
             </div>
             <p className="admin-mini-label">Bairros de interesse <span className="painel-meta">(todos os bairros de Uberlândia · {(sel.bairros || []).length} selecionado{(sel.bairros || []).length === 1 ? '' : 's'})</span></p>
             <div className="crm-chips crm-chips--bairros crm-setores">
