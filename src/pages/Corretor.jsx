@@ -64,6 +64,24 @@ const ATALHOS = [
   { to: '/impulsionar',           nome: 'Impulsionar anúncio', desc: 'Destaque pago para o seu imóvel nos buscadores.', icon: 'foguete' },
 ]
 
+// cobertura visual de cada card — gradiente de fundo + cor do glow radial
+const CORES = {
+  rotina:   { bg: 'linear-gradient(135deg,#160a2e 0%,#21104a 100%)', glow: 'rgba(155,80,250,0.26)'  },
+  legenda:  { bg: 'linear-gradient(135deg,#071535 0%,#0c2250 100%)', glow: 'rgba(59,130,246,0.26)'  },
+  objecoes: { bg: 'linear-gradient(135deg,#042320 0%,#063533 100%)', glow: 'rgba(20,184,166,0.28)'  },
+  captacao: { bg: 'linear-gradient(135deg,#042012 0%,#063d1d 100%)', glow: 'rgba(34,197,94,0.26)'   },
+  fotos:    { bg: 'linear-gradient(135deg,#1a1000 0%,#302000 100%)', glow: 'rgba(245,158,11,0.3)'   },
+  post:     { bg: 'linear-gradient(135deg,#240818 0%,#3d0e28 100%)', glow: 'rgba(236,72,153,0.26)'  },
+  roteiro:  { bg: 'linear-gradient(135deg,#1f0606 0%,#34080a 100%)', glow: 'rgba(239,68,68,0.28)'   },
+  marca:    { bg: 'linear-gradient(135deg,#0c0a26 0%,#181445 100%)', glow: 'rgba(99,102,241,0.3)'   },
+  comissao: { bg: 'linear-gradient(135deg,#181200 0%,#2a1e00 100%)', glow: 'rgba(234,179,8,0.3)'    },
+  acm:      { bg: 'linear-gradient(135deg,#021d26 0%,#053040 100%)', glow: 'rgba(6,182,212,0.28)'   },
+  ficha:    { bg: 'linear-gradient(135deg,#081228 0%,#10213e 100%)', glow: 'rgba(130,120,255,0.26)' },
+  agenda:   { bg: 'linear-gradient(135deg,#100828 0%,#1c1042 100%)', glow: 'rgba(139,92,246,0.3)'   },
+  swap:     { bg: 'linear-gradient(135deg,#0a1f10 0%,#103320 100%)', glow: 'rgba(74,222,128,0.26)'  },
+  foguete:  { bg: 'linear-gradient(135deg,#1f1200 0%,#341d00 100%)', glow: 'rgba(251,146,60,0.3)'   },
+}
+
 // ─── componentes internos ────────────────────────────────────────────────────
 
 function LegendaPortais() {
@@ -943,7 +961,7 @@ function HubCorretor({ corretor, onSair }) {
             style={{ opacity: dragIdx === idx ? 0.4 : 1, cursor: 'grab' }}
             title="Arraste para reordenar"
           >
-            <span className="ferr-capa" aria-hidden="true"><Ico name={t.icon} size={54} /></span>
+            <span className="ferr-capa" aria-hidden="true" style={CORES[t.id] ? { background: CORES[t.id].bg, '--capa-glow': CORES[t.id].glow } : undefined}><Ico name={t.icon} size={54} /></span>
             <span className="ferr-corpo">
               <span className="ferr-ico"><Ico name={t.icon} /></span>
               <span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span>
@@ -952,7 +970,7 @@ function HubCorretor({ corretor, onSair }) {
         ))}
         {ATALHOS.map((t) => (
           <Link key={t.to} className="ferr-card" to={t.to}>
-            <span className="ferr-capa" aria-hidden="true"><Ico name={t.icon} size={54} /></span>
+            <span className="ferr-capa" aria-hidden="true" style={CORES[t.icon] ? { background: CORES[t.icon].bg, '--capa-glow': CORES[t.icon].glow } : undefined}><Ico name={t.icon} size={54} /></span>
             <span className="ferr-corpo">
               <span className="ferr-ico"><Ico name={t.icon} /></span>
               <span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span>
