@@ -340,8 +340,6 @@ export default function MelhorarFotos() {
       const { pipeline, env } = tf
       env.allowLocalModels = false
       env.useBrowserCache = true
-      env.remoteHost = window.location.origin + '/'
-      env.remotePathTemplate = 'api/modelo-ia/{model}/resolve/{revision}/'
       let up
       try { up = await pipeline('image-to-image', 'Xenova/swin2SR-classical-sr-x2-64', { device: 'webgpu' }) }
       catch { up = await pipeline('image-to-image', 'Xenova/swin2SR-classical-sr-x2-64') }
@@ -644,20 +642,22 @@ export default function MelhorarFotos() {
                 {aba === 'export' && (
                   <div className="mf-grupo">
                     <div className="mf-grupo-tit">📤 Exportação</div>
-                    <label className="mf-sel"><span>Formato</span>
-                      <select value={formato} onChange={(e) => setFormato(e.target.value)}>
-                        <option value="jpeg">JPG — menor, ideal pra anúncio</option>
-                        <option value="png">PNG — sem perda, arquivo maior</option>
-                        <option value="webp">WebP — moderno e leve</option>
-                      </select>
-                    </label>
-                    <label className="mf-sel"><span>Ampliar</span>
-                      <select value={foto.s.escala} onChange={(e) => setS({ escala: parseFloat(e.target.value) })}>
-                        <option value={1}>Original (nítida)</option>
-                        <option value={1.5}>1,5× maior</option>
-                        <option value={2}>2× maior (UHD)</option>
-                      </select>
-                    </label>
+                    <div className="mf-campo">
+                      <span>Formato</span>
+                      <div className="mf-modo-sel">
+                        {[['jpeg','JPG'],['png','PNG'],['webp','WebP']].map(([val,label]) => (
+                          <button key={val} type="button" className={`mf-modo-btn${formato === val ? ' on' : ''}`} onClick={() => setFormato(val)}>{label}</button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="mf-campo">
+                      <span>Ampliar</span>
+                      <div className="mf-modo-sel">
+                        {[[1,'Original'],[1.5,'1,5×'],[2,'2× UHD']].map(([val,label]) => (
+                          <button key={val} type="button" className={`mf-modo-btn${foto.s.escala === val ? ' on' : ''}`} onClick={() => setS({ escala: val })}>{label}</button>
+                        ))}
+                      </div>
+                    </div>
                     <p className="mf-nota">Ampliação reamostra em alta qualidade + nitidez. Pra recuperar foto ruim de verdade, use a aba IA. O formato e a ampliação valem pra todos os downloads.</p>
                   </div>
                 )}
@@ -665,20 +665,22 @@ export default function MelhorarFotos() {
                 {aba === 'video' && (
                   <div className="mf-grupo">
                     <div className="mf-grupo-tit">🎬 Vídeo de apresentação</div>
-                    <label className="mf-sel"><span>Formato</span>
-                      <select value={videoFmt} onChange={(e) => setVideoFmt(e.target.value)} disabled={!!video}>
-                        <option value="vertical">Vertical 9:16 — Stories, Reels e Status</option>
-                        <option value="quadrado">Quadrado 1:1 — Feed do Instagram/Facebook</option>
-                        <option value="horizontal">Horizontal 16:9 — YouTube, site e TV</option>
-                      </select>
-                    </label>
-                    <label className="mf-sel"><span>Tempo por foto</span>
-                      <select value={durSeg} onChange={(e) => setDurSeg(parseFloat(e.target.value))} disabled={!!video}>
-                        <option value={2}>2 segundos</option>
-                        <option value={3}>3 segundos</option>
-                        <option value={4}>4 segundos</option>
-                      </select>
-                    </label>
+                    <div className="mf-campo">
+                      <span>Formato do vídeo</span>
+                      <div className="mf-modo-sel">
+                        {[['vertical','9:16 Vertical'],['quadrado','1:1 Quadrado'],['horizontal','16:9 Horizontal']].map(([val,label]) => (
+                          <button key={val} type="button" className={`mf-modo-btn${videoFmt === val ? ' on' : ''}`} onClick={() => !video && setVideoFmt(val)} disabled={!!video}>{label}</button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="mf-campo">
+                      <span>Tempo por foto</span>
+                      <div className="mf-modo-sel">
+                        {[[2,'2 seg'],[3,'3 seg'],[4,'4 seg']].map(([val,label]) => (
+                          <button key={val} type="button" className={`mf-modo-btn${durSeg === val ? ' on' : ''}`} onClick={() => !video && setDurSeg(val)} disabled={!!video}>{label}</button>
+                        ))}
+                      </div>
+                    </div>
                     <div>
                       <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-mute)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 6 }}>🎵 Trilha sonora <span style={{ fontWeight: 400, textTransform: 'none' }}>(opcional — use uma trilha livre de direitos)</span></div>
                       <input type="file" accept="audio/*" disabled={!!video} onChange={(e) => { const f = e.target.files?.[0]; setTrilha(f || null) }} style={{ fontSize: '0.85rem' }} />
