@@ -2465,6 +2465,17 @@ html[data-theme="dark"] .mf-sel select { color-scheme: dark; }
 .mf-nome-arq { flex: 1; min-width: 0; max-width: 260px; padding: 7px 12px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 0.82rem; font-family: var(--font); }
 .mf-nome-arq::placeholder { color: var(--text-mute); }
 .mf-nome-arq:focus { outline: none; border-color: var(--gold-2); background: rgba(255,255,255,0.09); }
+.mf-seo-panel { display: flex; align-items: flex-start; gap: 16px; padding: 14px 16px; margin-top: 16px; background: rgba(224,181,86,0.06); border: 1px solid rgba(224,181,86,0.22); border-radius: 12px; }
+.mf-seo-panel-corpo { flex: 1; min-width: 0; }
+.mf-seo-titulo { display: block; font-size: 0.8rem; font-weight: 700; color: var(--gold-2); letter-spacing: 0.02em; margin-bottom: 5px; }
+.mf-seo-texto { font-size: 0.78rem; color: var(--text-mute); line-height: 1.5; margin: 0 0 8px; }
+.mf-seo-texto strong { color: var(--text); }
+.mf-seo-modelo { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.mf-seo-code { font-size: 0.78rem; font-family: monospace; background: rgba(22,26,34,0.5); border: 1px solid rgba(255,255,255,0.1); padding: 3px 8px; border-radius: 5px; color: var(--gold-2); white-space: nowrap; }
+.mf-seo-ex { font-size: 0.76rem; color: var(--text-mute); }
+.mf-seo-ex em { color: var(--text); font-style: normal; }
+.mf-seo-aplicar { font-size: 0.78rem !important; white-space: nowrap; flex-shrink: 0; align-self: center; }
+@media (max-width: 640px) { .mf-seo-panel { flex-direction: column; gap: 10px; } .mf-seo-modelo { flex-direction: column; align-items: flex-start; gap: 4px; } }
 /* Ouvir imóvel (TTS acessibilidade) */
 .imovel-ouvir { display: flex; gap: 8px; align-items: center; margin: 14px 0 0; }
 .imovel-ouvir-btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.06); color: var(--text-soft); font-family: var(--font-head); font-weight: 600; font-size: 0.82rem; cursor: pointer; transition: background .2s, border-color .2s, color .2s; }

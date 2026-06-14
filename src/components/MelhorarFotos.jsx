@@ -708,6 +708,30 @@ export default function MelhorarFotos() {
             </div>
           </div>
 
+          {/* GUIA SEO DE NOME */}
+          <div className="mf-seo-panel">
+            <div className="mf-seo-panel-corpo">
+              <span className="mf-seo-titulo">💡 Nome ideal para salvar — impacto no SEO</span>
+              <p className="mf-seo-texto">
+                O Google indexa imagens pelo <strong>nome do arquivo</strong> como sinal de relevância. Em imóveis, nomes com tipo, bairro e cidade
+                aumentam a visibilidade no Google Imagens — canal onde compradores frequentemente iniciam a busca, antes mesmo de abrir um portal.
+                Use hífens entre palavras, tudo em minúsculas e sem acentos.
+              </p>
+              <div className="mf-seo-modelo">
+                <code className="mf-seo-code">tipo-quartos-bairro-cidade</code>
+                <span className="mf-seo-ex">→ ex: <em>apartamento-3-quartos-santa-monica-uberlandia</em></span>
+              </div>
+            </div>
+            <button
+              type="button"
+              className="admin-btn mf-seo-aplicar"
+              title="Preenche o campo com o modelo para você editar"
+              onClick={() => setNomeArquivo('apartamento-3-quartos-bairro-uberlandia')}
+            >
+              Usar modelo
+            </button>
+          </div>
+
           {/* BARRA DE AÇÕES FIXA */}
           <div className="mf-acoes-bar">
             <span className="mf-acoes-info">{fotos.length} foto(s)</span>
@@ -716,7 +740,7 @@ export default function MelhorarFotos() {
               type="text"
               value={nomeArquivo}
               onChange={(e) => setNomeArquivo(e.target.value)}
-              placeholder="Nome dos arquivos (ex: sala-202)"
+              placeholder="ex: apartamento-2-quartos-bairro-uberlandia"
             />
             <button className="admin-btn" onClick={baixarUma} disabled={baixando}>{baixando === 'uma' ? 'Gerando…' : '⬇ Baixar esta'}</button>
             <button className="btn btn-gold" onClick={baixarTodas} disabled={baixando}>{baixando === 'todas' ? 'Baixando…' : `⬇ Baixar todas (${fotos.length})`}</button>
