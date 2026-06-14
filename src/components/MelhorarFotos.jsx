@@ -339,6 +339,7 @@ export default function MelhorarFotos() {
       const tf = await import('@huggingface/transformers')
       const { pipeline, env } = tf
       env.allowLocalModels = false
+      env.allowRemoteModels = true
       env.useBrowserCache = true
       let up
       try { up = await pipeline('image-to-image', 'Xenova/swin2SR-classical-sr-x2-64', { device: 'webgpu' }) }
