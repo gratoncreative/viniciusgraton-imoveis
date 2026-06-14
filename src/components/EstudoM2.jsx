@@ -10,13 +10,14 @@ export default function EstudoM2({ im, est, onClose, onLaudo }) {
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
+    document.documentElement.style.overflow = 'hidden'
     const k = (e) => {
       if (e.key === 'Escape') onClose()
       if (e.key === 'ArrowRight') setSlide(s => Math.min(s + 1, 2))
       if (e.key === 'ArrowLeft') setSlide(s => Math.max(s - 1, 0))
     }
     document.addEventListener('keydown', k)
-    return () => { document.body.style.overflow = ''; document.removeEventListener('keydown', k) }
+    return () => { document.body.style.overflow = ''; document.documentElement.style.overflow = ''; document.removeEventListener('keydown', k) }
   }, [onClose])
 
   if (!est || !est.ok) return null
