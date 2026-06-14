@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { registrarLead } from '../engajamento'
 
 const LANC_LIMIT = 3
 const VIS_KEY = 'vg-lanc-vistos'
@@ -54,6 +55,7 @@ export default function LancGate() {
     ev.preventDefault()
     if (!nome.trim() || nome.trim().length < 2) { setErro('Informe seu nome'); return }
     try { localStorage.setItem(LIBRE_KEY, '1') } catch {}
+    try { registrarLead({ nome: nome.trim(), fone: soNum(fone), objetivo: perfil || '', origem: 'catalogo-lancamentos' }) } catch {}
     if (pendKey) markLancVisto(pendKey)
     fechar()
     if (pendUrl) nav(pendUrl)
