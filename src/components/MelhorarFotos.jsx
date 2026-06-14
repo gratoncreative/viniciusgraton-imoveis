@@ -267,6 +267,7 @@ export default function MelhorarFotos() {
   const [grade, setGrade] = useState(true)
   const [verOriginal, setVerOriginal] = useState(false)
   const [baixando, setBaixando] = useState('')
+  const [nomeArquivo, setNomeArquivo] = useState('')
   const [formato, setFormato] = useState('jpeg')
   const [durSeg, setDurSeg] = useState(3)
   const [videoFmt, setVideoFmt] = useState('vertical')
@@ -464,16 +465,21 @@ export default function MelhorarFotos() {
   const baixarUma = async () => {
     if (!foto) return
     setBaixando('uma')
-    await baixarCanvas(exportarCanvas(foto.img, foto.s), `${baseNome(foto.name)}-melhorada`)
+    const base = nomeArquivo.trim()
+    const nome = base ? `${base}-01` : `${baseNome(foto.name)}-melhorada`
+    await baixarCanvas(exportarCanvas(foto.img, foto.s), nome)
     setBaixando('')
   }
   // baixa TODAS individualmente (em lote, sem compactar) — uma a uma, no formato escolhido
   const baixarTodas = async () => {
     if (!fotos.length) return
     setBaixando('todas')
+    const base = nomeArquivo.trim()
     for (let i = 0; i < fotos.length; i++) {
       const ft = fotos[i]
-      await baixarCanvas(exportarCanvas(ft.img, ft.s), `${String(i + 1).padStart(2, '0')}-${baseNome(ft.name)}-melhorada`)
+      const num = String(i + 1).padStart(2, '0')
+      const nome = base ? `${base}-${num}` : `${num}-${baseNome(ft.name)}-melhorada`
+      await baixarCanvas(exportarCanvas(ft.img, ft.s), nome)
       await esperar(300) // intervalo curto pro navegador aceitar todos os downloads
     }
     setBaixando('')
@@ -701,7 +707,13 @@ export default function MelhorarFotos() {
           {/* BARRA DE AÇÕES FIXA */}
           <div className="mf-acoes-bar">
             <span className="mf-acoes-info">{fotos.length} foto(s)</span>
-            <span style={{ flex: 1 }} />
+            <input
+              className="mf-nome-arq"
+              type="text"
+              value={nomeArquivo}
+              onChange={(e) => setNomeArquivo(e.target.value)}
+              placeholder="Nome dos arquivos (ex: sala-202)"
+            />
             <button className="admin-btn" onClick={baixarUma} disabled={baixando}>{baixando === 'uma' ? 'Gerando…' : '⬇ Baixar esta'}</button>
             <button className="btn btn-gold" onClick={baixarTodas} disabled={baixando}>{baixando === 'todas' ? 'Baixando…' : `⬇ Baixar todas (${fotos.length})`}</button>
           </div>
