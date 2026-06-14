@@ -168,21 +168,38 @@ function comboPaleta(combo) {
 }
 
 // ——— Helpers de desenho ——————————————————————————————————
-function pillPal(ctx, x, y, txt, pal, fs = 28, h = 54) {
+function pillPal(ctx, x, y, txt, pal, fs = 26, h = 50) {
   ctx.font = `700 ${fs}px Arial`
-  const padX = h * 0.42, w = ctx.measureText(txt).width + padX * 2
+  const padX = h * 0.44, w = ctx.measureText(txt).width + padX * 2
   rr(ctx, x, y, w, h, h / 2); ctx.fillStyle = rc(...pal.acc, 0.96); ctx.fill()
   ctx.fillStyle = pal.accTxt; ctx.textBaseline = 'middle'; ctx.textAlign = 'left'
   ctx.fillText(txt, x + padX, y + h / 2 + 1); ctx.textBaseline = 'alphabetic'
 }
 function eyebrowPal(ctx, W, txt, safe, pal) {
   if (!txt) return
-  const t = txt.toUpperCase(), fs = 30, h = 58
+  const t = txt.toUpperCase(), fs = 28, h = 52
   ctx.font = `800 ${fs}px Arial`
-  const padX = 26, w = ctx.measureText(t).width + padX * 2, x = W - safe.side - w, y = safe.top
+  const padX = 24, w = ctx.measureText(t).width + padX * 2, x = W - safe.side - w, y = safe.top
   rr(ctx, x, y, w, h, 12); ctx.fillStyle = rc(...pal.badge, 1); ctx.fill()
   ctx.fillStyle = pal.badgeTxt; ctx.textBaseline = 'middle'; ctx.textAlign = 'left'
   ctx.fillText(t, x + padX, y + h / 2 + 1); ctx.textBaseline = 'alphabetic'
+}
+function fitText(ctx, text, maxW) {
+  if (ctx.measureText(text).width <= maxW) return text
+  let t = text
+  while (t.length > 3 && ctx.measureText(t + '…').width > maxW) t = t.slice(0, -1)
+  return t + '…'
+}
+function sombra(ctx, fn, blur, cor) {
+  ctx.shadowColor = cor || 'rgba(0,0,0,0.65)'; ctx.shadowBlur = blur || 18
+  fn()
+  ctx.shadowBlur = 0; ctx.shadowColor = 'transparent'
+}
+function linhaOuro(ctx, W, y, pal, esp) {
+  const g = ctx.createLinearGradient(0, 0, W, 0)
+  g.addColorStop(0, rc(...pal.acc, 0.2)); g.addColorStop(0.1, rc(...pal.acc, 1))
+  g.addColorStop(0.9, rc(...pal.acc, 1)); g.addColorStop(1, rc(...pal.acc, 0.2))
+  ctx.fillStyle = g; ctx.fillRect(0, y, W, esp || 7)
 }
 
 // ——— Zonas seguras ———————————————————————————————————————
@@ -200,84 +217,194 @@ export const TEMPLATES = [
   { id: 'minimal', nome: 'Minimalista' },
   { id: 'editorial', nome: 'Revista' },
   { id: 'gradiente', nome: 'Gradiente' },
+  { id: 'impacto', nome: 'Impacto' },
 ]
 
-function tplClassico(ctx, W, H, im, eyebrow, safe, pal) {
-  const bY = H - safe.bottom, gh = Math.min(H * 0.55, bY)
-  const g = ctx.createLinearGradient(0, bY - gh, 0, H)
-  g.addColorStop(0, rc(...pal.dark, 0)); g.addColorStop(0.6, rc(...pal.dark, 0.72)); g.addColorStop(1, rc(...pal.dark, 0.97))
-  ctx.fillStyle = g; ctx.fillRect(0, bY - gh, W, H - (bY - gh))
-  ctx.strokeStyle = rc(...pal.acc, 0.85); ctx.lineWidth = 6
-  ctx.strokeRect(safe.side - 10, safe.top - 10, W - 2 * (safe.side - 10), (bY - safe.top) + 20)
-  pillPal(ctx, safe.side, safe.top, (im.tipo || 'Imóvel').toUpperCase(), pal)
-  eyebrowPal(ctx, W, eyebrow, safe, pal)
-  const pad = safe.side; let y = bY; ctx.textAlign = 'left'
-  ctx.fillStyle = 'rgba(255,255,255,0.82)'; ctx.font = '500 30px Arial'; ctx.fillText(`rotina.com.br   ·   Cód. ${im.codigo}`, pad, y); y -= 60
-  ctx.fillStyle = pal.subAcc; ctx.font = '600 34px Arial'; ctx.fillText(specsLinha(im), pad, y); y -= 70
-  ctx.fillStyle = 'rgba(255,255,255,0.92)'; ctx.font = '500 42px Arial'; ctx.fillText(`${im.tipo} no ${im.bairro} · ${im.cidade}/${im.uf || 'MG'}`, pad, y); y -= 96
-  ctx.fillStyle = '#fff'; ctx.font = '800 96px Arial'; ctx.fillText(precoTxt(im), pad, y); y -= 110
-  ctx.fillStyle = pal.subAcc; ctx.font = '700 30px Arial'; ctx.fillText('ROTINA IMOBILIÁRIA  ·  CONSULTOR DE IMÓVEIS', pad, y)
-}
+// FAIXA MODERNA — faixa escura no rodapé, preço dominante
 function tplFaixa(ctx, W, H, im, eyebrow, safe, pal) {
-  const bY = H - safe.bottom, ph = 300, py = bY - ph
-  const g = ctx.createLinearGradient(0, py - 90, 0, py)
-  g.addColorStop(0, rc(...pal.dark, 0)); g.addColorStop(1, rc(...pal.dark, 0.97))
-  ctx.fillStyle = g; ctx.fillRect(0, py - 90, W, 90)
-  ctx.fillStyle = rc(...pal.dark, 0.97); ctx.fillRect(0, py, W, H - py)
-  ctx.fillStyle = rc(...pal.acc, 1); ctx.fillRect(0, py, W, 7)
+  const frac = H > 1300 ? 0.42 : 0.47
+  const bandY = Math.round(H * (1 - frac))
+  const fadeH = Math.round(H * 0.14)
+  const gFade = ctx.createLinearGradient(0, bandY - fadeH, 0, bandY + 24)
+  gFade.addColorStop(0, rc(...pal.dark, 0)); gFade.addColorStop(1, rc(...pal.dark, 0.98))
+  ctx.fillStyle = gFade; ctx.fillRect(0, bandY - fadeH, W, fadeH + 24)
+  ctx.fillStyle = rc(...pal.dark, 0.98); ctx.fillRect(0, bandY + 24, W, H - bandY - 24)
+  linhaOuro(ctx, W, bandY, pal)
   pillPal(ctx, safe.side, safe.top, (im.tipo || 'Imóvel').toUpperCase(), pal)
   eyebrowPal(ctx, W, eyebrow, safe, pal)
-  const pad = safe.side; let y = py + 60; ctx.textAlign = 'left'
-  ctx.fillStyle = pal.subAcc; ctx.font = '700 28px Arial'; ctx.fillText('ROTINA IMOBILIÁRIA · CONSULTOR DE IMÓVEIS', pad, y); y += 62
-  ctx.fillStyle = '#fff'; ctx.font = '800 88px Arial'; ctx.fillText(precoTxt(im), pad, y); y += 54
-  ctx.fillStyle = 'rgba(255,255,255,0.92)'; ctx.font = '500 36px Arial'; ctx.fillText(`${im.tipo} no ${im.bairro} · ${im.cidade}/${im.uf || 'MG'}`, pad, y); y += 48
-  ctx.fillStyle = pal.subAcc; ctx.font = '600 31px Arial'; ctx.fillText(specsLinha(im), pad, y)
+  const pad = safe.side, maxW = W - pad * 2
+  let y = bandY + 52; ctx.textAlign = 'left'
+  ctx.fillStyle = rc(...pal.acc, 0.82); ctx.font = '700 24px Arial'
+  ctx.fillText('ROTINA IMOBILIÁRIA  ·  CONSULTOR DE IMÓVEIS', pad, y); y += 84
+  ctx.fillStyle = '#fff'; ctx.font = '900 124px Arial'
+  sombra(ctx, () => ctx.fillText(fitText(ctx, precoTxt(im), maxW), pad, y), 22)
+  y += 62
+  ctx.fillStyle = 'rgba(255,255,255,0.84)'; ctx.font = '400 36px Arial'
+  ctx.fillText(fitText(ctx, `${im.tipo}  ·  ${im.bairro}  ·  ${im.cidade}/${im.uf || 'MG'}`, maxW), pad, y); y += 50
+  ctx.fillStyle = pal.subAcc; ctx.font = '600 30px Arial'
+  ctx.fillText(fitText(ctx, specsLinha(im), maxW), pad, y)
 }
+
+// CLÁSSICO — gradiente profundo de baixo, preço grande
+function tplClassico(ctx, W, H, im, eyebrow, safe, pal) {
+  const gH = Math.round(H * 0.66), gY = H - gH
+  const g = ctx.createLinearGradient(0, gY, 0, H)
+  g.addColorStop(0, rc(...pal.dark, 0)); g.addColorStop(0.28, rc(...pal.dark, 0.72))
+  g.addColorStop(0.62, rc(...pal.dark, 0.95)); g.addColorStop(1, rc(...pal.dark, 1))
+  ctx.fillStyle = g; ctx.fillRect(0, gY, W, gH)
+  const vg = ctx.createRadialGradient(W / 2, H * 0.26, 0, W / 2, H * 0.26, W * 0.8)
+  vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,0.28)')
+  ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H)
+  pillPal(ctx, safe.side, safe.top, (im.tipo || 'Imóvel').toUpperCase(), pal)
+  eyebrowPal(ctx, W, eyebrow, safe, pal)
+  const pad = safe.side, bY = H - safe.bottom, maxW = W - pad * 2
+  let y = bY; ctx.textAlign = 'left'
+  ctx.fillStyle = 'rgba(255,255,255,0.38)'; ctx.font = '400 24px Arial'
+  ctx.fillText(`rotina.com.br  ·  (34) 99157-0494  ·  Cód. ${im.codigo}`, pad, y); y -= 52
+  ctx.fillStyle = pal.subAcc; ctx.font = '600 30px Arial'
+  ctx.fillText(fitText(ctx, specsLinha(im), maxW), pad, y); y -= 54
+  ctx.fillStyle = 'rgba(255,255,255,0.84)'; ctx.font = '400 38px Arial'
+  ctx.fillText(fitText(ctx, `${im.tipo}  ·  ${im.bairro}`, maxW), pad, y); y -= 128
+  ctx.fillStyle = '#fff'; ctx.font = '900 124px Arial'
+  sombra(ctx, () => ctx.fillText(fitText(ctx, precoTxt(im), maxW), pad, y), 20)
+  y -= 52
+  ctx.fillStyle = rc(...pal.acc, 0.88); ctx.font = '700 26px Arial'
+  ctx.fillText('ROTINA IMOBILIÁRIA  ·  CONSULTOR DE IMÓVEIS', pad, y)
+}
+
+// MINIMALISTA — preço em pílula dourada sobre a foto
 function tplMinimal(ctx, W, H, im, eyebrow, safe, pal) {
-  const vg = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.4, W / 2, H / 2, Math.max(W, H) * 0.75)
-  vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,0.45)'); ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H)
-  ctx.fillStyle = '#fff'; ctx.font = '700 30px Arial'; ctx.textAlign = 'left'; ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 12
-  ctx.fillText('R O T I N A   I M O B I L I Á R I A', safe.side, safe.top + 30); ctx.shadowBlur = 0
+  const vg = ctx.createLinearGradient(0, H * 0.30, 0, H)
+  vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(0.48, 'rgba(0,0,0,0.54)'); vg.addColorStop(1, 'rgba(0,0,0,0.86)')
+  ctx.fillStyle = vg; ctx.fillRect(0, H * 0.30, W, H - H * 0.30)
+  const sg = ctx.createLinearGradient(0, 0, W * 0.28, 0)
+  sg.addColorStop(0, 'rgba(0,0,0,0.44)'); sg.addColorStop(1, 'rgba(0,0,0,0)')
+  ctx.fillStyle = sg; ctx.fillRect(0, 0, W * 0.28, H)
   eyebrowPal(ctx, W, eyebrow, safe, pal)
-  const bY = H - safe.bottom, pad = safe.side, ch = 96
-  ctx.font = '800 64px Arial'; const pw = ctx.measureText(precoTxt(im)).width
-  rr(ctx, pad, bY - ch, pw + 64, ch, 16); ctx.fillStyle = rc(...pal.acc, 0.96); ctx.fill()
-  ctx.fillStyle = pal.accTxt; ctx.textBaseline = 'middle'; ctx.fillText(precoTxt(im), pad + 32, bY - ch / 2 + 2); ctx.textBaseline = 'alphabetic'
-  ctx.fillStyle = '#fff'; ctx.font = '500 36px Arial'; ctx.shadowColor = 'rgba(0,0,0,0.6)'; ctx.shadowBlur = 10
-  ctx.fillText(`${im.tipo} no ${im.bairro} · ${specsLinha(im)}`, pad, bY - ch - 28); ctx.shadowBlur = 0
+  const pad = safe.side, bY = H - safe.bottom, maxW = W - pad * 2
+  ctx.textAlign = 'left'
+  ctx.fillStyle = '#fff'; ctx.font = '700 26px Arial'
+  sombra(ctx, () => ctx.fillText('ROTINA IMOBILIÁRIA', pad, safe.top + 32), 10)
+  let y = bY
+  ctx.fillStyle = 'rgba(255,255,255,0.40)'; ctx.font = '400 24px Arial'
+  ctx.fillText('rotina.com.br  ·  (34) 99157-0494', pad, y); y -= 52
+  ctx.fillStyle = pal.subAcc; ctx.font = '600 30px Arial'
+  ctx.fillText(fitText(ctx, specsLinha(im), maxW), pad, y); y -= 54
+  ctx.fillStyle = 'rgba(255,255,255,0.88)'; ctx.font = '400 36px Arial'
+  sombra(ctx, () => ctx.fillText(fitText(ctx, `${im.tipo}  ·  ${im.bairro}`, maxW), pad, y), 12)
+  y -= 134
+  ctx.font = '900 110px Arial'
+  const pw = Math.min(ctx.measureText(precoTxt(im)).width, maxW - 40)
+  const ph = 132, pY = y - ph
+  rr(ctx, pad - 18, pY, pw + 58, ph, 16)
+  ctx.fillStyle = rc(...pal.acc, 0.96); ctx.fill()
+  ctx.fillStyle = pal.accTxt; ctx.textBaseline = 'middle'
+  ctx.fillText(fitText(ctx, precoTxt(im), maxW - 40), pad, pY + ph / 2 + 4)
+  ctx.textBaseline = 'alphabetic'
 }
+
+// REVISTA — painel escuro à esquerda, foto à direita
 function tplEditorial(ctx, W, H, im, eyebrow, safe, pal) {
-  const g = ctx.createLinearGradient(0, 0, W * 0.85, 0)
-  g.addColorStop(0, rc(...pal.dark, 0.92)); g.addColorStop(1, rc(...pal.dark, 0))
-  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H)
-  const x = safe.side + 26, bY = H - safe.bottom
-  let y = Math.max(safe.top + 200, (safe.top + bY) / 2 - 40)
-  ctx.fillStyle = rc(...pal.acc, 1); ctx.fillRect(safe.side, y - 130, 5, 380)
-  ctx.textAlign = 'left'; ctx.fillStyle = pal.subAcc; ctx.font = '700 28px Georgia, serif'
-  ctx.fillText('ROTINA IMOBILIÁRIA · CONSULTOR DE IMÓVEIS', x, safe.top + 30)
+  const panelW = Math.round(W * 0.46)
+  const g = ctx.createLinearGradient(0, 0, panelW + 100, 0)
+  g.addColorStop(0, rc(...pal.dark, 0.98)); g.addColorStop(0.82, rc(...pal.dark, 0.96)); g.addColorStop(1, rc(...pal.dark, 0))
+  ctx.fillStyle = g; ctx.fillRect(0, 0, panelW + 100, H)
+  const bg = ctx.createLinearGradient(0, H * 0.87, 0, H)
+  bg.addColorStop(0, rc(...pal.dark, 0)); bg.addColorStop(1, rc(...pal.dark, 0.82))
+  ctx.fillStyle = bg; ctx.fillRect(0, H * 0.87, W, H * 0.13)
+  const lx = panelW - 3
+  const vLG = ctx.createLinearGradient(0, 0, 0, H)
+  vLG.addColorStop(0, rc(...pal.acc, 0.04)); vLG.addColorStop(0.1, rc(...pal.acc, 1))
+  vLG.addColorStop(0.9, rc(...pal.acc, 1)); vLG.addColorStop(1, rc(...pal.acc, 0.04))
+  ctx.fillStyle = vLG; ctx.fillRect(lx, 0, 6, H)
   eyebrowPal(ctx, W, eyebrow, safe, pal)
-  ctx.fillStyle = '#fff'; ctx.font = 'italic 600 70px Georgia, serif'
-  ctx.fillText(im.tipo || 'Imóvel', x, y); y += 74
-  ctx.fillText(`no ${im.bairro}`, x, y); y += 90
-  ctx.fillStyle = pal.subAcc; ctx.font = '700 76px Georgia, serif'; ctx.fillText(precoTxt(im), x, y); y += 56
-  ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.font = '400 34px Georgia, serif'; ctx.fillText(specsLinha(im), x, y); y += 46
-  ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.font = '400 26px Georgia, serif'; ctx.fillText(`${im.cidade}/${im.uf || 'MG'} · Cód. ${im.codigo}`, x, y)
+  const pad = safe.side, maxW = panelW - pad - 28
+  ctx.textAlign = 'left'
+  ctx.fillStyle = rc(...pal.acc, 0.90); ctx.font = '700 24px Arial'
+  ctx.fillText('ROTINA IMOBILIÁRIA', pad, safe.top + 30)
+  ctx.fillStyle = 'rgba(255,255,255,0.46)'; ctx.font = '400 20px Arial'
+  ctx.fillText('CONSULTOR DE IMÓVEIS', pad, safe.top + 56)
+  pillPal(ctx, pad, safe.top + 80, (im.tipo || 'Imóvel').toUpperCase(), pal, 24, 46)
+  const midY = H * 0.40
+  ctx.fillStyle = '#fff'; ctx.font = 'italic 600 56px Georgia, serif'
+  ctx.fillText(fitText(ctx, im.tipo || 'Imóvel', maxW), pad, midY)
+  ctx.fillStyle = 'rgba(255,255,255,0.70)'; ctx.font = '400 46px Georgia, serif'
+  ctx.fillText(fitText(ctx, 'no ' + im.bairro, maxW), pad, midY + 64)
+  ctx.fillStyle = pal.subAcc; ctx.font = '700 62px Georgia, serif'
+  ctx.fillText(fitText(ctx, precoTxt(im), maxW), pad, midY + 64 + 80)
+  ctx.fillStyle = 'rgba(255,255,255,0.70)'; ctx.font = '400 26px Georgia, serif'
+  ctx.fillText(fitText(ctx, specsLinha(im), maxW), pad, midY + 64 + 80 + 50)
+  const bY = H - safe.bottom
+  ctx.fillStyle = 'rgba(255,255,255,0.36)'; ctx.font = '400 22px Arial'
+  ctx.fillText(`${im.cidade}/${im.uf || 'MG'}  ·  Cód. ${im.codigo}`, pad, bY)
 }
+
+// GRADIENTE — diagonal de cor, texto no rodapé
 function tplGradiente(ctx, W, H, im, eyebrow, safe, pal) {
   const g = ctx.createLinearGradient(0, 0, W, H)
-  g.addColorStop(0, rc(...pal.dark, 0)); g.addColorStop(0.55, rc(...pal.dark, 0.2)); g.addColorStop(1, rc(...pal.acc, 0.78))
+  g.addColorStop(0, rc(...pal.dark, 0.10)); g.addColorStop(0.44, rc(...pal.dark, 0.54)); g.addColorStop(1, rc(...pal.acc, 0.90))
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H)
-  const bY = H - safe.bottom
-  const bg = ctx.createLinearGradient(0, bY - 360, 0, H)
-  bg.addColorStop(0, rc(...pal.dark, 0)); bg.addColorStop(1, rc(...pal.dark, 0.9))
-  ctx.fillStyle = bg; ctx.fillRect(0, bY - 360, W, H - (bY - 360))
+  const bg = ctx.createLinearGradient(0, H * 0.58, 0, H)
+  bg.addColorStop(0, rc(...pal.dark, 0)); bg.addColorStop(1, rc(...pal.dark, 0.94))
+  ctx.fillStyle = bg; ctx.fillRect(0, H * 0.58, W, H * 0.42)
   pillPal(ctx, safe.side, safe.top, (im.tipo || 'Imóvel').toUpperCase(), pal)
   eyebrowPal(ctx, W, eyebrow, safe, pal)
-  const pad = safe.side; let y = bY; ctx.textAlign = 'left'
-  ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.font = '700 30px Arial'; ctx.fillText('ROTINA IMOBILIÁRIA · rotina.com.br', pad, y); y -= 58
-  ctx.fillStyle = '#fff'; ctx.font = '600 38px Arial'; ctx.fillText(specsLinha(im), pad, y); y -= 64
-  ctx.fillStyle = '#fff'; ctx.font = '500 42px Arial'; ctx.fillText(`${im.tipo} no ${im.bairro}`, pad, y); y -= 100
-  ctx.fillStyle = '#fff'; ctx.font = '900 100px Arial'; ctx.shadowColor = 'rgba(0,0,0,0.35)'; ctx.shadowBlur = 18; ctx.fillText(precoTxt(im), pad, y); ctx.shadowBlur = 0
+  const pad = safe.side, bY = H - safe.bottom, maxW = W - pad * 2
+  let y = bY; ctx.textAlign = 'left'
+  ctx.fillStyle = 'rgba(255,255,255,0.40)'; ctx.font = '500 24px Arial'
+  ctx.fillText('rotina.com.br  ·  (34) 99157-0494', pad, y); y -= 52
+  ctx.fillStyle = pal.subAcc; ctx.font = '600 30px Arial'
+  ctx.fillText(fitText(ctx, specsLinha(im), maxW), pad, y); y -= 56
+  ctx.fillStyle = 'rgba(255,255,255,0.88)'; ctx.font = '500 38px Arial'
+  ctx.fillText(fitText(ctx, `${im.tipo}  ·  ${im.bairro}`, maxW), pad, y); y -= 124
+  ctx.fillStyle = '#fff'; ctx.font = '900 124px Arial'
+  sombra(ctx, () => ctx.fillText(fitText(ctx, precoTxt(im), maxW), pad, y), 24)
+  y -= 54
+  ctx.fillStyle = rc(...pal.acc, 0.88); ctx.font = '700 26px Arial'
+  ctx.fillText('ROTINA IMOBILIÁRIA  ·  CONSULTOR DE IMÓVEIS', pad, y)
+}
+
+// IMPACTO — texto central dramático sobre a foto (inspirado em peças editoriais)
+function tplImpacto(ctx, W, H, im, eyebrow, safe, pal) {
+  // Gradiente escuro de cima e de baixo, centro fica mais visível
+  const gt = ctx.createLinearGradient(0, 0, 0, H * 0.38)
+  gt.addColorStop(0, rc(...pal.dark, 0.78)); gt.addColorStop(1, rc(...pal.dark, 0))
+  ctx.fillStyle = gt; ctx.fillRect(0, 0, W, H * 0.38)
+  const gb = ctx.createLinearGradient(0, H * 0.54, 0, H)
+  gb.addColorStop(0, rc(...pal.dark, 0)); gb.addColorStop(1, rc(...pal.dark, 0.90))
+  ctx.fillStyle = gb; ctx.fillRect(0, H * 0.54, W, H * 0.46)
+  // Vinheta lateral
+  const gs = ctx.createLinearGradient(0, 0, W * 0.22, 0)
+  gs.addColorStop(0, 'rgba(0,0,0,0.42)'); gs.addColorStop(1, 'rgba(0,0,0,0)')
+  ctx.fillStyle = gs; ctx.fillRect(0, 0, W * 0.22, H)
+
+  pillPal(ctx, safe.side, safe.top, (im.tipo || 'Imóvel').toUpperCase(), pal)
+  eyebrowPal(ctx, W, eyebrow, safe, pal)
+
+  const pad = safe.side, bY = H - safe.bottom, maxW = W - pad * 2
+  ctx.textAlign = 'left'
+
+  // Marca topo
+  ctx.fillStyle = rc(...pal.acc, 0.88); ctx.font = '700 24px Arial'
+  sombra(ctx, () => ctx.fillText('ROTINA IMOBILIÁRIA', pad, safe.top + 30), 10)
+
+  // Texto central — cidade pequena, bairro grande
+  const cY = H * 0.47
+  ctx.fillStyle = 'rgba(255,255,255,0.65)'; ctx.font = '400 38px Arial'
+  sombra(ctx, () => ctx.fillText(fitText(ctx, im.cidade ? `${im.cidade}/${im.uf || 'MG'}` : 'Uberlândia/MG', maxW), pad, cY - 56), 14)
+  ctx.fillStyle = '#fff'; ctx.font = '900 110px Arial'
+  sombra(ctx, () => ctx.fillText(fitText(ctx, im.bairro || im.tipo || 'Imóvel', maxW), pad, cY + 40), 28)
+  // Linha dourada abaixo do bairro
+  linhaOuro(ctx, Math.min(ctx.measureText(fitText(ctx, im.bairro || im.tipo || 'Imóvel', maxW)).width + pad + 12, W - pad), cY + 56, pal, 5)
+
+  // Rodapé
+  let y = bY
+  ctx.fillStyle = 'rgba(255,255,255,0.38)'; ctx.font = '400 24px Arial'
+  ctx.fillText('rotina.com.br  ·  (34) 99157-0494', pad, y); y -= 52
+  ctx.fillStyle = pal.subAcc; ctx.font = '600 30px Arial'
+  ctx.fillText(fitText(ctx, specsLinha(im), maxW), pad, y); y -= 56
+  ctx.fillStyle = '#fff'; ctx.font = '800 72px Arial'
+  sombra(ctx, () => ctx.fillText(fitText(ctx, precoTxt(im), maxW), pad, y), 18)
 }
 
 function desenhar(canvas, img, im, opts) {
@@ -287,7 +414,7 @@ function desenhar(canvas, img, im, opts) {
   canvas.width = W; canvas.height = H
   const ctx = canvas.getContext('2d')
   coverDraw(ctx, img, 0, 0, W, H)
-  const fn = { classico: tplClassico, faixa: tplFaixa, minimal: tplMinimal, editorial: tplEditorial, gradiente: tplGradiente }[template] || tplFaixa
+  const fn = { classico: tplClassico, faixa: tplFaixa, minimal: tplMinimal, editorial: tplEditorial, gradiente: tplGradiente, impacto: tplImpacto }[template] || tplFaixa
   fn(ctx, W, H, im, eyebrow, safe, pal)
 }
 function desenharGuias(canvas, formato) {
