@@ -33,11 +33,11 @@ export default function AdminImovelBar({ im }) {
     return r.json()
   }
 
-  const buscar = async () => {
+  const buscar = async (force = false) => {
     setLoading(true)
     setMsg('')
     try {
-      const j = await post('owner-fetch')
+      const j = await post('owner-fetch', force ? { force: true } : {})
       if (j.ok) {
         const o = j.owner || { nome: '', email: '', fone: '' }
         const temDados = !!(o.nome || o.fone)
@@ -151,9 +151,14 @@ export default function AdminImovelBar({ im }) {
                 <button className="adm-btn" onClick={() => { setEditing(true); setForm(owner) }}>
                   Editar
                 </button>
-                <a className="adm-btn adm-btn--wa" href={waLink()} target="_blank" rel="noopener noreferrer">
-                  Enviar WhatsApp ao proprietário
-                </a>
+                <button className="adm-btn" onClick={() => buscar(true)} disabled={loading} title="Rebuscar dados diretamente no Imoview, ignorando cache">
+                  ↺ Atualizar do Imoview
+                </button>
+                {owner?.fone && (
+                  <a className="adm-btn adm-btn--wa" href={waLink()} target="_blank" rel="noopener noreferrer">
+                    Enviar WhatsApp ao proprietário
+                  </a>
+                )}
               </div>
             </div>
           ) : (
@@ -189,11 +194,9 @@ export default function AdminImovelBar({ im }) {
                   {temContato && (
                     <button className="adm-btn" onClick={() => setEditing(false)}>Cancelar</button>
                   )}
-                  {!temContato && (
-                    <button className="adm-btn" onClick={buscar} disabled={loading}>
-                      ↺ Buscar no Imoview
-                    </button>
-                  )}
+                  <button className="adm-btn" onClick={() => buscar(temContato)} disabled={loading}>
+                    ↺ Buscar no Imoview
+                  </button>
                 </div>
               </div>
             )

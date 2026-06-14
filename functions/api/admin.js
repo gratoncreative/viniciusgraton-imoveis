@@ -355,9 +355,10 @@ export async function onRequestPost({ env, request }) {
     if (!cod) return json({ error: 'codigo' }, 400)
     const isDebug = b.debug === true
 
-    // 1. KV cache
+    // 1. KV cache (ignorado se force=true)
+    const force = b.force === true
     const saved = await env.ENGAGEMENT.get('imovel:' + cod, 'json')
-    if (saved && saved.owner && (saved.owner.nome || saved.owner.fone)) {
+    if (!force && saved && saved.owner && (saved.owner.nome || saved.owner.fone)) {
       return json({ ok: true, owner: saved.owner, source: 'saved' })
     }
 
