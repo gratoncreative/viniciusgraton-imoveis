@@ -268,6 +268,10 @@ export default function MelhorarFotos() {
   const [verOriginal, setVerOriginal] = useState(false)
   const [baixando, setBaixando] = useState('')
   const [nomeArquivo, setNomeArquivo] = useState('')
+  const [codigoImovel, setCodigoImovel] = useState('')
+  const [buscandoCod, setBuscandoCod] = useState(false)
+  const [imovelSEO, setImovelSEO] = useState(null) // { nome, tipo, bairro }
+  const [erroCod, setErroCod] = useState('')
   const [formato, setFormato] = useState('jpeg')
   const [durSeg, setDurSeg] = useState(3)
   const [videoFmt, setVideoFmt] = useState('vertical')
@@ -325,6 +329,29 @@ export default function MelhorarFotos() {
     const t = setTimeout(redesenhar, 60)
     return () => clearTimeout(t)
   }, [redesenhar, foto?.s, atual])
+
+  const buscarPorCodigo = async () => {
+    const cod = codigoImovel.trim()
+    if (!cod || buscandoCod) return
+    setBuscandoCod(true); setImovelSEO(null); setErroCod('')
+    try {
+      const r = await fetch(`/api/rotina-imovel?codigo=${encodeURIComponent(cod)}`)
+      const d = await r.json()
+      const im = d?.imovel
+      if (!im) throw new Error('não encontrado')
+      const slug = (s) => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+      const tipo = slug(im.tipo)
+      const quartos = im.quartos > 0 ? `${im.quartos}-quartos` : null
+      const bairro = slug(im.bairro)
+      const cidade = slug(im.cidade || 'Uberlandia')
+      const nome = [tipo, quartos, bairro, cidade].filter(Boolean).join('-')
+      setImovelSEO({ nome, label: `${im.tipo} · ${im.bairro}${im.quartos ? ` · ${im.quartos} quartos` : ''}` })
+    } catch {
+      setErroCod('Código não encontrado. Verifique e tente novamente.')
+    } finally {
+      setBuscandoCod(false)
+    }
+  }
 
   const autoAngulo = () => { if (foto) setS({ angle: (() => { try { return estimarAngulo(foto.img) } catch { return 0 } })() }) }
   const autoAnguloTodas = () => setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, angle: (() => { try { return estimarAngulo(ft.img) } catch { return 0 } })() } })))
@@ -721,6 +748,42 @@ export default function MelhorarFotos() {
                 <code className="mf-seo-code">tipo-quartos-bairro-cidade</code>
                 <span className="mf-seo-ex">→ ex: <em>apartamento-3-quartos-santa-monica-uberlandia</em></span>
               </div>
+
+              <div className="mf-seo-divider" />
+
+              <span className="mf-seo-cod-label">Imóvel já publicado na Rotina ou no site? Cole o código e gero o nome automaticamente:</span>
+              <div className="mf-seo-cod-row">
+                <input
+                  type="text"
+                  className="mf-nome-arq mf-seo-cod-input"
+                  placeholder="Código do imóvel (ex: 25071)"
+                  value={codigoImovel}
+                  onChange={e => { setCodigoImovel(e.target.value); setImovelSEO(null); setErroCod('') }}
+                  onKeyDown={e => e.key === 'Enter' && buscarPorCodigo()}
+                />
+                <button
+                  type="button"
+                  className="admin-btn"
+                  onClick={buscarPorCodigo}
+                  disabled={buscandoCod || !codigoImovel.trim()}
+                >
+                  {buscandoCod ? 'Buscando…' : '🔍 Gerar nome'}
+                </button>
+              </div>
+              {imovelSEO && (
+                <div className="mf-seo-resultado">
+                  <span className="mf-seo-resultado-label">{imovelSEO.label}</span>
+                  <code className="mf-seo-code">{imovelSEO.nome}</code>
+                  <button
+                    type="button"
+                    className="admin-btn"
+                    onClick={() => setNomeArquivo(imovelSEO.nome)}
+                  >
+                    ✓ Aplicar
+                  </button>
+                </div>
+              )}
+              {erroCod && <p className="mf-nota mf-erro" style={{ marginTop: 6 }}>{erroCod}</p>}
             </div>
             <button
               type="button"

@@ -2474,8 +2474,14 @@ html[data-theme="dark"] .mf-sel select { color-scheme: dark; }
 .mf-seo-code { font-size: 0.78rem; font-family: monospace; background: rgba(22,26,34,0.5); border: 1px solid rgba(255,255,255,0.1); padding: 3px 8px; border-radius: 5px; color: var(--gold-2); white-space: nowrap; }
 .mf-seo-ex { font-size: 0.76rem; color: var(--text-mute); }
 .mf-seo-ex em { color: var(--text); font-style: normal; }
-.mf-seo-aplicar { font-size: 0.78rem !important; white-space: nowrap; flex-shrink: 0; align-self: center; }
-@media (max-width: 640px) { .mf-seo-panel { flex-direction: column; gap: 10px; } .mf-seo-modelo { flex-direction: column; align-items: flex-start; gap: 4px; } }
+.mf-seo-aplicar { font-size: 0.78rem !important; white-space: nowrap; flex-shrink: 0; align-self: flex-start; margin-top: 2px; }
+.mf-seo-divider { height: 1px; background: rgba(224,181,86,0.18); margin: 12px 0; }
+.mf-seo-cod-label { display: block; font-size: 0.76rem; color: var(--text-mute); margin-bottom: 7px; }
+.mf-seo-cod-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.mf-seo-cod-input { max-width: 200px !important; }
+.mf-seo-resultado { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 8px; padding: 8px 12px; background: rgba(22,26,34,0.35); border: 1px solid rgba(224,181,86,0.25); border-radius: 8px; }
+.mf-seo-resultado-label { font-size: 0.74rem; color: var(--text-mute); flex-shrink: 0; }
+@media (max-width: 640px) { .mf-seo-panel { flex-direction: column; gap: 10px; } .mf-seo-modelo { flex-direction: column; align-items: flex-start; gap: 4px; } .mf-seo-cod-input { max-width: 100% !important; } }
 /* Ouvir imóvel (TTS acessibilidade) */
 .imovel-ouvir { display: flex; gap: 8px; align-items: center; margin: 14px 0 0; }
 .imovel-ouvir-btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.06); color: var(--text-soft); font-family: var(--font-head); font-weight: 600; font-size: 0.82rem; cursor: pointer; transition: background .2s, border-color .2s, color .2s; }
