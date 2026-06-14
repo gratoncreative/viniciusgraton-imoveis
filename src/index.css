@@ -5331,3 +5331,24 @@ html[data-theme="dark"] .condo-filtro-grupo-v2 { background:var(--surface); bord
 /* det-info — slide-in quando mounted (classe adicionada após 60ms) */
 .det-info { transition: opacity .5s ease, transform .5s cubic-bezier(.22,.61,.36,1); }
 .det-info:not(.det-mounted) { opacity: 0; transform: translateY(18px); }
+
+/* ——— Mercado — dashboard de inteligência ——————————————— */
+.mercado-pg { padding-top: clamp(96px, 12vw, 128px); }
+.mercado-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 36px; }
+.mercado-stat { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; }
+.mercado-stat-num { font-family: var(--font-head); font-size: 2rem; font-weight: 800; color: var(--gold-3); line-height: 1; }
+.mercado-stat-rot { font-family: var(--font-head); font-weight: 600; color: var(--text); margin-top: 6px; font-size: 0.95rem; }
+.mercado-busca { width: 100%; max-width: 380px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; font-size: 0.95rem; color: var(--text); font-family: inherit; margin-bottom: 20px; }
+.mercado-table-wrap { overflow-x: auto; }
+.mercado-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.mercado-table th { text-align: left; padding: 10px 12px; font-family: var(--font-head); font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-mute); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; }
+.mercado-table th:hover { color: var(--gold-3); }
+.mercado-table th.ativo { color: var(--gold-3); }
+.mercado-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.mercado-table tr:last-child td { border-bottom: none; }
+.mercado-table tr:hover td { background: rgba(184,134,47,0.04); }
+.mercado-bairro-link { color: var(--text); font-weight: 600; text-decoration: none; }
+.mercado-bairro-link:hover { color: var(--gold-3); }
+.mercado-faixa { font-size: 0.78rem; color: var(--text-mute); }
+.mercado-nota { font-size: 0.82rem; color: var(--text-mute); margin-top: 24px; text-align: center; line-height: 1.6; }
+@media (max-width: 600px) { .mercado-table th:nth-child(5), .mercado-table td:nth-child(5), .mercado-table th:nth-child(6), .mercado-table td:nth-child(6) { display: none; } }

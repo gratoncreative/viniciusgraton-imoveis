@@ -1,4 +1,5 @@
-﻿import { useState, useEffect, useRef, lazy, Suspense } from 'react'
+﻿import { useState, useEffect, useRef, lazy, Suspense, useCallback } from 'react'
+import { gerarComIA } from '../useFerramentaIA'
 import { Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
 import { getCorretor, salvarCorretor, sairCorretor } from '../corretor'
@@ -69,9 +70,10 @@ function LegendaPortais() {
   const [f, setF] = useState({ tipo: 'Apartamento', quartos: '', suites: '', vagas: '', area: '', bairro: '', preco: '', diferenciais: '', disponivel: '' })
   const [texto, setTexto] = useState('')
   const [copiado, setCopiado] = useState(false)
+  const [gerando, setGerando] = useState(false)
   const set = (k) => (e) => setF(p => ({ ...p, [k]: e.target.value }))
 
-  const gerar = () => {
+  const gerarEstatico = useCallback(() => {
     const { tipo, quartos, suites, vagas, area, bairro, preco, diferenciais, disponivel } = f
     const linhas = []
     linhas.push(`🏠 ${tipo}${bairro ? ' no ' + bairro : ''} — oportunidade imperdível!`)
@@ -91,6 +93,22 @@ function LegendaPortais() {
     if (disponivel) linhas.push(`📅 Disponível a partir de: ${disponivel}`)
     setTexto(linhas.join('\n'))
     setCopiado(false)
+  }, [f])
+
+  const gerar = () => {
+    setTexto('')
+    setCopiado(false)
+    setGerando(true)
+    gerarComIA(
+      'legenda',
+      f,
+      (delta) => setTexto(t => t + delta),
+      () => setGerando(false),
+      (err) => {
+        if (err === '__sem_chave__') { gerarEstatico() }
+        else { setGerando(false); alert('Erro: ' + err) }
+      }
+    )
   }
 
   const copiar = () => {
@@ -114,11 +132,13 @@ function LegendaPortais() {
         <label><span>Disponível a partir de</span><input value={f.disponivel} onChange={set('disponivel')} placeholder="Imediata" /></label>
       </div>
       <label><span>Diferenciais (um por linha)</span><textarea rows={3} value={f.diferenciais} onChange={set('diferenciais')} placeholder="Varanda gourmet&#10;Piscina&#10;Academia no condomínio" /></label>
-      <button className="btn btn-gold" style={{ marginTop: 10 }} onClick={gerar}>Gerar legenda</button>
+      <button className="btn btn-gold" style={{ marginTop: 10 }} onClick={gerar} disabled={gerando}>
+        {gerando ? 'Gerando com IA…' : 'Gerar legenda'}
+      </button>
       {texto && (
         <div className="corr-ferr-resultado">
           <pre>{texto}</pre>
-          <button className="btn btn-ghost" onClick={copiar}>{copiado ? '✓ Copiado!' : 'Copiar texto'}</button>
+          {!gerando && <button className="btn btn-ghost" onClick={copiar}>{copiado ? '✓ Copiado!' : 'Copiar texto'}</button>}
         </div>
       )}
     </div>
@@ -238,9 +258,10 @@ function RoteirVideo() {
   const [f, setF] = useState({ tipo: 'Apartamento', quartos: '', area: '', bairro: '', destaque: '', publico: 'Família' })
   const [roteiro, setRoteiro] = useState('')
   const [copiado, setCopiado] = useState(false)
+  const [gerando, setGerando] = useState(false)
   const set = (k) => (e) => setF(p => ({ ...p, [k]: e.target.value }))
 
-  const gerar = () => {
+  const gerarEstatico = useCallback(() => {
     const { tipo, quartos, area, bairro, destaque, publico } = f
     const desc = `${tipo}${quartos ? ' com ' + quartos + ' quartos' : ''}${area ? ' de ' + area + ' m²' : ''}${bairro ? ' no ' + bairro : ''}`
     setRoteiro(`🎬 ROTEIRO DE VÍDEO — ${desc.toUpperCase()}
@@ -281,6 +302,22 @@ ${destaque ? `"Mas o que realmente se destaca aqui é ${destaque}. Isso é raro 
 • Grave cada cômodo 3x e use a melhor tomada
 • Fundo musical leve (sem direitos autorais)`)
     setCopiado(false)
+  }, [f])
+
+  const gerar = () => {
+    setRoteiro('')
+    setCopiado(false)
+    setGerando(true)
+    gerarComIA(
+      'roteiro',
+      f,
+      (delta) => setRoteiro(t => t + delta),
+      () => setGerando(false),
+      (err) => {
+        if (err === '__sem_chave__') { gerarEstatico() }
+        else { setGerando(false); alert('Erro: ' + err) }
+      }
+    )
   }
 
   const copiar = () => {
@@ -305,11 +342,13 @@ ${destaque ? `"Mas o que realmente se destaca aqui é ${destaque}. Isso é raro 
         <label><span>Bairro</span><input value={f.bairro} onChange={set('bairro')} placeholder="Tabajaras" /></label>
       </div>
       <label><span>Principal diferencial (será destacado no vídeo)</span><input value={f.destaque} onChange={set('destaque')} placeholder="varanda gourmet com churrasqueira" /></label>
-      <button className="btn btn-gold" style={{ marginTop: 10 }} onClick={gerar}>Gerar roteiro</button>
+      <button className="btn btn-gold" style={{ marginTop: 10 }} onClick={gerar} disabled={gerando}>
+        {gerando ? 'Gerando com IA…' : 'Gerar roteiro'}
+      </button>
       {roteiro && (
         <div className="corr-ferr-resultado">
           <pre>{roteiro}</pre>
-          <button className="btn btn-ghost" onClick={copiar}>{copiado ? '✓ Copiado!' : 'Copiar roteiro'}</button>
+          {!gerando && <button className="btn btn-ghost" onClick={copiar}>{copiado ? '✓ Copiado!' : 'Copiar roteiro'}</button>}
         </div>
       )}
     </div>
