@@ -27,8 +27,8 @@ Escreva a mensagem completa pronta para copiar e colar no WhatsApp. Tom consulti
 
 export async function onRequestPost(ctx) {
   const { request, env } = ctx
-  const key = String(env.ANTHROPIC_API_KEY || '').trim()
-  if (!key) return Response.json({ ok: false, semChave: true })
+
+  if (!env.AI) return Response.json({ ok: false, semChave: true })
 
   const body = await request.json()
   const { tool, campos } = body
@@ -36,27 +36,21 @@ export async function onRequestPost(ctx) {
   const prompt = buildPrompt(tool, campos)
   if (!prompt) return Response.json({ ok: false, erro: 'tool inválido' }, { status: 400 })
 
-  const upstream = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'x-api-key': key,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 600,
+  let stream
+  try {
+    stream = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
+      messages: [
+        { role: 'system', content: 'Você é um especialista imobiliário brasileiro. Responda sempre em português do Brasil. Seja direto e profissional.' },
+        { role: 'user', content: prompt },
+      ],
+      max_tokens: 700,
       stream: true,
-      messages: [{ role: 'user', content: prompt }],
-    }),
-    signal: request.signal,
-  })
-
-  if (!upstream.ok) {
-    const err = await upstream.text()
-    return new Response(`data: ${JSON.stringify({ erro: err })}\n\ndata: [DONE]\n\n`, {
-      headers: { 'Content-Type': 'text/event-stream' },
     })
+  } catch (e) {
+    return new Response(
+      `data: ${JSON.stringify({ erro: String(e) })}\n\ndata: [DONE]\n\n`,
+      { headers: { 'Content-Type': 'text/event-stream' } },
+    )
   }
 
   const { readable, writable } = new TransformStream()
@@ -64,7 +58,7 @@ export async function onRequestPost(ctx) {
   const enc = new TextEncoder()
 
   const pump = async () => {
-    const reader = upstream.body.getReader()
+    const reader = stream.getReader()
     const dec = new TextDecoder()
     let buf = ''
     try {
@@ -80,8 +74,8 @@ export async function onRequestPost(ctx) {
           if (raw === '[DONE]') continue
           try {
             const ev = JSON.parse(raw)
-            if (ev.type === 'content_block_delta' && ev.delta?.text) {
-              await writer.write(enc.encode(`data: ${JSON.stringify({ delta: ev.delta.text })}\n\n`))
+            if (ev.response) {
+              await writer.write(enc.encode(`data: ${JSON.stringify({ delta: ev.response })}\n\n`))
             }
           } catch {}
         }
