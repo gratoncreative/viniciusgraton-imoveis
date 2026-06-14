@@ -39,7 +39,10 @@ Escreva UMA resposta curta e empática para o corretor enviar por WhatsApp. Regr
 export async function onRequestPost(ctx) {
   const { request, env } = ctx
 
-  if (!env.AI) return Response.json({ ok: false, semChave: true })
+  if (!env.AI) return new Response(
+    `data: ${JSON.stringify({ semChave: true })}\n\ndata: [DONE]\n\n`,
+    { headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Access-Control-Allow-Origin': '*' } }
+  )
 
   const body = await request.json()
   const { tool, campos } = body

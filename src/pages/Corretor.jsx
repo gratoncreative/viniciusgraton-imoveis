@@ -190,6 +190,8 @@ function ScriptObjecoes() {
   const [respostaIA, setRespostaIA] = useState('')
   const [gerando, setGerando] = useState(false)
   const [copiadoIA, setCopiadoIA] = useState(false)
+  const [erroIA, setErroIA] = useState('')
+  const respostaRef = useRef(null)
 
   const copiar = (idx, txt) => {
     navigator.clipboard.writeText(txt).then(() => { setCopiado(idx); setTimeout(() => setCopiado(null), 2000) })
@@ -197,14 +199,17 @@ function ScriptObjecoes() {
 
   const gerarResposta = () => {
     if (!objecaoCustom.trim() || gerando) return
-    setRespostaIA('')
+    setRespostaIA(''); setErroIA('')
     setGerando(true)
     gerarComIA(
       'objecoes',
       { objecao: objecaoCustom.trim() },
-      (delta) => setRespostaIA(t => t + delta),
+      (delta) => {
+        setRespostaIA(t => t + delta)
+        setTimeout(() => respostaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50)
+      },
       () => setGerando(false),
-      () => setGerando(false)
+      (e) => { setGerando(false); setErroIA(e === '__sem_chave__' ? 'IA indisponível no momento. Tente mais tarde.' : 'Erro ao gerar resposta. Verifique sua conexão.') }
     )
   }
 
@@ -257,8 +262,9 @@ function ScriptObjecoes() {
         <button className="btn btn-gold" onClick={gerarResposta} disabled={gerando || !objecaoCustom.trim()} style={{ fontSize: '0.88rem' }}>
           {gerando ? 'Gerando…' : '✨ Gerar resposta com IA'}
         </button>
+        {erroIA && <p style={{ marginTop: 10, color: 'var(--red, #e05555)', fontSize: '0.85rem' }}>{erroIA}</p>}
         {respostaIA && (
-          <div className="corr-ferr-resultado" style={{ marginTop: 12 }}>
+          <div ref={respostaRef} className="corr-ferr-resultado" style={{ marginTop: 12 }}>
             <pre>{respostaIA}</pre>
             {!gerando && (
               <button className="btn btn-ghost" style={{ fontSize: '0.8rem', padding: '6px 14px' }} onClick={() => { navigator.clipboard.writeText(respostaIA).then(() => { setCopiadoIA(true); setTimeout(() => setCopiadoIA(false), 2000) }) }}>
@@ -848,6 +854,8 @@ function TrialCountdownBanner({ corretor, onAssinar }) {
 
 function HubCorretor({ corretor, onSair }) {
   const [modal, setModal] = useState(null)
+  const [mSize, setMSize] = useState({ w: null, h: null })
+  const mRef = useRef(null)
   const [modoGate, setModoGate] = useState(false)
   const [dragIdx, setDragIdx] = useState(null)
   const [toolOrder, setToolOrder] = useState(() => {
@@ -888,9 +896,29 @@ function HubCorretor({ corretor, onSair }) {
   }, [corretor, onSair])
 
   useEffect(() => {
-    const handler = (e) => { if (e.key === 'Escape') setModal(null) }
+    const handler = (e) => { if (e.key === 'Escape') { setModal(null); setMSize({ w: null, h: null }) } }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
+  }, [])
+
+  const fecharModal = useCallback(() => { setModal(null); setMSize({ w: null, h: null }) }, [])
+
+  const startResize = useCallback((e, dir) => {
+    e.preventDefault(); e.stopPropagation()
+    const el = mRef.current
+    if (!el) return
+    const r0 = el.getBoundingClientRect()
+    const x0 = e.clientX, y0 = e.clientY
+    const onMove = (ev) => {
+      const dx = ev.clientX - x0, dy = ev.clientY - y0
+      setMSize(prev => ({
+        w: dir.includes('e') ? Math.max(420, r0.width + dx) : prev.w,
+        h: dir.includes('s') ? Math.max(280, r0.height + dy) : prev.h,
+      }))
+    }
+    const onUp = () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp) }
+    window.addEventListener('mousemove', onMove)
+    window.addEventListener('mouseup', onUp)
   }, [])
 
   if (modoGate) return (
@@ -956,18 +984,29 @@ function HubCorretor({ corretor, onSair }) {
         const Comp = RENDER[modal]
         if (!t || !Comp) return null
         return (
-          <div className="corr-modal-overlay" onClick={() => setModal(null)}>
-            <div className="corr-modal" onClick={e => e.stopPropagation()}>
+          <div className="corr-modal-overlay" onClick={fecharModal}>
+            <div
+              ref={mRef}
+              className="corr-modal"
+              onClick={e => e.stopPropagation()}
+              style={{
+                ...(mSize.w && { width: mSize.w + 'px', maxWidth: 'none' }),
+                ...(mSize.h && { height: mSize.h + 'px' }),
+              }}
+            >
               <div className="corr-modal-head">
                 <span className="corr-modal-ico"><Ico name={t.icon} size={20} /></span>
                 <h3 className="corr-modal-tit">{t.nome}</h3>
-                <button className="corr-modal-close" type="button" onClick={() => setModal(null)}>×</button>
+                <button className="corr-modal-close" type="button" onClick={fecharModal}>×</button>
               </div>
               <div className="corr-modal-body">
                 <Suspense fallback={<p className="section-sub" style={{ padding: '24px 0' }}>Carregando…</p>}>
                   <Comp />
                 </Suspense>
               </div>
+              <div className="corr-rh corr-rh-e"  onMouseDown={e => startResize(e, 'e')} />
+              <div className="corr-rh corr-rh-s"  onMouseDown={e => startResize(e, 's')} />
+              <div className="corr-rh corr-rh-se" onMouseDown={e => startResize(e, 'se')} />
             </div>
           </div>
         )
