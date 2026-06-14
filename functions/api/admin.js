@@ -454,14 +454,14 @@ export async function onRequestPost({ env, request }) {
           dbg.imovelStatus = imovelR.status
           const imovelHtml = await imovelR.text()
 
-          // Busca data-codigos com aspas simples ou duplas, em qualquer elemento
+          // Prioridade: elemento loadPessoas (botão de proprietários) — evita pegar captador
           let pessoaCode = ''
-          const dcM = imovelHtml.match(/data-codigos=["'](\d+)["']/)
-          if (dcM) pessoaCode = dcM[1]
+          const lpEl = imovelHtml.match(/<[^>]*loadPessoas[^>]*>/i)
+          if (lpEl) { const dc = lpEl[0].match(/data-codigos=["']?(\d+)["']?/); if (dc) pessoaCode = dc[1] }
           if (!pessoaCode) {
-            // Fallback: procura loadPessoas e extrai data-codigos
-            const lpEl = imovelHtml.match(/<[^>]*loadPessoas[^>]*>/)
-            if (lpEl) { const dc2 = lpEl[0].match(/data-codigos=["']?(\d+)["']?/); if (dc2) pessoaCode = dc2[1] }
+            // Fallback: qualquer data-codigos na página
+            const dcM = imovelHtml.match(/data-codigos=["'](\d+)["']/)
+            if (dcM) pessoaCode = dcM[1]
           }
           dbg.pessoaCode = pessoaCode
           if (isDebug) dbg.imovelSnippet = imovelHtml.slice(0, 2000)
