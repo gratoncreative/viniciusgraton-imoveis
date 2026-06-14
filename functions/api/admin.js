@@ -467,46 +467,47 @@ export async function onRequestPost({ env, request }) {
           if (isDebug) dbg.imovelSnippet = imovelHtml.slice(0, 2000)
 
           if (pessoaCode) {
-            // Passo 4: GET /PessoaF/Detalhes/{pessoaCode} → parse nome, fone, email do HTML
-            const pessoaR = await fetch(`${WEB}/PessoaF/Detalhes/${pessoaCode}`, {
-              headers:{ cookie:cookies, 'user-agent':UA, accept:'text/html' },
-              redirect:'follow', signal:AbortSignal.timeout(12000),
-            })
-            dbg.pessoaStatus = pessoaR.status
-            const pessoaHtml = await pessoaR.text()
+            // Passo 4: tenta PessoaF (física) e depois PessoaJ (jurídica/empresa)
+            let owner = { nome: '', email: '', fone: '' }
+            for (const tipo of ['PessoaF', 'PessoaJ']) {
+              const pessoaR = await fetch(`${WEB}/${tipo}/Detalhes/${pessoaCode}`, {
+                headers:{ cookie:cookies, 'user-agent':UA, accept:'text/html' },
+                redirect:'follow', signal:AbortSignal.timeout(12000),
+              })
+              dbg[`${tipo}Status`] = pessoaR.status
+              const pessoaHtml = await pessoaR.text()
 
-            // Nome: <title>... | NOME DA PESSOA</title>
-            const nomeM = pessoaHtml.match(/<title>[^|<]+\|\s*([^<]+)<\/title>/)
-            const nome  = nomeM ? nomeM[1].trim() : ''
+              const nomeM = pessoaHtml.match(/<title>[^|<]+\|\s*([^<]+)<\/title>/)
+              const nome  = nomeM ? nomeM[1].trim() : ''
 
-            // Celular: link WhatsApp embutido → api.whatsapp.com/send?phone=55XXXXXXXXXX
-            const waM = pessoaHtml.match(/api\.whatsapp\.com\/send\?phone=55(\d{10,11})/)
-            let fone = ''
-            if (waM) {
-              const d = waM[1]
-              fone = d.length === 11
-                ? `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`
-                : `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`
-            } else {
-              const foneM = pessoaHtml.match(/\((\d{2})\)\s*(\d{4,5}[-.\s]?\d{4})/)
-              if (foneM) fone = `(${foneM[1]}) ${foneM[2].replace(/[-.\s]/g,'').replace(/(\d{4,5})(\d{4})$/,'$1-$2')}`
-            }
+              const waM = pessoaHtml.match(/api\.whatsapp\.com\/send\?phone=55(\d{10,11})/)
+              let fone = ''
+              if (waM) {
+                const d = waM[1]
+                fone = d.length === 11
+                  ? `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`
+                  : `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`
+              } else {
+                const foneM = pessoaHtml.match(/\((\d{2})\)\s*(\d{4,5}[-.\s]?\d{4})/)
+                if (foneM) fone = `(${foneM[1]}) ${foneM[2].replace(/[-.\s]/g,'').replace(/(\d{4,5})(\d{4})$/,'$1-$2')}`
+              }
 
-            // Email: primeiro endereço de e-mail da página
-            const emailM = pessoaHtml.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,6}/)
-            const email  = emailM ? emailM[0] : ''
+              const emailM = pessoaHtml.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,6}/)
+              const email  = emailM ? emailM[0] : ''
 
-            const owner = {
-              nome:  nome.slice(0,120),
-              email: email.slice(0,160),
-              fone:  fone.slice(0,40),
+              if (nome || fone) {
+                owner = { nome: nome.slice(0,120), email: email.slice(0,160), fone: fone.slice(0,40) }
+                if (isDebug) dbg.tipoUsado = tipo
+                break
+              }
+              if (isDebug) dbg[`${tipo}Snippet`] = pessoaHtml.slice(0,400)
             }
 
             if (owner.nome || owner.fone) {
               await env.ENGAGEMENT.put('imovel:'+cod, JSON.stringify({...(saved||{}), owner, atualizadoEm:Date.now()}))
               return json({ ok:true, owner, source:'imoview-web', ...(isDebug?{dbg}:{}) })
             }
-            if (isDebug) return json({ ok:false, source:'parse-falhou', dbg, pessoaSnippet:pessoaHtml.slice(0,1000) })
+            if (isDebug) return json({ ok:false, source:'parse-falhou', dbg })
           } else {
             if (isDebug) return json({ ok:false, source:'pessoa-code-nao-encontrado', dbg, imovelSnippet:imovelHtml.slice(0,2000) })
           }
@@ -518,6 +519,10 @@ export async function onRequestPost({ env, request }) {
       }
     }
 
+    // Se force=true e scraping não encontrou nada, limpa o owner desatualizado do KV
+    if (force && saved && saved.owner) {
+      await env.ENGAGEMENT.put('imovel:'+cod, JSON.stringify({...(saved||{}), owner:null, atualizadoEm:Date.now()}))
+    }
     return json({ ok: true, owner: { nome: '', email: '', fone: '' }, source: 'none' })
   }
 
