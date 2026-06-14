@@ -453,9 +453,10 @@ export default function Admin() {
   const [aprovadosLocais, setAprovadosLocais] = useState([]) // esconde na hora (KV tem atraso de leitura)
   const [carregando, setCarregando] = useState(false)
   const [espelhoTotal, setEspelhoTotal] = useState(null) // total do espelho da Rotina (catalogo-meta.json)
+  const [catalogoMeta, setCatalogoMeta] = useState(null)  // { geradoEm, total }
   const [novidades, setNovidades] = useState(null)
   useEffect(() => {
-    fetch('/catalogo-meta.json').then((r) => (r.ok ? r.json() : null)).then((d) => { if (d && typeof d.total === 'number') setEspelhoTotal(d.total) }).catch(() => {})
+    fetch('/catalogo-meta.json').then((r) => (r.ok ? r.json() : null)).then((d) => { if (d && typeof d.total === 'number') { setEspelhoTotal(d.total); setCatalogoMeta(d) } }).catch(() => {})
     fetch('/novidades.json').then((r) => (r.ok ? r.json() : null)).then((d) => { if (d) setNovidades(d) }).catch(() => {})
   }, [])
 
@@ -608,6 +609,15 @@ export default function Admin() {
               <StatCard rotulo="Acessos no site" valor={totalViews} sub={blogViews ? `${Object.keys(blogViews).length} posts lidos` : 'leituras registradas'} onClick={() => setAba('acessos')} />
               <StatCard rotulo="Newsletter" valor={(dados?.news || []).length} sub="inscritos por e-mail" onClick={() => setAba('news')} />
             </div>
+            {catalogoMeta?.geradoEm && (() => {
+              const diasCatalogo = Math.floor((Date.now() - new Date(catalogoMeta.geradoEm).getTime()) / 86400000)
+              if (diasCatalogo < 7) return null
+              return (
+                <div className="admin-alerta-stale">
+                  ⚠ Catálogo desatualizado há <b>{diasCatalogo} dias</b> — rode <code>node scripts/gera-catalogo-rotina.mjs</code> para atualizar os {espelhoTotal?.toLocaleString('pt-BR')} imóveis.
+                </div>
+              )
+            })()}
             <div className="det-trust" style={{ marginTop: 18 }}>
               <IconShield width={20} height={20} />
               <p><b>Visão geral do seu negócio.</b> Aqui ficam os números em tempo real. Use as abas acima para gerenciar os imóveis enviados pelos proprietários, seus leads (com status e anotações) e os cadastros da área do cliente.</p>

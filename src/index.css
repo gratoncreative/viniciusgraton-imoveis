@@ -1845,6 +1845,10 @@ html[data-theme="dark"] .det-dest-mini-chip { background: rgba(224,181,86,0.1); 
 .admin-foto:hover img { transform: scale(1.08); }
 /* Dashboard / visão geral */
 .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+.admin-alerta-stale { margin-top: 14px; padding: 12px 16px; border-radius: 10px; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.35); font-size: 0.85rem; color: #b45309; line-height: 1.55; }
+.admin-alerta-stale code { font-family: monospace; font-size: 0.82rem; background: rgba(0,0,0,0.07); padding: 2px 5px; border-radius: 4px; }
+html[data-theme="dark"] .admin-alerta-stale { background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.28); color: #fbbf24; }
+html[data-theme="dark"] .admin-alerta-stale code { background: rgba(255,255,255,0.08); }
 .admin-stat { background: #fff; border: 1px solid rgba(22,26,34,0.1); border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 3px; box-shadow: 0 12px 30px -26px rgba(22,26,34,0.5); }
 .admin-stat-num { font-family: var(--font-head); font-size: 2rem; font-weight: 800; color: var(--gold-3); line-height: 1; }
 .admin-stat-rot { font-family: var(--font-head); font-weight: 600; color: #1a1f29; margin-top: 6px; }
@@ -4114,6 +4118,11 @@ html[data-theme="dark"] .corrbn-nota { color: #6a7485; }
   .ferr-pro-plano { flex: 1; }
   .calc-cta { flex-direction: column; }
   .calc-cta .btn { width: 100%; justify-content: center; }
+  .ferr-modal-backdrop { padding: 16px 8px 24px; }
+  .ferr-modal-hd { padding: 16px 16px 12px; }
+  .ferr-modal-body { padding: 16px; }
+  .ferr-modal-cta { padding: 12px 16px 16px !important; }
+  .cg-modal { padding: 24px 18px 20px; }
 }
 @media (max-width: 420px) {
   .ferr-grid-3 { grid-template-columns: 1fr; }
