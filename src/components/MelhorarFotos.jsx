@@ -176,7 +176,9 @@ function aplicarMarca(canvas, wm, logoImg) {
 
   if (hasLogo) {
     const lh = Math.round(fs * 2.2)
-    const lw = Math.round(lh * (logoImg.naturalWidth || logoImg.width) / (logoImg.naturalHeight || logoImg.height))
+    const natW = logoImg.naturalWidth || logoImg.width || 1
+    const natH = logoImg.naturalHeight || logoImg.height || 1
+    const lw = Math.round(lh * natW / natH)
     const lx = alignH === 'right' ? x - lw : alignH === 'left' ? x : x - lw / 2
     const ly = isSup ? offsetY : isCentro ? offsetY - lh / 2 : offsetY - lh
     ctx.drawImage(logoImg, lx, ly, lw, lh)
@@ -282,6 +284,7 @@ export default function MelhorarFotos() {
   const [aba, setAba] = useState('ajustes')
   const previewRef = useRef(null)
   const wmLogoRef = useRef(null)
+  const redesenharRef = useRef(null)
   const fotosRef = useRef(fotos); fotosRef.current = fotos
 
   const subir = (e) => {
@@ -324,6 +327,7 @@ export default function MelhorarFotos() {
       ctx.drawImage(c, 0, 0)
     }
   }, [foto, verOriginal, wm])
+  redesenharRef.current = redesenhar
 
   useEffect(() => {
     const t = setTimeout(redesenhar, 60)
@@ -642,7 +646,11 @@ export default function MelhorarFotos() {
                                 if (!file) return
                                 const url = URL.createObjectURL(file)
                                 const img = new Image()
-                                img.onload = () => { wmLogoRef.current = img; setWm(w => ({ ...w, logoUrl: url })) }
+                                img.onload = () => {
+                                  wmLogoRef.current = img
+                                  setWm(w => ({ ...w, logoUrl: url }))
+                                  setTimeout(() => redesenharRef.current?.(), 0)
+                                }
                                 img.src = url
                               }} />
                             </label>

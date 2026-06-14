@@ -930,16 +930,13 @@ function HubCorretor({ corretor, onSair }) {
 
   return (
     <>
-      <header className="corr-hero">
-        <div>
-          <span className="eyebrow">Área do corretor · ferramentas profissionais</span>
-          <h1 className="section-title">Olá, <em>{primeiro || 'corretor'}</em></h1>
-          <p className="section-sub" style={{ marginTop: 8 }}>Suas ferramentas de captação, divulgação e venda — tudo num lugar só.</p>
-        </div>
+      <header className="corr-hub-header">
+        <h1 className="corr-hub-titulo">Área do Corretor — Ferramentas Profissionais</h1>
         <div className="corr-hero-acoes">
+          <span className="corr-hub-ola">Olá, {primeiro || 'Corretor'}</span>
           {corretor.creci && <span className="corr-chip">CRECI {corretor.creci}</span>}
           {corretor.tipo === 'admin' && (
-            <button className="btn btn-ghost" type="button" onClick={() => setModoGate(true)} style={{ fontSize: '0.8rem' }}>👁 Prévia da entrada</button>
+            <button className="btn btn-ghost" type="button" onClick={() => setModoGate(true)} style={{ fontSize: '0.8rem' }}>👁 Prévia</button>
           )}
           <button className="btn btn-ghost" type="button" onClick={onSair}>Sair</button>
         </div>
@@ -961,28 +958,25 @@ function HubCorretor({ corretor, onSair }) {
             style={{ opacity: dragIdx === idx ? 0.4 : 1, cursor: 'grab' }}
             title="Arraste para reordenar"
           >
-            <span className="ferr-capa" aria-hidden="true" style={CORES[t.id] ? { background: CORES[t.id].bg, '--capa-glow': CORES[t.id].glow } : undefined}><Ico name={t.icon} size={54} /></span>
-            <span className="ferr-corpo">
-              <span className="ferr-ico"><Ico name={t.icon} /></span>
-              <span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span>
-            </span>
+            <span className="ferr-card-ico" aria-hidden="true"><Ico name={t.icon} size={62} /></span>
+            <b className="ferr-card-nome">{t.nome}</b>
+            <i className="ferr-card-desc">{t.desc}</i>
+            <span className="ferr-card-acessar">Acessar</span>
           </button>
         ))}
         {ATALHOS.map((t) => (
           <Link key={t.to} className="ferr-card" to={t.to}>
-            <span className="ferr-capa" aria-hidden="true" style={CORES[t.icon] ? { background: CORES[t.icon].bg, '--capa-glow': CORES[t.icon].glow } : undefined}><Ico name={t.icon} size={54} /></span>
-            <span className="ferr-corpo">
-              <span className="ferr-ico"><Ico name={t.icon} /></span>
-              <span className="ferr-txt"><b>{t.nome}</b><i>{t.desc}</i></span>
-            </span>
+            <span className="ferr-card-ico" aria-hidden="true"><Ico name={t.icon} size={62} /></span>
+            <b className="ferr-card-nome">{t.nome}</b>
+            <i className="ferr-card-desc">{t.desc}</i>
+            <span className="ferr-card-acessar">Acessar</span>
           </Link>
         ))}
         <Link className="ferr-card ferr-card--gold" to="/admin">
-          <span className="ferr-capa" aria-hidden="true"><Ico name="painel" size={54} /></span>
-          <span className="ferr-corpo">
-            <span className="ferr-ico"><Ico name="painel" /></span>
-            <span className="ferr-txt"><b>Painel administrativo</b><i>Imóveis, leads e clientes.</i></span>
-          </span>
+          <span className="ferr-card-ico" aria-hidden="true"><Ico name="painel" size={62} /></span>
+          <b className="ferr-card-nome">Painel administrativo</b>
+          <i className="ferr-card-desc">Imóveis, leads e clientes.</i>
+          <span className="ferr-card-acessar">Acessar</span>
         </Link>
       </div>
     </>
