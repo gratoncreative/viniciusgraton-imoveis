@@ -594,13 +594,14 @@ export default function MelhorarFotos() {
                     <label className="mf-check"><input type="checkbox" checked={wm.on} onChange={(e) => setWm({ ...wm, on: e.target.checked })} /> Inserir marca d'água nas fotos</label>
                     {wm.on && (
                       <>
-                        <label className="mf-sel"><span>Modo</span>
-                          <select value={wm.modo} onChange={(e) => setWm({ ...wm, modo: e.target.value })}>
-                            <option value="texto">Só texto</option>
-                            <option value="logo">Só logomarca</option>
-                            <option value="ambos">Texto + logomarca</option>
-                          </select>
-                        </label>
+                        <div className="mf-campo">
+                          <span>Modo</span>
+                          <div className="mf-modo-sel">
+                            {[['texto','Só texto'],['logo','Só logomarca'],['ambos','Texto + logo']].map(([val,label]) => (
+                              <button key={val} type="button" className={`mf-modo-btn${wm.modo === val ? ' on' : ''}`} onClick={() => setWm({ ...wm, modo: val })}>{label}</button>
+                            ))}
+                          </div>
+                        </div>
                         {(wm.modo === 'texto' || wm.modo === 'ambos') && (
                           <label className="mf-campo"><span>Texto</span>
                             <input type="text" value={wm.texto} onChange={(e) => setWm({ ...wm, texto: e.target.value })} placeholder="Ex.: Vinícius Graton" />
