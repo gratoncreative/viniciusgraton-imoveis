@@ -7,7 +7,6 @@ import CardImovel from '../components/CardImovel'
 import Engajamento from '../components/Engajamento'
 import PrecoGate from '../components/PrecoGate'
 import PerguntasImovel from '../components/PerguntasImovel'
-import EstudoM2 from '../components/EstudoM2'
 import {
   getImovel, fotosDe, formatPreco, formatArea, resumoImovel, subtituloImovel,
   destaquesImovel, ehCondominio, IMOVEIS, linkWhatsApp, waImovel, CONFIG, BAIRROS, oportunidade, estudoM2,
@@ -364,7 +363,6 @@ export default function ImovelDetalhe() {
     image: fotos[0] || im?.img,
   })
   const [pdfProc, setPdfProc] = useState(false)
-  const [estudoAberto, setEstudoAberto] = useState(false)
   const [copiado, setCopiado] = useState(false)
   const [mounted, setMounted] = useState(false)
   useEffect(() => {
@@ -611,7 +609,7 @@ export default function ImovelDetalhe() {
     .filter((i) => i.codigo !== im.codigo)
     .map((i) => ({ i, s: similaridade(i) }))
     .sort((a, b) => b.s - a.s)
-    .slice(0, 3)
+    .slice(0, 4)
     .map((x) => x.i)
 
   return (
@@ -750,7 +748,7 @@ export default function ImovelDetalhe() {
                   </a>
                 )}
                 {est?.ok && (
-                  <button className="det-estudo-cta" onClick={() => setEstudoAberto(true)}>
+                  <Link className="det-estudo-cta" to={`/estudo/${im.codigo}`}>
                     <div className="det-estudo-cta-ico" aria-hidden="true">
                       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18M7 14l4-4 3 3 5-6" /></svg>
                     </div>
@@ -759,7 +757,7 @@ export default function ImovelDetalhe() {
                       <span>Veja se o preço pedido está justo para este bairro</span>
                     </div>
                     <svg className="det-estudo-cta-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                  </button>
+                  </Link>
                 )}
               </div>
 
@@ -859,7 +857,6 @@ export default function ImovelDetalhe() {
           <Link className="btn btn-ghost" to="/imoveis"><IconArrow style={{ transform: 'rotate(180deg)' }} /> Voltar para o catálogo</Link>
         </div>
       </div>
-      {estudoAberto && est?.ok && <EstudoM2 im={im} est={est} onClose={() => setEstudoAberto(false)} onLaudo={comprarLaudo} />}
     </main>
     </>
   )

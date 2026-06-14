@@ -1304,6 +1304,9 @@ html[data-theme="dark"] .det-dest-mini-chip { background: rgba(224,181,86,0.1); 
 .det-rel { margin-top: 52px; padding-top: 40px; border-top: 1px solid var(--border); }
 .det-rel-titulo { font-family: var(--font-head); font-weight: 700; font-size: 1.7rem; margin-bottom: 28px; }
 .det-rel-titulo::after { content: ''; display: block; width: 54px; height: 3px; border-radius: 3px; margin-top: 12px; background: linear-gradient(135deg, #c9962f, #9a6c1c); }
+.det-rel .im-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+@media (max-width: 900px) { .det-rel .im-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .det-rel .im-grid { grid-template-columns: 1fr; } }
 .det-mapa { margin-top: 52px; padding-top: 40px; border-top: 1px solid var(--border); }
 .det-mapa-bairro { display: flex; align-items: center; gap: 8px; color: var(--text-soft); font-weight: 600; margin-bottom: 18px; }
 .det-mapa-bairro svg { color: var(--gold-3); flex: none; }
@@ -5490,3 +5493,57 @@ html[data-theme="dark"] .condo-filtro-grupo-v2 { background:var(--surface); bord
 .condos-lista { padding-top: 32px; }
 @media (max-width: 900px) { .condos-hero-filtros { grid-template-columns: 1fr 1fr; } .condos-hf--wide { grid-column: 1 / 3; } .condos-hf-limpar { grid-column: 1 / 3; } }
 @media (max-width: 600px) { .condos-hero-filtros { grid-template-columns: 1fr; } .condos-hf--wide, .condos-hf-limpar { grid-column: auto; } }
+
+/* ── EstudoM2Page (/estudo/:codigo) ─────────────────────────────── */
+.est-pg { background: #0d1018; min-height: 100vh; padding-bottom: 80px; }
+.est-pg--erro { display: flex; align-items: center; justify-content: center; }
+/* nav top */
+.est-nav { background: rgba(8,11,18,0.9); border-bottom: 1px solid rgba(255,255,255,0.07); padding: 14px 0; position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px); }
+.est-nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.est-nav-back { display: inline-flex; align-items: center; gap: 7px; color: #8a93a6; font-size: 0.88rem; font-weight: 600; text-decoration: none; transition: color 0.18s; }
+.est-nav-back:hover { color: #e8eaf0; }
+.est-nav-eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-2); }
+/* container */
+.est-container { max-width: 860px; margin: 0 auto; padding-top: 48px; }
+/* header */
+.est-header { margin-bottom: 40px; }
+.est-titulo { font-family: var(--font-head); font-size: clamp(1.5rem,3vw,2rem); font-weight: 800; color: #f0ecdf; margin: 12px 0 8px; }
+.est-subtitulo { font-size: 0.95rem; color: #8a93a6; }
+/* seções */
+.est-sec { background: #13182a; border: 1px solid rgba(255,255,255,0.07); border-radius: 18px; padding: 32px; margin-bottom: 24px; }
+.est-sec-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-2); margin-bottom: 8px; }
+.est-sec-titulo { font-family: var(--font-head); font-size: 1.2rem; font-weight: 700; color: #e8eaf0; margin: 0 0 14px; }
+.est-sec-sub { font-size: 0.9rem; color: #8a93a6; line-height: 1.65; margin: 0 0 24px; }
+/* dados grid */
+.est-dados-grid { display: grid; grid-template-columns: 1fr 220px; gap: 24px; align-items: start; }
+.est-dado-principal { min-width: 0; }
+/* cards de contexto */
+.est-contexto { display: flex; flex-direction: column; gap: 12px; }
+.est-ctx-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+.est-ctx-ico { font-size: 1.2rem; flex: none; }
+.est-ctx-card b { display: block; font-size: 0.78rem; font-weight: 700; color: #c0c8d6; }
+.est-ctx-card span { display: block; font-size: 0.85rem; color: #8a93a6; margin-top: 2px; }
+/* metodologia */
+.est-metodologia { margin-bottom: 20px; }
+.est-met-subtit { font-size: 0.85rem; font-weight: 700; color: #c9a84c; margin: 0 0 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+.est-met-subtit--lim { color: #8a93a6; }
+.est-fatores li { font-size: 0.88rem; line-height: 1.55; }
+/* laudo profissional */
+.est-laudo-bloco { background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.2); border-radius: 16px; padding: 28px; }
+.est-laudo-tag { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #c9a84c; margin-bottom: 16px; }
+.est-laudo-preco-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px; }
+.est-laudo-de { font-size: 1rem; color: #6a738a; text-decoration: line-through; }
+.est-laudo-por { font-family: var(--font-head); font-size: 2rem; font-weight: 900; color: #f0ecdf; }
+.est-laudo-desc { font-size: 0.82rem; color: #8a93a6; }
+.est-laudo-itens { list-style: none; padding: 0; margin: 0 0 24px; display: flex; flex-direction: column; gap: 10px; }
+.est-laudo-btn { width: 100%; }
+/* CTA WhatsApp */
+.est-wa-wrap { text-align: center; padding: 40px 0 20px; }
+.est-wa-btn { display: inline-flex; align-items: center; gap: 10px; font-size: 1rem; padding: 14px 28px; }
+.est-wa-hint { font-size: 0.82rem; color: #6a738a; margin-top: 10px; }
+/* sem dados */
+.est-sem-dados { text-align: center; padding: 60px 20px; color: #8a93a6; }
+.est-sem-dados svg { margin: 0 auto 16px; display: block; opacity: 0.4; }
+/* footer nav */
+.est-footer-nav { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.07); }
+@media (max-width: 700px) { .est-dados-grid { grid-template-columns: 1fr; } .est-contexto { flex-direction: row; flex-wrap: wrap; } .est-ctx-card { flex: 1 1 calc(50% - 6px); } }

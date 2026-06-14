@@ -49,6 +49,7 @@ const Privacidade = lazy(() => import('./pages/Privacidade'))
 const Diferenciais = lazy(() => import('./pages/Diferenciais'))
 const Impulsionar = lazy(() => import('./pages/Impulsionar'))
 const LaudoPage = lazy(() => import('./pages/LaudoPage'))
+const EstudoM2Page = lazy(() => import('./pages/EstudoM2Page'))
 const Mercado = lazy(() => import('./pages/Mercado'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
@@ -169,6 +170,7 @@ export default function App() {
               <Route path="/diferenciais" element={<Diferenciais />} />
               <Route path="/impulsionar" element={<Impulsionar />} />
               <Route path="/laudo/:id" element={<LaudoPage />} />
+              <Route path="/estudo/:codigo" element={<EstudoM2Page />} />
               <Route path="/mercado" element={<Mercado />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
