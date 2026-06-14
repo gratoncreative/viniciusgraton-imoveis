@@ -114,5 +114,27 @@ const out = { geradoEm, fonte: 'Rotina Imobiliária', total: recs.length, imovei
 fs.writeFileSync('public/catalogo.json', JSON.stringify(out))
 fs.writeFileSync('public/catalogo-meta.json', JSON.stringify({ geradoEm, total: recs.length }))
 const kb = Math.round(fs.statSync('public/catalogo.json').size / 1024)
+
+// gera mercado-stats.json — medianas de preço e m² por bairro (alimenta /mercado)
+try {
+  const statsBairro = {}
+  for (const im of recs) {
+    const b = (im.bairro || '').trim()
+    const p = im.preco || 0
+    if (!b || p < 50000 || p > 30000000) continue
+    if (!statsBairro[b]) statsBairro[b] = { precos: [], areas: [], m2s: [] }
+    statsBairro[b].precos.push(p)
+    if (im.area > 0) { statsBairro[b].areas.push(im.area); statsBairro[b].m2s.push(Math.round(p / im.area)) }
+  }
+  const med = (arr) => { if (!arr.length) return 0; const s = [...arr].sort((a, b) => a - b); const m = Math.floor(s.length / 2); return s.length % 2 ? s[m] : Math.round((s[m - 1] + s[m]) / 2) }
+  const bairros = {}
+  for (const [b, v] of Object.entries(statsBairro)) {
+    if (v.precos.length < 3) continue
+    bairros[b] = { count: v.precos.length, mediana_preco: med(v.precos), mediana_area: med(v.areas), mediana_m2: med(v.m2s), min_preco: Math.min(...v.precos), max_preco: Math.max(...v.precos) }
+  }
+  fs.writeFileSync('public/mercado-stats.json', JSON.stringify({ geradoEm, total: recs.length, bairros }))
+  console.log('OK -> public/mercado-stats.json |', Object.keys(bairros).length, 'bairros')
+} catch (e) { console.warn('mercado-stats falhou:', e.message) }
+
 escreverStatus({ ok: true, total: recs.length, novos: novos.length, baixaram: baixaram.length, geradoEm })
 console.log('OK -> public/catalogo.json |', recs.length, 'imóveis |', kb, 'KB | + catalogo-meta.json')
