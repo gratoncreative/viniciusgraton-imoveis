@@ -61,6 +61,74 @@ function LaudoProfissional({ codigo, baseLabel }) {
   )
 }
 
+/* ── Gráfico de barras (comparáveis de mercado) ─────────────────── */
+function CompsChart({ est, im }) {
+  if (!est?.comparaveis?.length) return null
+  const comps = est.comparaveis
+  const allVals = [...comps.map(c => c.m2), est.m2Subj]
+  const rawMin = Math.min(...allVals)
+  const rawMax = Math.max(...allVals)
+  const pad = (rawMax - rawMin) * 0.15 || 500
+  const cMin = Math.max(0, rawMin - pad)
+  const cMax = rawMax + pad
+  const range = cMax - cMin || 1
+
+  const pct = v => ((v - cMin) / range * 100).toFixed(1) + '%'
+  const fmtK = v => `R$${Math.round(v / 1000)}k`
+  const step = range <= 3000 ? 500 : range <= 6000 ? 1000 : range <= 12000 ? 2000 : 3000
+  const ticks = []
+  for (let t = Math.ceil(cMin / step) * step; t <= cMax; t += step) ticks.push(t)
+
+  const subjInComps = comps.some(c => String(c.codigo) === String(im.codigo))
+
+  return (
+    <div className="em2-chart-card">
+      <div className="em2-chart-head">
+        <span className="em2-chart-titulo">Comparáveis no mercado</span>
+        <p className="em2-chart-sub">{comps.length} imóveis do mesmo tipo · preço/m² homogeneizado</p>
+      </div>
+      <div className="em2-chart-stage">
+        {ticks.map(t => (
+          <div key={t} className="em2-chart-grid-line" style={{ bottom: pct(t) }}>
+            <span className="em2-chart-grid-label">{fmtK(t)}</span>
+          </div>
+        ))}
+        <div className="em2-chart-med-line" style={{ bottom: pct(est.referencia) }}>
+          <span className="em2-chart-med-tag">mediana</span>
+        </div>
+        <div className="em2-chart-bars">
+          {comps.map((c, i) => {
+            const isSubj = String(c.codigo) === String(im.codigo)
+            return (
+              <div key={i} className="em2-chart-bar-wrap">
+                <div
+                  className={`em2-chart-bar${isSubj ? ' em2-chart-bar--subj' : ''}`}
+                  style={{ height: pct(c.m2) }}
+                  title={`R$ ${Math.round(c.m2).toLocaleString('pt-BR')}/m²`}
+                />
+              </div>
+            )
+          })}
+          {!subjInComps && (
+            <div className="em2-chart-bar-wrap">
+              <div
+                className="em2-chart-bar em2-chart-bar--subj"
+                style={{ height: pct(est.m2Subj) }}
+                title={`Este imóvel: R$ ${Math.round(est.m2Subj).toLocaleString('pt-BR')}/m²`}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="em2-chart-legend">
+        <span><span className="em2-chart-leg-swatch em2-chart-leg-swatch--comp" />Comparáveis</span>
+        <span><span className="em2-chart-leg-swatch em2-chart-leg-swatch--subj" />Este imóvel</span>
+        <span><span className="em2-chart-leg-swatch em2-chart-leg-swatch--med" />Mediana</span>
+      </div>
+    </div>
+  )
+}
+
 /* ── Régua de posicionamento no mercado ─────────────────────────── */
 function PositionRuler({ im, est }) {
   const { m2Subj, referencia, campoMin, campoMax } = est
@@ -104,13 +172,11 @@ function PositionRuler({ im, est }) {
       </div>
 
       <div className="em2-ruler-stage">
-        {/* Label do imóvel (acima da régua) */}
         <div className="em2-ruler-subj-ann" style={{ left: pct(m2Subj), transform: subjTransform }}>
           <span className="em2-ruler-subj-name">Este imóvel</span>
           <span className="em2-ruler-subj-val">{fmtVal(m2Subj)} / m² homogeneizado</span>
         </div>
 
-        {/* Tooltip da mediana (acima da régua, só se não sobrepuser) */}
         {showMedianTip && (
           <div className="em2-ruler-median-ann" style={{ left: pct(referencia) }}>
             <div className="em2-ruler-median-box">
@@ -121,7 +187,6 @@ function PositionRuler({ im, est }) {
           </div>
         )}
 
-        {/* Trilho */}
         <div className="em2-ruler-track">
           <div className="em2-ruler-band" style={{
             left: pct(campoMin),
@@ -132,7 +197,6 @@ function PositionRuler({ im, est }) {
           {ticks.map(t => <div key={t} className="em2-ruler-tick" style={{ left: pct(t) }} />)}
         </div>
 
-        {/* Rótulos dos ticks */}
         <div className="em2-ruler-tick-labels">
           {ticks.map(t => (
             <span key={t} className="em2-ruler-tick-label" style={{ left: pct(t) }}>
@@ -155,7 +219,6 @@ export default function EstudoM2Page() {
   const staticIm = useMemo(() => getImovel(codigo), [codigo])
   const im = staticIm || imApi
 
-  // Fallback: busca na API da Rotina quando o imóvel não está no bundle estático
   useEffect(() => {
     if (staticIm) { setLoadingApi(false); return }
     let vivo = true
@@ -182,7 +245,6 @@ export default function EstudoM2Page() {
     return () => { vivo = false }
   }, [codigo, staticIm])
 
-  // Catálogo para comparação no estudo de m²
   useEffect(() => {
     let vivo = true
     fetch('/catalogo.json')
@@ -262,10 +324,9 @@ export default function EstudoM2Page() {
         {est?.ok ? (
           <div className="em2-dash">
 
-            {/* ── Coluna principal ── */}
-            <div className="em2-dash-main">
+            {/* ── A: métricas ── */}
+            <div className="em2-dash-a">
 
-              {/* Hero métrica */}
               <div className="em2-hero em2-hero--dash">
                 <span className="em2-hero-label">Análise de Mercado · m²</span>
                 <div className="em2-hero-body">
@@ -295,65 +356,6 @@ export default function EstudoM2Page() {
                 </div>
               </div>
 
-              {/* Régua de posicionamento */}
-              <PositionRuler im={im} est={est} />
-
-              {/* Stat cards */}
-              <div className="em2-stats-row">
-                <div className="em2-stat">
-                  <span className="em2-stat-label">Preço anunciado</span>
-                  <b className="em2-stat-val">{fmtM2(est.precoM2)}</b>
-                  <span className="em2-stat-sub">por m² (com vaga)</span>
-                </div>
-                <div className="em2-stat">
-                  <span className="em2-stat-label">Comparável</span>
-                  <b className="em2-stat-val">{fmtM2(est.m2Subj)}</b>
-                  <span className="em2-stat-sub">por m² (sem vaga)</span>
-                </div>
-                <div className="em2-stat">
-                  <span className="em2-stat-label">Estimativa venda</span>
-                  <b className="em2-stat-val">{fmtM2(est.valorVenda)}</b>
-                  <span className="em2-stat-sub">ajuste de mercado</span>
-                </div>
-                {est.n > 0 && (
-                  <div className="em2-stat">
-                    <span className="em2-stat-label">Amostra</span>
-                    <b className="em2-stat-val">{est.n}</b>
-                    <span className="em2-stat-sub">imóveis comparados</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Metodologia */}
-              {(est.fatoresAplicados?.length > 0 || est.limitacoes?.length > 0) && (
-                <section className="est-sec">
-                  <div className="est-sec-label">Metodologia · ABNT NBR 14653</div>
-                  <h2 className="est-sec-titulo">Como chegamos nesse valor</h2>
-                  {est.fatoresAplicados?.length > 0 && (
-                    <ul className="em2-fatores-list est-fatores">
-                      {est.fatoresAplicados.map((f, i) => <li key={i}>{f}</li>)}
-                    </ul>
-                  )}
-                  {est.limitacoes?.length > 0 && (
-                    <>
-                      <h3 className="est-met-subtit est-met-subtit--lim" style={{ marginTop: 16 }}>O que este estudo não cobre</h3>
-                      <ul className="em2-fatores-list em2-fatores-list--lim est-fatores">
-                        {est.limitacoes.map((f, i) => <li key={i}>{f}</li>)}
-                      </ul>
-                    </>
-                  )}
-                  <p className="em2-disc">
-                    Estudo comparativo de mercado pelo método ABNT NBR 14653.
-                    Estimativa de referência — não substitui laudo com vistoria presencial.
-                  </p>
-                </section>
-              )}
-            </div>
-
-            {/* ── Coluna lateral ── */}
-            <div className="em2-dash-side">
-
-              {/* Campo de mercado (triptych) */}
               <div className="em2-dash-card">
                 <span className="em2-dash-card-label">Campo de mercado</span>
                 <div className="em2-triptych em2-triptych--side">
@@ -385,17 +387,79 @@ export default function EstudoM2Page() {
                 </p>
               </div>
 
-              {/* Laudo */}
+              <div className="em2-stats-grid">
+                <div className="em2-stat">
+                  <span className="em2-stat-label">Preço anunciado</span>
+                  <b className="em2-stat-val">{fmtM2(est.precoM2)}</b>
+                  <span className="em2-stat-sub">por m² (com vaga)</span>
+                </div>
+                <div className="em2-stat">
+                  <span className="em2-stat-label">Comparável</span>
+                  <b className="em2-stat-val">{fmtM2(est.m2Subj)}</b>
+                  <span className="em2-stat-sub">por m² (sem vaga)</span>
+                </div>
+                <div className="em2-stat">
+                  <span className="em2-stat-label">Estimativa venda</span>
+                  <b className="em2-stat-val">{fmtM2(est.valorVenda)}</b>
+                  <span className="em2-stat-sub">ajuste de mercado</span>
+                </div>
+                {est.n > 0 && (
+                  <div className="em2-stat">
+                    <span className="em2-stat-label">Amostra</span>
+                    <b className="em2-stat-val">{est.n}</b>
+                    <span className="em2-stat-sub">imóveis comparados</span>
+                  </div>
+                )}
+              </div>
+
+            </div>
+
+            {/* ── B: gráficos e análise ── */}
+            <div className="em2-dash-b">
+
+              <CompsChart est={est} im={im} />
+
+              <PositionRuler im={im} est={est} />
+
+              {(est.fatoresAplicados?.length > 0 || est.limitacoes?.length > 0) && (
+                <section className="est-sec">
+                  <div className="est-sec-label">Metodologia · ABNT NBR 14653</div>
+                  <h2 className="est-sec-titulo">Como chegamos nesse valor</h2>
+                  {est.fatoresAplicados?.length > 0 && (
+                    <ul className="em2-fatores-list est-fatores">
+                      {est.fatoresAplicados.map((f, i) => <li key={i}>{f}</li>)}
+                    </ul>
+                  )}
+                  {est.limitacoes?.length > 0 && (
+                    <>
+                      <h3 className="est-met-subtit est-met-subtit--lim" style={{ marginTop: 16 }}>O que este estudo não cobre</h3>
+                      <ul className="em2-fatores-list em2-fatores-list--lim est-fatores">
+                        {est.limitacoes.map((f, i) => <li key={i}>{f}</li>)}
+                      </ul>
+                    </>
+                  )}
+                  <p className="em2-disc">
+                    Estudo comparativo de mercado pelo método ABNT NBR 14653.
+                    Estimativa de referência — não substitui laudo com vistoria presencial.
+                  </p>
+                </section>
+              )}
+
+            </div>
+
+            {/* ── C: conversão ── */}
+            <div className="em2-dash-c">
+
               <div className="em2-dash-card">
                 <div className="est-sec-label">Laudo profissional</div>
                 <h2 className="est-sec-titulo" style={{ marginBottom: 12 }}>Quer o laudo em PDF?</h2>
                 <LaudoProfissional codigo={im.codigo} baseLabel={est.baseLabel} />
               </div>
 
-              {/* CTA WhatsApp */}
               <a className="btn btn-gold est-wa-btn" href={linkWhatsApp(waMsg)} target="_blank" rel="noopener" style={{ width: '100%', justifyContent: 'center', boxSizing: 'border-box' }}>
                 <IconWhats width={18} height={18} /> Falar com o Vinícius
               </a>
+
             </div>
 
           </div>
