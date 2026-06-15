@@ -85,14 +85,45 @@ function LaudoProfissional({ codigo, baseLabel }) {
 /* ═══ PÁGINA PRINCIPAL ══════════════════════════════════════════ */
 export default function EstudoM2Page() {
   const { codigo } = useParams()
+  const [imApi, setImApi] = useState(null)
+  const [loadingApi, setLoadingApi] = useState(true)
   const [feed, setFeed] = useState([])
 
-  const im = useMemo(() => getImovel(codigo), [codigo])
+  const staticIm = useMemo(() => getImovel(codigo), [codigo])
+  const im = staticIm || imApi
 
+  // Fallback: busca na API da Rotina quando o imóvel não está no bundle estático
+  useEffect(() => {
+    if (staticIm) { setLoadingApi(false); return }
+    let vivo = true
+    setLoadingApi(true)
+    fetch(`/api/rotina-imovel?codigo=${encodeURIComponent(codigo)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => {
+        if (!vivo) return
+        if (j && j.imovel) {
+          const a = j.imovel
+          setImApi({
+            codigo: String(a.codigo),
+            tipo: a.tipo || '',
+            bairro: a.bairro || '',
+            preco: a.valorNum || 0,
+            area: a.areaNum || 0,
+            vagas: a.vagas || 0,
+            quartos: a.quartos || 0,
+          })
+        }
+        setLoadingApi(false)
+      })
+      .catch(() => { if (vivo) setLoadingApi(false) })
+    return () => { vivo = false }
+  }, [codigo, staticIm])
+
+  // Catálogo para comparação no estudo de m²
   useEffect(() => {
     let vivo = true
-    fetch('/api/imoveis-pub')
-      .then((r) => r.json())
+    fetch('/catalogo.json')
+      .then((r) => (r.ok ? r.json() : null))
       .then((d) => { if (vivo && d && Array.isArray(d.imoveis)) setFeed(d.imoveis) })
       .catch(() => {})
     return () => { vivo = false }
@@ -105,6 +136,15 @@ export default function EstudoM2Page() {
   })
 
   if (!im) {
+    if (loadingApi) {
+      return (
+        <main className="est-pg est-pg--erro">
+          <div className="container" style={{ textAlign: 'center', padding: '120px 20px' }}>
+            <p style={{ color: '#8a93a6' }}>Carregando imóvel…</p>
+          </div>
+        </main>
+      )
+    }
     return (
       <main className="est-pg est-pg--erro">
         <div className="container" style={{ textAlign: 'center', padding: '120px 20px' }}>
