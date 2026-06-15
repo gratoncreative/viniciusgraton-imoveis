@@ -127,7 +127,22 @@ function Destaque({ icon, titulo, sub }) {
   )
 }
 
-// Leitura em voz alta do imóvel — Azure Neural TTS (primário) + Web Speech (fallback)
+function precoFala(v) {
+  if (!v || v <= 0) return ''
+  const r = Math.round(v)
+  if (r >= 1000000) {
+    const mi = Math.floor(r / 1000000)
+    const milResto = Math.round((r % 1000000) / 1000)
+    if (milResto > 0) return `${mi} ${mi === 1 ? 'milhão' : 'milhões'} e ${milResto} mil reais`
+    return `${mi} ${mi === 1 ? 'milhão' : 'milhões'} de reais`
+  }
+  const mil = Math.floor(r / 1000)
+  const resto = r % 1000
+  if (resto > 0) return `${mil} mil e ${resto} reais`
+  return `${mil} mil reais`
+}
+
+// Leitura em voz alta do imóvel — ElevenLabs TTS (primário) + Web Speech (fallback)
 function OuvirImovel({ im }) {
   const [estado, setEstado] = useState('parado') // parado | carregando | tocando | pausado
   const audioRef = useRef(null)
@@ -140,17 +155,20 @@ function OuvirImovel({ im }) {
     }
   }, [im?.codigo])
 
-  const texto = [
-    `${im.tipo} no bairro ${im.bairro}, ${im.cidade || 'Uberlândia'}, Minas Gerais`,
-    im.preco > 0 && `Preço: ${formatPreco(im.preco)}`,
-    im.area > 0 && `Área de ${im.area} metros quadrados`,
-    im.quartos > 0 && `${im.quartos} ${im.quartos === 1 ? 'quarto' : 'quartos'}`,
-    im.suites > 0 && `${im.suites === 1 ? 'uma suíte' : im.suites + ' suítes'}`,
-    im.banheiros > 0 && `${im.banheiros === 1 ? 'um banheiro' : im.banheiros + ' banheiros'}`,
-    im.vagas > 0 && `${im.vagas === 1 ? 'uma vaga' : im.vagas + ' vagas'} de garagem`,
-    im.descricao && im.descricao.trim().slice(0, 800),
-    'Para saber mais, entre em contato com Vinícius Graton pelo WhatsApp.',
-  ].filter(Boolean).join('. ')
+  const texto = useMemo(() => {
+    const { paras } = apresentacao(im)
+    const preco = im.preco > 0 ? `O valor é ${precoFala(im.preco)}.` : ''
+    // insere o preço entre o segundo e o terceiro parágrafo
+    const partes = [...paras.slice(0, 2), preco, ...paras.slice(2)].filter(Boolean)
+    return partes.join(' ')
+      .replace(/\bm²\b/g, ' metros quadrados')
+      .replace(/;/g, ',')
+      .replace(/\|/g, ' e ')
+      .replace(/\n+/g, ' ')
+      .replace(/  +/g, ' ')
+      .trim()
+      .slice(0, 1800)
+  }, [im])
 
   // Fallback: Web Speech API (caso Azure não esteja configurado)
   const falarWebSpeech = () => {
