@@ -5489,7 +5489,7 @@ html[data-theme="dark"] .condo-filtro-grupo-v2 { background:var(--surface); bord
 
 /* ── EstudoM2Page (/estudo/:codigo) ─────────────────────────────── */
 .est-pg { background: #080a0f; min-height: 100vh; padding-bottom: 80px; }
-.est-container--dash { max-width: 1320px; }
+.est-container--dash { max-width: var(--maxw); }
 
 /* Dashboard grid */
 .em2-dash { display: grid; grid-template-columns: 1fr 300px; gap: 20px; align-items: start; }
