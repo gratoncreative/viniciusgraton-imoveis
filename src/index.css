@@ -5,25 +5,40 @@
 
 :root {
   color-scheme: dark;
-  --bg: #080d18;
-  --bg-2: #0c1220;
-  --surface: rgba(255, 255, 255, 0.035);
-  --surface-2: rgba(255, 255, 255, 0.06);
-  --border: rgba(255, 255, 255, 0.09);
-  --border-strong: rgba(255, 255, 255, 0.16);
+  /* ── Manual de Marca VG Imóveis v1.0 — paleta oficial (regra primordial) ── */
+  --navy: #0A0E16;          /* Marinho Meia-Noite — base/âncora */
+  --petrol: #1C2A44;        /* Azul Petróleo — estrutura (cards, blocos) */
+  --steel: #44608C;         /* Azul Aço — links/interação em fundo claro */
+  --champagne: #C6A15B;     /* Dourado Champanhe — destaque (máx 10%) */
+  --champagne-pale: #E3D2A8;/* Champanhe Pálido — tint claro do dourado */
+  --ivory: #F4EFE6;         /* Marfim — base clara */
+  --pearl: #E4DFD4;         /* Cinza Pérola — bordas/divisões no claro */
+  --graphite: #2A2F38;      /* Grafite — texto no claro */
+  --stone: #8A8F99;         /* Cinza Pedra — texto secundário/legenda */
+  --sage: #3F7A5E;          /* Verde Sálvia — sucesso/disponível (UI) */
+  --terracotta: #B04A37;    /* Terracota — alerta (UI) */
 
-  --gold-1: #f4d98a;
-  --gold-2: #e0b556;
-  --gold-3: #b8862f;
-  --gold-grad: linear-gradient(135deg, #f7e3a4 0%, #e0b556 45%, #b8862f 100%);
+  --bg: #0A0E16;            /* Marinho Meia-Noite */
+  --bg-2: #131d30;          /* leve direção ao petróleo */
+  --surface: rgba(28, 42, 68, 0.34);    /* cards em tom petróleo translúcido */
+  --surface-2: rgba(28, 42, 68, 0.55);
+  --border: rgba(227, 210, 168, 0.10);  /* borda morna sutil */
+  --border-strong: rgba(227, 210, 168, 0.20);
 
-  --text: #f4f1ea;
-  --text-soft: #c3c8d2;
-  --text-mute: #8b93a3;
+  /* dourado = champanhe do manual (tons sóbrios, não amarelados) */
+  --gold-1: #E3D2A8;        /* champanhe pálido (claro, gradiente/topo) */
+  --gold-2: #C6A15B;        /* dourado champanhe (acento principal) */
+  --gold-3: #9A7B3C;        /* champanhe escuro (ícone/detalhe em fundo claro) */
+  --gold-grad: linear-gradient(135deg, #E3D2A8 0%, #C6A15B 50%, #9A7B3C 100%);
 
-  --font-head: 'Sora', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
-  --font-serif: 'Fraunces', Georgia, serif;
+  --text: #F4EFE6;          /* Marfim */
+  --text-soft: #C9CEDA;
+  --text-mute: #8A8F99;     /* Cinza Pedra */
+
+  --font-display: 'Playfair Display', Georgia, serif; /* TÍTULOS nobres (manual) */
+  --font-head: 'Montserrat', system-ui, sans-serif;   /* rótulos, botões, nav, selos */
+  --font-body: 'Montserrat', system-ui, sans-serif;   /* texto/interface */
+  --font-serif: 'Playfair Display', Georgia, serif;   /* acentos em itálico */
 
   --maxw: 1360px;
   --radius: 20px;
@@ -112,11 +127,11 @@ select option { background: #1a1f29; color: #e8eaf0; }
 .eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--gold-2); opacity: 0.7; }
 
 .section-title {
-  font-family: var(--font-head);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 600;
   font-size: clamp(1.9rem, 4vw, 3.1rem);
-  line-height: 1.08;
-  letter-spacing: -0.022em;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
   margin: 16px 0 0;
   /* regra global: título no máximo 2 linhas */
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
@@ -343,7 +358,7 @@ section { position: relative; padding: clamp(20px, 3vw, 40px) 0; }
 /* ===== Hero unificado: bio (esquerda) + card de busca (direita) ===== */
 .hero-grid2 { position: relative; z-index: 4; display: grid; grid-template-columns: clamp(360px, 32vw, 460px) minmax(0, 1fr); gap: clamp(28px, 4vw, 56px); align-items: center; width: 100%; max-width: 1180px; margin-inline: auto; }
 .hero-bio { max-width: 640px; }
-.hero-nome { font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: clamp(2.6rem, 5.5vw, 4.4rem); line-height: 1.02; margin: 6px 0 16px; background: linear-gradient(135deg, #ecd07c 0%, #b8862f 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.92)); }
+.hero-nome { font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: clamp(2.6rem, 5.5vw, 4.4rem); line-height: 1.02; margin: 6px 0 16px; background: linear-gradient(135deg, #E3D2A8 0%, #C6A15B 60%, #9A7B3C 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.92)); }
 .hero-bio .apres-lead { max-width: 560px; }
 .hero-bio-acoes { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 24px; }
 @media (max-width: 980px) {
@@ -6869,3 +6884,100 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .ep-fontes-lista { margin: 0 0 10px; padding-left: 16px; display: flex; flex-direction: column; gap: 3px; }
 .ep-fontes-lista li { font-size: .72rem; color: var(--ep-mid); line-height: 1.5; }
 .ep-fontes-meta { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: .68rem; color: var(--ep-low); font-family: 'IBM Plex Mono', monospace; }
+
+/* ══════════════════════════════════════════════════════════════════
+   Simulador de Financiamento (/simulador-financiamento)
+   ══════════════════════════════════════════════════════════════════ */
+.simf-pg { background: #080a0f; min-height: 100vh; }
+.simf-wrap { padding-top: 40px; padding-bottom: 80px; max-width: 1080px; }
+.simf-header { margin-bottom: 28px; }
+.simf-titulo { font-family: var(--font-head); font-size: clamp(1.5rem, 3.2vw, 2.1rem); font-weight: 800; color: #f0ecdf; margin: 0 0 10px; }
+.simf-sub { font-size: 0.92rem; color: #8a93a6; margin: 0; line-height: 1.6; max-width: 720px; }
+
+.simf-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 24px; align-items: start; }
+.simf-form { background: rgba(10,9,6,0.55); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+.simf-dupla { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.simf-range { width: 100%; accent-color: var(--gold-2); cursor: pointer; margin: -4px 0 2px; }
+.simf-select { border: none; background: transparent; width: 100%; font: inherit; color: inherit; padding: 14px 0; cursor: pointer; }
+.simf-select option { background: #14110a; color: #e8eaf0; }
+.simf-aviso { font-size: 0.74rem; color: var(--gold-2); background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.22); border-radius: 9px; padding: 8px 11px; margin: 0; line-height: 1.5; }
+
+.simf-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.simf-toggle-btn { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 11px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: #c8cdda; cursor: pointer; transition: border-color .15s, background .15s; }
+.simf-toggle-btn strong, .simf-toggle-btn { font-weight: 800; font-size: 0.92rem; }
+.simf-toggle-btn em { font-style: normal; font-weight: 500; font-size: 0.68rem; color: rgba(241,237,228,0.4); }
+.simf-toggle-btn--on { border-color: rgba(201,168,76,0.6); background: rgba(201,168,76,0.1); color: var(--gold-1); }
+.simf-toggle-btn--on em { color: var(--gold-2); }
+
+.simf-avancado { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 12px; }
+.simf-avancado summary { cursor: pointer; font-size: 0.82rem; font-weight: 700; color: #b9c1d0; list-style: none; }
+.simf-avancado summary::-webkit-details-marker { display: none; }
+.simf-avancado summary::before { content: '+ '; color: var(--gold-2); }
+.simf-avancado[open] summary::before { content: '− '; }
+.simf-avancado-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+
+/* resultados */
+.simf-result { display: flex; flex-direction: column; gap: 16px; }
+.simf-hero { background: linear-gradient(145deg, rgba(201,168,76,0.14), rgba(10,9,6,0.6)); border: 1px solid rgba(201,168,76,0.3); border-radius: 20px; padding: 24px; text-align: center; }
+.simf-hero-label { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(241,237,228,0.55); font-weight: 700; }
+.simf-hero-valor { display: block; font-family: var(--font-head); font-size: clamp(2rem, 5vw, 2.9rem); font-weight: 800; color: var(--gold-1); letter-spacing: -0.01em; margin: 6px 0 4px; font-variant-numeric: tabular-nums; }
+.simf-hero-sub { font-size: 0.74rem; color: rgba(241,237,228,0.42); }
+
+.simf-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.simf-mini > div { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 12px 14px; }
+.simf-mini span { display: block; font-size: 0.7rem; color: rgba(241,237,228,0.45); margin-bottom: 3px; }
+.simf-mini b { font-size: 1rem; color: #e8eaf0; font-variant-numeric: tabular-nums; }
+
+.simf-medidor { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 14px 16px; }
+.simf-medidor-topo { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.82rem; color: rgba(241,237,228,0.6); }
+.simf-medidor-topo b { font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+.simf-medidor-svg { width: 100%; height: 12px; margin: 8px 0 4px; display: block; }
+.simf-medidor-base { display: flex; justify-content: space-between; font-size: 0.62rem; color: rgba(241,237,228,0.3); }
+.simf-medidor-marca { color: rgba(241,237,228,0.5); }
+.simf-medidor-tag { font-size: 0.74rem; line-height: 1.5; margin: 8px 0 0; }
+.simf-medidor-tag--ok { color: #56c27d; }
+.simf-medidor-tag--warn { color: #e89a6a; }
+.simf-renda-min { font-size: 0.82rem; color: rgba(241,237,228,0.6); margin: -4px 2px 0; }
+.simf-renda-min b { color: var(--gold-1); }
+.simf-renda-min span { font-size: 0.7rem; color: rgba(241,237,228,0.35); }
+
+.simf-bloco { background: rgba(10,9,6,0.55); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 16px 18px; }
+.simf-bloco-tit { font-family: var(--font-head); font-size: 0.95rem; font-weight: 700; color: #e0e4ee; margin: 0 0 12px; }
+.simf-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+.simf-lista li { display: flex; justify-content: space-between; gap: 12px; font-size: 0.84rem; color: rgba(241,237,228,0.62); }
+.simf-lista li b { color: #e8eaf0; font-variant-numeric: tabular-nums; }
+.simf-lista-total { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 9px; margin-top: 3px; }
+.simf-lista-total span { color: #f0ecdf; font-weight: 700; }
+.simf-lista-total b { color: var(--gold-1) !important; font-size: 1.02rem; }
+
+.simf-tab-comp { width: 100%; border-collapse: collapse; font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+.simf-tab-comp th, .simf-tab-comp td { padding: 7px 8px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.06); color: rgba(241,237,228,0.7); }
+.simf-tab-comp th { color: var(--gold-2); font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.simf-tab-comp td:first-child, .simf-tab-comp th:first-child { text-align: left; color: rgba(241,237,228,0.5); }
+
+.simf-tab-toggle { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: none; border: none; color: #c8cdda; font-size: 0.86rem; font-weight: 700; cursor: pointer; padding: 0; }
+.simf-tab-wrap { max-height: 360px; overflow-y: auto; margin-top: 12px; border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; }
+.simf-tab-amort { width: 100%; border-collapse: collapse; font-size: 0.72rem; font-variant-numeric: tabular-nums; }
+.simf-tab-amort th { position: sticky; top: 0; background: #14110a; color: var(--gold-2); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 7px 8px; text-align: right; z-index: 1; }
+.simf-tab-amort td { padding: 6px 8px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); color: rgba(241,237,228,0.6); }
+.simf-tab-amort th:first-child, .simf-tab-amort td:first-child { text-align: left; }
+
+.simf-ctas { display: flex; gap: 10px; flex-wrap: wrap; }
+.simf-cta-wa { flex: 1; min-width: 200px; justify-content: center; }
+.simf-legal { font-size: 0.72rem; color: rgba(241,237,228,0.32); line-height: 1.6; margin: 28px 0 8px; max-width: 820px; }
+.simf-assina { font-size: 0.76rem; color: var(--gold-2); font-weight: 600; margin: 0; }
+
+@media (max-width: 880px) {
+  .simf-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 540px) {
+  .simf-dupla, .simf-avancado-grid, .simf-mini, .simf-toggle { grid-template-columns: 1fr; }
+}
+
+/* ══ Manual de Marca.. títulos nobres em Playfair Display (regra primordial) ══ */
+.hero h1, .lan-hero-title, .cat-titulo, .condos-hero-title, .det-titulo,
+.pre-seo h1, .post-hero h1, .blog-feat-titulo, .hero-card h1,
+.pdfjpg-titulo, .simf-titulo {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
