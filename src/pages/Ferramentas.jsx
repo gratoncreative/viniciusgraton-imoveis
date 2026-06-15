@@ -75,13 +75,13 @@ const TOOLS = [
   { id: 'fgts',          nome: 'Simulador de FGTS',         desc: 'Como o FGTS reduz a entrada e a parcela.',     icon: 'wallet',  sec: 'financiamento' },
   { id: 'amortizacao',   nome: 'Amortização com FGTS',      desc: 'Quanto o FGTS encurta o financiamento.',       icon: 'calc',    sec: 'financiamento' },
   // fotos e imagens
-  { id: 'endireitar',    nome: 'Endireitar foto',           desc: 'Corrija a inclinação e a rotação de fotos.',   icon: 'camera',  sec: 'fotos' },
-  { id: 'marca-agua',    nome: "Marca d'água em fotos",     desc: 'Adicione seu logo ou texto em cada foto.',     icon: 'edit',    sec: 'fotos' },
-  { id: 'redimensionar', nome: 'Redimensionar foto',        desc: 'Reduza o tamanho para WhatsApp ou portal.',    icon: 'edit',    sec: 'fotos' },
-  { id: 'converter',     nome: 'Conversor de fotos',        desc: 'JPG · PNG · WebP · AVIF em lote.',             icon: 'edit',    sec: 'fotos', to: '/ferramentas/converter' },
+  { id: 'endireitar',    nome: 'Endireitar foto',           desc: 'Corrija a inclinação e a rotação de fotos.',   icon: 'camera',  sec: 'fotos', needsSub: true },
+  { id: 'marca-agua',    nome: "Marca d'água em fotos",     desc: 'Adicione seu logo ou texto em cada foto.',     icon: 'edit',    sec: 'fotos', needsSub: true },
+  { id: 'redimensionar', nome: 'Redimensionar foto',        desc: 'Reduza o tamanho para WhatsApp ou portal.',    icon: 'edit',    sec: 'fotos', needsSub: true },
+  { id: 'converter',     nome: 'Conversor de fotos',        desc: 'JPG · PNG · WebP · AVIF em lote.',             icon: 'edit',    sec: 'fotos', needsSub: true, to: '/ferramentas/converter' },
   // explorar
-  { id: 'comparar',      nome: 'Comparar imóveis',          desc: 'Compare até 3 imóveis lado a lado.',           icon: 'compare', sec: 'explorar', to: '/comparar' },
-  { id: 'mapa',          nome: 'Mapa de imóveis',           desc: 'Explore imóveis por região de Uberlândia.',    icon: 'map',     sec: 'explorar', to: '/mapa'     },
+  { id: 'comparar',      nome: 'Comparar imóveis',          desc: 'Compare até 3 imóveis lado a lado.',           icon: 'compare', sec: 'explorar', needsSub: true, to: '/comparar' },
+  { id: 'mapa',          nome: 'Mapa de imóveis',           desc: 'Explore imóveis por região de Uberlândia.',    icon: 'map',     sec: 'explorar', needsSub: true, to: '/mapa'     },
   // pro
   { id: 'acm',           nome: 'ACM — Avaliação de imóvel', desc: 'Faixa de preço pelo m² do bairro.',            icon: 'home',    sec: 'pro', pro: true },
   { id: 'comissao',      nome: 'Calculadora de comissão',   desc: 'Comissão e divisão corretor / imobiliária.',   icon: 'coins',   sec: 'pro', pro: true },
@@ -544,6 +544,13 @@ export default function Ferramentas() {
   const ModalAtiva = modalAtiva ? RENDER[modalAtiva] : null
 
   const escolher = (tool) => {
+    if (tool.needsSub && !isCorretor) {
+      setLockMsg(tool.id)
+      setTimeout(() => {
+        document.getElementById('ferr-pro-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 60)
+      return
+    }
     if (tool.to) return
     if (tool.toPro) {
       if (isCorretor) {
@@ -657,11 +664,12 @@ export default function Ferramentas() {
               {/* grade de cards */}
               <div className="ferr-grid-3">
                 {tools.map((tool) => {
-                  const locked  = tool.pro && !isCorretor
-                  const isOn    = ativa === tool.id
+                  const locked     = tool.pro && !isCorretor
+                  const subLocked  = tool.needsSub && !isCorretor
+                  const isOn       = ativa === tool.id
                   const isLockMsgOn = lockMsg === tool.id
 
-                  if (tool.to && !locked) {
+                  if (tool.to && !locked && !subLocked) {
                     return (
                       <Link key={tool.id} className="ferr-card3" to={tool.to}>
                         <span className="ferr-card3-ico"><FI name={tool.icon} /></span>
@@ -692,7 +700,7 @@ export default function Ferramentas() {
                         <span className="ferr-card3-tit">
                           <b>{tool.nome}</b>
                           {tool.popular && <span className="ferr-badge-popular">Popular</span>}
-                          {tool.pro && <span className="ferr-badge-pro-sm">PRO</span>}
+                          {(tool.pro || (tool.needsSub && !isCorretor)) && <span className="ferr-badge-pro-sm">PRO</span>}
                         </span>
                         <i>{tool.desc}</i>
                         {isLockMsgOn && (
