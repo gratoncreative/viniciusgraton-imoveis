@@ -51,6 +51,7 @@ const Diferenciais = lazy(() => import('./pages/Diferenciais'))
 const Impulsionar = lazy(() => import('./pages/Impulsionar'))
 const LaudoPage = lazy(() => import('./pages/LaudoPage'))
 const EstudoM2Page = lazy(() => import('./pages/EstudoM2Page'))
+const AnalisarUrlPage = lazy(() => import('./pages/AnalisarUrlPage'))
 const Mercado = lazy(() => import('./pages/Mercado'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
@@ -151,6 +152,7 @@ export default function App() {
               <Route path="/ferramentas" element={<Ferramentas />} />
               <Route path="/ferramentas/converter" element={<ConverterFotos />} />
               <Route path="/ferramentas/pdf-para-jpg" element={<PdfParaJpg />} />
+              <Route path="/ferramentas/analisar-imovel" element={<AnalisarUrlPage />} />
               <Route path="/corretor" element={<Corretor />} />
               <Route path="/corretor/:toolId" element={<Corretor />} />
               <Route path="/condominios" element={<Condominios />} />
