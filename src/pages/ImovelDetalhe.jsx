@@ -578,7 +578,7 @@ export default function ImovelDetalhe() {
           {/* Galeria */}
           <div className="det-galeria">
             <span className="det-tag">{im.tipo}</span>
-            <Galeria fotos={fotos} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} />
+            <Galeria fotos={fotos} alt={`${im.tipo} à venda no ${im.bairro}, Uberlândia · Cód. ${im.codigo}`} />
             {(() => { const ap = apresentacao(im); return (
               <div className="det-apresenta">
                 <h2 className="det-apresenta-tit">Por que esse imóvel vale a sua visita</h2>
