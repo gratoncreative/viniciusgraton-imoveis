@@ -1,9 +1,10 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { buildEstudo, EstudoContent, useFontsPremium } from '../pages/EstudoM2Page'
 
 export default function EstudoModal({ im, est, open, onClose }) {
   useFontsPremium()
+  const panelRef = useRef(null)
 
   useEffect(() => {
     if (!open) return
@@ -21,6 +22,17 @@ export default function EstudoModal({ im, est, open, onClose }) {
     }
   }, [open])
 
+  useEffect(() => {
+    if (!open) return
+    const onWheel = (e) => {
+      if (panelRef.current && !panelRef.current.contains(e.target)) {
+        panelRef.current.scrollBy({ top: e.deltaY })
+      }
+    }
+    document.addEventListener('wheel', onWheel, { passive: true })
+    return () => document.removeEventListener('wheel', onWheel)
+  }, [open])
+
   if (!open || !im || !est?.ok) return null
 
   const estudo = buildEstudo(im, est)
@@ -33,7 +45,7 @@ export default function EstudoModal({ im, est, open, onClose }) {
       aria-label="Estudo do valor do m²"
       onClick={onClose}
     >
-      <div className="em-panel ep-pg" onClick={e => e.stopPropagation()}>
+      <div className="em-panel ep-pg" ref={panelRef} onClick={e => e.stopPropagation()}>
         <EstudoContent estudo={estudo} im={im} onClose={onClose} />
       </div>
     </div>,
