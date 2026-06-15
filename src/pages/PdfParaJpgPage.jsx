@@ -43,6 +43,54 @@ function iconeTag(size = 13) {
   return <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
 }
 
+// Animação viva durante a conversão: um PDF sendo "escaneado" por um feixe dourado
+// que se move, e as páginas saltando como imagens à direita. Tudo em CSS (confiável).
+function ConversaoAnim() {
+  return (
+    <div className="pdfjpg-anim" aria-hidden="true">
+      <svg viewBox="0 0 220 130" width="220" height="130" fill="none">
+        {/* documento PDF à esquerda */}
+        <g className="pdfjpg-anim-doc">
+          <rect x="14" y="20" width="64" height="84" rx="6" fill="rgba(255,255,255,0.05)" stroke="rgba(201,168,76,0.4)" strokeWidth="1.5"/>
+          <path d="M62 20 v14 h14" fill="none" stroke="rgba(201,168,76,0.4)" strokeWidth="1.5" strokeLinejoin="round"/>
+          <line x1="24" y1="46" x2="58" y2="46" stroke="rgba(241,237,228,0.28)" strokeWidth="2.5" strokeLinecap="round"/>
+          <line x1="24" y1="56" x2="68" y2="56" stroke="rgba(241,237,228,0.22)" strokeWidth="2.5" strokeLinecap="round"/>
+          <line x1="24" y1="66" x2="62" y2="66" stroke="rgba(241,237,228,0.22)" strokeWidth="2.5" strokeLinecap="round"/>
+          <line x1="24" y1="76" x2="68" y2="76" stroke="rgba(241,237,228,0.16)" strokeWidth="2.5" strokeLinecap="round"/>
+          <line x1="24" y1="86" x2="52" y2="86" stroke="rgba(241,237,228,0.16)" strokeWidth="2.5" strokeLinecap="round"/>
+          {/* feixe de scanner que varre o documento */}
+          <g className="pdfjpg-anim-beam">
+            <rect x="14" y="18" width="64" height="4" rx="2" fill="var(--gold-2)"/>
+            <rect x="14" y="18" width="64" height="22" fill="url(#beamGrad)"/>
+          </g>
+        </g>
+
+        {/* seta de fluxo */}
+        <g className="pdfjpg-anim-flow">
+          <path d="M92 62 h26" stroke="var(--gold-2)" strokeWidth="2" strokeLinecap="round" strokeDasharray="4 5"/>
+          <path d="M114 56 l8 6 l-8 6" fill="none" stroke="var(--gold-2)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </g>
+
+        {/* imagens que saltam à direita (com paisagem: sol + montanha) */}
+        {[0, 1, 2].map(i => (
+          <g key={i} className={`pdfjpg-anim-tile pdfjpg-anim-tile--${i + 1}`}>
+            <rect x="142" y={30 + i * 26} width="58" height="20" rx="4" fill="rgba(201,168,76,0.1)" stroke="rgba(201,168,76,0.45)" strokeWidth="1.3"/>
+            <circle cx={154} cy={37 + i * 26} r="2.6" fill="var(--gold-1)"/>
+            <path d={`M147 ${46 + i * 26} l7 -7 l5 5 l6 -8 l8 10 z`} fill="rgba(201,168,76,0.5)"/>
+          </g>
+        ))}
+
+        <defs>
+          <linearGradient id="beamGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="rgba(201,168,76,0.45)"/>
+            <stop offset="1" stopColor="rgba(201,168,76,0)"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  )
+}
+
 export default function PdfParaJpgPage() {
   useSEO({
     title: 'Converter PDF para JPG Grátis Online — Sem Upload, Alta Resolução',
@@ -242,10 +290,11 @@ export default function PdfParaJpgPage() {
         <div className="pdfjpg-header">
           <div className="pdfjpg-header-icon">{iconePdf(32)}</div>
           <div>
-            <h1 className="pdfjpg-titulo">Converter PDF para JPG — Grátis</h1>
+            <h1 className="pdfjpg-titulo">
+              Seu PDF vira <span className="pdfjpg-titulo-hl">imagem nítida</span><br className="pdfjpg-titulo-br" /> em segundos
+            </h1>
             <p className="pdfjpg-sub">
-              Converta cada página em imagem de alta definição — JPG, PNG ou WebP.<br />
-              Processamento 100% no seu navegador, sem enviar nenhum arquivo a servidor.
+              Converta cada página em <strong>JPG, PNG ou WebP</strong> de alta definição — direto no seu navegador, sem enviar nada a servidor. <strong>PDF para JPG grátis</strong>, ilimitado e sem marca d'água.
             </p>
             <div className="pdfjpg-trust-chips">
               <span className="pdfjpg-trust-chip pdfjpg-trust-chip--free">{iconeTag(13)} 100% Gratuito</span>
@@ -350,6 +399,7 @@ export default function PdfParaJpgPage() {
           {/* progresso */}
           {converting && (
             <div className="pdfjpg-progress-wrap">
+              <ConversaoAnim />
               <div className="pdfjpg-progress-info">
                 <span>
                   {totalPages > 0
