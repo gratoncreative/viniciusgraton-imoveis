@@ -520,7 +520,7 @@ function SortableTable({ rows, referencia }) {
                 <td className="ep-td ep-mono ep-td-r">{fmtM2(t.valorM2)}</td>
                 <td className="ep-td ep-mono ep-td-r">{t.fatorHom.toFixed(3)}</td>
                 <td className={`ep-td ep-mono ep-td-r ep-td-${cls}`}>{fmtM2(t.valorHomM2)}</td>
-                <td className="ep-td ep-mono ep-td-r">{t.dist ? fmtKm(t.dist) : '—'}</td>
+                <td className="ep-td ep-mono ep-td-r">{t.dist ? fmtKm(t.dist) : '·'}</td>
                 <td className="ep-td ep-td-fonte">{t.fonte}</td>
               </tr>
             )
@@ -841,7 +841,7 @@ export function EstudoContent({ estudo, im, onClose }) {
             ))}
           </div>
           <p className="ep-disc">
-            Estudo comparativo pelo método ABNT NBR 14653. Estimativa de referência — não substitui laudo com vistoria presencial. Baseado em preços anunciados, não em escrituras registradas.
+            Estudo comparativo pelo método ABNT NBR 14653. Estimativa de referência.. não substitui laudo com vistoria presencial. Baseado em preços anunciados, não em escrituras registradas.
           </p>
         </Secao>
 

@@ -66,7 +66,7 @@ function faqImovel(im) {
   const comp = [im.quartos > 0 && `${im.quartos} ${plural(im.quartos, 'quarto', 'quartos')}`, im.suites > 0 && `${im.suites} ${plural(im.suites, 'suíte', 'suítes')}`, im.banheiros > 0 && `${im.banheiros} ${plural(im.banheiros, 'banheiro', 'banheiros')}`, im.vagas > 0 && `${im.vagas} ${plural(im.vagas, 'vaga', 'vagas')}`].filter(Boolean)
   if (comp.length) qa.push({ q: 'Quantos quartos e vagas tem?', a: `O imóvel oferece ${comp.join(', ')}.` })
   qa.push({ q: 'Onde fica este imóvel?', a: `Fica no bairro ${b}, em Uberlândia - MG. A localização exata é informada no atendimento.` })
-  qa.push({ q: 'Como agendar uma visita?', a: 'É só falar com o Vinícius Graton, consultor da Rotina Imobiliária, pelo WhatsApp (34) 99157-0494 — ele acompanha do primeiro contato à entrega das chaves.' })
+  qa.push({ q: 'Como agendar uma visita?', a: 'É só falar com o Vinícius Graton, consultor da Rotina Imobiliária, pelo WhatsApp (34) 99157-0494.. ele acompanha do primeiro contato à entrega das chaves.' })
   return qa
 }
 
@@ -99,7 +99,7 @@ function descricaoUnica(im) {
     `Oferece ${specs.join(', ')}${andar ? ', ' + andar : ''}${elev ? ', ' + elev : ''}.`,
   ]
   const fe = [
-    `Atendimento pessoal do Vinícius Graton, consultor da Rotina Imobiliária — agende uma visita e tire suas dúvidas.`,
+    `Atendimento pessoal do Vinícius Graton, consultor da Rotina Imobiliária.. agende uma visita e tire suas dúvidas.`,
     `Fale com o Vinícius Graton (Rotina Imobiliária) para visitar, simular o financiamento e negociar com segurança.`,
     `Com a curadoria e o acompanhamento do Vinícius Graton, da Rotina Imobiliária, do primeiro contato à entrega das chaves.`,
   ]
@@ -117,7 +117,7 @@ function bodySeo(im, descUnica) {
     im.condominio > 0 && `Condomínio: R$ ${Number(im.condominio).toLocaleString('pt-BR')}`,
   ].filter(Boolean)
   const faqs = faqImovel(im)
-  return `<main class="pre-seo"><h1>${esc(im.tipo)} à venda no ${esc(im.bairro)}, Uberlândia — Cód. ${esc(im.codigo)}</h1>` +
+  return `<main class="pre-seo"><h1>${esc(im.tipo)} à venda no ${esc(im.bairro)}, Uberlândia · Cód. ${esc(im.codigo)}</h1>` +
     `<p>${esc(descUnica)}</p>` +
     `<ul>${specs.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>` +
     `<p>Imóvel à venda em ${esc(im.bairro)}, ${esc(im.cidade || 'Uberlândia')} - MG, com Vinícius Graton, consultor credenciado da Rotina Imobiliária. Veja fotos, localização e fale comigo para agendar uma visita.</p>` +

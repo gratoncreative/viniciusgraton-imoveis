@@ -256,7 +256,7 @@ const FATOR_OFERTA = 0.90  // anúncio -> estimativa de venda (gordura de negoci
 const EXP_AREA = 0.10      // economia de escala: imóvel menor tende a ter m² maior
 const _fontesM2 = (refRow) => {
   const f = ['Carteira de imóveis da Rotina Imobiliária (preços anunciados)', 'Metodologia ABNT NBR 14653 (avaliação de bens imóveis)']
-  if (refRow && refRow.fonte) f.push(`Índice de m² do bairro — ${refRow.fonte}${refRow.ref ? ', ' + refRow.ref : ''}`)
+  if (refRow && refRow.fonte) f.push(`Índice de m² do bairro · ${refRow.fonte}${refRow.ref ? ', ' + refRow.ref : ''}`)
   f.push('Para o valor de venda real: ITBI/cartórios (Prefeitura de Uberlândia)')
   return f
 }
@@ -304,7 +304,7 @@ export function estudoM2(im, base) {
       diffPct, veredito: diffPct <= -10 ? 'abaixo' : diffPct >= 10 ? 'acima' : 'dentro',
       baseLabel: `índice de mercado do ${im.bairro}${refRow && refRow.fonte ? ' (' + refRow.fonte + ')' : ''}`,
       refFonte: refRow && refRow.fonte, refRef: refRow && refRow.ref, grupo, escopo: 'indice',
-      fatoresAplicados: ['Poucos comparáveis na carteira — usamos o índice público do bairro como referência'],
+      fatoresAplicados: ['Poucos comparáveis na carteira.. usamos o índice público do bairro como referência'],
       limitacoes: ['Sem amostra suficiente de imóveis iguais para a homogeneização completa.'],
       fontes: _fontesM2(refRow),
     }
@@ -334,10 +334,10 @@ export function estudoM2(im, base) {
     refIPD, refFonte: refRow && refRow.fonte, refRef: refRow && refRow.ref, grupo,
     fatoresAplicados: [
       `Comparação só com imóveis do mesmo tipo (${im.tipo || grupo}) ${escopo === 'bairro' ? 'no ' + im.bairro : 'na cidade'}`,
-      'Ajuste de mercado — preço de anúncio convertido para estimativa real de venda',
-      !ehTer ? `Fator vaga — valor das vagas (~${formatPreco(VAGA_VALOR)} cada) descontado antes do m²` : 'Sem fator vaga (terreno)',
-      `Fator área — homogeneização pela área do imóvel (${Math.round(areaSubj)} m²), economia de escala`,
-      `Saneamento estatístico — ${nDesc} imóvel(is) fora de ±30% da mediana descartado(s)`,
+      'Ajuste de mercado · preço de anúncio convertido para estimativa real de venda',
+      !ehTer ? `Fator vaga · valor das vagas (~${formatPreco(VAGA_VALOR)} cada) descontado antes do m²` : 'Sem fator vaga (terreno)',
+      `Fator área · homogeneização pela área do imóvel (${Math.round(areaSubj)} m²), economia de escala`,
+      `Saneamento estatístico · ${nDesc} imóvel(is) fora de ±30% da mediana descartado(s)`,
       'Campo de arbítrio (intervalo) calculado pelo desvio padrão da amostra',
     ],
     limitacoes: [
@@ -352,7 +352,7 @@ export function estudoM2(im, base) {
 
 // Mensagem de WhatsApp personalizada por imóvel
 export const waImovel = (im) =>
-  `Olá Vinícius! Tenho interesse no imóvel cód. ${im.codigo} — ${im.tipo} no ${im.bairro} (${formatPreco(im.preco)}). Pode me passar mais informações?`
+  `Olá Vinícius! Tenho interesse no imóvel cód. ${im.codigo} · ${im.tipo} no ${im.bairro} (${formatPreco(im.preco)}). Pode me passar mais informações?`
 
 // Busca um imóvel pelo código
 export const getImovel = (codigo) =>
@@ -448,7 +448,7 @@ export const subtituloImovel = (im) => {
   const lista = specs.length
     ? ` São ${specs.join(', ')}, pensados para você viver com conforto, espaço e segurança.`
     : ' Um imóvel pensado para você viver com conforto e segurança.'
-  return `${im.tipo} no ${im.bairro} — um dos endereços mais procurados de ${im.cidade}.${lista}`
+  return `${im.tipo} no ${im.bairro}.. um dos endereços mais procurados de ${im.cidade}.${lista}`
 }
 
 // procura um termo (com acento-insensível) no título + descrição do imóvel
@@ -466,11 +466,11 @@ export function vantagensImovel(im) {
   const terreno = _ehTerreno(im)
   const op = oportunidade(im)
   const v = []
-  if (op.temDesconto) v.push(`Preço reduzido — ${op.pctDesconto}% abaixo do valor anterior`)
+  if (op.temDesconto) v.push(`Preço reduzido · ${op.pctDesconto}% abaixo do valor anterior`)
   if (op.abaixoMercado) v.push('Abaixo do preço médio do bairro')
-  if (ehEsquina(im)) v.push(terreno ? 'Lote de esquina — mais frente, iluminação e valorização' : 'Imóvel de esquina — mais arejado, iluminado e valorizado')
+  if (ehEsquina(im)) v.push(terreno ? 'Lote de esquina · mais frente, iluminação e valorização' : 'Imóvel de esquina · mais arejado, iluminado e valorizado')
   if (terreno) {
-    if (im.area > 0) v.push(`Terreno amplo de ${formatArea(im.area)} — espaço pra projetar do seu jeito`)
+    if (im.area > 0) v.push(`Terreno amplo de ${formatArea(im.area)} · espaço pra projetar do seu jeito`)
     if (tem(/plano|topografia|nivelad/)) v.push('Terreno plano, fácil de construir')
     if (tem(/murad/)) v.push('Já murado')
     if (tem(/document|escritur|registr/)) v.push('Documentação em ordem')
