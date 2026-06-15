@@ -5548,8 +5548,8 @@ html[data-theme="dark"] .condo-filtro-grupo-v2 { background:var(--surface); bord
 .em2-ruler-median-sub { display: block; font-size: 0.58rem; font-weight: 800; letter-spacing: 0.11em; text-transform: uppercase; color: rgba(201,168,76,0.6); }
 /* Track */
 .em2-ruler-track { position: absolute; top: 80px; left: 0; right: 0; height: 2px; background: rgba(255,255,255,0.09); }
-.em2-ruler-band { position: absolute; top: 50%; transform: translateY(-50%); height: 14px; background: rgba(201,168,76,0.2); border: 1px solid rgba(201,168,76,0.38); border-radius: 7px; }
-.em2-ruler-median-line { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 2px; height: 22px; background: rgba(255,255,255,0.55); border-radius: 1px; }
+.em2-ruler-band { position: absolute; top: 50%; transform: translateY(-50%); height: 18px; background: rgba(201,168,76,0.32); border: 1px solid rgba(201,168,76,0.48); border-radius: 9px; }
+.em2-ruler-median-line { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 2px; height: 26px; background: rgba(201,168,76,0.9); border-radius: 1px; }
 .em2-ruler-dot { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 14px; height: 14px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 3px rgba(74,222,128,0.2), 0 0 0 6px rgba(74,222,128,0.07); z-index: 2; }
 .em2-ruler-tick { position: absolute; top: 100%; transform: translateX(-50%); width: 1px; height: 6px; background: rgba(255,255,255,0.16); margin-top: 2px; }
 /* Tick labels */
@@ -5559,9 +5559,9 @@ html[data-theme="dark"] .condo-filtro-grupo-v2 { background:var(--surface); bord
 /* Stat cards row */
 .em2-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 .em2-stat { background: rgba(10,9,6,0.94); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 18px 16px; }
-.em2-stat-label { display: block; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #414760; margin-bottom: 8px; }
+.em2-stat-label { display: block; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #7a84a0; margin-bottom: 8px; }
 .em2-stat-val { display: block; font-family: var(--font-head); font-size: 1.05rem; font-weight: 800; color: #e0e4ee; margin-bottom: 4px; }
-.em2-stat-sub { font-size: 0.7rem; color: #353d56; }
+.em2-stat-sub { font-size: 0.7rem; color: #636e8a; }
 
 /* Triptych compacto no sidebar */
 .em2-triptych--side { gap: 8px; }
@@ -5570,10 +5570,17 @@ html[data-theme="dark"] .condo-filtro-grupo-v2 { background:var(--surface); bord
 .em2-triptych--side .em2-triptych-card--destaque { transform: none; box-shadow: 0 4px 18px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,168,76,0.18); }
 .em2-triptych--side .em2-triptych-card--destaque b { font-size: 0.96rem; }
 
+/* CTA flutuante mobile */
+.em2-cta-mobile-bar { display: none; }
+@media (max-width: 960px) {
+  .em2-cta-mobile-bar { display: flex; position: fixed; bottom: 0; left: 0; right: 0; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: rgba(8,10,15,0.96); backdrop-filter: blur(10px); border-top: 1px solid rgba(201,168,76,0.2); z-index: 50; }
+  .est-pg { padding-bottom: 76px; }
+}
+
 /* Responsive dashboard */
 @media (max-width: 1180px) { .em2-dash { grid-template-columns: 240px 1fr 230px; } }
 @media (max-width: 960px) { .em2-dash { grid-template-columns: 1fr 1fr; } .em2-dash-b { grid-column: 1 / -1; order: -1; } .em2-dash-c { position: static; } }
-@media (max-width: 640px) { .em2-dash { grid-template-columns: 1fr; } .em2-dash-b { order: 0; } .em2-stats-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .em2-dash { grid-template-columns: 1fr; } .em2-dash-a { order: 1; } .em2-dash-b { order: 2; } .em2-dash-c { order: 3; } .em2-stats-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 420px) { .em2-stats-grid { grid-template-columns: 1fr; } }
 
 /* Hero card */
@@ -5588,7 +5595,7 @@ html[data-theme="dark"] .condo-filtro-grupo-v2 { background:var(--surface); bord
 .em2-hero-badge--ok { background: rgba(29,122,69,0.2); color: #46c47e; border: 1px solid rgba(46,196,126,0.35); }
 .em2-hero-badge--alto { background: rgba(201,168,76,0.18); color: var(--gold-1); border: 1px solid rgba(201,168,76,0.4); }
 .em2-hero-badge--neutro { background: rgba(255,255,255,0.08); color: #c0c8d6; border: 1px solid rgba(255,255,255,0.18); }
-.em2-hero-veredito { font-size: 0.85rem; color: #8a93a6; margin: 0; }
+.em2-hero-veredito { font-size: 0.85rem; color: #c0c8d6; margin: 0; }
 .em2-hero-chips { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
 .em2-hero-chip { display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 100px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #c0c8d6; font-size: 0.82rem; font-weight: 500; white-space: nowrap; }
 .em2-hero-chip svg { opacity: 0.55; flex-shrink: 0; }

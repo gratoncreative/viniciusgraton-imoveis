@@ -46,17 +46,17 @@ function LaudoProfissional({ codigo, baseLabel }) {
         <li><span className="em2-check">✓</span> Análise completa da amostra com fatores de homogeneização aplicados</li>
         <li><span className="em2-check">✓</span> Assinatura do consultor com parecer técnico personalizado</li>
       </ul>
+      <p className="em2-urgencia">
+        Você está prestes a investir centenas de milhares de reais. Saber se o preço está justo por R$ 250 é a decisão mais inteligente antes de assinar qualquer coisa.
+      </p>
       <button
         className="em2-laudo em2-laudo--destaque est-laudo-btn"
         onClick={comprar}
         disabled={comprando}
       >
-        <span>{comprando ? 'Processando…' : '📄 Quero o laudo e entrar na negociação com dados'}</span>
-        <em>R$ 250 · entrega imediata · minha decisão precisa de dados reais</em>
+        <span>{comprando ? 'Processando…' : '📄 Quero o laudo — R$ 250'}</span>
+        <em>entrega em PDF imediata · pagamento seguro</em>
       </button>
-      <p className="em2-urgencia">
-        Você está prestes a investir centenas de milhares de reais. Saber se o preço está justo por R$ 250 é a decisão mais inteligente antes de assinar qualquer coisa.
-      </p>
     </div>
   )
 }
@@ -183,7 +183,7 @@ function PositionRuler({ im, est }) {
               <span className="em2-ruler-median-val">{fmtVal(referencia)}</span>
               <span className="em2-ruler-median-tag">mercado · m²</span>
             </div>
-            <span className="em2-ruler-median-sub">FAIXA DE MERCADO</span>
+            <span className="em2-ruler-median-sub">MEDIANA DO BAIRRO</span>
           </div>
         )}
 
@@ -332,12 +332,16 @@ export default function EstudoM2Page() {
                 <div className="em2-hero-body">
                   <div className="em2-hero-left">
                     <div className="em2-hero-row">
-                      <span className="em2-hero-metric">{fmtM2(est.referencia)}</span>
+                      <span className="em2-hero-metric">{fmtM2(est.m2Subj)}</span>
                       <span className={`em2-hero-badge em2-hero-badge--${cor}`}>
                         {est.diffPct > 0 ? '+' : ''}{est.diffPct}%
                       </span>
                     </div>
                     <p className="em2-hero-veredito">{verdito}</p>
+                    <p className="em2-hero-fonte" style={{ marginTop: 8 }}>
+                      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M3 3v18h18M7 14l4-4 3 3 5-6"/></svg>
+                      Mediana do bairro: {fmtM2(est.referencia)}
+                    </p>
                   </div>
                   <div className="em2-hero-chips">
                     <span className="em2-hero-chip">
@@ -468,6 +472,15 @@ export default function EstudoM2Page() {
             <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M3 3v18h18M7 14l4-4 3 3 5-6"/></svg>
             <p>Estudo de m² não disponível para este imóvel no momento.</p>
             <Link to={`/imovel/${im.codigo}`} className="btn btn-ghost">Voltar ao imóvel</Link>
+          </div>
+        )}
+
+        {/* ── CTA flutuante mobile ── */}
+        {est?.ok && (
+          <div className="em2-cta-mobile-bar">
+            <a className="btn btn-gold" href={linkWhatsApp(waMsg)} target="_blank" rel="noopener" style={{ flex: 1, justifyContent: 'center' }}>
+              <IconWhats width={16} height={16} /> Falar com o Vinícius
+            </a>
           </div>
         )}
 
