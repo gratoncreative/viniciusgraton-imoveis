@@ -5399,7 +5399,7 @@ html[data-theme="dark"] .placa-card i { color: #9298a6; }
 .det-btn-acao--wide { grid-column:1/-1; flex-direction:row; gap:10px; padding:11px 16px; font-size:0.79rem; justify-content:center; }
 .det-btn-acao--ok { background:rgba(86,194,125,.1); border-color:rgba(86,194,125,.35); color:#56c27d; }
 .det-btn-acao--proc { opacity:.7; cursor:wait; }
-.det-estudo-cta { display:flex; align-items:center; gap:14px; width:100%; grid-column:1/-1; background:linear-gradient(135deg,rgba(184,134,47,.12),rgba(244,217,138,.05)); border:1.5px solid rgba(184,134,47,.42); border-radius:13px; padding:14px 16px; cursor:pointer; text-align:left; transition:background .2s,border-color .2s,transform .18s; margin-top:2px; }
+.det-estudo-cta { display:flex; align-items:center; gap:14px; width:100%; grid-column:1/-1; background:linear-gradient(135deg,rgba(184,134,47,.12),rgba(244,217,138,.05)); border:1.5px solid rgba(184,134,47,.42); border-radius:13px; padding:14px 16px; cursor:pointer; text-align:left; transition:background .2s,border-color .2s,transform .18s; margin-top:2px; color:inherit; font:inherit; -webkit-appearance:none; appearance:none; }
 .det-estudo-cta:hover { background:linear-gradient(135deg,rgba(184,134,47,.22),rgba(244,217,138,.1)); border-color:var(--gold-2); transform:translateY(-1px); }
 .det-estudo-cta-ico { flex-shrink:0; width:42px; height:42px; border-radius:10px; background:rgba(184,134,47,.18); border:1px solid rgba(184,134,47,.32); display:flex; align-items:center; justify-content:center; color:var(--gold-1); }
 .det-estudo-cta-txt { flex:1; min-width:0; display:flex; flex-direction:column; gap:3px; }
@@ -6702,3 +6702,25 @@ html[data-theme="dark"] .det-info--claro .btn-ghost svg {
 @media (prefers-reduced-motion: reduce) {
   .ep-pg * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+/* ── Modal EstudoM2 ─────────────────────────────────────────────────────── */
+.em-overlay {
+  position: fixed; inset: 0; z-index: 900;
+  display: flex; flex-direction: column; align-items: center;
+  overflow: hidden;
+}
+.em-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(4, 8, 14, 0.9);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  z-index: 0; cursor: pointer;
+}
+.em-panel {
+  width: 100%; max-width: 580px;
+  height: 100vh; overflow-y: auto;
+  overscroll-behavior: contain;
+  position: relative; z-index: 1;
+  box-shadow: -20px 0 60px rgba(0,0,0,.5), 20px 0 60px rgba(0,0,0,.5);
+}
+/* Remove a margem de nav fixo dentro do modal */
+.em-panel.ep-pg { padding-top: 0; min-height: 100%; }

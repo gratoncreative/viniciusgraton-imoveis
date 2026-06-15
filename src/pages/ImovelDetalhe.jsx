@@ -14,6 +14,7 @@ import {
 import { IconWhats, IconArrow, IconPin, IconShield, ICONS } from './../components/icons'
 import { useSEO } from '../useSEO'
 import AdminImovelBar from '../components/AdminImovelBar'
+import EstudoModal from '../components/EstudoModal'
 
 const plural = (n, s, p) => (n > 1 ? p : s)
 
@@ -255,6 +256,7 @@ const BAIRRO_POIS = {
 export default function ImovelDetalhe() {
   const { codigo } = useParams()
   const local = getImovel(codigo)
+  const [showEstudo, setShowEstudo] = useState(false)
   const [imApi, setImApi] = useState(null)
   const [feed, setFeed] = useState([])
   const [beneficios, setBeneficios] = useState([])
@@ -696,7 +698,7 @@ export default function ImovelDetalhe() {
                   </a>
                 )}
                 {est?.ok && (
-                  <Link className="det-estudo-cta" to={`/estudo/${im.codigo}`}>
+                  <button className="det-estudo-cta" onClick={() => setShowEstudo(true)}>
                     <div className="det-estudo-cta-ico" aria-hidden="true">
                       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18M7 14l4-4 3 3 5-6" /></svg>
                     </div>
@@ -705,8 +707,9 @@ export default function ImovelDetalhe() {
                       <span>Veja se o preço pedido está justo para este bairro</span>
                     </div>
                     <svg className="det-estudo-cta-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                  </Link>
+                  </button>
                 )}
+                <EstudoModal im={im} est={est} open={showEstudo} onClose={() => setShowEstudo(false)} />
               </div>
 
 

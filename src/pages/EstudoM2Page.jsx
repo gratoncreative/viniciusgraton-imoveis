@@ -9,7 +9,7 @@ import {
 } from '../utils/estudo-calc'
 
 // ── Fontes carregadas dinamicamente (só nesta página) ─────────────────────────
-function useFontsPremium() {
+export function useFontsPremium() {
   useEffect(() => {
     const id = 'ep-fonts'
     if (document.getElementById(id)) return
@@ -38,7 +38,7 @@ function getBairroLatLng(bairro) {
 }
 
 // ── Adapta a saída de estudoM2() para o contrato interno ─────────────────────
-function buildEstudo(im, est) {
+export function buildEstudo(im, est) {
   const hoje = new Date().toISOString().slice(0, 10)
   const avCoords = getBairroLatLng(im.bairro)
   const avLat = avCoords?.lat ?? -18.9186
@@ -554,82 +554,9 @@ function Secao({ num, titulo, sub, children, print }) {
   )
 }
 
-// ══ PÁGINA PRINCIPAL ══════════════════════════════════════════════════════════
-export default function EstudoM2Page() {
-  const { codigo } = useParams()
-  const [imApi, setImApi] = useState(null)
-  const [loadingApi, setLoadingApi] = useState(true)
-  const [feed, setFeed] = useState([])
-  const [hovT, setHovT] = useState(null)     // testemunha destacada na lista/radar
-  const printRef = useRef(null)
-
-  useFontsPremium()
-
-  const staticIm = useMemo(() => getImovel(codigo), [codigo])
-  const im = staticIm || imApi
-
-  useEffect(() => {
-    if (staticIm) { setLoadingApi(false); return }
-    let live = true
-    setLoadingApi(true)
-    fetch(`/api/rotina-imovel?codigo=${encodeURIComponent(codigo)}`)
-      .then(r => r.ok ? r.json() : null)
-      .then(j => {
-        if (!live) return
-        if (j?.imovel) {
-          const a = j.imovel
-          setImApi({
-            codigo: String(a.codigo), tipo: a.tipo || '', bairro: a.bairro || '',
-            preco: a.valorNum || 0, area: a.areaNum || 0,
-            vagas: a.vagas || 0, quartos: a.quartos || 0,
-          })
-        }
-        setLoadingApi(false)
-      })
-      .catch(() => { if (live) setLoadingApi(false) })
-    return () => { live = false }
-  }, [codigo, staticIm])
-
-  useEffect(() => {
-    let live = true
-    fetch('/catalogo.json')
-      .then(r => r.ok ? r.json() : null)
-      .then(d => { if (live && Array.isArray(d?.imoveis)) setFeed(d.imoveis) })
-      .catch(() => {})
-    return () => { live = false }
-  }, [])
-
-  useSEO({
-    title: im ? `Estudo de valor · ${im.tipo} no ${im.bairro} | Vinícius Graton` : 'Estudo de valor do m²',
-    description: im ? `Análise técnica comparativa do ${im.tipo} no ${im.bairro} pelo método NBR 14653. Valor de mercado apurado com radar de proximidade e estatística.` : '',
-    path: `/estudo/${codigo}`,
-  })
-
-  // ── estados de loading / erro ──────────────────────────────────────────────
-  if (!im) {
-    return (
-      <main className="pagina ep-pg ep-pg--loading">
-        {loadingApi
-          ? <><div className="ep-spinner" /><p>Carregando análise…</p></>
-          : <><p>Imóvel não encontrado.</p><Link to="/imoveis" className="btn btn-gold">Ver catálogo</Link></>
-        }
-      </main>
-    )
-  }
-
-  const rawEst = (() => { try { return estudoM2(im, feed) } catch { return { ok: false } } })()
-  if (!rawEst?.ok) {
-    return (
-      <main className="pagina ep-pg ep-pg--loading">
-        {loadingApi
-          ? <><div className="ep-spinner" /><p>Calculando análise…</p></>
-          : <><p>Análise não disponível para este imóvel.</p><Link to={`/imovel/${im.codigo}`} className="btn btn-ghost">Voltar ao imóvel</Link></>
-        }
-      </main>
-    )
-  }
-
-  const estudo = buildEstudo(im, rawEst)
+// ══ CONTEÚDO DO ESTUDO ════════════════════════════════════════════════════════
+export function EstudoContent({ estudo, im, onClose }) {
+  const [hovT, setHovT] = useState(null)
   const { avaliando, testemunhas, stats, grau, adotadoM2, valorTotal, valMin, valMax, diffPct, veredito } = estudo
 
   const corVerd = veredito === 'abaixo' ? 'up' : veredito === 'acima' ? 'down' : 'neu'
@@ -638,9 +565,7 @@ export default function EstudoM2Page() {
     : veredito === 'acima'
       ? `${diffPct}% acima da mediana do bairro`
       : 'dentro da faixa de mercado'
-
   const waMsg = `Olá Vinícius! Vi o estudo de valor cód. ${estudo.numero} (${avaliando.tipo} no ${avaliando.bairro}) e quero entender melhor. Pode me ajudar?`
-
   const METODOLOGIA = [
     { n: '01', titulo: 'Coleta de dados', desc: `Levantamento de ${testemunhas.length} imóveis do mesmo tipo na região, com área, valor anunciado, bairro e fonte de origem.` },
     { n: '02', titulo: 'Saneamento', desc: 'Exclusão de amostras que excedem ±30% da mediana, evitando distorção por valores extremos na amostra.' },
@@ -650,8 +575,7 @@ export default function EstudoM2Page() {
   ]
 
   return (
-    <main className="pagina ep-pg" ref={printRef}>
-
+    <>
       {/* ── Cabeçalho ─────────────────────────────────────────────────────── */}
       <header className="ep-header">
         <div className="ep-container ep-header-inner">
@@ -665,10 +589,16 @@ export default function EstudoM2Page() {
             <span className="ep-meta-data">{fmtData(estudo.data)}</span>
           </div>
           <div className="ep-header-nav print-hide">
-            <Link to={`/imovel/${im.codigo}`} className="ep-back">
-              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-              Voltar ao imóvel
-            </Link>
+            {onClose
+              ? <button className="ep-back" onClick={onClose}>
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                  Fechar
+                </button>
+              : <Link to={`/imovel/${im.codigo}`} className="ep-back">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                  Voltar ao imóvel
+                </Link>
+            }
           </div>
         </div>
         <div className="ep-header-bar" />
@@ -937,7 +867,87 @@ export default function EstudoM2Page() {
           </a>
         </div>
       </footer>
+    </>
+  )
+}
 
+// ══ PÁGINA PRINCIPAL ══════════════════════════════════════════════════════════
+export default function EstudoM2Page() {
+  const { codigo } = useParams()
+  const [imApi, setImApi] = useState(null)
+  const [loadingApi, setLoadingApi] = useState(true)
+  const [feed, setFeed] = useState([])
+
+  useFontsPremium()
+
+  const staticIm = useMemo(() => getImovel(codigo), [codigo])
+  const im = staticIm || imApi
+
+  useEffect(() => {
+    if (staticIm) { setLoadingApi(false); return }
+    let live = true
+    setLoadingApi(true)
+    fetch(`/api/rotina-imovel?codigo=${encodeURIComponent(codigo)}`)
+      .then(r => r.ok ? r.json() : null)
+      .then(j => {
+        if (!live) return
+        if (j?.imovel) {
+          const a = j.imovel
+          setImApi({
+            codigo: String(a.codigo), tipo: a.tipo || '', bairro: a.bairro || '',
+            preco: a.valorNum || 0, area: a.areaNum || 0,
+            vagas: a.vagas || 0, quartos: a.quartos || 0,
+          })
+        }
+        setLoadingApi(false)
+      })
+      .catch(() => { if (live) setLoadingApi(false) })
+    return () => { live = false }
+  }, [codigo, staticIm])
+
+  useEffect(() => {
+    let live = true
+    fetch('/catalogo.json')
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (live && Array.isArray(d?.imoveis)) setFeed(d.imoveis) })
+      .catch(() => {})
+    return () => { live = false }
+  }, [])
+
+  useSEO({
+    title: im ? `Estudo de valor · ${im.tipo} no ${im.bairro} | Vinícius Graton` : 'Estudo de valor do m²',
+    description: im ? `Análise técnica comparativa do ${im.tipo} no ${im.bairro} pelo método NBR 14653. Valor de mercado apurado com radar de proximidade e estatística.` : '',
+    path: `/estudo/${codigo}`,
+  })
+
+  if (!im) {
+    return (
+      <main className="pagina ep-pg ep-pg--loading">
+        {loadingApi
+          ? <><div className="ep-spinner" /><p>Carregando análise…</p></>
+          : <><p>Imóvel não encontrado.</p><Link to="/imoveis" className="btn btn-gold">Ver catálogo</Link></>
+        }
+      </main>
+    )
+  }
+
+  const rawEst = (() => { try { return estudoM2(im, feed) } catch { return { ok: false } } })()
+  if (!rawEst?.ok) {
+    return (
+      <main className="pagina ep-pg ep-pg--loading">
+        {loadingApi
+          ? <><div className="ep-spinner" /><p>Calculando análise…</p></>
+          : <><p>Análise não disponível para este imóvel.</p><Link to={`/imovel/${im.codigo}`} className="btn btn-ghost">Voltar ao imóvel</Link></>
+        }
+      </main>
+    )
+  }
+
+  const estudo = buildEstudo(im, rawEst)
+
+  return (
+    <main className="pagina ep-pg">
+      <EstudoContent estudo={estudo} im={im} />
     </main>
   )
 }
