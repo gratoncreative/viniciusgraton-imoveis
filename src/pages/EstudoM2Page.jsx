@@ -86,17 +86,25 @@ function LaudoProfissional({ codigo, baseLabel }) {
 export default function EstudoM2Page() {
   const { codigo } = useParams()
   const [feed, setFeed] = useState([])
+  const [feedIm, setFeedIm] = useState(null)
 
-  const im = useMemo(() => IMOVEIS.find((i) => String(i.codigo) === String(codigo)), [codigo])
+  const staticIm = useMemo(() => IMOVEIS.find((i) => String(i.codigo) === String(codigo)), [codigo])
+  const im = staticIm || feedIm
 
   useEffect(() => {
     let vivo = true
     fetch('/api/imoveis-pub')
       .then((r) => r.json())
-      .then((d) => { if (vivo && d && Array.isArray(d.imoveis)) setFeed(d.imoveis) })
+      .then((d) => {
+        if (vivo && d && Array.isArray(d.imoveis)) {
+          setFeed(d.imoveis)
+          const found = d.imoveis.find(i => String(i.codigo) === String(codigo))
+          if (found) setFeedIm(found)
+        }
+      })
       .catch(() => {})
     return () => { vivo = false }
-  }, [])
+  }, [codigo])
 
   useSEO({
     title: im ? `Estudo do m² — ${im.tipo} no ${im.bairro} | Vinícius Graton` : 'Estudo do valor do m²',
