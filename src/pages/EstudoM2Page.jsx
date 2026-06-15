@@ -6,27 +6,6 @@ import { IconWhats } from '../components/icons'
 
 const fmtM2 = (v) => 'R$ ' + Math.round(v).toLocaleString('pt-BR') + '/m²'
 
-/* ── Régua de posição ───────────────────────────────────────────── */
-function Regua({ est }) {
-  const lo = Math.min(est.m2Subj, est.min, est.campoMin) * 0.96
-  const hi = Math.max(est.m2Subj, est.max, est.campoMax) * 1.04
-  const pos = (v) => Math.max(0, Math.min(100, ((v - lo) / (hi - lo)) * 100))
-  return (
-    <>
-      <div className="em2-regua" aria-hidden="true">
-        <span className="em2-banda" style={{ left: pos(est.campoMin) + '%', width: (pos(est.campoMax) - pos(est.campoMin)) + '%' }} />
-        <span className="em2-ref" style={{ left: pos(est.referencia) + '%' }} />
-        <span className="em2-eu" style={{ left: pos(est.m2Subj) + '%' }} />
-      </div>
-      <div className="em2-legenda">
-        <span><i className="em2-dot em2-dot--eu" /> Este imóvel</span>
-        <span><i className="em2-dot em2-dot--ref" /> Mercado ({fmtM2(est.referencia)})</span>
-        <span><i className="em2-dot em2-dot--banda" /> Campo de arbítrio</span>
-      </div>
-    </>
-  )
-}
-
 /* ── Bloco de laudo profissional ────────────────────────────────── */
 function LaudoProfissional({ codigo, baseLabel }) {
   const [comprando, setComprando] = useState(false)
@@ -198,125 +177,111 @@ export default function EstudoM2Page() {
 
         {est?.ok ? (
           <>
-            {/* ── Seção 1: Dados do mercado ── */}
-            <section className="est-sec">
-              <div className="est-sec-label">Análise de preço</div>
-              <h2 className="est-sec-titulo">Comparativo de mercado</h2>
+            {/* ── Hero: Análise de Preço ── */}
+            <div className="em2-hero">
+              <span className="em2-hero-label">Análise de Preço</span>
 
-              <div className="est-dados-grid">
-                {/* Valor de referência + veredito */}
-                <div className="est-dado-principal">
-                  <div className="em2-topo">
-                    <div className="em2-num">
-                      <span>Valor de mercado (m²)</span>
-                      <b>{fmtM2(est.referencia)}</b>
-                    </div>
-                    <div className={`em2-verdito em2-verdito--${cor}`}>{verdito}</div>
+              <div className="em2-hero-body">
+                <div className="em2-hero-left">
+                  <div className="em2-hero-row">
+                    <span className="em2-hero-metric">{fmtM2(est.referencia)}</span>
+                    <span className={`em2-hero-badge em2-hero-badge--${cor}`}>
+                      {est.diffPct > 0 ? '+' : ''}{est.diffPct}%
+                    </span>
                   </div>
-
-                  <div className="em2-cards">
-                    <div className="em2-card"><span>Este anúncio</span><b>{fmtM2(est.precoM2)}</b></div>
-                    <div className="em2-card"><span>Comparável (s/ vaga)</span><b>{fmtM2(est.m2Subj)}</b></div>
-                    <div className="em2-card"><span>Estimativa de venda</span><b>{fmtM2(est.valorVenda)}</b></div>
-                  </div>
-
-                  <Regua est={est} />
-
-                  <p className="em2-base">
-                    <b>Campo de arbítrio:</b> {fmtM2(est.campoMin)} a {fmtM2(est.campoMax)}.{' '}
-                    Baseado em <b>{est.baseLabel}</b>{est.nDesc > 0 ? ` (${est.nDesc} descartado(s) no saneamento)` : ''}.
-                  </p>
+                  <p className="em2-hero-veredito">{verdito}</p>
                 </div>
 
-                {/* Cards de contexto */}
-                <div className="est-contexto">
-                  <div className="est-ctx-card">
-                    <span className="est-ctx-ico">📍</span>
-                    <div>
-                      <b>Bairro analisado</b>
-                      <span>{im.bairro}</span>
-                    </div>
-                  </div>
-                  <div className="est-ctx-card">
-                    <span className="est-ctx-ico">🏠</span>
-                    <div>
-                      <b>Tipo de imóvel</b>
-                      <span>{im.tipo}</span>
-                    </div>
-                  </div>
-                  <div className="est-ctx-card">
-                    <span className="est-ctx-ico">📐</span>
-                    <div>
-                      <b>Área do imóvel</b>
-                      <span>{im.area} m²</span>
-                    </div>
-                  </div>
-                  {est.n > 0 && (
-                    <div className="est-ctx-card">
-                      <span className="est-ctx-ico">📊</span>
-                      <div>
-                        <b>Amostra utilizada</b>
-                        <span>{est.n} imóveis comparáveis</span>
-                      </div>
-                    </div>
-                  )}
+                <div className="em2-hero-chips">
+                  <span className="em2-hero-chip">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    {im.bairro}
+                  </span>
+                  <span className="em2-hero-chip">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    {im.tipo}
+                  </span>
+                  <span className="em2-hero-chip">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    {im.area} m²
+                  </span>
                 </div>
               </div>
-            </section>
 
-            {/* ── Seção 2: Metodologia ── */}
-            {(est.fatoresAplicados?.length > 0 || est.limitacoes?.length > 0) && (
+              <div className="em2-triptych">
+                <div className="em2-triptych-card">
+                  <span className="em2-tri-ico">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                  </span>
+                  <b>{fmtM2(est.campoMin)}</b>
+                  <span>Mínimo estimado</span>
+                </div>
+                <div className="em2-triptych-card em2-triptych-card--destaque">
+                  <span className="em2-tri-ico">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+                  </span>
+                  <b>{fmtM2(est.referencia)}</b>
+                  <span>Média de mercado</span>
+                </div>
+                <div className="em2-triptych-card">
+                  <span className="em2-tri-ico">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  </span>
+                  <b>{fmtM2(est.campoMax)}</b>
+                  <span>Máximo estimado</span>
+                </div>
+              </div>
+
+              <p className="em2-hero-fonte">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                {est.baseLabel}{est.nDesc > 0 ? ` · ${est.nDesc} descartado(s) no saneamento` : ''}
+              </p>
+            </div>
+
+            {/* ── Metodologia + Fontes ── */}
+            {(est.fatoresAplicados?.length > 0 || est.limitacoes?.length > 0 || est.fontes?.length > 0) && (
               <section className="est-sec">
-                <div className="est-sec-label">Metodologia</div>
+                <div className="est-sec-label">Metodologia · ABNT NBR 14653</div>
                 <h2 className="est-sec-titulo">Como chegamos nesse valor</h2>
-                <p className="est-sec-sub">
-                  A análise segue o método comparativo direto da ABNT NBR 14653 com homogeneização da amostra,
-                  removendo influências de vaga, área e nível de oferta para comparar imóveis em condições iguais.
-                </p>
 
                 {est.fatoresAplicados?.length > 0 && (
-                  <div className="est-metodologia">
+                  <>
                     <h3 className="est-met-subtit">Fatores aplicados</h3>
                     <ul className="em2-fatores-list est-fatores">
                       {est.fatoresAplicados.map((f, i) => <li key={i}>{f}</li>)}
                     </ul>
-                  </div>
+                  </>
                 )}
-
                 {est.limitacoes?.length > 0 && (
-                  <div className="est-metodologia est-metodologia--lim">
-                    <h3 className="est-met-subtit est-met-subtit--lim">O que este estudo não cobre</h3>
+                  <>
+                    <h3 className="est-met-subtit est-met-subtit--lim" style={{ marginTop: 16 }}>O que este estudo não cobre</h3>
                     <ul className="em2-fatores-list em2-fatores-list--lim est-fatores">
                       {est.limitacoes.map((f, i) => <li key={i}>{f}</li>)}
                     </ul>
-                  </div>
+                  </>
                 )}
-              </section>
-            )}
-
-            {/* ── Seção 3: Fontes ── */}
-            {est.fontes?.length > 0 && (
-              <section className="est-sec">
-                <div className="est-sec-label">Fontes</div>
-                <h2 className="est-sec-titulo">Fontes utilizadas</h2>
-                <ul className="em2-fatores-list est-fatores">
-                  {est.fontes.map((f, i) => <li key={i}>{f}</li>)}
-                </ul>
+                {est.fontes?.length > 0 && (
+                  <>
+                    <h3 className="est-met-subtit" style={{ marginTop: 16 }}>Fontes</h3>
+                    <ul className="em2-fatores-list est-fatores">
+                      {est.fontes.map((f, i) => <li key={i}>{f}</li>)}
+                    </ul>
+                  </>
+                )}
                 <p className="em2-disc">
-                  Estudo comparativo de mercado, calculado pelo método ABNT NBR 14653 com homogeneização da amostra.
-                  É uma estimativa de referência — não substitui um laudo com vistoria por profissional credenciado.
+                  Estudo comparativo de mercado pelo método ABNT NBR 14653 com homogeneização da amostra.
+                  É uma estimativa de referência — não substitui laudo com vistoria por profissional credenciado.
                 </p>
               </section>
             )}
 
-            {/* ── Seção 4: Laudo profissional ── */}
+            {/* ── Laudo profissional ── */}
             <section className="est-sec">
               <div className="est-sec-label">Laudo profissional</div>
               <h2 className="est-sec-titulo">Quer o laudo completo em PDF?</h2>
               <p className="est-sec-sub">
-                O laudo técnico inclui toda a amostra de comparáveis, os fatores de homogeneização aplicados
-                item por item, o parecer do consultor e uma análise ampliada do mercado do bairro — no mesmo
-                padrão utilizado por bancos para aprovação de financiamento.
+                O laudo técnico inclui toda a amostra de comparáveis, os fatores de homogeneização aplicados,
+                o parecer do consultor e análise do bairro — no padrão usado por bancos para financiamento.
               </p>
               <LaudoProfissional codigo={im.codigo} baseLabel={est.baseLabel} />
             </section>
@@ -330,7 +295,6 @@ export default function EstudoM2Page() {
             </div>
           </>
         ) : (
-          /* Sem dados suficientes */
           <div className="est-sem-dados">
             <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M3 3v18h18M7 14l4-4 3 3 5-6"/></svg>
             <p>Estudo de m² não disponível para este imóvel no momento.</p>

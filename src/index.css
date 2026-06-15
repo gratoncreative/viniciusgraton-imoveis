@@ -5488,7 +5488,51 @@ html[data-theme="dark"] .condo-filtro-grupo-v2 { background:var(--surface); bord
 @media (max-width: 600px) { .condos-hf, .condos-hf--wide { flex: 1 1 100%; } .condos-hf-limpar { flex: 1 1 100%; text-align: center; } }
 
 /* ── EstudoM2Page (/estudo/:codigo) ─────────────────────────────── */
-.est-pg { background: #0d1018; min-height: 100vh; padding-bottom: 80px; }
+.est-pg { background: #080a0f; min-height: 100vh; padding-bottom: 80px; }
+
+/* Hero card */
+.em2-hero { position: relative; background: rgba(10,9,6,0.94); border: 1px solid rgba(201,168,76,0.18); border-radius: 24px; padding: 36px 36px 28px; margin-bottom: 28px; overflow: hidden; }
+.em2-hero::before { content: ''; position: absolute; bottom: -80px; left: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, transparent 65%); pointer-events: none; }
+.em2-hero-label { display: block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-2); margin-bottom: 22px; }
+.em2-hero-body { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+.em2-hero-left { flex: 1 1 0; min-width: 0; }
+.em2-hero-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; }
+.em2-hero-metric { font-family: var(--font-head); font-size: clamp(2.2rem, 4.5vw, 3rem); font-weight: 900; color: #fff; line-height: 1; }
+.em2-hero-badge { display: inline-flex; align-items: center; padding: 5px 14px; border-radius: 100px; font-family: var(--font-head); font-weight: 800; font-size: 1rem; }
+.em2-hero-badge--ok { background: rgba(29,122,69,0.2); color: #46c47e; border: 1px solid rgba(46,196,126,0.35); }
+.em2-hero-badge--alto { background: rgba(201,168,76,0.18); color: var(--gold-1); border: 1px solid rgba(201,168,76,0.4); }
+.em2-hero-badge--neutro { background: rgba(255,255,255,0.08); color: #c0c8d6; border: 1px solid rgba(255,255,255,0.18); }
+.em2-hero-veredito { font-size: 0.85rem; color: #8a93a6; margin: 0; }
+.em2-hero-chips { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+.em2-hero-chip { display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 100px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #c0c8d6; font-size: 0.82rem; font-weight: 500; white-space: nowrap; }
+.em2-hero-chip svg { opacity: 0.55; flex-shrink: 0; }
+
+/* Triptico de métricas */
+.em2-triptych { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.em2-triptych-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 20px 14px 18px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.em2-triptych-card--destaque { background: linear-gradient(150deg, rgba(201,168,76,0.18) 0%, rgba(120,85,20,0.28) 100%); border-color: rgba(201,168,76,0.38); transform: translateY(-6px); box-shadow: 0 12px 36px rgba(0,0,0,0.45), 0 0 0 1px rgba(201,168,76,0.15); }
+.em2-tri-ico { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: rgba(255,255,255,0.07); color: #6a738a; flex-shrink: 0; }
+.em2-triptych-card--destaque .em2-tri-ico { background: rgba(201,168,76,0.18); color: var(--gold-2); }
+.em2-triptych-card b { font-family: var(--font-head); font-size: 1.05rem; font-weight: 800; color: #dde2ea; }
+.em2-triptych-card--destaque b { color: #fff; font-size: 1.15rem; }
+.em2-triptych-card span { font-size: 0.68rem; color: #55607a; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+.em2-triptych-card--destaque span { color: rgba(201,168,76,0.7); }
+
+/* Rodapé da hero com fonte */
+.em2-hero-fonte { display: flex; align-items: center; gap: 6px; font-size: 0.74rem; color: #505870; margin: 20px 0 0; line-height: 1.4; }
+.em2-hero-fonte svg { flex-shrink: 0; opacity: 0.5; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .em2-hero { padding: 24px 20px 20px; }
+  .em2-hero-body { flex-direction: column; gap: 18px; }
+  .em2-hero-chips { flex-direction: row; flex-wrap: wrap; }
+  .em2-triptych { gap: 8px; }
+  .em2-triptych-card { border-radius: 14px; padding: 16px 10px 14px; }
+  .em2-triptych-card--destaque { transform: none; }
+  .em2-triptych-card b { font-size: 0.92rem; }
+  .em2-triptych-card--destaque b { font-size: 1rem; }
+}
 .est-pg--erro { display: flex; align-items: center; justify-content: center; }
 /* nav top */
 .est-nav { background: rgba(8,11,18,0.9); border-bottom: 1px solid rgba(255,255,255,0.07); padding: 14px 0; position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px); }
