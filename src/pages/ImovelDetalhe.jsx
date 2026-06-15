@@ -621,7 +621,7 @@ export default function ImovelDetalhe() {
               )}
               {(() => { const op = oportunidade(im); return (op.temDesconto || op.abaixoMercado) ? (
                 <div className="det-selos">
-                  {op.temDesconto && <span className="im-selo im-selo--off">Preço reduzido · -{op.pctDesconto}%</span>}
+                  {op.temDesconto && <span className="im-selo im-selo--off">Preço caiu {op.pctDesconto}%</span>}
                   {op.abaixoMercado && <span className="im-selo im-selo--mercado">Abaixo do m² do bairro</span>}
                 </div>
               ) : null })()}

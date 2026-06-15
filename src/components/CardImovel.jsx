@@ -9,11 +9,13 @@ import { onImgError } from '../img'
 const plural = (n, s, p) => (n > 1 ? p : s)
 
 // Selos de oportunidade (legítimos): % de desconto real ou abaixo do m² do bairro
+// REGRA: todo selo sobreposto à foto deve dizer o QUE é — o cliente não tem
+// contexto. Nada de número solto (ex.: "-11%"); sempre rotular ("Preço caiu 11%").
 function SelosOportunidade({ op }) {
   if (!op || (!op.temDesconto && !op.abaixoMercado)) return null
   return (
     <div className="im-selos">
-      {op.temDesconto && <span className="im-selo im-selo--off">-{op.pctDesconto}%</span>}
+      {op.temDesconto && <span className="im-selo im-selo--off">Preço caiu {op.pctDesconto}%</span>}
       {op.abaixoMercado && <span className="im-selo im-selo--mercado">Abaixo do mercado</span>}
     </div>
   )
