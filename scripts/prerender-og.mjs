@@ -228,15 +228,15 @@ function bairroBody(b) {
   const doBairro = [...imoveis, ...feed].filter((im) => im.bairro && slugify(im.bairro) === b.slug).slice(0, 24)
   const outros = bairrosSeo.filter((x) => x.slug !== b.slug).slice(0, 30)
   return `<main class="pre-seo"><h1>Imóveis à venda em ${esc(b.nome)}, Uberlândia</h1>` +
-    `<p>Veja imóveis à venda em ${esc(b.nome)}, Uberlândia - MG, com o atendimento pessoal do Vinícius Graton, consultor da Rotina Imobiliária — do primeiro contato à entrega das chaves.</p>` +
-    (doBairro.length ? `<ul>${doBairro.map((im) => `<li><a href="/imovel/${esc(im.codigo)}">${esc(im.tipo)} no ${esc(im.bairro)} — ${esc(formatPreco(im.preco))} (cód. ${esc(im.codigo)})</a></li>`).join('')}</ul>` : '') +
+    `<p>Veja imóveis à venda em ${esc(b.nome)}, Uberlândia - MG, com o atendimento pessoal do Vinícius Graton, consultor da Rotina Imobiliária.. do primeiro contato à entrega das chaves.</p>` +
+    (doBairro.length ? `<ul>${doBairro.map((im) => `<li><a href="/imovel/${esc(im.codigo)}">${esc(im.tipo)} no ${esc(im.bairro)} · ${esc(formatPreco(im.preco))} (cód. ${esc(im.codigo)})</a></li>`).join('')}</ul>` : '') +
     `<p><a href="/imoveis">Ver todos os imóveis em Uberlândia</a></p>` +
     `<nav><h2>Imóveis em outros bairros de Uberlândia</h2>${outros.map((x) => `<a href="/imoveis/uberlandia/${x.slug}">${esc(x.nome)}</a>`).join(' · ')}</nav></main>`
 }
 
 function renderBairro(b) {
   const titulo = `Imóveis à venda em ${b.nome}, Uberlândia`
-  const desc = `Casas e apartamentos à venda em ${b.nome}, Uberlândia, com Vinícius Graton — consultor credenciado da Rotina Imobiliária. Veja as opções e fale comigo.`
+  const desc = `Casas e apartamentos à venda em ${b.nome}, Uberlândia, com Vinícius Graton, consultor credenciado da Rotina Imobiliária. Veja as opções e fale comigo.`
   const url = `${SITE}/imoveis/uberlandia/${b.slug}`
   const ld = {
     '@context': 'https://schema.org',
@@ -270,14 +270,14 @@ console.log(`✓ prerender bairros: ${nb} páginas em dist/imoveis/uberlandia/{b
 
 // páginas de empreendimento (construtora) — ficha completa, meta + JSON-LD
 function renderEmpre(c, p) {
-  const titulo = `${p.nome} — ${c.nome}, ${p.bairro || 'Uberlândia'}`
+  const titulo = `${p.nome} · ${c.nome}, ${p.bairro || 'Uberlândia'}`
   const desc = trunc(`${p.descricao || ''} Fale com o Vinícius Graton e agende uma visita ao ${p.nome}, da ${c.nome}, em Uberlândia.`)
   const url = `${SITE}/construtoras/${c.slug}/${p.slug}`
   const image = p.capa ? abs(p.capa) : `${SITE}/vinicius-graton.jpg`
   const ld = {
     '@context': 'https://schema.org',
     '@type': 'Residence',
-    name: `${p.nome} — ${c.nome}`,
+    name: `${p.nome} · ${c.nome}`,
     description: p.descricao || desc,
     url,
     image,
@@ -307,10 +307,10 @@ function empreBodySeo(c, p) {
     p.unidades > 0 && `${p.unidades} unidades`,
     p.entrega && `Previsão de entrega: ${esc(p.entrega)}`,
   ].filter(Boolean)
-  return `<main class="pre-seo"><h1>${esc(p.nome)} — ${esc(c.nome)}, Uberlândia</h1>` +
+  return `<main class="pre-seo"><h1>${esc(p.nome)} · ${esc(c.nome)}, Uberlândia</h1>` +
     `<p>${esc(p.descricao || `Conheça o ${p.nome}, empreendimento da ${c.nome} em ${p.bairro || 'Uberlândia'}.`)}</p>` +
     (specs.length ? `<ul>${specs.map((s) => `<li>${s}</li>`).join('')}</ul>` : '') +
-    `<p>Atendimento com Vinícius Graton, consultor credenciado da Rotina Imobiliária — agende uma visita e tire suas dúvidas.</p>` +
+    `<p>Atendimento com Vinícius Graton, consultor credenciado da Rotina Imobiliária.. agende uma visita e tire suas dúvidas.</p>` +
     `<p><a href="/construtoras/${esc(c.slug)}">Ver todos os empreendimentos da ${esc(c.nome)}</a> · <a href="/construtoras">Construtoras em Uberlândia</a></p></main>`
 }
 
@@ -356,7 +356,7 @@ function blogBodySeo(post) {
     `<p><em>${categoria}${leitura}</em></p>` +
     `<p>${esc(post.resumo || '')}</p>` +
     blocos +
-    `<p>Por <strong>Vinícius Graton</strong> — Consultor de imóveis em Uberlândia, Rotina Imobiliária.</p>` +
+    `<p>Por <strong>Vinícius Graton</strong>, consultor de imóveis em Uberlândia, Rotina Imobiliária.</p>` +
     `<nav><a href="/blog">← Voltar ao blog</a> · <a href="/imoveis">Ver imóveis em Uberlândia</a></nav></article>`
 }
 
@@ -408,13 +408,13 @@ console.log(`✓ prerender blog: ${np2} posts (base + extra) em dist/blog/{slug}
 const PAGINAS_FIXAS = [
   {
     rota: 'encontrar-imovel',
-    titulo: 'Encontre seu imóvel em 1 minuto — Uberlândia',
+    titulo: 'Encontre seu imóvel em 1 minuto · Uberlândia',
     desc: 'Responda algumas perguntas rápidas e receba uma seleção de imóveis em Uberlândia feita sob medida pra você, com a curadoria do Vinícius Graton.',
     image: `${SITE}/og/encontrar.png`, w: 1280, h: 720,
   },
   {
     rota: 'imoveis',
-    titulo: 'Imóveis à venda em Uberlândia — Catálogo completo',
+    titulo: 'Imóveis à venda em Uberlândia · Catálogo completo',
     desc: `Mais de ${[...imoveis, ...feed].length} imóveis à venda em Uberlândia, com o atendimento pessoal do Vinícius Graton, consultor da Rotina Imobiliária.`,
     image: `${SITE}/vinicius-graton.jpg`, w: 1200, h: 900,
     body: `<main class="pre-seo"><h1>Imóveis à venda em Uberlândia</h1>` +
@@ -424,41 +424,41 @@ const PAGINAS_FIXAS = [
   },
   {
     rota: 'blog',
-    titulo: 'Blog Imobiliário — Guias e dicas de compra em Uberlândia',
+    titulo: 'Blog Imobiliário · Guias e dicas de compra em Uberlândia',
     desc: 'Artigos práticos sobre financiamento, FGTS, ITBI, bairros e mercado imobiliário em Uberlândia. Escrito por Vinícius Graton, consultor da Rotina Imobiliária.',
     image: `${SITE}/vinicius-graton.jpg`, w: 1200, h: 900,
-    body: `<main class="pre-seo"><h1>Blog Imobiliário — Guias de compra em Uberlândia</h1>` +
+    body: `<main class="pre-seo"><h1>Blog Imobiliário · Guias de compra em Uberlândia</h1>` +
       `<p>Artigos práticos sobre financiamento, FGTS, ITBI, bairros e mercado imobiliário em Uberlândia. Escrito por Vinícius Graton, consultor da Rotina Imobiliária.</p>` +
       `<ul>${blogTodos.slice(0, 30).map((p) => `<li><a href="/blog/${esc(p.slug)}">${esc(p.titulo)}</a></li>`).join('')}</ul>` +
       `</main>`,
   },
   {
     rota: 'sobre',
-    titulo: 'Sobre Vinícius Graton — Consultor de Imóveis em Uberlândia',
+    titulo: 'Sobre Vinícius Graton · Consultor de Imóveis em Uberlândia',
     desc: 'Conheça o Vinícius Graton, consultor credenciado da Rotina Imobiliária. Curadoria de imóveis em Uberlândia com acompanhamento do primeiro contato à entrega das chaves.',
     image: `${SITE}/vinicius-graton.jpg`, w: 1200, h: 900,
-    body: `<main class="pre-seo"><h1>Vinícius Graton — Consultor de Imóveis em Uberlândia</h1>` +
-      `<p>Consultor credenciado da Rotina Imobiliária em Uberlândia - MG. Ajudo você a comprar, vender e investir com segurança — da busca à entrega das chaves.</p>` +
+    body: `<main class="pre-seo"><h1>Vinícius Graton · Consultor de Imóveis em Uberlândia</h1>` +
+      `<p>Consultor credenciado da Rotina Imobiliária em Uberlândia - MG. Ajudo você a comprar, vender e investir com segurança.. da busca à entrega das chaves.</p>` +
       `<p>Atendimento pessoal, curadoria criteriosa e acompanhamento em todas as etapas: busca, visitas, negociação, financiamento, documentação e registro.</p>` +
       `<p>WhatsApp: (34) 99157-0494 · <a href="/">viniciusgraton.com.br</a></p>` +
       `</main>`,
   },
   {
     rota: 'ferramentas',
-    titulo: 'Calculadoras de Imóveis — Uberlândia',
+    titulo: 'Calculadoras de Imóveis · Uberlândia',
     desc: 'Calculadoras gratuitas: financiamento, FGTS, ITBI, comparador de imóveis, ROI de investimento. Ferramentas para quem quer comprar ou investir em Uberlândia.',
     image: `${SITE}/vinicius-graton.jpg`, w: 1200, h: 900,
-    body: `<main class="pre-seo"><h1>Calculadoras de Imóveis — Uberlândia</h1>` +
+    body: `<main class="pre-seo"><h1>Calculadoras de Imóveis · Uberlândia</h1>` +
       `<p>Ferramentas gratuitas para quem está comprando ou investindo em imóveis em Uberlândia: simulador de financiamento, calculadora de ITBI e custos de cartório, calculadora de ROI, comparador de imóveis.</p>` +
       `<p>Desenvolvidas por Vinícius Graton, consultor da Rotina Imobiliária.</p>` +
       `</main>`,
   },
   {
     rota: 'regioes',
-    titulo: 'Regiões de Uberlândia — Zona Norte, Sul, Leste e Oeste',
+    titulo: 'Regiões de Uberlândia · Zona Norte, Sul, Leste e Oeste',
     desc: 'Guia completo das regiões de Uberlândia: Zona Sul (Karaíba, Finotti, Cidade Jardim), Zona Norte, Zona Leste e Zona Oeste. Compare perfil, infraestrutura e preço médio.',
     image: `${SITE}/vinicius-graton.jpg`, w: 1200, h: 900,
-    body: `<main class="pre-seo"><h1>Regiões de Uberlândia — Guia completo</h1>` +
+    body: `<main class="pre-seo"><h1>Regiões de Uberlândia · Guia completo</h1>` +
       `<p>Conheça as principais regiões de Uberlândia: Zona Sul (Jardim Karaíba, Finotti, Cidade Jardim, Gávea, Granja Marileusa), Zona Norte, Zona Leste e Zona Oeste. Compare infraestrutura, perfil e preço médio do m².</p>` +
       `<nav>${bairrosSeo.map((b) => `<a href="/imoveis/uberlandia/${b.slug}">${esc(b.nome)}</a>`).join(' · ')}</nav>` +
       `</main>`,
@@ -514,7 +514,7 @@ const urls = [
     freq: 'weekly',
     pri: '0.7',
     img: p.capa ? abs(p.capa) : '',
-    imgTitle: `${p.nome} — ${c.nome}, Uberlândia`,
+    imgTitle: `${p.nome} · ${c.nome}, Uberlândia`,
   }))),
   { loc: `${SITE}/contato`, freq: 'monthly', pri: '0.5' },
   ...bairrosSeo.map((b) => ({ loc: `${SITE}/imoveis/uberlandia/${b.slug}`, freq: 'weekly', pri: '0.7' })),
@@ -579,7 +579,7 @@ const feedItem = (im) => `  <Listing>
 const feedXml = `<?xml version="1.0" encoding="UTF-8"?>
 <ListingDataFeed xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Header>
-    <Provider>Vinícius Graton — Rotina Imobiliária</Provider>
+    <Provider>Vinícius Graton · Rotina Imobiliária</Provider>
     <Email>contato@viniciusgraton.com.br</Email>
     <ContactName>Vinícius Graton</ContactName>
     <PublishDate>${new Date(lastmod).toISOString()}</PublishDate>
