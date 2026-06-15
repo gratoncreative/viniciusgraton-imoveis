@@ -334,14 +334,14 @@ export function estudoM2(im, base) {
     refIPD, refFonte: refRow && refRow.fonte, refRef: refRow && refRow.ref, grupo,
     fatoresAplicados: [
       `Comparação só com imóveis do mesmo tipo (${im.tipo || grupo}) ${escopo === 'bairro' ? 'no ' + im.bairro : 'na cidade'}`,
-      'Fator oferta — anúncios ajustados ~10% (gordura de negociação) para nível de venda',
+      'Ajuste de mercado — preço de anúncio convertido para estimativa real de venda',
       !ehTer ? `Fator vaga — valor das vagas (~${formatPreco(VAGA_VALOR)} cada) descontado antes do m²` : 'Sem fator vaga (terreno)',
       `Fator área — homogeneização pela área do imóvel (${Math.round(areaSubj)} m²), economia de escala`,
       `Saneamento estatístico — ${nDesc} imóvel(is) fora de ±30% da mediana descartado(s)`,
       'Campo de arbítrio (intervalo) calculado pelo desvio padrão da amostra',
     ],
     limitacoes: [
-      'Baseado em preços anunciados (não em escrituras/ITBI), ajustados pelo fator oferta.',
+      'Baseado em preços anunciados (não em escrituras/ITBI) com ajuste para estimativa de valor real.',
       'Não considera idade exata, padrão de acabamento e microlocalização de cada comparável (exigiriam vistoria/laudo).',
     ],
     fontes: _fontesM2(refRow),
