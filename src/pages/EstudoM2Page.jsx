@@ -7,7 +7,7 @@ import { IconWhats } from '../components/icons'
 const fmtM2 = (v) => 'R$ ' + Math.round(v).toLocaleString('pt-BR') + '/m²'
 
 /* ── Bloco de laudo profissional ────────────────────────────────── */
-function LaudoProfissional({ codigo, baseLabel }) {
+function LaudoProfissional({ codigo, baseLabel, n }) {
   const [comprando, setComprando] = useState(false)
 
   const comprar = async () => {
@@ -40,11 +40,11 @@ function LaudoProfissional({ codigo, baseLabel }) {
         <span className="est-laudo-desc">entrega imediata</span>
       </div>
       <ul className="est-laudo-itens">
-        <li><span className="em2-check">✓</span> Todos os {baseLabel} com preço, área e homogeneização detalhada</li>
-        <li><span className="em2-check">✓</span> Metodologia NBR 14653 — a mesma que bancos usam para aprovar financiamento</li>
-        <li><span className="em2-check">✓</span> PDF em minutos · argumento técnico na hora de negociar o preço</li>
-        <li><span className="em2-check">✓</span> Análise completa da amostra com fatores de homogeneização aplicados</li>
-        <li><span className="em2-check">✓</span> Assinatura do consultor com parecer técnico personalizado</li>
+        <li><span className="em2-check">✓</span> {n > 0 ? `Todos os ${n} comparáveis` : baseLabel} com endereço, preço e o motivo de cada ajuste aplicado</li>
+        <li><span className="em2-check">✓</span> Cálculo de quanto você pode negociar de desconto com base no mercado real</li>
+        <li><span className="em2-check">✓</span> Documento aceito por bancos para questionar avaliação no financiamento</li>
+        <li><span className="em2-check">✓</span> Entregue em PDF em até 30 min — você usa ainda hoje na negociação</li>
+        <li><span className="em2-check">✓</span> Assinado pelo consultor Vinícius Graton com parecer técnico personalizado</li>
       </ul>
       <p className="em2-urgencia">
         Você está prestes a investir centenas de milhares de reais. Saber se o preço está justo por R$ 250 é a decisão mais inteligente antes de assinar qualquer coisa.
@@ -74,7 +74,7 @@ function CompsChart({ est, im }) {
   const range = cMax - cMin || 1
 
   const pct = v => ((v - cMin) / range * 100).toFixed(1) + '%'
-  const fmtK = v => `R$${Math.round(v / 1000)}k`
+  const fmtMil = v => `R$ ${Math.round(v / 1000)} mil`
   const step = range <= 3000 ? 500 : range <= 6000 ? 1000 : range <= 12000 ? 2000 : 3000
   const ticks = []
   for (let t = Math.ceil(cMin / step) * step; t <= cMax; t += step) ticks.push(t)
@@ -90,7 +90,7 @@ function CompsChart({ est, im }) {
       <div className="em2-chart-stage">
         {ticks.map(t => (
           <div key={t} className="em2-chart-grid-line" style={{ bottom: pct(t) }}>
-            <span className="em2-chart-grid-label">{fmtK(t)}</span>
+            <span className="em2-chart-grid-label">{fmtMil(t)}</span>
           </div>
         ))}
         <div className="em2-chart-med-line" style={{ bottom: pct(est.referencia) }}>
@@ -101,20 +101,26 @@ function CompsChart({ est, im }) {
             const isSubj = String(c.codigo) === String(im.codigo)
             return (
               <div key={i} className="em2-chart-bar-wrap">
+                {isSubj && (
+                  <span className="em2-bar-subj-label">
+                    {`R$ ${Math.round(c.m2).toLocaleString('pt-BR')}/m²`}
+                  </span>
+                )}
                 <div
                   className={`em2-chart-bar${isSubj ? ' em2-chart-bar--subj' : ''}`}
                   style={{ height: pct(c.m2) }}
-                  title={`R$ ${Math.round(c.m2).toLocaleString('pt-BR')}/m²`}
                 />
               </div>
             )
           })}
           {!subjInComps && (
             <div className="em2-chart-bar-wrap">
+              <span className="em2-bar-subj-label">
+                {`R$ ${Math.round(est.m2Subj).toLocaleString('pt-BR')}/m²`}
+              </span>
               <div
                 className="em2-chart-bar em2-chart-bar--subj"
                 style={{ height: pct(est.m2Subj) }}
-                title={`Este imóvel: R$ ${Math.round(est.m2Subj).toLocaleString('pt-BR')}/m²`}
               />
             </div>
           )}
@@ -215,6 +221,7 @@ export default function EstudoM2Page() {
   const [imApi, setImApi] = useState(null)
   const [loadingApi, setLoadingApi] = useState(true)
   const [feed, setFeed] = useState([])
+  const [metOpen, setMetOpen] = useState(false)
 
   const staticIm = useMemo(() => getImovel(codigo), [codigo])
   const im = staticIm || imApi
@@ -302,7 +309,7 @@ export default function EstudoM2Page() {
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
             Voltar ao imóvel
           </Link>
-          <span className="est-nav-eyebrow">Estudo do valor do m² · método NBR 14653</span>
+          <span className="est-nav-eyebrow">Análise de preço · {im.tipo} no {im.bairro}</span>
         </div>
       </div>
 
@@ -311,7 +318,7 @@ export default function EstudoM2Page() {
         {/* ── Header do imóvel ── */}
         <div className="est-header">
           <span className="em2-preview-badge">✦ Preview gratuito · dados reais do bairro</span>
-          <h1 className="est-titulo">{im.tipo} no {im.bairro}</h1>
+          <h1 className="est-titulo">Este {im.tipo} no {im.bairro} está com preço justo?</h1>
           {im.preco > 0 && im.area > 0 && (
             <p className="est-subtitulo">
               {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(im.preco)}
@@ -375,7 +382,7 @@ export default function EstudoM2Page() {
                       <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
                     </span>
                     <b>{fmtM2(est.referencia)}</b>
-                    <span>Média</span>
+                    <span>Mediana</span>
                   </div>
                   <div className="em2-triptych-card">
                     <span className="em2-tri-ico">
@@ -398,20 +405,20 @@ export default function EstudoM2Page() {
                   <span className="em2-stat-sub">por m² (com vaga)</span>
                 </div>
                 <div className="em2-stat">
-                  <span className="em2-stat-label">Comparável</span>
+                  <span className="em2-stat-label">M² ajustado</span>
                   <b className="em2-stat-val">{fmtM2(est.m2Subj)}</b>
-                  <span className="em2-stat-sub">por m² (sem vaga)</span>
+                  <span className="em2-stat-sub">para comparação justa</span>
                 </div>
                 <div className="em2-stat">
-                  <span className="em2-stat-label">Estimativa venda</span>
+                  <span className="em2-stat-label">Valor justo</span>
                   <b className="em2-stat-val">{fmtM2(est.valorVenda)}</b>
-                  <span className="em2-stat-sub">ajuste de mercado</span>
+                  <span className="em2-stat-sub">estimativa de mercado</span>
                 </div>
                 {est.n > 0 && (
                   <div className="em2-stat">
-                    <span className="em2-stat-label">Amostra</span>
+                    <span className="em2-stat-label">Imóveis comparados</span>
                     <b className="em2-stat-val">{est.n}</b>
-                    <span className="em2-stat-sub">imóveis comparados</span>
+                    <span className="em2-stat-sub">na amostra</span>
                   </div>
                 )}
               </div>
@@ -425,24 +432,45 @@ export default function EstudoM2Page() {
 
               <PositionRuler im={im} est={est} />
 
+              {/* CTA inline (visível só em mobile) */}
+              <div className="em2-cta-inline">
+                <p className="em2-cta-inline-text">Ficou com dúvida sobre esse valor?</p>
+                <a className="btn btn-ghost" href={linkWhatsApp(waMsg)} target="_blank" rel="noopener" style={{ justifyContent: 'center' }}>
+                  <IconWhats width={16} height={16} /> Falar com o Vinícius
+                </a>
+              </div>
+
+              {/* Metodologia colapsável */}
               {(est.fatoresAplicados?.length > 0 || est.limitacoes?.length > 0) && (
                 <section className="est-sec">
-                  <div className="est-sec-label">Metodologia · ABNT NBR 14653</div>
-                  <h2 className="est-sec-titulo">Como chegamos nesse valor</h2>
-                  {est.fatoresAplicados?.length > 0 && (
-                    <ul className="em2-fatores-list est-fatores">
-                      {est.fatoresAplicados.map((f, i) => <li key={i}>{f}</li>)}
-                    </ul>
+                  <div className="em2-met-header" onClick={() => setMetOpen(o => !o)}>
+                    <div>
+                      <div className="est-sec-label">Metodologia · ABNT NBR 14653</div>
+                      <h2 className="est-sec-titulo" style={{ marginBottom: 0 }}>Como chegamos nesse valor</h2>
+                    </div>
+                    <button className="em2-met-toggle" type="button" onClick={e => { e.stopPropagation(); setMetOpen(o => !o) }}>
+                      {metOpen ? 'Recolher' : 'Ver detalhes'}
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: metOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                  </div>
+                  {metOpen && (
+                    <div className="em2-met-body">
+                      {est.fatoresAplicados?.length > 0 && (
+                        <ul className="em2-fatores-list est-fatores">
+                          {est.fatoresAplicados.map((f, i) => <li key={i}>{f}</li>)}
+                        </ul>
+                      )}
+                      {est.limitacoes?.length > 0 && (
+                        <>
+                          <h3 className="est-met-subtit est-met-subtit--lim" style={{ marginTop: 16 }}>O que este estudo não cobre</h3>
+                          <ul className="em2-fatores-list em2-fatores-list--lim est-fatores">
+                            {est.limitacoes.map((f, i) => <li key={i}>{f}</li>)}
+                          </ul>
+                        </>
+                      )}
+                    </div>
                   )}
-                  {est.limitacoes?.length > 0 && (
-                    <>
-                      <h3 className="est-met-subtit est-met-subtit--lim" style={{ marginTop: 16 }}>O que este estudo não cobre</h3>
-                      <ul className="em2-fatores-list em2-fatores-list--lim est-fatores">
-                        {est.limitacoes.map((f, i) => <li key={i}>{f}</li>)}
-                      </ul>
-                    </>
-                  )}
-                  <p className="em2-disc">
+                  <p className="em2-disc" style={{ marginTop: metOpen ? undefined : 8 }}>
                     Estudo comparativo de mercado pelo método ABNT NBR 14653.
                     Estimativa de referência — não substitui laudo com vistoria presencial.
                   </p>
@@ -456,11 +484,12 @@ export default function EstudoM2Page() {
 
               <div className="em2-dash-card">
                 <div className="est-sec-label">Laudo profissional</div>
-                <h2 className="est-sec-titulo" style={{ marginBottom: 12 }}>Quer o laudo em PDF?</h2>
-                <LaudoProfissional codigo={im.codigo} baseLabel={est.baseLabel} />
+                <h2 className="est-sec-titulo" style={{ marginBottom: 12 }}>Tenha argumentos reais na negociação</h2>
+                <LaudoProfissional codigo={im.codigo} baseLabel={est.baseLabel} n={est.n} />
               </div>
 
-              <a className="btn btn-gold est-wa-btn" href={linkWhatsApp(waMsg)} target="_blank" rel="noopener" style={{ width: '100%', justifyContent: 'center', boxSizing: 'border-box' }}>
+              <p className="em2-wa-pre">Prefere conversar antes de decidir?</p>
+              <a className="btn btn-ghost est-wa-btn" href={linkWhatsApp(waMsg)} target="_blank" rel="noopener" style={{ width: '100%', justifyContent: 'center', boxSizing: 'border-box' }}>
                 <IconWhats width={18} height={18} /> Falar com o Vinícius
               </a>
 
