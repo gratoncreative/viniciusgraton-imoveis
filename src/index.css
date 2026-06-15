@@ -5494,6 +5494,15 @@ html[data-theme="dark"] .det-info--claro .btn-ghost svg {
   color:      var(--gold-3);
 }
 
+/* ── Corrigir cores para o painel claro: gold-1 e gold-2 são invisíveis sobre branco ── */
+html[data-theme="dark"] .det-info--claro {
+  --gold-1: #7a5a1e;   /* substitui #f4d98a (clarinho) por marrom-ouro legível */
+  --gold-2: #9a6f1e;   /* substitui #e0b556 (amarelo claro) por dourado escuro */
+}
+/* Garante que os SVGs dos botões de ação usem cor legível */
+html[data-theme="dark"] .det-info--claro .det-btn-acao svg { color: var(--gold-3); }
+html[data-theme="dark"] .det-info--claro .det-btn-acao:hover { color: var(--gold-3); }
+
 /* ——— Mercado — dashboard de inteligência ——————————————— */
 .mercado-pg { padding-top: clamp(96px, 12vw, 128px); }
 .mercado-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 36px; }
