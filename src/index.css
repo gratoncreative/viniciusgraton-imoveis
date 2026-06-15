@@ -5499,25 +5499,35 @@ html[data-theme="dark"] .condo-filtro-grupo-v2 { background:var(--surface); bord
 .em2-dash-card-label { display: block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-3); margin-bottom: 14px; }
 .em2-hero--dash { margin-bottom: 0; border-radius: 18px; }
 
-/* Chart card */
-.em2-chart-card { background: rgba(10,9,6,0.94); border: 1px solid rgba(255,255,255,0.07); border-radius: 18px; padding: 22px 24px; }
-.em2-chart-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
-.em2-chart-titulo { font-family: var(--font-head); font-weight: 700; font-size: 1rem; color: #dde2ea; }
-.em2-chart-sub { font-size: 0.74rem; color: #505870; }
-.em2-chart-empty { font-size: 0.85rem; color: #505870; padding: 20px 0; }
-.em2-chart-wrap { display: flex; flex-direction: column; gap: 14px; }
-.em2-chart-bars { position: relative; height: 160px; display: flex; align-items: flex-end; gap: 3px; }
-.em2-chart-bar-col { flex: 1; min-width: 4px; height: 100%; display: flex; align-items: flex-end; }
-.em2-chart-bar-col--gap { flex: 0 0 10px; }
-.em2-chart-bar { width: 100%; min-height: 4px; border-radius: 3px 3px 0 0; background: rgba(201,168,76,0.2); transition: background 0.18s; }
-.em2-chart-bar:hover { background: rgba(201,168,76,0.45); }
-.em2-chart-bar--subject { background: var(--gold-2); box-shadow: 0 0 14px rgba(201,168,76,0.35); }
-.em2-chart-refline { position: absolute; left: 0; right: 0; height: 0; border-top: 1px dashed rgba(201,168,76,0.55); pointer-events: none; z-index: 1; }
-.em2-chart-footer { display: flex; gap: 18px; flex-wrap: wrap; }
-.em2-chart-legend { display: inline-flex; align-items: center; gap: 7px; font-size: 0.75rem; color: #6a738a; }
-.em2-chart-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; flex-shrink: 0; }
-.em2-chart-dot--ref { background: transparent; border: 1px dashed rgba(201,168,76,0.65); }
-.em2-chart-dot--sub { background: var(--gold-2); border-radius: 50%; }
+/* ── PositionRuler ──────────────────────────────────────────────── */
+.em2-ruler-card { background: rgba(10,9,6,0.94); border: 1px solid rgba(255,255,255,0.07); border-radius: 18px; padding: 26px 28px 22px; }
+.em2-ruler-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; margin-bottom: 40px; }
+.em2-ruler-title { font-family: var(--font-head); font-size: 1rem; font-weight: 700; color: #f1ede4; margin: 0 0 5px; line-height: 1.3; }
+.em2-ruler-sub { font-size: 0.76rem; color: rgba(241,237,228,0.42); margin: 0; }
+.em2-ruler-faixa-info { text-align: right; flex-shrink: 0; }
+.em2-ruler-faixa-tag { display: block; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: rgba(241,237,228,0.38); margin-bottom: 3px; }
+.em2-ruler-faixa-val { display: block; font-size: 0.88rem; font-weight: 700; color: var(--gold-2); }
+/* Stage */
+.em2-ruler-stage { position: relative; height: 120px; }
+/* Subject label */
+.em2-ruler-subj-ann { position: absolute; top: 0; white-space: nowrap; }
+.em2-ruler-subj-name { display: block; font-size: 0.76rem; font-weight: 700; color: #4ade80; margin-bottom: 3px; }
+.em2-ruler-subj-val { display: block; font-size: 0.69rem; color: rgba(241,237,228,0.46); }
+/* Median tooltip */
+.em2-ruler-median-ann { position: absolute; top: 0; transform: translateX(-50%); text-align: center; pointer-events: none; }
+.em2-ruler-median-box { display: inline-block; background: rgba(201,168,76,0.92); border-radius: 10px; padding: 8px 13px 7px; margin-bottom: 5px; }
+.em2-ruler-median-val { display: block; font-size: 0.98rem; font-weight: 800; color: #0d0c0a; line-height: 1; margin-bottom: 3px; }
+.em2-ruler-median-tag { display: block; font-size: 0.62rem; font-weight: 600; color: rgba(0,0,0,0.58); }
+.em2-ruler-median-sub { display: block; font-size: 0.58rem; font-weight: 800; letter-spacing: 0.11em; text-transform: uppercase; color: rgba(201,168,76,0.6); }
+/* Track */
+.em2-ruler-track { position: absolute; top: 80px; left: 0; right: 0; height: 2px; background: rgba(255,255,255,0.09); }
+.em2-ruler-band { position: absolute; top: 50%; transform: translateY(-50%); height: 14px; background: rgba(201,168,76,0.2); border: 1px solid rgba(201,168,76,0.38); border-radius: 7px; }
+.em2-ruler-median-line { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 2px; height: 22px; background: rgba(255,255,255,0.55); border-radius: 1px; }
+.em2-ruler-dot { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 14px; height: 14px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 3px rgba(74,222,128,0.2), 0 0 0 6px rgba(74,222,128,0.07); z-index: 2; }
+.em2-ruler-tick { position: absolute; top: 100%; transform: translateX(-50%); width: 1px; height: 6px; background: rgba(255,255,255,0.16); margin-top: 2px; }
+/* Tick labels */
+.em2-ruler-tick-labels { position: absolute; top: 94px; left: 0; right: 0; }
+.em2-ruler-tick-label { position: absolute; transform: translateX(-50%); font-size: 0.68rem; color: rgba(241,237,228,0.35); white-space: nowrap; top: 12px; }
 
 /* Stat cards row */
 .em2-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }

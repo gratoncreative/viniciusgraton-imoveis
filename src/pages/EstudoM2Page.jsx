@@ -61,62 +61,85 @@ function LaudoProfissional({ codigo, baseLabel }) {
   )
 }
 
-/* ── Gráfico de barras: comparáveis do mercado ──────────────────── */
-function CompsChart({ feed, im, est }) {
-  const grupo = useMemo(() => {
-    const t = (im.tipo || '').toLowerCase()
-    if (/apart|kit|studio|stúdio|loft|flat|cobertura|andar/i.test(t)) return 'apto'
-    if (/casa|sobrado|village|geminada/i.test(t)) return 'casa'
-    if (/terreno|lote/i.test(t)) return 'terreno'
-    return 'outro'
-  }, [im.tipo])
+/* ── Régua de posicionamento no mercado ─────────────────────────── */
+function PositionRuler({ im, est }) {
+  const { m2Subj, referencia, campoMin, campoMax } = est
 
-  const dados = useMemo(() => {
-    const lista = feed
-      .filter(p => {
-        if (!p.preco || !p.area || String(p.codigo) === String(im.codigo)) return false
-        const t = (p.tipo || '').toLowerCase()
-        let g = 'outro'
-        if (/apart|kit|studio|stúdio|loft|flat|cobertura|andar/i.test(t)) g = 'apto'
-        else if (/casa|sobrado|village|geminada/i.test(t)) g = 'casa'
-        else if (/terreno|lote/i.test(t)) g = 'terreno'
-        return g === grupo
-      })
-      .map(p => Math.round(p.preco / p.area))
-      .filter(m2 => m2 > 500 && m2 < 20000)
-      .sort((a, b) => a - b)
-    if (lista.length < 3) return null
-    const mid = Math.floor(lista.length / 2)
-    const sample = lista.slice(Math.max(0, mid - 14), mid + 14)
-    const subM2 = Math.round(im.preco / im.area)
-    const refM2 = Math.round(est.referencia)
-    const maxM2 = Math.max(...sample, subM2) * 1.08
-    return { sample, subM2, refM2, maxM2 }
-  }, [feed, im, est, grupo])
+  const dataMin = Math.min(m2Subj, campoMin)
+  const dataMax = Math.max(m2Subj, campoMax)
+  const dataRange = dataMax - dataMin || 1000
+  const axisMin = Math.floor((dataMin - dataRange * 0.18) / 500) * 500
+  const axisMax = Math.ceil((dataMax + dataRange * 0.12) / 500) * 500
+  const axisRange = axisMax - axisMin || 1
 
-  if (!dados) return <p className="em2-chart-empty">Comparáveis insuficientes para o gráfico.</p>
+  const pct = v => ((v - axisMin) / axisRange * 100).toFixed(1) + '%'
+  const pctNum = v => (v - axisMin) / axisRange * 100
 
-  const { sample, subM2, refM2, maxM2 } = dados
-  const pct = (v) => Math.max(3, Math.round((v / maxM2) * 100))
-  const refPct = Math.round((refM2 / maxM2) * 100)
+  const tickStep = axisRange <= 4000 ? 500 : axisRange <= 8000 ? 1000 : axisRange <= 16000 ? 2000 : 3000
+  const ticks = []
+  const firstTick = Math.ceil((axisMin + 1) / tickStep) * tickStep
+  for (let t = firstTick; t <= axisMax; t += tickStep) ticks.push(t)
+
+  const fmtK = v => `R$ ${(v / 1000).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}k`
+  const fmtVal = v => 'R$ ' + Math.round(v).toLocaleString('pt-BR')
+
+  const subjPct = pctNum(m2Subj)
+  const medianPct = pctNum(referencia)
+  const subjTransform = subjPct < 15 ? 'translateX(0)' : subjPct > 85 ? 'translateX(-100%)' : 'translateX(-50%)'
+  const showMedianTip = Math.abs(medianPct - subjPct) > 18
 
   return (
-    <div className="em2-chart-wrap">
-      <div className="em2-chart-bars">
-        <div className="em2-chart-refline" style={{ bottom: refPct + '%' }} />
-        {sample.map((m2, i) => (
-          <div key={i} className="em2-chart-bar-col">
-            <div className="em2-chart-bar" style={{ height: pct(m2) + '%' }} />
-          </div>
-        ))}
-        <div className="em2-chart-bar-col em2-chart-bar-col--gap" />
-        <div className="em2-chart-bar-col">
-          <div className="em2-chart-bar em2-chart-bar--subject" style={{ height: pct(subM2) + '%' }} />
+    <div className="em2-ruler-card">
+      <div className="em2-ruler-header">
+        <div>
+          <h3 className="em2-ruler-title">Onde este preço se posiciona no mercado</h3>
+          <p className="em2-ruler-sub">
+            Valor por m² homogeneizado, comparado à faixa praticada no {im.bairro}
+          </p>
+        </div>
+        <div className="em2-ruler-faixa-info">
+          <span className="em2-ruler-faixa-tag">Faixa de mercado</span>
+          <span className="em2-ruler-faixa-val">{fmtVal(campoMin)} a {fmtVal(campoMax)} / m²</span>
         </div>
       </div>
-      <div className="em2-chart-footer">
-        <span className="em2-chart-legend"><i className="em2-chart-dot em2-chart-dot--ref" />Ref. mercado · {fmtM2(refM2)}</span>
-        <span className="em2-chart-legend"><i className="em2-chart-dot em2-chart-dot--sub" />Este imóvel · {fmtM2(subM2)}</span>
+
+      <div className="em2-ruler-stage">
+        {/* Label do imóvel (acima da régua) */}
+        <div className="em2-ruler-subj-ann" style={{ left: pct(m2Subj), transform: subjTransform }}>
+          <span className="em2-ruler-subj-name">Este imóvel</span>
+          <span className="em2-ruler-subj-val">{fmtVal(m2Subj)} / m² homogeneizado</span>
+        </div>
+
+        {/* Tooltip da mediana (acima da régua, só se não sobrepuser) */}
+        {showMedianTip && (
+          <div className="em2-ruler-median-ann" style={{ left: pct(referencia) }}>
+            <div className="em2-ruler-median-box">
+              <span className="em2-ruler-median-val">{fmtVal(referencia)}</span>
+              <span className="em2-ruler-median-tag">mercado · m²</span>
+            </div>
+            <span className="em2-ruler-median-sub">FAIXA DE MERCADO</span>
+          </div>
+        )}
+
+        {/* Trilho */}
+        <div className="em2-ruler-track">
+          <div className="em2-ruler-band" style={{
+            left: pct(campoMin),
+            width: ((campoMax - campoMin) / axisRange * 100).toFixed(1) + '%'
+          }} />
+          <div className="em2-ruler-median-line" style={{ left: pct(referencia) }} />
+          <div className="em2-ruler-dot" style={{ left: pct(m2Subj) }} />
+          {ticks.map(t => <div key={t} className="em2-ruler-tick" style={{ left: pct(t) }} />)}
+        </div>
+
+        {/* Rótulos dos ticks */}
+        <div className="em2-ruler-tick-labels">
+          {ticks.map(t => (
+            <span key={t} className="em2-ruler-tick-label" style={{ left: pct(t) }}>
+              {fmtK(t)}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   )
@@ -272,14 +295,8 @@ export default function EstudoM2Page() {
                 </div>
               </div>
 
-              {/* Gráfico de comparáveis */}
-              <div className="em2-chart-card">
-                <div className="em2-chart-head">
-                  <span className="em2-chart-titulo">Comparáveis no mercado</span>
-                  <span className="em2-chart-sub">preço/m² · imóveis do mesmo tipo na cidade</span>
-                </div>
-                <CompsChart feed={feed} im={im} est={est} />
-              </div>
+              {/* Régua de posicionamento */}
+              <PositionRuler im={im} est={est} />
 
               {/* Stat cards */}
               <div className="em2-stats-row">
