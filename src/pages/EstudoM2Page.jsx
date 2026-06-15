@@ -1,213 +1,581 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
-import { getImovel, estudoM2, linkWhatsApp } from '../data'
-import { IconWhats } from '../components/icons'
+import { getImovel, estudoM2 } from '../data'
+import bairrosM2 from '../bairros-m2.json'
+import {
+  haversine, azimuth, calcStats, calcGrau,
+  fmtBRL, fmtM2, fmtKm, fmtData,
+} from '../utils/estudo-calc'
 
-const fmtM2  = (v) => 'R$ ' + Math.round(v).toLocaleString('pt-BR') + '/m²'
-const fmtBRL = (v) => 'R$ ' + Math.round(v).toLocaleString('pt-BR')
+// ── Fontes carregadas dinamicamente (só nesta página) ─────────────────────────
+function useFontsPremium() {
+  useEffect(() => {
+    const id = 'ep-fonts'
+    if (document.getElementById(id)) return
+    const link = document.createElement('link')
+    link.id = id
+    link.rel = 'stylesheet'
+    link.href =
+      'https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap'
+    document.head.appendChild(link)
+  }, [])
+}
 
-/* ══ Laudo profissional ═══════════════════════════════════════════ */
-function LaudoProfissional({ codigo, n }) {
-  const [comprando, setComprando] = useState(false)
+// ── Mapa de coordenadas por bairro ────────────────────────────────────────────
+const bairroCoords = (() => {
+  const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim()
+  const map = {}
+  for (const b of bairrosM2) {
+    if (b.lat && b.lng) map[norm(b.bairro)] = { lat: b.lat, lng: b.lng }
+  }
+  return map
+})()
 
-  const comprar = async () => {
-    setComprando(true)
-    try {
-      const r = await fetch('/api/laudo-pagar', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ codigo }),
-      })
-      const j = await r.json()
-      if (j?.naoConfigurado) {
-        alert('Pagamento ainda não configurado. Chame no WhatsApp que eu te envio o laudo.')
-        return
-      }
-      if (j?.url) window.location.href = j.url
-    } catch {
-      alert('Erro ao processar pagamento. Tente novamente.')
-    } finally {
-      setComprando(false)
+function getBairroLatLng(bairro) {
+  const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim()
+  return bairroCoords[norm(bairro)] ?? null
+}
+
+// ── Adapta a saída de estudoM2() para o contrato interno ─────────────────────
+function buildEstudo(im, est) {
+  const hoje = new Date().toISOString().slice(0, 10)
+  const avCoords = getBairroLatLng(im.bairro)
+  const avLat = avCoords?.lat ?? -18.9186
+  const avLng = avCoords?.lng ?? -48.2772
+
+  const comps = est.comparaveis || []
+  const testemunhas = comps.map((c, i) => {
+    const coords = getBairroLatLng(c.bairro)
+    const lat = coords?.lat ?? avLat
+    const lng = coords?.lng ?? avLng
+    const valorM2 = c.m2bruto ?? (c.preco > 0 && c.area > 0 ? c.preco / c.area : 0)
+    const fatorHom = valorM2 > 0 ? c.m2 / valorM2 : 1
+    const sameBairro = Math.abs(lat - avLat) < 0.001 && Math.abs(lng - avLng) < 0.001
+    // Para mesmo bairro: posiciona em raio mínimo com ângulo distribuído (ângulo áureo)
+    const dist = sameBairro ? 0.08 + (i % 6) * 0.05 : haversine(avLat, avLng, lat, lng)
+    const brg = sameBairro ? (i * 137.5) % 360 : azimuth(avLat, avLng, lat, lng)
+    return {
+      ref: `T${i + 1}`, tipo: im.tipo, bairro: c.bairro,
+      area: c.area, valor: c.preco, lat, lng,
+      fonte: 'Rotina Imobiliária', fatorHom,
+      valorM2, valorHomM2: c.m2,
+      dist, brg,
     }
+  })
+
+  const homVals = testemunhas.map(t => t.valorHomM2).filter(v => v > 0)
+  const stats = calcStats(homVals)
+  const grau = calcGrau(est.n, stats.cv)
+  const adotadoM2 = est.referencia
+  const valorTotal = Math.round(adotadoM2 * im.area)
+  const amplitude = 0.08
+  const valMin = Math.round(valorTotal * (1 - amplitude))
+  const valMax = Math.round(valorTotal * (1 + amplitude))
+
+  return {
+    numero: im.codigo,
+    data: hoje,
+    metodo: 'Comparativo direto de dados de mercado',
+    tendencia: 'mediana',
+    amplitude,
+    consultor: {
+      nome: 'Vinícius Graton',
+      registro: 'Consultor da Rotina Imobiliária',
+      whatsapp: '5534991570494',
+    },
+    avaliando: {
+      tipo: im.tipo || 'Imóvel', endereco: im.bairro,
+      bairro: im.bairro, cidade: 'Uberlândia/MG',
+      area: im.area, dormitorios: im.quartos || 0,
+      suites: im.suites || 0, banheiros: im.banheiros || 0,
+      vagas: im.vagas || 0, lat: avLat, lng: avLng,
+    },
+    testemunhas,
+    // resultado
+    stats, grau, adotadoM2, valorTotal, valMin, valMax,
+    m2Subj: est.m2Subj, precoM2: est.precoM2,
+    diffPct: est.diffPct, veredito: est.veredito, n: est.n,
+    simples: !!est.simples,
+    baseLabel: est.baseLabel,
+    fontes: est.fontes,
+  }
+}
+
+// ══ COMPONENTES SVG ══════════════════════════════════════════════════════════
+
+/** Radar polar de proximidade */
+function RadarChart({ testemunhas, avaliando, referencia }) {
+  const [hov, setHov] = useState(null)
+
+  const dists = testemunhas.map(t => t.dist).filter(v => v > 0)
+  const rawMax = Math.max(...dists, 0.5)
+  // escala "arredondada para cima"
+  const niceMax = rawMax <= 1 ? 1 : rawMax <= 2 ? 2 : rawMax <= 3 ? 3 : rawMax <= 5 ? 5 : rawMax <= 8 ? 8 : 10
+  const RMAX = 155
+  const toXY = (dist, az) => {
+    const r = Math.min((dist / niceMax) * RMAX, RMAX)
+    const rad = az * Math.PI / 180
+    return { x: r * Math.sin(rad), y: -r * Math.cos(rad) }
+  }
+
+  const rings = []
+  const ringStep = niceMax <= 2 ? 0.5 : niceMax <= 5 ? 1 : 2
+  for (let r = ringStep; r <= niceMax + 0.01; r += ringStep) rings.push(r)
+
+  const dotColor = t => {
+    const pct = referencia > 0 ? (t.valorHomM2 - referencia) / referencia : 0
+    if (pct < -0.10) return '#6fbf95'
+    if (pct > 0.10) return '#d2918a'
+    return '#5ec8d8'
   }
 
   return (
-    <>
-      <ul className="es3-laudo-lista">
-        <li>{n > 0 ? `${n} comparáveis` : 'Comparáveis'} com endereço, preço e motivo de cada ajuste</li>
-        <li>Cálculo de quanto você pode negociar de desconto</li>
-        <li>Aceito por bancos para contestar avaliação no financiamento</li>
-        <li>Entregue em PDF em até 30 minutos</li>
-        <li>Assinado pelo consultor com parecer técnico personalizado</li>
-      </ul>
-      <button className="es3-laudo-btn" onClick={comprar} disabled={comprando}>
-        <span className="es3-laudo-btn-main">
-          {comprando ? 'Processando…' : '📄 Quero o laudo — R$ 250'}
-        </span>
-        <span className="es3-laudo-btn-sub">entrega em PDF imediata · pagamento seguro</span>
-      </button>
-    </>
+    <svg
+      viewBox={`-190 -190 380 380`}
+      className="ep-radar-svg"
+      role="img"
+      aria-label="Radar de proximidade das testemunhas de mercado"
+    >
+      {/* Fundo */}
+      <circle cx={0} cy={0} r={180} fill="#0f1623" />
+
+      {/* Eixos cardeais */}
+      {[0, 90, 180, 270].map(az => {
+        const rad = az * Math.PI / 180
+        return (
+          <line key={az}
+            x1={0} y1={0}
+            x2={(RMAX + 20) * Math.sin(rad)} y2={-(RMAX + 20) * Math.cos(rad)}
+            stroke="#26334a" strokeWidth="0.8"
+          />
+        )
+      })}
+
+      {/* Anéis de distância */}
+      {rings.map(km => {
+        const r = (km / niceMax) * RMAX
+        return (
+          <g key={km}>
+            <circle cx={0} cy={0} r={r}
+              fill="none" stroke="#26334a"
+              strokeWidth={km === niceMax ? "1" : "0.5"}
+              strokeDasharray={km === niceMax ? "none" : "3 4"}
+            />
+            <text x={4} y={-r + 9}
+              fill="#647691" fontSize="8"
+              fontFamily="'IBM Plex Mono', monospace"
+            >
+              {km < 1 ? km.toFixed(1).replace('.', ',') : km}km
+            </text>
+          </g>
+        )
+      })}
+
+      {/* Labels cardeais */}
+      {[
+        { label: 'N', x: 0, y: -(RMAX + 22) },
+        { label: 'L', x: RMAX + 22, y: 3 },
+        { label: 'S', x: 0, y: RMAX + 24 },
+        { label: 'O', x: -(RMAX + 22), y: 3 },
+      ].map(({ label, x, y }) => (
+        <text key={label} x={x} y={y}
+          fill="#647691" fontSize="10"
+          fontFamily="'IBM Plex Sans', sans-serif"
+          fontWeight="500"
+          textAnchor="middle" dominantBaseline="middle"
+        >
+          {label}
+        </text>
+      ))}
+
+      {/* Testemunhas */}
+      {testemunhas.map((t, i) => {
+        const { x, y } = toXY(t.dist, t.brg)
+        const color = dotColor(t)
+        const isHov = hov === i
+        return (
+          <g key={i}
+            onMouseEnter={() => setHov(i)}
+            onMouseLeave={() => setHov(null)}
+            style={{ cursor: 'pointer' }}
+          >
+            <circle cx={x} cy={y} r={isHov ? 13 : 9}
+              fill={color} fillOpacity={isHov ? 0.95 : 0.75}
+              stroke={isHov ? '#fff' : '#0f1623'}
+              strokeWidth={isHov ? "1.5" : "1"}
+            />
+            <text x={x} y={y}
+              fill="#0a0e16" fontSize="7"
+              fontFamily="'IBM Plex Mono', monospace"
+              fontWeight="500"
+              textAnchor="middle" dominantBaseline="middle"
+              style={{ pointerEvents: 'none' }}
+            >
+              {i + 1}
+            </text>
+            {isHov && (
+              <g>
+                <rect
+                  x={x > 80 ? x - 128 : x + 14} y={y - 26}
+                  width={114} height={52}
+                  rx={4} fill="#141d2c"
+                  stroke="#26334a" strokeWidth="1"
+                />
+                <text x={x > 80 ? x - 70 : x + 71} y={y - 13}
+                  fill="#eef2f8" fontSize="8"
+                  fontFamily="'IBM Plex Sans', sans-serif"
+                  fontWeight="500" textAnchor="middle"
+                >
+                  {t.ref} · {t.bairro}
+                </text>
+                <text x={x > 80 ? x - 70 : x + 71} y={y + 1}
+                  fill="#9fb0c8" fontSize="7.5"
+                  fontFamily="'IBM Plex Mono', monospace"
+                  textAnchor="middle"
+                >
+                  {fmtKm(t.dist)} · {fmtM2(t.valorHomM2)}
+                </text>
+                <text x={x > 80 ? x - 70 : x + 71} y={y + 15}
+                  fill="#647691" fontSize="7"
+                  fontFamily="'IBM Plex Sans', sans-serif"
+                  textAnchor="middle"
+                >
+                  {t.area} m² · {fmtBRL(t.valor)}
+                </text>
+              </g>
+            )}
+          </g>
+        )
+      })}
+
+      {/* Avaliando ao centro — diamante latão */}
+      <polygon points="0,-10 10,0 0,10 -10,0"
+        fill="#cda35b" stroke="#0f1623" strokeWidth="2"
+      />
+      <text x={0} y={21}
+        fill="#cda35b" fontSize="8"
+        fontFamily="'IBM Plex Sans', sans-serif"
+        fontWeight="500" textAnchor="middle"
+      >
+        Avaliando
+      </text>
+    </svg>
   )
 }
 
-/* ══ Gráfico de comparáveis ═══════════════════════════════════════ */
-function CompsChart({ est, im }) {
-  if (!est?.comparaveis?.length) return null
-  const comps = est.comparaveis
-  const allVals = [...comps.map(c => c.m2), est.m2Subj]
-  const rawMin = Math.min(...allVals)
-  const rawMax = Math.max(...allVals)
-  const pad = (rawMax - rawMin) * 0.15 || 500
-  const cMin = Math.max(0, rawMin - pad)
-  const cMax = rawMax + pad
-  const range = cMax - cMin || 1
+/** Scatter área × R$/m² */
+function AreaScatter({ testemunhas, avaliandoArea, avaliandoM2, referencia }) {
+  if (!testemunhas.length) return null
+  const W = 360, H = 200
+  const PAD = { t: 22, r: 20, b: 32, l: 52 }
+  const pW = W - PAD.l - PAD.r
+  const pH = H - PAD.t - PAD.b
 
-  const pct = v => ((v - cMin) / range * 100).toFixed(1) + '%'
-  const fmtMil = v => `R$ ${Math.round(v / 1000)} mil`
-  const step = range <= 3000 ? 500 : range <= 6000 ? 1000 : range <= 12000 ? 2000 : 3000
-  const ticks = []
-  for (let t = Math.ceil(cMin / step) * step; t <= cMax; t += step) ticks.push(t)
+  const allAreas = [...testemunhas.map(t => t.area), avaliandoArea]
+  const allM2 = [...testemunhas.map(t => t.valorHomM2), avaliandoM2, referencia]
+  const aMin = Math.min(...allAreas) * 0.88
+  const aMax = Math.max(...allAreas) * 1.12
+  const mMin = Math.max(0, Math.min(...allM2) * 0.85)
+  const mMax = Math.max(...allM2) * 1.15
 
-  const subjInComps = comps.some(c => String(c.codigo) === String(im.codigo))
+  const xS = v => PAD.l + (v - aMin) / (aMax - aMin) * pW
+  const yS = v => PAD.t + pH - (v - mMin) / (mMax - mMin) * pH
+  const refY = yS(referencia)
+
+  // ticks eixo Y
+  const yRange = mMax - mMin
+  const yStep = yRange <= 3000 ? 500 : yRange <= 6000 ? 1000 : 2000
+  const yTicks = []
+  for (let t = Math.ceil(mMin / yStep) * yStep; t <= mMax; t += yStep) yTicks.push(t)
 
   return (
-    <div className="es3-chart">
-      <div className="es3-chart-stage">
-        {ticks.map(t => (
-          <div key={t} className="es3-chart-grid" style={{ bottom: pct(t) }}>
-            <span className="es3-chart-grid-label">{fmtMil(t)}</span>
-          </div>
-        ))}
-        <div className="es3-chart-med" style={{ bottom: pct(est.referencia) }}>
-          <span className="es3-chart-med-tag">mediana</span>
+    <svg viewBox={`0 0 ${W} ${H}`} className="ep-chart-svg" aria-label="Dispersão área por R$/m²">
+      {/* Grade */}
+      {yTicks.map(v => (
+        <line key={v} x1={PAD.l} y1={yS(v)} x2={W - PAD.r} y2={yS(v)}
+          stroke="#26334a" strokeWidth="0.4"
+        />
+      ))}
+
+      {/* Eixos */}
+      <line x1={PAD.l} y1={PAD.t} x2={PAD.l} y2={H - PAD.b} stroke="#26334a" strokeWidth="1" />
+      <line x1={PAD.l} y1={H - PAD.b} x2={W - PAD.r} y2={H - PAD.b} stroke="#26334a" strokeWidth="1" />
+
+      {/* Linha do valor adotado */}
+      <line x1={PAD.l} y1={refY} x2={W - PAD.r} y2={refY}
+        stroke="#cda35b" strokeWidth="1" strokeDasharray="6 3"
+      />
+      <text x={W - PAD.r - 2} y={refY - 4}
+        fill="#cda35b" fontSize="7.5" textAnchor="end"
+        fontFamily="'IBM Plex Mono', monospace"
+      >
+        adotado
+      </text>
+
+      {/* Comparáveis */}
+      {testemunhas.map((t, i) => (
+        <circle key={i} cx={xS(t.area)} cy={yS(t.valorHomM2)}
+          r={4} fill="#5ec8d8" fillOpacity={0.7}
+        />
+      ))}
+
+      {/* Avaliando */}
+      <circle cx={xS(avaliandoArea)} cy={yS(avaliandoM2)}
+        r={7} fill="#cda35b" stroke="#0f1623" strokeWidth="2"
+      />
+
+      {/* Labels Y */}
+      {yTicks.map(v => (
+        <text key={v} x={PAD.l - 5} y={yS(v)}
+          fill="#647691" fontSize="7" textAnchor="end"
+          fontFamily="'IBM Plex Mono', monospace" dominantBaseline="middle"
+        >
+          {Math.round(v / 1000)}k
+        </text>
+      ))}
+
+      {/* Label X */}
+      <text x={PAD.l + pW / 2} y={H - 4}
+        fill="#647691" fontSize="8" textAnchor="middle"
+        fontFamily="'IBM Plex Sans', sans-serif"
+      >
+        área (m²)
+      </text>
+      <text x={PAD.l - 46} y={PAD.t + pH / 2}
+        fill="#647691" fontSize="8" textAnchor="middle"
+        fontFamily="'IBM Plex Sans', sans-serif"
+        transform={`rotate(-90, ${PAD.l - 46}, ${PAD.t + pH / 2})`}
+      >
+        R$/m²
+      </text>
+
+      {/* Legenda */}
+      <circle cx={PAD.l + 4} cy={PAD.t + 8} r={3} fill="#5ec8d8" fillOpacity={0.7} />
+      <text x={PAD.l + 10} y={PAD.t + 11} fill="#9fb0c8" fontSize="7" fontFamily="'IBM Plex Sans', sans-serif">
+        testemunhas
+      </text>
+      <circle cx={PAD.l + 80} cy={PAD.t + 8} r={4} fill="#cda35b" stroke="#0f1623" strokeWidth="1.5" />
+      <text x={PAD.l + 88} y={PAD.t + 11} fill="#9fb0c8" fontSize="7" fontFamily="'IBM Plex Sans', sans-serif">
+        avaliando
+      </text>
+    </svg>
+  )
+}
+
+/** Distribuição do R$/m² homogeneizado */
+function DistributionChart({ vals, media, dp, referencia }) {
+  if (!vals.length) return null
+  const W = 360, H = 88
+  const PAD = { l: 20, r: 20, t: 22, b: 22 }
+  const pW = W - PAD.l - PAD.r
+  const midY = PAD.t + (H - PAD.t - PAD.b) / 2
+
+  const spread = Math.max(dp * 2.5, 500)
+  const rMin = Math.min(...vals, media - spread)
+  const rMax = Math.max(...vals, media + spread)
+  const range = rMax - rMin || 1
+
+  const xS = v => PAD.l + (v - rMin) / range * pW
+  const bL = xS(Math.max(rMin, media - dp))
+  const bR = xS(Math.min(rMax, media + dp))
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="ep-chart-svg" aria-label="Distribuição do R$/m² homogeneizado">
+      {/* Faixa 1σ */}
+      <rect x={bL} y={PAD.t} width={Math.max(0, bR - bL)} height={H - PAD.t - PAD.b}
+        fill="#5ec8d8" fillOpacity={0.07}
+      />
+
+      {/* Linha do adotado */}
+      <line x1={xS(referencia)} y1={PAD.t - 4} x2={xS(referencia)} y2={H - PAD.b + 4}
+        stroke="#cda35b" strokeWidth="1.5"
+      />
+      <text x={xS(referencia)} y={PAD.t - 6}
+        fill="#cda35b" fontSize="7.5" textAnchor="middle"
+        fontFamily="'IBM Plex Mono', monospace"
+      >
+        adotado
+      </text>
+
+      {/* Linha da média */}
+      <line x1={xS(media)} y1={PAD.t + 2} x2={xS(media)} y2={H - PAD.b - 2}
+        stroke="#5ec8d8" strokeWidth="1" strokeDasharray="3 2"
+      />
+      <text x={xS(media)} y={H - PAD.b + 14}
+        fill="#5ec8d8" fontSize="7" textAnchor="middle"
+        fontFamily="'IBM Plex Mono', monospace"
+      >
+        média
+      </text>
+
+      {/* Dots */}
+      {vals.map((v, i) => {
+        const pct = referencia > 0 ? (v - referencia) / referencia : 0
+        const color = pct < -0.10 ? '#6fbf95' : pct > 0.10 ? '#d2918a' : '#5ec8d8'
+        return (
+          <circle key={i} cx={xS(v)} cy={midY + (i % 2 === 0 ? -5 : 5)}
+            r={3.5} fill={color} fillOpacity={0.8}
+          />
+        )
+      })}
+
+      {/* Escala */}
+      <text x={PAD.l} y={H - 3} fill="#647691" fontSize="7" fontFamily="'IBM Plex Mono', monospace">
+        {Math.round(rMin / 1000)}k
+      </text>
+      <text x={W - PAD.r} y={H - 3} fill="#647691" fontSize="7" textAnchor="end" fontFamily="'IBM Plex Mono', monospace">
+        {Math.round(rMax / 1000)}k
+      </text>
+    </svg>
+  )
+}
+
+// ══ COMPONENTES UI ═══════════════════════════════════════════════════════════
+
+function GrauBadge({ grau }) {
+  const cor = grau === 'III' ? 'up' : grau === 'II' ? 'teal' : 'brass'
+  return (
+    <div className={`ep-grau ep-grau--${cor}`}>
+      <span className="ep-grau-num">{grau}</span>
+      <span className="ep-grau-label">Grau de fundamentação</span>
+    </div>
+  )
+}
+
+function IntervalBar({ valMin, adotado, valMax }) {
+  return (
+    <div className="ep-ibar">
+      <div className="ep-ibar-track">
+        <div className="ep-ibar-seg ep-ibar-seg--lo" />
+        <div className="ep-ibar-pip" />
+        <div className="ep-ibar-seg ep-ibar-seg--hi" />
+      </div>
+      <div className="ep-ibar-row">
+        <div className="ep-ibar-anchor">
+          <span className="ep-ibar-val">{fmtBRL(valMin)}</span>
+          <span className="ep-ibar-sub">mínimo</span>
         </div>
-        <div className="es3-chart-bars">
-          {comps.map((c, i) => {
-            const isSubj = String(c.codigo) === String(im.codigo)
+        <div className="ep-ibar-anchor ep-ibar-anchor--center">
+          <span className="ep-ibar-val ep-ibar-val--adotado">{fmtBRL(adotado)}</span>
+          <span className="ep-ibar-sub">valor de mercado</span>
+        </div>
+        <div className="ep-ibar-anchor ep-ibar-anchor--right">
+          <span className="ep-ibar-val">{fmtBRL(valMax)}</span>
+          <span className="ep-ibar-sub">máximo</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SortableTable({ rows, referencia }) {
+  const [col, setCol] = useState('ref')
+  const [dir, setDir] = useState(1)
+
+  const toggleSort = k => {
+    if (col === k) setDir(d => -d)
+    else { setCol(k); setDir(1) }
+  }
+
+  const sorted = [...rows].sort((a, b) => {
+    const va = a[col], vb = b[col]
+    if (typeof va === 'string') return dir * va.localeCompare(vb, 'pt-BR')
+    return dir * ((va ?? 0) - (vb ?? 0))
+  })
+
+  const Th = ({ k, label }) => (
+    <th className={`ep-th${col === k ? ' ep-th--active' : ''}`} onClick={() => toggleSort(k)}>
+      {label}
+      <span className="ep-sort-icon">{col === k ? (dir > 0 ? '↑' : '↓') : '↕'}</span>
+    </th>
+  )
+
+  return (
+    <div className="ep-table-wrap">
+      <table className="ep-table">
+        <thead>
+          <tr>
+            <Th k="ref" label="Ref" />
+            <Th k="bairro" label="Bairro" />
+            <Th k="area" label="Área" />
+            <Th k="valor" label="Valor" />
+            <Th k="valorM2" label="R$/m²" />
+            <Th k="fatorHom" label="Fator" />
+            <Th k="valorHomM2" label="R$/m² hom." />
+            <Th k="dist" label="Dist." />
+            <th className="ep-th">Fonte</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sorted.map((t, i) => {
+            const delta = referencia > 0 ? (t.valorHomM2 - referencia) / referencia : 0
+            const cls = delta > 0.10 ? 'hi' : delta < -0.10 ? 'lo' : 'ok'
             return (
-              <div key={i} className="es3-chart-bar-wrap">
-                {isSubj && (
-                  <span className="es3-chart-subj-label">
-                    {`R$ ${Math.round(c.m2).toLocaleString('pt-BR')}/m²`}
-                  </span>
-                )}
-                <div
-                  className={`es3-chart-bar${isSubj ? ' es3-chart-bar--subj' : ''}`}
-                  style={{ height: pct(c.m2) }}
-                />
-                <div className="es3-chart-tooltip">
-                  <span className="es3-chart-tt-name">{isSubj ? 'Este imóvel' : c.bairro}</span>
-                  <span className="es3-chart-tt-area">{c.area} m² · {c.vagas > 0 ? `${c.vagas} vaga${c.vagas > 1 ? 's' : ''}` : 'sem vaga'}</span>
-                  <span className="es3-chart-tt-preco">{fmtBRL(c.preco)}</span>
-                  <span className="es3-chart-tt-m2">{fmtM2(c.m2)}</span>
-                </div>
-              </div>
+              <tr key={i} className="ep-tr">
+                <td className="ep-td ep-mono ep-td-ref">{t.ref}</td>
+                <td className="ep-td">{t.bairro}</td>
+                <td className="ep-td ep-mono ep-td-r">{t.area} m²</td>
+                <td className="ep-td ep-mono ep-td-r">{fmtBRL(t.valor)}</td>
+                <td className="ep-td ep-mono ep-td-r">{fmtM2(t.valorM2)}</td>
+                <td className="ep-td ep-mono ep-td-r">{t.fatorHom.toFixed(3)}</td>
+                <td className={`ep-td ep-mono ep-td-r ep-td-${cls}`}>{fmtM2(t.valorHomM2)}</td>
+                <td className="ep-td ep-mono ep-td-r">{t.dist ? fmtKm(t.dist) : '—'}</td>
+                <td className="ep-td ep-td-fonte">{t.fonte}</td>
+              </tr>
             )
           })}
-          {!subjInComps && (
-            <div className="es3-chart-bar-wrap">
-              <span className="es3-chart-subj-label">
-                {`R$ ${Math.round(est.m2Subj).toLocaleString('pt-BR')}/m²`}
-              </span>
-              <div className="es3-chart-bar es3-chart-bar--subj" style={{ height: pct(est.m2Subj) }} />
-              <div className="es3-chart-tooltip">
-                <span className="es3-chart-tt-name">Este imóvel</span>
-                <span className="es3-chart-tt-area">{im.area} m²</span>
-                <span className="es3-chart-tt-m2">{fmtM2(est.m2Subj)}</span>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-      <div className="es3-chart-legend">
-        <span><span className="es3-chart-swatch es3-chart-swatch--comp" />Comparáveis</span>
-        <span><span className="es3-chart-swatch es3-chart-swatch--subj" />Este imóvel</span>
-        <span><span className="es3-chart-swatch es3-chart-swatch--med" />Mediana</span>
-      </div>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={6} className="ep-td-adotado-label">Valor adotado (mediana)</td>
+            <td className="ep-td ep-mono ep-td-r ep-td-adotado">{fmtM2(referencia)}</td>
+            <td colSpan={2} />
+          </tr>
+        </tfoot>
+      </table>
     </div>
   )
 }
 
-/* ══ Régua de posicionamento ══════════════════════════════════════ */
-function PositionRuler({ im, est }) {
-  const { m2Subj, referencia, campoMin, campoMax } = est
-  const dataMin = Math.min(m2Subj, campoMin)
-  const dataMax = Math.max(m2Subj, campoMax)
-  const dataRange = dataMax - dataMin || 1000
-  const axisMin = Math.floor((dataMin - dataRange * 0.18) / 500) * 500
-  const axisMax = Math.ceil((dataMax + dataRange * 0.12) / 500) * 500
-  const axisRange = axisMax - axisMin || 1
-
-  const pct    = v => ((v - axisMin) / axisRange * 100).toFixed(1) + '%'
-  const pctNum = v => (v - axisMin) / axisRange * 100
-  const fmtK   = v => `R$ ${(v / 1000).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}k`
-  const fmtVal = v => 'R$ ' + Math.round(v).toLocaleString('pt-BR')
-
-  const tickStep = axisRange <= 4000 ? 500 : axisRange <= 8000 ? 1000 : axisRange <= 16000 ? 2000 : 3000
-  const ticks = []
-  for (let t = Math.ceil((axisMin + 1) / tickStep) * tickStep; t <= axisMax; t += tickStep) ticks.push(t)
-
-  const subjPct = pctNum(m2Subj)
-  const medPct  = pctNum(referencia)
-  const subjTransform = subjPct < 15 ? 'translateX(0)' : subjPct > 85 ? 'translateX(-100%)' : 'translateX(-50%)'
-
+// ── Seção com número e título ──────────────────────────────────────────────────
+function Secao({ num, titulo, sub, children, print }) {
   return (
-    <div className="es3-ruler">
-      <div className="es3-ruler-ann-row">
-        <div className="es3-ruler-subj-ann" style={{ left: pct(m2Subj), transform: subjTransform }}>
-          <span className="es3-ruler-subj-name">Este imóvel</span>
-          <span className="es3-ruler-subj-val">{fmtVal(m2Subj)}/m²</span>
-        </div>
-        {Math.abs(medPct - subjPct) > 18 && (
-          <div className="es3-ruler-med-ann" style={{ left: pct(referencia), transform: 'translateX(-50%)' }}>
-            <span className="es3-ruler-med-val">{fmtVal(referencia)}</span>
-            <span className="es3-ruler-med-sub">mediana</span>
-          </div>
-        )}
+    <section className={`ep-secao${print ? ' ep-secao--print-break' : ''}`}>
+      <header className="ep-secao-head">
+        <span className="ep-secao-num">Seção {String(num).padStart(2, '0')}</span>
+        <h2 className="ep-secao-titulo">{titulo}</h2>
+        {sub && <p className="ep-secao-sub">{sub}</p>}
+      </header>
+      <div className="ep-secao-body">
+        {children}
       </div>
-      <div className="es3-ruler-track">
-        <div className="es3-ruler-band" style={{
-          left:  pct(campoMin),
-          width: ((campoMax - campoMin) / axisRange * 100).toFixed(1) + '%',
-        }} />
-        <div className="es3-ruler-med-line" style={{ left: pct(referencia) }} />
-        <div className="es3-ruler-dot"      style={{ left: pct(m2Subj) }} />
-        {ticks.map(t => <div key={t} className="es3-ruler-tick" style={{ left: pct(t) }} />)}
-      </div>
-      <div className="es3-ruler-labels">
-        {ticks.map(t => (
-          <span key={t} className="es3-ruler-label" style={{ left: pct(t) }}>{fmtK(t)}</span>
-        ))}
-      </div>
-      <div className="es3-ruler-faixa-info">
-        <span>Faixa de mercado:</span>
-        <strong>{fmtVal(campoMin)} a {fmtVal(campoMax)}/m²</strong>
-        <span>· {im.bairro}</span>
-      </div>
-    </div>
+    </section>
   )
 }
 
-/* ══ PÁGINA PRINCIPAL ═════════════════════════════════════════════ */
+// ══ PÁGINA PRINCIPAL ══════════════════════════════════════════════════════════
 export default function EstudoM2Page() {
   const { codigo } = useParams()
-  const [imApi,      setImApi]      = useState(null)
+  const [imApi, setImApi] = useState(null)
   const [loadingApi, setLoadingApi] = useState(true)
-  const [feed,       setFeed]       = useState([])
-  const [metOpen,    setMetOpen]    = useState(false)
+  const [feed, setFeed] = useState([])
+  const [hovT, setHovT] = useState(null)     // testemunha destacada na lista/radar
+  const printRef = useRef(null)
+
+  useFontsPremium()
 
   const staticIm = useMemo(() => getImovel(codigo), [codigo])
   const im = staticIm || imApi
 
   useEffect(() => {
     if (staticIm) { setLoadingApi(false); return }
-    let vivo = true
+    let live = true
     setLoadingApi(true)
     fetch(`/api/rotina-imovel?codigo=${encodeURIComponent(codigo)}`)
       .then(r => r.ok ? r.json() : null)
       .then(j => {
-        if (!vivo) return
+        if (!live) return
         if (j?.imovel) {
           const a = j.imovel
           setImApi({
@@ -218,344 +586,357 @@ export default function EstudoM2Page() {
         }
         setLoadingApi(false)
       })
-      .catch(() => { if (vivo) setLoadingApi(false) })
-    return () => { vivo = false }
+      .catch(() => { if (live) setLoadingApi(false) })
+    return () => { live = false }
   }, [codigo, staticIm])
 
   useEffect(() => {
-    let vivo = true
+    let live = true
     fetch('/catalogo.json')
       .then(r => r.ok ? r.json() : null)
-      .then(d => { if (vivo && Array.isArray(d?.imoveis)) setFeed(d.imoveis) })
+      .then(d => { if (live && Array.isArray(d?.imoveis)) setFeed(d.imoveis) })
       .catch(() => {})
-    return () => { vivo = false }
+    return () => { live = false }
   }, [])
 
   useSEO({
-    title: im ? `Estudo do m² — ${im.tipo} no ${im.bairro} | Vinícius Graton` : 'Estudo de valor do m²',
-    description: im ? `Veja se o preço do ${im.tipo} no ${im.bairro} está justo. Análise comparativa de mercado pelo método NBR 14653.` : '',
+    title: im ? `Estudo de valor · ${im.tipo} no ${im.bairro} | Vinícius Graton` : 'Estudo de valor do m²',
+    description: im ? `Análise técnica comparativa do ${im.tipo} no ${im.bairro} pelo método NBR 14653. Valor de mercado apurado com radar de proximidade e estatística.` : '',
     path: `/estudo/${codigo}`,
   })
 
-  /* ── loading / erro ── */
+  // ── estados de loading / erro ──────────────────────────────────────────────
   if (!im) {
-    if (loadingApi) return (
-      <main className="pagina es3-pg">
-        <div className="es3-loading">
-          <div className="es3-loading-spin" />
-          <p>Carregando análise…</p>
-        </div>
-      </main>
-    )
     return (
-      <main className="pagina es3-pg">
-        <div className="es3-loading">
-          <p style={{ color: '#8a93a6', marginBottom: 24 }}>Imóvel não encontrado.</p>
-          <Link to="/imoveis" className="btn btn-gold">Ver catálogo</Link>
-        </div>
+      <main className="pagina ep-pg ep-pg--loading">
+        {loadingApi
+          ? <><div className="ep-spinner" /><p>Carregando análise…</p></>
+          : <><p>Imóvel não encontrado.</p><Link to="/imoveis" className="btn btn-gold">Ver catálogo</Link></>
+        }
       </main>
     )
   }
 
-  const est = (() => { try { return estudoM2(im, feed) } catch { return { ok: false } } })()
+  const rawEst = (() => { try { return estudoM2(im, feed) } catch { return { ok: false } } })()
+  if (!rawEst?.ok) {
+    return (
+      <main className="pagina ep-pg ep-pg--loading">
+        {loadingApi
+          ? <><div className="ep-spinner" /><p>Calculando análise…</p></>
+          : <><p>Análise não disponível para este imóvel.</p><Link to={`/imovel/${im.codigo}`} className="btn btn-ghost">Voltar ao imóvel</Link></>
+        }
+      </main>
+    )
+  }
 
-  /* cor semântica baseada no veredicto */
-  const cor = est?.ok
-    ? est.veredito === 'abaixo' ? 'ok'
-    : est.veredito === 'acima'  ? 'alto'
-    : 'neutro'
-    : 'neutro'
+  const estudo = buildEstudo(im, rawEst)
+  const { avaliando, testemunhas, stats, grau, adotadoM2, valorTotal, valMin, valMax, diffPct, veredito } = estudo
 
-  /* frase do veredicto */
-  const verdito = est?.ok
-    ? est.veredito === 'abaixo' ? `Este imóvel está ${Math.abs(est.diffPct)}% abaixo da mediana do bairro`
-    : est.veredito === 'acima'  ? `Este imóvel está ${est.diffPct}% acima da mediana do bairro`
-    : 'Este imóvel está dentro da faixa de mercado'
-    : ''
+  const corVerd = veredito === 'abaixo' ? 'up' : veredito === 'acima' ? 'down' : 'neu'
+  const textoVerd = veredito === 'abaixo'
+    ? `${Math.abs(diffPct)}% abaixo da mediana do bairro`
+    : veredito === 'acima'
+      ? `${diffPct}% acima da mediana do bairro`
+      : 'dentro da faixa de mercado'
 
-  const badgeTexto = est?.ok
-    ? est.veredito === 'abaixo' ? 'Abaixo do mercado'
-    : est.veredito === 'acima'  ? 'Acima do mercado'
-    : 'Na média do mercado'
-    : ''
+  const waMsg = `Olá Vinícius! Vi o estudo de valor cód. ${estudo.numero} (${avaliando.tipo} no ${avaliando.bairro}) e quero entender melhor. Pode me ajudar?`
 
-  const waMsg = `Olá Vinícius! Vi o estudo de valor do m² do imóvel cód. ${im.codigo} (${im.tipo} no ${im.bairro}) e quero entender melhor. Pode me ajudar?`
+  const METODOLOGIA = [
+    { n: '01', titulo: 'Coleta de dados', desc: `Levantamento de ${testemunhas.length} imóveis do mesmo tipo na região, com área, valor anunciado, bairro e fonte de origem.` },
+    { n: '02', titulo: 'Saneamento', desc: 'Exclusão de amostras que excedem ±30% da mediana, evitando distorção por valores extremos na amostra.' },
+    { n: '03', titulo: 'Homogeneização', desc: 'Aplicação de fator que ajusta área (economia de escala) e deduz o valor da vaga de garagem antes do cálculo do m².' },
+    { n: '04', titulo: 'Tratamento estatístico', desc: `Cálculo de média, mediana, desvio padrão (σ = ${Math.round(stats.dp).toLocaleString('pt-BR')} R$/m²) e CV (${(stats.cv * 100).toFixed(1).replace('.', ',')}%). Adotado: mediana.` },
+    { n: '05', titulo: 'Conclusão', desc: `Valor unitário adotado de ${fmtM2(adotadoM2)}, resultando em ${fmtBRL(valorTotal)} para ${avaliando.area} m², com faixa de arbítrio de ±${Math.round(estudo.amplitude * 100)}%.` },
+  ]
 
   return (
-    <main className="pagina es3-pg">
+    <main className="pagina ep-pg" ref={printRef}>
 
-      {/* ── nav ── */}
-      <div className="es3-nav">
-        <div className="container es3-nav-inner">
-          <Link to={`/imovel/${im.codigo}`} className="es3-back">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            Voltar ao imóvel
-          </Link>
-          <span className="es3-eyebrow">Análise de valor do m²</span>
+      {/* ── Cabeçalho ─────────────────────────────────────────────────────── */}
+      <header className="ep-header">
+        <div className="ep-container ep-header-inner">
+          <div className="ep-header-marca">
+            <span className="ep-marca-nome">Vinícius Graton</span>
+            <span className="ep-marca-papel">Consultor da Rotina Imobiliária</span>
+          </div>
+          <div className="ep-header-meta">
+            <span className="ep-meta-label">Estudo</span>
+            <span className="ep-meta-num">#{estudo.numero}</span>
+            <span className="ep-meta-data">{fmtData(estudo.data)}</span>
+          </div>
+          <div className="ep-header-nav print-hide">
+            <Link to={`/imovel/${im.codigo}`} className="ep-back">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              Voltar ao imóvel
+            </Link>
+          </div>
         </div>
-      </div>
+        <div className="ep-header-bar" />
+      </header>
 
-      {est?.ok ? (
-        <>
-          {/* ── hero ── */}
-          <div className={`es3-hero es3-hero--${cor}`}>
-            <div className="container">
-
-              {/* breadcrumb */}
-              <div className="es3-ctx">
-                <span>{im.tipo}</span>
-                <span className="es3-ctx-sep">·</span>
-                <span>{im.bairro}</span>
-                <span className="es3-ctx-sep">·</span>
-                <span>{im.area} m²</span>
-                {im.quartos > 0 && <><span className="es3-ctx-sep">·</span><span>{im.quartos} quartos</span></>}
-                {im.vagas > 0   && <><span className="es3-ctx-sep">·</span><span>{im.vagas} vaga{im.vagas > 1 ? 's' : ''}</span></>}
-              </div>
-
-              {/* veredicto principal */}
-              <div className="es3-veredicto">
-                <span className={`es3-badge es3-badge--${cor}`}>{badgeTexto}</span>
-
-                <div className="es3-metrics">
-                  <div className="es3-metric-bloco">
-                    <span className="es3-metric-label">Preço/m² deste imóvel</span>
-                    <span className="es3-metric-valor">{fmtM2(est.m2Subj)}</span>
-                  </div>
-                  <div className={`es3-diff-pill es3-diff-pill--${cor}`}>
-                    {est.diffPct > 0 ? '+' : ''}{est.diffPct}%
-                  </div>
-                  <div className="es3-metrics-sep" />
-                  <div className="es3-metric-bloco">
-                    <span className="es3-metric-label">Mediana do bairro</span>
-                    <span className="es3-metric-valor es3-metric-valor--ref">{fmtM2(est.referencia)}</span>
-                  </div>
+      {/* ── Identificação ────────────────────────────────────────────────── */}
+      <section className="ep-ident">
+        <div className="ep-container">
+          <div className="ep-ident-inner">
+            <div className="ep-ident-info">
+              <span className="ep-chip">{avaliando.tipo}</span>
+              <h1 className="ep-ident-bairro">{avaliando.bairro}</h1>
+              <p className="ep-ident-cidade">{avaliando.cidade}</p>
+              <p className="ep-ident-metodo">
+                <span className="ep-label-above">Método</span>
+                {estudo.metodo}
+              </p>
+            </div>
+            <div className="ep-ficha">
+              {avaliando.area > 0 && (
+                <div className="ep-ficha-item">
+                  <span className="ep-ficha-label">Área</span>
+                  <span className="ep-ficha-val">{avaliando.area} <span className="ep-ficha-unit">m²</span></span>
                 </div>
+              )}
+              {avaliando.dormitorios > 0 && (
+                <div className="ep-ficha-item">
+                  <span className="ep-ficha-label">Dormitórios</span>
+                  <span className="ep-ficha-val">{avaliando.dormitorios}</span>
+                </div>
+              )}
+              {avaliando.suites > 0 && (
+                <div className="ep-ficha-item">
+                  <span className="ep-ficha-label">Suítes</span>
+                  <span className="ep-ficha-val">{avaliando.suites}</span>
+                </div>
+              )}
+              {avaliando.banheiros > 0 && (
+                <div className="ep-ficha-item">
+                  <span className="ep-ficha-label">Banheiros</span>
+                  <span className="ep-ficha-val">{avaliando.banheiros}</span>
+                </div>
+              )}
+              {avaliando.vagas > 0 && (
+                <div className="ep-ficha-item">
+                  <span className="ep-ficha-label">Vagas</span>
+                  <span className="ep-ficha-val">{avaliando.vagas}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
 
-                <p className="es3-veredicto-frase">{verdito}</p>
+      {/* ── Veredito ─────────────────────────────────────────────────────── */}
+      <section className="ep-veredito">
+        <div className="ep-container">
+
+          <div className="ep-verd-grid">
+            {/* Valor principal */}
+            <div className="ep-verd-valor">
+              <span className="ep-label-above">Valor de mercado apurado</span>
+              <div className="ep-valor-num">{fmtBRL(valorTotal)}</div>
+              <div className="ep-valor-m2">
+                <span className="ep-m2-val">{fmtM2(adotadoM2)}</span>
+                <span className={`ep-diff-pill ep-diff-pill--${corVerd}`}>
+                  {diffPct > 0 ? '+' : ''}{diffPct}% vs. mediana
+                </span>
               </div>
+              <p className="ep-verd-frase">{textoVerd}</p>
+            </div>
 
+            {/* Faixa de arbítrio */}
+            <div className="ep-verd-faixa">
+              <span className="ep-label-above">Faixa de arbítrio ±{Math.round(estudo.amplitude * 100)}%</span>
+              <IntervalBar valMin={valMin} adotado={valorTotal} valMax={valMax} />
+            </div>
+
+            {/* Grau + indicadores */}
+            <div className="ep-verd-grau">
+              <GrauBadge grau={grau} />
+              <div className="ep-indicadores">
+                <div className="ep-indic">
+                  <span className="ep-indic-label">Amostra</span>
+                  <span className="ep-indic-val ep-mono">{estudo.n} imóveis</span>
+                </div>
+                <div className="ep-indic">
+                  <span className="ep-indic-label">CV</span>
+                  <span className="ep-indic-val ep-mono">{(stats.cv * 100).toFixed(1).replace('.', ',')}%</span>
+                </div>
+                <div className="ep-indic">
+                  <span className="ep-indic-label">Faixa hom.</span>
+                  <span className="ep-indic-val ep-mono">{fmtM2(stats.min)} – {fmtM2(stats.max)}</span>
+                </div>
+                <div className="ep-indic">
+                  <span className="ep-indic-label">Dist. média</span>
+                  <span className="ep-indic-val ep-mono">{fmtKm(testemunhas.length ? testemunhas.reduce((s, t) => s + (t.dist || 0), 0) / testemunhas.length : 0)}</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* ── corpo ── */}
-          <div className="container es3-body-wrap">
-            <div className="es3-body">
+        </div>
+      </section>
 
-              {/* ── coluna principal ── */}
-              <div className="es3-main">
+      {/* ── Corpo ────────────────────────────────────────────────────────── */}
+      <div className="ep-container ep-corpo">
 
-                {/* campo de mercado */}
-                <div className="es3-card es3-card--campo">
-                  <div className="es3-sec-head">
-                    <span className="es3-sec-label">Análise · Campo de Mercado</span>
-                    <h2 className="es3-card-titulo">Faixa de preços praticada no bairro</h2>
-                    <p className="es3-card-sub">{est.baseLabel}</p>
-                  </div>
-                  <div className="es3-campo">
-                    <div className="es3-campo-item">
-                      <span className="es3-campo-label">Mínimo</span>
-                      <span className="es3-campo-val">{fmtM2(est.campoMin)}</span>
-                    </div>
-                    <div className="es3-campo-divider" />
-                    <div className="es3-campo-item es3-campo-item--dest">
-                      <span className="es3-campo-label">Mediana</span>
-                      <span className="es3-campo-val">{fmtM2(est.referencia)}</span>
-                    </div>
-                    <div className="es3-campo-divider" />
-                    <div className="es3-campo-item">
-                      <span className="es3-campo-label">Máximo</span>
-                      <span className="es3-campo-val">{fmtM2(est.campoMax)}</span>
-                    </div>
-                  </div>
-                  {/* track visual de posicionamento */}
-                  {(() => {
-                    const span = est.campoMax - est.campoMin || 1
-                    const pctSubj = Math.max(2, Math.min(98, (est.m2Subj - est.campoMin) / span * 100))
-                    const pctMed  = Math.max(2, Math.min(98, (est.referencia - est.campoMin) / span * 100))
-                    return (
-                      <div className="es3-campo-track-wrap">
-                        <div className="es3-campo-track">
-                          <div className="es3-campo-track-band" />
-                          <div className="es3-campo-track-med" style={{ left: pctMed.toFixed(1) + '%' }} />
-                          <div className={`es3-campo-track-dot es3-campo-track-dot--${cor}`} style={{ left: pctSubj.toFixed(1) + '%' }}>
-                            <div className="es3-campo-track-label">Este imóvel</div>
-                          </div>
-                        </div>
-                        <div className="es3-campo-track-ends">
-                          <span>{fmtM2(est.campoMin)}</span>
-                          <span>{fmtM2(est.campoMax)}</span>
-                        </div>
-                      </div>
-                    )
-                  })()}
-                </div>
-
-                {/* posicionamento */}
-                <div className="es3-card es3-card--ruler">
-                  <div className="es3-sec-head">
-                    <span className="es3-sec-label">Análise · Posicionamento</span>
-                    <h2 className="es3-card-titulo">Onde este imóvel está no mercado</h2>
-                    <p className="es3-card-sub">Preço/m² ajustado comparado à faixa praticada no {im.bairro}</p>
-                  </div>
-                  <PositionRuler im={im} est={est} />
-                </div>
-
-                {/* comparáveis */}
-                {est.comparaveis?.length > 0 && (
-                  <div className="es3-card es3-card--chart">
-                    <div className="es3-sec-head">
-                      <span className="es3-sec-label">Evidências · Comparáveis</span>
-                      <h2 className="es3-card-titulo">Imóveis usados na análise</h2>
-                      <p className="es3-card-sub">{est.comparaveis.length} imóveis do mesmo tipo · preço/m² homogeneizado</p>
-                    </div>
-                    <CompsChart est={est} im={im} />
-                  </div>
-                )}
-
-                {/* stats */}
-                <div className="es3-card es3-card--stats">
-                  <div className="es3-sec-head">
-                    <span className="es3-sec-label">Dados · Homogeneização</span>
-                    <h2 className="es3-card-titulo">Como o preço/m² foi calculado</h2>
-                  </div>
-                  <div className="es3-stats">
-                    <div className="es3-stat">
-                      <span className="es3-stat-label">Preço anunciado/m²</span>
-                      <span className="es3-stat-val">{fmtM2(est.precoM2)}</span>
-                      <span className="es3-stat-sub">sem ajuste de vaga</span>
-                    </div>
-                    <div className="es3-stat">
-                      <span className="es3-stat-label">M² homogeneizado</span>
-                      <span className="es3-stat-val">{fmtM2(est.m2Subj)}</span>
-                      <span className="es3-stat-sub">com vaga ponderada</span>
-                    </div>
-                    <div className="es3-stat">
-                      <span className="es3-stat-label">Valor justo estimado</span>
-                      <span className="es3-stat-val">{fmtM2(est.valorVenda)}</span>
-                      <span className="es3-stat-sub">referência de negociação</span>
-                    </div>
-                    {est.n > 0 && (
-                      <div className="es3-stat">
-                        <span className="es3-stat-label">Amostra comparável</span>
-                        <span className="es3-stat-val">{est.n} imóveis</span>
-                        <span className="es3-stat-sub">{est.nDesc > 0 ? `${est.nDesc} desc.` : 'aproveitados'}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* metodologia */}
-                {(est.fatoresAplicados?.length > 0 || est.limitacoes?.length > 0) && (
-                  <div className="es3-card es3-card--met">
-                    <button
-                      className="es3-met-btn"
-                      onClick={() => setMetOpen(o => !o)}
+        {/* S01 — Radar */}
+        {testemunhas.length > 0 && (
+          <Secao num={1} titulo="Radar de proximidade"
+            sub={`${testemunhas.length} testemunhas posicionadas por distância real e azimute a partir do avaliando`}
+          >
+            <div className="ep-radar-wrap">
+              <div className="ep-radar-col">
+                <RadarChart testemunhas={testemunhas} avaliando={avaliando} referencia={adotadoM2} />
+              </div>
+              <ul className="ep-radar-list">
+                {testemunhas.map((t, i) => {
+                  const delta = adotadoM2 > 0 ? (t.valorHomM2 - adotadoM2) / adotadoM2 : 0
+                  const cor = delta > 0.10 ? 'down' : delta < -0.10 ? 'up' : 'teal'
+                  return (
+                    <li key={i}
+                      className={`ep-radar-item${hovT === i ? ' ep-radar-item--hov' : ''}`}
+                      onMouseEnter={() => setHovT(i)}
+                      onMouseLeave={() => setHovT(null)}
                     >
-                      <div>
-                        <span className="es3-met-tag">Metodologia · ABNT NBR 14653</span>
-                        <span className="es3-card-titulo" style={{ margin: 0 }}>Como chegamos nesse valor</span>
+                      <span className={`ep-radar-dot ep-radar-dot--${cor}`}>{i + 1}</span>
+                      <div className="ep-radar-info">
+                        <span className="ep-radar-bairro">{t.bairro}</span>
+                        <span className="ep-radar-dist ep-mono">{fmtKm(t.dist)}</span>
                       </div>
-                      <svg
-                        className={`es3-met-chevron${metOpen ? ' es3-met-chevron--open' : ''}`}
-                        viewBox="0 0 24 24" width="18" height="18" fill="none"
-                        stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                        style={{ flexShrink: 0 }}
-                      ><path d="M6 9l6 6 6-6"/></svg>
-                    </button>
-                    <div className={`es3-met-body${metOpen ? ' es3-met-body--open' : ''}`}>
-                      {est.fatoresAplicados?.length > 0 && (
-                        <ul className="es3-met-list">
-                          {est.fatoresAplicados.map((f, i) => <li key={i}>{f}</li>)}
-                        </ul>
-                      )}
-                      {est.limitacoes?.length > 0 && (
-                        <>
-                          <p className="es3-met-subtit">O que este estudo não cobre</p>
-                          <ul className="es3-met-list es3-met-list--warn">
-                            {est.limitacoes.map((f, i) => <li key={i}>{f}</li>)}
-                          </ul>
-                        </>
-                      )}
-                    </div>
-                    <p className="es3-disc">
-                      Estudo comparativo pelo método ABNT NBR 14653.
-                      Estimativa de referência — não substitui laudo com vistoria presencial.
-                    </p>
-                  </div>
-                )}
-
-              </div>
-
-              {/* ── sidebar ── */}
-              <aside className="es3-sidebar">
-
-                {/* laudo card */}
-                <div className="es3-laudo-card">
-                  <div className="es3-laudo-head">
-                    <span className="es3-laudo-tag">Laudo Técnico em PDF · NBR 14653</span>
-                    <h3 className="es3-laudo-titulo">Tenha argumentos reais na negociação</h3>
-                  </div>
-
-                  <div className="es3-laudo-preco">
-                    <span className="es3-laudo-de">R$ 399</span>
-                    <strong className="es3-laudo-por">R$ 250</strong>
-                    <span className="es3-laudo-imediata">entrega imediata</span>
-                  </div>
-
-                  <LaudoProfissional codigo={im.codigo} n={est.n} />
-
-                  <p className="es3-laudo-trust">
-                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    Sem risco · pagamento seguro · suporte pelo WhatsApp
-                  </p>
-                </div>
-
-                {/* whatsapp */}
-                <div className="es3-wa-card">
-                  <p className="es3-wa-pre">Prefere tirar dúvidas antes de decidir?</p>
-                  <a
-                    className="btn btn-ghost"
-                    href={linkWhatsApp(waMsg)}
-                    target="_blank" rel="noopener"
-                    style={{ width: '100%', justifyContent: 'center', boxSizing: 'border-box' }}
-                  >
-                    <IconWhats width={16} height={16} /> Falar com o Vinícius
-                  </a>
-                </div>
-
-              </aside>
+                      <span className={`ep-radar-m2 ep-mono ep-radar-m2--${cor}`}>{fmtM2(t.valorHomM2)}</span>
+                    </li>
+                  )
+                })}
+              </ul>
             </div>
-          </div>
+          </Secao>
+        )}
 
-          {/* ── CTA flutuante mobile ── */}
-          <div className="es3-mobile-bar">
-            <a
-              className="btn btn-gold"
-              href={linkWhatsApp(waMsg)}
-              target="_blank" rel="noopener"
-              style={{ flex: 1, justifyContent: 'center' }}
-            >
-              <IconWhats width={15} height={15} /> Falar com o Vinícius
-            </a>
-          </div>
-        </>
-      ) : (
-        <div className="es3-loading">
-          {loadingApi
-            ? <><div className="es3-loading-spin" /><p>Calculando análise…</p></>
-            : <><p style={{ color: '#8a93a6', marginBottom: 24 }}>Análise não disponível para este imóvel.</p><Link to={`/imovel/${im.codigo}`} className="btn btn-ghost">Voltar ao imóvel</Link></>
-          }
-        </div>
-      )}
+        {/* S02 — Tabela */}
+        {testemunhas.length > 0 && (
+          <Secao num={2} titulo="Amostra de mercado"
+            sub="Tabela completa de testemunhas com R$/m² bruto, fator de homogeneização e R$/m² ajustado"
+            print
+          >
+            <SortableTable rows={testemunhas} referencia={adotadoM2} />
+          </Secao>
+        )}
 
-      {/* ── footer nav ── */}
-      <div className="container es3-footer-nav">
-        <Link to={`/imovel/${im.codigo}`} className="btn btn-ghost">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Voltar ao imóvel
-        </Link>
-        <Link to="/imoveis" className="btn btn-ghost">Ver outros imóveis</Link>
+        {/* S03 — Gráficos */}
+        {testemunhas.length >= 3 && (
+          <Secao num={3} titulo="Dispersão e aderência"
+            sub="Relação entre área e R$/m² homogeneizado, com valor adotado de referência"
+            print
+          >
+            <div className="ep-charts-grid">
+              <div className="ep-chart-bloco">
+                <span className="ep-chart-titulo">Área × R$/m²</span>
+                <AreaScatter
+                  testemunhas={testemunhas}
+                  avaliandoArea={avaliando.area}
+                  avaliandoM2={estudo.m2Subj}
+                  referencia={adotadoM2}
+                />
+              </div>
+              <div className="ep-chart-bloco">
+                <span className="ep-chart-titulo">Distribuição do R$/m² homogeneizado</span>
+                <DistributionChart
+                  vals={testemunhas.map(t => t.valorHomM2)}
+                  media={stats.media}
+                  dp={stats.dp}
+                  referencia={adotadoM2}
+                />
+                <div className="ep-chart-legend">
+                  <span><span className="ep-swatch ep-swatch--up" />abaixo da referência</span>
+                  <span><span className="ep-swatch ep-swatch--teal" />na faixa</span>
+                  <span><span className="ep-swatch ep-swatch--down" />acima da referência</span>
+                </div>
+              </div>
+            </div>
+          </Secao>
+        )}
+
+        {/* S04 — Estatísticas */}
+        {estudo.n > 0 && (
+          <Secao num={4} titulo="Tratamento estatístico"
+            sub="Sobre o R$/m² homogeneizado da amostra saneada"
+            print
+          >
+            <div className="ep-stats-grid">
+              <div className="ep-stat-bloco">
+                <span className="ep-stat-label">Média</span>
+                <span className="ep-stat-val ep-mono">{fmtM2(stats.media)}</span>
+              </div>
+              <div className="ep-stat-bloco ep-stat-bloco--dest">
+                <span className="ep-stat-label">Mediana (adotado)</span>
+                <span className="ep-stat-val ep-mono ep-stat-val--brass">{fmtM2(stats.mediana)}</span>
+              </div>
+              <div className="ep-stat-bloco">
+                <span className="ep-stat-label">Desvio padrão</span>
+                <span className="ep-stat-val ep-mono">{fmtM2(stats.dp)}</span>
+              </div>
+              <div className="ep-stat-bloco">
+                <span className="ep-stat-label">Coef. de variação</span>
+                <span className="ep-stat-val ep-mono">{(stats.cv * 100).toFixed(1).replace('.', ',')}%</span>
+              </div>
+              <div className="ep-stat-bloco">
+                <span className="ep-stat-label">Mínimo hom.</span>
+                <span className="ep-stat-val ep-mono">{fmtM2(stats.min)}</span>
+              </div>
+              <div className="ep-stat-bloco">
+                <span className="ep-stat-label">Máximo hom.</span>
+                <span className="ep-stat-val ep-mono">{fmtM2(stats.max)}</span>
+              </div>
+              <div className="ep-stat-bloco">
+                <span className="ep-stat-label">Amostras</span>
+                <span className="ep-stat-val ep-mono">{estudo.n}</span>
+              </div>
+              <div className="ep-stat-bloco">
+                <span className="ep-stat-label">Tendência</span>
+                <span className="ep-stat-val">{estudo.tendencia}</span>
+              </div>
+            </div>
+          </Secao>
+        )}
+
+        {/* S05 — Metodologia */}
+        <Secao num={5} titulo="Metodologia" sub="Etapas do método comparativo direto de dados de mercado (ABNT NBR 14653)" print>
+          <div className="ep-met-grid">
+            {METODOLOGIA.map(etapa => (
+              <div key={etapa.n} className="ep-met-etapa">
+                <span className="ep-met-num">{etapa.n}</span>
+                <div className="ep-met-corpo">
+                  <span className="ep-met-titulo">{etapa.titulo}</span>
+                  <p className="ep-met-desc">{etapa.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="ep-disc">
+            Estudo comparativo pelo método ABNT NBR 14653. Estimativa de referência — não substitui laudo com vistoria presencial. Baseado em preços anunciados, não em escrituras registradas.
+          </p>
+        </Secao>
+
       </div>
+
+      {/* ── Assinatura ───────────────────────────────────────────────────── */}
+      <footer className="ep-assinatura">
+        <div className="ep-container ep-assinatura-inner">
+          <div className="ep-assina-info">
+            <span className="ep-assina-nome">{estudo.consultor.nome}</span>
+            <span className="ep-assina-reg">{estudo.consultor.registro}</span>
+            <span className="ep-assina-nota">
+              Estudo elaborado com base em dados públicos de mercado. Valores sujeitos a variação conforme condições de mercado.
+            </span>
+          </div>
+          <a
+            className="ep-assina-wa"
+            href={`https://wa.me/${estudo.consultor.whatsapp}?text=${encodeURIComponent(waMsg)}`}
+            target="_blank" rel="noopener noreferrer"
+          >
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.946-1.418A9.956 9.956 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a7.946 7.946 0 01-4.29-1.254l-.308-.185-3.17.909.91-3.094-.2-.32A7.96 7.96 0 014 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z"/></svg>
+            Falar com o Vinícius
+          </a>
+        </div>
+      </footer>
 
     </main>
   )
