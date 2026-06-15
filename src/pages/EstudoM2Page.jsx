@@ -61,6 +61,67 @@ function LaudoProfissional({ codigo, baseLabel }) {
   )
 }
 
+/* ── Gráfico de barras: comparáveis do mercado ──────────────────── */
+function CompsChart({ feed, im, est }) {
+  const grupo = useMemo(() => {
+    const t = (im.tipo || '').toLowerCase()
+    if (/apart|kit|studio|stúdio|loft|flat|cobertura|andar/i.test(t)) return 'apto'
+    if (/casa|sobrado|village|geminada/i.test(t)) return 'casa'
+    if (/terreno|lote/i.test(t)) return 'terreno'
+    return 'outro'
+  }, [im.tipo])
+
+  const dados = useMemo(() => {
+    const lista = feed
+      .filter(p => {
+        if (!p.preco || !p.area || String(p.codigo) === String(im.codigo)) return false
+        const t = (p.tipo || '').toLowerCase()
+        let g = 'outro'
+        if (/apart|kit|studio|stúdio|loft|flat|cobertura|andar/i.test(t)) g = 'apto'
+        else if (/casa|sobrado|village|geminada/i.test(t)) g = 'casa'
+        else if (/terreno|lote/i.test(t)) g = 'terreno'
+        return g === grupo
+      })
+      .map(p => Math.round(p.preco / p.area))
+      .filter(m2 => m2 > 500 && m2 < 20000)
+      .sort((a, b) => a - b)
+    if (lista.length < 3) return null
+    const mid = Math.floor(lista.length / 2)
+    const sample = lista.slice(Math.max(0, mid - 14), mid + 14)
+    const subM2 = Math.round(im.preco / im.area)
+    const refM2 = Math.round(est.referencia)
+    const maxM2 = Math.max(...sample, subM2) * 1.08
+    return { sample, subM2, refM2, maxM2 }
+  }, [feed, im, est, grupo])
+
+  if (!dados) return <p className="em2-chart-empty">Comparáveis insuficientes para o gráfico.</p>
+
+  const { sample, subM2, refM2, maxM2 } = dados
+  const pct = (v) => Math.max(3, Math.round((v / maxM2) * 100))
+  const refPct = Math.round((refM2 / maxM2) * 100)
+
+  return (
+    <div className="em2-chart-wrap">
+      <div className="em2-chart-bars">
+        <div className="em2-chart-refline" style={{ bottom: refPct + '%' }} />
+        {sample.map((m2, i) => (
+          <div key={i} className="em2-chart-bar-col">
+            <div className="em2-chart-bar" style={{ height: pct(m2) + '%' }} />
+          </div>
+        ))}
+        <div className="em2-chart-bar-col em2-chart-bar-col--gap" />
+        <div className="em2-chart-bar-col">
+          <div className="em2-chart-bar em2-chart-bar--subject" style={{ height: pct(subM2) + '%' }} />
+        </div>
+      </div>
+      <div className="em2-chart-footer">
+        <span className="em2-chart-legend"><i className="em2-chart-dot em2-chart-dot--ref" />Ref. mercado · {fmtM2(refM2)}</span>
+        <span className="em2-chart-legend"><i className="em2-chart-dot em2-chart-dot--sub" />Este imóvel · {fmtM2(subM2)}</span>
+      </div>
+    </div>
+  )
+}
+
 /* ═══ PÁGINA PRINCIPAL ══════════════════════════════════════════ */
 export default function EstudoM2Page() {
   const { codigo } = useParams()
@@ -160,7 +221,7 @@ export default function EstudoM2Page() {
         </div>
       </div>
 
-      <div className="container est-container">
+      <div className={`container est-container${est?.ok ? ' est-container--dash' : ''}`}>
 
         {/* ── Header do imóvel ── */}
         <div className="est-header">
@@ -176,124 +237,151 @@ export default function EstudoM2Page() {
         </div>
 
         {est?.ok ? (
-          <>
-            {/* ── Hero: Análise de Preço ── */}
-            <div className="em2-hero">
-              <span className="em2-hero-label">Análise de Preço</span>
+          <div className="em2-dash">
 
-              <div className="em2-hero-body">
-                <div className="em2-hero-left">
-                  <div className="em2-hero-row">
-                    <span className="em2-hero-metric">{fmtM2(est.referencia)}</span>
-                    <span className={`em2-hero-badge em2-hero-badge--${cor}`}>
-                      {est.diffPct > 0 ? '+' : ''}{est.diffPct}%
+            {/* ── Coluna principal ── */}
+            <div className="em2-dash-main">
+
+              {/* Hero métrica */}
+              <div className="em2-hero em2-hero--dash">
+                <span className="em2-hero-label">Análise de Mercado · m²</span>
+                <div className="em2-hero-body">
+                  <div className="em2-hero-left">
+                    <div className="em2-hero-row">
+                      <span className="em2-hero-metric">{fmtM2(est.referencia)}</span>
+                      <span className={`em2-hero-badge em2-hero-badge--${cor}`}>
+                        {est.diffPct > 0 ? '+' : ''}{est.diffPct}%
+                      </span>
+                    </div>
+                    <p className="em2-hero-veredito">{verdito}</p>
+                  </div>
+                  <div className="em2-hero-chips">
+                    <span className="em2-hero-chip">
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                      {im.bairro}
+                    </span>
+                    <span className="em2-hero-chip">
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                      {im.tipo}
+                    </span>
+                    <span className="em2-hero-chip">
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                      {im.area} m²
                     </span>
                   </div>
-                  <p className="em2-hero-veredito">{verdito}</p>
-                </div>
-
-                <div className="em2-hero-chips">
-                  <span className="em2-hero-chip">
-                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                    {im.bairro}
-                  </span>
-                  <span className="em2-hero-chip">
-                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                    {im.tipo}
-                  </span>
-                  <span className="em2-hero-chip">
-                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-                    {im.area} m²
-                  </span>
                 </div>
               </div>
 
-              <div className="em2-triptych">
-                <div className="em2-triptych-card">
-                  <span className="em2-tri-ico">
-                    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
-                  </span>
-                  <b>{fmtM2(est.campoMin)}</b>
-                  <span>Mínimo estimado</span>
+              {/* Gráfico de comparáveis */}
+              <div className="em2-chart-card">
+                <div className="em2-chart-head">
+                  <span className="em2-chart-titulo">Comparáveis no mercado</span>
+                  <span className="em2-chart-sub">preço/m² · imóveis do mesmo tipo na cidade</span>
                 </div>
-                <div className="em2-triptych-card em2-triptych-card--destaque">
-                  <span className="em2-tri-ico">
-                    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-                  </span>
-                  <b>{fmtM2(est.referencia)}</b>
-                  <span>Média de mercado</span>
-                </div>
-                <div className="em2-triptych-card">
-                  <span className="em2-tri-ico">
-                    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                  </span>
-                  <b>{fmtM2(est.campoMax)}</b>
-                  <span>Máximo estimado</span>
-                </div>
+                <CompsChart feed={feed} im={im} est={est} />
               </div>
 
-              <p className="em2-hero-fonte">
-                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                {est.baseLabel}{est.nDesc > 0 ? ` · ${est.nDesc} descartado(s) no saneamento` : ''}
-              </p>
-            </div>
+              {/* Stat cards */}
+              <div className="em2-stats-row">
+                <div className="em2-stat">
+                  <span className="em2-stat-label">Preço anunciado</span>
+                  <b className="em2-stat-val">{fmtM2(est.precoM2)}</b>
+                  <span className="em2-stat-sub">por m² (com vaga)</span>
+                </div>
+                <div className="em2-stat">
+                  <span className="em2-stat-label">Comparável</span>
+                  <b className="em2-stat-val">{fmtM2(est.m2Subj)}</b>
+                  <span className="em2-stat-sub">por m² (sem vaga)</span>
+                </div>
+                <div className="em2-stat">
+                  <span className="em2-stat-label">Estimativa venda</span>
+                  <b className="em2-stat-val">{fmtM2(est.valorVenda)}</b>
+                  <span className="em2-stat-sub">ajuste de mercado</span>
+                </div>
+                {est.n > 0 && (
+                  <div className="em2-stat">
+                    <span className="em2-stat-label">Amostra</span>
+                    <b className="em2-stat-val">{est.n}</b>
+                    <span className="em2-stat-sub">imóveis comparados</span>
+                  </div>
+                )}
+              </div>
 
-            {/* ── Metodologia + Fontes ── */}
-            {(est.fatoresAplicados?.length > 0 || est.limitacoes?.length > 0 || est.fontes?.length > 0) && (
-              <section className="est-sec">
-                <div className="est-sec-label">Metodologia · ABNT NBR 14653</div>
-                <h2 className="est-sec-titulo">Como chegamos nesse valor</h2>
-
-                {est.fatoresAplicados?.length > 0 && (
-                  <>
-                    <h3 className="est-met-subtit">Fatores aplicados</h3>
+              {/* Metodologia */}
+              {(est.fatoresAplicados?.length > 0 || est.limitacoes?.length > 0) && (
+                <section className="est-sec">
+                  <div className="est-sec-label">Metodologia · ABNT NBR 14653</div>
+                  <h2 className="est-sec-titulo">Como chegamos nesse valor</h2>
+                  {est.fatoresAplicados?.length > 0 && (
                     <ul className="em2-fatores-list est-fatores">
                       {est.fatoresAplicados.map((f, i) => <li key={i}>{f}</li>)}
                     </ul>
-                  </>
-                )}
-                {est.limitacoes?.length > 0 && (
-                  <>
-                    <h3 className="est-met-subtit est-met-subtit--lim" style={{ marginTop: 16 }}>O que este estudo não cobre</h3>
-                    <ul className="em2-fatores-list em2-fatores-list--lim est-fatores">
-                      {est.limitacoes.map((f, i) => <li key={i}>{f}</li>)}
-                    </ul>
-                  </>
-                )}
-                {est.fontes?.length > 0 && (
-                  <>
-                    <h3 className="est-met-subtit" style={{ marginTop: 16 }}>Fontes</h3>
-                    <ul className="em2-fatores-list est-fatores">
-                      {est.fontes.map((f, i) => <li key={i}>{f}</li>)}
-                    </ul>
-                  </>
-                )}
-                <p className="em2-disc">
-                  Estudo comparativo de mercado pelo método ABNT NBR 14653 com homogeneização da amostra.
-                  É uma estimativa de referência — não substitui laudo com vistoria por profissional credenciado.
-                </p>
-              </section>
-            )}
-
-            {/* ── Laudo profissional ── */}
-            <section className="est-sec">
-              <div className="est-sec-label">Laudo profissional</div>
-              <h2 className="est-sec-titulo">Quer o laudo completo em PDF?</h2>
-              <p className="est-sec-sub">
-                O laudo técnico inclui toda a amostra de comparáveis, os fatores de homogeneização aplicados,
-                o parecer do consultor e análise do bairro — no padrão usado por bancos para financiamento.
-              </p>
-              <LaudoProfissional codigo={im.codigo} baseLabel={est.baseLabel} />
-            </section>
-
-            {/* ── CTA WhatsApp ── */}
-            <div className="est-wa-wrap">
-              <a className="btn btn-gold est-wa-btn" href={linkWhatsApp(waMsg)} target="_blank" rel="noopener">
-                <IconWhats width={18} height={18} /> Falar sobre o preço com o Vinícius
-              </a>
-              <p className="est-wa-hint">Tire suas dúvidas antes de tomar qualquer decisão</p>
+                  )}
+                  {est.limitacoes?.length > 0 && (
+                    <>
+                      <h3 className="est-met-subtit est-met-subtit--lim" style={{ marginTop: 16 }}>O que este estudo não cobre</h3>
+                      <ul className="em2-fatores-list em2-fatores-list--lim est-fatores">
+                        {est.limitacoes.map((f, i) => <li key={i}>{f}</li>)}
+                      </ul>
+                    </>
+                  )}
+                  <p className="em2-disc">
+                    Estudo comparativo de mercado pelo método ABNT NBR 14653.
+                    Estimativa de referência — não substitui laudo com vistoria presencial.
+                  </p>
+                </section>
+              )}
             </div>
-          </>
+
+            {/* ── Coluna lateral ── */}
+            <div className="em2-dash-side">
+
+              {/* Campo de mercado (triptych) */}
+              <div className="em2-dash-card">
+                <span className="em2-dash-card-label">Campo de mercado</span>
+                <div className="em2-triptych em2-triptych--side">
+                  <div className="em2-triptych-card">
+                    <span className="em2-tri-ico">
+                      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                    </span>
+                    <b>{fmtM2(est.campoMin)}</b>
+                    <span>Mínimo</span>
+                  </div>
+                  <div className="em2-triptych-card em2-triptych-card--destaque">
+                    <span className="em2-tri-ico">
+                      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+                    </span>
+                    <b>{fmtM2(est.referencia)}</b>
+                    <span>Média</span>
+                  </div>
+                  <div className="em2-triptych-card">
+                    <span className="em2-tri-ico">
+                      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    </span>
+                    <b>{fmtM2(est.campoMax)}</b>
+                    <span>Máximo</span>
+                  </div>
+                </div>
+                <p className="em2-hero-fonte" style={{ marginTop: 14 }}>
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  {est.baseLabel}
+                </p>
+              </div>
+
+              {/* Laudo */}
+              <div className="em2-dash-card">
+                <div className="est-sec-label">Laudo profissional</div>
+                <h2 className="est-sec-titulo" style={{ marginBottom: 12 }}>Quer o laudo em PDF?</h2>
+                <LaudoProfissional codigo={im.codigo} baseLabel={est.baseLabel} />
+              </div>
+
+              {/* CTA WhatsApp */}
+              <a className="btn btn-gold est-wa-btn" href={linkWhatsApp(waMsg)} target="_blank" rel="noopener" style={{ width: '100%', justifyContent: 'center', boxSizing: 'border-box' }}>
+                <IconWhats width={18} height={18} /> Falar com o Vinícius
+              </a>
+            </div>
+
+          </div>
         ) : (
           <div className="est-sem-dados">
             <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M3 3v18h18M7 14l4-4 3 3 5-6"/></svg>

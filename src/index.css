@@ -5489,6 +5489,54 @@ html[data-theme="dark"] .condo-filtro-grupo-v2 { background:var(--surface); bord
 
 /* ── EstudoM2Page (/estudo/:codigo) ─────────────────────────────── */
 .est-pg { background: #080a0f; min-height: 100vh; padding-bottom: 80px; }
+.est-container--dash { max-width: 1320px; }
+
+/* Dashboard grid */
+.em2-dash { display: grid; grid-template-columns: 1fr 300px; gap: 20px; align-items: start; }
+.em2-dash-main { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.em2-dash-side { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 80px; }
+.em2-dash-card { background: rgba(10,9,6,0.94); border: 1px solid rgba(201,168,76,0.14); border-radius: 18px; padding: 22px 20px; }
+.em2-dash-card-label { display: block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-3); margin-bottom: 14px; }
+.em2-hero--dash { margin-bottom: 0; border-radius: 18px; }
+
+/* Chart card */
+.em2-chart-card { background: rgba(10,9,6,0.94); border: 1px solid rgba(255,255,255,0.07); border-radius: 18px; padding: 22px 24px; }
+.em2-chart-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+.em2-chart-titulo { font-family: var(--font-head); font-weight: 700; font-size: 1rem; color: #dde2ea; }
+.em2-chart-sub { font-size: 0.74rem; color: #505870; }
+.em2-chart-empty { font-size: 0.85rem; color: #505870; padding: 20px 0; }
+.em2-chart-wrap { display: flex; flex-direction: column; gap: 14px; }
+.em2-chart-bars { position: relative; height: 160px; display: flex; align-items: flex-end; gap: 3px; }
+.em2-chart-bar-col { flex: 1; min-width: 4px; height: 100%; display: flex; align-items: flex-end; }
+.em2-chart-bar-col--gap { flex: 0 0 10px; }
+.em2-chart-bar { width: 100%; min-height: 4px; border-radius: 3px 3px 0 0; background: rgba(201,168,76,0.2); transition: background 0.18s; }
+.em2-chart-bar:hover { background: rgba(201,168,76,0.45); }
+.em2-chart-bar--subject { background: var(--gold-2); box-shadow: 0 0 14px rgba(201,168,76,0.35); }
+.em2-chart-refline { position: absolute; left: 0; right: 0; height: 0; border-top: 1px dashed rgba(201,168,76,0.55); pointer-events: none; z-index: 1; }
+.em2-chart-footer { display: flex; gap: 18px; flex-wrap: wrap; }
+.em2-chart-legend { display: inline-flex; align-items: center; gap: 7px; font-size: 0.75rem; color: #6a738a; }
+.em2-chart-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; flex-shrink: 0; }
+.em2-chart-dot--ref { background: transparent; border: 1px dashed rgba(201,168,76,0.65); }
+.em2-chart-dot--sub { background: var(--gold-2); border-radius: 50%; }
+
+/* Stat cards row */
+.em2-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.em2-stat { background: rgba(10,9,6,0.94); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 18px 16px; }
+.em2-stat-label { display: block; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #414760; margin-bottom: 8px; }
+.em2-stat-val { display: block; font-family: var(--font-head); font-size: 1.05rem; font-weight: 800; color: #e0e4ee; margin-bottom: 4px; }
+.em2-stat-sub { font-size: 0.7rem; color: #353d56; }
+
+/* Triptych compacto no sidebar */
+.em2-triptych--side { gap: 8px; }
+.em2-triptych--side .em2-triptych-card { padding: 14px 10px 12px; border-radius: 12px; }
+.em2-triptych--side .em2-triptych-card b { font-size: 0.88rem; }
+.em2-triptych--side .em2-triptych-card--destaque { transform: none; box-shadow: 0 4px 18px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,168,76,0.18); }
+.em2-triptych--side .em2-triptych-card--destaque b { font-size: 0.96rem; }
+
+/* Responsive dashboard */
+@media (max-width: 960px) { .em2-dash { grid-template-columns: 1fr; } .em2-dash-side { position: static; } }
+@media (max-width: 700px) { .em2-stats-row { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 420px) { .em2-stats-row { grid-template-columns: 1fr; } }
 
 /* Hero card */
 .em2-hero { position: relative; background: rgba(10,9,6,0.94); border: 1px solid rgba(201,168,76,0.18); border-radius: 24px; padding: 36px 36px 28px; margin-bottom: 28px; overflow: hidden; }
