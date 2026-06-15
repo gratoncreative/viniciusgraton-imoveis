@@ -38,6 +38,9 @@ function blogPreviewPlugin() {
 export default defineConfig({
   plugins: [react(), blogPreviewPlugin()],
   base: '/',
+  optimizeDeps: {
+    exclude: ['pdfjs-dist'],
+  },
   build: {
     outDir: 'dist',
     assetsInlineLimit: 4096,

@@ -34,6 +34,7 @@ const ICN = {
   map:     'M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14',
   percent: 'M19 5 5 19M7.5 7.5h.01M16.5 16.5h.01M6 7.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0M15 16.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0',
   edit:    'M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z',
+  pdf:     'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M9 13h6M9 17h4',
   bell:    'M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0',
   star:    'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
   lock:    'M18 11H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2zM12 17v-2M8 11V7a4 4 0 0 1 8 0v4',
@@ -79,6 +80,7 @@ const TOOLS = [
   { id: 'marca-agua',    nome: "Marca d'água em fotos",     desc: 'Adicione seu logo ou texto em cada foto.',     icon: 'edit',    sec: 'fotos', needsSub: true },
   { id: 'redimensionar', nome: 'Redimensionar foto',        desc: 'Reduza o tamanho para WhatsApp ou portal.',    icon: 'edit',    sec: 'fotos', needsSub: true },
   { id: 'converter',     nome: 'Conversor de fotos',        desc: 'JPG · PNG · WebP · AVIF em lote.',             icon: 'edit',    sec: 'fotos', needsSub: true, to: '/ferramentas/converter' },
+  { id: 'pdf-jpg',      nome: 'PDF para JPG',              desc: 'Converta cada página do PDF em JPG de alta definição.', icon: 'pdf', sec: 'fotos', popular: true, to: '/ferramentas/pdf-para-jpg' },
   // explorar
   { id: 'comparar',      nome: 'Comparar imóveis',          desc: 'Compare até 3 imóveis lado a lado.',           icon: 'compare', sec: 'explorar', needsSub: true, to: '/comparar' },
   { id: 'mapa',          nome: 'Mapa de imóveis',           desc: 'Explore imóveis por região de Uberlândia.',    icon: 'map',     sec: 'explorar', needsSub: true, to: '/mapa'     },

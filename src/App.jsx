@@ -21,6 +21,7 @@ const Regioes = lazy(() => import('./pages/Regioes'))
 const FaleComigo = lazy(() => import('./pages/FaleComigo'))
 const Ferramentas = lazy(() => import('./pages/Ferramentas'))
 const ConverterFotos = lazy(() => import('./pages/ConverterFotos'))
+const PdfParaJpg = lazy(() => import('./pages/PdfParaJpgPage'))
 const Corretor = lazy(() => import('./pages/Corretor'))
 const Condominios = lazy(() => import('./pages/Condominios'))
 const Anunciar = lazy(() => import('./pages/Anunciar'))
@@ -149,6 +150,7 @@ export default function App() {
               <Route path="/lancamentos/empreendimento/blow/:slug" element={<BlowEmpreendimentoDetalhe />} />
               <Route path="/ferramentas" element={<Ferramentas />} />
               <Route path="/ferramentas/converter" element={<ConverterFotos />} />
+              <Route path="/ferramentas/pdf-para-jpg" element={<PdfParaJpg />} />
               <Route path="/corretor" element={<Corretor />} />
               <Route path="/corretor/:toolId" element={<Corretor />} />
               <Route path="/condominios" element={<Condominios />} />
