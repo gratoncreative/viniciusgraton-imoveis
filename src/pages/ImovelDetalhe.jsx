@@ -154,14 +154,25 @@ function OuvirImovel({ im }) {
       'Para saber mais, entre em contato com Vinícius Graton pelo WhatsApp.',
     ].filter(Boolean).join('. ')
     const u = new SpeechSynthesisUtterance(partes)
-    u.lang = 'pt-BR'; u.rate = 0.95; u.pitch = 1
-    const vs = synth.getVoices() || []
-    const voz = vs.find((v) => /pt[-_]?BR/i.test(v.lang)) || vs.find((v) => /^pt/i.test(v.lang))
-    if (voz) u.voice = voz
+    u.lang = 'pt-BR'; u.rate = 0.9; u.pitch = 1.1
     u.onend = () => setEstado('parado')
     u.onerror = () => setEstado('parado')
-    synth.speak(u)
-    setEstado('tocando')
+    const doSpeak = (voices) => {
+      const voz =
+        voices.find((v) => /pt[-_]?BR/i.test(v.lang) && v.name.toLowerCase().includes('google')) ||
+        voices.find((v) => /pt[-_]?BR/i.test(v.lang) && !v.localService) ||
+        voices.find((v) => /pt[-_]?BR/i.test(v.lang)) ||
+        voices.find((v) => /^pt/i.test(v.lang))
+      if (voz) u.voice = voz
+      synth.speak(u)
+      setEstado('tocando')
+    }
+    const voices = synth.getVoices()
+    if (voices.length > 0) {
+      doSpeak(voices)
+    } else {
+      synth.addEventListener('voiceschanged', () => doSpeak(synth.getVoices()), { once: true })
+    }
   }
   const parar = () => { try { window.speechSynthesis.cancel() } catch {} setEstado('parado') }
 
