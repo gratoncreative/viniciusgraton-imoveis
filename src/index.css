@@ -5611,7 +5611,7 @@ html[data-theme="dark"] .condo-filtro-grupo-v2 { background:var(--surface); bord
 .em2-hero-badge--alto { background: rgba(201,168,76,0.18); color: var(--gold-1); border: 1px solid rgba(201,168,76,0.4); }
 .em2-hero-badge--neutro { background: rgba(255,255,255,0.08); color: #c0c8d6; border: 1px solid rgba(255,255,255,0.18); }
 .em2-hero-veredito { font-size: 0.85rem; color: #c0c8d6; margin: 0; }
-.em2-hero-chips { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+.em2-hero-chips { display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
 .em2-hero-chip { display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 100px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #c0c8d6; font-size: 0.82rem; font-weight: 500; white-space: nowrap; }
 .em2-hero-chip svg { opacity: 0.55; flex-shrink: 0; }
 
@@ -5633,8 +5633,6 @@ html[data-theme="dark"] .condo-filtro-grupo-v2 { background:var(--surface); bord
 /* Responsive */
 @media (max-width: 640px) {
   .em2-hero { padding: 24px 20px 20px; }
-  .em2-hero-body { flex-direction: column; gap: 18px; }
-  .em2-hero-chips { flex-direction: row; flex-wrap: wrap; }
   .em2-triptych { gap: 8px; }
   .em2-triptych-card { border-radius: 14px; padding: 16px 10px 14px; }
   .em2-triptych-card--destaque { transform: none; }

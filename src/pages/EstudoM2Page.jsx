@@ -336,34 +336,30 @@ export default function EstudoM2Page() {
 
               <div className="em2-hero em2-hero--dash">
                 <span className="em2-hero-label">Análise de Mercado · m²</span>
-                <div className="em2-hero-body">
-                  <div className="em2-hero-left">
-                    <div className="em2-hero-row">
-                      <span className="em2-hero-metric">{fmtM2(est.m2Subj)}</span>
-                      <span className={`em2-hero-badge em2-hero-badge--${cor}`}>
-                        {est.diffPct > 0 ? '+' : ''}{est.diffPct}%
-                      </span>
-                    </div>
-                    <p className="em2-hero-veredito">{verdito}</p>
-                    <p className="em2-hero-fonte" style={{ marginTop: 8 }}>
-                      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M3 3v18h18M7 14l4-4 3 3 5-6"/></svg>
-                      Mediana do bairro: {fmtM2(est.referencia)}
-                    </p>
-                  </div>
-                  <div className="em2-hero-chips">
-                    <span className="em2-hero-chip">
-                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                      {im.bairro}
-                    </span>
-                    <span className="em2-hero-chip">
-                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                      {im.tipo}
-                    </span>
-                    <span className="em2-hero-chip">
-                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-                      {im.area} m²
-                    </span>
-                  </div>
+                <div className="em2-hero-row">
+                  <span className="em2-hero-metric">{fmtM2(est.m2Subj)}</span>
+                  <span className={`em2-hero-badge em2-hero-badge--${cor}`}>
+                    {est.diffPct > 0 ? '+' : ''}{est.diffPct}%
+                  </span>
+                </div>
+                <p className="em2-hero-veredito">{verdito}</p>
+                <p className="em2-hero-fonte" style={{ marginTop: 8 }}>
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M3 3v18h18M7 14l4-4 3 3 5-6"/></svg>
+                  Mediana do bairro: {fmtM2(est.referencia)}
+                </p>
+                <div className="em2-hero-chips">
+                  <span className="em2-hero-chip">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    {im.bairro}
+                  </span>
+                  <span className="em2-hero-chip">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    {im.tipo}
+                  </span>
+                  <span className="em2-hero-chip">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    {im.area} m²
+                  </span>
                 </div>
               </div>
 
