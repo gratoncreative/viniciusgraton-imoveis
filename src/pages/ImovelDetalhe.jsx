@@ -127,62 +127,94 @@ function Destaque({ icon, titulo, sub }) {
   )
 }
 
-// Leitura em voz alta do imóvel (acessibilidade)
+// Leitura em voz alta do imóvel — Azure Neural TTS (primário) + Web Speech (fallback)
 function OuvirImovel({ im }) {
-  const [estado, setEstado] = useState('parado')
-  const [ok, setOk] = useState(false)
-  useEffect(() => {
-    setOk(typeof window !== 'undefined' && 'speechSynthesis' in window)
-    return () => { try { window.speechSynthesis.cancel() } catch {} }
-  }, [])
-  useEffect(() => { try { window.speechSynthesis.cancel() } catch {} setEstado('parado') }, [im?.codigo])
+  const [estado, setEstado] = useState('parado') // parado | carregando | tocando | pausado
+  const audioRef = useRef(null)
 
-  const tocar = () => {
+  // Limpa o áudio ao trocar de imóvel
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) { audioRef.current.pause(); audioRef.current = null }
+      try { window.speechSynthesis?.cancel() } catch {}
+    }
+  }, [im?.codigo])
+
+  const texto = [
+    `${im.tipo} no bairro ${im.bairro}, ${im.cidade || 'Uberlândia'}, Minas Gerais`,
+    im.preco > 0 && `Preço: ${formatPreco(im.preco)}`,
+    im.area > 0 && `Área de ${im.area} metros quadrados`,
+    im.quartos > 0 && `${im.quartos} ${im.quartos === 1 ? 'quarto' : 'quartos'}`,
+    im.suites > 0 && `${im.suites === 1 ? 'uma suíte' : im.suites + ' suítes'}`,
+    im.banheiros > 0 && `${im.banheiros === 1 ? 'um banheiro' : im.banheiros + ' banheiros'}`,
+    im.vagas > 0 && `${im.vagas === 1 ? 'uma vaga' : im.vagas + ' vagas'} de garagem`,
+    im.descricao && im.descricao.trim().slice(0, 800),
+    'Para saber mais, entre em contato com Vinícius Graton pelo WhatsApp.',
+  ].filter(Boolean).join('. ')
+
+  // Fallback: Web Speech API (caso Azure não esteja configurado)
+  const falarWebSpeech = () => {
     const synth = window.speechSynthesis
-    if (estado === 'tocando') { synth.pause(); setEstado('pausado'); return }
-    if (estado === 'pausado') { synth.resume(); setEstado('tocando'); return }
     synth.cancel()
-    const partes = [
-      `${im.tipo} no bairro ${im.bairro}, ${im.cidade || 'Uberlândia'}, Minas Gerais`,
-      im.preco > 0 && `Preço: ${formatPreco(im.preco)}`,
-      im.area > 0 && `Área de ${im.area} metros quadrados`,
-      im.quartos > 0 && `${im.quartos} ${im.quartos === 1 ? 'quarto' : 'quartos'}`,
-      im.suites > 0 && `${im.suites === 1 ? 'uma suíte' : im.suites + ' suítes'}`,
-      im.banheiros > 0 && `${im.banheiros === 1 ? 'um banheiro' : im.banheiros + ' banheiros'}`,
-      im.vagas > 0 && `${im.vagas === 1 ? 'uma vaga' : im.vagas + ' vagas'} de garagem`,
-      im.descricao && im.descricao.trim().slice(0, 800),
-      'Para saber mais, entre em contato com Vinícius Graton pelo WhatsApp.',
-    ].filter(Boolean).join('. ')
-    const u = new SpeechSynthesisUtterance(partes)
-    u.lang = 'pt-BR'; u.rate = 0.9; u.pitch = 1.1
+    const u = new SpeechSynthesisUtterance(texto)
+    u.lang = 'pt-BR'; u.rate = 0.9; u.pitch = 1.05
     u.onend = () => setEstado('parado')
     u.onerror = () => setEstado('parado')
     const doSpeak = (voices) => {
       const voz =
+        voices.find((v) => /pt[-_]?BR/i.test(v.lang) && /natural|online/i.test(v.name)) ||
         voices.find((v) => /pt[-_]?BR/i.test(v.lang) && v.name.toLowerCase().includes('google')) ||
         voices.find((v) => /pt[-_]?BR/i.test(v.lang) && !v.localService) ||
-        voices.find((v) => /pt[-_]?BR/i.test(v.lang)) ||
-        voices.find((v) => /^pt/i.test(v.lang))
+        voices.find((v) => /pt[-_]?BR/i.test(v.lang))
       if (voz) u.voice = voz
       synth.speak(u)
       setEstado('tocando')
     }
     const voices = synth.getVoices()
-    if (voices.length > 0) {
-      doSpeak(voices)
-    } else {
-      synth.addEventListener('voiceschanged', () => doSpeak(synth.getVoices()), { once: true })
+    voices.length > 0 ? doSpeak(voices) : synth.addEventListener('voiceschanged', () => doSpeak(synth.getVoices()), { once: true })
+  }
+
+  const tocar = async () => {
+    // Pausar / continuar áudio já carregado
+    if (estado === 'tocando' && audioRef.current) { audioRef.current.pause(); setEstado('pausado'); return }
+    if (estado === 'pausado' && audioRef.current) { audioRef.current.play(); setEstado('tocando'); return }
+    if (estado === 'carregando') return
+
+    // Parar qualquer reprodução anterior
+    if (audioRef.current) { audioRef.current.pause(); audioRef.current = null }
+    try { window.speechSynthesis?.cancel() } catch {}
+
+    setEstado('carregando')
+
+    try {
+      const resp = await fetch(`/api/tts?texto=${encodeURIComponent(texto)}`)
+      if (!resp.ok) throw new Error('sem azure')
+      const blob = await resp.blob()
+      const url = URL.createObjectURL(blob)
+      const audio = new Audio(url)
+      audioRef.current = audio
+      audio.onended = () => { URL.revokeObjectURL(url); audioRef.current = null; setEstado('parado') }
+      audio.onerror = () => { URL.revokeObjectURL(url); audioRef.current = null; setEstado('parado') }
+      await audio.play()
+      setEstado('tocando')
+    } catch {
+      // Azure indisponível → Web Speech como fallback
+      if ('speechSynthesis' in window) { falarWebSpeech() } else { setEstado('parado') }
     }
   }
-  const parar = () => { try { window.speechSynthesis.cancel() } catch {} setEstado('parado') }
 
-  if (!ok) return null
+  const parar = () => {
+    if (audioRef.current) { audioRef.current.pause(); audioRef.current = null }
+    try { window.speechSynthesis?.cancel() } catch {}
+    setEstado('parado')
+  }
+
   return (
     <div className="imovel-ouvir">
-      <button type="button" className="imovel-ouvir-btn" onClick={tocar} aria-label="Ouvir descrição do imóvel">
-        {estado === 'tocando' ? '⏸ Pausar leitura' : estado === 'pausado' ? '▶ Continuar' : '🔊 Ouvir este imóvel'}
+      <button type="button" className="imovel-ouvir-btn" onClick={tocar} aria-label="Ouvir descrição do imóvel" disabled={estado === 'carregando'}>
+        {estado === 'carregando' ? '⏳ Preparando…' : estado === 'tocando' ? '⏸ Pausar leitura' : estado === 'pausado' ? '▶ Continuar' : '🔊 Ouvir este imóvel'}
       </button>
-      {estado !== 'parado' && (
+      {estado !== 'parado' && estado !== 'carregando' && (
         <button type="button" className="imovel-ouvir-btn imovel-ouvir-btn--stop" onClick={parar} aria-label="Parar">⏹</button>
       )}
       {estado === 'tocando' && <span className="imovel-ouvir-ondas" aria-hidden="true" />}
