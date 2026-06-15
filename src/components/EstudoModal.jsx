@@ -24,12 +24,15 @@ export default function EstudoModal({ im, est, open, onClose }) {
 
   useEffect(() => {
     if (!open) return
+    // Rola o painel do estudo com a roda do mouse independente de onde o
+    // cursor estiver (sobre o painel ou sobre o fundo escuro ao redor).
     const onWheel = (e) => {
-      if (panelRef.current && !panelRef.current.contains(e.target)) {
-        panelRef.current.scrollBy({ top: e.deltaY })
-      }
+      const panel = panelRef.current
+      if (!panel) return
+      e.preventDefault()
+      panel.scrollBy({ top: e.deltaY })
     }
-    document.addEventListener('wheel', onWheel, { passive: true })
+    document.addEventListener('wheel', onWheel, { passive: false })
     return () => document.removeEventListener('wheel', onWheel)
   }, [open])
 
