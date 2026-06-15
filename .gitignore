@@ -33,3 +33,6 @@ scripts/_og-bg.jpg
 
 # arquivos temporarios de geracao (mesclados depois)
 scripts/_*
+
+# worktrees internos do Claude Code
+.claude/worktrees/
