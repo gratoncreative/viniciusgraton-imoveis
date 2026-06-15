@@ -95,8 +95,13 @@ function CompsChart({ est, im }) {
                 <div
                   className={`es3-chart-bar${isSubj ? ' es3-chart-bar--subj' : ''}`}
                   style={{ height: pct(c.m2) }}
-                  title={`${c.bairro} · ${c.area}m² · ${fmtBRL(c.preco)}`}
                 />
+                <div className="es3-chart-tooltip">
+                  <span className="es3-chart-tt-name">{isSubj ? 'Este imóvel' : c.bairro}</span>
+                  <span className="es3-chart-tt-area">{c.area} m² · {c.vagas > 0 ? `${c.vagas} vaga${c.vagas > 1 ? 's' : ''}` : 'sem vaga'}</span>
+                  <span className="es3-chart-tt-preco">{fmtBRL(c.preco)}</span>
+                  <span className="es3-chart-tt-m2">{fmtM2(c.m2)}</span>
+                </div>
               </div>
             )
           })}
@@ -106,6 +111,11 @@ function CompsChart({ est, im }) {
                 {`R$ ${Math.round(est.m2Subj).toLocaleString('pt-BR')}/m²`}
               </span>
               <div className="es3-chart-bar es3-chart-bar--subj" style={{ height: pct(est.m2Subj) }} />
+              <div className="es3-chart-tooltip">
+                <span className="es3-chart-tt-name">Este imóvel</span>
+                <span className="es3-chart-tt-area">{im.area} m²</span>
+                <span className="es3-chart-tt-m2">{fmtM2(est.m2Subj)}</span>
+              </div>
             </div>
           )}
         </div>
@@ -357,6 +367,27 @@ export default function EstudoM2Page() {
                       <span className="es3-campo-val">{fmtM2(est.campoMax)}</span>
                     </div>
                   </div>
+                  {/* track visual de posicionamento */}
+                  {(() => {
+                    const span = est.campoMax - est.campoMin || 1
+                    const pctSubj = Math.max(2, Math.min(98, (est.m2Subj - est.campoMin) / span * 100))
+                    const pctMed  = Math.max(2, Math.min(98, (est.referencia - est.campoMin) / span * 100))
+                    return (
+                      <div className="es3-campo-track-wrap">
+                        <div className="es3-campo-track">
+                          <div className="es3-campo-track-band" />
+                          <div className="es3-campo-track-med" style={{ left: pctMed.toFixed(1) + '%' }} />
+                          <div className={`es3-campo-track-dot es3-campo-track-dot--${cor}`} style={{ left: pctSubj.toFixed(1) + '%' }}>
+                            <div className="es3-campo-track-label">Este imóvel</div>
+                          </div>
+                        </div>
+                        <div className="es3-campo-track-ends">
+                          <span>{fmtM2(est.campoMin)}</span>
+                          <span>{fmtM2(est.campoMax)}</span>
+                        </div>
+                      </div>
+                    )
+                  })()}
                 </div>
 
                 {/* posicionamento */}
@@ -425,28 +456,27 @@ export default function EstudoM2Page() {
                         <span className="es3-card-titulo" style={{ margin: 0 }}>Como chegamos nesse valor</span>
                       </div>
                       <svg
+                        className={`es3-met-chevron${metOpen ? ' es3-met-chevron--open' : ''}`}
                         viewBox="0 0 24 24" width="18" height="18" fill="none"
                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                        style={{ transform: metOpen ? 'rotate(180deg)' : 'none', transition: 'transform .2s', flexShrink: 0 }}
+                        style={{ flexShrink: 0 }}
                       ><path d="M6 9l6 6 6-6"/></svg>
                     </button>
-                    {metOpen && (
-                      <div className="es3-met-body">
-                        {est.fatoresAplicados?.length > 0 && (
-                          <ul className="es3-met-list">
-                            {est.fatoresAplicados.map((f, i) => <li key={i}>{f}</li>)}
+                    <div className={`es3-met-body${metOpen ? ' es3-met-body--open' : ''}`}>
+                      {est.fatoresAplicados?.length > 0 && (
+                        <ul className="es3-met-list">
+                          {est.fatoresAplicados.map((f, i) => <li key={i}>{f}</li>)}
+                        </ul>
+                      )}
+                      {est.limitacoes?.length > 0 && (
+                        <>
+                          <p className="es3-met-subtit">O que este estudo não cobre</p>
+                          <ul className="es3-met-list es3-met-list--warn">
+                            {est.limitacoes.map((f, i) => <li key={i}>{f}</li>)}
                           </ul>
-                        )}
-                        {est.limitacoes?.length > 0 && (
-                          <>
-                            <p className="es3-met-subtit">O que este estudo não cobre</p>
-                            <ul className="es3-met-list es3-met-list--warn">
-                              {est.limitacoes.map((f, i) => <li key={i}>{f}</li>)}
-                            </ul>
-                          </>
-                        )}
-                      </div>
-                    )}
+                        </>
+                      )}
+                    </div>
                     <p className="es3-disc">
                       Estudo comparativo pelo método ABNT NBR 14653.
                       Estimativa de referência — não substitui laudo com vistoria presencial.
