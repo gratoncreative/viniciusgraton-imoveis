@@ -63,6 +63,7 @@ export default function PortalLancamentosHome() {
   const todos = useMemo(() => todosEmpreendimentosTodos(), [])
   const bairros = useMemo(() => bairrosComEmpreendimentos(), [])
   const [filtroStatus, setFiltroStatus] = useState('todos')
+  const [busca, setBusca] = useState('')
 
   const PRIORIDADE = { Lançamento: 0, 'Em obras': 1, Pronto: 2 }
   const STATUS_TABS = [
@@ -73,12 +74,18 @@ export default function PortalLancamentosHome() {
   ]
 
   const vitrine = useMemo(() => {
+    const q = busca.trim().toLowerCase()
     const base = filtroStatus === 'todos' ? todos : todos.filter((e) => e.status === filtroStatus)
     return base
       .filter((e) => e.capa)
+      .filter((e) => !q ||
+        (e.nome || '').toLowerCase().includes(q) ||
+        (e.bairro || '').toLowerCase().includes(q) ||
+        (e.construtoraNome || '').toLowerCase().includes(q)
+      )
       .sort((a, b) => (PRIORIDADE[a.status] ?? 9) - (PRIORIDADE[b.status] ?? 9))
-      .slice(0, 12)
-  }, [todos, filtroStatus])
+      .slice(0, q ? 60 : 12)
+  }, [todos, filtroStatus, busca])
 
   const contPorStatus = (k) => (k === 'todos' ? todos.length : todos.filter((e) => e.status === k).length)
 
@@ -174,6 +181,22 @@ export default function PortalLancamentosHome() {
             <Link to="/lancamentos/catalogo" className="btn btn-ghost lan-ver-todos">
               Catálogo completo <IconArrow width={13} height={13} />
             </Link>
+          </div>
+
+          {/* Busca */}
+          <div className="lan-busca-wrap">
+            <svg className="lan-busca-ico" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input
+              type="search"
+              className="lan-busca"
+              placeholder="Buscar por nome, bairro ou construtora…"
+              value={busca}
+              onChange={e => setBusca(e.target.value)}
+              aria-label="Buscar empreendimentos"
+            />
+            {busca && (
+              <button className="lan-busca-clear" onClick={() => setBusca('')} aria-label="Limpar busca">✕</button>
+            )}
           </div>
 
           {/* Tabs V2 */}

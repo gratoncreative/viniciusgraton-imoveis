@@ -5369,6 +5369,28 @@ html[data-theme="dark"] .placa-card i { color: #9298a6; }
 @media (max-width:400px) { .lan-stat-v2 { padding:14px 12px; gap:10px; } .lan-stat-v2-ico { width:34px; height:34px; border-radius:9px; } .lan-stat-v2-txt b { font-size:1.25rem; } }
 
 /* ——— Tabs V2 — segmented control com dots coloridos ———— */
+/* Busca de lançamentos */
+.lan-busca-wrap {
+  position: relative; display: flex; align-items: center;
+  background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px;
+  margin-bottom: 18px; transition: border-color .15s;
+}
+.lan-busca-wrap:focus-within { border-color: var(--gold-2); }
+.lan-busca-ico { position: absolute; left: 14px; color: var(--muted); pointer-events: none; flex-shrink: 0; }
+.lan-busca {
+  width: 100%; padding: 12px 40px 12px 40px;
+  background: transparent; border: none; outline: none;
+  color: var(--text); font-size: .92rem;
+}
+.lan-busca::placeholder { color: var(--muted); }
+.lan-busca::-webkit-search-cancel-button { display: none; }
+.lan-busca-clear {
+  position: absolute; right: 12px; background: none; border: none; cursor: pointer;
+  color: var(--muted); font-size: .8rem; padding: 4px 6px; border-radius: 6px;
+  transition: color .15s, background .15s;
+}
+.lan-busca-clear:hover { color: var(--text); background: var(--border); }
+
 .lan-tabs--v2 { display:inline-flex; gap:0; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:4px; margin-bottom:28px; flex-wrap:wrap; }
 .lan-tab-v2 { background:transparent; border:none; border-radius:10px; padding:7px 16px; font-family:var(--font-head); font-size:0.81rem; font-weight:600; color:var(--text-soft); cursor:pointer; transition:background .18s, color .18s; display:inline-flex; align-items:center; gap:7px; white-space:nowrap; }
 .lan-tab-v2:hover { color:var(--text); background:rgba(244,217,138,.07); }
@@ -6706,21 +6728,21 @@ html[data-theme="dark"] .det-info--claro .btn-ghost svg {
 /* ── Modal EstudoM2 ─────────────────────────────────────────────────────── */
 .em-overlay {
   position: fixed; inset: 0; z-index: 900;
-  display: flex; flex-direction: column; align-items: center;
-  overflow: hidden;
-}
-.em-backdrop {
-  position: fixed; inset: 0;
-  background: rgba(4, 8, 14, 0.9);
+  background: rgba(4, 8, 14, 0.88);
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-  z-index: 0; cursor: pointer;
+  cursor: pointer;
+  display: flex; align-items: flex-start; justify-content: center;
 }
 .em-panel {
-  width: 100%; max-width: 580px;
-  height: 100vh; overflow-y: auto;
-  overscroll-behavior: contain;
   position: relative; z-index: 1;
+  width: 100%; max-width: 580px;
+  height: 100dvh; overflow-y: auto; overflow-x: hidden;
+  overscroll-behavior: contain;
+  cursor: default;
   box-shadow: -20px 0 60px rgba(0,0,0,.5), 20px 0 60px rgba(0,0,0,.5);
 }
-/* Remove a margem de nav fixo dentro do modal */
 .em-panel.ep-pg { padding-top: 0; min-height: 100%; }
+/* Dentro do modal, radar fica em coluna única (painel estreito ignora o @media 600px) */
+.em-panel .ep-radar-wrap { flex-direction: column; }
+.em-panel .ep-radar-col  { flex: none; }
+.em-panel .ep-radar-svg  { max-width: 320px; }
