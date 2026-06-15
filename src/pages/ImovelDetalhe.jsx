@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useRef } from 'react'
+import { useEffect, useState, useMemo, useRef, lazy, Suspense } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import Galeria from '../components/Galeria'
@@ -14,7 +14,8 @@ import {
 import { IconWhats, IconArrow, IconPin, IconShield, ICONS } from './../components/icons'
 import { useSEO } from '../useSEO'
 import AdminImovelBar from '../components/AdminImovelBar'
-import EstudoModal from '../components/EstudoModal'
+// Lazy.. o estudo do m² (componente pesado + fontes premium) só carrega ao abrir
+const EstudoModal = lazy(() => import('../components/EstudoModal'))
 
 const plural = (n, s, p) => (n > 1 ? p : s)
 
@@ -259,6 +260,7 @@ export default function ImovelDetalhe() {
   const [showEstudo, setShowEstudo] = useState(false)
   const [imApi, setImApi] = useState(null)
   const [feed, setFeed] = useState([])
+  const [feedColeta, setFeedColeta] = useState(null)
   const [beneficios, setBeneficios] = useState([])
   const [buscando, setBuscando] = useState(false)
   const [tentativa, setTentativa] = useState(0)
@@ -267,7 +269,7 @@ export default function ImovelDetalhe() {
   useEffect(() => {
     let vivo = true
     fetch('/catalogo.json').then((r) => (r.ok ? r.json() : null))
-      .then((d) => { if (vivo && d && Array.isArray(d.imoveis)) setFeed(d.imoveis) })
+      .then((d) => { if (vivo && d && Array.isArray(d.imoveis)) { setFeed(d.imoveis); setFeedColeta(d.geradoEm || null) } })
       .catch(() => {})
     return () => { vivo = false }
   }, [])
@@ -335,7 +337,7 @@ export default function ImovelDetalhe() {
       } catch {}
     }
   }
-  const est = useMemo(() => { try { return estudoM2(im, feed) } catch { return { ok: false } } }, [im, feed])
+  const est = useMemo(() => { try { return { ...estudoM2(im, feed), coletaEm: feedColeta } } catch { return { ok: false } } }, [im, feed, feedColeta])
   const baixarPdf = async () => {
     if (!im) return
     setPdfProc(true)
@@ -709,7 +711,11 @@ export default function ImovelDetalhe() {
                     <svg className="det-estudo-cta-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </button>
                 )}
-                <EstudoModal im={im} est={est} open={showEstudo} onClose={() => setShowEstudo(false)} />
+                {showEstudo && (
+                  <Suspense fallback={null}>
+                    <EstudoModal im={im} est={est} open={showEstudo} onClose={() => setShowEstudo(false)} />
+                  </Suspense>
+                )}
               </div>
 
 

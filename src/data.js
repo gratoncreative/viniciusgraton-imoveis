@@ -257,7 +257,7 @@ const EXP_AREA = 0.10      // economia de escala: imóvel menor tende a ter m² 
 const _fontesM2 = (refRow) => {
   const f = ['Carteira de imóveis da Rotina Imobiliária (preços anunciados)', 'Metodologia ABNT NBR 14653 (avaliação de bens imóveis)']
   if (refRow && refRow.fonte) f.push(`Índice de m² do bairro · ${refRow.fonte}${refRow.ref ? ', ' + refRow.ref : ''}`)
-  f.push('Para o valor de venda real: ITBI/cartórios (Prefeitura de Uberlândia)')
+  f.push('Para o valor de venda real.. ITBI/cartórios (Prefeitura de Uberlândia)')
   return f
 }
 

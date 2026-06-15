@@ -36,6 +36,14 @@ export default function EstudoModal({ im, est, open, onClose }) {
     return () => document.removeEventListener('wheel', onWheel)
   }, [open])
 
+  // Fecha com a tecla ESC
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [open, onClose])
+
   if (!open || !im || !est?.ok) return null
 
   const estudo = buildEstudo(im, est)

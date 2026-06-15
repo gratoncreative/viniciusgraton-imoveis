@@ -6862,3 +6862,10 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .em-panel .ep-table-wrap { overflow-x: visible; margin: 0; }
 .em-panel .ep-table { min-width: 0; }
 .em-panel .ep-radar-svg { max-width: 320px; }
+
+/* bloco de fontes / data da coleta / amostra (estudo) */
+.ep-fontes { margin-top: 16px; padding: 14px 16px; border: 1px solid var(--ep-line); border-radius: 12px; background: var(--ep-card2, rgba(255,255,255,0.02)); }
+.ep-fontes-label { display: block; font-size: .6rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ep-low); font-weight: 600; margin-bottom: 8px; }
+.ep-fontes-lista { margin: 0 0 10px; padding-left: 16px; display: flex; flex-direction: column; gap: 3px; }
+.ep-fontes-lista li { font-size: .72rem; color: var(--ep-mid); line-height: 1.5; }
+.ep-fontes-meta { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: .68rem; color: var(--ep-low); font-family: 'IBM Plex Mono', monospace; }

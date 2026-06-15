@@ -82,8 +82,10 @@ export function buildEstudo(im, est) {
     consultor: {
       nome: 'Vinícius Graton',
       registro: 'Consultor da Rotina Imobiliária',
+      creci: 'CRECI PJ 132',
       whatsapp: '5534991570494',
     },
+    coletaEm: est.coletaEm || null,
     avaliando: {
       tipo: im.tipo || 'Imóvel', endereco: im.bairro,
       bairro: im.bairro, cidade: 'Uberlândia/MG',
@@ -843,6 +845,19 @@ export function EstudoContent({ estudo, im, onClose }) {
           <p className="ep-disc">
             Estudo comparativo pelo método ABNT NBR 14653. Estimativa de referência.. não substitui laudo com vistoria presencial. Baseado em preços anunciados, não em escrituras registradas.
           </p>
+          <div className="ep-fontes">
+            <span className="ep-fontes-label">Fontes e atualização</span>
+            {(estudo.fontes || []).length > 0 && (
+              <ul className="ep-fontes-lista">
+                {estudo.fontes.map((f, i) => <li key={i}>{f}</li>)}
+              </ul>
+            )}
+            <div className="ep-fontes-meta">
+              {estudo.coletaEm && <span>Coleta dos comparáveis.. {fmtData(estudo.coletaEm)}</span>}
+              {estudo.n > 0 && <span>Amostra.. {estudo.n} imóveis do mesmo tipo</span>}
+              {estudo.baseLabel && <span>Base.. {estudo.baseLabel}</span>}
+            </div>
+          </div>
         </Secao>
 
       </div>
@@ -852,9 +867,9 @@ export function EstudoContent({ estudo, im, onClose }) {
         <div className="ep-container ep-assinatura-inner">
           <div className="ep-assina-info">
             <span className="ep-assina-nome">{estudo.consultor.nome}</span>
-            <span className="ep-assina-reg">{estudo.consultor.registro}</span>
+            <span className="ep-assina-reg">{estudo.consultor.registro}{estudo.consultor.creci ? ` · ${estudo.consultor.creci}` : ''}</span>
             <span className="ep-assina-nota">
-              Estudo elaborado com base em dados públicos de mercado. Valores sujeitos a variação conforme condições de mercado.
+              Estudo preliminar a partir de ofertas públicas, pelo método comparativo ABNT NBR 14653. Não substitui avaliação formal com vistoria. Valores sujeitos a variação conforme condições de mercado.
             </span>
           </div>
           <a
