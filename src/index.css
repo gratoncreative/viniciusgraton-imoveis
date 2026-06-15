@@ -6849,14 +6849,16 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 }
 .em-panel {
   position: relative; z-index: 1;
-  width: 100%; max-width: 580px;
+  width: 100%; max-width: min(1040px, 95vw);
   height: 100dvh; overflow-y: auto; overflow-x: hidden;
   overscroll-behavior: contain;
   cursor: default;
   box-shadow: -20px 0 60px rgba(0,0,0,.5), 20px 0 60px rgba(0,0,0,.5);
 }
 .em-panel.ep-pg { padding-top: 0; min-height: 100%; }
-/* Dentro do modal, radar fica em coluna única (painel estreito ignora o @media 600px) */
-.em-panel .ep-radar-wrap { flex-direction: column; }
-.em-panel .ep-radar-col  { flex: none; }
-.em-panel .ep-radar-svg  { max-width: 320px; }
+/* Painel largo: o conteúdo usa o layout desktop (≥600px) com folga, sem corte */
+.em-panel .ep-container { max-width: 960px; }
+/* Tabela comparativa (8 colunas) cabe sem barra horizontal no painel largo */
+.em-panel .ep-table-wrap { overflow-x: visible; margin: 0; }
+.em-panel .ep-table { min-width: 0; }
+.em-panel .ep-radar-svg { max-width: 320px; }
