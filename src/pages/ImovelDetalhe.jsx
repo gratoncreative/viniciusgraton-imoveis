@@ -595,7 +595,7 @@ export default function ImovelDetalhe() {
           </div>
 
           {/* Painel de info */}
-          <aside className={`det-info${mounted ? ' det-mounted' : ''}`}>
+          <aside className={`det-info det-info--claro${mounted ? ' det-mounted' : ''}`}>
             <Reveal>
               <p className="det-local"><IconPin width={15} height={15} /> {im.cidade} — {im.uf} · Cód. {im.codigo}</p>
               <h1 className="det-titulo">{im.tipo} no {im.bairro}</h1>
