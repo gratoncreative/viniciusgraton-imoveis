@@ -27,10 +27,12 @@ export default function EstudoModal({ im, est, open, onClose }) {
     // Rola o painel do estudo com a roda do mouse independente de onde o
     // cursor estiver (sobre o painel ou sobre o fundo escuro ao redor).
     const onWheel = (e) => {
+      // Ctrl+roda (e pinça no trackpad) é gesto de zoom do navegador — não intercepta.
+      if (e.ctrlKey) return
       const panel = panelRef.current
       if (!panel) return
       e.preventDefault()
-      panel.scrollBy({ top: e.deltaY })
+      panel.scrollBy({ top: e.deltaY, left: e.deltaX })
     }
     document.addEventListener('wheel', onWheel, { passive: false })
     return () => document.removeEventListener('wheel', onWheel)
