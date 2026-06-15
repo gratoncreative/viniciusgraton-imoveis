@@ -29,8 +29,11 @@ export function useSEO({ title, description, path, noindex, image }) {
     const url = SITE + (path || window.location.pathname)
     setMeta('property', 'og:url', url)
     if (image) {
-      setMeta('property', 'og:image', image)
-      setMeta('name', 'twitter:image', image)
+      // Open Graph/Twitter exigem URL absoluta — caminho relativo (/imoveis/x.jpg)
+      // quebra a prévia em WhatsApp/Facebook. Absolutiza a partir do domínio.
+      const absImg = /^https?:\/\//.test(image) ? image : SITE + (image.startsWith('/') ? '' : '/') + image
+      setMeta('property', 'og:image', absImg)
+      setMeta('name', 'twitter:image', absImg)
     }
     let can = document.head.querySelector('link[rel="canonical"]')
     if (!can) {
