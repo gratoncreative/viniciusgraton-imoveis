@@ -314,6 +314,7 @@ export default function EstudoM2Page() {
                   <div className={`es3-diff-pill es3-diff-pill--${cor}`}>
                     {est.diffPct > 0 ? '+' : ''}{est.diffPct}%
                   </div>
+                  <div className="es3-metrics-sep" />
                   <div className="es3-metric-bloco">
                     <span className="es3-metric-label">Mediana do bairro</span>
                     <span className="es3-metric-valor es3-metric-valor--ref">{fmtM2(est.referencia)}</span>
@@ -334,9 +335,12 @@ export default function EstudoM2Page() {
               <div className="es3-main">
 
                 {/* campo de mercado */}
-                <div className="es3-card">
-                  <h2 className="es3-card-titulo">Campo de mercado</h2>
-                  <p className="es3-card-sub">{est.baseLabel}</p>
+                <div className="es3-card es3-card--campo">
+                  <div className="es3-sec-head">
+                    <span className="es3-sec-label">Análise · Campo de Mercado</span>
+                    <h2 className="es3-card-titulo">Faixa de preços praticada no bairro</h2>
+                    <p className="es3-card-sub">{est.baseLabel}</p>
+                  </div>
                   <div className="es3-campo">
                     <div className="es3-campo-item">
                       <span className="es3-campo-label">Mínimo</span>
@@ -356,24 +360,33 @@ export default function EstudoM2Page() {
                 </div>
 
                 {/* posicionamento */}
-                <div className="es3-card">
-                  <h2 className="es3-card-titulo">Posicionamento no mercado</h2>
-                  <p className="es3-card-sub">Preço/m² homogeneizado comparado à faixa praticada no bairro</p>
+                <div className="es3-card es3-card--ruler">
+                  <div className="es3-sec-head">
+                    <span className="es3-sec-label">Análise · Posicionamento</span>
+                    <h2 className="es3-card-titulo">Onde este imóvel está no mercado</h2>
+                    <p className="es3-card-sub">Preço/m² ajustado comparado à faixa praticada no {im.bairro}</p>
+                  </div>
                   <PositionRuler im={im} est={est} />
                 </div>
 
                 {/* comparáveis */}
                 {est.comparaveis?.length > 0 && (
-                  <div className="es3-card">
-                    <h2 className="es3-card-titulo">Comparáveis no mercado</h2>
-                    <p className="es3-card-sub">{est.comparaveis.length} imóveis do mesmo tipo · preço/m² homogeneizado</p>
+                  <div className="es3-card es3-card--chart">
+                    <div className="es3-sec-head">
+                      <span className="es3-sec-label">Evidências · Comparáveis</span>
+                      <h2 className="es3-card-titulo">Imóveis usados na análise</h2>
+                      <p className="es3-card-sub">{est.comparaveis.length} imóveis do mesmo tipo · preço/m² homogeneizado</p>
+                    </div>
                     <CompsChart est={est} im={im} />
                   </div>
                 )}
 
                 {/* stats */}
-                <div className="es3-card">
-                  <h2 className="es3-card-titulo">Detalhes do cálculo</h2>
+                <div className="es3-card es3-card--stats">
+                  <div className="es3-sec-head">
+                    <span className="es3-sec-label">Dados · Homogeneização</span>
+                    <h2 className="es3-card-titulo">Como o preço/m² foi calculado</h2>
+                  </div>
                   <div className="es3-stats">
                     <div className="es3-stat">
                       <span className="es3-stat-label">Preço anunciado/m²</span>
