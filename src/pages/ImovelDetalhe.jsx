@@ -187,7 +187,7 @@ function OuvirImovel({ im }) {
     setEstado('carregando')
 
     try {
-      const resp = await fetch(`/api/tts?texto=${encodeURIComponent(texto)}`)
+      const resp = await fetch(`/api/tts?codigo=${encodeURIComponent(im.codigo)}&texto=${encodeURIComponent(texto)}`)
       if (!resp.ok) throw new Error('sem azure')
       const blob = await resp.blob()
       const url = URL.createObjectURL(blob)
