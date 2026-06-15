@@ -19,6 +19,15 @@ export default function AdminImovelBar({ im }) {
     return () => window.removeEventListener('storage', check)
   }, [])
 
+  useEffect(() => {
+    setOpen(false)
+    setOwner(null)
+    setForm({ nome: '', email: '', fone: '' })
+    setEditing(false)
+    setMsg('')
+    setLoading(false)
+  }, [im?.codigo])
+
   if (!isAdmin || !im) return null
 
   const token = localStorage.getItem(LSK)

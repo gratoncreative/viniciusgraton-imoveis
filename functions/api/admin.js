@@ -253,7 +253,8 @@ export async function onRequestPost({ env, request }) {
     if (c.andar !== '' && c.andar !== null && c.andar !== undefined) campos.andar = Number(c.andar) || 0
     if (typeof c.elevador === 'boolean') campos.elevador = c.elevador
     if (Array.isArray(c.fotos)) campos.fotos = c.fotos.filter((s) => typeof s === 'string').slice(0, 40).map((s) => s.slice(0, 300))
-    await env.ENGAGEMENT.put('imovel:' + codigo, JSON.stringify({ owner, campos, atualizadoEm: Date.now() }))
+    const existing = await env.ENGAGEMENT.get('imovel:' + codigo, 'json') || {}
+    await env.ENGAGEMENT.put('imovel:' + codigo, JSON.stringify({ ...existing, owner, campos, atualizadoEm: Date.now() }))
     return json({ ok: true })
   }
 
