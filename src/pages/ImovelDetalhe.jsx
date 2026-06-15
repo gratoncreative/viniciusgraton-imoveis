@@ -127,118 +127,6 @@ function Destaque({ icon, titulo, sub }) {
   )
 }
 
-function precoFala(v) {
-  if (!v || v <= 0) return ''
-  const r = Math.round(v)
-  if (r >= 1000000) {
-    const mi = Math.floor(r / 1000000)
-    const milResto = Math.round((r % 1000000) / 1000)
-    if (milResto > 0) return `${mi} ${mi === 1 ? 'milhão' : 'milhões'} e ${milResto} mil reais`
-    return `${mi} ${mi === 1 ? 'milhão' : 'milhões'} de reais`
-  }
-  const mil = Math.floor(r / 1000)
-  const resto = r % 1000
-  if (resto > 0) return `${mil} mil e ${resto} reais`
-  return `${mil} mil reais`
-}
-
-// Leitura em voz alta do imóvel — ElevenLabs TTS (primário) + Web Speech (fallback)
-function OuvirImovel({ im }) {
-  const [estado, setEstado] = useState('parado') // parado | carregando | tocando | pausado
-  const audioRef = useRef(null)
-
-  // Limpa o áudio ao trocar de imóvel
-  useEffect(() => {
-    return () => {
-      if (audioRef.current) { audioRef.current.pause(); audioRef.current = null }
-      try { window.speechSynthesis?.cancel() } catch {}
-    }
-  }, [im?.codigo])
-
-  const texto = useMemo(() => {
-    const { paras } = apresentacao(im)
-    const preco = im.preco > 0 ? `O valor é ${precoFala(im.preco)}.` : ''
-    // insere o preço entre o segundo e o terceiro parágrafo
-    const partes = [...paras.slice(0, 2), preco, ...paras.slice(2)].filter(Boolean)
-    return partes.join(' ')
-      .replace(/\bm²\b/g, ' metros quadrados')
-      .replace(/;/g, ',')
-      .replace(/\|/g, ' e ')
-      .replace(/\n+/g, ' ')
-      .replace(/  +/g, ' ')
-      .trim()
-      .slice(0, 1800)
-  }, [im])
-
-  // Fallback: Web Speech API (caso Azure não esteja configurado)
-  const falarWebSpeech = () => {
-    const synth = window.speechSynthesis
-    synth.cancel()
-    const u = new SpeechSynthesisUtterance(texto)
-    u.lang = 'pt-BR'; u.rate = 0.9; u.pitch = 1.05
-    u.onend = () => setEstado('parado')
-    u.onerror = () => setEstado('parado')
-    const doSpeak = (voices) => {
-      const voz =
-        voices.find((v) => /pt[-_]?BR/i.test(v.lang) && /natural|online/i.test(v.name)) ||
-        voices.find((v) => /pt[-_]?BR/i.test(v.lang) && v.name.toLowerCase().includes('google')) ||
-        voices.find((v) => /pt[-_]?BR/i.test(v.lang) && !v.localService) ||
-        voices.find((v) => /pt[-_]?BR/i.test(v.lang))
-      if (voz) u.voice = voz
-      synth.speak(u)
-      setEstado('tocando')
-    }
-    const voices = synth.getVoices()
-    voices.length > 0 ? doSpeak(voices) : synth.addEventListener('voiceschanged', () => doSpeak(synth.getVoices()), { once: true })
-  }
-
-  const tocar = async () => {
-    // Pausar / continuar áudio já carregado
-    if (estado === 'tocando' && audioRef.current) { audioRef.current.pause(); setEstado('pausado'); return }
-    if (estado === 'pausado' && audioRef.current) { audioRef.current.play(); setEstado('tocando'); return }
-    if (estado === 'carregando') return
-
-    // Parar qualquer reprodução anterior
-    if (audioRef.current) { audioRef.current.pause(); audioRef.current = null }
-    try { window.speechSynthesis?.cancel() } catch {}
-
-    setEstado('carregando')
-
-    try {
-      const resp = await fetch(`/api/tts?codigo=${encodeURIComponent(im.codigo)}&texto=${encodeURIComponent(texto)}`)
-      if (!resp.ok) throw new Error('sem azure')
-      const blob = await resp.blob()
-      const url = URL.createObjectURL(blob)
-      const audio = new Audio(url)
-      audioRef.current = audio
-      audio.onended = () => { URL.revokeObjectURL(url); audioRef.current = null; setEstado('parado') }
-      audio.onerror = () => { URL.revokeObjectURL(url); audioRef.current = null; setEstado('parado') }
-      await audio.play()
-      setEstado('tocando')
-    } catch {
-      // Azure indisponível → Web Speech como fallback
-      if ('speechSynthesis' in window) { falarWebSpeech() } else { setEstado('parado') }
-    }
-  }
-
-  const parar = () => {
-    if (audioRef.current) { audioRef.current.pause(); audioRef.current = null }
-    try { window.speechSynthesis?.cancel() } catch {}
-    setEstado('parado')
-  }
-
-  return (
-    <div className="imovel-ouvir">
-      <button type="button" className="imovel-ouvir-btn" onClick={tocar} aria-label="Ouvir descrição do imóvel" disabled={estado === 'carregando'}>
-        {estado === 'carregando' ? '⏳ Preparando…' : estado === 'tocando' ? '⏸ Pausar leitura' : estado === 'pausado' ? '▶ Continuar' : '🔊 Ouvir este imóvel'}
-      </button>
-      {estado !== 'parado' && estado !== 'carregando' && (
-        <button type="button" className="imovel-ouvir-btn imovel-ouvir-btn--stop" onClick={parar} aria-label="Parar">⏹</button>
-      )}
-      {estado === 'tocando' && <span className="imovel-ouvir-ondas" aria-hidden="true" />}
-    </div>
-  )
-}
 
 // mensagens descontraídas que giram enquanto o imóvel carrega
 const MSG_LOAD = [
@@ -687,7 +575,6 @@ export default function ImovelDetalhe() {
           <div className="det-galeria">
             <span className="det-tag">{im.tipo}</span>
             <Galeria fotos={fotos} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} />
-            <OuvirImovel im={im} />
             {(() => { const ap = apresentacao(im); return (
               <div className="det-apresenta">
                 <h2 className="det-apresenta-tit">Por que esse imóvel vale a sua visita</h2>
