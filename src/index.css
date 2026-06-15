@@ -429,7 +429,7 @@ section { position: relative; padding: clamp(20px, 3vw, 40px) 0; }
 .im-grid > * { height: 100%; }
 .im-media { aspect-ratio: 4/3; }
 .im-tag { position: absolute; top: 14px; left: 14px; z-index: 2; font-family: var(--font-head); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 6px 12px; border-radius: 100px; background: rgba(7,10,17,0.62); border: 1px solid var(--gold-3); color: var(--gold-1); backdrop-filter: blur(6px); transform: translateZ(46px); }
-.im-novo { position: absolute; top: 14px; right: 14px; z-index: 3; font-family: var(--font-head); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 5px 11px; border-radius: 100px; background: var(--gold-grad); color: #20160a; transform: translateZ(50px); box-shadow: 0 6px 18px -6px rgba(224,181,86,0.6); }
+.im-novo { position: absolute; top: 14px; right: 14px; z-index: 3; font-family: var(--font-head); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 5px 11px; border-radius: 100px; background: rgba(60,35,3,0.88); color: #fef0bc; border: 1px solid rgba(201,168,76,0.45); backdrop-filter: blur(6px); transform: translateZ(50px); box-shadow: 0 4px 16px -6px rgba(0,0,0,0.55); }
 .im-preco { position: absolute; bottom: 14px; left: 18px; right: 18px; z-index: 2; font-family: var(--font-head); font-weight: 700; font-size: 1.5rem; color: #fff; letter-spacing: -0.01em; transform: translateZ(56px); text-shadow: 0 2px 18px rgba(0,0,0,0.55); }
 /* Selo de publicidade (anúncio impulsionado) — transparente e clicável */
 .im-pub { position: absolute; top: 14px; left: 14px; z-index: 4; display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-head); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 5px 10px; border-radius: 100px; background: rgba(7,10,17,0.72); border: 1px solid rgba(224,181,86,0.55); color: var(--gold-1); text-decoration: none; backdrop-filter: blur(6px); transform: translateZ(60px); transition: background 0.2s, border-color 0.2s, color 0.2s; }
@@ -771,7 +771,7 @@ html[data-theme="dark"] .det-novo-tag { color: #60a5fa; }
 .im-linha .im-selos { top: auto; bottom: 12px; left: 12px; transform: none; justify-content: flex-start; }
 .im-selo { font-family: var(--font-head); font-weight: 700; font-size: 0.68rem; letter-spacing: 0.07em; text-transform: uppercase; padding: 5px 11px; border-radius: 999px; white-space: nowrap; box-shadow: 0 6px 16px -8px rgba(0,0,0,0.5); }
 .im-selo--off { background: #1f8a4c; color: #fff; }
-.im-selo--mercado { background: var(--gold-grad); color: #20160a; }
+.im-selo--mercado { background: rgba(60,35,3,0.88); color: #fef0bc; border: 1px solid rgba(201,168,76,0.45); backdrop-filter: blur(6px); }
 .det-selos { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 12px; }
 .det-selos .im-selo { font-size: 0.78rem; padding: 6px 13px; box-shadow: none; }
 .preco-gate .pg-cta { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-head); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.01em; transition: transform 0.18s var(--ease), filter 0.18s; }
@@ -1956,7 +1956,7 @@ html[data-theme="dark"] .admin-alerta-stale code { background: rgba(255,255,255,
 .condo-contagem { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 16px; font-family: var(--font-head); font-weight: 600; color: #3a4150; }
 .condo-limpar { background: none; border: none; color: var(--gold-3); font-family: var(--font-head); font-weight: 600; font-size: 0.9rem; cursor: pointer; }
 .condo-limpar:hover { text-decoration: underline; }
-.condo-seg { position: absolute; top: 12px; right: 12px; font-family: var(--font-head); font-size: 0.65rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: #0a0600; background: linear-gradient(135deg, #f5df88 0%, #d4a030 100%); padding: 5px 11px; border-radius: 100px; text-shadow: 0 1px 0 rgba(255,255,255,0.18); }
+.condo-seg { position: absolute; top: 12px; right: 12px; font-family: var(--font-head); font-size: 0.65rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: #fef0bc; background: rgba(60,35,3,0.88); border: 1px solid rgba(201,168,76,0.45); backdrop-filter: blur(6px); padding: 5px 11px; border-radius: 100px; }
 
 /* link de destaque no menu (Anunciar imóvel) */
 .nav-links a.nav-destaque { color: var(--gold-1); border: 1px solid var(--gold-3); border-radius: 100px; padding: 7px 16px; }
