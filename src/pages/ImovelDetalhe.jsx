@@ -308,7 +308,7 @@ export default function ImovelDetalhe() {
 
   const fotos = fotosDe(im)
   useSEO({
-    title: im ? `${im.tipo} no ${im.bairro} — ${formatPreco(im.preco)}` : 'Imóvel em Uberlândia',
+    title: im ? `${im.tipo} ${im.bairro} · ${formatPreco(im.preco)}${im.area > 0 ? ` · ${Math.round(im.area)} m²` : ''} · Uberlândia` : 'Imóvel em Uberlândia',
     description: im ? resumoImovel(im) : 'Imóvel à venda em Uberlândia-MG. Consultoria personalizada com Vinícius Graton.',
     path: `/imovel/${codigo}`,
     image: fotos[0] || im?.img,
@@ -324,7 +324,7 @@ export default function ImovelDetalhe() {
   const compartilhar = async () => {
     if (!im) return
     const url = `https://viniciusgraton.com.br/imovel/${im.codigo}`
-    const title = `${im.tipo} no ${im.bairro} — ${formatPreco(im.preco)}`
+    const title = `${im.tipo} ${im.bairro} · ${formatPreco(im.preco)}`
     if (navigator.share) {
       try { await navigator.share({ title, url, text: resumoImovel(im) }) } catch {}
     } else {

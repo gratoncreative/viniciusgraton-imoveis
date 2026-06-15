@@ -126,7 +126,9 @@ function bodySeo(im, descUnica) {
 }
 
 function render(im) {
-  const titulo = `${im.tipo} no ${im.bairro}, Uberlândia — ${formatPreco(im.preco)}`
+  const areaTit = im.area > 0 ? ` · ${Math.round(im.area)} m²` : ''
+  const precoTit = im.preco > 0 ? `R$ ${Math.round(im.preco).toLocaleString('pt-BR')}` : 'Sob consulta'
+  const titulo = `${im.tipo} ${im.bairro} · ${precoTit}${areaTit} · Uberlândia`
   const descUnica = descricaoUnica(im)
   const desc = trunc(descUnica)
   const url = `${SITE}/imovel/${im.codigo}`
@@ -168,7 +170,7 @@ function render(im) {
   }
 
   let html = baseHtml
-    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)} | Vinícius Graton</title>`)
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)}</title>`)
     .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
     .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
     .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
