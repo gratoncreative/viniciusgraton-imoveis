@@ -309,11 +309,20 @@ export default function ImovelDetalhe() {
   }, [im])
 
   const fotos = fotosDe(im)
+  // Imagem social tem que ser do próprio imóvel. Se a foto aponta para a pasta
+  // CDN de outro código (dado inconsistente do feed), usa fallback genérico.
+  const ogImg = (() => {
+    const cand = fotos[0] || im?.img
+    if (!cand) return undefined
+    const m = String(cand).match(/\/Imoveis\/(\d+)\//i)
+    if (m && im && String(m[1]) !== String(im.codigo)) return '/casa-conceito.jpg'
+    return cand
+  })()
   useSEO({
     title: im ? `${im.tipo} ${im.bairro} · ${formatPreco(im.preco)}${im.area > 0 ? ` · ${Math.round(im.area)} m²` : ''} · Uberlândia` : 'Imóvel em Uberlândia',
     description: im ? resumoImovel(im) : 'Imóvel à venda em Uberlândia-MG. Consultoria personalizada com Vinícius Graton.',
     path: `/imovel/${codigo}`,
-    image: fotos[0] || im?.img,
+    image: ogImg,
   })
   const [pdfProc, setPdfProc] = useState(false)
   const [copiado, setCopiado] = useState(false)

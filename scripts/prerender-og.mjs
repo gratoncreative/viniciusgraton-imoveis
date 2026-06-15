@@ -54,6 +54,16 @@ const trunc = (s, n = 160) => {
   return t.slice(0, n - 1).replace(/\s+\S*$/, '') + '…'
 }
 const abs = (u) => (u && u.startsWith('http') ? u : SITE + u)
+// Imagem social TEM que ser do próprio imóvel. O CDN da Rotina usa o padrão
+// .../Imoveis/{codigo}/... — se a foto aponta para outro código (dado
+// inconsistente do feed) ou não existe, devolve null para cair no fallback.
+const FALLBACK_IMG = `${SITE}/casa-conceito.jpg`
+const imgDoImovel = (im) => {
+  if (!im.img) return null
+  const m = im.img.match(/\/Imoveis\/(\d+)\//i)
+  if (m && String(m[1]) !== String(im.codigo)) return null
+  return im.img
+}
 const slugify = (s) => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 
 // FAQ factual por imóvel — vira FAQPage (JSON-LD) + texto visível no HTML estático
@@ -132,7 +142,8 @@ function render(im) {
   const descUnica = descricaoUnica(im)
   const desc = trunc(descUnica)
   const url = `${SITE}/imovel/${im.codigo}`
-  const image = abs(im.img)
+  const ownImg = imgDoImovel(im)
+  const image = ownImg ? abs(ownImg) : FALLBACK_IMG
   const ld = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -141,7 +152,7 @@ function render(im) {
         '@id': `${url}#imovel`,
         name: `${im.tipo} no ${im.bairro}, Uberlândia`,
         description: descUnica,
-        image: (im.fotos && im.fotos.length ? im.fotos : [im.img]).map(abs),
+        image: ownImg ? (im.fotos && im.fotos.length ? im.fotos : [im.img]).map(abs) : [FALLBACK_IMG],
         category: 'Imóvel à venda',
         sku: String(im.codigo),
         offers: {
