@@ -1956,7 +1956,7 @@ html[data-theme="dark"] .admin-alerta-stale code { background: rgba(255,255,255,
 .condo-contagem { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 16px; font-family: var(--font-head); font-weight: 600; color: #3a4150; }
 .condo-limpar { background: none; border: none; color: var(--gold-3); font-family: var(--font-head); font-weight: 600; font-size: 0.9rem; cursor: pointer; }
 .condo-limpar:hover { text-decoration: underline; }
-.condo-seg { position: absolute; top: 12px; right: 12px; font-family: var(--font-head); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #20160a; background: var(--gold-grad); padding: 4px 9px; border-radius: 100px; }
+.condo-seg { position: absolute; top: 12px; right: 12px; font-family: var(--font-head); font-size: 0.65rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: #0a0600; background: linear-gradient(135deg, #f5df88 0%, #d4a030 100%); padding: 5px 11px; border-radius: 100px; text-shadow: 0 1px 0 rgba(255,255,255,0.18); }
 
 /* link de destaque no menu (Anunciar imóvel) */
 .nav-links a.nav-destaque { color: var(--gold-1); border: 1px solid var(--gold-3); border-radius: 100px; padding: 7px 16px; }
@@ -4021,7 +4021,7 @@ html[data-theme="dark"] .corrbn-nota { color: #6a7485; }
 
 /* hero strip escuro */
 .ferramentas-pg { background: #0d1018; min-height: 100vh; padding-bottom: 80px; }
-.ferr-hero { background: linear-gradient(160deg, #11151e 0%, #0d1018 60%); border-bottom: 1px solid rgba(255,255,255,0.07); padding: 130px 0 0; }
+.ferr-hero { background: radial-gradient(ellipse 70% 90% at 92% 30%, rgba(201,168,76,0.22) 0%, rgba(201,168,76,0.06) 42%, transparent 68%), radial-gradient(ellipse 35% 50% at 100% 0%, rgba(247,227,164,0.12) 0%, transparent 55%), linear-gradient(160deg, #0e1220 0%, #0d1018 55%); border-bottom: 1px solid rgba(255,255,255,0.07); padding: 130px 0 0; overflow: hidden; position: relative; }
 .ferr-hero .container { display: flex; flex-direction: column; gap: 24px; }
 .ferr-hero-eyebrow { display: inline-flex; align-items: center; gap: 7px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-2); }
 .ferr-hero-titulo { font-family: var(--font-head); font-size: clamp(1.7rem, 4vw, 2.8rem); font-weight: 800; color: #f1ede4; line-height: 1.15; margin: 0; }
@@ -5480,19 +5480,19 @@ html[data-theme="dark"] .condo-filtro-grupo-v2 { background:var(--surface); bord
 .condos-search-x { background: rgba(255,255,255,0.08); border: none; color: #9aa0b0; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; font-size: 0.82rem; line-height: 1; flex: none; }
 .condos-search-x:hover { background: rgba(255,255,255,0.14); color: #e8eaf0; }
 /* filtros dropdowns */
-.condos-hero-filtros { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; }
-.condos-hf { position: relative; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 0 14px 0 14px; transition: border-color 0.2s; }
+.condos-hero-filtros { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.condos-hf { position: relative; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 0 14px 0 14px; transition: border-color 0.2s; flex: 1 1 190px; min-width: 0; }
 .condos-hf:focus-within { border-color: rgba(201,168,76,0.45); }
 .condos-hf > svg:first-child { color: var(--gold-2); flex: none; opacity: 0.75; }
-.condos-hf select { flex: 1; border: none; outline: none; background: none; font-size: 0.88rem; color: #d0d4de; padding: 14px 0; cursor: pointer; appearance: none; -webkit-appearance: none; }
+.condos-hf select { flex: 1; min-width: 0; border: none; outline: none; background: none; font-size: 0.88rem; color: #d0d4de; padding: 14px 0; cursor: pointer; appearance: none; -webkit-appearance: none; }
 .condos-hf > svg:last-child { color: #6a738a; flex: none; pointer-events: none; }
-.condos-hf--wide { grid-column: 1 / 3; }
-.condos-hf-limpar { grid-column: span 1; border: 1px solid rgba(255,255,255,0.18); border-radius: 12px; background: none; color: #d0d4de; font-size: 0.88rem; font-weight: 600; cursor: pointer; padding: 14px 16px; transition: background 0.18s, border-color 0.18s; }
+.condos-hf--wide { flex: 2 1 380px; }
+.condos-hf-limpar { flex: 0 0 auto; border: 1px solid rgba(255,255,255,0.18); border-radius: 12px; background: none; color: #d0d4de; font-size: 0.88rem; font-weight: 600; cursor: pointer; padding: 14px 20px; transition: background 0.18s, border-color 0.18s; white-space: nowrap; }
 .condos-hf-limpar:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.28); }
 /* lista */
 .condos-lista { padding-top: 32px; }
-@media (max-width: 900px) { .condos-hero-filtros { grid-template-columns: 1fr 1fr; } .condos-hf--wide { grid-column: 1 / 3; } .condos-hf-limpar { grid-column: 1 / 3; } }
-@media (max-width: 600px) { .condos-hero-filtros { grid-template-columns: 1fr; } .condos-hf--wide, .condos-hf-limpar { grid-column: auto; } }
+@media (max-width: 900px) { .condos-hf { flex: 1 1 160px; } .condos-hf--wide { flex: 2 1 320px; } }
+@media (max-width: 600px) { .condos-hf, .condos-hf--wide { flex: 1 1 100%; } .condos-hf-limpar { flex: 1 1 100%; text-align: center; } }
 
 /* ── EstudoM2Page (/estudo/:codigo) ─────────────────────────────── */
 .est-pg { background: #0d1018; min-height: 100vh; padding-bottom: 80px; }
