@@ -14,6 +14,7 @@ import {
 import { IconWhats, IconArrow, IconPin, IconShield, ICONS } from './../components/icons'
 import { useSEO } from '../useSEO'
 import AdminImovelBar from '../components/AdminImovelBar'
+import BaixarFotosImovel from '../components/BaixarFotosImovel'
 // Lazy.. o estudo do m² (componente pesado + fontes premium) só carrega ao abrir
 const EstudoModal = lazy(() => import('../components/EstudoModal'))
 
@@ -688,6 +689,7 @@ export default function ImovelDetalhe() {
                     </>
                   )}
                 </button>
+                <BaixarFotosImovel im={im} fotos={fotos} />
                 <Link to="/ferramentas" className="det-btn-acao">
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3M16 5h3v3M14 11l5.5-5.5"/></svg>
                   Simular
