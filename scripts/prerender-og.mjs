@@ -43,7 +43,7 @@ const resumo = (im) => {
     im.quartos > 0 && `${im.quartos} ${plural(im.quartos, 'quarto', 'quartos')}`,
     im.suites > 0 && `${im.suites} ${plural(im.suites, 'suíte', 'suítes')}`,
     im.vagas > 0 && `${im.vagas} ${plural(im.vagas, 'vaga', 'vagas')}`,
-    im.area > 0 && `${im.area} m²`,
+    im.area > 0 && `${Math.round(im.area)} m²`,
   ].filter(Boolean)
   return `${im.tipo} à venda no ${im.bairro}, em ${im.cidade}.${itens.length ? ' ' + itens.join(', ') + '.' : ''}`
 }
@@ -62,7 +62,7 @@ function faqImovel(im) {
   const b = im.bairro || 'Uberlândia'
   const qa = []
   qa.push({ q: `Qual o valor deste ${t} no ${b}?`, a: `O ${t} no ${b}, em Uberlândia, está à venda por ${formatPreco(im.preco)}${im.condominio ? `, com condomínio de R$ ${Number(im.condominio).toLocaleString('pt-BR')}` : ''}. Fale com o Vinícius Graton para condições e financiamento.` })
-  if (im.area > 0) qa.push({ q: 'Qual a área do imóvel?', a: `Este ${t} tem ${im.area} m².` })
+  if (im.area > 0) qa.push({ q: 'Qual a área do imóvel?', a: `Este ${t} tem ${Math.round(im.area)} m².` })
   const comp = [im.quartos > 0 && `${im.quartos} ${plural(im.quartos, 'quarto', 'quartos')}`, im.suites > 0 && `${im.suites} ${plural(im.suites, 'suíte', 'suítes')}`, im.banheiros > 0 && `${im.banheiros} ${plural(im.banheiros, 'banheiro', 'banheiros')}`, im.vagas > 0 && `${im.vagas} ${plural(im.vagas, 'vaga', 'vagas')}`].filter(Boolean)
   if (comp.length) qa.push({ q: 'Quantos quartos e vagas tem?', a: `O imóvel oferece ${comp.join(', ')}.` })
   qa.push({ q: 'Onde fica este imóvel?', a: `Fica no bairro ${b}, em Uberlândia - MG. A localização exata é informada no atendimento.` })
@@ -79,7 +79,7 @@ function descricaoUnica(im) {
   const pick = (arr, off = 0) => arr[(seed + off) % arr.length]
   const ehApto = /apart|kit|studio|stúdio|loft|flat|cobertura/i.test(t)
   const specs = [
-    im.area > 0 && `${im.area} m²`,
+    im.area > 0 && `${Math.round(im.area)} m²`,
     im.quartos > 0 && `${im.quartos} ${plural(im.quartos, 'quarto', 'quartos')}`,
     im.suites > 0 && `${im.suites} ${plural(im.suites, 'suíte', 'suítes')}`,
     im.banheiros > 0 && `${im.banheiros} ${plural(im.banheiros, 'banheiro', 'banheiros')}`,
@@ -109,7 +109,7 @@ function descricaoUnica(im) {
 // bloco de conteúdo estático único dentro do #root (crawler lê; o React substitui ao montar)
 function bodySeo(im, descUnica) {
   const specs = [
-    im.area > 0 && `Área: ${im.area} m²`,
+    im.area > 0 && `Área: ${Math.round(im.area)} m²`,
     im.quartos > 0 && `Quartos: ${im.quartos}`,
     im.suites > 0 && `Suítes: ${im.suites}`,
     im.banheiros > 0 && `Banheiros: ${im.banheiros}`,

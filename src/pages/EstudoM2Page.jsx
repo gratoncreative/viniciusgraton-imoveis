@@ -241,7 +241,7 @@ function RadarChart({ testemunhas, avaliando, referencia }) {
                   fontFamily="'IBM Plex Sans', sans-serif"
                   textAnchor="middle"
                 >
-                  {t.area} m² · {fmtBRL(t.valor)}
+                  {Math.round(t.area)} m² · {fmtBRL(t.valor)}
                 </text>
               </g>
             )}
@@ -515,7 +515,7 @@ function SortableTable({ rows, referencia }) {
               <tr key={i} className="ep-tr">
                 <td className="ep-td ep-mono ep-td-ref">{t.ref}</td>
                 <td className="ep-td">{t.bairro}</td>
-                <td className="ep-td ep-mono ep-td-r">{t.area} m²</td>
+                <td className="ep-td ep-mono ep-td-r">{Math.round(t.area)} m²</td>
                 <td className="ep-td ep-mono ep-td-r">{fmtBRL(t.valor)}</td>
                 <td className="ep-td ep-mono ep-td-r">{fmtM2(t.valorM2)}</td>
                 <td className="ep-td ep-mono ep-td-r">{t.fatorHom.toFixed(3)}</td>
@@ -571,7 +571,7 @@ export function EstudoContent({ estudo, im, onClose }) {
     { n: '02', titulo: 'Saneamento', desc: 'Exclusão de amostras que excedem ±30% da mediana, evitando distorção por valores extremos na amostra.' },
     { n: '03', titulo: 'Homogeneização', desc: 'Aplicação de fator que ajusta área (economia de escala) e deduz o valor da vaga de garagem antes do cálculo do m².' },
     { n: '04', titulo: 'Tratamento estatístico', desc: `Cálculo de média, mediana, desvio padrão (σ = ${Math.round(stats.dp).toLocaleString('pt-BR')} R$/m²) e CV (${(stats.cv * 100).toFixed(1).replace('.', ',')}%). Adotado: mediana.` },
-    { n: '05', titulo: 'Conclusão', desc: `Valor unitário adotado de ${fmtM2(adotadoM2)}, resultando em ${fmtBRL(valorTotal)} para ${avaliando.area} m², com faixa de arbítrio de ±${Math.round(estudo.amplitude * 100)}%.` },
+    { n: '05', titulo: 'Conclusão', desc: `Valor unitário adotado de ${fmtM2(adotadoM2)}, resultando em ${fmtBRL(valorTotal)} para ${Math.round(avaliando.area)} m², com faixa de arbítrio de ±${Math.round(estudo.amplitude * 100)}%.` },
   ]
 
   return (
@@ -621,7 +621,7 @@ export function EstudoContent({ estudo, im, onClose }) {
               {avaliando.area > 0 && (
                 <div className="ep-ficha-item">
                   <span className="ep-ficha-label">Área</span>
-                  <span className="ep-ficha-val">{avaliando.area} <span className="ep-ficha-unit">m²</span></span>
+                  <span className="ep-ficha-val">{Math.round(avaliando.area)} <span className="ep-ficha-unit">m²</span></span>
                 </div>
               )}
               {avaliando.dormitorios > 0 && (
