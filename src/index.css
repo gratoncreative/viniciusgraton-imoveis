@@ -52,8 +52,8 @@
 html[data-theme="claro"] {
   color-scheme: light;
   --bg: #FFFFFF;
-  --bg-2: #F4EFE6;
-  --surface: #FFFFFF;
+  --bg-2: #FCFBF9;
+  --surface: #FCFBF9;
   --surface-2: #F4EFE6;
   --border: #E4DFD4;          /* Cinza Pérola */
   --border-strong: #d8cfbc;
@@ -591,10 +591,22 @@ html[data-theme="claro"] .back-top:hover { background: #F4EFE6; color: #0A0E16; 
 html[data-theme="claro"] .card-body .card-seg-desc { color: #2A2F38; }
 
 /* Chips de garantias do hero — eram marinho translúcido (cinza lamacento); viram cartões claros */
-html[data-theme="claro"] .apres-checks li { background: #FFFFFF; border-color: #E4DFD4; color: #2A2F38; backdrop-filter: none; box-shadow: 0 1px 3px rgba(10,14,22,.05); }
+html[data-theme="claro"] .apres-checks li { background: #FCFBF9; border-color: #E4DFD4; color: #2A2F38; backdrop-filter: none; box-shadow: 0 1px 3px rgba(10,14,22,.05); }
 html[data-theme="claro"] .apres-checks li:hover { background: #FBF9F4; border-color: #C6A15B; }
 html[data-theme="claro"] .apres-checks li span { background: rgba(198,161,91,0.16); color: #1C2A44; }
 html[data-theme="claro"] .apres-checks li i { color: #1C2A44; }
+
+/* ════ Refino visual — foto moderna + base branca / áreas em branco-quente #FCFBF9 ════ */
+/* avatar.. tira o halo dourado pesado; anel branco fino + fio dourado + sombra suave */
+html[data-theme="claro"] .hero-avatar { border: 3px solid #FFFFFF; box-shadow: 0 0 0 1px rgba(198,161,91,0.5), 0 14px 32px -12px rgba(10,14,22,0.30); }
+/* áreas/cards/botões secundários em branco-quente (fundo da página segue branco puro) */
+html[data-theme="claro"] .im-linha { background: #FCFBF9; }
+html[data-theme="claro"] .fs-trigger,
+html[data-theme="claro"] .fp-pill,
+html[data-theme="claro"] .cat-tipo,
+html[data-theme="claro"] .btn-ghost { background: #FCFBF9; }
+html[data-theme="claro"] .fp-pill.on,
+html[data-theme="claro"] .cat-tipo.on { background: #1C2A44; color: #FFFFFF; border-color: #1C2A44; }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -703,8 +715,8 @@ section { position: relative; padding: clamp(20px, 3vw, 40px) 0; }
   --text: #161a22;
   --text-soft: #3b4250;
   --text-mute: #6c7480;
-  --surface: rgba(22, 26, 34, 0.04);
-  --surface-2: rgba(22, 26, 34, 0.07);
+  --surface: #FCFBF9;
+  --surface-2: #F4EFE6;
   --border: rgba(22, 26, 34, 0.12);
   --border-strong: rgba(22, 26, 34, 0.22);
   color: var(--text);
@@ -991,7 +1003,8 @@ section { position: relative; padding: clamp(20px, 3vw, 40px) 0; }
 .card-specs span { display: flex; align-items: center; gap: 6px; }
 
 /* ===== Imóveis em destaque (listagem real) ===== */
-.im-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; align-items: stretch; }
+.im-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; align-items: stretch; }
+@media (max-width: 1280px) { .im-grid { grid-template-columns: repeat(3, 1fr); } }
 .im-grid > * { height: 100%; }
 .im-media { aspect-ratio: 4/3; }
 .im-tag { position: absolute; top: 14px; left: 14px; z-index: 2; font-family: var(--font-head); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 6px 12px; border-radius: 100px; background: rgba(7,10,17,0.62); border: 1px solid var(--gold-3); color: var(--gold-1); backdrop-filter: blur(6px); transform: translateZ(46px); }

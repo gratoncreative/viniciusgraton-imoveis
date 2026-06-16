@@ -64,7 +64,7 @@ export default function Home() {
       <Hero />
       <Suspense fallback={null}>
         <Novidades />
-        <Destaque limite={9} />
+        <Destaque limite={8} />
         <FerramentasHome />
         <CorretorBanner />
         <VenderCta />
