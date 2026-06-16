@@ -1336,6 +1336,16 @@ html[data-theme="claro"] .promo-imovel-media { background: linear-gradient(150de
 .cat-main { min-width: 0; }
 .cat-lista { display: flex; flex-direction: column; gap: 13px; }
 
+/* —— Filtro de preço por digitação (mín/máx) —— */
+.cat-preco { display: flex; flex-direction: column; gap: 8px; }
+.cat-preco-tit { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-head); font-size: 0.88rem; font-weight: 600; color: var(--text-soft); }
+.cat-preco-ico { display: inline-flex; opacity: 0.8; }
+.cat-preco-campos { display: flex; align-items: center; gap: 8px; }
+.cat-preco-input { flex: 1; min-width: 0; width: 100%; border: 1px solid var(--border); border-radius: 10px; padding: 11px 12px; font-family: inherit; font-size: 0.92rem; color: var(--text); background: #fff; outline: none; transition: border-color 0.18s, box-shadow 0.18s; }
+.cat-preco-input::placeholder { color: var(--text-mute); }
+.cat-preco-input:focus { border-color: var(--gold-3); box-shadow: 0 0 0 3px rgba(176,141,87,0.14); }
+.cat-preco-ate { flex: none; font-size: 0.82rem; color: var(--text-mute); }
+
 /* —— Destaque do catálogo (curadoria do admin no topo) —— */
 .cat-destaque-topo { margin-bottom: 26px; }
 .cat-destaque-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }

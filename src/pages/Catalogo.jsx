@@ -6,7 +6,8 @@ import CardImovel from '../components/CardImovel'
 import AviseMe from '../components/AviseMe'
 import FiltroSelect from '../components/FiltroSelect'
 import FiltroPills from '../components/FiltroPills'
-import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, FAIXAS_PRECO, linkWhatsApp, WA } from '../data'
+import InputMoeda from '../components/InputMoeda'
+import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, linkWhatsApp, WA } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconClose } from '../components/icons'
 
@@ -115,7 +116,7 @@ export default function Catalogo() {
     }
     return [...mapa.values()]
   }, [feed])
-  const BAIRROS_TODOS = useMemo(() => [...new Set(TODOS.map((i) => i.bairro).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')), [TODOS])
+  const BAIRROS_TODOS = useMemo(() => [...new Set(TODOS.map((i) => (i.bairro || '').trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')), [TODOS])
 
   // —— DESTAQUE no topo do catálogo (curadoria do admin; até 3) ——
   const ADMIN_LSK = 'vg_admin_token'
@@ -167,7 +168,8 @@ export default function Catalogo() {
     q: params.get('q') || '',
     tipo: params.get('tipo') || '',
     bairros: (params.get('bairros') || params.get('bairro') || '').split(',').map((s) => s.trim()).filter(Boolean),
-    faixa: params.has('faixa') ? parseInt(params.get('faixa'), 10) : -1,
+    precoMin: parseInt(params.get('precoMin') || '0', 10) || 0,
+    precoMax: parseInt(params.get('precoMax') || '0', 10) || 0,
     quartos: parseInt(params.get('quartos') || '0', 10),
     suites: parseInt(params.get('suites') || '0', 10),
     vagas: parseInt(params.get('vagas') || '0', 10),
@@ -232,16 +234,14 @@ export default function Catalogo() {
     let r = TODOS.filter((im) => {
       if (f.tipo && im.tipo !== f.tipo) return false
       if (f.grupo) { const g = TIPO_CHIPS.find((c) => c.grupo === f.grupo); if (g && !g.re.test(im.tipo || '')) return false }
-      if (f.bairros.length && !f.bairros.includes(im.bairro)) return false
+      if (f.bairros.length && !f.bairros.includes((im.bairro || '').trim())) return false
       if (f.quartos && (im.quartos || 0) < f.quartos) return false
       if (f.suites && (im.suites || 0) < f.suites) return false
       if (f.vagas && (im.vagas || 0) < f.vagas) return false
       if (f.area && (im.area || 0) < f.area) return false
       if (f.carac && !blobDe(im).includes(f.carac.toLowerCase())) return false
-      if (f.faixa >= 0) {
-        const faixa = FAIXAS_PRECO[f.faixa]
-        if (im.preco < faixa.min || im.preco >= faixa.max) return false
-      }
+      if (f.precoMin && (im.preco || 0) < f.precoMin) return false
+      if (f.precoMax && (im.preco || 0) > f.precoMax) return false
       if (f.q && fuseIds && !fuseIds.has(String(im.codigo))) return false
       return true
     })
@@ -254,7 +254,7 @@ export default function Catalogo() {
     // anúncios impulsionados (publicidade) sobem para o topo da listagem, como nos portais
     r = [...r].sort((a, b) => (b.impulsionado ? 1 : 0) - (a.impulsionado ? 1 : 0))
     return r
-  }, [TODOS, f.tipo, f.grupo, f.bairros.join(','), f.quartos, f.suites, f.vagas, f.area, f.carac, f.faixa, f.q, f.ordem])
+  }, [TODOS, f.tipo, f.grupo, f.bairros.join(','), f.quartos, f.suites, f.vagas, f.area, f.carac, f.precoMin, f.precoMax, f.q, f.ordem])
 
   const visiveis = lista.slice(0, mostrar)
   const temMais = mostrar < lista.length
@@ -287,7 +287,8 @@ export default function Catalogo() {
     f.q && { k: 'q', label: `“${f.q}”`, onRemove: () => up('q', '') },
     f.tipo && { k: 'tipo', label: f.tipo, onRemove: () => up('tipo', '') },
     ...f.bairros.map((b) => ({ k: 'b:' + b, label: b, onRemove: () => setBairros(f.bairros.filter((x) => x !== b)) })),
-    f.faixa >= 0 && { k: 'faixa', label: FAIXAS_PRECO[f.faixa].label, onRemove: () => up('faixa', -1) },
+    f.precoMin > 0 && { k: 'precoMin', label: `A partir de R$ ${f.precoMin.toLocaleString('pt-BR')}`, onRemove: () => up('precoMin', 0) },
+    f.precoMax > 0 && { k: 'precoMax', label: `Até R$ ${f.precoMax.toLocaleString('pt-BR')}`, onRemove: () => up('precoMax', 0) },
     f.quartos > 0 && { k: 'quartos', label: `${f.quartos}+ quartos`, onRemove: () => up('quartos', 0) },
     f.suites > 0 && { k: 'suites', label: `${f.suites}+ suítes`, onRemove: () => up('suites', 0) },
     f.vagas > 0 && { k: 'vagas', label: `${f.vagas}+ vagas`, onRemove: () => up('vagas', 0) },
@@ -352,8 +353,14 @@ export default function Catalogo() {
             options={[{ value: '', label: 'Todos os tipos' }, ...TIPOS_IMOVEL.map((t) => ({ value: t, label: t }))]} />
           <FiltroSelect icon={<FIco n="bairro" />} placeholder="Todos os bairros" multiple searchable value={f.bairros} onChange={setBairros}
             options={(BAIRROS_TODOS.length ? BAIRROS_TODOS : BAIRROS_IMOVEL).map((b) => ({ value: b, label: b }))} />
-          <FiltroSelect icon={<FIco n="preco" />} placeholder="Qualquer preço" neutral={-1} value={f.faixa} onChange={(v) => up('faixa', v)}
-            options={[{ value: -1, label: 'Qualquer preço' }, ...FAIXAS_PRECO.map((p, i) => ({ value: i, label: p.label }))]} />
+          <div className="cat-preco">
+            <span className="cat-preco-tit"><span className="cat-preco-ico"><FIco n="preco" /></span> Preço</span>
+            <div className="cat-preco-campos">
+              <InputMoeda className="cat-preco-input" placeholder="Mínimo" value={f.precoMin || ''} onChange={(v) => up('precoMin', v || 0)} />
+              <span className="cat-preco-ate">até</span>
+              <InputMoeda className="cat-preco-input" placeholder="Máximo" value={f.precoMax || ''} onChange={(v) => up('precoMax', v || 0)} />
+            </div>
+          </div>
           <FiltroPills icon={<FIco n="quartos" />} label="Quartos" value={f.quartos} onChange={(v) => up('quartos', v)} />
           <FiltroPills icon={<FIco n="suites" />} label="Suítes" value={f.suites} onChange={(v) => up('suites', v)} />
           <FiltroPills icon={<FIco n="vagas" />} label="Vagas" value={f.vagas} onChange={(v) => up('vagas', v)} />
