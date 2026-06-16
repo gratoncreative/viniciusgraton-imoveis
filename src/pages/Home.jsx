@@ -17,6 +17,21 @@ export default function Home() {
     path: '/',
   })
 
+  // Sistema CLARO (Manual v2.0) só na home — desliga o tema escuro global aqui,
+  // para que o escopo .tema-claro mande (as regras html[data-theme="dark"] saem).
+  useEffect(() => {
+    const html = document.documentElement
+    const anterior = html.getAttribute('data-theme')
+    html.setAttribute('data-theme', 'claro')
+    const meta = document.querySelector('meta[name="theme-color"]')
+    const corAnterior = meta?.getAttribute('content')
+    if (meta) meta.setAttribute('content', '#FFFFFF')
+    return () => {
+      html.setAttribute('data-theme', anterior || 'dark')
+      if (meta && corAnterior) meta.setAttribute('content', corAnterior)
+    }
+  }, [])
+
   useEffect(() => {
     const el = document.createElement('script')
     el.type = 'application/ld+json'
@@ -45,7 +60,7 @@ export default function Home() {
   }, [])
 
   return (
-    <main>
+    <main className="tema-claro">
       <Hero />
       <Suspense fallback={null}>
         <Novidades />
