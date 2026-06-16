@@ -1107,6 +1107,22 @@ html[data-theme="claro"] .promo-imovel-media { background: linear-gradient(150de
 .promo-imovel--card .im-tag { top: 14px; right: 14px; left: auto; bottom: auto; }
 .promo-imovel-preco-ov { z-index: 3; color: #FFFFFF; }
 .promo-imovel-preco-ov b { color: #FFFFFF; font-weight: 800; }
+
+/* variante TEXTO — faixa elegante só com texto/elementos (catálogo) */
+.promo-texto { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 22px; flex-wrap: wrap; margin-bottom: 22px; padding: 22px 26px; border-radius: var(--radius); cursor: pointer; background: linear-gradient(115deg, #0A0E16 0%, #141C2E 55%, #1C2A44 100%); border: 1px solid rgba(227,210,168,0.22); box-shadow: 0 14px 34px -22px rgba(10,14,22,0.7); transition: border-color .25s var(--ease), transform .25s var(--ease), box-shadow .25s var(--ease); }
+.promo-texto:hover { border-color: rgba(227,210,168,0.5); transform: translateY(-2px); box-shadow: 0 20px 44px -22px rgba(10,14,22,0.8); }
+.promo-texto::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, var(--gold-1), var(--gold-3)); }
+.promo-texto-glow { position: absolute; right: -40px; top: -60px; width: 240px; height: 240px; border-radius: 50%; background: radial-gradient(circle, rgba(198,161,91,0.16), transparent 70%); pointer-events: none; }
+.promo-texto-conteudo { position: relative; z-index: 1; min-width: 0; flex: 1 1 420px; }
+.promo-texto-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-head); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-1); }
+.promo-texto-tit { font-family: var(--font-display); font-size: clamp(1.18rem, 2.3vw, 1.6rem); line-height: 1.18; color: #F4EFE6; margin: 8px 0 6px; font-weight: 600; }
+.promo-texto-tit em { font-style: italic; color: var(--gold-1); }
+.promo-texto-sub { font-size: 0.88rem; color: rgba(244,239,230,0.66); margin: 0; }
+.promo-texto-cta { position: relative; z-index: 1; flex: none; display: inline-flex; align-items: center; gap: 9px; font-family: var(--font-head); font-size: 0.92rem; font-weight: 700; color: #20160a; background: linear-gradient(135deg, var(--gold-1), var(--gold-2)); border-radius: 100px; padding: 13px 24px; text-decoration: none; box-shadow: 0 10px 24px -12px rgba(198,161,91,0.7); transition: transform .2s var(--ease), box-shadow .2s var(--ease); white-space: nowrap; }
+.promo-texto-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -12px rgba(198,161,91,0.85); }
+.promo-texto-cta svg { transition: transform .2s var(--ease); }
+.promo-texto:hover .promo-texto-cta svg { transform: translateX(3px); }
+@media (max-width: 600px) { .promo-texto { padding: 20px; } .promo-texto-cta { width: 100%; justify-content: center; } }
 .promo-imovel-preco { font-family: var(--font-head); font-size: .8rem; color: #5b626e; }
 .promo-imovel-preco b { display: block; font-family: var(--font-head); font-size: 1.4rem; font-weight: 800; color: #0A0E16; line-height: 1.1; }
 .hero-nome { font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: clamp(2.6rem, 5.5vw, 4.4rem); line-height: 1.02; margin: 6px 0 16px; background: linear-gradient(135deg, #E3D2A8 0%, #C6A15B 60%, #9A7B3C 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.92)); }

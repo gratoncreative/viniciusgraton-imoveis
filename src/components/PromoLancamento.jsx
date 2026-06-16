@@ -38,6 +38,29 @@ export default function PromoLancamento({ variante = 'linha' }) {
     </>
   )
 
+  // ——— variante TEXTO — faixa elegante só com texto/elementos (catálogo) ———
+  if (variante === 'texto') {
+    return (
+      <article className="promo-texto card-clickable" onClick={abrir} role="link" tabIndex={0}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir() } }}
+        aria-label="Publicidade — lançamento Louis Studios, falar no WhatsApp">
+        <span className="promo-texto-glow" aria-hidden="true" />
+        <div className="promo-texto-conteudo">
+          <span className="promo-texto-eyebrow">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 15l7-7 7 7" /></svg>
+            Publicidade · Lançamento
+          </span>
+          <h3 className="promo-texto-tit">Procurando <em>lançamentos de studios</em> pertinho da UFU Umuarama?</h3>
+          <p className="promo-texto-sub">Louis Studios · 36–37 m² · gestão Housi · entrada R$ 41.400 · mensais R$ 2.000.</p>
+        </div>
+        <a className="promo-texto-cta" href={href} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()}>
+          Clique aqui
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </a>
+      </article>
+    )
+  }
+
   // ——— variante CARD (vertical) — mistura na grade de imóveis da home ———
   if (variante === 'card') {
     return (

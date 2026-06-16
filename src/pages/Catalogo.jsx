@@ -351,7 +351,7 @@ export default function Catalogo() {
           ))}
         </div>
 
-        <PromoLancamento />
+        <PromoLancamento variante="texto" />
 
         {semFiltros && novosHoje.length > 0 && (
           <div className="cat-hoje">
