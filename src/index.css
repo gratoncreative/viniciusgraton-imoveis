@@ -457,6 +457,23 @@ html[data-theme="claro"] .blog-feat-titulo { font-family: var(--font-display); }
 /* Lançamentos — nome da construtora (metadado) em dourado sobre card claro -> grafite suave */
 html[data-theme="claro"] .lan-card-const { color: #5b626e; }
 
+/* ════ Auditoria multiagente v2 — rodada 4 (gold-texto/botão sobre claro, verificados) ════ */
+/* Mantidos de propósito (gold sobre fundo escuro próprio = legível): .im-tag, .card-tag,
+   .condo-tipo, .pilar-card-ico, .adslot-eyebrow, .band-eyebrow, .det-tour-b. */
+html[data-theme="claro"] .hero-busca-tit { color: #1C2A44; }
+html[data-theme="claro"] .pilar-ico { color: #1C2A44; }
+html[data-theme="claro"] .card-seg-link { color: #1C2A44; }
+html[data-theme="claro"] .card-body .bairro { color: #1C2A44; }
+html[data-theme="claro"] .det-pub { color: #2A2F38; }
+html[data-theme="claro"] .det-pub b { color: #1C2A44; }
+html[data-theme="claro"] .det-novo-tag { color: #1C2A44; }
+html[data-theme="claro"] .det-baixou-em { color: #3F7A5E; }
+html[data-theme="claro"] .section--light .faq-item summary:hover,
+html[data-theme="claro"] .section--light .faq-item[open] summary { color: #1C2A44; }
+/* botões/badges com fundo dourado -> petróleo (regra dura: nunca dourado de preenchimento) */
+html[data-theme="claro"] .fp-pill.on { background: #1C2A44; color: #FFFFFF; border-color: #1C2A44; }
+html[data-theme="claro"] .cat-filtro-count { background: #1C2A44; color: #FFFFFF; }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }

@@ -120,15 +120,15 @@ function PositionRuler({ im, est }) {
 
 /* ══ Análise qualitativa IA ═══════════════════════════════════════ */
 const COND = {
-  novo:       { label: 'Imóvel novo',         color: '#4ade80' },
-  reformado:  { label: 'Reformado',            color: '#a3e635' },
-  bom:        { label: 'Bom estado',           color: '#93c5fd' },
-  a_reformar: { label: 'Precisa de reformas',  color: '#fb923c' },
+  novo:       { label: 'Imóvel novo',         color: '#3F7A5E' },
+  reformado:  { label: 'Reformado',            color: '#5E8C6A' },
+  bom:        { label: 'Bom estado',           color: '#1C2A44' },
+  a_reformar: { label: 'Precisa de reformas',  color: '#B04A37' },
 }
 
 function QualidadeCard({ analise }) {
   if (!analise) return null
-  const cond = COND[analise.condicao] || { label: analise.condicao, color: '#93c5fd' }
+  const cond = COND[analise.condicao] || { label: analise.condicao, color: '#1C2A44' }
   return (
     <div className="es3-card au-card-qual">
       <div className="es3-sec-head">
