@@ -1,4 +1,7 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback, lazy, Suspense } from 'react'
+
+// Ferramenta de remover marca d'água (IA própria) — entra como 6ª aba do estúdio.
+const RemoverMarca = lazy(() => import('./RemoverMarca'))
 
 // Ferramenta (área restrita): corrige inclinação + realça fotos em lote, 100% no
 // navegador. Estima o ângulo automaticamente, deixa ajustar com grade de nível,
@@ -285,7 +288,21 @@ export default function MelhorarFotos() {
   const previewRef = useRef(null)
   const wmLogoRef = useRef(null)
   const redesenharRef = useRef(null)
+  const inputFotosRef = useRef(null)
+  const [modoLimpar, setModoLimpar] = useState(false)
   const fotosRef = useRef(fotos); fotosRef.current = fotos
+
+  // Vitrine.. ferramentas do estúdio, exibidas já na chegada (antes do upload).
+  // Clicar abre o seletor de fotos e deixa a aba certa pré-selecionada.
+  const FERRAMENTAS_VITRINE = [
+    { aba: 'ajustes', ico: '🪄', nome: 'Endireitar & realçar', desc: 'Corrige a inclinação automaticamente e realça nitidez, cor, luz e filtros prontos.' },
+    { aba: 'ia',      ico: '🤖', nome: 'Super-resolução com IA', desc: 'Recompõe o detalhe de fotos de baixa resolução, direto no navegador.' },
+    { aba: 'marca',   ico: '💧', nome: "Marca d'água", desc: 'Aplica sua marca (texto ou logo) em lote, na posição e opacidade que quiser.' },
+    { aba: 'export',  ico: '📐', nome: 'Redimensionar & converter', desc: 'Amplia até 2× UHD e exporta em JPG, PNG ou WebP.' },
+    { aba: 'video',   ico: '🎬', nome: 'Vídeo do imóvel', desc: 'Monta um slideshow com transições suaves, marca e trilha a partir das fotos.' },
+    { limpar: true,   ico: '🧽', nome: 'Remover marca', desc: 'Apaga logo ou marca de fotos de terceiros com IA, direto no navegador.' },
+  ]
+  const abrirCom = (abaAlvo) => { setAba(abaAlvo); inputFotosRef.current?.click() }
 
   const subir = (e) => {
     const arr = [...(e.target.files || [])]; e.target.value = ''
@@ -525,11 +542,36 @@ export default function MelhorarFotos() {
       </div>
 
       <label className="mf-upload">
-        <input type="file" accept="image/*" multiple onChange={subir} hidden />
+        <input ref={inputFotosRef} type="file" accept="image/*" multiple onChange={subir} hidden />
         <span>📤 Selecionar fotos</span>
       </label>
 
-      {foto && (
+      {!foto && !modoLimpar && (
+        <div className="mf-vitrine">
+          <p className="mf-vitrine-tit">Tudo o que você faz aqui, com o mesmo envio:</p>
+          <div className="mf-vitrine-grid">
+            {FERRAMENTAS_VITRINE.map((f) => (
+              <button key={f.aba || 'limpar'} type="button" className="mf-vitrine-card" onClick={() => f.limpar ? setModoLimpar(true) : abrirCom(f.aba)}>
+                <span className="mf-vitrine-ico" aria-hidden="true">{f.ico}</span>
+                <b>{f.nome}</b>
+                <small>{f.desc}</small>
+              </button>
+            ))}
+          </div>
+          <p className="mf-vitrine-cta">Envie suas fotos uma vez — todas as ferramentas acima trabalham com o mesmo envio, em abas, na mesma tela.</p>
+        </div>
+      )}
+
+      {modoLimpar && (
+        <div className="mf-limpar">
+          <button type="button" className="admin-btn" style={{ marginBottom: 14 }} onClick={() => setModoLimpar(false)}>← Voltar ao estúdio</button>
+          <Suspense fallback={<p className="mf-nota">Carregando ferramenta…</p>}>
+            <RemoverMarca />
+          </Suspense>
+        </div>
+      )}
+
+      {foto && !modoLimpar && (
         <div className="mf-editor">
           <div className="mf-edit">
             {/* COLUNA ESQUERDA: preview + filmstrip */}
@@ -562,6 +604,7 @@ export default function MelhorarFotos() {
                 {[['ajustes', '🪄 Ajustes'], ['ia', '🤖 IA'], ['marca', "💧 Marca"], ['export', '📤 Exportar'], ['video', '🎬 Vídeo']].map(([id, nome]) => (
                   <button key={id} className={`mf-aba ${aba === id ? 'on' : ''}`} onClick={() => setAba(id)}>{nome}</button>
                 ))}
+                <button className="mf-aba" onClick={() => setModoLimpar(true)}>🧽 Remover marca</button>
               </div>
 
               <div className="mf-aba-conteudo">
