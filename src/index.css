@@ -533,6 +533,13 @@ html[data-theme="claro"] .pg-promo--linha .pg-de { color: #8A8F99; }
 html[data-theme="claro"] .pg-promo--linha .pg-por { color: #0A0E16; }
 html[data-theme="claro"] .fs--on .fs-label { color: #0A0E16; }
 
+/* ════ Rodada 7 — títulos de card/modal em Playfair (manual: títulos = Playfair) ════ */
+html[data-theme="claro"] .card-seg-title,
+html[data-theme="claro"] .card-body h3,
+html[data-theme="claro"] .modal-head h3,
+html[data-theme="claro"] .im-linha-tit,
+html[data-theme="claro"] .im-linha h3 { font-family: var(--font-display); }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
