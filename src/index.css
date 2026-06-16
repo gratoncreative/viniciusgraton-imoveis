@@ -454,6 +454,8 @@ html[data-theme="claro"] .simf-titulo,
 html[data-theme="claro"] .pdfjpg-titulo,
 html[data-theme="claro"] .pv-titulo,
 html[data-theme="claro"] .blog-feat-titulo { font-family: var(--font-display); }
+/* Lançamentos — nome da construtora (metadado) em dourado sobre card claro -> grafite suave */
+html[data-theme="claro"] .lan-card-const { color: #5b626e; }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
