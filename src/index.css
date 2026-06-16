@@ -546,6 +546,25 @@ html[data-theme="claro"] .cb-count b { color: #1C2A44; }
 html[data-theme="claro"] .es3-laudo-btn { background: #1C2A44; color: #FFFFFF; box-shadow: 0 4px 20px rgba(28,42,68,0.25); }
 html[data-theme="claro"] .es3-laudo-btn:hover { background: #0A0E16; }
 
+/* ════ Rodada 9 — acentos da home + ferramenta MelhorarFotos (mf-) ════ */
+/* home — eyebrow/ícones/preço dourados sobre seções agora claras */
+html[data-theme="claro"] .vender-cta-txt .eyebrow { color: #1C2A44; }
+html[data-theme="claro"] .vender-cta-nota svg { color: #1C2A44; }
+html[data-theme="claro"] .ferr-home-card:hover .ferr-home-ico { color: #1C2A44; }
+html[data-theme="claro"] .corrbn-price b { color: #1C2A44; }
+/* selo de desconto -> Verde Sálvia oficial */
+html[data-theme="claro"] .im-selo--off { background: #3F7A5E; color: #FFFFFF; border: none; }
+/* MelhorarFotos — botões/abas dourados -> sem preenchimento dourado; selects e rótulos claros */
+html[data-theme="claro"] .mf-modo-btn.on,
+html[data-theme="claro"] .mf-aba.on { background: #F4EFE6; border-color: #C6A15B; color: #0A0E16; }
+html[data-theme="claro"] .mf-grupo-tit { color: #1C2A44; border-bottom-color: #E4DFD4; }
+html[data-theme="claro"] .mf-sel select { color-scheme: light; background: #FFFFFF; color: #2A2F38; border-color: #E4DFD4; }
+html[data-theme="claro"] .mf-sel select option { background: #FFFFFF; color: #2A2F38; }
+html[data-theme="claro"] .mf-tira.on { background: #F4EFE6; border-color: #C6A15B; color: #0A0E16; }
+html[data-theme="claro"] .mf-beta { background: #1C2A44; color: #FFFFFF; }
+html[data-theme="claro"] .mf-seo-titulo { color: #1C2A44; }
+html[data-theme="claro"] .mf-seo-code { color: #1C2A44; }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
