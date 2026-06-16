@@ -82,6 +82,7 @@ const TOOLS = [
   { id: 'redimensionar', nome: 'Redimensionar foto',        desc: 'Reduza o tamanho para WhatsApp ou portal.',    icon: 'edit',    sec: 'fotos', needsSub: true },
   { id: 'converter',     nome: 'Conversor de fotos',        desc: 'JPG · PNG · WebP · AVIF em lote.',             icon: 'edit',    sec: 'fotos', needsSub: true, to: '/ferramentas/converter' },
   { id: 'pdf-jpg',      nome: 'PDF para JPG',              desc: 'Converta cada página do PDF em JPG de alta definição.', icon: 'pdf', sec: 'fotos', popular: true, to: '/ferramentas/pdf-para-jpg' },
+  { id: 'transcrever',  nome: 'Transcrever vídeo/áudio',   desc: 'Tour em vídeo ou áudio → texto, legenda e descrição. No navegador.', icon: 'doc', sec: 'fotos', popular: true, to: '/ferramentas/transcrever' },
   // explorar
   { id: 'comparar',      nome: 'Comparar imóveis',          desc: 'Compare até 3 imóveis lado a lado.',           icon: 'compare', sec: 'explorar', needsSub: true, to: '/comparar' },
   { id: 'mapa',          nome: 'Mapa de imóveis',           desc: 'Explore imóveis por região de Uberlândia.',    icon: 'map',     sec: 'explorar', needsSub: true, to: '/mapa'     },
