@@ -158,7 +158,7 @@ function RadarChart({ testemunhas, avaliando, referencia }) {
             />
             <text x={4} y={-r + 9}
               fill="#496278" fontSize="8"
-              fontFamily="'IBM Plex Mono', monospace"
+              fontFamily="'Montserrat', sans-serif"
             >
               {km < 1 ? km.toFixed(1).replace('.', ',') : km}km
             </text>
@@ -175,7 +175,7 @@ function RadarChart({ testemunhas, avaliando, referencia }) {
       ].map(({ label, x, y }) => (
         <text key={label} x={x} y={y}
           fill="#496278" fontSize="10"
-          fontFamily="'IBM Plex Sans', sans-serif"
+          fontFamily="'Montserrat', sans-serif"
           fontWeight="500"
           textAnchor="middle" dominantBaseline="middle"
         >
@@ -201,7 +201,7 @@ function RadarChart({ testemunhas, avaliando, referencia }) {
             />
             <text x={x} y={y}
               fill="#070c14" fontSize="7"
-              fontFamily="'IBM Plex Mono', monospace"
+              fontFamily="'Montserrat', sans-serif"
               fontWeight="500"
               textAnchor="middle" dominantBaseline="middle"
               style={{ pointerEvents: 'none' }}
@@ -218,21 +218,21 @@ function RadarChart({ testemunhas, avaliando, referencia }) {
                 />
                 <text x={x > 80 ? x - 70 : x + 71} y={y - 13}
                   fill="#e8f0fc" fontSize="8"
-                  fontFamily="'IBM Plex Sans', sans-serif"
+                  fontFamily="'Montserrat', sans-serif"
                   fontWeight="500" textAnchor="middle"
                 >
                   {t.ref} · {t.bairro}
                 </text>
                 <text x={x > 80 ? x - 70 : x + 71} y={y + 1}
                   fill="#8ca4be" fontSize="7.5"
-                  fontFamily="'IBM Plex Mono', monospace"
+                  fontFamily="'Montserrat', sans-serif"
                   textAnchor="middle"
                 >
                   {fmtKm(t.dist)} · {fmtM2(t.valorHomM2)}
                 </text>
                 <text x={x > 80 ? x - 70 : x + 71} y={y + 15}
                   fill="#496278" fontSize="7"
-                  fontFamily="'IBM Plex Sans', sans-serif"
+                  fontFamily="'Montserrat', sans-serif"
                   textAnchor="middle"
                 >
                   {Math.round(t.area)} m² · {fmtBRL(t.valor)}
@@ -249,7 +249,7 @@ function RadarChart({ testemunhas, avaliando, referencia }) {
       />
       <text x={0} y={21}
         fill="#d4a84b" fontSize="8"
-        fontFamily="'IBM Plex Sans', sans-serif"
+        fontFamily="'Montserrat', sans-serif"
         fontWeight="500" textAnchor="middle"
       >
         Avaliando
@@ -302,7 +302,7 @@ function AreaScatter({ testemunhas, avaliandoArea, avaliandoM2, referencia }) {
       />
       <text x={W - PAD.r - 2} y={refY - 4}
         fill="#d4a84b" fontSize="7.5" textAnchor="end"
-        fontFamily="'IBM Plex Mono', monospace"
+        fontFamily="'Montserrat', sans-serif"
       >
         adotado
       </text>
@@ -323,7 +323,7 @@ function AreaScatter({ testemunhas, avaliandoArea, avaliandoM2, referencia }) {
       {yTicks.map(v => (
         <text key={v} x={PAD.l - 5} y={yS(v)}
           fill="#496278" fontSize="7" textAnchor="end"
-          fontFamily="'IBM Plex Mono', monospace" dominantBaseline="middle"
+          fontFamily="'Montserrat', sans-serif" dominantBaseline="middle"
         >
           {Math.round(v / 1000)}k
         </text>
@@ -332,13 +332,13 @@ function AreaScatter({ testemunhas, avaliandoArea, avaliandoM2, referencia }) {
       {/* Label X */}
       <text x={PAD.l + pW / 2} y={H - 4}
         fill="#496278" fontSize="8" textAnchor="middle"
-        fontFamily="'IBM Plex Sans', sans-serif"
+        fontFamily="'Montserrat', sans-serif"
       >
         área (m²)
       </text>
       <text x={PAD.l - 46} y={PAD.t + pH / 2}
         fill="#496278" fontSize="8" textAnchor="middle"
-        fontFamily="'IBM Plex Sans', sans-serif"
+        fontFamily="'Montserrat', sans-serif"
         transform={`rotate(-90, ${PAD.l - 46}, ${PAD.t + pH / 2})`}
       >
         R$/m²
@@ -346,11 +346,11 @@ function AreaScatter({ testemunhas, avaliandoArea, avaliandoM2, referencia }) {
 
       {/* Legenda */}
       <circle cx={PAD.l + 4} cy={PAD.t + 8} r={3} fill="#38bdf8" fillOpacity={0.75} />
-      <text x={PAD.l + 10} y={PAD.t + 11} fill="#8ca4be" fontSize="7" fontFamily="'IBM Plex Sans', sans-serif">
+      <text x={PAD.l + 10} y={PAD.t + 11} fill="#8ca4be" fontSize="7" fontFamily="'Montserrat', sans-serif">
         testemunhas
       </text>
       <circle cx={PAD.l + 80} cy={PAD.t + 8} r={4} fill="#d4a84b" stroke="#0d1623" strokeWidth="1.5" />
-      <text x={PAD.l + 88} y={PAD.t + 11} fill="#8ca4be" fontSize="7" fontFamily="'IBM Plex Sans', sans-serif">
+      <text x={PAD.l + 88} y={PAD.t + 11} fill="#8ca4be" fontSize="7" fontFamily="'Montserrat', sans-serif">
         avaliando
       </text>
     </svg>
@@ -387,7 +387,7 @@ function DistributionChart({ vals, media, dp, referencia }) {
       />
       <text x={xS(referencia)} y={PAD.t - 6}
         fill="#d4a84b" fontSize="7.5" textAnchor="middle"
-        fontFamily="'IBM Plex Mono', monospace"
+        fontFamily="'Montserrat', sans-serif"
       >
         adotado
       </text>
@@ -398,7 +398,7 @@ function DistributionChart({ vals, media, dp, referencia }) {
       />
       <text x={xS(media)} y={H - PAD.b + 14}
         fill="#38bdf8" fontSize="7" textAnchor="middle"
-        fontFamily="'IBM Plex Mono', monospace"
+        fontFamily="'Montserrat', sans-serif"
       >
         média
       </text>
@@ -415,10 +415,10 @@ function DistributionChart({ vals, media, dp, referencia }) {
       })}
 
       {/* Escala */}
-      <text x={PAD.l} y={H - 3} fill="#496278" fontSize="7" fontFamily="'IBM Plex Mono', monospace">
+      <text x={PAD.l} y={H - 3} fill="#496278" fontSize="7" fontFamily="'Montserrat', sans-serif">
         {Math.round(rMin / 1000)}k
       </text>
-      <text x={W - PAD.r} y={H - 3} fill="#496278" fontSize="7" textAnchor="end" fontFamily="'IBM Plex Mono', monospace">
+      <text x={W - PAD.r} y={H - 3} fill="#496278" fontSize="7" textAnchor="end" fontFamily="'Montserrat', sans-serif">
         {Math.round(rMax / 1000)}k
       </text>
     </svg>
