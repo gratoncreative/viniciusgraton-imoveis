@@ -646,6 +646,43 @@ html[data-theme="claro"] .condos-hero .condos-hero-desc,
 html[data-theme="claro"] .ferr-hero .ferr-hero-sub,
 html[data-theme="claro"] .dif-banner .dif-banner-sub { color: rgba(244,239,230,0.82); }
 
+/* ════ Hover legível — texto que ficava CLARO sobre fundo claro (sumia no hover) ════
+   Heranças do tema escuro (color: gold-1 / marfim no :hover) deixavam o texto
+   da mesma cor do fundo. No sistema claro, hover de texto em superfície clara = petróleo. */
+html[data-theme="claro"] .cat-limpar:hover,
+html[data-theme="claro"] .qs-faq-q:hover,
+html[data-theme="claro"] .faq-item summary:hover,
+html[data-theme="claro"] .cb-voltar:hover,
+html[data-theme="claro"] .apres-checks--link li a:hover,
+html[data-theme="claro"] .ferr-pro-ativo-link:hover,
+html[data-theme="claro"] .det-ferr-btn:hover,
+html[data-theme="claro"] .mf-filtro:hover,
+html[data-theme="claro"] .ferr-pill:hover { color: #1C2A44; }
+/* botões ghost do rodapé de /ferramentas (texto era marfim no hover -> sumia) */
+html[data-theme="claro"] .ferr-footer-links .btn-ghost { color: #1C2A44; border-color: #E4DFD4; }
+html[data-theme="claro"] .ferr-footer-links .btn-ghost:hover { color: #0A0E16; background: #F4EFE6; border-color: #C6A15B; }
+/* botões "fechar" de modais/painéis claros — ícone escuro no hover */
+html[data-theme="claro"] .modal-close:hover,
+html[data-theme="claro"] .ferr-painel-fechar:hover,
+html[data-theme="claro"] .ferr-modal-fechar:hover { color: #1C2A44; background: #F4EFE6; }
+
+/* Card PRO "Área do Corretor" — era estilizado p/ tema escuro (texto claro sobre
+   card claro = lavado). Texto escurecido; dourado só em acento/borda/badge. */
+html[data-theme="claro"] .ferr-section--pro .ferr-sec-titulo { color: #0A0E16; }
+html[data-theme="claro"] .ferr-section--pro .ferr-sec-sub { color: #2A2F38; }
+html[data-theme="claro"] .ferr-section--pro .ferr-sec-count { color: #5b626e; }
+html[data-theme="claro"] .ferr-pro-banner-txt b { color: #0A0E16; }
+html[data-theme="claro"] .ferr-pro-banner-txt span { color: #2A2F38; }
+html[data-theme="claro"] .ferr-pro-plano { background: #FFFFFF; border-color: #E4DFD4; }
+html[data-theme="claro"] .ferr-pro-plano-nome,
+html[data-theme="claro"] .ferr-pro-plano-per { color: #5b626e; }
+html[data-theme="claro"] .ferr-pro-plano-preco { color: #0A0E16; }
+html[data-theme="claro"] .ferr-pro-plano-cta { color: #1C2A44; }
+html[data-theme="claro"] .ferr-pro-plano--dest { background: rgba(198,161,91,0.12); border-color: #C6A15B; }
+html[data-theme="claro"] .ferr-pro-plano--dest .ferr-pro-plano-preco { color: #0A0E16; }
+html[data-theme="claro"] .ferr-pro-plano--dest .ferr-pro-plano-cta { color: #9A7B3C; }
+html[data-theme="claro"] .ferr-pro-ativo span { color: #2A2F38; }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
