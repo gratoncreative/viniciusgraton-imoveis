@@ -152,11 +152,11 @@ export default function Catalogo() {
         throw new Error(motivo)
       }
       setDestaqueCods((j.codigos || []).map(String))
+      setDestaqueMsg('') // limpa qualquer erro anterior
       setDestaqueOk(true); setTimeout(() => setDestaqueOk(false), 2500)
     } catch (e) {
       setDestaqueCods(anterior) // reverte
-      setDestaqueMsg('⚠ ' + (e && e.message ? e.message : 'Não consegui salvar.'))
-      setTimeout(() => setDestaqueMsg(''), 7000)
+      setDestaqueMsg('⚠ ' + (e && e.message ? e.message : 'Não consegui salvar.')) // fica fixo até a próxima ação
     }
   }
   // o token é "<exp>.<assinatura>"; checa se ainda é válido (não venceu) antes de tentar
@@ -167,9 +167,9 @@ export default function Catalogo() {
     return !!exp && Date.now() < exp
   }
   const toggleDestaque = (cod) => {
+    setDestaqueMsg('')
     if (!tokenValido()) {
-      setDestaqueMsg('⚠ Sua sessão de admin expirou (dura 12h). Abra /admin, faça login de novo e volte aqui para destacar.')
-      setTimeout(() => setDestaqueMsg(''), 8000)
+      setDestaqueMsg('⚠ Sua sessão de admin expirou (o login dura 12h). Abra /admin, faça login de novo e recarregue esta página para destacar.')
       return
     }
     const c = String(cod)
