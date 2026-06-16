@@ -437,12 +437,11 @@ export default function Catalogo() {
               {isAdmin && destaqueOk && <span className="cat-destaque-ok">✓ Destaque atualizado</span>}
             </div>
             {destaqueImoveis.length > 0 ? (
-              <div className="cat-lista">
+              <div className="cat-grid">
                 {destaqueImoveis.map((im) => (
                   <div className="cat-card-wrap cat-card-wrap--destaque" key={im.codigo}>
-                    <span className="cat-destaque-selo">★ Destaque</span>
-                    <CardImovel im={im} variante="linha" />
-                    {isAdmin && <button type="button" className="cat-destacar-btn cat-destacar-btn--rem" onClick={() => toggleDestaque(im.codigo)}>✕ remover</button>}
+                    <CardImovel im={im} />
+                    {isAdmin && <button type="button" className="cat-destacar-bar cat-destacar-bar--rem" onClick={() => toggleDestaque(im.codigo)}>✕ remover do destaque</button>}
                   </div>
                 ))}
               </div>
@@ -459,8 +458,8 @@ export default function Catalogo() {
               <span className="eyebrow">Atualizado hoje</span>
               <h2 className="cat-hoje-h2">Chegaram em <em>{diaLabel}</em></h2>
             </div>
-            <div className="cat-lista">
-              {novosHoje.map((im) => <CardImovel key={im.codigo} im={im} variante="linha" />)}
+            <div className="cat-grid">
+              {novosHoje.map((im) => <CardImovel key={im.codigo} im={im} />)}
             </div>
             <div className="cat-hoje-sep"><span>Todos os imóveis</span></div>
           </div>
@@ -470,15 +469,15 @@ export default function Catalogo() {
 
         {lista.length ? (
           <>
-          <div className="cat-lista">
+          <div className="cat-grid">
             {visiveis.filter((im) => !destaqueCods.includes(String(im.codigo))).map((im) => (
               isAdmin ? (
                 <div className="cat-card-wrap" key={im.codigo}>
-                  <CardImovel im={im} variante="linha" />
-                  <button type="button" className="cat-destacar-btn" onClick={() => toggleDestaque(im.codigo)} title="Destacar este imóvel no topo do catálogo">★ Destacar no topo</button>
+                  <CardImovel im={im} />
+                  <button type="button" className="cat-destacar-bar" onClick={() => toggleDestaque(im.codigo)} title="Destacar este imóvel no topo do catálogo">★ Destacar no topo</button>
                 </div>
               ) : (
-                <CardImovel key={im.codigo} im={im} variante="linha" />
+                <CardImovel key={im.codigo} im={im} />
               )
             ))}
           </div>
