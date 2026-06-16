@@ -245,10 +245,10 @@ function RadarChart({ testemunhas, avaliando, referencia }) {
 
       {/* Avaliando ao centro — diamante latão */}
       <polygon points="0,-10 10,0 0,10 -10,0"
-        fill="#d4a84b" stroke="#FFFFFF" strokeWidth="2"
+        fill="#C6A15B" stroke="#FFFFFF" strokeWidth="2"
       />
       <text x={0} y={21}
-        fill="#d4a84b" fontSize="8"
+        fill="#C6A15B" fontSize="8"
         fontFamily="'Montserrat', sans-serif"
         fontWeight="500" textAnchor="middle"
       >
@@ -298,10 +298,10 @@ function AreaScatter({ testemunhas, avaliandoArea, avaliandoM2, referencia }) {
 
       {/* Linha do valor adotado */}
       <line x1={PAD.l} y1={refY} x2={W - PAD.r} y2={refY}
-        stroke="#d4a84b" strokeWidth="1" strokeDasharray="6 3"
+        stroke="#C6A15B" strokeWidth="1" strokeDasharray="6 3"
       />
       <text x={W - PAD.r - 2} y={refY - 4}
-        fill="#d4a84b" fontSize="7.5" textAnchor="end"
+        fill="#C6A15B" fontSize="7.5" textAnchor="end"
         fontFamily="'Montserrat', sans-serif"
       >
         adotado
@@ -316,7 +316,7 @@ function AreaScatter({ testemunhas, avaliandoArea, avaliandoM2, referencia }) {
 
       {/* Avaliando */}
       <circle cx={xS(avaliandoArea)} cy={yS(avaliandoM2)}
-        r={7} fill="#d4a84b" stroke="#FFFFFF" strokeWidth="2"
+        r={7} fill="#C6A15B" stroke="#FFFFFF" strokeWidth="2"
       />
 
       {/* Labels Y */}
@@ -349,7 +349,7 @@ function AreaScatter({ testemunhas, avaliandoArea, avaliandoM2, referencia }) {
       <text x={PAD.l + 10} y={PAD.t + 11} fill="#5b626e" fontSize="7" fontFamily="'Montserrat', sans-serif">
         testemunhas
       </text>
-      <circle cx={PAD.l + 80} cy={PAD.t + 8} r={4} fill="#d4a84b" stroke="#FFFFFF" strokeWidth="1.5" />
+      <circle cx={PAD.l + 80} cy={PAD.t + 8} r={4} fill="#C6A15B" stroke="#FFFFFF" strokeWidth="1.5" />
       <text x={PAD.l + 88} y={PAD.t + 11} fill="#5b626e" fontSize="7" fontFamily="'Montserrat', sans-serif">
         avaliando
       </text>
@@ -383,10 +383,10 @@ function DistributionChart({ vals, media, dp, referencia }) {
 
       {/* Linha do adotado */}
       <line x1={xS(referencia)} y1={PAD.t - 4} x2={xS(referencia)} y2={H - PAD.b + 4}
-        stroke="#d4a84b" strokeWidth="1.5"
+        stroke="#C6A15B" strokeWidth="1.5"
       />
       <text x={xS(referencia)} y={PAD.t - 6}
-        fill="#d4a84b" fontSize="7.5" textAnchor="middle"
+        fill="#C6A15B" fontSize="7.5" textAnchor="middle"
         fontFamily="'Montserrat', sans-serif"
       >
         adotado

@@ -565,6 +565,13 @@ html[data-theme="claro"] .mf-beta { background: #1C2A44; color: #FFFFFF; }
 html[data-theme="claro"] .mf-seo-titulo { color: #1C2A44; }
 html[data-theme="claro"] .mf-seo-code { color: #1C2A44; }
 
+/* ════ Rodada 10 — accent de checkbox, seta do select, price-gate do detalhe ════ */
+html[data-theme="claro"] .ff-toggle input { accent-color: #1C2A44; }
+html[data-theme="claro"] .filtro-form select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%231C2A44' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M3 5l4 4 4-4'/%3E%3C/svg%3E"); }
+html[data-theme="claro"] .pg-promo--detalhe .pg-por { color: #0A0E16; }
+html[data-theme="claro"] .pg-promo--detalhe .pg-de { color: #8A8F99; }
+html[data-theme="claro"] .preco-gate--detalhe .pg-cta { background: #1C2A44; color: #FFFFFF; box-shadow: 0 6px 18px rgba(28,42,68,.25); }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
