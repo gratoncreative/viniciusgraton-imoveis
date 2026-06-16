@@ -510,6 +510,9 @@ html[data-theme="claro"] .lead-form h3 { color: #F4EFE6; }
 html[data-theme="claro"] .bairro-card-foto h4,
 html[data-theme="claro"] .bairro-card-foto h3,
 html[data-theme="claro"] .bairro-card-foto .bairro-card-tag { color: #FFFFFF; }
+/* /conta — aba ativa e selo com fundo dourado -> petróleo + branco (regra dura) */
+html[data-theme="claro"] .login-senha-tabs button.on { background: #1C2A44; color: #FFFFFF; }
+html[data-theme="claro"] .conta-form-selo { background: #1C2A44; color: #FFFFFF; }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
