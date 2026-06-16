@@ -142,17 +142,36 @@ export default function Catalogo() {
     setDestaqueCods(novos) // otimista
     try {
       const r = await fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'catalogo-destaque', token, codigos: novos }) })
-      const j = await r.json()
-      if (!r.ok || !j.ok) throw new Error('falhou')
+      let j = null
+      try { j = await r.json() } catch {}
+      if (!r.ok || !j || !j.ok) {
+        const motivo = r.status === 401 ? 'Sua sessão de admin expirou. Abra /admin, faça login de novo e volte aqui.'
+          : r.status === 403 ? 'Bloqueado por permissão/origem.'
+          : (j && (j.msg || j.error)) ? (j.msg || j.error)
+          : `Falha ao salvar (HTTP ${r.status}).`
+        throw new Error(motivo)
+      }
       setDestaqueCods((j.codigos || []).map(String))
       setDestaqueOk(true); setTimeout(() => setDestaqueOk(false), 2500)
-    } catch {
+    } catch (e) {
       setDestaqueCods(anterior) // reverte
-      setDestaqueMsg('Não consegui salvar. Faça login em /admin e tente de novo.')
-      setTimeout(() => setDestaqueMsg(''), 4000)
+      setDestaqueMsg('⚠ ' + (e && e.message ? e.message : 'Não consegui salvar.'))
+      setTimeout(() => setDestaqueMsg(''), 7000)
     }
   }
+  // o token é "<exp>.<assinatura>"; checa se ainda é válido (não venceu) antes de tentar
+  const tokenValido = () => {
+    const t = localStorage.getItem(ADMIN_LSK)
+    if (!t || t.indexOf('.') < 0) return false
+    const exp = Number(t.split('.')[0])
+    return !!exp && Date.now() < exp
+  }
   const toggleDestaque = (cod) => {
+    if (!tokenValido()) {
+      setDestaqueMsg('⚠ Sua sessão de admin expirou (dura 12h). Abra /admin, faça login de novo e volte aqui para destacar.')
+      setTimeout(() => setDestaqueMsg(''), 8000)
+      return
+    }
     const c = String(cod)
     const adicionando = !destaqueCods.includes(c)
     const novos = adicionando ? [...destaqueCods, c].slice(-3) : destaqueCods.filter((x) => x !== c)
