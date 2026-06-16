@@ -286,9 +286,10 @@ html[data-theme="claro"] .nav .brand-name,
 html[data-theme="claro"] .nav .nav-conta,
 html[data-theme="claro"] .nav .nav-cta { color: rgba(244,239,230,0.92); }
 html[data-theme="claro"] .nav .brand-sub { color: rgba(244,239,230,0.6); }
-html[data-theme="claro"] .nav .nav-links a:hover { color: #FFFFFF; }
+/* hover e item ativo viram pílula CLARA (branca) → texto/ícone ESCUROS p/ contraste */
+html[data-theme="claro"] .nav .nav-links a:hover,
 html[data-theme="claro"] .nav .nav-links a.is-active,
-html[data-theme="claro"] .nav .is-active { color: #E3D2A8; }
+html[data-theme="claro"] .nav .is-active { color: #1C2A44; }
 /* A2 — rodapé.. texto marfim sobre o marinho */
 html[data-theme="claro"] .footer a,
 html[data-theme="claro"] .footer-col a { color: rgba(244,239,230,0.82); }
