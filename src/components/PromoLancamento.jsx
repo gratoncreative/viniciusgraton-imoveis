@@ -23,7 +23,8 @@ export default function PromoLancamento({ variante = 'linha' }) {
 
   const Media = () => (
     <>
-      <span className="promo-imovel-marca" aria-hidden="true">Louis<i>living experience</i></span>
+      {/* a marca centralizada é o FALLBACK — só aparece quando não há imagem ilustrativa */}
+      {!imgOk && <span className="promo-imovel-marca" aria-hidden="true">Louis<i>living experience</i></span>}
       {imgOk && (
         <img
           src="/anuncios/louis-studios.jpg"
