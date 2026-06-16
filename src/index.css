@@ -585,6 +585,11 @@ html[data-theme="claro"] .gi-select option { background: #FFFFFF; color: #2A2F38
 html[data-theme="claro"] .pdfjpg-drop-icon { color: #8A8F99; }
 html[data-theme="claro"] .ef-canvas-wrap { background: #F4EFE6; border-color: #E4DFD4; }
 
+/* ════ Rodada 12 — botão voltar-ao-topo e descrição de card ════ */
+html[data-theme="claro"] .back-top { background: rgba(244,239,230,0.92); color: #1C2A44; border-color: #C6A15B; }
+html[data-theme="claro"] .back-top:hover { background: #F4EFE6; color: #0A0E16; }
+html[data-theme="claro"] .card-body .card-seg-desc { color: #2A2F38; }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
