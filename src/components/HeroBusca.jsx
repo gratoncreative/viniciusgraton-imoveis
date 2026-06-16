@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { TIPOS_IMOVEL, BAIRROS_IMOVEL, FAIXAS_PRECO } from '../data'
 import { IconSearch } from './icons'
@@ -11,6 +11,22 @@ export default function HeroBusca() {
   const [tipo, setTipo] = useState('')
   const [bairros, setBairros] = useState([])
   const [faixa, setFaixa] = useState(-1)
+  // lista COMPLETA de bairros (todos os que têm imóvel na base da Rotina), via /bairros.json.
+  // começa com os bairros dos imóveis curados e é substituída pela lista completa ao carregar.
+  const [bairrosOpts, setBairrosOpts] = useState(BAIRROS_IMOVEL)
+  useEffect(() => {
+    let vivo = true
+    fetch('/bairros.json')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (!vivo || !d || !Array.isArray(d.bairros)) return
+        const nomes = d.bairros.map((b) => (typeof b === 'string' ? b : b.nome)).filter(Boolean)
+        const todos = [...new Set([...nomes, ...BAIRROS_IMOVEL])].sort((a, b) => a.localeCompare(b, 'pt-BR'))
+        if (todos.length) setBairrosOpts(todos)
+      })
+      .catch(() => {})
+    return () => { vivo = false }
+  }, [])
 
   const buscar = (e) => {
     e.preventDefault()
@@ -35,7 +51,7 @@ export default function HeroBusca() {
         <span>Bairro ou região</span>
         <FiltroSelect
           placeholder="Toda Uberlândia" multiple searchable value={bairros} onChange={setBairros}
-          options={BAIRROS_IMOVEL.map((b) => ({ value: b, label: b }))}
+          options={bairrosOpts.map((b) => ({ value: b, label: b }))}
         />
       </div>
       <div className="hb-campo">

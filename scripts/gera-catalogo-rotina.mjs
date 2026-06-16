@@ -115,6 +115,15 @@ fs.writeFileSync('public/catalogo.json', JSON.stringify(out))
 fs.writeFileSync('public/catalogo-meta.json', JSON.stringify({ geradoEm, total: recs.length }))
 const kb = Math.round(fs.statSync('public/catalogo.json').size / 1024)
 
+// lista COMPLETA de bairros (todos os que têm imóvel) — alimenta o dropdown da busca no hero
+try {
+  const cont = {}
+  for (const im of recs) { const b = (im.bairro || '').trim(); if (b) cont[b] = (cont[b] || 0) + 1 }
+  const bairros = Object.entries(cont).sort((a, b) => a[0].localeCompare(b[0], 'pt-BR')).map(([nome, n]) => ({ nome, n }))
+  fs.writeFileSync('public/bairros.json', JSON.stringify({ geradoEm, bairros }))
+  console.log('OK -> public/bairros.json |', bairros.length, 'bairros')
+} catch (e) { console.warn('bairros.json falhou:', e.message) }
+
 // gera mercado-stats.json — medianas de preço e m² por bairro (alimenta /mercado)
 try {
   const statsBairro = {}
