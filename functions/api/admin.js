@@ -287,6 +287,15 @@ export async function onRequestPost({ env, request }) {
     return json({ ok: true, aprovado: b.aprovado !== false })
   }
 
+  // imóveis em DESTAQUE no topo do catálogo (no máx. 3) — lido pelo /api/destaque
+  if (action === 'catalogo-destaque') {
+    const codigos = Array.isArray(b.codigos)
+      ? [...new Set(b.codigos.map((x) => String(x).replace(/[^a-zA-Z0-9]/g, '').slice(0, 12)).filter(Boolean))].slice(0, 3)
+      : []
+    await env.ENGAGEMENT.put('config:catalogo-topo', JSON.stringify({ codigos, ts: Date.now() }))
+    return json({ ok: true, codigos })
+  }
+
   // ————— CRM "Meus clientes" (preferências + sugestões + página personalizada) —————
   if (action === 'crm-list') {
     const lista = await env.ENGAGEMENT.list({ prefix: 'crm:' })

@@ -6,7 +6,6 @@ import CardImovel from '../components/CardImovel'
 import AviseMe from '../components/AviseMe'
 import FiltroSelect from '../components/FiltroSelect'
 import FiltroPills from '../components/FiltroPills'
-import PromoLancamento from '../components/PromoLancamento'
 import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, FAIXAS_PRECO, linkWhatsApp, WA } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconClose } from '../components/icons'
@@ -117,6 +116,48 @@ export default function Catalogo() {
     return [...mapa.values()]
   }, [feed])
   const BAIRROS_TODOS = useMemo(() => [...new Set(TODOS.map((i) => i.bairro).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')), [TODOS])
+
+  // —— DESTAQUE no topo do catálogo (curadoria do admin; até 3) ——
+  const ADMIN_LSK = 'vg_admin_token'
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [destaqueCods, setDestaqueCods] = useState([])
+  const [destaqueMsg, setDestaqueMsg] = useState('')
+  useEffect(() => {
+    const check = () => setIsAdmin(!!localStorage.getItem(ADMIN_LSK))
+    check()
+    window.addEventListener('storage', check)
+    let vivo = true
+    fetch('/api/destaque').then((r) => (r.ok ? r.json() : null))
+      .then((d) => { if (vivo && d && Array.isArray(d.codigos)) setDestaqueCods(d.codigos.map(String)) })
+      .catch(() => {})
+    return () => { vivo = false; window.removeEventListener('storage', check) }
+  }, [])
+  const salvarDestaque = async (novos) => {
+    const token = localStorage.getItem(ADMIN_LSK)
+    if (!token) return
+    const anterior = destaqueCods
+    setDestaqueCods(novos) // otimista
+    try {
+      const r = await fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'catalogo-destaque', token, codigos: novos }) })
+      const j = await r.json()
+      if (!r.ok || !j.ok) throw new Error('falhou')
+      setDestaqueCods((j.codigos || []).map(String))
+    } catch {
+      setDestaqueCods(anterior) // reverte
+      setDestaqueMsg('Não consegui salvar. Faça login em /admin e tente de novo.')
+      setTimeout(() => setDestaqueMsg(''), 4000)
+    }
+  }
+  const toggleDestaque = (cod) => {
+    const c = String(cod)
+    const novos = destaqueCods.includes(c) ? destaqueCods.filter((x) => x !== c) : [...destaqueCods, c].slice(-3)
+    salvarDestaque(novos)
+  }
+  const destaqueImoveis = useMemo(
+    () => destaqueCods.map((c) => TODOS.find((i) => String(i.codigo) === c)).filter(Boolean),
+    [destaqueCods, TODOS]
+  )
+
   const LOTE = 12
   const [mostrar, setMostrar] = useState(LOTE)
   const sentinelaRef = useRef(null)
@@ -351,7 +392,28 @@ export default function Catalogo() {
           ))}
         </div>
 
-        <PromoLancamento variante="texto" />
+        {(destaqueImoveis.length > 0 || isAdmin) && (
+          <section className="cat-destaque-topo">
+            <div className="cat-destaque-head">
+              <span className="eyebrow">{destaqueImoveis.length ? 'Imóvel em destaque' : 'Destaque do catálogo'}</span>
+              {isAdmin && <span className="cat-destaque-dica">Admin · clique em <b>★ Destacar no topo</b> em qualquer imóvel (até 3)</span>}
+            </div>
+            {destaqueImoveis.length > 0 ? (
+              <div className="cat-lista">
+                {destaqueImoveis.map((im) => (
+                  <div className="cat-card-wrap cat-card-wrap--destaque" key={im.codigo}>
+                    <span className="cat-destaque-selo">★ Destaque</span>
+                    <CardImovel im={im} variante="linha" />
+                    {isAdmin && <button type="button" className="cat-destacar-btn cat-destacar-btn--rem" onClick={() => toggleDestaque(im.codigo)}>✕ remover</button>}
+                  </div>
+                ))}
+              </div>
+            ) : isAdmin ? (
+              <p className="cat-destaque-vazio">Nenhum imóvel destacado ainda. Role a lista e clique em <b>★ Destacar no topo</b> no imóvel que quiser exibir aqui.</p>
+            ) : null}
+            {destaqueMsg && <p className="cat-destaque-erro">{destaqueMsg}</p>}
+          </section>
+        )}
 
         {semFiltros && novosHoje.length > 0 && (
           <div className="cat-hoje">
@@ -371,8 +433,15 @@ export default function Catalogo() {
         {lista.length ? (
           <>
           <div className="cat-lista">
-            {visiveis.map((im) => (
-              <CardImovel key={im.codigo} im={im} variante="linha" />
+            {visiveis.filter((im) => !destaqueCods.includes(String(im.codigo))).map((im) => (
+              isAdmin ? (
+                <div className="cat-card-wrap" key={im.codigo}>
+                  <CardImovel im={im} variante="linha" />
+                  <button type="button" className="cat-destacar-btn" onClick={() => toggleDestaque(im.codigo)} title="Destacar este imóvel no topo do catálogo">★ Destacar no topo</button>
+                </div>
+              ) : (
+                <CardImovel key={im.codigo} im={im} variante="linha" />
+              )
             ))}
           </div>
           {temMais && (
