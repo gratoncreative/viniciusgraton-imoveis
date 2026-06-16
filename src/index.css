@@ -78,7 +78,7 @@ html[data-theme="claro"] .btn-gold svg { color: #E3D2A8; }
 html[data-theme="claro"] .btn-ghost { background: #fff; border-color: #E4DFD4; color: #1C2A44; }
 html[data-theme="claro"] .btn-ghost:hover { border-color: #1C2A44; background: #F4EFE6; }
 /* HERO claro — esconde a cena escura (3D, skyline, tint) e clareia */
-html[data-theme="claro"] .hero { background: linear-gradient(180deg, #FFFFFF 0%, #F4EFE6 100%); }
+html[data-theme="claro"] .hero { background: #FFFFFF; }
 html[data-theme="claro"] .hero-bg, html[data-theme="claro"] .hero-bg-tint, html[data-theme="claro"] .hero-skyline,
 html[data-theme="claro"] .hero canvas, html[data-theme="claro"] .scroll-hint { display: none !important; }
 html[data-theme="claro"] .hero-card { background: #FFFFFF; border: 1px solid #E4DFD4; box-shadow: 0 30px 70px -40px rgba(10,14,22,.25); }
@@ -1106,7 +1106,7 @@ section { position: relative; padding: clamp(20px, 3vw, 40px) 0; }
   .cat-main { height: 100%; overflow-y: auto; overflow-x: hidden; padding: 2px 6px 48px 2px; scrollbar-width: none; -ms-overflow-style: none; }
   .cat-rail::-webkit-scrollbar, .cat-main::-webkit-scrollbar { width: 0; height: 0; display: none; }
   /* no catálogo, a página não rola e o rodapé não aparece — só as duas colunas rolam */
-  body.rota-catalogo { overflow: hidden; background: #f5f2ea; }
+  body.rota-catalogo { overflow: hidden; background: #FFFFFF; }
   html[data-theme="dark"] body.rota-catalogo { background: #0c1222; }
   body.rota-catalogo .footer { display: none; }
   /* AviseMe fica no fim de cat-main; no desktop com lista curta aparece imediatamente como barra escura — ocultar */
