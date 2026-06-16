@@ -281,7 +281,7 @@ function ImoveisPub({ token, onSair, alvo, onAbriu }) {
     const owFone = String(reg.owner.fone || '').replace(/\D/g, '')
     const owNome1 = (reg.owner.nome || '').trim().split(/\s+/)[0]
     const linkImovel = `${typeof window !== 'undefined' ? window.location.origin : 'https://viniciusgraton.com.br'}/imovel/${sel}`
-    const msgProp = `Olá${owNome1 ? ' ' + owNome1 : ''}! Aqui é o Vinícius Graton, corretor da Rotina Imobiliária. Estou com um cliente com forte interesse de compra no seu ${base?.tipo || 'imóvel'}${base?.bairro ? ' no ' + base.bairro : ''} (cód. ${sel}). Pra você ver qual é, segue o anúncio: ${linkImovel} — gostaria de agendar uma visita. Você pode me dizer onde ficam as chaves: estão com você, com alguém, ou o imóvel está ocupado/vago no momento? É um cliente com real potencial de compra; fico no aguardo pra combinarmos o melhor horário. Obrigado!`
+    const msgProp = `Olá${owNome1 ? ' ' + owNome1 : ''}! Aqui é o Vinícius Graton, consultor da Rotina Imobiliária. Estou com um cliente com forte interesse de compra no seu ${base?.tipo || 'imóvel'}${base?.bairro ? ' no ' + base.bairro : ''} (cód. ${sel}). Pra você ver qual é, segue o anúncio: ${linkImovel} — gostaria de agendar uma visita. Você pode me dizer onde ficam as chaves: estão com você, com alguém, ou o imóvel está ocupado/vago no momento? É um cliente com real potencial de compra; fico no aguardo pra combinarmos o melhor horário. Obrigado!`
     const linkProp = owFone ? `https://wa.me/55${owFone}?text=${encodeURIComponent(msgProp)}` : ''
     return (
       <section>
@@ -359,7 +359,7 @@ function ImoveisPub({ token, onSair, alvo, onAbriu }) {
                   : <span className="painel-meta">Preencha o telefone acima pra liberar o WhatsApp.</span>}
                 <a className="admin-btn" href={`/imovel/${sel}`} target="_blank" rel="noopener">Ver perfil público do imóvel <IconArrow width={14} height={14} /></a>
               </div>
-              <p className="calc-nota">A mensagem já vai pronta: me apresento como corretor da Rotina, digo que tenho cliente com interesse de compra e pergunto sobre as chaves (com quem estão, se está ocupado/vago) pra agendar a visita.</p>
+              <p className="calc-nota">A mensagem já vai pronta: me apresento como consultor da Rotina, digo que tenho cliente com interesse de compra e pergunto sobre as chaves (com quem estão, se está ocupado/vago) pra agendar a visita.</p>
             </div>
             <div style={{ display: 'flex', gap: 10, marginTop: 14, alignItems: 'center', flexWrap: 'wrap' }}>
               <button className="btn btn-gold" onClick={salvar}>Salvar alterações</button>
