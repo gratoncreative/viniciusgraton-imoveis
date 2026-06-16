@@ -175,25 +175,29 @@ export async function onRequestPost({ env, request }) {
   if (action === 'data') {
     const out = { anuncios: [], leads: [], clientes: [], news: [] }
     const fontes = [['anuncio:', 'anuncios'], ['lead:', 'leads'], ['conta:', 'clientes'], ['news:', 'news']]
-    for (const [prefix, arr] of fontes) {
-      const lista = await env.ENGAGEMENT.list({ prefix })
-      for (const k of (lista?.keys || [])) {
-        const v = await env.ENGAGEMENT.get(k.name, 'json')
-        if (v) { v._key = k.name; out[arr].push(v) }
-      }
-    }
+    // PERFORMANCE: lista os 4 prefixos + 'aprovado:'/'crm:' em paralelo (antes era serial).
+    const [listas, apr, crm] = await Promise.all([
+      Promise.all(fontes.map(([prefix]) => env.ENGAGEMENT.list({ prefix }))),
+      env.ENGAGEMENT.list({ prefix: 'aprovado:' }),
+      env.ENGAGEMENT.list({ prefix: 'crm:' }),
+    ])
+    // busca os valores de cada fonte EM PARALELO (antes era um get serial por chave -> N round-trips).
+    await Promise.all(fontes.map(async ([prefix, arr], idx) => {
+      const keys = listas[idx]?.keys || []
+      const vals = await Promise.all(keys.map((k) =>
+        env.ENGAGEMENT.get(k.name, 'json').then((v) => { if (v) v._key = k.name; return v }).catch(() => null)
+      ))
+      for (const v of vals) if (v) out[arr].push(v)
+    }))
     out.anuncios.sort((a, b) => (b.ts || 0) - (a.ts || 0))
     out.leads.sort((a, b) => (b.ts || 0) - (a.ts || 0))
     out.clientes.sort((a, b) => (b.atualizadoEm || 0) - (a.atualizadoEm || 0))
     out.news.sort((a, b) => (b.ts || 0) - (a.ts || 0))
-    out.aprovados = []
-    const apr = await env.ENGAGEMENT.list({ prefix: 'aprovado:' })
-    for (const k of (apr?.keys || [])) out.aprovados.push(k.name.slice('aprovado:'.length))
+    out.aprovados = (apr?.keys || []).map((k) => k.name.slice('aprovado:'.length))
     // resumo do CRM — usa metadata do KV (sem carregar o valor completo, que pode ter fotos grandes)
-    out.crmTotal = 0; out.crmNovos = 0; out.crmNovidades = 0
-    const crm = await env.ENGAGEMENT.list({ prefix: 'crm:' })
     const crmKeys = crm?.keys || []
     out.crmTotal = crmKeys.length
+    out.crmNovos = 0; out.crmNovidades = 0
     for (const k of crmKeys) {
       if (k.metadata?.novo) out.crmNovos++
       if (k.metadata?.temNovidade) out.crmNovidades++
@@ -285,15 +289,16 @@ export async function onRequestPost({ env, request }) {
 
   // ————— CRM "Meus clientes" (preferências + sugestões + página personalizada) —————
   if (action === 'crm-list') {
-    const out = []
     const lista = await env.ENGAGEMENT.list({ prefix: 'crm:' })
-    for (const k of (lista?.keys || [])) {
-      const v = await env.ENGAGEMENT.get(k.name, 'json')
-      if (v) {
-        // Strip foto (can be up to 700KB base64) — loaded lazily via crm-get when editing
-        const { foto, ...rest } = v
-        out.push(foto ? { ...rest, temFoto: true } : rest)
-      }
+    const keys = lista?.keys || []
+    // PERFORMANCE: busca todos os clientes em paralelo (antes era um get serial por chave).
+    const vals = await Promise.all(keys.map((k) => env.ENGAGEMENT.get(k.name, 'json').catch(() => null)))
+    const out = []
+    for (const v of vals) {
+      if (!v) continue
+      // Strip foto (can be up to 700KB base64) — loaded lazily via crm-get when editing
+      const { foto, ...rest } = v
+      out.push(foto ? { ...rest, temFoto: true } : rest)
     }
     out.sort((a, b) => (b.atualizadoEm || 0) - (a.atualizadoEm || 0))
     return json({ ok: true, clientes: out })
