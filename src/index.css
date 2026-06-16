@@ -474,6 +474,37 @@ html[data-theme="claro"] .section--light .faq-item[open] summary { color: #1C2A4
 html[data-theme="claro"] .fp-pill.on { background: #1C2A44; color: #FFFFFF; border-color: #1C2A44; }
 html[data-theme="claro"] .cat-filtro-count { background: #1C2A44; color: #FFFFFF; }
 
+/* ════ Rodada 5 — /sobre: banner MARINHO reusa classes genéricas (regressão) + seção qs- clara ════ */
+/* .sobre-banner é #0A0E16 (escuro): texto deve ser CLARO (meus overrides globais o escureceram) */
+html[data-theme="claro"] .sobre-banner .eyebrow { color: var(--gold-1); }
+html[data-theme="claro"] .sobre-banner .eyebrow::before { background: var(--gold-2); }
+html[data-theme="claro"] .sobre-banner .section-title,
+html[data-theme="claro"] .sobre-banner .section-title em { color: #F4EFE6; -webkit-text-fill-color: #F4EFE6; background: none; }
+html[data-theme="claro"] .sobre-banner p,
+html[data-theme="claro"] .sobre-banner-text p { color: rgba(244,239,230,0.86); }
+/* selo dentro do banner marinho deve ser claro (gold); fora dele, petróleo */
+html[data-theme="claro"] .sobre-banner .sobre-selo { color: var(--gold-1); }
+/* seção qs- (clara): texto marfim/dourado -> escuro legível */
+html[data-theme="claro"] .qs-historia-text strong,
+html[data-theme="claro"] .qs-historia-ass strong { color: #0A0E16; }
+html[data-theme="claro"] .qs-historia-text span,
+html[data-theme="claro"] .qs-historia-ass span,
+html[data-theme="claro"] .qs-num-label { color: #5b626e; }
+html[data-theme="claro"] .qs-faq-q { color: #1C2A44; }
+html[data-theme="claro"] .qs-num-val { color: #1C2A44; }
+html[data-theme="claro"] .sobre-selo { color: #1C2A44; }
+/* seções claras (.section--light) com dourado-texto restante -> petróleo */
+html[data-theme="claro"] .section--light .passo .n { background: none; -webkit-text-fill-color: #0A0E16; color: #0A0E16; }
+html[data-theme="claro"] .section--light .contact-row .ci { color: #1C2A44; }
+html[data-theme="claro"] .section--light .bairro-ico { color: #1C2A44; }
+/* botão tour 360 — fundo quase-preto fixo -> petróleo no claro */
+html[data-theme="claro"] .det-tour-b { background: #1C2A44; color: #FFFFFF; }
+html[data-theme="claro"] .det-tour-b:hover { background: #0A0E16; }
+/* /anunciar — acentos champanhe/branco sobre seção clara (não migrados) -> petróleo/grafite */
+html[data-theme="claro"] .anu-hero-selo,
+html[data-theme="claro"] .anu-hero-imp a { color: #1C2A44; }
+html[data-theme="claro"] .anu-stat span { color: #5b626e; }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
