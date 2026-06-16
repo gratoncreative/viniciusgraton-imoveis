@@ -514,6 +514,25 @@ html[data-theme="claro"] .bairro-card-foto .bairro-card-tag { color: #FFFFFF; }
 html[data-theme="claro"] .login-senha-tabs button.on { background: #1C2A44; color: #FFFFFF; }
 html[data-theme="claro"] .conta-form-selo { background: #1C2A44; color: #FFFFFF; }
 
+/* ════ Rodada 6 — feedback de erro, card-linha (vista lista), título pdf ════ */
+/* feedback/erro em laranja-tailwind -> Terracota oficial (>=4.5:1) */
+html[data-theme="claro"] .au-feedback--erro { background: rgba(176,74,55,0.08); border-color: rgba(176,74,55,0.3); color: #B04A37; }
+html[data-theme="claro"] .au-feedback--erro svg,
+html[data-theme="claro"] .au-feedback svg { stroke: #B04A37; }
+html[data-theme="claro"] .lead-erro,
+html[data-theme="claro"] .mf-nota.mf-erro { color: #B04A37; }
+/* título destacado das ferramentas — garante sem gradiente dourado vazando */
+html[data-theme="claro"] .pdfjpg-titulo-hl { background: none; -webkit-background-clip: border-box; background-clip: border-box; -webkit-text-fill-color: #0A0E16; color: #0A0E16; animation: none; }
+html[data-theme="claro"] .pdfjpg-progress-pct { color: #1C2A44; }
+/* card variante LINHA (vista de lista) — dourado/marrom sobre claro -> petróleo/marinho */
+html[data-theme="claro"] .im-linha-tipo { color: #1C2A44; }
+html[data-theme="claro"] .im-linha-preco { color: #0A0E16; }
+html[data-theme="claro"] .preco-gate--linha .pg-num { color: #0A0E16; }
+html[data-theme="claro"] .preco-gate--linha .pg-cta { color: #1C2A44; }
+html[data-theme="claro"] .pg-promo--linha .pg-de { color: #8A8F99; }
+html[data-theme="claro"] .pg-promo--linha .pg-por { color: #0A0E16; }
+html[data-theme="claro"] .fs--on .fs-label { color: #0A0E16; }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
