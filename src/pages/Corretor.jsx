@@ -60,6 +60,9 @@ const TOOLS = [
   { id: 'agenda',   nome: 'Planner de visitas',      desc: 'Organize sua agenda de visitas do dia com horários e observações.',           icon: 'clock',   dor: 'Confusão de horário é uma das maiores causas de cancelamento de visita. O planner organiza seu dia com horários, endereços e observações de cada cliente — você vai a cada visita preparado e no horário.' },
 ]
 const ATALHOS = [
+  { to: '/ferramentas/editar-foto',  nome: 'Editar foto com IA',    desc: 'Remover objeto, mobiliar ambiente vazio, trocar o céu.', icon: 'varinha' },
+  { to: '/ferramentas/gerar-imagem', nome: 'Gerar imagem com IA',   desc: 'Capas de artigo, posts de bairro e peças de lançamento.', icon: 'camera'  },
+  { to: '/ferramentas/transcrever',  nome: 'Transcrever vídeo/áudio', desc: 'Tour ou áudio → texto, legenda e descrição.',          icon: 'doc'     },
   { to: '/ferramentas/converter', nome: 'Conversor de fotos',  desc: 'JPG, PNG, WebP e AVIF em lote.',              icon: 'swap'    },
   { to: '/impulsionar',           nome: 'Impulsionar anúncio', desc: 'Destaque pago para o seu imóvel nos buscadores.', icon: 'foguete' },
 ]

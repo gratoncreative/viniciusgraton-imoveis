@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback, lazy, Suspense } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 // Ferramenta de remover marca d'água (IA própria) — entra como 6ª aba do estúdio.
 const RemoverMarca = lazy(() => import('./RemoverMarca'))
@@ -301,7 +302,9 @@ export default function MelhorarFotos() {
     { aba: 'export',  ico: '📐', nome: 'Redimensionar & converter', desc: 'Amplia até 2× UHD e exporta em JPG, PNG ou WebP.' },
     { aba: 'video',   ico: '🎬', nome: 'Vídeo do imóvel', desc: 'Monta um slideshow com transições suaves, marca e trilha a partir das fotos.' },
     { limpar: true,   ico: '🧽', nome: 'Remover marca', desc: 'Apaga logo ou marca de fotos de terceiros com IA, direto no navegador.' },
+    { to: '/ferramentas/editar-foto', ico: '🛋️', nome: 'Remover objeto / mobiliar', desc: 'Pinte uma área e a IA remove um objeto, mobília o ambiente vazio ou troca o céu.' },
   ]
+  const navigate = useNavigate()
   const abrirCom = (abaAlvo) => { setAba(abaAlvo); inputFotosRef.current?.click() }
 
   const subir = (e) => {
@@ -551,7 +554,7 @@ export default function MelhorarFotos() {
           <p className="mf-vitrine-tit">Tudo o que você faz aqui, com o mesmo envio:</p>
           <div className="mf-vitrine-grid">
             {FERRAMENTAS_VITRINE.map((f) => (
-              <button key={f.aba || 'limpar'} type="button" className="mf-vitrine-card" onClick={() => f.limpar ? setModoLimpar(true) : abrirCom(f.aba)}>
+              <button key={f.aba || f.to || 'limpar'} type="button" className="mf-vitrine-card" onClick={() => f.to ? navigate(f.to) : f.limpar ? setModoLimpar(true) : abrirCom(f.aba)}>
                 <span className="mf-vitrine-ico" aria-hidden="true">{f.ico}</span>
                 <b>{f.nome}</b>
                 <small>{f.desc}</small>
