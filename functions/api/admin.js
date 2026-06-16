@@ -328,6 +328,7 @@ export async function onRequestPost({ env, request }) {
       quartosMin: Number(c.quartosMin) || 0, suitesMin: Number(c.suitesMin) || 0,
       vagasMin: Number(c.vagasMin) || 0, areaMin: Number(c.areaMin) || 0,
       obs: lim(c.obs, 1500), sugeridos: arrCod(c.sugeridos, 60),
+      papeis: arrStr(c.papeis, 8, 24),
       nota: lim(c.nota, 1000), status: lim(c.status, 24),
       foto: lim(c.foto, 200000), // dataURL da foto do cliente (JPEG ~480px, ≈150KB base64)
       // preserva o que o PRÓPRIO cliente refinou na página dele (nunca sobrescrever no save do admin)

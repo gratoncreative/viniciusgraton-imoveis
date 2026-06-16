@@ -37,7 +37,11 @@ function calcularTop3(matchesList, m2Mediana) {
 
 const api = (payload) => fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) }).then((r) => r.json().then((j) => ({ status: r.status, j })))
 
-const VAZIO = { id: '', nome: '', whatsapp: '', finalidade: 'Comprar', tipos: [], bairros: [], precoMin: '', precoMax: '', quartosMin: '', suitesMin: '', vagasMin: '', areaMin: '', obs: '', nota: '', sugeridos: [] }
+const VAZIO = { id: '', nome: '', whatsapp: '', finalidade: 'Comprar', tipos: [], bairros: [], precoMin: '', precoMax: '', quartosMin: '', suitesMin: '', vagasMin: '', areaMin: '', obs: '', nota: '', sugeridos: [], papeis: [] }
+
+// "Relacionamentos" (estilo CRM Rotina): que papel a pessoa tem no negócio
+const PAPEIS = ['Lead', 'Comprador', 'Locatário', 'Proprietário', 'Locador', 'Investidor']
+const PAPEL_COR = { Lead: '#8a909c', Comprador: '#2f6fb8', 'Locatário': '#7a4fce', 'Proprietário': '#2e8c57', Locador: '#c98a1a', Investidor: '#b8862f' }
 const waLink = (wa, msg) => { const d = String(wa || '').replace(/\D/g, ''); const full = d.length <= 11 ? '55' + d : d; return `https://wa.me/${full}?text=${encodeURIComponent(msg)}` }
 
 const objToFinal = (o) => { const s = (o || '').toLowerCase(); if (s.includes('alug')) return 'Alugar'; if (s.includes('invest')) return 'Investir'; return 'Comprar' }
@@ -245,6 +249,8 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
   }
   // Salva ANTES de abrir/enviar — aguarda propagação do Cloudflare KV (pode levar até ~2s)
   const [abrindo, setAbrindo] = useState(false)
+  const [aba, setAba] = useState('detalhes') // aba do cadastro: detalhes | atendimentos | auditoria
+  const [acoesAberto, setAcoesAberto] = useState(false) // menu "Ações" do cabeçalho
   const comSalvar = async (acao) => {
     setAbrindo(true)
     const c = await salvar()
@@ -260,6 +266,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
   // limpa o aviso de novidade ao abrir o cliente
   const abrir = (c) => {
     if (c.temNovidade) { api({ action: 'crm-visto', token, id: c.id }); setClientes((cs) => (cs || []).map((x) => (x.id === c.id ? { ...x, temNovidade: false } : x))) }
+    setAba('detalhes'); setAcoesAberto(false)
     setSel({ ...VAZIO, ...c })
     // Load full record (including foto, which is stripped from the list for performance)
     api({ action: 'crm-get', token, id: c.id })
@@ -336,29 +343,89 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
     return (
       <section>
         <div className="admin-barra">
-          <button className="admin-btn" onClick={() => setSel(null)}>← Voltar à lista</button>
-          {sel.id && <span className="painel-meta">Cliente salvo · página: /cliente/{sel.id.slice(0, 8)}…</span>}
+          <button className="admin-btn" onClick={() => { setSel(null); setAcoesAberto(false) }}>← Voltar à lista</button>
         </div>
-        <div className="admin-edit-grid">
-          <div>
-            <h3 className="det-rel-titulo">Dados e preferências do cliente</h3>
-            <div className="crm-foto-campo">
-              {sel.foto ? <img className="crm-foto-prev" src={sel.foto} alt="Foto do cliente" /> : <span className="crm-foto-vazia">👤</span>}
-              <div className="crm-foto-acoes">
-                <label className="admin-btn">{sel.foto ? 'Trocar foto' : '📷 Adicionar foto do cliente'}<input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => lerFoto(e.target.files && e.target.files[0])} /></label>
-                {sel.foto && <button type="button" className="admin-btn admin-btn--del admin-btn--mini" onClick={() => setF('foto', '')}>Remover</button>}
-                <span className="painel-meta">Aparece na página de seleção do cliente.</span>
+
+        {/* Cabeçalho do cadastro (estilo CRM): identidade + menu de ações */}
+        <div className="crm-cli-head">
+          <div className="crm-cli-ident">
+            <div className="crm-cli-avatar">
+              {sel.foto ? <img src={sel.foto} alt="" /> : <span>{(sel.nome || '?').trim().charAt(0).toUpperCase() || '?'}</span>}
+            </div>
+            <div className="crm-cli-id-txt">
+              <h2 className="crm-cli-nome">{sel.nome || 'Novo cliente'}</h2>
+              <div className="crm-cli-tags">
+                <span className="crm-cli-tipo">Pessoa física</span>
+                {sel.status && <span className="crm-status-chip" style={{ background: STATUS_COR[sel.status] || '#8a909c' }}>{sel.status}</span>}
+                {(sel.papeis || []).map((p) => <span key={p} className="crm-papel-chip" style={{ background: PAPEL_COR[p] || '#8a909c' }}>{p}</span>)}
+                {sel.id && <span className="painel-meta">página: /cliente/{sel.id.slice(0, 8)}…</span>}
               </div>
             </div>
+          </div>
+          {sel.id && (
+            <div className="crm-acoes-wrap">
+              <button className="admin-btn crm-acoes-btn" onClick={() => setAcoesAberto((a) => !a)} aria-expanded={acoesAberto}>Ações ▾</button>
+              {acoesAberto && (
+                <>
+                  <div className="crm-acoes-backdrop" onClick={() => setAcoesAberto(false)} />
+                  <div className="crm-acoes-menu" role="menu">
+                    <button role="menuitem" disabled={abrindo} onClick={() => { setAcoesAberto(false); comSalvar((c) => window.open(linkCliente(c), '_blank', 'noopener')) }}>Abrir página do cliente</button>
+                    <button role="menuitem" disabled={abrindo} onClick={() => { setAcoesAberto(false); comSalvar((c) => { navigator.clipboard?.writeText(linkCliente(c)); setLinkCopiado(true); setTimeout(() => setLinkCopiado(false), 1500) }) }}>Copiar link da página</button>
+                    <button role="menuitem" disabled={abrindo} onClick={() => { setAcoesAberto(false); comSalvar((c) => window.open(waLink(c.whatsapp, montarMsgCliente(c)), '_blank', 'noopener')) }}>Enviar no WhatsApp</button>
+                    <button role="menuitem" onClick={() => { setAcoesAberto(false); setAba('detalhes'); setLaudoModal(true); setLaudoLink('') }}>Gerar Laudo PDF</button>
+                    <div className="crm-acoes-sep" />
+                    <button role="menuitem" className="crm-acoes-del" onClick={() => { setAcoesAberto(false); excluir(sel.id) }}>Excluir cliente</button>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Abas (estilo CRM Rotina) */}
+        <div className="crm-tabs" role="tablist">
+          {[['detalhes', 'Detalhes'], ['atendimentos', 'Atendimentos'], ['auditoria', 'Auditoria']].map(([k, lbl]) => (
+            <button key={k} role="tab" aria-selected={aba === k} className={`crm-tab ${aba === k ? 'on' : ''}`} onClick={() => setAba(k)}>{lbl}</button>
+          ))}
+        </div>
+
+        <div className="admin-edit-grid" style={{ display: aba === 'detalhes' ? '' : 'none' }}>
+          <div>
+            {/* Card: Dados pessoais */}
+            <div className="crm-card-bloco">
+              <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Dados pessoais</h3>
+              <div className="crm-foto-campo">
+                {sel.foto ? <img className="crm-foto-prev" src={sel.foto} alt="Foto do cliente" /> : <span className="crm-foto-vazia">👤</span>}
+                <div className="crm-foto-acoes">
+                  <label className="admin-btn">{sel.foto ? 'Trocar foto' : '📷 Adicionar foto do cliente'}<input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => lerFoto(e.target.files && e.target.files[0])} /></label>
+                  {sel.foto && <button type="button" className="admin-btn admin-btn--del admin-btn--mini" onClick={() => setF('foto', '')}>Remover</button>}
+                  <span className="painel-meta">Aparece na página de seleção do cliente.</span>
+                </div>
+              </div>
+              <div className="admin-fields">
+                <label className="admin-field"><span>Nome (opcional)</span><input value={sel.nome} onChange={(e) => setF('nome', e.target.value)} /></label>
+                <label className="admin-field"><span>WhatsApp (obrigatório)</span><input value={sel.whatsapp} onChange={(e) => setF('whatsapp', e.target.value)} placeholder="34 99999-9999" /></label>
+                <label className="admin-field"><span>Finalidade</span>
+                  <select value={sel.finalidade} onChange={(e) => setF('finalidade', e.target.value)}><option>Comprar</option><option>Alugar</option><option>Investir</option></select>
+                </label>
+                <label className="admin-field"><span>Status (funil)</span>
+                  <select value={sel.status || ''} onChange={(e) => setF('status', e.target.value)}><option value="">—</option>{STATUS.map((s) => <option key={s}>{s}</option>)}</select>
+                </label>
+              </div>
+            </div>
+
+            {/* Card: Relacionamentos */}
+            <div className="crm-card-bloco">
+              <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Relacionamentos</h3>
+              <p className="calc-nota" style={{ marginTop: 0 }}>Que papel essa pessoa tem no negócio (pode marcar mais de um).</p>
+              <div className="crm-chips">
+                {PAPEIS.map((p) => <button type="button" key={p} className={`crm-chip ${(sel.papeis || []).includes(p) ? 'on' : ''}`} onClick={() => toggleArr('papeis', p)}>{p}</button>)}
+              </div>
+            </div>
+
+            {/* Card: Preferências de busca */}
+            <h3 className="det-rel-titulo">Preferências de busca</h3>
             <div className="admin-fields">
-              <label className="admin-field"><span>Nome (opcional)</span><input value={sel.nome} onChange={(e) => setF('nome', e.target.value)} /></label>
-              <label className="admin-field"><span>WhatsApp (obrigatório)</span><input value={sel.whatsapp} onChange={(e) => setF('whatsapp', e.target.value)} placeholder="34 99999-9999" /></label>
-              <label className="admin-field"><span>Finalidade</span>
-                <select value={sel.finalidade} onChange={(e) => setF('finalidade', e.target.value)}><option>Comprar</option><option>Alugar</option><option>Investir</option></select>
-              </label>
-              <label className="admin-field"><span>Status (funil)</span>
-                <select value={sel.status || ''} onChange={(e) => setF('status', e.target.value)}><option value="">—</option>{STATUS.map((s) => <option key={s}>{s}</option>)}</select>
-              </label>
               <label className="admin-field"><span>Preço mín.</span><InputMoeda value={sel.precoMin} onChange={(v) => setF('precoMin', v)} /></label>
               <label className="admin-field"><span>Preço máx.</span><InputMoeda value={sel.precoMax} onChange={(v) => setF('precoMax', v)} /></label>
               <label className="admin-field"><span>Quartos (mín.)</span><input type="number" value={sel.quartosMin} onChange={(e) => setF('quartosMin', e.target.value)} /></label>
@@ -650,6 +717,89 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
             )}
           </div>
         </div>
+
+        {/* ABA: Atendimentos — linha do tempo da atividade que já registramos */}
+        {aba === 'atendimentos' && (() => {
+          const fmt = (t) => t ? new Date(t).toLocaleString('pt-BR') : null
+          const fb = sel.feedback && typeof sel.feedback === 'object' ? sel.feedback : {}
+          const likes = Object.keys(fb).filter((k) => fb[k] === 'like')
+          const dislikes = Object.keys(fb).filter((k) => fb[k] === 'dislike')
+          const linha = (cod) => { const im = resolverImovel(cod); return im ? `${im.tipo} · ${im.bairro} · ${formatPreco(im.preco)}` : `cód ${cod}` }
+          const eventos = [
+            sel.criadoEm && { t: sel.criadoEm, ic: '🟢', tit: 'Cliente cadastrado no CRM', sub: sel.origem === 'area-cliente' ? 'Origem: criou conta no site' : 'Cadastro manual' },
+            sel.refinadoEm && { t: sel.refinadoEm, ic: '🎚', tit: 'Refinou a seleção na página dele', sub: `${likes.length} curtido(s) · ${dislikes.length} descartado(s)` },
+            sel.ultimaAcaoEm && { t: sel.ultimaAcaoEm, ic: '⚡', tit: 'Última atividade registrada', sub: '' },
+            sel.atualizadoEm && { t: sel.atualizadoEm, ic: '💾', tit: 'Cadastro atualizado', sub: '' },
+          ].filter(Boolean).sort((a, b) => b.t - a.t)
+          return (
+            <div className="crm-aba-corpo">
+              {!sel.id ? (
+                <div className="crm-vazio">Salve o cliente para começar a registrar atendimentos e acompanhar a atividade dele.</div>
+              ) : (
+                <>
+                  <div className="admin-owner">
+                    <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Linha do tempo</h3>
+                    {eventos.length === 0 ? (
+                      <p className="painel-meta">Sem atividade registrada ainda. Conforme o cliente interagir com a página dele, os eventos aparecem aqui.</p>
+                    ) : (
+                      <ul className="crm-timeline">
+                        {eventos.map((e, i) => (
+                          <li key={i} className="crm-tl-item">
+                            <span className="crm-tl-ic">{e.ic}</span>
+                            <div className="crm-tl-txt">
+                              <b>{e.tit}</b>
+                              {e.sub && <i>{e.sub}</i>}
+                              <span className="painel-meta">{fmt(e.t)}</span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+
+                  {(likes.length > 0 || dislikes.length > 0) && (
+                    <div className="admin-owner crm-feedback" style={{ marginTop: 14 }}>
+                      <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>O que o cliente sinalizou</h3>
+                      {likes.length > 0 && (<><p className="crm-fb-tit crm-fb-tit--like">❤️ Curtiu ({likes.length})</p><ul className="crm-fb-lista">{likes.map((c) => <li key={c}>{linha(c)}</li>)}</ul></>)}
+                      {dislikes.length > 0 && (<><p className="crm-fb-tit crm-fb-tit--dis">👎 Descartou ({dislikes.length})</p><ul className="crm-fb-lista">{dislikes.map((c) => <li key={c}>{linha(c)}</li>)}</ul></>)}
+                    </div>
+                  )}
+                  <p className="painel-meta" style={{ marginTop: 10 }}>Dica: use o menu <b>Ações → Enviar no WhatsApp</b> para falar com o cliente e o botão de status no funil (aba Detalhes) para registrar o avanço.</p>
+                </>
+              )}
+            </div>
+          )
+        })()}
+
+        {/* ABA: Auditoria — dados técnicos do registro */}
+        {aba === 'auditoria' && (() => {
+          const fmt = (t) => t ? new Date(t).toLocaleString('pt-BR') : '—'
+          const linhas = [
+            ['ID do cliente', sel.id || '— (ainda não salvo)'],
+            ['Página pública', sel.id ? `/cliente/${sel.id}` : '—'],
+            ['Origem', sel.origem === 'area-cliente' ? 'Conta criada no site' : 'Cadastro manual no CRM'],
+            ['Criado em', fmt(sel.criadoEm)],
+            ['Atualizado em', fmt(sel.atualizadoEm)],
+            ['Última ação', fmt(sel.ultimaAcaoEm)],
+            ['Refinou em', fmt(sel.refinadoEm)],
+            ['Status no funil', sel.status || '—'],
+            ['Imóveis na seleção', String((sel.sugeridos || []).length)],
+          ]
+          return (
+            <div className="crm-aba-corpo">
+              <div className="admin-owner">
+                <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Auditoria do cadastro</h3>
+                <table className="crm-auditoria">
+                  <tbody>
+                    {linhas.map(([k, v]) => (
+                      <tr key={k}><th>{k}</th><td>{v}</td></tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )
+        })()}
       </section>
     )
   }
@@ -669,7 +819,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
   return (
     <section>
       <div className="admin-barra">
-        <button className="btn btn-gold" onClick={() => { setSel({ ...VAZIO }); setErro('') }}>+ Novo cliente</button>
+        <button className="btn btn-gold" onClick={() => { setAba('detalhes'); setAcoesAberto(false); setSel({ ...VAZIO }); setErro('') }}>+ Novo cliente</button>
         <span className="painel-meta">{clientes ? `${clientes.length} cliente(s)${clientes.filter((c) => c.novo).length ? ` · ${clientes.filter((c) => c.novo).length} novo(s) do site` : ''}` : 'Carregando…'}</span>
         {erroLista && <button className="admin-btn admin-btn--mini" onClick={carregar} style={{ marginLeft: 8 }}>↺ Tentar de novo</button>}
       </div>
