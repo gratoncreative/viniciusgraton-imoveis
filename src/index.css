@@ -500,10 +500,17 @@ html[data-theme="claro"] .section--light .bairro-ico { color: #1C2A44; }
 /* botão tour 360 — fundo quase-preto fixo -> petróleo no claro */
 html[data-theme="claro"] .det-tour-b { background: #1C2A44; color: #FFFFFF; }
 html[data-theme="claro"] .det-tour-b:hover { background: #0A0E16; }
-/* /anunciar — acentos champanhe/branco sobre seção clara (não migrados) -> petróleo/grafite */
-html[data-theme="claro"] .anu-hero-selo,
-html[data-theme="claro"] .anu-hero-imp a { color: #1C2A44; }
-html[data-theme="claro"] .anu-stat span { color: #5b626e; }
+/* /anunciar — o hero É ESCURO (imagem + tint .anu-hero-tint). Texto CLARO. */
+html[data-theme="claro"] .anu-hero .eyebrow { color: var(--gold-1); }
+html[data-theme="claro"] .anu-hero .eyebrow::before { background: var(--gold-2); }
+html[data-theme="claro"] .anu-hero-tit { color: #F4EFE6; -webkit-text-fill-color: #F4EFE6; }
+html[data-theme="claro"] .anu-hero-tit em { -webkit-text-fill-color: transparent; }
+html[data-theme="claro"] .anu-hero-sub { color: rgba(244,239,230,0.85); }
+html[data-theme="claro"] .anu-hero-selo { color: var(--gold-1); }
+html[data-theme="claro"] .anu-hero-imp { color: rgba(244,239,230,0.8); }
+html[data-theme="claro"] .anu-hero-imp a { color: var(--gold-1); }
+html[data-theme="claro"] .anu-stat b { color: #FFFFFF; }
+html[data-theme="claro"] .anu-stat span { color: rgba(244,239,230,0.72); }
 /* /contato — lead-form é card MARINHO (rgba(7,10,17,.85)); título escurecido pelo override global -> marfim */
 html[data-theme="claro"] .lead-form h3 { color: #F4EFE6; }
 /* /regioes — título do bairro fica SOBRE foto escura -> branco */
@@ -682,6 +689,23 @@ html[data-theme="claro"] .ferr-pro-plano--dest { background: rgba(198,161,91,0.1
 html[data-theme="claro"] .ferr-pro-plano--dest .ferr-pro-plano-preco { color: #0A0E16; }
 html[data-theme="claro"] .ferr-pro-plano--dest .ferr-pro-plano-cta { color: #9A7B3C; }
 html[data-theme="claro"] .ferr-pro-ativo span { color: #2A2F38; }
+
+/* /condominios — filtros sobre o hero ESCURO ficavam transparentes/ilegíveis.
+   Fundo branco sólido + texto escuro (nítido sobre a imagem escura do hero). */
+html[data-theme="claro"] .condos-hero-search,
+html[data-theme="claro"] .condos-hf { background: #FFFFFF; border-color: #E4DFD4; }
+html[data-theme="claro"] .condos-hero-search:focus-within,
+html[data-theme="claro"] .condos-hf:focus-within { border-color: #C6A15B; }
+html[data-theme="claro"] .condos-hero-search input,
+html[data-theme="claro"] .condos-hf select { color: #2A2F38; }
+html[data-theme="claro"] .condos-hero-search input::placeholder { color: #8A8F99; }
+html[data-theme="claro"] .condos-hf select option { background: #FFFFFF; color: #2A2F38; }
+html[data-theme="claro"] .condos-hero-search svg,
+html[data-theme="claro"] .condos-hf > svg:first-child { color: #C6A15B; opacity: 1; }
+html[data-theme="claro"] .condos-hf > svg:last-child { color: #1C2A44; }
+html[data-theme="claro"] .condos-search-x { background: #F4EFE6; color: #1C2A44; }
+html[data-theme="claro"] .condos-hf-limpar { background: #FFFFFF; border-color: #E4DFD4; color: #1C2A44; }
+html[data-theme="claro"] .condos-hf-limpar:hover { background: #F4EFE6; border-color: #C6A15B; }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
