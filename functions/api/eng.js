@@ -23,25 +23,30 @@ function hashCod(cod) {
 }
 // prova social: 20..90, MAIS para imóveis melhor posicionados (preço maior).
 // MESMA fórmula do frontend (src/engajamento.js) p/ os números baterem sem flicker.
-const SEED_V = 3
-const seedDe = (cod) => {
+const SEED_V = 4
+const seedDe = (cod, boost) => {
   const h = hashCod(cod)
-  const likes = 2 + (h % 44) // 2..45
-  const shares = 2 + ((h >>> 7) % 44) // 2..45
+  if (boost) {
+    const likes = 29 + (h % 15) // 29..43 (sempre acima do teto normal)
+    const shares = 26 + ((h >>> 7) % 13) // 26..38
+    return { likes, shares }
+  }
+  const likes = 5 + (h % 24) // 5..28
+  const shares = 5 + ((h >>> 7) % 24) // 5..28
   return { likes, shares }
 }
 const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
 const diaHoje = () => new Date().toISOString().slice(0, 10) // YYYY-MM-DD
 
-async function getEng(env, cod, preco) {
-  if (!temKV(env)) return seedDe(cod, preco) // degrada gracioso: sem KV, devolve o seed (read-only)
+async function getEng(env, cod, preco, boost) {
+  if (!temKV(env)) return seedDe(cod, boost) // degrada gracioso: sem KV, devolve o seed (read-only)
   const key = 'eng:' + cod
   let data = await env.ENGAGEMENT.get(key, 'json')
-  // (re)semeia se nunca existiu ou se está num esquema antigo (migra p/ a faixa 20-90)
+  // (re)semeia se nunca existiu ou se está num esquema antigo (migra p/ a nova faixa)
   if (!data || typeof data.likes !== 'number' || data.v !== SEED_V) {
     const extraL = data && data.v !== SEED_V && typeof data.likesReais === 'number' ? data.likesReais : 0
     const extraS = data && data.v !== SEED_V && typeof data.sharesReais === 'number' ? data.sharesReais : 0
-    const s = seedDe(cod, preco)
+    const s = seedDe(cod, boost)
     data = { likes: s.likes + extraL, shares: s.shares + extraS, v: SEED_V, dia: diaHoje() }
     await env.ENGAGEMENT.put(key, JSON.stringify(data))
   }
@@ -69,7 +74,7 @@ export async function onRequestGet({ env, request }) {
     }
     const cod = url.searchParams.get('cod')
     if (!cod) return json({ error: 'cod obrigatorio' }, 400)
-    return json(await getEng(env, cod, url.searchParams.get('p')))
+    return json(await getEng(env, cod, url.searchParams.get('p'), url.searchParams.get('b') === '1'))
   } catch (e) {
     console.error('eng:', e)
     return json({ error: 'interno' }, 500)

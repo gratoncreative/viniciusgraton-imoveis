@@ -14,16 +14,22 @@ function hashCod(cod) {
   for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0
   return h
 }
-// prova social: contagem inicial entre 2 e 45, variando por imóvel (determinístico,
-// estável, sem flicker). MESMA fórmula no back (eng.js).
-function seedDe(cod) {
+// prova social: contagem inicial determinística por imóvel (estável, sem flicker).
+// Normal: 5..28 (bem alternado). Imóveis "abaixo do mercado" / impulsionados
+// (publicidade) recebem boost -> volume claramente maior. MESMA fórmula no back (eng.js).
+function seedDe(cod, boost) {
   const h = hashCod(cod)
-  const likes = 2 + (h % 44) // 2..45
-  const shares = 2 + ((h >>> 7) % 44) // 2..45
+  if (boost) {
+    const likes = 29 + (h % 15) // 29..43 (sempre acima do teto normal)
+    const shares = 26 + ((h >>> 7) % 13) // 26..38
+    return { likes, shares }
+  }
+  const likes = 5 + (h % 24) // 5..28
+  const shares = 5 + ((h >>> 7) % 24) // 5..28
   return { likes, shares }
 }
-export const seedLikes = (cod, preco) => seedDe(cod, preco).likes
-export const seedShares = (cod, preco) => seedDe(cod, preco).shares
+export const seedLikes = (cod, boost) => seedDe(cod, boost).likes
+export const seedShares = (cod, boost) => seedDe(cod, boost).shares
 
 // ---- estado local do visitante (o que ELE já curtiu) ----
 const LSK = 'vg_curtidos'
@@ -46,9 +52,9 @@ const marcar = (cod, on) => {
 }
 
 // ---- chamadas à API (sempre tolerantes a falha) ----
-export async function lerEngajamento(cod, preco) {
+export async function lerEngajamento(cod, preco, boost) {
   try {
-    const r = await fetch(`${API}?cod=${encodeURIComponent(cod)}${preco ? `&p=${encodeURIComponent(preco)}` : ''}`)
+    const r = await fetch(`${API}?cod=${encodeURIComponent(cod)}${preco ? `&p=${encodeURIComponent(preco)}` : ''}${boost ? '&b=1' : ''}`)
     if (!r.ok) return null
     const d = await r.json()
     if (typeof d.likes === 'number') return d

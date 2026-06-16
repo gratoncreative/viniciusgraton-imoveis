@@ -3,14 +3,19 @@ import { IconHeart, IconShare } from './icons'
 import {
   seedLikes, seedShares, jaCurtiu, lerEngajamento, alternarCurtida, registrarShare,
 } from '../engajamento'
+import { oportunidade } from '../data'
 import ShareModal from './ShareModal'
 
 // Barra de curtir + compartilhar com contadores reais e persistentes.
 // variante: 'card' (compacto, sobre a foto) | 'detalhe' (em linha, na página do imóvel)
 export default function Engajamento({ im, variante = 'card' }) {
   const cod = im.codigo
-  const [likes, setLikes] = useState(() => seedLikes(cod, im.preco))
-  const [shares, setShares] = useState(() => seedShares(cod, im.preco))
+  // imóveis "abaixo do mercado" / com desconto / impulsionados (publicidade) recebem
+  // volume MAIOR de curtidas e compartilhamentos (boost na prova social).
+  const op = oportunidade(im)
+  const boost = !!(im.impulsionado || op?.abaixoMercado || op?.temDesconto)
+  const [likes, setLikes] = useState(() => seedLikes(cod, boost))
+  const [shares, setShares] = useState(() => seedShares(cod, boost))
   const [curtido, setCurtido] = useState(() => jaCurtiu(cod))
   const [pulso, setPulso] = useState(false)
   const [aberto, setAberto] = useState(false)
@@ -18,7 +23,7 @@ export default function Engajamento({ im, variante = 'card' }) {
   // busca os números reais (compartilhados entre visitantes) quando disponíveis
   useEffect(() => {
     let vivo = true
-    lerEngajamento(cod, im.preco).then((d) => {
+    lerEngajamento(cod, im.preco, boost).then((d) => {
       if (!vivo || !d) return
       setLikes(d.likes)
       setShares(d.shares)
