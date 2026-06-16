@@ -87,7 +87,7 @@ export default function EditarFotoPage() {
     const t = tmp.getContext('2d')
     t.drawImage(mask, 0, 0)
     t.globalCompositeOperation = 'source-in'
-    t.fillStyle = '#e0533a'; t.fillRect(0, 0, tmp.width, tmp.height)
+    t.fillStyle = '#B04A37'; t.fillRect(0, 0, tmp.width, tmp.height)
     ctx.globalAlpha = 0.5
     ctx.drawImage(tmp, 0, 0)
     ctx.globalAlpha = 1

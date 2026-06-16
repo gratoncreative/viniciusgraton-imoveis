@@ -119,9 +119,9 @@ function RadarChart({ testemunhas, avaliando, referencia }) {
 
   const dotColor = t => {
     const pct = referencia > 0 ? (t.valorHomM2 - referencia) / referencia : 0
-    if (pct < -0.10) return '#4ade80'
-    if (pct > 0.10) return '#f87171'
-    return '#38bdf8'
+    if (pct < -0.10) return '#3F7A5E'
+    if (pct > 0.10) return '#B04A37'
+    return '#1C2A44'
   }
 
   return (
@@ -132,7 +132,7 @@ function RadarChart({ testemunhas, avaliando, referencia }) {
       aria-label="Radar de proximidade das testemunhas de mercado"
     >
       {/* Fundo */}
-      <circle cx={0} cy={0} r={180} fill="#0d1623" />
+      <circle cx={0} cy={0} r={180} fill="#FAF7F0" />
 
       {/* Eixos cardeais */}
       {[0, 90, 180, 270].map(az => {
@@ -141,7 +141,7 @@ function RadarChart({ testemunhas, avaliando, referencia }) {
           <line key={az}
             x1={0} y1={0}
             x2={(RMAX + 20) * Math.sin(rad)} y2={-(RMAX + 20) * Math.cos(rad)}
-            stroke="#1c2e46" strokeWidth="0.8"
+            stroke="#E4DFD4" strokeWidth="0.8"
           />
         )
       })}
@@ -152,12 +152,12 @@ function RadarChart({ testemunhas, avaliando, referencia }) {
         return (
           <g key={km}>
             <circle cx={0} cy={0} r={r}
-              fill="none" stroke="#1c2e46"
+              fill="none" stroke="#E4DFD4"
               strokeWidth={km === niceMax ? "1" : "0.5"}
               strokeDasharray={km === niceMax ? "none" : "3 4"}
             />
             <text x={4} y={-r + 9}
-              fill="#496278" fontSize="8"
+              fill="#5b626e" fontSize="8"
               fontFamily="'Montserrat', sans-serif"
             >
               {km < 1 ? km.toFixed(1).replace('.', ',') : km}km
@@ -174,7 +174,7 @@ function RadarChart({ testemunhas, avaliando, referencia }) {
         { label: 'O', x: -(RMAX + 22), y: 3 },
       ].map(({ label, x, y }) => (
         <text key={label} x={x} y={y}
-          fill="#496278" fontSize="10"
+          fill="#5b626e" fontSize="10"
           fontFamily="'Montserrat', sans-serif"
           fontWeight="500"
           textAnchor="middle" dominantBaseline="middle"
@@ -213,25 +213,25 @@ function RadarChart({ testemunhas, avaliando, referencia }) {
                 <rect
                   x={x > 80 ? x - 128 : x + 14} y={y - 26}
                   width={114} height={52}
-                  rx={4} fill="#111d30"
-                  stroke="#1c2e46" strokeWidth="1"
+                  rx={4} fill="#FFFFFF"
+                  stroke="#E4DFD4" strokeWidth="1"
                 />
                 <text x={x > 80 ? x - 70 : x + 71} y={y - 13}
-                  fill="#e8f0fc" fontSize="8"
+                  fill="#1C2A44" fontSize="8"
                   fontFamily="'Montserrat', sans-serif"
                   fontWeight="500" textAnchor="middle"
                 >
                   {t.ref} · {t.bairro}
                 </text>
                 <text x={x > 80 ? x - 70 : x + 71} y={y + 1}
-                  fill="#8ca4be" fontSize="7.5"
+                  fill="#5b626e" fontSize="7.5"
                   fontFamily="'Montserrat', sans-serif"
                   textAnchor="middle"
                 >
                   {fmtKm(t.dist)} · {fmtM2(t.valorHomM2)}
                 </text>
                 <text x={x > 80 ? x - 70 : x + 71} y={y + 15}
-                  fill="#496278" fontSize="7"
+                  fill="#5b626e" fontSize="7"
                   fontFamily="'Montserrat', sans-serif"
                   textAnchor="middle"
                 >
@@ -245,7 +245,7 @@ function RadarChart({ testemunhas, avaliando, referencia }) {
 
       {/* Avaliando ao centro — diamante latão */}
       <polygon points="0,-10 10,0 0,10 -10,0"
-        fill="#d4a84b" stroke="#0d1623" strokeWidth="2"
+        fill="#d4a84b" stroke="#FFFFFF" strokeWidth="2"
       />
       <text x={0} y={21}
         fill="#d4a84b" fontSize="8"
@@ -288,13 +288,13 @@ function AreaScatter({ testemunhas, avaliandoArea, avaliandoM2, referencia }) {
       {/* Grade */}
       {yTicks.map(v => (
         <line key={v} x1={PAD.l} y1={yS(v)} x2={W - PAD.r} y2={yS(v)}
-          stroke="#1c2e46" strokeWidth="0.4"
+          stroke="#E4DFD4" strokeWidth="0.4"
         />
       ))}
 
       {/* Eixos */}
-      <line x1={PAD.l} y1={PAD.t} x2={PAD.l} y2={H - PAD.b} stroke="#1c2e46" strokeWidth="1" />
-      <line x1={PAD.l} y1={H - PAD.b} x2={W - PAD.r} y2={H - PAD.b} stroke="#1c2e46" strokeWidth="1" />
+      <line x1={PAD.l} y1={PAD.t} x2={PAD.l} y2={H - PAD.b} stroke="#E4DFD4" strokeWidth="1" />
+      <line x1={PAD.l} y1={H - PAD.b} x2={W - PAD.r} y2={H - PAD.b} stroke="#E4DFD4" strokeWidth="1" />
 
       {/* Linha do valor adotado */}
       <line x1={PAD.l} y1={refY} x2={W - PAD.r} y2={refY}
@@ -310,19 +310,19 @@ function AreaScatter({ testemunhas, avaliandoArea, avaliandoM2, referencia }) {
       {/* Comparáveis */}
       {testemunhas.map((t, i) => (
         <circle key={i} cx={xS(t.area)} cy={yS(t.valorHomM2)}
-          r={4} fill="#38bdf8" fillOpacity={0.75}
+          r={4} fill="#1C2A44" fillOpacity={0.75}
         />
       ))}
 
       {/* Avaliando */}
       <circle cx={xS(avaliandoArea)} cy={yS(avaliandoM2)}
-        r={7} fill="#d4a84b" stroke="#0d1623" strokeWidth="2"
+        r={7} fill="#d4a84b" stroke="#FFFFFF" strokeWidth="2"
       />
 
       {/* Labels Y */}
       {yTicks.map(v => (
         <text key={v} x={PAD.l - 5} y={yS(v)}
-          fill="#496278" fontSize="7" textAnchor="end"
+          fill="#5b626e" fontSize="7" textAnchor="end"
           fontFamily="'Montserrat', sans-serif" dominantBaseline="middle"
         >
           {Math.round(v / 1000)}k
@@ -331,13 +331,13 @@ function AreaScatter({ testemunhas, avaliandoArea, avaliandoM2, referencia }) {
 
       {/* Label X */}
       <text x={PAD.l + pW / 2} y={H - 4}
-        fill="#496278" fontSize="8" textAnchor="middle"
+        fill="#5b626e" fontSize="8" textAnchor="middle"
         fontFamily="'Montserrat', sans-serif"
       >
         área (m²)
       </text>
       <text x={PAD.l - 46} y={PAD.t + pH / 2}
-        fill="#496278" fontSize="8" textAnchor="middle"
+        fill="#5b626e" fontSize="8" textAnchor="middle"
         fontFamily="'Montserrat', sans-serif"
         transform={`rotate(-90, ${PAD.l - 46}, ${PAD.t + pH / 2})`}
       >
@@ -345,12 +345,12 @@ function AreaScatter({ testemunhas, avaliandoArea, avaliandoM2, referencia }) {
       </text>
 
       {/* Legenda */}
-      <circle cx={PAD.l + 4} cy={PAD.t + 8} r={3} fill="#38bdf8" fillOpacity={0.75} />
-      <text x={PAD.l + 10} y={PAD.t + 11} fill="#8ca4be" fontSize="7" fontFamily="'Montserrat', sans-serif">
+      <circle cx={PAD.l + 4} cy={PAD.t + 8} r={3} fill="#1C2A44" fillOpacity={0.75} />
+      <text x={PAD.l + 10} y={PAD.t + 11} fill="#5b626e" fontSize="7" fontFamily="'Montserrat', sans-serif">
         testemunhas
       </text>
-      <circle cx={PAD.l + 80} cy={PAD.t + 8} r={4} fill="#d4a84b" stroke="#0d1623" strokeWidth="1.5" />
-      <text x={PAD.l + 88} y={PAD.t + 11} fill="#8ca4be" fontSize="7" fontFamily="'Montserrat', sans-serif">
+      <circle cx={PAD.l + 80} cy={PAD.t + 8} r={4} fill="#d4a84b" stroke="#FFFFFF" strokeWidth="1.5" />
+      <text x={PAD.l + 88} y={PAD.t + 11} fill="#5b626e" fontSize="7" fontFamily="'Montserrat', sans-serif">
         avaliando
       </text>
     </svg>
@@ -378,7 +378,7 @@ function DistributionChart({ vals, media, dp, referencia }) {
     <svg viewBox={`0 0 ${W} ${H}`} className="ep-chart-svg" aria-label="Distribuição do R$/m² homogeneizado">
       {/* Faixa 1σ */}
       <rect x={bL} y={PAD.t} width={Math.max(0, bR - bL)} height={H - PAD.t - PAD.b}
-        fill="#38bdf8" fillOpacity={0.07}
+        fill="#1C2A44" fillOpacity={0.07}
       />
 
       {/* Linha do adotado */}
@@ -394,10 +394,10 @@ function DistributionChart({ vals, media, dp, referencia }) {
 
       {/* Linha da média */}
       <line x1={xS(media)} y1={PAD.t + 2} x2={xS(media)} y2={H - PAD.b - 2}
-        stroke="#38bdf8" strokeWidth="1" strokeDasharray="3 2"
+        stroke="#1C2A44" strokeWidth="1" strokeDasharray="3 2"
       />
       <text x={xS(media)} y={H - PAD.b + 14}
-        fill="#38bdf8" fontSize="7" textAnchor="middle"
+        fill="#1C2A44" fontSize="7" textAnchor="middle"
         fontFamily="'Montserrat', sans-serif"
       >
         média
@@ -406,7 +406,7 @@ function DistributionChart({ vals, media, dp, referencia }) {
       {/* Dots */}
       {vals.map((v, i) => {
         const pct = referencia > 0 ? (v - referencia) / referencia : 0
-        const color = pct < -0.10 ? '#4ade80' : pct > 0.10 ? '#f87171' : '#38bdf8'
+        const color = pct < -0.10 ? '#3F7A5E' : pct > 0.10 ? '#B04A37' : '#1C2A44'
         return (
           <circle key={i} cx={xS(v)} cy={midY + (i % 2 === 0 ? -5 : 5)}
             r={3.5} fill={color} fillOpacity={0.8}
@@ -415,10 +415,10 @@ function DistributionChart({ vals, media, dp, referencia }) {
       })}
 
       {/* Escala */}
-      <text x={PAD.l} y={H - 3} fill="#496278" fontSize="7" fontFamily="'Montserrat', sans-serif">
+      <text x={PAD.l} y={H - 3} fill="#5b626e" fontSize="7" fontFamily="'Montserrat', sans-serif">
         {Math.round(rMin / 1000)}k
       </text>
-      <text x={W - PAD.r} y={H - 3} fill="#496278" fontSize="7" textAnchor="end" fontFamily="'Montserrat', sans-serif">
+      <text x={W - PAD.r} y={H - 3} fill="#5b626e" fontSize="7" textAnchor="end" fontFamily="'Montserrat', sans-serif">
         {Math.round(rMax / 1000)}k
       </text>
     </svg>

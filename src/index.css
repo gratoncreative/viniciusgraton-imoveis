@@ -540,6 +540,12 @@ html[data-theme="claro"] .modal-head h3,
 html[data-theme="claro"] .im-linha-tit,
 html[data-theme="claro"] .im-linha h3 { font-family: var(--font-display); }
 
+/* ════ Rodada 8 — ícones/contador/botão dourados sobre claro -> petróleo ════ */
+html[data-theme="claro"] .im-spec svg { color: #1C2A44; }
+html[data-theme="claro"] .cb-count b { color: #1C2A44; }
+html[data-theme="claro"] .es3-laudo-btn { background: #1C2A44; color: #FFFFFF; box-shadow: 0 4px 20px rgba(28,42,68,0.25); }
+html[data-theme="claro"] .es3-laudo-btn:hover { background: #0A0E16; }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
