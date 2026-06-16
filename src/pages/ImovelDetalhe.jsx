@@ -11,10 +11,11 @@ import {
   getImovel, fotosDe, formatPreco, formatArea, resumoImovel, subtituloImovel,
   destaquesImovel, ehCondominio, IMOVEIS, linkWhatsApp, waImovel, CONFIG, BAIRROS, oportunidade, estudoM2,
 } from '../data'
-import { IconWhats, IconArrow, IconPin, IconShield, ICONS } from './../components/icons'
+import { IconWhats, IconArrow, IconPin, IconShield, IconHeart, ICONS } from './../components/icons'
 import { useSEO } from '../useSEO'
 import AdminImovelBar from '../components/AdminImovelBar'
 import BaixarFotosImovel from '../components/BaixarFotosImovel'
+import { jaCurtiu, alternarCurtida } from '../engajamento'
 // Lazy.. o estudo do m² (componente pesado + fontes premium) só carrega ao abrir
 const EstudoModal = lazy(() => import('../components/EstudoModal'))
 
@@ -328,6 +329,14 @@ export default function ImovelDetalhe() {
   const [pdfProc, setPdfProc] = useState(false)
   const [copiado, setCopiado] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [fav, setFav] = useState(false)
+  useEffect(() => { if (im?.codigo) setFav(jaCurtiu(im.codigo)) }, [im?.codigo])
+  const toggleFav = () => {
+    if (!im?.codigo) return
+    const novo = !fav
+    setFav(novo)
+    alternarCurtida(im.codigo, novo, im.preco)
+  }
   useEffect(() => {
     if (!im) return
     const t = setTimeout(() => setMounted(true), 60)
@@ -588,6 +597,16 @@ export default function ImovelDetalhe() {
           {/* Galeria */}
           <div className="det-galeria">
             <span className="det-tag">{im.tipo}</span>
+            <button
+              type="button"
+              className={`det-fav${fav ? ' is-on' : ''}`}
+              onClick={toggleFav}
+              aria-pressed={fav}
+              aria-label={fav ? 'Remover dos favoritos' : 'Salvar nos favoritos'}
+              title={fav ? 'Salvo nos favoritos' : 'Salvar nos favoritos'}
+            >
+              <IconHeart filled={fav} width={20} height={20} />
+            </button>
             <Galeria fotos={fotos} alt={`${im.tipo} à venda no ${im.bairro}, Uberlândia · Cód. ${im.codigo}`} />
             {fotos.length > 0 && <BaixarFotosImovel im={im} fotos={fotos} galeria />}
             {(() => { const ap = apresentacao(im); return (
