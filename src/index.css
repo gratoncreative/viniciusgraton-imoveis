@@ -626,6 +626,26 @@ html[data-theme="claro"] .fs-opt { color: #606366; background: transparent; }
 html[data-theme="claro"] .fs-opt:hover { background: #F4EFE6; color: #2A2F38; }
 html[data-theme="claro"] .fs-opt.on { background: transparent; color: #606366; border-color: transparent; font-weight: 600; }
 
+/* ════ Heros/banners ESCUROS (imagem de fundo) — título/subtítulo CLAROS ════
+   O override amplo "html[data-theme=claro] h1,h2,h3,h4 { color:#0A0E16 }" escurecia
+   TODOS os títulos, inclusive os que ficam sobre heros escuros (lan/condos/ferr/anu/
+   dif/simf), deixando texto escuro sobre fundo escuro (ilegível). Aqui restauramos. */
+html[data-theme="claro"] .lan-hero .lan-hero-title,
+html[data-theme="claro"] .condos-hero .condos-hero-title,
+html[data-theme="claro"] .ferr-hero .ferr-hero-titulo,
+html[data-theme="claro"] .dif-banner .dif-banner-tit,
+html[data-theme="claro"] .simf-hero .simf-titulo { color: #F4EFE6; -webkit-text-fill-color: #F4EFE6; }
+/* o <em> dourado dentro do título permanece dourado (gradiente champanhe) */
+html[data-theme="claro"] .lan-hero .lan-hero-title em,
+html[data-theme="claro"] .condos-hero .condos-hero-title em,
+html[data-theme="claro"] .ferr-hero .ferr-hero-titulo em,
+html[data-theme="claro"] .dif-banner .dif-banner-tit em { -webkit-text-fill-color: transparent; }
+/* subtítulos claros sobre o hero escuro */
+html[data-theme="claro"] .lan-hero .lan-hero-sub,
+html[data-theme="claro"] .condos-hero .condos-hero-desc,
+html[data-theme="claro"] .ferr-hero .ferr-hero-sub,
+html[data-theme="claro"] .dif-banner .dif-banner-sub { color: rgba(244,239,230,0.82); }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
