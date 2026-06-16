@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-06-14T09:54:35.230Z",
+  "geradoEm": "2026-06-16T11:31:23.542Z",
   "fonte": "blow",
   "empreendimentos": [
     {
@@ -1695,16 +1695,6 @@
       ],
       "unidadesDetalhes": [
         {
-          "ap": "704",
-          "tipologia": "Apto. Tipo",
-          "area": 112,
-          "quartos": 3,
-          "suites": 1,
-          "banheiros": 2,
-          "vagas": 2,
-          "valor": 1150000
-        },
-        {
           "ap": "902",
           "tipologia": "Apto. Tipo",
           "area": 112,
@@ -1723,26 +1713,6 @@
           "banheiros": 2,
           "vagas": 2,
           "valor": 1171800
-        },
-        {
-          "ap": "1303",
-          "tipologia": "Apto. Tipo",
-          "area": 112,
-          "quartos": 3,
-          "suites": 1,
-          "banheiros": 2,
-          "vagas": 2,
-          "valor": 1188000
-        },
-        {
-          "ap": "1102",
-          "tipologia": "Apto. Tipo",
-          "area": 112,
-          "quartos": 3,
-          "suites": 1,
-          "banheiros": 2,
-          "vagas": 2,
-          "valor": 1190000
         },
         {
           "ap": "1202",
@@ -1813,16 +1783,46 @@
           "banheiros": 2,
           "vagas": 2,
           "valor": 1236600
+        },
+        {
+          "ap": "1101",
+          "tipologia": "Apto. Tipo",
+          "area": 112,
+          "quartos": 3,
+          "suites": 1,
+          "banheiros": 2,
+          "vagas": 2,
+          "valor": 1247400
+        },
+        {
+          "ap": "1301",
+          "tipologia": "Apto. Tipo",
+          "area": 112,
+          "quartos": 3,
+          "suites": 1,
+          "banheiros": 2,
+          "vagas": 2,
+          "valor": 1274400
+        },
+        {
+          "ap": "1304",
+          "tipologia": "Apto. Tipo",
+          "area": 112,
+          "quartos": 3,
+          "suites": 1,
+          "banheiros": 2,
+          "vagas": 2,
+          "valor": 1280000
         }
       ],
       "valorCondominio": null,
       "quantAndares": 16,
       "quantElevadores": 2,
-      "fracaoVendida": 0.71,
+      "fracaoVendida": 0.76,
       "dataEntrega": "2026-03-30T03:00:00Z",
       "aquecimento": "Elétrico",
       "arCondicionado": "Previsão de Ar Condicionado",
-      "unidadesDisponiveis": 16,
+      "unidadesDisponiveis": 13,
       "totalUnidades": 56,
       "lat": -18.9179584,
       "lng": -48.2636358,
@@ -5228,16 +5228,26 @@
           "banheiros": 2,
           "vagas": 1,
           "valor": 432900
+        },
+        {
+          "ap": "104",
+          "tipologia": "Apto. Tipo",
+          "area": 57.92,
+          "quartos": 2,
+          "suites": 1,
+          "banheiros": 2,
+          "vagas": 1,
+          "valor": 520000
         }
       ],
       "valorCondominio": null,
       "quantAndares": 14,
       "quantElevadores": 2,
-      "fracaoVendida": 0.96,
+      "fracaoVendida": 0.95,
       "dataEntrega": "2026-05-31T03:00:00Z",
       "aquecimento": "Elétrico",
       "arCondicionado": "Previsão de Ar Condicionado",
-      "unidadesDisponiveis": 3,
+      "unidadesDisponiveis": 4,
       "totalUnidades": 84,
       "lat": -18.92454,
       "lng": -48.27496,
@@ -6226,7 +6236,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 290900
+          "valor": 292900
         },
         {
           "ap": "107",
@@ -6236,7 +6246,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 290900
+          "valor": 292900
         },
         {
           "ap": "104",
@@ -6246,7 +6256,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 290900
+          "valor": 292900
         },
         {
           "ap": "107",
@@ -6256,16 +6266,6 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 290900
-        },
-        {
-          "ap": "207",
-          "tipologia": "Apto. Tipo",
-          "area": 51.92,
-          "quartos": 2,
-          "suites": 1,
-          "banheiros": 2,
-          "vagas": 1,
           "valor": 292900
         },
         {
@@ -6276,7 +6276,17 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 292900
+          "valor": 294900
+        },
+        {
+          "ap": "207",
+          "tipologia": "Apto. Tipo",
+          "area": 51.92,
+          "quartos": 2,
+          "suites": 1,
+          "banheiros": 2,
+          "vagas": 1,
+          "valor": 294900
         },
         {
           "ap": "204",
@@ -6286,7 +6296,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 292900
+          "valor": 294900
         },
         {
           "ap": "204",
@@ -6296,7 +6306,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 292900
+          "valor": 294900
         },
         {
           "ap": "304",
@@ -6306,7 +6316,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 294900
+          "valor": 296900
         },
         {
           "ap": "307",
@@ -6316,7 +6326,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 294900
+          "valor": 296900
         },
         {
           "ap": "404",
@@ -6326,27 +6336,27 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 296900
+          "valor": 298900
         },
         {
-          "ap": "504",
+          "ap": "507",
           "tipologia": "Apto. Tipo",
           "area": 51.92,
           "quartos": 2,
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 298900
+          "valor": 300900
         }
       ],
       "valorCondominio": null,
       "quantAndares": 15,
       "quantElevadores": 3,
-      "fracaoVendida": 0.41,
+      "fracaoVendida": 0.45,
       "dataEntrega": "2027-07-31T03:00:00Z",
       "aquecimento": "Elétrico",
       "arCondicionado": "Previsão de Ar Condicionado",
-      "unidadesDisponiveis": 149,
+      "unidadesDisponiveis": 139,
       "totalUnidades": 256,
       "lat": -18.96282220279251,
       "lng": -48.25302066307188,
@@ -14069,7 +14079,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 283220
+          "valor": 286050
         },
         {
           "ap": "104",
@@ -14079,7 +14089,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 283220
+          "valor": 286050
         },
         {
           "ap": "105",
@@ -14089,7 +14099,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 283220
+          "valor": 286050
         },
         {
           "ap": "104",
@@ -14099,7 +14109,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 283220
+          "valor": 286050
         },
         {
           "ap": "205",
@@ -14109,7 +14119,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 284630
+          "valor": 287480
         },
         {
           "ap": "204",
@@ -14119,7 +14129,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 284630
+          "valor": 287480
         },
         {
           "ap": "205",
@@ -14129,20 +14139,10 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 284630
+          "valor": 287480
         },
         {
           "ap": "204",
-          "tipologia": "Apto. Tipo",
-          "area": 56.9,
-          "quartos": 2,
-          "suites": null,
-          "banheiros": 1,
-          "vagas": 1,
-          "valor": 284630
-        },
-        {
-          "ap": "305",
           "tipologia": "Apto. Tipo",
           "area": 56.9,
           "quartos": 2,
@@ -14159,7 +14159,17 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 287480
+          "valor": 290350
+        },
+        {
+          "ap": "305",
+          "tipologia": "Apto. Tipo",
+          "area": 56.9,
+          "quartos": 2,
+          "suites": null,
+          "banheiros": 1,
+          "vagas": 1,
+          "valor": 290350
         },
         {
           "ap": "304",
@@ -14169,7 +14179,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 287480
+          "valor": 290350
         },
         {
           "ap": "304",
@@ -14179,7 +14189,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 287480
+          "valor": 290350
         }
       ],
       "valorCondominio": null,
@@ -16961,7 +16971,7 @@
         }
       ],
       "pdfApresentacao": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/87105db1-7122-4ce2-b7a6-06de1dfa3c29/13cd8c11-0b87-48ce-b31f-9d09ddcd9bd5",
-      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/87105db1-7122-4ce2-b7a6-06de1dfa3c29/eb50cf41-35af-44ac-9e71-57a5f45eaad2",
+      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/87105db1-7122-4ce2-b7a6-06de1dfa3c29/e6757839-8344-4021-acd0-0b0517af1da8",
       "tipologias": [
         "3 quartos"
       ],
@@ -27556,7 +27566,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 229160
+          "valor": 232590
         },
         {
           "ap": "101",
@@ -27566,7 +27576,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 229160
+          "valor": 232590
         },
         {
           "ap": "107",
@@ -27576,7 +27586,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 229160
+          "valor": 232590
         },
         {
           "ap": "102",
@@ -27586,7 +27596,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 229160
+          "valor": 232590
         },
         {
           "ap": "201",
@@ -27596,7 +27606,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 231450
+          "valor": 234920
         },
         {
           "ap": "208",
@@ -27606,7 +27616,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 231450
+          "valor": 234920
         },
         {
           "ap": "207",
@@ -27616,7 +27626,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 231450
+          "valor": 234920
         },
         {
           "ap": "202",
@@ -27626,7 +27636,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 231450
+          "valor": 234920
         },
         {
           "ap": "106",
@@ -27636,7 +27646,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 233740
+          "valor": 237250
         },
         {
           "ap": "103",
@@ -27646,7 +27656,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 233740
+          "valor": 237250
         },
         {
           "ap": "105",
@@ -27656,7 +27666,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 233740
+          "valor": 237250
         },
         {
           "ap": "104",
@@ -27666,7 +27676,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 233740
+          "valor": 237250
         }
       ],
       "valorCondominio": null,
