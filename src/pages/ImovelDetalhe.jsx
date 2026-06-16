@@ -589,6 +589,7 @@ export default function ImovelDetalhe() {
           <div className="det-galeria">
             <span className="det-tag">{im.tipo}</span>
             <Galeria fotos={fotos} alt={`${im.tipo} à venda no ${im.bairro}, Uberlândia · Cód. ${im.codigo}`} />
+            {fotos.length > 0 && <BaixarFotosImovel im={im} fotos={fotos} galeria />}
             {(() => { const ap = apresentacao(im); return (
               <div className="det-apresenta">
                 <h2 className="det-apresenta-tit">Por que esse imóvel vale a sua visita</h2>
@@ -689,7 +690,6 @@ export default function ImovelDetalhe() {
                     </>
                   )}
                 </button>
-                <BaixarFotosImovel im={im} fotos={fotos} />
                 <Link to="/ferramentas" className="det-btn-acao">
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3M16 5h3v3M14 11l5.5-5.5"/></svg>
                   Simular

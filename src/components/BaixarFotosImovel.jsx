@@ -46,7 +46,7 @@ function carregarImagem(url) {
   })
 }
 
-export default function BaixarFotosImovel({ im, fotos = [] }) {
+export default function BaixarFotosImovel({ im, fotos = [], galeria = false }) {
   const [estado, setEstado] = useState('idle') // idle | baixando | ok | erro
   const [prog, setProg] = useState({ feito: 0, total: 0, falhas: 0 })
 
@@ -113,11 +113,16 @@ export default function BaixarFotosImovel({ im, fotos = [] }) {
         ? 'Fotos baixadas!'
         : estado === 'erro'
           ? 'Erro — tente de novo'
-          : `Baixar fotos (${fotos.length})`
+          : galeria
+            ? `Baixar todas as fotos (${fotos.length})`
+            : `Baixar fotos (${fotos.length})`
+
+  const base = galeria ? 'det-fotos-dl' : 'det-btn-acao'
+  const cls = `${base}${estado === 'baixando' ? ` ${base}--proc` : ''}${estado === 'ok' ? ` ${base}--ok` : ''}`
 
   return (
     <button
-      className={`det-btn-acao${estado === 'baixando' ? ' det-btn-acao--proc' : ''}${estado === 'ok' ? ' det-btn-acao--ok' : ''}`}
+      className={cls}
       onClick={baixar}
       disabled={estado === 'baixando'}
       title="Baixa todas as fotos do imóvel com a marca d'água do site"
@@ -129,6 +134,7 @@ export default function BaixarFotosImovel({ im, fotos = [] }) {
         <path d="M12 13v6M9 16l3 3 3-3" />
       </svg>
       {rotulo}
+      {galeria && estado === 'idle' && <span className="det-fotos-dl-hint">com marca d'água do site</span>}
     </button>
   )
 }
