@@ -123,6 +123,8 @@ export default function Catalogo() {
   const [isAdmin, setIsAdmin] = useState(false)
   const [destaqueCods, setDestaqueCods] = useState([])
   const [destaqueMsg, setDestaqueMsg] = useState('')
+  const [destaqueOk, setDestaqueOk] = useState(false)
+  const catMainRef = useRef(null)
   useEffect(() => {
     const check = () => setIsAdmin(!!localStorage.getItem(ADMIN_LSK))
     check()
@@ -143,6 +145,7 @@ export default function Catalogo() {
       const j = await r.json()
       if (!r.ok || !j.ok) throw new Error('falhou')
       setDestaqueCods((j.codigos || []).map(String))
+      setDestaqueOk(true); setTimeout(() => setDestaqueOk(false), 2500)
     } catch {
       setDestaqueCods(anterior) // reverte
       setDestaqueMsg('Não consegui salvar. Faça login em /admin e tente de novo.')
@@ -151,8 +154,16 @@ export default function Catalogo() {
   }
   const toggleDestaque = (cod) => {
     const c = String(cod)
-    const novos = destaqueCods.includes(c) ? destaqueCods.filter((x) => x !== c) : [...destaqueCods, c].slice(-3)
+    const adicionando = !destaqueCods.includes(c)
+    const novos = adicionando ? [...destaqueCods, c].slice(-3) : destaqueCods.filter((x) => x !== c)
     salvarDestaque(novos)
+    // feedback VISÍVEL: sobe ao topo p/ o admin ver o imóvel entrar em destaque.
+    // setTimeout (não rAF) p/ rodar DEPOIS do React inserir o card no topo —
+    // senão a "ancoragem de rolagem" do navegador desfaz o scroll.
+    if (adicionando) setTimeout(() => {
+      if (catMainRef.current) catMainRef.current.scrollTop = 0
+      try { window.scrollTo(0, 0) } catch {}
+    }, 70)
   }
   const destaqueImoveis = useMemo(
     () => destaqueCods.map((c) => TODOS.find((i) => String(i.codigo) === c)).filter(Boolean),
@@ -389,7 +400,7 @@ export default function Catalogo() {
         )}
         </aside>
 
-        <div className="cat-main" data-lenis-prevent>
+        <div className="cat-main" data-lenis-prevent ref={catMainRef}>
         <div className="cat-tipos">
           {TIPO_CHIPS.map((c) => (
             <button key={c.grupo} type="button" className={`cat-tipo ${f.grupo === c.grupo ? 'on' : ''}`} onClick={() => toggleGrupo(c.grupo)}>
@@ -403,7 +414,8 @@ export default function Catalogo() {
           <section className="cat-destaque-topo">
             <div className="cat-destaque-head">
               <span className="eyebrow">{destaqueImoveis.length ? 'Imóvel em destaque' : 'Destaque do catálogo'}</span>
-              {isAdmin && <span className="cat-destaque-dica">Admin · clique em <b>★ Destacar no topo</b> em qualquer imóvel (até 3)</span>}
+              {isAdmin && !destaqueOk && <span className="cat-destaque-dica">Admin · clique em <b>★ Destacar no topo</b> em qualquer imóvel (até 3)</span>}
+              {isAdmin && destaqueOk && <span className="cat-destaque-ok">✓ Destaque atualizado</span>}
             </div>
             {destaqueImoveis.length > 0 ? (
               <div className="cat-lista">

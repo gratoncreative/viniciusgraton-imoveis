@@ -7,7 +7,7 @@
  */
 const json = (o, s = 200) => new Response(JSON.stringify(o), {
   status: s,
-  headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'public, max-age=30' },
+  headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'public, max-age=10' },
 })
 
 export async function onRequestGet({ env }) {
