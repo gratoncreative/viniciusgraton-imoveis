@@ -53,7 +53,7 @@ function MedidorRenda({ comprometimento }) {
   const c = comprometimento == null ? null : comprometimento * 100
   const aprovavel = c != null && c <= PARAMS.comprometimentoMax * 100
   const preench = c == null ? 0 : Math.min(100, c)
-  const cor = c == null ? '#3a4150' : aprovavel ? 'var(--ok, #56c27d)' : 'var(--warn, #e06a4f)'
+  const cor = c == null ? '#5b626e' : aprovavel ? '#3F7A5E' : '#B04A37'
   return (
     <div className="simf-medidor">
       <div className="simf-medidor-topo">
@@ -61,9 +61,9 @@ function MedidorRenda({ comprometimento }) {
         <b style={{ color: cor }}>{c == null ? '—' : pct(c, 0)}</b>
       </div>
       <svg viewBox="0 0 100 10" className="simf-medidor-svg" preserveAspectRatio="none" aria-hidden="true">
-        <rect x="0" y="3" width="100" height="4" rx="2" fill="rgba(255,255,255,0.08)" />
+        <rect x="0" y="3" width="100" height="4" rx="2" fill="rgba(10,14,22,0.10)" />
         <rect x="0" y="3" width={preench} height="4" rx="2" fill={cor} />
-        <line x1="30" y1="1" x2="30" y2="9" stroke="rgba(255,255,255,0.55)" strokeWidth="0.6" strokeDasharray="1 1" />
+        <line x1="30" y1="1" x2="30" y2="9" stroke="rgba(10,14,22,0.45)" strokeWidth="0.6" strokeDasharray="1 1" />
       </svg>
       <div className="simf-medidor-base">
         <span>0%</span>

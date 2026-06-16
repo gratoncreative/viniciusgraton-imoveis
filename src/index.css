@@ -405,6 +405,56 @@ html[data-theme="claro"] .det-dest-ico { color: var(--gold-3); }
 html[data-theme="claro"] .pdfjpg-titulo-hl { color: #0A0E16; }
 html[data-theme="claro"] .pdfjpg-nav-tag { color: #1C2A44; }
 
+/* ════ Auditoria multiagente v2 — rodada 3 (achados reais verificados ao vivo) ════ */
+/* Modal de filtro avançado (FiltroModal) — sem dourado de fundo, tudo legível */
+html[data-theme="claro"] .ff-field > span,
+html[data-theme="claro"] .ff-pillset > span,
+html[data-theme="claro"] .ff-block > span { color: #1C2A44; }
+html[data-theme="claro"] .ff-toggle { color: #2A2F38; }
+html[data-theme="claro"] .ff-toggle b { color: #0A0E16; }
+html[data-theme="claro"] .filtro-form input,
+html[data-theme="claro"] .filtro-form select { background: #FFFFFF; border: 1px solid #E4DFD4; color: #2A2F38; }
+html[data-theme="claro"] .filtro-form input:focus,
+html[data-theme="claro"] .filtro-form select:focus { border-color: #C6A15B; background: #FFFFFF; }
+html[data-theme="claro"] .ff-pills button { background: #FFFFFF; border: 1px solid #E4DFD4; color: #2A2F38; }
+html[data-theme="claro"] .ff-pills button:hover { border-color: #C6A15B; }
+html[data-theme="claro"] .ff-pills button.on { background: #1C2A44; color: #FFFFFF; border-color: #1C2A44; }
+html[data-theme="claro"] .ff-chk { background: #FFFFFF; border: 1px solid #E4DFD4; color: #2A2F38; }
+html[data-theme="claro"] .ff-chk:hover { border-color: #C6A15B; }
+html[data-theme="claro"] .ff-chk.on { background: #F4EFE6; border-color: #C6A15B; color: #1C2A44; }
+html[data-theme="claro"] .fs-opt { color: #2A2F38; }
+html[data-theme="claro"] .fs-opt:hover { background: #F4EFE6; }
+html[data-theme="claro"] .fs-opt.on { background: #F4EFE6; border-color: #C6A15B; color: #0A0E16; }
+/* Badges dos cards — marrom+dourado (fora da paleta) -> marinho/branco; desconto fica verde */
+html[data-theme="claro"] .im-novo { background: #1C2A44; color: #FFFFFF; border: 1px solid #1C2A44; }
+html[data-theme="claro"] .im-selo--mercado { background: #1C2A44; color: #FFFFFF; border: 1px solid #C6A15B; }
+/* Detalhe do imóvel — rótulos/links em dourado-texto -> petróleo (regra dura) */
+html[data-theme="claro"] .det-perguntas-tit,
+html[data-theme="claro"] .det-tour-tit,
+html[data-theme="claro"] .det-apre-sub,
+html[data-theme="claro"] .det-carac-cond,
+html[data-theme="claro"] .det-mapa-ampliar { color: #1C2A44; }
+/* Detalhe — ícones funcionais de baixo contraste -> petróleo (gold fica em filete/borda) */
+html[data-theme="claro"] .det-btn-acao svg,
+html[data-theme="claro"] .det-estudo-cta-arrow,
+html[data-theme="claro"] .det-estudo-cta-ico,
+html[data-theme="claro"] .det-spec-ico,
+html[data-theme="claro"] .det-dest-ico { color: #1C2A44; opacity: 1; }
+/* Seta dos selects do hero -> petróleo (era dourado pálido, baixo contraste) */
+html[data-theme="claro"] .hb-campo select,
+html[data-theme="claro"] .hero-busca-campo select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%231C2A44' d='M6 8 0 0h12z'/%3E%3C/svg%3E"); }
+/* Tipografia — títulos nobres de página/herói em Playfair (eram Montserrat) */
+html[data-theme="claro"] .ferr-hero-titulo,
+html[data-theme="claro"] .ldr-titulo,
+html[data-theme="claro"] .cat-titulo,
+html[data-theme="claro"] .guia-titulo,
+html[data-theme="claro"] .bairlan-titulo,
+html[data-theme="claro"] .est-titulo,
+html[data-theme="claro"] .simf-titulo,
+html[data-theme="claro"] .pdfjpg-titulo,
+html[data-theme="claro"] .pv-titulo,
+html[data-theme="claro"] .blog-feat-titulo { font-family: var(--font-display); }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }

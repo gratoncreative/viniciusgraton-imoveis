@@ -191,7 +191,7 @@ function aplicarMarca(canvas, wm, logoImg) {
   }
 
   if (hasTxt) {
-    ctx.font = `600 ${fs}px Georgia, "Times New Roman", serif`
+    ctx.font = `600 ${fs}px "Montserrat", "Segoe UI", system-ui, sans-serif`
     ctx.fillStyle = '#fff'
     ctx.textAlign = alignH
     if (isSup) { ctx.textBaseline = 'top'; ctx.fillText(wm.texto, x, offsetY) }
@@ -243,10 +243,10 @@ function marcaDagua(ctx, W, H, texto) {
   ctx.shadowColor = 'rgba(0,0,0,0.4)'; ctx.shadowBlur = Math.round(W * 0.012)
   ctx.globalAlpha = 0.22
   ctx.fillStyle = '#ffffff'
-  ctx.font = `600 ${fs}px Georgia, "Times New Roman", serif`
+  ctx.font = `600 ${fs}px "Montserrat", "Segoe UI", system-ui, sans-serif`
   ctx.fillText((texto || 'Vinícius Graton').toUpperCase(), W / 2, H / 2)
   ctx.globalAlpha = 0.18
-  ctx.font = `400 ${Math.round(fs * 0.4)}px Georgia, serif`
+  ctx.font = `400 ${Math.round(fs * 0.4)}px "Montserrat", "Segoe UI", system-ui, sans-serif`
   ctx.fillText('Consultor de Imóveis · Uberlândia', W / 2, H / 2 + fs * 0.78)
   ctx.restore()
 }
