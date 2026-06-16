@@ -214,6 +214,71 @@ html[data-theme="claro"] .ep-pg {
 }
 html[data-theme="claro"] .em-overlay { background: rgba(10,14,22,0.55); }
 
+/* ── Tema claro.. condomínios, analisar imóvel, laudo/avaliação (es3/est/em2) ── */
+html[data-theme="claro"] .condos-pg,
+html[data-theme="claro"] .est-pg,
+html[data-theme="claro"] .es3-pg { background: #F4EFE6; color: #2A2F38; }
+/* superfícies escuras -> brancas com borda pérola */
+html[data-theme="claro"] .em2-dash-a,
+html[data-theme="claro"] .em2-dash-b,
+html[data-theme="claro"] .em2-dash-c,
+html[data-theme="claro"] .em2-dash-card,
+html[data-theme="claro"] .em2-chart-card,
+html[data-theme="claro"] .em2-chart-med-tag,
+html[data-theme="claro"] .em2-ruler-card,
+html[data-theme="claro"] .em2-stat,
+html[data-theme="claro"] .em2-cta-inline,
+html[data-theme="claro"] .em2-hero,
+html[data-theme="claro"] .est-sec,
+html[data-theme="claro"] .es3-card--campo,
+html[data-theme="claro"] .es3-card--ruler,
+html[data-theme="claro"] .es3-card--chart,
+html[data-theme="claro"] .es3-card--met,
+html[data-theme="claro"] .es3-wa-card,
+html[data-theme="claro"] .es3-campo-track-label,
+html[data-theme="claro"] .au-card-imovel,
+html[data-theme="claro"] .au-card-qual,
+html[data-theme="claro"] .au-input-wrap,
+html[data-theme="claro"] .au-foto,
+html[data-theme="claro"] .condos-card,
+html[data-theme="claro"] .condo-card { background: #FFFFFF !important; border-color: #E4DFD4 !important; }
+/* texto padrão grafite nessas páginas + títulos marinho */
+html[data-theme="claro"] .condos-pg,
+html[data-theme="claro"] .est-pg,
+html[data-theme="claro"] .es3-pg,
+html[data-theme="claro"] .au-pg { color: #2A2F38; }
+html[data-theme="claro"] .condos-hero-title,
+html[data-theme="claro"] .est-titulo,
+html[data-theme="claro"] .est-sec-titulo,
+html[data-theme="claro"] .es3-card-titulo,
+html[data-theme="claro"] .em2-ruler-title,
+html[data-theme="claro"] .em2-chart-titulo,
+html[data-theme="claro"] .au-form-titulo,
+html[data-theme="claro"] .au-qual-sec-title,
+html[data-theme="claro"] .es3-metric-valor,
+html[data-theme="claro"] .em2-stat-val,
+html[data-theme="claro"] .em2-ruler-median-val,
+html[data-theme="claro"] .au-spec-val { color: #0A0E16; }
+/* textos de apoio -> grafite/cinza pedra */
+html[data-theme="claro"] .condos-hero-desc,
+html[data-theme="claro"] .est-subtitulo,
+html[data-theme="claro"] .est-sec-sub,
+html[data-theme="claro"] .es3-card-sub,
+html[data-theme="claro"] .es3-metric-label,
+html[data-theme="claro"] .em2-stat-label,
+html[data-theme="claro"] .em2-stat-sub,
+html[data-theme="claro"] .au-spec-label,
+html[data-theme="claro"] .au-form-sub,
+html[data-theme="claro"] .au-form-hint,
+html[data-theme="claro"] .est-laudo-desc,
+html[data-theme="claro"] .est-wa-hint { color: #8A8F99; }
+/* parágrafos/legendas genéricos dessas páginas -> grafite */
+html[data-theme="claro"] .condos-pg p,
+html[data-theme="claro"] .condos-lista p,
+html[data-theme="claro"] .es3-pg p,
+html[data-theme="claro"] .est-pg p,
+html[data-theme="claro"] .au-pg p { color: #2A2F38; }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
