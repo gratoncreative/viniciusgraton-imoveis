@@ -504,6 +504,12 @@ html[data-theme="claro"] .det-tour-b:hover { background: #0A0E16; }
 html[data-theme="claro"] .anu-hero-selo,
 html[data-theme="claro"] .anu-hero-imp a { color: #1C2A44; }
 html[data-theme="claro"] .anu-stat span { color: #5b626e; }
+/* /contato — lead-form é card MARINHO (rgba(7,10,17,.85)); título escurecido pelo override global -> marfim */
+html[data-theme="claro"] .lead-form h3 { color: #F4EFE6; }
+/* /regioes — título do bairro fica SOBRE foto escura -> branco */
+html[data-theme="claro"] .bairro-card-foto h4,
+html[data-theme="claro"] .bairro-card-foto h3,
+html[data-theme="claro"] .bairro-card-foto .bairro-card-tag { color: #FFFFFF; }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
