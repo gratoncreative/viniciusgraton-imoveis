@@ -90,7 +90,10 @@ export default function App() {
   // catálogo (/imoveis) usa layout de "duas colunas que rolam sozinhas" — no desktop a
   // página não rola e o rodapé não aparece (estilo Chaves na Mão). Marca o body p/ o CSS.
   useEffect(() => {
-    document.body.classList.toggle('rota-catalogo', pathname === '/imoveis')
+    // normaliza barra final (o Cloudflare Pages pode servir /imoveis/) p/ a classe
+    // do catálogo sempre valer e o rodapé nunca aparecer nessa tela.
+    const rota = pathname.replace(/\/+$/, '') || '/'
+    document.body.classList.toggle('rota-catalogo', rota === '/imoveis')
     return () => document.body.classList.remove('rota-catalogo')
   }, [pathname])
 
