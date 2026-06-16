@@ -86,6 +86,21 @@ html[data-theme="claro"] .hero-card h1 { color: #0A0E16; }
 html[data-theme="claro"] .hero-card-sub, html[data-theme="claro"] .apres-lead { color: var(--text); }
 html[data-theme="claro"] .hero-card-rodape span { color: var(--text-mute); }
 html[data-theme="claro"] .hero-bio .apres-checks a { color: #1C2A44; }
+/* REGRA DE OURO.. dourado nunca é texto sobre fundo claro (reprova 2,4:1).
+   Nome, títulos e destaques de texto viram marinho no claro. */
+html[data-theme="claro"] .hero-nome,
+html[data-theme="claro"] .text-gold,
+html[data-theme="claro"] .section-title em,
+html[data-theme="claro"] .hero h1 em {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-text-fill-color: #0A0E16;
+  color: #0A0E16;
+  filter: none;
+}
+html[data-theme="claro"] .apres-lead b,
+html[data-theme="claro"] .apres-lead strong { color: #0A0E16; }
 /* filete dourado decorativo continua permitido */
 html[data-theme="claro"] .eyebrow::before { background: var(--gold-2); }
 /* rodapé e navbar são globais (fora do main) — no tema claro, viram estrutura marinho */
