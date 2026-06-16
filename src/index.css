@@ -608,6 +608,17 @@ html[data-theme="claro"] .btn-ghost { background: #FCFBF9; }
 html[data-theme="claro"] .fp-pill.on,
 html[data-theme="claro"] .cat-tipo.on { background: #1C2A44; color: #FFFFFF; border-color: #1C2A44; }
 
+/* Hero busca — FiltroSelect renderizado como campo inline (dentro da caixa .hb-campo) */
+html[data-theme="claro"] .hb-campo .fs { width: 100%; }
+html[data-theme="claro"] .hb-campo .fs-trigger { width: 100%; padding: 2px 0; min-height: auto; background: transparent; border: none; box-shadow: none; border-radius: 0; color: #1a1f29; font-weight: 600; font-size: 1rem; }
+html[data-theme="claro"] .hb-campo .fs-trigger:hover { background: transparent; border: none; }
+html[data-theme="claro"] .hb-campo .fs-label { color: #1a1f29; flex: 1; }
+/* Opções do dropdown de bairro/filtros — fundo branco + texto #606366 (seleção via caixinha) */
+html[data-theme="claro"] .fs-pop { background: #FFFFFF; }
+html[data-theme="claro"] .fs-opt { color: #606366; background: transparent; }
+html[data-theme="claro"] .fs-opt:hover { background: #F4EFE6; color: #2A2F38; }
+html[data-theme="claro"] .fs-opt.on { background: transparent; color: #606366; border-color: transparent; font-weight: 600; }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
