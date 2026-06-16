@@ -72,23 +72,25 @@ export default function EditarFotoPage() {
       if (ref.current) { ref.current.width = w; ref.current.height = h }
     }
     baseRef.current.getContext('2d').drawImage(imgRef.current, 0, 0, w, h)
-    const mc = maskRef.current.getContext('2d')
-    mc.fillStyle = '#000'; mc.fillRect(0, 0, w, h)
+    maskRef.current.getContext('2d').clearRect(0, 0, w, h) // máscara transparente; pinta branco só na área
     redesenhar()
   }, [dim])
 
   const redesenhar = () => {
-    if (!overlayRef.current || !baseRef.current) return
-    const ctx = overlayRef.current.getContext('2d')
-    ctx.clearRect(0, 0, overlayRef.current.width, overlayRef.current.height)
-    ctx.drawImage(baseRef.current, 0, 0)
-    // pinta o vermelho onde a máscara é branca
-    ctx.save()
-    ctx.globalAlpha = 0.45; ctx.fillStyle = '#e0533a'
-    ctx.drawImage(maskRef.current, 0, 0)
-    ctx.globalCompositeOperation = 'source-in'
-    ctx.fillRect(0, 0, overlayRef.current.width, overlayRef.current.height)
-    ctx.restore()
+    const ov = overlayRef.current, base = baseRef.current, mask = maskRef.current
+    if (!ov || !base) return
+    const ctx = ov.getContext('2d')
+    ctx.clearRect(0, 0, ov.width, ov.height)
+    ctx.drawImage(base, 0, 0)
+    // tinta vermelha SÓ onde foi pintado (máscara = branco sobre transparente)
+    const tmp = document.createElement('canvas'); tmp.width = ov.width; tmp.height = ov.height
+    const t = tmp.getContext('2d')
+    t.drawImage(mask, 0, 0)
+    t.globalCompositeOperation = 'source-in'
+    t.fillStyle = '#e0533a'; t.fillRect(0, 0, tmp.width, tmp.height)
+    ctx.globalAlpha = 0.5
+    ctx.drawImage(tmp, 0, 0)
+    ctx.globalAlpha = 1
   }
 
   const posRel = (ev) => {
@@ -112,7 +114,7 @@ export default function EditarFotoPage() {
   const limparMascara = () => {
     if (!maskRef.current) return
     const mc = maskRef.current.getContext('2d')
-    mc.fillStyle = '#000'; mc.fillRect(0, 0, maskRef.current.width, maskRef.current.height)
+    mc.clearRect(0, 0, maskRef.current.width, maskRef.current.height)
     setTemMascara(false); redesenhar()
   }
 
@@ -123,7 +125,10 @@ export default function EditarFotoPage() {
     setEstado('editando'); setErro(''); setResultado('')
     try {
       const image = baseRef.current.toDataURL('image/png')
-      const mask = maskRef.current.toDataURL('image/png')
+      // máscara p/ a IA.. fundo PRETO (manter) + branco (refazer) — compõe a máscara transparente sobre preto
+      const mcanvas = document.createElement('canvas'); mcanvas.width = baseRef.current.width; mcanvas.height = baseRef.current.height
+      const mx = mcanvas.getContext('2d'); mx.fillStyle = '#000'; mx.fillRect(0, 0, mcanvas.width, mcanvas.height); mx.drawImage(maskRef.current, 0, 0)
+      const mask = mcanvas.toDataURL('image/png')
       const r = await fetch('/api/editar-imagem', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image, mask, prompt, strength: modoAtual.strength }),
