@@ -279,6 +279,87 @@ html[data-theme="claro"] .es3-pg p,
 html[data-theme="claro"] .est-pg p,
 html[data-theme="claro"] .au-pg p { color: #2A2F38; }
 
+/* ════ Correções da auditoria de design (manual v2.0) ════ */
+/* A1 — navbar.. texto marfim sobre o marinho (era escuro/ilegível) */
+html[data-theme="claro"] .nav .nav-links a,
+html[data-theme="claro"] .nav .brand-name,
+html[data-theme="claro"] .nav .nav-conta,
+html[data-theme="claro"] .nav .nav-cta { color: rgba(244,239,230,0.92); }
+html[data-theme="claro"] .nav .brand-sub { color: rgba(244,239,230,0.6); }
+html[data-theme="claro"] .nav .nav-links a:hover { color: #FFFFFF; }
+html[data-theme="claro"] .nav .nav-links a.is-active,
+html[data-theme="claro"] .nav .is-active { color: #E3D2A8; }
+/* A2 — rodapé.. texto marfim sobre o marinho */
+html[data-theme="claro"] .footer a,
+html[data-theme="claro"] .footer-col a { color: rgba(244,239,230,0.82); }
+html[data-theme="claro"] .footer a:hover,
+html[data-theme="claro"] .footer-col a:hover { color: #E3D2A8; }
+html[data-theme="claro"] .footer p,
+html[data-theme="claro"] .footer span,
+html[data-theme="claro"] .footer h5,
+html[data-theme="claro"] .footer-brand p,
+html[data-theme="claro"] .footer-col h5,
+html[data-theme="claro"] .footer-end,
+html[data-theme="claro"] .footer-bottom { color: rgba(244,239,230,0.62); }
+html[data-theme="claro"] .footer .brand-name { color: rgba(244,239,230,0.95); }
+/* A3 — selects/options nativos claros */
+html[data-theme="claro"] select { color-scheme: light; }
+html[data-theme="claro"] select option { background: #FFFFFF; color: #2A2F38; }
+/* A5 — modais (filtro/compartilhar) claros */
+html[data-theme="claro"] .modal,
+html[data-theme="claro"] .filtro-modal,
+html[data-theme="claro"] .share-modal { background: #FFFFFF; border: 1px solid #E4DFD4; box-shadow: 0 40px 100px -30px rgba(10,14,22,.35); }
+html[data-theme="claro"] .modal-head h3,
+html[data-theme="claro"] .modal h2,
+html[data-theme="claro"] .modal h3 { color: #0A0E16; }
+html[data-theme="claro"] .filtro-form input,
+html[data-theme="claro"] .filtro-form select,
+html[data-theme="claro"] .lead-form input,
+html[data-theme="claro"] .lead-form select,
+html[data-theme="claro"] .modal input,
+html[data-theme="claro"] .modal select { background: #FFFFFF; color: #2A2F38; border-color: #E4DFD4; }
+/* A6/A7 — nenhum botão de fundo dourado (regra dura) */
+html[data-theme="claro"] .barra-whats { background: transparent; color: #1C2A44; border: 1px solid var(--gold-3); }
+html[data-theme="claro"] .barra-whats:hover { background: #F4EFE6; color: #0A0E16; }
+html[data-theme="claro"] .barra-whats svg { color: var(--gold-3); }
+html[data-theme="claro"] .mm-btn--ouro { background: #1C2A44 !important; color: #FFFFFF !important; border-color: transparent !important; }
+html[data-theme="claro"] .nav-fav-badge { background: #1C2A44; color: #FFFFFF; }
+/* A4/A11–A16 — Analisar imóvel (au-).. azul -> petróleo, textos legíveis */
+html[data-theme="claro"] .au-btn { background: #1C2A44; color: #FFFFFF; }
+html[data-theme="claro"] .au-btn:hover { background: #0A0E16; }
+html[data-theme="claro"] .au-input { color: #2A2F38; }
+html[data-theme="claro"] .au-input::placeholder,
+html[data-theme="claro"] .au-input-icon,
+html[data-theme="claro"] .au-spec-label { color: #8A8F99; }
+html[data-theme="claro"] .au-qual-cond,
+html[data-theme="claro"] .au-qual-list li,
+html[data-theme="claro"] .au-spec-val,
+html[data-theme="claro"] .au-link-orig { color: #2A2F38; }
+html[data-theme="claro"] .au-chip { background: #F4EFE6; border-color: #E4DFD4; color: #2A2F38; }
+html[data-theme="claro"] .au-spec { background: #F4EFE6; }
+html[data-theme="claro"] .au-side-cta { background: linear-gradient(160deg, #1C2A44, #0A0E16); }
+/* A22/A23/A24 — dourado como TEXTO sobre claro -> marinho/petróleo */
+html[data-theme="claro"] .cat-hoje-h2 em { color: #0A0E16; -webkit-text-fill-color: #0A0E16; background: none; }
+html[data-theme="claro"] .section--light .eyebrow { color: #1C2A44; }
+html[data-theme="claro"] .pdfjpg-nav-tag { color: #1C2A44; }
+/* A9/A10 — títulos nobres em Playfair */
+html[data-theme="claro"] .hero h1,
+html[data-theme="claro"] .hero-card h1,
+html[data-theme="claro"] .det-titulo,
+html[data-theme="claro"] .det-apresenta-tit,
+html[data-theme="claro"] .det-rel-titulo,
+html[data-theme="claro"] .anu-hero-tit,
+html[data-theme="claro"] .dif-banner-tit,
+html[data-theme="claro"] .cta-grid h2,
+html[data-theme="claro"] .cg-titulo { font-family: var(--font-display); }
+/* A18/A19 — cinza pedra como texto pequeno -> tom mais escuro (>=4.5:1) */
+html[data-theme="claro"] .pdfjpg-privacy,
+html[data-theme="claro"] .simf-legal,
+html[data-theme="claro"] .pdfjpg-drop-hint,
+html[data-theme="claro"] .pdfjpg-progress-note,
+html[data-theme="claro"] .pdfjpg-drop-sub,
+html[data-theme="claro"] .est-wa-hint,
+html[data-theme="claro"] .au-form-hint { color: #5b626e; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
