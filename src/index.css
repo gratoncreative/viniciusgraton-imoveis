@@ -572,6 +572,19 @@ html[data-theme="claro"] .pg-promo--detalhe .pg-por { color: #0A0E16; }
 html[data-theme="claro"] .pg-promo--detalhe .pg-de { color: #8A8F99; }
 html[data-theme="claro"] .preco-gate--detalhe .pg-cta { background: #1C2A44; color: #FFFFFF; box-shadow: 0 6px 18px rgba(28,42,68,.25); }
 
+/* ════ Rodada 11 — botão da galeria, cinza pedra em texto pequeno, elementos de ferramenta ════ */
+html[data-theme="claro"] .gal-tour { background: #1C2A44; color: #FFFFFF; box-shadow: 0 8px 22px rgba(28,42,68,.35); }
+html[data-theme="claro"] .gal-tour:hover { background: #0A0E16; }
+/* Cinza Pedra (#8A8F99) em texto pequeno reprova 4.5:1 -> #5b626e (5.2:1) */
+html[data-theme="claro"] .ff-field > span i,
+html[data-theme="claro"] .au-spec-label,
+html[data-theme="claro"] .pg-promo--linha .pg-de,
+html[data-theme="claro"] .pg-promo--detalhe .pg-de { color: #5b626e; }
+/* ferramentas — option/ícone/canvas legíveis no claro */
+html[data-theme="claro"] .gi-select option { background: #FFFFFF; color: #2A2F38; }
+html[data-theme="claro"] .pdfjpg-drop-icon { color: #8A8F99; }
+html[data-theme="claro"] .ef-canvas-wrap { background: #F4EFE6; border-color: #E4DFD4; }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
