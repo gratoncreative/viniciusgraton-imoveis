@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom'
 import Scene3D from './Scene3D'
 import HeroSkyline from './HeroSkyline'
 import HeroBusca from './HeroBusca'
-import { CONFIG, linkWhatsApp, WA } from '../data'
-import { IconWhats, IconArrow } from './icons'
+import CardImovel from './CardImovel'
+import { IMOVEIS } from '../data'
+import { IconArrow } from './icons'
 
 // Capa unificada: bio do Vinícius (esquerda) + card de busca (direita),
 // sobre a foto do imóvel da capa, com escurecimento e parallax.
@@ -50,26 +51,15 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="hero-bio hero-in">
-          <div className="hero-bio-head">
-            <img className="hero-avatar" src="/vinicius-graton.jpg" alt="Vinícius Graton, consultor de imóveis em Uberlândia" fetchpriority="high" decoding="sync" />
-            <div>
-              <span className="eyebrow">Quem te atende</span>
-              <h2 className="hero-nome">Vinícius Graton</h2>
-            </div>
+        <div className="hero-destaques hero-in">
+          <div className="hero-destaques-top">
+            <span className="eyebrow">Oportunidades em destaque</span>
+            <Link className="hero-destaques-link" to="/imoveis">Ver todos <IconArrow /></Link>
           </div>
-          <p className="apres-lead">
-            Sou <b>consultor de imóveis em Uberlândia</b>, da <b>Rotina Imobiliária</b>. Te ajudo a comprar, vender ou investir com segurança — da primeira conversa à entrega das chaves.
-          </p>
-          <ul className="apres-checks apres-checks--link">
-            <li><Link to="/diferenciais#curadoria"><span>✓</span> Curadoria criteriosa</Link></li>
-            <li><Link to="/diferenciais#transparencia"><span>✓</span> Pontos fortes e riscos, na transparência</Link></li>
-            <li><Link to="/diferenciais#documentacao"><span>✓</span> Documentação conferida</Link></li>
-            <li><Link to="/diferenciais#negociacao"><span>✓</span> Negociação a seu favor</Link></li>
-          </ul>
-          <div className="hero-bio-acoes">
-            <a className="btn btn-gold" href={linkWhatsApp(WA.hero)} target="_blank" rel="noopener"><IconWhats /> Falar comigo agora</a>
-            <Link className="btn btn-ghost" to="/sobre">Conhecer minha história <IconArrow /></Link>
+          <div className="hero-destaques-grid">
+            {IMOVEIS.slice(0, 2).map((im) => (
+              <CardImovel key={im.codigo} im={im} />
+            ))}
           </div>
         </div>
       </div>

@@ -939,6 +939,14 @@ section { position: relative; padding: clamp(20px, 3vw, 40px) 0; }
 /* ===== Hero unificado: bio (esquerda) + card de busca (direita) ===== */
 .hero-grid2 { position: relative; z-index: 4; display: grid; grid-template-columns: clamp(360px, 32vw, 460px) minmax(0, 1fr); gap: clamp(28px, 4vw, 56px); align-items: center; width: 100%; max-width: 1180px; margin-inline: auto; }
 .hero-bio { max-width: 640px; }
+/* 2 imóveis em destaque na capa (substitui a bio) */
+.hero-destaques { display: flex; flex-direction: column; gap: 16px; max-width: 720px; }
+.hero-destaques-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.hero-destaques-link { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-head); font-weight: 600; font-size: 0.9rem; color: #1C2A44; text-decoration: none; white-space: nowrap; transition: gap 0.2s var(--ease); }
+.hero-destaques-link:hover { gap: 10px; }
+.hero-destaques-link svg { width: 16px; height: 16px; }
+.hero-destaques-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 560px) { .hero-destaques-grid { grid-template-columns: 1fr; } }
 .hero-nome { font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: clamp(2.6rem, 5.5vw, 4.4rem); line-height: 1.02; margin: 6px 0 16px; background: linear-gradient(135deg, #E3D2A8 0%, #C6A15B 60%, #9A7B3C 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.92)); }
 .hero-bio .apres-lead { max-width: 560px; }
 .hero-bio-acoes { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 24px; }
