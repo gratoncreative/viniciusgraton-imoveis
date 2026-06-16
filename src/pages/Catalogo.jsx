@@ -342,7 +342,6 @@ export default function Catalogo() {
         </aside>
 
         <div className="cat-main" data-lenis-prevent>
-        <PromoLancamento compact />
         <div className="cat-tipos">
           {TIPO_CHIPS.map((c) => (
             <button key={c.grupo} type="button" className={`cat-tipo ${f.grupo === c.grupo ? 'on' : ''}`} onClick={() => toggleGrupo(c.grupo)}>
@@ -351,6 +350,8 @@ export default function Catalogo() {
             </button>
           ))}
         </div>
+
+        <PromoLancamento />
 
         {semFiltros && novosHoje.length > 0 && (
           <div className="cat-hoje">

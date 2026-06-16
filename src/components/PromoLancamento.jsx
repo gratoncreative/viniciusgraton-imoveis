@@ -2,46 +2,62 @@ import { useState } from 'react'
 import { linkWhatsApp } from '../data'
 import { IconWhats } from './icons'
 
-// Publicidade de lançamento (Louis Studios). Mostra o pôster quando a imagem
-// existe em /anuncios/louis-studios.jpg; se não, exibe um cartão-texto elegante
-// (nunca quebra). Clique leva ao WhatsApp do consultor.
+// Publicidade de lançamento (Louis Studios) no MESMO layout dos imóveis da página
+// (card estilo .im-linha): imagem ilustrativa escurecida à esquerda, infos à direita,
+// selo "Publicidade", CTA pro WhatsApp. Aparece sempre em primeiro lugar.
 const MSG =
   'Olá Vinícius! Vi o lançamento Louis Studios (Studios próximos ao Campus UFU Umuarama) e quero saber mais sobre as unidades, entrada, parcelas e rentabilidade.'
 
-export default function PromoLancamento({ compact = false }) {
-  // Mostra o cartão-texto por padrão; troca pelo pôster só quando a imagem
-  // /anuncios/louis-studios.jpg carregar de fato (nunca exibe imagem quebrada).
-  const [ok, setOk] = useState(false)
+export default function PromoLancamento() {
+  const [imgOk, setImgOk] = useState(true)
   const href = linkWhatsApp(MSG)
+  const abrir = () => window.open(href, '_blank', 'noopener')
 
   return (
-    <section className={`promo-lanc${compact ? ' promo-lanc--compact' : ''}`} aria-label="Publicidade — lançamento">
-      <div className="container">
-        <span className="eyebrow promo-lanc-eye">Publicidade · Lançamento</span>
-        <a className={`promo-lanc-card${ok ? ' promo-lanc-card--img' : ''}`} href={href} target="_blank" rel="noopener">
+    <article className="im-linha card-clickable promo-imovel" onClick={abrir} aria-label="Publicidade — lançamento Louis Studios">
+      <div className="im-linha-media promo-imovel-media">
+        <span className="promo-imovel-marca" aria-hidden="true">Louis<i>living experience</i></span>
+        {imgOk && (
           <img
-            className="promo-lanc-img"
             src="/anuncios/louis-studios.jpg"
-            alt="Louis Studios — studios próximos ao Campus UFU Umuarama, Uberlândia/MG. 36 e 37 m², rentabilidade 1,5% a.m., gestão Housi. Entrada R$ 41.400."
+            alt="Louis Studios — studios próximos ao Campus UFU Umuarama, Uberlândia/MG"
+            loading="lazy"
             decoding="async"
-            aria-hidden={!ok}
-            onLoad={(e) => { if (e.currentTarget.naturalWidth > 1) setOk(true) }}
-            style={ok ? undefined : { position: 'absolute', width: 1, height: 1, opacity: 0, pointerEvents: 'none' }}
+            onError={() => setImgOk(false)}
           />
-          {!ok && (
-            <div className="promo-lanc-txt">
-              <span className="promo-lanc-marca">Louis · living experience</span>
-              <strong className="promo-lanc-tit">Studios <em>próximos à UFU Umuarama</em></strong>
-              <p className="promo-lanc-sub">Uberlândia/MG · 36 e 37 m² · Gestão Housi · Rentabilidade 1,5% a.m.</p>
-              <div className="promo-lanc-nums">
-                <span><i>Entrada</i> R$ 41.400</span>
-                <span><i>Mensais</i> R$ 2.000 <small>+ intermediárias</small></span>
-              </div>
-            </div>
-          )}
-          <span className="promo-lanc-cta"><IconWhats width={18} height={18} /> Quero saber mais</span>
-        </a>
+        )}
+        <span className="promo-imovel-tint" aria-hidden="true" />
+        <span className="im-pub promo-imovel-pub" title="Publicidade — anúncio de lançamento">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 15l7-7 7 7" /></svg>
+          Publicidade
+        </span>
+        <span className="im-tag">Lançamento</span>
       </div>
-    </section>
+      <div className="im-linha-body">
+        <div className="im-linha-top">
+          <div className="im-linha-tit">
+            <span className="im-linha-tipo">Studios · 36 e 37 m² · Gestão Housi</span>
+            <h3 className="im-bairro">Louis Studios</h3>
+            <p className="im-local">Próximos ao Campus UFU Umuarama · Uberlândia — MG</p>
+          </div>
+        </div>
+        <div className="im-specs im-specs--min">
+          <span className="im-spec"><b>1,5%</b> a.m.</span>
+          <span className="im-spec"><b>36–37</b> m²</span>
+          <span className="im-spec"><b>Housi</b> gestão</span>
+        </div>
+        <div className="im-linha-rodape">
+          <div className="im-linha-precobloco">
+            <span className="promo-imovel-preco">Entrada <b>R$ 41.400</b></span>
+            <span className="im-linha-cond">Mensais R$ 2.000 + intermediárias</span>
+          </div>
+          <div className="im-actions">
+            <a className="im-cta" href={href} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()}>
+              <IconWhats width={18} height={18} /> Quero saber mais
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
   )
 }

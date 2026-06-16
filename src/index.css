@@ -1076,27 +1076,19 @@ section { position: relative; padding: clamp(20px, 3vw, 40px) 0; }
 .cat-atalho-label { font-family: var(--font-head); font-weight: 600; font-size: 0.95rem; color: #2A2F38; text-align: center; line-height: 1.25; }
 @media (max-width: 980px) { .cats-rapidas-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 560px) { .cats-rapidas-grid { grid-template-columns: repeat(2, 1fr); } }
-/* Publicidade de lançamento (pôster Louis Studios) */
-.promo-lanc { padding: clamp(32px, 5vw, 56px) 0; }
-.promo-lanc--compact { padding: 4px 0 18px; }
-.promo-lanc--compact .promo-lanc-card { max-width: 300px; }
-.promo-lanc--compact .promo-lanc-eye { margin-bottom: 12px; }
-.promo-lanc-eye { display: flex; justify-content: center; margin-bottom: 16px; }
-.promo-lanc-card { position: relative; display: block; max-width: 420px; margin: 0 auto; border-radius: 18px; overflow: hidden; border: 1px solid #E4DFD4; box-shadow: 0 30px 70px -42px rgba(10,14,22,.42); text-decoration: none; background: #FCFBF9; transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
-.promo-lanc-card:hover { transform: translateY(-4px); box-shadow: 0 44px 92px -40px rgba(10,14,22,.52); }
-.promo-lanc-img { display: block; width: 100%; height: auto; }
-.promo-lanc-cta { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100px; background: #25D366; color: #053b1e; font-family: var(--font-head); font-weight: 700; font-size: 0.92rem; box-shadow: 0 10px 26px rgba(0,0,0,.32); white-space: nowrap; }
-.promo-lanc-card:hover .promo-lanc-cta { background: #1ebe5b; }
-/* fallback (enquanto a imagem /anuncios/louis-studios.jpg não está no ar) */
-.promo-lanc-txt { padding: 36px 28px 78px; background: linear-gradient(150deg, #0A0E16 0%, #1C2A44 100%); color: #F4EFE6; text-align: center; }
-.promo-lanc-marca { font-family: var(--font-head); letter-spacing: .18em; text-transform: uppercase; font-size: .72rem; color: var(--gold-1); }
-.promo-lanc-tit { display: block; font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.1rem); line-height: 1.15; margin: 10px 0 8px; color: #F4EFE6; }
-.promo-lanc-tit em { font-style: italic; color: var(--gold-1); }
-.promo-lanc-sub { color: rgba(244,239,230,.8); font-size: .95rem; line-height: 1.5; margin-bottom: 18px; }
-.promo-lanc-nums { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-.promo-lanc-nums span { font-family: var(--font-head); font-weight: 800; font-size: 1.15rem; color: #fff; }
-.promo-lanc-nums i { display: block; font-style: normal; font-weight: 600; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-1); }
-.promo-lanc-nums small { font-size: .66rem; font-weight: 600; color: rgba(244,239,230,.7); }
+/* Publicidade de lançamento no MESMO estilo dos imóveis (card .im-linha) */
+.promo-imovel { cursor: pointer; border: 1px solid #E4DFD4; box-shadow: 0 16px 44px -30px rgba(10,14,22,.4); margin-bottom: 22px; }
+.promo-imovel:hover { border-color: #C6A15B; }
+.promo-imovel-media { position: relative; overflow: hidden; }
+html[data-theme="claro"] .promo-imovel-media { background: linear-gradient(150deg, #0A0E16 0%, #1C2A44 100%); }
+.promo-imovel-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.promo-imovel-tint { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(10,14,22,.4) 0%, rgba(10,14,22,.8) 100%); }
+.promo-imovel-marca { position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-family: var(--font-display); font-size: 2rem; color: #F4EFE6; letter-spacing: .03em; }
+.promo-imovel-marca i { font-family: var(--font-head); font-style: normal; font-size: .6rem; letter-spacing: .26em; text-transform: uppercase; color: var(--gold-1); }
+.promo-imovel-pub { z-index: 3; }
+.promo-imovel .im-tag { top: auto; bottom: 12px; left: 12px; z-index: 3; }
+.promo-imovel-preco { font-family: var(--font-head); font-size: .8rem; color: #5b626e; }
+.promo-imovel-preco b { display: block; font-family: var(--font-head); font-size: 1.4rem; font-weight: 800; color: #0A0E16; line-height: 1.1; }
 .hero-nome { font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: clamp(2.6rem, 5.5vw, 4.4rem); line-height: 1.02; margin: 6px 0 16px; background: linear-gradient(135deg, #E3D2A8 0%, #C6A15B 60%, #9A7B3C 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.92)); }
 .hero-bio .apres-lead { max-width: 560px; }
 .hero-bio-acoes { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 24px; }
