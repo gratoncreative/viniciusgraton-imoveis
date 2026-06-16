@@ -25,6 +25,7 @@ const PdfParaJpg = lazy(() => import('./pages/PdfParaJpgPage'))
 const SimuladorFinanciamento = lazy(() => import('./pages/SimuladorFinanciamento'))
 const TranscreverPage = lazy(() => import('./pages/TranscreverPage'))
 const GerarImagemPage = lazy(() => import('./pages/GerarImagemPage'))
+const EditarFotoPage = lazy(() => import('./pages/EditarFotoPage'))
 const Corretor = lazy(() => import('./pages/Corretor'))
 const Condominios = lazy(() => import('./pages/Condominios'))
 const Anunciar = lazy(() => import('./pages/Anunciar'))
@@ -159,6 +160,7 @@ export default function App() {
               <Route path="/simulador-financiamento" element={<SimuladorFinanciamento />} />
               <Route path="/ferramentas/transcrever" element={<TranscreverPage />} />
               <Route path="/ferramentas/gerar-imagem" element={<GerarImagemPage />} />
+              <Route path="/ferramentas/editar-foto" element={<EditarFotoPage />} />
               <Route path="/corretor" element={<Corretor />} />
               <Route path="/corretor/:toolId" element={<Corretor />} />
               <Route path="/condominios" element={<Condominios />} />

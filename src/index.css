@@ -6272,6 +6272,15 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .pdfjpg-progress-bar--indet .pdfjpg-progress-fill { width: 38% !important; animation: pdfjpgIndet 1.3s ease-in-out infinite; }
 @keyframes pdfjpgIndet { 0% { margin-left: -40%; } 100% { margin-left: 100%; } }
 
+/* editor de foto IA (inpainting) */
+.ef-edit { display: flex; flex-direction: column; gap: 14px; }
+.ef-tipos { display: flex; flex-wrap: wrap; gap: 8px; }
+.ef-canvas-wrap { display: flex; justify-content: center; background: rgba(8,11,18,0.5); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 10px; }
+.ef-canvas { max-width: 100%; max-height: 60vh; border-radius: 8px; cursor: crosshair; touch-action: none; }
+.ef-controles { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.ef-pincel { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: rgba(241,237,228,0.6); }
+.ef-pincel input { accent-color: var(--gold-2); }
+
 /* gerador de imagem IA */
 .gi-form { display: flex; flex-direction: column; gap: 14px; }
 .gi-tipos { display: flex; flex-wrap: wrap; gap: 8px; }

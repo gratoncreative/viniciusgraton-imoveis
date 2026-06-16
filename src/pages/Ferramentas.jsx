@@ -84,6 +84,7 @@ const TOOLS = [
   { id: 'pdf-jpg',      nome: 'PDF para JPG',              desc: 'Converta cada página do PDF em JPG de alta definição.', icon: 'pdf', sec: 'fotos', popular: true, to: '/ferramentas/pdf-para-jpg' },
   { id: 'transcrever',  nome: 'Transcrever vídeo/áudio',   desc: 'Tour em vídeo ou áudio → texto, legenda e descrição. No navegador.', icon: 'doc', sec: 'fotos', popular: true, to: '/ferramentas/transcrever' },
   { id: 'gerar-imagem', nome: 'Gerar imagem com IA',        desc: 'Capas de artigo, posts de bairro e peças de lançamento por IA.', icon: 'camera', sec: 'fotos', needsSub: true, to: '/ferramentas/gerar-imagem' },
+  { id: 'editar-foto',  nome: 'Editar foto com IA',         desc: 'Remover objeto, mobiliar ambiente vazio e trocar o céu.', icon: 'edit', sec: 'fotos', needsSub: true, to: '/ferramentas/editar-foto' },
   // explorar
   { id: 'comparar',      nome: 'Comparar imóveis',          desc: 'Compare até 3 imóveis lado a lado.',           icon: 'compare', sec: 'explorar', needsSub: true, to: '/comparar' },
   { id: 'mapa',          nome: 'Mapa de imóveis',           desc: 'Explore imóveis por região de Uberlândia.',    icon: 'map',     sec: 'explorar', needsSub: true, to: '/mapa'     },
