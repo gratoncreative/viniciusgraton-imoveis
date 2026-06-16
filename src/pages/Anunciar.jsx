@@ -193,49 +193,7 @@ export default function Anunciar() {
       </section>
 
       <div className="container anunciar-corpo">
-        {/* COMO FUNCIONA */}
-        <Reveal>
-          <div className="anu-sec-head">
-            <span className="eyebrow" style={{ justifyContent: 'center' }}>Simples assim</span>
-            <h2 className="section-title">Como funciona</h2>
-          </div>
-        </Reveal>
-        <div className="anu-passos">
-          {PASSOS.map((p, i) => (
-            <Reveal key={i} delay={i * 0.07}>
-              <div className="anu-passo">
-                <span className="anu-passo-num">{i + 1}</span>
-                <span className="anu-passo-ico"><PIco d={p.d} /></span>
-                <b>{p.titulo}</b>
-                <i>{p.txt}</i>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-
-        {/* BENEFÍCIOS */}
-        <Reveal>
-          <div className="anu-sec-head">
-            <span className="eyebrow" style={{ justifyContent: 'center' }}>Por que comigo</span>
-            <h2 className="section-title">O que você ganha</h2>
-          </div>
-        </Reveal>
-        <div className="anu-beneficios">
-          {[
-            ['Avaliação justa e grátis', 'Preço de mercado de verdade, sem chute — pra vender no tempo certo.'],
-            ['Curadoria + fotos que vendem', 'Seu imóvel apresentado do jeito que valoriza e atrai comprador.'],
-            ['Divulgação ativa', 'No site, nas redes e direto pra clientes que já procuram algo assim.'],
-            ['Segurança em cada etapa', 'Documentação conferida e negociação com a estrutura da Rotina.'],
-            ['Placa "VENDE-SE" grátis', 'Se quiser, uma placa profissional no seu imóvel, sem custo.'],
-            ['Você no controle', 'Acompanha tudo de perto, sem enrolação. Cadastrar não tem compromisso.'],
-          ].map(([t, d]) => (
-            <Reveal key={t}>
-              <div className="anu-benef-card"><span className="anu-benef-check">{check}</span><div><b>{t}</b><i>{d}</i></div></div>
-            </Reveal>
-          ))}
-        </div>
-
-        {/* FORMULÁRIO */}
+        {/* FORMULÁRIO — em destaque, logo no topo */}
         <div id="cadastrar" className="anu-form-wrap">
           <Reveal>
             <div className="anu-sec-head">
@@ -334,6 +292,48 @@ export default function Anunciar() {
             <IconWhats /> {estado === 'enviando' ? 'Enviando…' : 'Enviar para avaliação'} <IconArrow />
           </button>
         </form>
+        </div>
+
+        {/* COMO FUNCIONA — depois do formulário */}
+        <Reveal>
+          <div className="anu-sec-head anu-sec-head--pos">
+            <span className="eyebrow" style={{ justifyContent: 'center' }}>Simples assim</span>
+            <h2 className="section-title">Como funciona</h2>
+          </div>
+        </Reveal>
+        <div className="anu-passos">
+          {PASSOS.map((p, i) => (
+            <Reveal key={i} delay={i * 0.07}>
+              <div className="anu-passo">
+                <span className="anu-passo-num">{i + 1}</span>
+                <span className="anu-passo-ico"><PIco d={p.d} /></span>
+                <b>{p.titulo}</b>
+                <i>{p.txt}</i>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* BENEFÍCIOS — depois do formulário */}
+        <Reveal>
+          <div className="anu-sec-head">
+            <span className="eyebrow" style={{ justifyContent: 'center' }}>Por que comigo</span>
+            <h2 className="section-title">O que você ganha</h2>
+          </div>
+        </Reveal>
+        <div className="anu-beneficios">
+          {[
+            ['Avaliação justa e grátis', 'Preço de mercado de verdade, sem chute — pra vender no tempo certo.'],
+            ['Curadoria + fotos que vendem', 'Seu imóvel apresentado do jeito que valoriza e atrai comprador.'],
+            ['Divulgação ativa', 'No site, nas redes e direto pra clientes que já procuram algo assim.'],
+            ['Segurança em cada etapa', 'Documentação conferida e negociação com a estrutura da Rotina.'],
+            ['Placa "VENDE-SE" grátis', 'Se quiser, uma placa profissional no seu imóvel, sem custo.'],
+            ['Você no controle', 'Acompanha tudo de perto, sem enrolação. Cadastrar não tem compromisso.'],
+          ].map(([t, d]) => (
+            <Reveal key={t}>
+              <div className="anu-benef-card"><span className="anu-benef-check">{check}</span><div><b>{t}</b><i>{d}</i></div></div>
+            </Reveal>
+          ))}
         </div>
       </div>
     </main>
