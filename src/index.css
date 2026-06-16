@@ -203,6 +203,17 @@ html[data-theme="claro"] .simf-tab-amort th { background: #F4EFE6; }
 html[data-theme="claro"] .simf-hero .simf-hero-label { color: rgba(255,255,255,0.6); }
 html[data-theme="claro"] .simf-hero .simf-hero-sub { color: rgba(255,255,255,0.5); }
 
+/* Estudo do m² (página /estudo + modal .em-panel.ep-pg) no tema claro.
+   Usa os tokens --ep-* (mesmos valores da versão de impressão) — flip num bloco só. */
+html[data-theme="claro"] .ep-pg {
+  --ep-bg: #FFFFFF; --ep-card: #FFFFFF; --ep-card2: #F4EFE6;
+  --ep-line: #E4DFD4; --ep-line2: #d8cfbc;
+  --ep-hi: #0A0E16; --ep-mid: #4a5160; --ep-low: #8A8F99;
+  --ep-brass: #9A7B3C; --ep-teal: #44608C;
+  background: #F4EFE6; color: #2A2F38;
+}
+html[data-theme="claro"] .em-overlay { background: rgba(10,14,22,0.55); }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
