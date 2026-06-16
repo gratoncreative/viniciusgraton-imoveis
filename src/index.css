@@ -49,7 +49,7 @@
    SISTEMA CLARO — Manual de Design de Cores v2.0 (escopo por página)
    Base branca/marfim · marinho texto/estrutura · dourado só detalhe (70/20/10)
    ══════════════════════════════════════════════════════════════════ */
-.tema-claro {
+html[data-theme="claro"] {
   color-scheme: light;
   --bg: #FFFFFF;
   --bg-2: #F4EFE6;
@@ -67,27 +67,27 @@
   color: var(--text);
 }
 /* títulos em marinho sobre claro; rótulos em petróleo (dourado reprova como texto no claro) */
-.tema-claro h1, .tema-claro h2, .tema-claro h3, .tema-claro h4,
-.tema-claro .section-title, .tema-claro .hero h1 { color: #0A0E16; }
-.tema-claro .eyebrow { color: #1C2A44; }
-.tema-claro .section-sub, .tema-claro p { color: var(--text); }
+html[data-theme="claro"] h1, html[data-theme="claro"] h2, html[data-theme="claro"] h3, html[data-theme="claro"] h4,
+html[data-theme="claro"] .section-title, html[data-theme="claro"] .hero h1 { color: #0A0E16; }
+html[data-theme="claro"] .eyebrow { color: #1C2A44; }
+html[data-theme="claro"] .section-sub, html[data-theme="claro"] p { color: var(--text); }
 /* botão primário = Azul Petróleo (nunca fundo dourado) */
-.tema-claro .btn-gold { background: #1C2A44; color: #FFFFFF; box-shadow: 0 10px 30px -12px rgba(28,42,68,.5); }
-.tema-claro .btn-gold:hover { background: #0A0E16; }
-.tema-claro .btn-gold svg { color: #E3D2A8; }
-.tema-claro .btn-ghost { background: #fff; border-color: #E4DFD4; color: #1C2A44; }
-.tema-claro .btn-ghost:hover { border-color: #1C2A44; background: #F4EFE6; }
+html[data-theme="claro"] .btn-gold { background: #1C2A44; color: #FFFFFF; box-shadow: 0 10px 30px -12px rgba(28,42,68,.5); }
+html[data-theme="claro"] .btn-gold:hover { background: #0A0E16; }
+html[data-theme="claro"] .btn-gold svg { color: #E3D2A8; }
+html[data-theme="claro"] .btn-ghost { background: #fff; border-color: #E4DFD4; color: #1C2A44; }
+html[data-theme="claro"] .btn-ghost:hover { border-color: #1C2A44; background: #F4EFE6; }
 /* HERO claro — esconde a cena escura (3D, skyline, tint) e clareia */
-.tema-claro .hero { background: linear-gradient(180deg, #FFFFFF 0%, #F4EFE6 100%); }
-.tema-claro .hero-bg, .tema-claro .hero-bg-tint, .tema-claro .hero-skyline,
-.tema-claro .hero canvas, .tema-claro .scroll-hint { display: none !important; }
-.tema-claro .hero-card { background: #FFFFFF; border: 1px solid #E4DFD4; box-shadow: 0 30px 70px -40px rgba(10,14,22,.25); }
-.tema-claro .hero-card h1 { color: #0A0E16; }
-.tema-claro .hero-card-sub, .tema-claro .apres-lead { color: var(--text); }
-.tema-claro .hero-card-rodape span { color: var(--text-mute); }
-.tema-claro .hero-bio .apres-checks a { color: #1C2A44; }
+html[data-theme="claro"] .hero { background: linear-gradient(180deg, #FFFFFF 0%, #F4EFE6 100%); }
+html[data-theme="claro"] .hero-bg, html[data-theme="claro"] .hero-bg-tint, html[data-theme="claro"] .hero-skyline,
+html[data-theme="claro"] .hero canvas, html[data-theme="claro"] .scroll-hint { display: none !important; }
+html[data-theme="claro"] .hero-card { background: #FFFFFF; border: 1px solid #E4DFD4; box-shadow: 0 30px 70px -40px rgba(10,14,22,.25); }
+html[data-theme="claro"] .hero-card h1 { color: #0A0E16; }
+html[data-theme="claro"] .hero-card-sub, html[data-theme="claro"] .apres-lead { color: var(--text); }
+html[data-theme="claro"] .hero-card-rodape span { color: var(--text-mute); }
+html[data-theme="claro"] .hero-bio .apres-checks a { color: #1C2A44; }
 /* filete dourado decorativo continua permitido */
-.tema-claro .eyebrow::before { background: var(--gold-2); }
+html[data-theme="claro"] .eyebrow::before { background: var(--gold-2); }
 /* rodapé e navbar são globais (fora do main) — no tema claro, viram estrutura marinho */
 html[data-theme="claro"] body { background: #FFFFFF; }
 html[data-theme="claro"] .footer { background: #0A0E16; }
