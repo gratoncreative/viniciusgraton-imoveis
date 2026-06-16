@@ -10,16 +10,8 @@ import {
 
 // ── Fontes carregadas dinamicamente (só nesta página) ─────────────────────────
 export function useFontsPremium() {
-  useEffect(() => {
-    const id = 'ep-fonts'
-    if (document.getElementById(id)) return
-    const link = document.createElement('link')
-    link.id = id
-    link.rel = 'stylesheet'
-    link.href =
-      'https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap'
-    document.head.appendChild(link)
-  }, [])
+  // As fontes da marca (Playfair Display + Montserrat) já são carregadas
+  // globalmente no index.html — não é mais preciso injetar Spectral/IBM Plex.
 }
 
 // ── Mapa de coordenadas por bairro ────────────────────────────────────────────
