@@ -1,4 +1,5 @@
 import { useState, useRef, useLayoutEffect } from 'react'
+import { createPortal } from 'react-dom'
 
 // Dropdown de filtro personalizado (substitui o <select> nativo).
 // - single: escolha única (tipo, preço, quartos…)
@@ -17,14 +18,25 @@ export default function FiltroSelect({ icon, placeholder, options = [], value, m
     const calc = () => {
       const t = ref.current
       if (!t) return
+      // O site usa html{zoom:0.85} no desktop. getBoundingClientRect devolve coords
+      // VISUAIS (já escaladas); um position:fixed re-aplica o zoom. Por isso dividimos
+      // os valores aplicados pelo zoom — assim o popup alinha exatamente com o gatilho.
+      const z = parseFloat(getComputedStyle(document.documentElement).zoom) || 1
       const r = t.getBoundingClientRect()
-      const vh = document.documentElement.clientHeight
+      const vh = window.innerHeight * z // altura da viewport em coords visuais
       const abaixo = vh - r.bottom - 12
       const acima = r.top - 12
       // se não há espaço suficiente embaixo, abre PRA CIMA (não vaza pra fora da tela)
       const abrirCima = abaixo < 240 && acima > abaixo
       const maxH = Math.max(160, Math.min(360, abrirCima ? acima : abaixo))
-      setPos({ left: r.left, width: r.width, maxH, abrirCima, top: r.bottom + 6, bottom: vh - r.top + 6 })
+      setPos({
+        left: r.left / z,
+        width: r.width / z,
+        maxH: maxH / z,
+        abrirCima,
+        top: (r.bottom + 6) / z,
+        bottom: (vh - r.top + 6) / z,
+      })
     }
     calc()
     const onDoc = (e) => { if (ref.current && !ref.current.contains(e.target) && popRef.current && !popRef.current.contains(e.target)) setOpen(false) }
@@ -75,8 +87,8 @@ export default function FiltroSelect({ icon, placeholder, options = [], value, m
         <span className="fs-label">{rotulo()}</span>
         <svg className="fs-chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
       </button>
-      {open && (
-        <div className="fs-pop" data-lenis-prevent ref={popRef} style={pos ? { position: 'fixed', left: pos.left, width: pos.width, maxHeight: pos.maxH, right: 'auto', top: pos.abrirCima ? 'auto' : pos.top, bottom: pos.abrirCima ? pos.bottom : 'auto' } : { visibility: 'hidden' }}>
+      {open && createPortal(
+        <div className="fs-pop" data-lenis-prevent ref={popRef} style={pos ? { position: 'fixed', left: pos.left, width: pos.width, maxHeight: pos.maxH, right: 'auto', top: pos.abrirCima ? 'auto' : pos.top, bottom: pos.abrirCima ? pos.bottom : 'auto', zIndex: 1000 } : { visibility: 'hidden' }}>
           {searchable && (
             <input className="fs-busca" autoFocus type="search" placeholder="Buscar bairro…" value={q} onChange={(e) => setQ(e.target.value)} />
           )}
@@ -97,7 +109,8 @@ export default function FiltroSelect({ icon, placeholder, options = [], value, m
           {multiple && arr.length > 0 && (
             <button type="button" className="fs-limpar" onClick={() => onChange([])}>Limpar seleção</button>
           )}
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   )
