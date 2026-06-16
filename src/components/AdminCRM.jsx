@@ -69,6 +69,95 @@ const motivoFollowUp = (c, d) => {
   return r.slice(0, 2).join(' · ') || 'vale um alô'
 }
 
+// ——— Importador de leads (colar a lista do CRM da Rotina) ———
+const faseParaStatus = (fase) => {
+  const f = (fase || '').toLowerCase()
+  if (f.includes('visita')) return 'Visita marcada'
+  if (f.includes('proposta')) return 'Proposta'
+  if (f.includes('fechado')) return 'Fechado'
+  if (f.includes('perdido') || f.includes('descart')) return 'Perdido'
+  return 'Em atendimento'
+}
+const tipoRotina = (t) => {
+  const s = (t || '').toLowerCase()
+  if (s.includes('apart')) return 'Apartamento'
+  if (s.includes('cobertura')) return 'Cobertura'
+  if (s.includes('kit') || s.includes('studio') || s.includes('stúdio')) return 'Kitnet/Studio'
+  if (s.includes('casa') && s.includes('cond')) return 'Casa em condomínio'
+  if (s.includes('casa')) return 'Casa'
+  if (s.includes('chácara') || s.includes('chacara')) return 'Chácara'
+  if (s.includes('galp')) return 'Galpão'
+  if (s.includes('sala') || s.includes('comercial')) return 'Sala comercial'
+  if (s.includes('lote')) return 'Lote'
+  if (s.includes('terreno')) return 'Terreno'
+  return ''
+}
+const parsePrecoSeg = (seg) => {
+  const nums = [...seg.matchAll(/R\$\s*([\d.]+(?:,\d{2})?)/g)].map((m) => parseInt(m[1].replace(/\./g, '').split(',')[0], 10) || 0)
+  if (nums.length >= 2) return { min: nums[0], max: nums[1] }
+  if (nums.length === 1) return /at[ée]/i.test(seg) ? { min: 0, max: nums[0] } : { min: nums[0], max: 0 }
+  return { min: 0, max: 0 }
+}
+const parseHeaderRotina = (h) => {
+  const out = { finalidade: 'Comprar', tipos: [], bairros: [], precoMin: 0, precoMax: 0, quartosMin: 0, vagasMin: 0 }
+  if (!h) return out
+  const parts = h.split('|').map((s) => s.trim()).filter(Boolean)
+  if (parts[0]) out.finalidade = /alug|loca/i.test(parts[0]) ? 'Alugar' : 'Comprar'
+  const tp = tipoRotina(parts[1]); if (tp) out.tipos = [tp]
+  for (let i = 2; i < parts.length; i++) {
+    const p = parts[i]
+    if (/R\$/.test(p) || /^at[ée]\s/i.test(p)) { const pr = parsePrecoSeg(p); out.precoMin = pr.min; out.precoMax = pr.max }
+    else if (/quarto/i.test(p)) { const m = p.match(/(\d+)/); if (m) out.quartosMin = +m[1] }
+    else if (/vaga/i.test(p)) { const m = p.match(/(\d+)/); if (m) out.vagasMin = +m[1] }
+    else if (/^uberl[âa]ndia\/?(mg)?$/i.test(p)) { /* só cidade */ }
+    else if (/uberl[âa]ndia/i.test(p)) {
+      const bs = p.split(/\s-\s/).map((x) => x.trim()).filter((x) => x && !/uberl[âa]ndia/i.test(x))
+      out.bairros.push(...bs)
+    }
+  }
+  out.bairros = [...new Set(out.bairros)]
+  return out
+}
+// recebe o texto colado do CRM da Rotina e devolve uma lista de clientes prontos p/ salvar
+function parseLeadsRotina(txt) {
+  const linhas = String(txt || '').split('\n').map((l) => l.trim())
+  const ehHeader = (l) => /^(venda|aluguel|loca[çc][aã]o)\s*\|/i.test(l)
+  const blocos = []
+  let header = null, cur = null
+  for (const l of linhas) {
+    if (!l) continue
+    if (ehHeader(l)) { header = l; continue }
+    const ma = l.match(/^atendimento\s+(\d+)/i)
+    if (ma) { cur = { id: ma[1], header, linhas: [] }; blocos.push(cur); header = null; continue }
+    if (cur) cur.linhas.push(l)
+  }
+  const ignora = (l) => /^(situa[çc][aã]o|fase atendimento|m[íi]dia de origem|usu[áa]rio mql|corretor|gerente|unidade|equipe|indicadores|quartos|vagas|carrinho|visitas|proposta)\b/i.test(l) || /^[-\s]*$/.test(l)
+  const ehFone = (l) => /\(?\d{2}\)?\s*9?\d{4}-?\d{4}/.test(l) && !/@/.test(l)
+  return blocos.map((b) => {
+    const h = parseHeaderRotina(b.header)
+    const texto = b.linhas.join('\n')
+    let nome = '', whatsapp = '', email = ''
+    for (const l of b.linhas) { if (!nome && !ignora(l) && !ehFone(l) && !/\S+@\S+/.test(l) && !/:/.test(l) && /[A-Za-zÀ-ú]/.test(l)) nome = l }
+    for (const l of b.linhas) { if (!whatsapp && ehFone(l)) whatsapp = l.replace(/\D/g, '') }
+    for (const l of b.linhas) { if (!email) { const m = l.match(/\S+@\S+\.\S+/); if (m) email = m[0] } }
+    const fase = ((texto.match(/fase atendimento:\s*(.+)/i) || [])[1] || '').trim()
+    const midia = ((texto.match(/m[íi]dia de origem:\s*(.+)/i) || [])[1] || '').trim()
+    const situacao = ((texto.match(/situa[çc][aã]o:\s*(.+)/i) || [])[1] || '').trim()
+    if (!h.quartosMin) { const m = texto.match(/quartos\s+(\d+)/i); if (m) h.quartosMin = +m[1] }
+    if (!h.vagasMin) { const m = texto.match(/vagas\s+(\d+)/i); if (m) h.vagasMin = +m[1] }
+    const obs = [`Importado da Rotina · Atend. ${b.id}`, fase && ('Fase: ' + fase), midia && ('Origem: ' + midia), situacao, email && ('Email: ' + email)].filter(Boolean).join(' · ')
+    const papeis = ['Lead', h.finalidade === 'Alugar' ? 'Locatário' : 'Comprador']
+    return {
+      _atend: b.id, _nome: nome || 'Sem nome',
+      nome, whatsapp, email, finalidade: h.finalidade,
+      tipos: h.tipos, bairros: h.bairros,
+      precoMin: h.precoMin || '', precoMax: h.precoMax || '',
+      quartosMin: h.quartosMin || '', suitesMin: '', vagasMin: h.vagasMin || '', areaMin: '',
+      status: faseParaStatus(fase), papeis, obs, nota: '', sugeridos: [],
+    }
+  }).filter((c) => c.whatsapp && c.whatsapp.replace(/\D/g, '').length >= 10)
+}
+
 export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadastro }) {
   const [clientes, setClientes] = useState(null)
   const [busca, setBusca] = useState('')
@@ -251,6 +340,30 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
   const [abrindo, setAbrindo] = useState(false)
   const [aba, setAba] = useState('detalhes') // aba do cadastro: detalhes | atendimentos | auditoria
   const [acoesAberto, setAcoesAberto] = useState(false) // menu "Ações" do cabeçalho
+  // importador de leads em massa (colar a lista do CRM da Rotina)
+  const [impAberto, setImpAberto] = useState(false)
+  const [impTexto, setImpTexto] = useState('')
+  const [impPreview, setImpPreview] = useState([])
+  const [impando, setImpando] = useState(false)
+  const [impResult, setImpResult] = useState(null)
+  const analisarImport = () => { setImpResult(null); setImpPreview(parseLeadsRotina(impTexto)) }
+  const importarLeads = async () => {
+    if (!impPreview.length || impando) return
+    setImpando(true)
+    const existentes = new Set((clientes || []).map((c) => (c.whatsapp || '').replace(/\D/g, '')))
+    let ok = 0, pulados = 0, falhas = 0
+    for (const c of impPreview) {
+      const wa = (c.whatsapp || '').replace(/\D/g, '')
+      if (existentes.has(wa)) { pulados++; continue }
+      try {
+        const { status, j } = await api({ action: 'crm-save', token, cliente: { ...VAZIO, ...c, id: '' } })
+        if (status === 200 && j && j.cliente) { ok++; existentes.add(wa) } else falhas++
+      } catch { falhas++ }
+    }
+    setImpando(false)
+    setImpResult({ ok, pulados, falhas, total: impPreview.length })
+    carregar()
+  }
   const comSalvar = async (acao) => {
     setAbrindo(true)
     const c = await salvar()
@@ -820,9 +933,51 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
     <section>
       <div className="admin-barra">
         <button className="btn btn-gold" onClick={() => { setAba('detalhes'); setAcoesAberto(false); setSel({ ...VAZIO }); setErro('') }}>+ Novo cliente</button>
+        <button className="admin-btn" onClick={() => { setImpAberto(true); setImpTexto(''); setImpPreview([]); setImpResult(null) }}>📋 Importar leads</button>
         <span className="painel-meta">{clientes ? `${clientes.length} cliente(s)${clientes.filter((c) => c.novo).length ? ` · ${clientes.filter((c) => c.novo).length} novo(s) do site` : ''}` : 'Carregando…'}</span>
         {erroLista && <button className="admin-btn admin-btn--mini" onClick={carregar} style={{ marginLeft: 8 }}>↺ Tentar de novo</button>}
       </div>
+
+      {impAberto && (
+        <div className="crm-laudo-modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) setImpAberto(false) }}>
+          <div className="crm-laudo-modal crm-import-modal">
+            <button className="crm-laudo-modal-close" onClick={() => setImpAberto(false)}>×</button>
+            <h3 style={{ marginTop: 0 }}>Importar leads da Rotina</h3>
+            <p className="calc-nota">Cole a lista de atendimentos copiada do CRM da Rotina. Eu identifico nome, WhatsApp, e-mail, tipo, bairro, faixa de preço, quartos/vagas e a fase — e crio um cliente para cada um. Quem já existir (mesmo WhatsApp) é pulado.</p>
+            <textarea
+              className="crm-import-txt"
+              rows="8"
+              value={impTexto}
+              onChange={(e) => setImpTexto(e.target.value)}
+              placeholder="Cole aqui a lista (Venda | Apartamento | … / Atendimento 318509 / Nome / (34) 9xxxx-xxxx / …)"
+            />
+            <div style={{ display: 'flex', gap: 8, marginTop: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+              <button className="admin-btn" onClick={analisarImport} disabled={!impTexto.trim()}>Analisar lista</button>
+              {impPreview.length > 0 && !impResult && (
+                <button className="btn btn-gold" onClick={importarLeads} disabled={impando}>{impando ? '⏳ Importando…' : `Importar ${impPreview.length} cliente(s)`}</button>
+              )}
+              {impPreview.length > 0 && <span className="painel-meta">{impPreview.length} lead(s) reconhecido(s)</span>}
+            </div>
+
+            {impResult && (
+              <div className="crm-import-result">
+                ✓ {impResult.ok} criado(s){impResult.pulados ? ` · ${impResult.pulados} já existia(m)` : ''}{impResult.falhas ? ` · ${impResult.falhas} falha(s)` : ''}. <button className="admin-btn admin-btn--mini" onClick={() => setImpAberto(false)}>Fechar</button>
+              </div>
+            )}
+
+            {impPreview.length > 0 && (
+              <div className="crm-import-preview">
+                {impPreview.map((c, i) => (
+                  <div className="crm-import-row" key={c._atend || i}>
+                    <b>{c._nome}</b>
+                    <span className="painel-meta">{c.whatsapp} · {c.finalidade} · {[c.tipos.join('/'), c.bairros.slice(0, 2).join(', '), c.precoMax ? 'até ' + formatPreco(c.precoMax) : ''].filter(Boolean).join(' · ')} · <i>{c.status}</i></span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
       <div className="crm-busca-wrap">
         <input
           className="crm-busca"

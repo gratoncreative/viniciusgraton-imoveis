@@ -2854,6 +2854,14 @@ html[data-theme="dark"] .nav:not(.scrolled) .nav-links a.nav-destaque { color: #
 .crm-auditoria th { text-align: left; font-family: var(--font-head); font-weight: 600; color: #5a616e; padding: 9px 0; width: 42%; vertical-align: top; }
 .crm-auditoria td { color: #20252e; padding: 9px 0; word-break: break-all; }
 .crm-auditoria tr + tr th, .crm-auditoria tr + tr td { border-top: 1px solid rgba(22,26,34,0.08); }
+/* Importador de leads */
+.crm-import-modal { max-width: 660px; }
+.crm-import-txt { width: 100%; border: 1px solid rgba(22,26,34,0.16); border-radius: 9px; padding: 10px 12px; font-family: var(--font-body); font-size: 0.88rem; line-height: 1.45; color: #20252e; background: #fff; resize: vertical; }
+.crm-import-txt:focus { outline: none; border-color: var(--gold-3); box-shadow: 0 0 0 3px rgba(176,141,87,0.14); }
+.crm-import-result { margin-top: 12px; background: #eef7f0; border: 1px solid #2e8c57; color: #1f5e3a; border-radius: 10px; padding: 10px 14px; font-size: 0.9rem; font-weight: 600; }
+.crm-import-preview { margin-top: 14px; max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; border-top: 1px solid rgba(22,26,34,0.1); padding-top: 8px; }
+.crm-import-row { padding: 8px 2px; border-bottom: 1px solid rgba(22,26,34,0.06); display: flex; flex-direction: column; gap: 2px; }
+.crm-import-row b { color: #20252e; font-size: 0.92rem; }
 .admin-fotos-edit { margin-top: 16px; }
 .admin-fotos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
 .admin-foto-item { position: relative; border-radius: 10px; overflow: hidden; border: 1px solid rgba(22,26,34,0.14); aspect-ratio: 4 / 3; background: #11151d; }
