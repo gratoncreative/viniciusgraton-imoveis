@@ -108,6 +108,101 @@ html[data-theme="claro"] body { background: #FFFFFF; }
 html[data-theme="claro"] .footer { background: #0A0E16; }
 html[data-theme="claro"] .nav { background: rgba(10,14,22,0.92); border-bottom: 1px solid rgba(227,210,168,0.14); }
 
+/* ── Tema claro nas páginas de ferramenta (eram fundo escuro fixo) ── */
+html[data-theme="claro"] .simf-pg,
+html[data-theme="claro"] .pdfjpg-pg { background: #F4EFE6; color: #2A2F38; }
+/* navs internas */
+html[data-theme="claro"] .pdfjpg-nav { background: rgba(255,255,255,0.92); border-bottom: 1px solid #E4DFD4; }
+html[data-theme="claro"] .pdfjpg-back { color: #1C2A44; }
+html[data-theme="claro"] .pdfjpg-nav-tag { color: #9A7B3C; }
+/* títulos e subtítulos */
+html[data-theme="claro"] .simf-titulo,
+html[data-theme="claro"] .pdfjpg-titulo { color: #0A0E16; }
+html[data-theme="claro"] .pdfjpg-titulo-hl { -webkit-text-fill-color: initial; background: none; color: #9A7B3C; }
+html[data-theme="claro"] .simf-sub,
+html[data-theme="claro"] .pdfjpg-sub { color: #2A2F38; }
+html[data-theme="claro"] .pdfjpg-header-icon,
+html[data-theme="claro"] .simf-hero { /* blocos de destaque seguem petróleo (estrutura marinho, permitida) */ }
+/* superfícies escuras -> brancas com borda pérola */
+html[data-theme="claro"] .simf-form,
+html[data-theme="claro"] .simf-bloco,
+html[data-theme="claro"] .simf-mini > div,
+html[data-theme="claro"] .simf-medidor,
+html[data-theme="claro"] .pdfjpg-main,
+html[data-theme="claro"] .pdfjpg-drop,
+html[data-theme="claro"] .pdfjpg-card,
+html[data-theme="claro"] .pdfjpg-how-step,
+html[data-theme="claro"] .pdfjpg-benefit,
+html[data-theme="claro"] .pdfjpg-faq-item,
+html[data-theme="claro"] .transc-bloco {
+  background: #FFFFFF !important;
+  border-color: #E4DFD4 !important;
+}
+html[data-theme="claro"] .pdfjpg-card-thumb { background: #F4EFE6; }
+html[data-theme="claro"] .simf-bloco-tit,
+html[data-theme="claro"] .pdfjpg-how-step h3,
+html[data-theme="claro"] .pdfjpg-benefit h3,
+html[data-theme="claro"] .pdfjpg-section-title,
+html[data-theme="claro"] .transc-bloco-head h3,
+html[data-theme="claro"] .pdfjpg-faq-q { color: #0A0E16; }
+/* textos de apoio / labels -> grafite e cinza pedra */
+html[data-theme="claro"] .simf-lista li,
+html[data-theme="claro"] .simf-mini b,
+html[data-theme="claro"] .pdfjpg-how-step p,
+html[data-theme="claro"] .pdfjpg-benefit p,
+html[data-theme="claro"] .pdfjpg-faq-a,
+html[data-theme="claro"] .pdfjpg-card-label,
+html[data-theme="claro"] .simf-renda-min,
+html[data-theme="claro"] .simf-lista li b { color: #2A2F38; }
+html[data-theme="claro"] .simf-mini span,
+html[data-theme="claro"] .simf-opcoes-label,
+html[data-theme="claro"] .pdfjpg-opcoes-label,
+html[data-theme="claro"] .pdfjpg-drop-sub,
+html[data-theme="claro"] .pdfjpg-drop-hint,
+html[data-theme="claro"] .pdfjpg-progress-note,
+html[data-theme="claro"] .simf-legal,
+html[data-theme="claro"] .simf-medidor-topo,
+html[data-theme="claro"] .pdfjpg-privacy { color: #8A8F99; }
+html[data-theme="claro"] .pdfjpg-drop-titulo { color: #1C2A44; }
+/* campos de formulário (inputs/selects/abas) no claro */
+html[data-theme="claro"] .simf-form input,
+html[data-theme="claro"] .simf-select,
+html[data-theme="claro"] .simf-range-input,
+html[data-theme="claro"] .transc-texto,
+html[data-theme="claro"] .gi-campo textarea,
+html[data-theme="claro"] .gi-select,
+html[data-theme="claro"] .calc-campo input {
+  background: #FFFFFF; color: #2A2F38; border-color: #E4DFD4;
+}
+html[data-theme="claro"] .simf-toggle-btn,
+html[data-theme="claro"] .simf-dpi-btn,
+html[data-theme="claro"] .pdfjpg-dpi-btn,
+html[data-theme="claro"] .gi-tipo { background: #FFFFFF; border-color: #E4DFD4; color: #2A2F38; }
+html[data-theme="claro"] .simf-toggle-btn--on,
+html[data-theme="claro"] .pdfjpg-dpi-btn--ativo,
+html[data-theme="claro"] .gi-tipo--on { background: #F4EFE6; border-color: #C6A15B; color: #0A0E16; }
+/* bloco de destaque do simulador continua petróleo (estrutura marinho); valor em champanhe (8:1 ok) */
+html[data-theme="claro"] .simf-hero { background: linear-gradient(145deg, #1C2A44, #0A0E16); border-color: rgba(198,161,91,0.4); }
+/* textos restantes claros -> grafite/marinho no simulador */
+html[data-theme="claro"] .simf-medidor-topo,
+html[data-theme="claro"] .simf-medidor-base,
+html[data-theme="claro"] .simf-medidor-marca,
+html[data-theme="claro"] .simf-range-tips,
+html[data-theme="claro"] .simf-range-tips span,
+html[data-theme="claro"] .simf-tab-comp td,
+html[data-theme="claro"] .simf-tab-amort td,
+html[data-theme="claro"] .pdfjpg-range-tips,
+html[data-theme="claro"] .gi-campo > span,
+html[data-theme="claro"] .ef-pincel { color: #2A2F38; }
+html[data-theme="claro"] .simf-avancado summary,
+html[data-theme="claro"] .simf-tab-toggle,
+html[data-theme="claro"] .simf-tab-comp th,
+html[data-theme="claro"] .simf-tab-amort th { color: #1C2A44; }
+html[data-theme="claro"] .simf-tab-amort th { background: #F4EFE6; }
+/* dentro do bloco petróleo, manter texto claro */
+html[data-theme="claro"] .simf-hero .simf-hero-label { color: rgba(255,255,255,0.6); }
+html[data-theme="claro"] .simf-hero .simf-hero-sub { color: rgba(255,255,255,0.5); }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
