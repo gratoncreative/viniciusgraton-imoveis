@@ -590,6 +590,12 @@ html[data-theme="claro"] .back-top { background: rgba(244,239,230,0.92); color: 
 html[data-theme="claro"] .back-top:hover { background: #F4EFE6; color: #0A0E16; }
 html[data-theme="claro"] .card-body .card-seg-desc { color: #2A2F38; }
 
+/* Chips de garantias do hero — eram marinho translúcido (cinza lamacento); viram cartões claros */
+html[data-theme="claro"] .apres-checks li { background: #FFFFFF; border-color: #E4DFD4; color: #2A2F38; backdrop-filter: none; box-shadow: 0 1px 3px rgba(10,14,22,.05); }
+html[data-theme="claro"] .apres-checks li:hover { background: #FBF9F4; border-color: #C6A15B; }
+html[data-theme="claro"] .apres-checks li span { background: rgba(198,161,91,0.16); color: #1C2A44; }
+html[data-theme="claro"] .apres-checks li i { color: #1C2A44; }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
