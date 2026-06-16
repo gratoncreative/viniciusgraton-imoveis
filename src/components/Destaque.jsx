@@ -1,12 +1,17 @@
+import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import Reveal from './Reveal'
 import CardImovel from './CardImovel'
+import PromoLancamento from './PromoLancamento'
 import { IMOVEIS } from '../data'
 import { IconArrow } from './icons'
 
 export default function Destaque({ limite = 6 }) {
   if (!IMOVEIS.length) return null
-  const lista = IMOVEIS.slice(0, limite)
+  // a publicidade entra MISTURADA na grade (regra: anúncio no formato de card da
+  // página). Abrimos 1 vaga p/ ela e mantemos o total preenchendo as linhas.
+  const lista = IMOVEIS.slice(0, Math.max(0, limite - 1))
+  const PROMO_POS = Math.min(2, lista.length)
 
   return (
     <section id="destaque" className="section--light">
@@ -31,9 +36,14 @@ export default function Destaque({ limite = 6 }) {
 
         <div className="im-grid" style={{ perspective: '1400px' }}>
           {lista.map((im, i) => (
-            <Reveal key={im.codigo} delay={(i % 3) * 0.08}>
-              <CardImovel im={im} />
-            </Reveal>
+            <Fragment key={im.codigo}>
+              {i === PROMO_POS && (
+                <Reveal delay={(PROMO_POS % 4) * 0.06}><PromoLancamento variante="card" /></Reveal>
+              )}
+              <Reveal delay={(i % 4) * 0.06}>
+                <CardImovel im={im} />
+              </Reveal>
+            </Fragment>
           ))}
         </div>
 

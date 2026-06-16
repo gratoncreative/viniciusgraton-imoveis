@@ -1101,6 +1101,11 @@ html[data-theme="claro"] .promo-imovel-media { background: linear-gradient(150de
 .promo-imovel-marca i { font-family: var(--font-head); font-style: normal; font-size: .6rem; letter-spacing: .26em; text-transform: uppercase; color: var(--gold-1); }
 .promo-imovel-pub { z-index: 3; }
 .promo-imovel .im-tag { top: auto; bottom: 12px; left: 12px; z-index: 3; }
+/* variante CARD (vertical) — misturada na grade de imóveis da home */
+.promo-imovel--card { margin-bottom: 0; }
+.promo-imovel--card .im-tag { top: 14px; right: 14px; left: auto; bottom: auto; }
+.promo-imovel-preco-ov { z-index: 3; color: #FFFFFF; }
+.promo-imovel-preco-ov b { color: #FFFFFF; font-weight: 800; }
 .promo-imovel-preco { font-family: var(--font-head); font-size: .8rem; color: #5b626e; }
 .promo-imovel-preco b { display: block; font-family: var(--font-head); font-size: 1.4rem; font-weight: 800; color: #0A0E16; line-height: 1.1; }
 .hero-nome { font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: clamp(2.6rem, 5.5vw, 4.4rem); line-height: 1.02; margin: 6px 0 16px; background: linear-gradient(135deg, #E3D2A8 0%, #C6A15B 60%, #9A7B3C 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.92)); }

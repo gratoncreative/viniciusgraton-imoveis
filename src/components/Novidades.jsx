@@ -18,15 +18,19 @@ export default function Novidades() {
   const diaLabel = new Date().toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' })
 
   const Bloco = ({ eyebrow, titulo, em, sub, itens, top, overlayOnPhoto }) => {
-    const slice = itens.slice(0, 6)
+    // a grade tem 4 colunas no desktop (2 no tablet, 1 no mobile). Para o grid
+    // NUNCA deixar buraco em branco, o nº de itens precisa preencher a linha →
+    // limitamos a um múltiplo de 4 (8 se houver, senão 4). 1–3 itens usam o layout em linha.
+    const max = itens.length >= 8 ? 8 : itens.length >= 4 ? 4 : itens.length
+    const slice = itens.slice(0, max)
     const n = slice.length
-    const usaLinha = n <= 2
+    const usaLinha = n <= 3
     const mostraHeader = !overlayOnPhoto || !usaLinha
     return (
       <>
         {mostraHeader && (
           <Reveal>
-            <div className="cat-head" style={{ textAlign: 'center', maxWidth: 660, margin: `${top ? 56 : 0}px auto 30px` }}>
+            <div className="cat-head" style={{ textAlign: 'center', maxWidth: 660, margin: `${top ? 32 : 0}px auto 26px` }}>
               <span className="eyebrow" style={{ justifyContent: 'center' }}>{eyebrow}</span>
               <h2 className="section-title">{titulo} <em>{em}</em></h2>
               <p className="section-sub" style={{ marginTop: 12 }}>{sub}</p>
