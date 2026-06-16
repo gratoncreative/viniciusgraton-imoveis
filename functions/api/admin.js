@@ -289,10 +289,15 @@ export async function onRequestPost({ env, request }) {
 
   // imóveis em DESTAQUE no topo do catálogo (no máx. 3) — lido pelo /api/destaque
   if (action === 'catalogo-destaque') {
+    if (!temKV(env)) return json({ error: 'kv', msg: 'Armazenamento (KV) indisponível neste ambiente.' }, 503)
     const codigos = Array.isArray(b.codigos)
       ? [...new Set(b.codigos.map((x) => String(x).replace(/[^a-zA-Z0-9]/g, '').slice(0, 12)).filter(Boolean))].slice(0, 3)
       : []
-    await env.ENGAGEMENT.put('config:catalogo-topo', JSON.stringify({ codigos, ts: Date.now() }))
+    try {
+      await env.ENGAGEMENT.put('config:catalogo-topo', JSON.stringify({ codigos, ts: Date.now() }))
+    } catch (e) {
+      return json({ error: 'destaque', msg: 'Falha ao gravar destaque (KV): ' + String((e && e.message) || e).slice(0, 160) }, 500)
+    }
     return json({ ok: true, codigos })
   }
 
