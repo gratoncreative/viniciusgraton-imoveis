@@ -364,16 +364,16 @@ html[data-theme="claro"] .au-form-hint { color: #5b626e; }
 /* ════ Auditoria multiagente v2 — rodada 2 (30 achados) ════ */
 /* Home — seções com fundo escuro hardcoded -> claras */
 html[data-theme="claro"] .section-title em { color: #0A0E16; -webkit-text-fill-color: #0A0E16; background: none; -webkit-background-clip: unset; background-clip: unset; }
-html[data-theme="claro"] .vender-cta { background: linear-gradient(135deg, #FFFFFF 0%, #F4EFE6 100%); border-color: rgba(28,42,68,0.18); color: #2A2F38; }
+html[data-theme="claro"] .vender-cta { background: #FCFBF9; border-color: #E4DFD4; color: #2A2F38; }
 html[data-theme="claro"] .vender-cta-txt h2 { color: #0A0E16; font-family: var(--font-display); }
 html[data-theme="claro"] .vender-cta-txt h2 em { -webkit-text-fill-color: #0A0E16; color: #0A0E16; background: none; }
 html[data-theme="claro"] .vender-cta-txt > p { color: #2A2F38; }
 html[data-theme="claro"] .vender-cta-num b { -webkit-text-fill-color: #0A0E16; color: #0A0E16; background: none; }
 html[data-theme="claro"] .vender-cta-acoes .btn-ghost { background: #FFFFFF; border-color: #E4DFD4; color: #1C2A44; }
-html[data-theme="claro"] .ferr-home-sec { background: linear-gradient(180deg, #FFFFFF 0%, #F4EFE6 100%); }
+html[data-theme="claro"] .ferr-home-sec { background: #FFFFFF; }
 html[data-theme="claro"] .ferr-home-sec::before,
 html[data-theme="claro"] .ferr-home-sec::after { background: linear-gradient(90deg, transparent 0%, rgba(28,42,68,0.1) 20%, rgba(28,42,68,0.2) 50%, rgba(28,42,68,0.1) 80%, transparent 100%); }
-html[data-theme="claro"] .corrbn { background: linear-gradient(140deg, rgba(154,123,60,0.06) 0%, transparent 100%); border-color: rgba(154,123,60,0.2); }
+html[data-theme="claro"] .corrbn { background: #FCFBF9; border-color: #E4DFD4; }
 html[data-theme="claro"] .corrbn-eyebrow,
 html[data-theme="claro"] .corrbn .eyebrow { color: #1C2A44; }
 html[data-theme="claro"] .blog-feat-tag { color: #1C2A44; }
@@ -589,6 +589,13 @@ html[data-theme="claro"] .ef-canvas-wrap { background: #F4EFE6; border-color: #E
 html[data-theme="claro"] .back-top { background: rgba(244,239,230,0.92); color: #1C2A44; border-color: #C6A15B; }
 html[data-theme="claro"] .back-top:hover { background: #F4EFE6; color: #0A0E16; }
 html[data-theme="claro"] .card-body .card-seg-desc { color: #2A2F38; }
+
+/* Fundo do site 100% branco — sem glow dourado e sem bandas marfim (cards seguem #FCFBF9) */
+html[data-theme="claro"] body::before { background: none; }
+html[data-theme="claro"] .section--light { background: #FFFFFF; }
+html[data-theme="claro"] .section--alt,
+html[data-theme="claro"] .pagina,
+html[data-theme="claro"] main { background: #FFFFFF; }
 
 /* Chips de garantias do hero — eram marinho translúcido (cinza lamacento); viram cartões claros */
 html[data-theme="claro"] .apres-checks li { background: #FCFBF9; border-color: #E4DFD4; color: #2A2F38; backdrop-filter: none; box-shadow: 0 1px 3px rgba(10,14,22,.05); }
