@@ -13,7 +13,7 @@ const MARCA = 'viniciusgraton.com.br'
 function desenharMarca(ctx, w, h) {
   ctx.save()
   const fonte = Math.max(20, Math.round(w * 0.042))
-  ctx.font = `700 ${fonte}px "Inter", "Segoe UI", system-ui, sans-serif`
+  ctx.font = `700 ${fonte}px "Montserrat", "Segoe UI", system-ui, sans-serif`
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
   const txtW = ctx.measureText(MARCA).width

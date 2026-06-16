@@ -360,6 +360,51 @@ html[data-theme="claro"] .pdfjpg-progress-note,
 html[data-theme="claro"] .pdfjpg-drop-sub,
 html[data-theme="claro"] .est-wa-hint,
 html[data-theme="claro"] .au-form-hint { color: #5b626e; }
+
+/* ════ Auditoria multiagente v2 — rodada 2 (30 achados) ════ */
+/* Home — seções com fundo escuro hardcoded -> claras */
+html[data-theme="claro"] .section-title em { color: #0A0E16; -webkit-text-fill-color: #0A0E16; background: none; -webkit-background-clip: unset; background-clip: unset; }
+html[data-theme="claro"] .vender-cta { background: linear-gradient(135deg, #FFFFFF 0%, #F4EFE6 100%); border-color: rgba(28,42,68,0.18); color: #2A2F38; }
+html[data-theme="claro"] .vender-cta-txt h2 { color: #0A0E16; font-family: var(--font-display); }
+html[data-theme="claro"] .vender-cta-txt h2 em { -webkit-text-fill-color: #0A0E16; color: #0A0E16; background: none; }
+html[data-theme="claro"] .vender-cta-txt > p { color: #2A2F38; }
+html[data-theme="claro"] .vender-cta-num b { -webkit-text-fill-color: #0A0E16; color: #0A0E16; background: none; }
+html[data-theme="claro"] .vender-cta-acoes .btn-ghost { background: #FFFFFF; border-color: #E4DFD4; color: #1C2A44; }
+html[data-theme="claro"] .ferr-home-sec { background: linear-gradient(180deg, #FFFFFF 0%, #F4EFE6 100%); }
+html[data-theme="claro"] .ferr-home-sec::before,
+html[data-theme="claro"] .ferr-home-sec::after { background: linear-gradient(90deg, transparent 0%, rgba(28,42,68,0.1) 20%, rgba(28,42,68,0.2) 50%, rgba(28,42,68,0.1) 80%, transparent 100%); }
+html[data-theme="claro"] .corrbn { background: linear-gradient(140deg, rgba(154,123,60,0.06) 0%, transparent 100%); border-color: rgba(154,123,60,0.2); }
+html[data-theme="claro"] .corrbn-eyebrow,
+html[data-theme="claro"] .corrbn .eyebrow { color: #1C2A44; }
+html[data-theme="claro"] .blog-feat-tag { color: #1C2A44; }
+html[data-theme="claro"] .blog-cor-0,
+html[data-theme="claro"] .blog-cor-1,
+html[data-theme="claro"] .blog-cor-2 { background: linear-gradient(135deg, #F4EFE6 0%, #ECE6DA 70%); }
+html[data-theme="claro"] .section--light .eyebrow { color: #1C2A44; }
+html[data-theme="claro"] .hero-busca-campo select { background: #FFFFFF; color: #2A2F38; border-color: rgba(28,42,68,0.2); }
+/* Lista de imóveis — botão dourado -> petróleo; link dourado -> marinho */
+html[data-theme="claro"] .im-cta { background: #1C2A44; color: #FFFFFF; box-shadow: 0 10px 30px -12px rgba(28,42,68,.5); }
+html[data-theme="claro"] .im-card:hover .im-cta { background: #0A0E16; box-shadow: 0 18px 44px -8px rgba(28,42,68,.5); }
+html[data-theme="claro"] .im-ver { color: #1C2A44; }
+html[data-theme="claro"] .im-card:hover .im-ver { color: #0A0E16; }
+/* Modal de filtro — labels/borda/notas legíveis */
+html[data-theme="claro"] .ff-field > span,
+html[data-theme="claro"] .ff-pillset > span,
+html[data-theme="claro"] .ff-block > span { color: #1C2A44; }
+html[data-theme="claro"] .ff-field > span i { color: #8A8F99; }
+html[data-theme="claro"] .ff-note { color: #5b626e; }
+html[data-theme="claro"] .fs-pop { border: 1px solid #E4DFD4; box-shadow: 0 22px 50px -22px rgba(10,14,22,0.25); }
+html[data-theme="claro"] .filtro-form select option { background: #FFFFFF; color: #2A2F38; }
+/* Detalhe do imóvel — texto dourado claro -> marinho/grafite; ícones -> champanhe escuro (acento permitido) */
+html[data-theme="claro"] .det-bread a:hover { color: #1C2A44; }
+html[data-theme="claro"] .det-estudo-cta-txt strong { color: #2A2F38; }
+html[data-theme="claro"] .det-estudo-cta-ico,
+html[data-theme="claro"] .det-spec-ico,
+html[data-theme="claro"] .det-dest-ico { color: var(--gold-3); }
+/* Ferramenta PDF/JPG — destaque dourado -> marinho */
+html[data-theme="claro"] .pdfjpg-titulo-hl { color: #0A0E16; }
+html[data-theme="claro"] .pdfjpg-nav-tag { color: #1C2A44; }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; zoom: 0.85; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; width: 100%; }
