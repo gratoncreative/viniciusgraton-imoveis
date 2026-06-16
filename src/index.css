@@ -947,6 +947,17 @@ section { position: relative; padding: clamp(20px, 3vw, 40px) 0; }
 .hero-destaques-link svg { width: 16px; height: 16px; }
 .hero-destaques-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 @media (max-width: 560px) { .hero-destaques-grid { grid-template-columns: 1fr; } }
+/* Categorias rápidas — atalhos de busca por estilo/categoria */
+.cats-rapidas { padding: clamp(40px, 6vw, 72px) 0; }
+.cats-rapidas-head { text-align: center; margin-bottom: 34px; display: flex; flex-direction: column; align-items: center; }
+.cats-rapidas-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+.cat-atalho { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 24px 14px; border-radius: 16px; background: #FCFBF9; border: 1px solid #E4DFD4; text-decoration: none; transition: transform .25s var(--ease), border-color .25s var(--ease), box-shadow .25s var(--ease); }
+.cat-atalho:hover { transform: translateY(-4px); border-color: #C6A15B; box-shadow: 0 18px 40px -24px rgba(10,14,22,.3); }
+.cat-atalho-ico { width: 58px; height: 58px; display: grid; place-items: center; border-radius: 50%; background: rgba(198,161,91,0.12); color: #1C2A44; transition: background .25s var(--ease); }
+.cat-atalho:hover .cat-atalho-ico { background: rgba(198,161,91,0.2); }
+.cat-atalho-label { font-family: var(--font-head); font-weight: 600; font-size: 0.95rem; color: #2A2F38; text-align: center; line-height: 1.25; }
+@media (max-width: 980px) { .cats-rapidas-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 560px) { .cats-rapidas-grid { grid-template-columns: repeat(2, 1fr); } }
 .hero-nome { font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: clamp(2.6rem, 5.5vw, 4.4rem); line-height: 1.02; margin: 6px 0 16px; background: linear-gradient(135deg, #E3D2A8 0%, #C6A15B 60%, #9A7B3C 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.92)); }
 .hero-bio .apres-lead { max-width: 560px; }
 .hero-bio-acoes { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 24px; }

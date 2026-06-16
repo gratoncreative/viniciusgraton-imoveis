@@ -4,6 +4,7 @@ import { useSEO } from '../useSEO'
 
 const Novidades = lazy(() => import('../components/Novidades'))
 const Destaque = lazy(() => import('../components/Destaque'))
+const CategoriasRapidas = lazy(() => import('../components/CategoriasRapidas'))
 const FerramentasHome = lazy(() => import('../components/FerramentasHome'))
 const CorretorBanner = lazy(() => import('../components/CorretorBanner'))
 const VenderCta = lazy(() => import('../components/VenderCta'))
@@ -65,6 +66,7 @@ export default function Home() {
       <Suspense fallback={null}>
         <Novidades />
         <Destaque limite={8} />
+        <CategoriasRapidas />
         <FerramentasHome />
         <CorretorBanner />
         <VenderCta />
