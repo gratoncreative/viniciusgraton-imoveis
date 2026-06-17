@@ -1160,7 +1160,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
         </div>
       )}
 
-      <CrmOportunidades clientes={clientes || []} cadastros={cadastros} linkCliente={linkCliente} />
+      <CrmOportunidades clientes={clientes || []} cadastros={cadastros} linkCliente={linkCliente} token={token} onMudou={carregar} />
 
       {(() => {
         const fu = [...(clientes || [])].map((c) => ({ c, d: diasParado(c) })).map((x) => ({ ...x, s: scoreFollowUp(x.c, x.d) })).filter((x) => x.s > 0).sort((a, b) => b.s - a.s).slice(0, 6)

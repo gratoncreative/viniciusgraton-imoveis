@@ -6,11 +6,12 @@ const waLink = (wa, msg) => { const d = String(wa || '').replace(/\D/g, ''); if 
 const pNome = (n) => (n ? String(n).trim().split(' ')[0] : '')
 
 // #5 e #14 — Oportunidades de contato do dia.
-// Reusa o novidades.json (gerado no sync diário): casa imóveis NOVOS com os critérios
-// salvos de cada cliente (#5) e quedas de preço com seleção/favoritos (#14).
-// NÃO dispara nada sozinho — entrega o WhatsApp pré-preenchido para o Vinícius enviar.
-export default function CrmOportunidades({ clientes = [], cadastros = [], linkCliente }) {
+// Casa imóveis NOVOS com os critérios salvos de cada cliente (#5) e quedas de preço
+// com seleção/favoritos (#14). Ao enviar o WhatsApp, marca o imóvel como AVISADO àquele
+// cliente (KV) — assim a oportunidade SOME e não reaparece nos dias seguintes (sem reenvio).
+export default function CrmOportunidades({ clientes = [], cadastros = [], linkCliente, token, onMudou }) {
   const [nov, setNov] = useState(null)
+  const [avisadosUI, setAvisadosUI] = useState(() => new Set()) // `${id}|${cod}` marcados nesta sessão
   useEffect(() => {
     let vivo = true
     fetch('/novidades.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).then((d) => { if (vivo) setNov(d) }).catch(() => {})
@@ -19,6 +20,21 @@ export default function CrmOportunidades({ clientes = [], cadastros = [], linkCl
   const novos = nov?.novos || []
   const baixaram = nov?.baixaram || []
 
+  // já avisei esse imóvel pra esse cliente? (persistido em c.avisados + marcados nesta sessão)
+  const jaAvisou = (id, cod) => {
+    if (!id) return false
+    if (avisadosUI.has(id + '|' + cod)) return true
+    const c = clientes.find((x) => x.id === id)
+    return !!(c && (c.avisados || []).map(String).includes(String(cod)))
+  }
+  const marcarAvisado = (id, codigos) => {
+    const cods = (codigos || []).map(String).filter(Boolean)
+    if (!id || !cods.length) return
+    setAvisadosUI((prev) => { const n = new Set(prev); cods.forEach((cod) => n.add(id + '|' + cod)); return n })
+    fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'crm-avisado', token, id, codigos: cods }) })
+      .then(() => { if (onMudou) setTimeout(onMudou, 400) }).catch(() => {})
+  }
+
   const alertasNovos = useMemo(() => {
     if (!novos.length) return []
     return clientes.map((c) => {
@@ -26,10 +42,10 @@ export default function CrmOportunidades({ clientes = [], cadastros = [], linkCl
       const temPref = (c.tipos?.length || c.bairros?.length || +c.precoMax > 0 || +c.quartosMin > 0)
       if (!temPref) return null
       const prefs = { tipos: c.tipos, bairros: c.bairros, precoMin: +c.precoMin || 0, precoMax: +c.precoMax || 0, quartosMin: +c.quartosMin || 0, suitesMin: +c.suitesMin || 0, vagasMin: +c.vagasMin || 0, areaMin: +c.areaMin || 0 }
-      const hits = novos.filter((im) => avaliarMatch(im, prefs).ok)
+      const hits = novos.filter((im) => avaliarMatch(im, prefs).ok && !jaAvisou(c.id, im.codigo))
       return hits.length ? { c, hits } : null
     }).filter(Boolean).sort((a, b) => b.hits.length - a.hits.length)
-  }, [clientes, novos])
+  }, [clientes, novos, avisadosUI])
 
   const alertasQueda = useMemo(() => {
     if (!baixaram.length) return []
@@ -39,17 +55,20 @@ export default function CrmOportunidades({ clientes = [], cadastros = [], linkCl
       const pct = im.precoAnterior > 0 ? Math.round((1 - im.preco / im.precoAnterior) * 100) : 0
       const interessados = []
       for (const c of clientes) {
+        if (jaAvisou(c.id, cod)) continue
         const liked = c.feedback && c.feedback[cod] === 'like'
         const naSel = (c.sugeridos || []).map(String).includes(cod)
-        if (liked || naSel) interessados.push({ nome: c.nome, wa: c.whatsapp, link: linkCliente ? linkCliente(c) : '', como: liked ? 'curtiu' : 'estava na sua seleção' })
+        if (liked || naSel) interessados.push({ id: c.id, nome: c.nome, wa: c.whatsapp, como: liked ? 'curtiu' : 'estava na sua seleção' })
       }
       for (const ca of cadastros) {
-        if ((ca.favoritos || []).map(String).includes(cod)) interessados.push({ nome: ca.nome, wa: ca.fone, link: '', como: 'favoritou no site' })
+        if ((ca.favoritos || []).map(String).includes(cod) && !avisadosUI.has('conta:' + (ca.token || ca.nome) + '|' + cod)) {
+          interessados.push({ id: null, contaKey: 'conta:' + (ca.token || ca.nome), nome: ca.nome, wa: ca.fone, como: 'favoritou no site' })
+        }
       }
-      if (interessados.length) res.push({ im, pct, interessados })
+      if (interessados.length) res.push({ im, cod, pct, interessados })
     }
     return res
-  }, [clientes, cadastros, baixaram, linkCliente])
+  }, [clientes, cadastros, baixaram, avisadosUI])
 
   if (!novos.length && !baixaram.length) return null
   const totalAlertas = alertasNovos.length + alertasQueda.reduce((s, q) => s + q.interessados.length, 0)
@@ -74,7 +93,7 @@ export default function CrmOportunidades({ clientes = [], cadastros = [], linkCl
             return (
               <div className="crm-oport-row" key={c.id}>
                 <span className="crm-oport-info"><b>{c.nome || 'Sem nome'}</b><i>{hits.length} novo{hits.length > 1 ? 's' : ''} ({hits.slice(0, 2).map((im) => `${im.tipo} ${im.bairro}`).join(', ')}{hits.length > 2 ? '…' : ''})</i></span>
-                {wa && <a className="admin-btn admin-btn--ok admin-btn--mini" href={wa} target="_blank" rel="noopener noreferrer">WhatsApp</a>}
+                {wa && <a className="admin-btn admin-btn--ok admin-btn--mini" href={wa} target="_blank" rel="noopener noreferrer" onClick={() => marcarAvisado(c.id, hits.map((h) => h.codigo))}>WhatsApp ✓</a>}
               </div>
             )
           })}
@@ -84,15 +103,16 @@ export default function CrmOportunidades({ clientes = [], cadastros = [], linkCl
       {alertasQueda.length > 0 && (
         <div className="crm-oport-bloco">
           <p className="crm-oport-tit">↓ Quedas de preço em quem favoritou / tinha na seleção</p>
-          {alertasQueda.map(({ im, pct, interessados }) => (
+          {alertasQueda.map(({ im, cod, pct, interessados }) => (
             <div className="crm-oport-queda" key={im.codigo}>
               <p className="crm-oport-queda-im"><b>{im.tipo} · {im.bairro}</b> — {formatPreco(im.preco)} {pct > 0 && <span className="crm-oport-pct">↓ {pct}%</span>}</p>
               {interessados.map((p, i) => {
                 const wa = waLink(p.wa, msgQueda(im, pct, p.nome))
+                const marcar = () => { if (p.id) marcarAvisado(p.id, [cod]); else setAvisadosUI((prev) => new Set(prev).add(p.contaKey + '|' + cod)) }
                 return (
                   <div className="crm-oport-row" key={i}>
                     <span className="crm-oport-info"><b>{p.nome || 'Sem nome'}</b><i>{p.como}</i></span>
-                    {wa && <a className="admin-btn admin-btn--ok admin-btn--mini" href={wa} target="_blank" rel="noopener noreferrer">WhatsApp</a>}
+                    {wa && <a className="admin-btn admin-btn--ok admin-btn--mini" href={wa} target="_blank" rel="noopener noreferrer" onClick={marcar}>WhatsApp ✓</a>}
                   </div>
                 )
               })}
@@ -100,7 +120,7 @@ export default function CrmOportunidades({ clientes = [], cadastros = [], linkCl
           ))}
         </div>
       )}
-      <p className="painel-meta" style={{ marginTop: 8 }}>Baseado nos imóveis novos e nas quedas de preço do último sync. Os textos já vêm prontos — é só revisar e enviar.</p>
+      <p className="painel-meta" style={{ marginTop: 8 }}>Ao clicar em <b>WhatsApp</b>, o imóvel é marcado como avisado àquele cliente e sai daqui — não reaparece nem reenvia nos próximos dias. Baseado no último sync.</p>
     </details>
   )
 }

@@ -367,6 +367,7 @@ export async function onRequestPost({ env, request }) {
       papeis: arrStr(c.papeis, 8, 24),
       nota: lim(c.nota, 1000), status: lim(c.status, 24),
       tags: arrStr(c.tags != null ? c.tags : reg.tags, 16, 28),
+      avisados: arrStr(c.avisados != null ? c.avisados : reg.avisados, 500, 16),
       atendimentos, notas,
       foto: lim(c.foto, 200000), // dataURL da foto do cliente (JPEG ~480px, ≈150KB base64)
       // preserva o que o PRÓPRIO cliente refinou na página dele (nunca sobrescrever no save do admin)
@@ -391,6 +392,19 @@ export async function onRequestPost({ env, request }) {
   if (action === 'crm-visto') {
     const id = String(b.id || '').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)
     if (id) { const r = await env.ENGAGEMENT.get('crm:' + id, 'json'); if (r && r.temNovidade) { r.temNovidade = false; await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(r), { metadata: { novo: !!r.novo, temNovidade: false } }) } }
+    return json({ ok: true })
+  }
+  // marca imóveis já AVISADOS a um cliente (some das "oportunidades de contato" e não repete)
+  if (action === 'crm-avisado') {
+    const id = String(b.id || '').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)
+    const cods = Array.isArray(b.codigos) ? b.codigos.map((x) => String(x).replace(/[^\w-]/g, '').slice(0, 16)).filter(Boolean) : []
+    if (!id || !cods.length) return json({ ok: true })
+    const r = await env.ENGAGEMENT.get('crm:' + id, 'json')
+    if (r) {
+      r.avisados = [...new Set([...(Array.isArray(r.avisados) ? r.avisados : []), ...cods])].slice(-500)
+      r.atualizadoEm = Date.now()
+      await env.ENGAGEMENT.put('crm:' + id, JSON.stringify(r), { metadata: { novo: !!r.novo, temNovidade: !!r.temNovidade } })
+    }
     return json({ ok: true })
   }
   if (action === 'crm-del') {
