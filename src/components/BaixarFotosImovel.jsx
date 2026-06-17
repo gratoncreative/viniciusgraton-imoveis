@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import JSZip from 'jszip'
 
-// Protótipo — download de TODAS as fotos do imóvel aberto, com marca d'água
-// do site (grande, diagonal, baixa opacidade) aplicada no momento do download.
-// O processamento é 100% no navegador (canvas + JSZip); o CDN da Rotina
-// permite CORS, então não precisa de servidor.
+// Download de TODAS as fotos do imóvel aberto, com marca d'água do site
+// (grande, diagonal, baixa opacidade) aplicada no momento do download.
+// Baixa as fotos UMA A UMA (sem ZIP), já nomeando cada arquivo com a
+// descrição do imóvel + "Vinícius Graton". 100% no navegador (canvas);
+// o CDN da Rotina permite CORS, então não precisa de servidor.
 
 const MARCA = 'viniciusgraton.com.br'
 
@@ -55,7 +55,11 @@ export default function BaixarFotosImovel({ im, fotos = [], galeria = false }) {
     setEstado('baixando')
     setProg({ feito: 0, total: fotos.length, falhas: 0 })
 
-    const zip = new JSZip()
+    // nome dos arquivos: descrição do imóvel + "Vinícius Graton" + número
+    const limpar = (s) => String(s || '').replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' ').trim()
+    const desc = limpar(`${im.tipo || 'Imóvel'}${im.bairro ? ' no ' + im.bairro : ''}${im.cidade ? ' - ' + im.cidade : ''}`)
+    const baseNome = `${desc} - Vinícius Graton`
+
     let feito = 0
     let falhas = 0
 
@@ -69,39 +73,34 @@ export default function BaixarFotosImovel({ im, fotos = [], galeria = false }) {
         ctx.drawImage(img, 0, 0)
         desenharMarca(ctx, canvas.width, canvas.height)
         const blob = await new Promise((r) => canvas.toBlob(r, 'image/jpeg', 0.9))
+        canvas.width = 0
+        canvas.height = 0
         if (blob) {
-          zip.file(`${im.codigo}_foto_${String(i + 1).padStart(2, '0')}.jpg`, blob)
+          // baixa a foto INDIVIDUAL (sem compactar), já com o nome definido
+          const url = URL.createObjectURL(blob)
+          const a = document.createElement('a')
+          a.href = url
+          a.download = `${baseNome} - ${String(i + 1).padStart(2, '0')}.jpg`
+          document.body.appendChild(a)
+          a.click()
+          a.remove()
+          setTimeout(() => URL.revokeObjectURL(url), 5000)
           feito++
+          setProg({ feito, total: fotos.length, falhas })
+          // espaça os downloads p/ o navegador não agrupar/bloquear
+          await new Promise((r) => setTimeout(r, 350))
+          continue
         } else {
           falhas++
         }
-        canvas.width = 0
-        canvas.height = 0
       } catch {
         falhas++
       }
       setProg({ feito, total: fotos.length, falhas })
     }
 
-    if (feito === 0) {
-      setEstado('erro')
-      setTimeout(() => setEstado('idle'), 4000)
-      return
-    }
-
-    const zipBlob = await zip.generateAsync({
-      type: 'blob',
-      compression: 'DEFLATE',
-      compressionOptions: { level: 3 },
-    })
-    const a = document.createElement('a')
-    a.href = URL.createObjectURL(zipBlob)
-    a.download = `fotos_${im.tipo ? im.tipo.toLowerCase().replace(/\s+/g, '-') + '_' : ''}cod-${im.codigo}.zip`
-    a.click()
-    URL.revokeObjectURL(a.href)
-
-    setEstado('ok')
-    setTimeout(() => setEstado('idle'), 5000)
+    setEstado(feito === 0 ? 'erro' : 'ok')
+    setTimeout(() => setEstado('idle'), feito === 0 ? 4000 : 5000)
   }
 
   if (!fotos.length) return null
