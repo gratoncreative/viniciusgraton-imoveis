@@ -38,7 +38,7 @@ const FIco = ({ n }) => (
 )
 
 const AREAS = [50, 80, 100, 150, 200, 250, 300, 400, 500, 750, 1000]
-const CARACS = ['Piscina', 'Churrasqueira', 'Varanda gourmet', 'Academia', 'Portaria 24h', 'Closet', 'Energia solar']
+const CARACS = ['Piscina', 'Churrasqueira', 'Academia', 'Salão de festas', 'Playground', 'Portaria 24h', 'Elevador', 'Varanda gourmet', 'Sacada', 'Closet', 'Mobiliado', 'Lavabo', 'Energia solar']
 
 
 const blobDe = (im) => {
@@ -204,7 +204,7 @@ export default function Catalogo() {
     suites: parseInt(params.get('suites') || '0', 10),
     vagas: parseInt(params.get('vagas') || '0', 10),
     area: parseInt(params.get('area') || '0', 10),
-    carac: params.get('carac') || '',
+    carac: (params.get('carac') || '').split(',').map((s) => s.trim()).filter(Boolean),
     grupo: params.get('grupo') || '',
     ordem: params.get('ordem') || 'recentes',
   }
@@ -231,6 +231,12 @@ export default function Catalogo() {
     const p = new URLSearchParams(params)
     p.delete('bairro')
     if (arr && arr.length) p.set('bairros', arr.join(',')); else p.delete('bairros')
+    setParams(p, { replace: true })
+  }
+  // seleção de MÚLTIPLAS características (imóvel precisa ter TODAS as marcadas)
+  const setCarac = (arr) => {
+    const p = new URLSearchParams(params)
+    if (arr && arr.length) p.set('carac', arr.join(',')); else p.delete('carac')
     setParams(p, { replace: true })
   }
 
@@ -269,7 +275,7 @@ export default function Catalogo() {
       if (f.suites && (im.suites || 0) < f.suites) return false
       if (f.vagas && (im.vagas || 0) < f.vagas) return false
       if (f.area && (im.area || 0) < f.area) return false
-      if (f.carac && !blobDe(im).includes(f.carac.toLowerCase())) return false
+      if (f.carac.length && !f.carac.every((c) => blobDe(im).includes(c.toLowerCase()))) return false
       if (f.precoMin && (im.preco || 0) < f.precoMin) return false
       if (f.precoMax && (im.preco || 0) > f.precoMax) return false
       if (f.q && fuseIds && !fuseIds.has(String(im.codigo))) return false
@@ -284,7 +290,7 @@ export default function Catalogo() {
     // anúncios impulsionados (publicidade) sobem para o topo da listagem, como nos portais
     r = [...r].sort((a, b) => (b.impulsionado ? 1 : 0) - (a.impulsionado ? 1 : 0))
     return r
-  }, [TODOS, f.tipo, f.grupo, f.bairros.join(','), f.quartos, f.suites, f.vagas, f.area, f.carac, f.precoMin, f.precoMax, f.q, f.ordem])
+  }, [TODOS, f.tipo, f.grupo, f.bairros.join(','), f.quartos, f.suites, f.vagas, f.area, f.carac.join(','), f.precoMin, f.precoMax, f.q, f.ordem])
 
   const visiveis = lista.slice(0, mostrar)
   const temMais = mostrar < lista.length
@@ -323,7 +329,7 @@ export default function Catalogo() {
     f.suites > 0 && { k: 'suites', label: `${f.suites}+ suítes`, onRemove: () => up('suites', 0) },
     f.vagas > 0 && { k: 'vagas', label: `${f.vagas}+ vagas`, onRemove: () => up('vagas', 0) },
     f.area > 0 && { k: 'area', label: `${f.area}+ m²`, onRemove: () => up('area', 0) },
-    f.carac && { k: 'carac', label: f.carac, onRemove: () => up('carac', '') },
+    ...f.carac.map((c) => ({ k: 'c:' + c, label: c, onRemove: () => setCarac(f.carac.filter((x) => x !== c)) })),
   ].filter(Boolean)
 
   const semFiltros = chips.length === 0
@@ -381,7 +387,7 @@ export default function Catalogo() {
         <div className="cat-filtros">
           <FiltroSelect icon={<FIco n="tipo" />} placeholder="Todos os tipos" neutral="" value={f.tipo} onChange={(v) => up('tipo', v)}
             options={[{ value: '', label: 'Todos os tipos' }, ...TIPOS_IMOVEL.map((t) => ({ value: t, label: t }))]} />
-          <FiltroSelect icon={<FIco n="bairro" />} placeholder="Todos os bairros" multiple searchable value={f.bairros} onChange={setBairros}
+          <FiltroSelect icon={<FIco n="bairro" />} placeholder="Todos os bairros" multiple searchable multiNoun="bairros" value={f.bairros} onChange={setBairros}
             options={(BAIRROS_TODOS.length ? BAIRROS_TODOS : BAIRROS_IMOVEL).map((b) => ({ value: b, label: b }))} />
           <div className="cat-preco">
             <span className="cat-preco-tit"><span className="cat-preco-ico"><FIco n="preco" /></span> Preço</span>
@@ -396,8 +402,8 @@ export default function Catalogo() {
           <FiltroPills icon={<FIco n="vagas" />} label="Vagas" value={f.vagas} onChange={(v) => up('vagas', v)} />
           <FiltroSelect icon={<FIco n="area" />} placeholder="Área mín. (m²)" neutral={0} value={f.area} onChange={(v) => up('area', v)}
             options={[{ value: 0, label: 'Qualquer área' }, ...AREAS.map((n) => ({ value: n, label: `${n.toLocaleString('pt-BR')}+ m²` }))]} />
-          <FiltroSelect icon={<FIco n="carac" />} placeholder="Característica" neutral="" value={f.carac} onChange={(v) => up('carac', v)}
-            options={[{ value: '', label: 'Qualquer' }, ...CARACS.map((c) => ({ value: c, label: c }))]} />
+          <FiltroSelect icon={<FIco n="carac" />} placeholder="Características" multiple searchable multiNoun="características" value={f.carac} onChange={setCarac}
+            options={CARACS.map((c) => ({ value: c, label: c }))} />
           <FiltroSelect icon={<FIco n="ordem" />} placeholder="Mais recentes" neutral="recentes" value={f.ordem} onChange={(v) => up('ordem', v)}
             options={[{ value: 'recentes', label: 'Mais recentes' }, { value: 'menor', label: 'Menor preço' }, { value: 'maior', label: 'Maior preço' }, { value: 'area-maior', label: 'Maior área' }, { value: 'area-menor', label: 'Menor área' }]} />
         </div>

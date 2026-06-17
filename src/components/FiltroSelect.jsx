@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom'
 // - multiple: marca vários (bairros) com caixinhas
 // - searchable: campo de busca no topo (útil pra lista grande de bairros)
 // Texto com respiro, opções alinhadas, e seleção múltipla — tudo sob nosso controle.
-export default function FiltroSelect({ icon, placeholder, options = [], value, multiple = false, searchable = false, neutral = '', onChange }) {
+export default function FiltroSelect({ icon, placeholder, options = [], value, multiple = false, searchable = false, neutral = '', onChange, multiNoun = 'selecionados' }) {
   const [open, setOpen] = useState(false)
   const [q, setQ] = useState('')
   const [pos, setPos] = useState(null) // posição fixa do dropdown (não é cortado por colunas que rolam)
@@ -59,7 +59,7 @@ export default function FiltroSelect({ icon, placeholder, options = [], value, m
   const ativo = multiple ? arr.length > 0 : String(value) !== String(neutral)
 
   const rotulo = () => {
-    if (multiple) return arr.length === 0 ? placeholder : arr.length === 1 ? arr[0] : `${arr.length} bairros`
+    if (multiple) return arr.length === 0 ? placeholder : arr.length === 1 ? arr[0] : `${arr.length} ${multiNoun}`
     if (!ativo) return placeholder
     const o = options.find((x) => String(x.value) === String(value))
     return o ? o.label : placeholder
