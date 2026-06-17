@@ -445,6 +445,20 @@ export default function Catalogo() {
           ))}
         </div>
 
+        {/* CTA: estudo do m² de qualquer imóvel (mesmo fora do site) */}
+        <Link to="/avaliar" className="cat-avaliar-cta">
+          <span className="cat-avaliar-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-3 3 3 5-6"/></svg>
+          </span>
+          <span className="cat-avaliar-txt">
+            <b>Esse imóvel vale o que pedem?</b>
+            <i>Avalie <u>qualquer imóvel</u> — até de outro site. Estudo do valor do m² com dados reais do bairro.</i>
+          </span>
+          <span className="cat-avaliar-seta" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </Link>
+
         {(destaqueImoveis.length > 0 || isAdmin) && (
           <section className="cat-destaque-topo">
             <div className="cat-destaque-head">

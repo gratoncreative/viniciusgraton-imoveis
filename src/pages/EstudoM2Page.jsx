@@ -561,9 +561,10 @@ const _adminLogado = () => {
 const _estudoPago = () => { try { const t = Number(localStorage.getItem('vg_estudo_pago') || 0); return t > 0 && (Date.now() - t) < 6 * 3600 * 1000 } catch { return false } }
 export const podeBaixarEstudo = () => _adminLogado() || _estudoPago()
 
-export function EstudoContent({ estudo, im, onClose }) {
+export function EstudoContent({ estudo, im, onClose, bloquearAteLiberar = false }) {
   const [hovT, setHovT] = useState(null)
   const [liberado, setLiberado] = useState(() => podeBaixarEstudo())
+  const bloqueado = bloquearAteLiberar && !liberado
   const { avaliando, testemunhas, stats, grau, adotadoM2, valorTotal, valMin, valMax, diffPct, veredito } = estudo
 
   const [pagando, setPagando] = useState(false)
@@ -699,6 +700,7 @@ export function EstudoContent({ estudo, im, onClose }) {
         <div className="ep-header-bar" />
       </header>
 
+      <div className={bloqueado ? 'ep-locked' : undefined} aria-hidden={bloqueado ? 'true' : undefined}>
       {/* ── Identificação ────────────────────────────────────────────────── */}
       <section className="ep-ident">
         <div className="ep-container">
@@ -975,6 +977,25 @@ export function EstudoContent({ estudo, im, onClose }) {
           </a>
         </div>
       </footer>
+      </div>
+
+      {bloqueado && (
+        <div className="ep-lock-bar print-hide" role="region" aria-label="Desbloquear estudo completo">
+          <div className="ep-container ep-lock-inner">
+            <div className="ep-lock-txt">
+              <span className="ep-lock-ico" aria-hidden="true">🔒</span>
+              <div>
+                <b>Resultado completo bloqueado</b>
+                <span>Veja os <i>números exatos</i> + baixe o laudo em PDF (também por e-mail). Liberação automática na hora.</span>
+              </div>
+            </div>
+            <button type="button" className="ep-lock-cta" onClick={baixarEstudo} disabled={pagando}>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+              {pagando ? 'Abrindo pagamento…' : 'Desbloquear tudo · R$ 4,90'}
+            </button>
+          </div>
+        </div>
+      )}
     </>
   )
 }

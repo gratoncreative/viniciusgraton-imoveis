@@ -173,26 +173,17 @@ export default function Anunciar() {
 
   return (
     <main className="anunciar-pg2 section--light">
-      {/* HERO */}
-      <section className="anu-hero">
-        <div className="anu-hero-bg" style={{ backgroundImage: `url(${ANU_HERO})` }} />
-        <div className="anu-hero-tint" />
-        <div className="container anu-hero-in">
+      {/* Cabeçalho enxuto — vai direto ao cadastro */}
+      <section className="anu-head2">
+        <div className="container">
           <Reveal>
-            <span className="eyebrow">Quero vender ou alugar</span>
-            <h1 className="anu-hero-tit">Venda seu imóvel <em>sem dor de cabeça</em></h1>
-            <p className="anu-hero-sub">
-              Eu cuido de tudo: avalio pelo valor justo, faço a curadoria e as fotos, divulgo pra minha base de clientes e conduzo a negociação com segurança — você acompanha de perto, do anúncio à entrega das chaves.
+            <span className="eyebrow" style={{ justifyContent: 'center' }}>Quero vender ou alugar</span>
+            <h1 className="anu-head2-tit">Cadastre seu imóvel <em>sem dor de cabeça</em></h1>
+            <p className="anu-head2-sub">
+              <IconShield width={16} height={16} /> Grátis e sem compromisso · avalio pelo valor justo, faço as fotos, divulgo e conduzo a negociação. Preencha abaixo que eu te retorno.
             </p>
-            <div className="anu-hero-acoes">
-              <a className="btn btn-gold btn-grande" href="#cadastrar">Cadastrar meu imóvel <IconArrow /></a>
-              <span className="anu-hero-selo"><IconShield width={17} height={17} /> Grátis e sem compromisso</span>
-            </div>
             <p className="anu-hero-imp">Já tem um anúncio no site? <Link to="/impulsionar">Impulsione e ganhe destaque →</Link></p>
           </Reveal>
-          <div className="anu-stats">
-            {STATS.map((s) => <div key={s.l} className="anu-stat"><b>{s.n}</b><span>{s.l}</span></div>)}
-          </div>
         </div>
       </section>
 
