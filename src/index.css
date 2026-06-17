@@ -1344,7 +1344,7 @@ html[data-theme="claro"] .promo-imovel-media { background: linear-gradient(150de
 .im-parcela b { color: #1C2A44; font-weight: 700; }
 .im-parcela i { font-style: normal; color: var(--text-mute); font-size: 0.72rem; }
 .im-media { aspect-ratio: 4/3; }
-.im-tag { position: absolute; top: 14px; left: 14px; z-index: 2; font-family: var(--font-head); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 6px 12px; border-radius: 100px; background: rgba(7,10,17,0.62); border: 1px solid var(--gold-3); color: var(--gold-1); backdrop-filter: blur(6px); transform: translateZ(46px); }
+.im-tag { position: absolute; top: 14px; left: 14px; z-index: 2; font-family: var(--font-head); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 6px 12px; border-radius: 100px; background: rgba(7,10,17,0.62); border: 1px solid rgba(255,255,255,0.4); color: #FFFFFF; backdrop-filter: blur(6px); transform: translateZ(46px); }
 .im-novo { position: absolute; top: 14px; right: 14px; z-index: 3; font-family: var(--font-head); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 5px 11px; border-radius: 100px; background: rgba(60,35,3,0.88); color: #fef0bc; border: 1px solid rgba(10, 14, 22,0.45); backdrop-filter: blur(6px); transform: translateZ(50px); box-shadow: 0 4px 16px -6px rgba(0,0,0,0.55); }
 .im-preco { position: absolute; bottom: 14px; left: 18px; right: 18px; z-index: 2; font-family: var(--font-head); font-weight: 700; font-size: 1.5rem; color: #fff; letter-spacing: -0.01em; transform: translateZ(56px); text-shadow: 0 2px 18px rgba(0,0,0,0.55); }
 /* Selo de publicidade (anúncio impulsionado) — transparente e clicável */
@@ -1599,13 +1599,13 @@ html[data-theme="dark"] .det-novo-tag { color: #60a5fa; }
 }
 .im-linha-lbl-eye {
   font-size: 0.58rem; font-weight: 800; letter-spacing: 0.16em;
-  text-transform: uppercase; color: var(--gold-2);
+  text-transform: uppercase; color: rgba(255,255,255,0.9);
 }
 .im-linha-lbl-tit {
   font-family: var(--font-head); font-weight: 800;
   font-size: 1rem; line-height: 1.2; color: #f5f1e9;
 }
-.im-linha-lbl-tit em { color: var(--gold-1); font-style: italic; font-weight: 800; }
+.im-linha-lbl-tit em { color: #FFFFFF; font-style: italic; font-weight: 800; }
 /* quando overlay está no top-left, move a tag de tipo para top-right */
 .im-linha-lbl ~ .im-tag { left: auto; right: 12px; top: 12px; }
 .im-pub-on .im-linha-lbl ~ .im-tag { left: auto; right: 12px; top: 44px; }
