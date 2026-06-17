@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react'
 import { IMOVEIS, BAIRROS_TODOS, filtrarParaCliente, formatPreco, getImovel, oportunidade, ehEsquina, fotosDe } from '../data'
 import InputMoeda from './InputMoeda'
+import CrmOportunidades from './CrmOportunidades'
 import { agruparPorSetor } from '../bairros-setores'
 
 const TIPOS_CRM = ['Apartamento', 'Casa', 'Casa em condomínio', 'Chácara', 'Cobertura', 'Galpão', 'Kitnet/Studio', 'Lote', 'Sala comercial', 'Terreno']
@@ -1158,6 +1159,8 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
           {funilFiltro && <p className="painel-meta" style={{ marginTop: 8 }}>Mostrando só <b>{funilFiltro}</b>. <button className="crm-busca-clear" style={{ position: 'static', display: 'inline' }} onClick={() => setFunilFiltro('')}>limpar filtro ×</button></p>}
         </div>
       )}
+
+      <CrmOportunidades clientes={clientes || []} cadastros={cadastros} linkCliente={linkCliente} />
 
       {(() => {
         const fu = [...(clientes || [])].map((c) => ({ c, d: diasParado(c) })).map((x) => ({ ...x, s: scoreFollowUp(x.c, x.d) })).filter((x) => x.s > 0).sort((a, b) => b.s - a.s).slice(0, 6)

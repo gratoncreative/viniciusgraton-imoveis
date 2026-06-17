@@ -3045,6 +3045,18 @@ html[data-theme="dark"] .nav:not(.scrolled) .nav-links a.nav-destaque { color: #
 .depo-card figcaption { display: flex; flex-direction: column; gap: 2px; margin-top: auto; }
 .depo-card figcaption b { color: #1C2A44; font-family: var(--font-head); }
 .depo-card figcaption span { font-size: 0.84rem; color: var(--text-mute); }
+/* #5/#14 — oportunidades de contato no CRM */
+.crm-oport { background: #fff; border: 1px solid rgba(46,140,87,0.35); border-radius: 14px; padding: 4px 16px 14px; margin-bottom: 16px; }
+.crm-oport > summary { cursor: pointer; padding: 12px 0; font-family: var(--font-head); font-weight: 700; color: #1f5e3a; font-size: 0.96rem; }
+.crm-oport-bloco { margin-top: 8px; }
+.crm-oport-tit { font-size: 0.8rem; font-weight: 700; color: #5a616e; margin: 10px 0 6px; letter-spacing: 0.02em; }
+.crm-oport-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(22,26,34,0.06); }
+.crm-oport-info { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.crm-oport-info b { color: #20252e; font-size: 0.9rem; }
+.crm-oport-info i { font-style: normal; color: #5a616e; font-size: 0.8rem; }
+.crm-oport-queda { background: #fbf9f4; border: 1px solid rgba(22,26,34,0.08); border-radius: 10px; padding: 8px 12px; margin-bottom: 8px; }
+.crm-oport-queda-im { margin: 0 0 4px; font-size: 0.88rem; color: #20252e; }
+.crm-oport-pct { color: #1f5e3a; font-weight: 700; }
 .crm-auditoria { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .crm-auditoria th { text-align: left; font-family: var(--font-head); font-weight: 600; color: #5a616e; padding: 9px 0; width: 42%; vertical-align: top; }
 .crm-auditoria td { color: #20252e; padding: 9px 0; word-break: break-all; }
