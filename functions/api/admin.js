@@ -310,9 +310,10 @@ export async function onRequestPost({ env, request }) {
     const out = []
     for (const v of vals) {
       if (!v) continue
-      // Strip foto (can be up to 700KB base64) — loaded lazily via crm-get when editing
-      const { foto, ...rest } = v
-      out.push(foto ? { ...rest, temFoto: true } : rest)
+      // Strip foto (até ~700KB) e os logs grandes (atendimentos/notas) — carregados sob demanda no crm-get.
+      // Mantém tags/status (pequenos) para os chips da lista e um contador de atendimentos.
+      const { foto, atendimentos, notas, ...rest } = v
+      out.push({ ...rest, temFoto: !!foto, nAtend: Array.isArray(atendimentos) ? atendimentos.length : 0 })
     }
     out.sort((a, b) => (b.atualizadoEm || 0) - (a.atualizadoEm || 0))
     return json({ ok: true, clientes: out })
@@ -339,6 +340,12 @@ export async function onRequestPost({ env, request }) {
     const arrStr = (a, max, n) => (Array.isArray(a) ? a.filter((x) => typeof x === 'string').slice(0, max).map((x) => lim(x, n)) : [])
     // sugeridos: tolera códigos numéricos (converte pra string antes de filtrar)
     const arrCod = (a, max) => (Array.isArray(a) ? a.map((x) => String(x)).filter((x) => x && x.length <= 20).slice(0, max) : [])
+    // #1 atendimentos registrados (liguei/visitei/mensagem) e #2 notas datadas e #13 etiquetas
+    const arrAtend = (a) => (Array.isArray(a) ? a.filter((x) => x && typeof x === 'object').slice(0, 120).map((x) => ({ tipo: lim(x.tipo, 24), em: Number(x.em) || Date.now(), obs: lim(x.obs, 600) })) : [])
+    const arrNotas = (a) => (Array.isArray(a) ? a.filter((x) => x && typeof x === 'object' && String(x.texto || '').trim()).slice(0, 200).map((x) => ({ em: Number(x.em) || Date.now(), texto: lim(x.texto, 2000) })) : [])
+    const atendimentos = arrAtend(c.atendimentos != null ? c.atendimentos : reg.atendimentos)
+    const notas = arrNotas(c.notas != null ? c.notas : reg.notas)
+    const ultAtend = atendimentos.reduce((mx, a) => Math.max(mx, Number(a.em) || 0), 0)
     const novo = {
       id, criadoEm: reg.criadoEm || Date.now(), atualizadoEm: Date.now(),
       nome: lim(c.nome, 80), whatsapp: wa, finalidade: lim(c.finalidade, 20),
@@ -349,6 +356,8 @@ export async function onRequestPost({ env, request }) {
       obs: lim(c.obs, 1500), sugeridos: arrCod(c.sugeridos, 60),
       papeis: arrStr(c.papeis, 8, 24),
       nota: lim(c.nota, 1000), status: lim(c.status, 24),
+      tags: arrStr(c.tags != null ? c.tags : reg.tags, 16, 28),
+      atendimentos, notas,
       foto: lim(c.foto, 200000), // dataURL da foto do cliente (JPEG ~480px, ≈150KB base64)
       // preserva o que o PRÓPRIO cliente refinou na página dele (nunca sobrescrever no save do admin)
       feedback: reg.feedback && typeof reg.feedback === 'object' ? reg.feedback : {},
@@ -357,7 +366,8 @@ export async function onRequestPost({ env, request }) {
       origem: reg.origem || lim(c.origem, 20) || '',
       prazo: lim(c.prazo, 40) || reg.prazo || '',
       novo: false,
-      ultimaAcaoEm: reg.ultimaAcaoEm || 0,
+      // última ação reflete o atendimento manual mais recente (corrige o "parado há X dias")
+      ultimaAcaoEm: Math.max(reg.ultimaAcaoEm || 0, Number(c.ultimaAcaoEm) || 0, ultAtend),
       temNovidade: false, // ao salvar, o Vinícius já viu
     }
     try {

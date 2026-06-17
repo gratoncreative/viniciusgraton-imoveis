@@ -37,7 +37,19 @@ function calcularTop3(matchesList, m2Mediana) {
 
 const api = (payload) => fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) }).then((r) => r.json().then((j) => ({ status: r.status, j })))
 
-const VAZIO = { id: '', nome: '', whatsapp: '', finalidade: 'Comprar', tipos: [], bairros: [], precoMin: '', precoMax: '', quartosMin: '', suitesMin: '', vagasMin: '', areaMin: '', obs: '', nota: '', sugeridos: [], papeis: [] }
+const VAZIO = { id: '', nome: '', whatsapp: '', finalidade: 'Comprar', tipos: [], bairros: [], precoMin: '', precoMax: '', quartosMin: '', suitesMin: '', vagasMin: '', areaMin: '', obs: '', nota: '', sugeridos: [], papeis: [], tags: [], atendimentos: [], notas: [] }
+
+// #1 — tipos de atendimento que o Vinícius registra (um clique = log com data)
+const ATEND_TIPOS = [
+  { k: 'ligacao', ic: '📞', lbl: 'Liguei' },
+  { k: 'whatsapp', ic: '💬', lbl: 'Mandei mensagem' },
+  { k: 'visita', ic: '🏠', lbl: 'Visitei imóvel' },
+  { k: 'reuniao', ic: '🤝', lbl: 'Reunião / atendi' },
+  { k: 'proposta', ic: '📝', lbl: 'Enviei proposta' },
+]
+const ATEND_MAP = { ligacao: '📞 Liguei', whatsapp: '💬 Mandei mensagem', visita: '🏠 Visitei imóvel', reuniao: '🤝 Reunião / atendimento', proposta: '📝 Enviei proposta' }
+// #13 — etiquetas que coexistem com o status do funil
+const TAGS_SUGERIDAS = ['Quente', 'Morno', 'Frio', 'Aguardando banco', 'Precisa revisita', 'Documentação', 'Indicação', 'Não responde', 'Pré-aprovado']
 
 // "Relacionamentos" (estilo CRM Rotina): que papel a pessoa tem no negócio
 const PAPEIS = ['Lead', 'Comprador', 'Locatário', 'Proprietário', 'Locador', 'Investidor']
@@ -376,6 +388,53 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
     if (!confirm('Excluir este cliente do CRM?')) return
     await api({ action: 'crm-del', token, id }); setSel(null); carregar()
   }
+
+  // ——— #1/#2: registrar atendimento e anotações datadas (salva na hora) ———
+  const [atObs, setAtObs] = useState('')
+  const [novaNota, setNovaNota] = useState('')
+  const [novaTag, setNovaTag] = useState('')
+  const [registrando, setRegistrando] = useState(false)
+  const salvarParcial = async (patch) => {
+    const novo = { ...sel, ...patch }
+    setSel(novo)
+    const { status, j } = await api({ action: 'crm-save', token, cliente: novo })
+    if (status === 401) { onSair(); return null }
+    if (j?.ok) { setSel(j.cliente); setSalvo(true); setTimeout(() => setSalvo(false), 1500); carregar(); return j.cliente }
+    setErro(j?.msg || 'Não consegui salvar.'); return null
+  }
+  const registrarAtendimento = async (tipo) => {
+    if (!sel?.id || registrando) return
+    setRegistrando(true)
+    const em = Date.now()
+    const at = [{ tipo, em, obs: atObs.trim().slice(0, 600) }, ...(sel.atendimentos || [])].slice(0, 120)
+    setAtObs('')
+    await salvarParcial({ atendimentos: at, ultimaAcaoEm: em })
+    setRegistrando(false)
+  }
+  const removerAtendimento = async (em) => {
+    if (!sel?.id) return
+    await salvarParcial({ atendimentos: (sel.atendimentos || []).filter((a) => a.em !== em) })
+  }
+  const adicionarNota = async () => {
+    const texto = novaNota.trim()
+    if (!sel?.id || !texto || registrando) return
+    setRegistrando(true)
+    const ns = [{ em: Date.now(), texto: texto.slice(0, 2000) }, ...(sel.notas || [])].slice(0, 200)
+    setNovaNota('')
+    await salvarParcial({ notas: ns })
+    setRegistrando(false)
+  }
+  const removerNota = async (em) => {
+    if (!sel?.id) return
+    await salvarParcial({ notas: (sel.notas || []).filter((n) => n.em !== em) })
+  }
+  const addTag = (t) => {
+    const v = (t || '').trim().slice(0, 28)
+    if (!v) return
+    setSel((s) => ({ ...s, tags: (s.tags || []).includes(v) ? s.tags : [...(s.tags || []), v] }))
+    setNovaTag('')
+  }
+  const removerTag = (t) => setSel((s) => ({ ...s, tags: (s.tags || []).filter((x) => x !== t) }))
   // limpa o aviso de novidade ao abrir o cliente
   const abrir = (c) => {
     if (c.temNovidade) { api({ action: 'crm-visto', token, id: c.id }); setClientes((cs) => (cs || []).map((x) => (x.id === c.id ? { ...x, temNovidade: false } : x))) }
@@ -471,6 +530,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                 <span className="crm-cli-tipo">Pessoa física</span>
                 {sel.status && <span className="crm-status-chip" style={{ background: STATUS_COR[sel.status] || '#8a909c' }}>{sel.status}</span>}
                 {(sel.papeis || []).map((p) => <span key={p} className="crm-papel-chip" style={{ background: PAPEL_COR[p] || '#8a909c' }}>{p}</span>)}
+                {(sel.tags || []).map((t) => <span key={t} className="crm-tag-chip">{t}</span>)}
                 {sel.id && <span className="painel-meta">página: /cliente/{sel.id.slice(0, 8)}…</span>}
               </div>
             </div>
@@ -533,6 +593,24 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
               <p className="calc-nota" style={{ marginTop: 0 }}>Que papel essa pessoa tem no negócio (pode marcar mais de um).</p>
               <div className="crm-chips">
                 {PAPEIS.map((p) => <button type="button" key={p} className={`crm-chip ${(sel.papeis || []).includes(p) ? 'on' : ''}`} onClick={() => toggleArr('papeis', p)}>{p}</button>)}
+              </div>
+            </div>
+
+            {/* Card: Etiquetas (#13) — coexistem com o status do funil */}
+            <div className="crm-card-bloco">
+              <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Etiquetas</h3>
+              <p className="calc-nota" style={{ marginTop: 0 }}>Marcadores livres que convivem com o status (ex.: "aguardando banco", "precisa revisita").</p>
+              {(sel.tags || []).length > 0 && (
+                <div className="crm-tags-sel">
+                  {(sel.tags || []).map((t) => <span key={t} className="crm-tag-chip crm-tag-chip--rem" onClick={() => removerTag(t)} title="Remover">{t} ✕</span>)}
+                </div>
+              )}
+              <div className="crm-chips">
+                {TAGS_SUGERIDAS.filter((t) => !(sel.tags || []).includes(t)).map((t) => <button type="button" key={t} className="crm-chip" onClick={() => addTag(t)}>+ {t}</button>)}
+              </div>
+              <div className="crm-tag-add">
+                <input value={novaTag} onChange={(e) => setNovaTag(e.target.value)} placeholder="Nova etiqueta…" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addTag(novaTag) } }} />
+                <button type="button" className="admin-btn admin-btn--mini" onClick={() => addTag(novaTag)}>Adicionar</button>
               </div>
             </div>
 
@@ -831,17 +909,22 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
           </div>
         </div>
 
-        {/* ABA: Atendimentos — linha do tempo da atividade que já registramos */}
+        {/* ABA: Atendimentos — registro de contatos + anotações datadas + linha do tempo */}
         {aba === 'atendimentos' && (() => {
           const fmt = (t) => t ? new Date(t).toLocaleString('pt-BR') : null
           const fb = sel.feedback && typeof sel.feedback === 'object' ? sel.feedback : {}
           const likes = Object.keys(fb).filter((k) => fb[k] === 'like')
           const dislikes = Object.keys(fb).filter((k) => fb[k] === 'dislike')
           const linha = (cod) => { const im = resolverImovel(cod); return im ? `${im.tipo} · ${im.bairro} · ${formatPreco(im.preco)}` : `cód ${cod}` }
+          const atendEventos = (sel.atendimentos || []).map((a) => {
+            const lbl = ATEND_MAP[a.tipo] || '• Atendimento'
+            const sp = lbl.indexOf(' ')
+            return { t: a.em, ic: sp > 0 ? lbl.slice(0, sp) : '•', tit: sp > 0 ? lbl.slice(sp + 1) : lbl, sub: a.obs || '', _at: a.em }
+          })
           const eventos = [
+            ...atendEventos,
             sel.criadoEm && { t: sel.criadoEm, ic: '🟢', tit: 'Cliente cadastrado no CRM', sub: sel.origem === 'area-cliente' ? 'Origem: criou conta no site' : 'Cadastro manual' },
             sel.refinadoEm && { t: sel.refinadoEm, ic: '🎚', tit: 'Refinou a seleção na página dele', sub: `${likes.length} curtido(s) · ${dislikes.length} descartado(s)` },
-            sel.ultimaAcaoEm && { t: sel.ultimaAcaoEm, ic: '⚡', tit: 'Última atividade registrada', sub: '' },
             sel.atualizadoEm && { t: sel.atualizadoEm, ic: '💾', tit: 'Cadastro atualizado', sub: '' },
           ].filter(Boolean).sort((a, b) => b.t - a.t)
           return (
@@ -850,7 +933,41 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                 <div className="crm-vazio">Salve o cliente para começar a registrar atendimentos e acompanhar a atividade dele.</div>
               ) : (
                 <>
+                  {/* #1 — registrar um contato com um clique */}
                   <div className="admin-owner">
+                    <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Registrar atendimento</h3>
+                    <p className="calc-nota" style={{ marginTop: 0 }}>Um clique marca o contato com data e hora — e reseta o "parado há X dias".</p>
+                    <input className="crm-atend-obs" value={atObs} onChange={(e) => setAtObs(e.target.value)} placeholder="Detalhe rápido (opcional): ex. 'não atendeu', 'visita sábado 10h'…" />
+                    <div className="crm-atend-botoes">
+                      {ATEND_TIPOS.map((a) => (
+                        <button key={a.k} type="button" className="crm-atend-btn" disabled={registrando} onClick={() => registrarAtendimento(a.k)}>
+                          <span>{a.ic}</span> {a.lbl}
+                        </button>
+                      ))}
+                    </div>
+                    {salvo && <span className="lead-salvo" style={{ marginTop: 8, display: 'inline-block' }}>✓ registrado</span>}
+                  </div>
+
+                  {/* #2 — anotações datadas (histórico, não sobrescreve) */}
+                  <div className="admin-owner" style={{ marginTop: 14 }}>
+                    <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Anotações <span className="painel-meta">({(sel.notas || []).length})</span></h3>
+                    <div className="crm-nota-add">
+                      <textarea rows="2" value={novaNota} onChange={(e) => setNovaNota(e.target.value)} placeholder="Escreva uma anotação datada… (cada uma fica guardada, não apaga a anterior)" />
+                      <button type="button" className="admin-btn" disabled={!novaNota.trim() || registrando} onClick={adicionarNota}>+ Anotar</button>
+                    </div>
+                    {(sel.notas || []).length > 0 ? (
+                      <ul className="crm-notas-lista">
+                        {(sel.notas || []).map((n) => (
+                          <li key={n.em} className="crm-nota-item">
+                            <div><p>{n.texto}</p><span className="painel-meta">{fmt(n.em)}</span></div>
+                            <button type="button" className="crm-tl-del" title="Remover anotação" onClick={() => removerNota(n.em)}>✕</button>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : <p className="painel-meta">Nenhuma anotação ainda.</p>}
+                  </div>
+
+                  <div className="admin-owner" style={{ marginTop: 14 }}>
                     <h3 className="det-rel-titulo" style={{ marginTop: 0 }}>Linha do tempo</h3>
                     {eventos.length === 0 ? (
                       <p className="painel-meta">Sem atividade registrada ainda. Conforme o cliente interagir com a página dele, os eventos aparecem aqui.</p>
@@ -864,6 +981,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                               {e.sub && <i>{e.sub}</i>}
                               <span className="painel-meta">{fmt(e.t)}</span>
                             </div>
+                            {e._at && <button type="button" className="crm-tl-del" title="Remover" onClick={() => removerAtendimento(e._at)}>✕</button>}
                           </li>
                         ))}
                       </ul>
@@ -927,6 +1045,24 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
       (bNum && c.whatsapp && c.whatsapp.replace(/\D/g, '').includes(bNum))
     )
   }, [clientes, busca])
+
+  // #11 — relatório do funil: quantos em cada etapa + conversão
+  const [funilFiltro, setFunilFiltro] = useState('')
+  const funil = useMemo(() => {
+    const lista = clientes || []
+    const m = {}; STATUS.forEach((s) => { m[s] = 0 })
+    let semStatus = 0
+    for (const c of lista) { if (c.status && m[c.status] != null) m[c.status]++; else semStatus++ }
+    const total = lista.length
+    const fechados = m['Fechado'] || 0
+    const perdidos = m['Perdido'] || 0
+    const ativos = total - fechados - perdidos
+    const visitas = (m['Visita marcada'] || 0) + (m['Proposta'] || 0) + fechados
+    const conv = total > 0 ? Math.round((fechados / total) * 100) : 0
+    const convVisita = visitas > 0 ? Math.round((fechados / visitas) * 100) : 0
+    const parados = lista.filter((c) => !['Fechado', 'Perdido'].includes(c.status) && diasParado(c) >= 7).length
+    return { m, semStatus, total, fechados, perdidos, ativos, conv, convVisita, parados }
+  }, [clientes])
 
   // ——— LISTA ———
   return (
@@ -992,6 +1128,36 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
       {clientes && clientes.length === 0 && !erroLista && <p className="section-sub">Nenhum cliente cadastrado ainda. Clique em <b>+ Novo cliente</b> para começar.</p>}
       {busca && clientesFiltrados.length === 0 && <p className="painel-meta" style={{ marginBottom: 12 }}>Nenhum cliente encontrado para "{busca}".</p>}
 
+      {/* #11 — Relatório do funil */}
+      {funil.total > 0 && (
+        <div className="crm-funil">
+          <div className="crm-funil-head">
+            <b className="crm-fu-tit">📊 Funil de atendimento</b>
+            <div className="crm-funil-kpis">
+              <span><b>{funil.ativos}</b> ativos</span>
+              <span><b>{funil.fechados}</b> fechados</span>
+              <span><b>{funil.conv}%</b> conversão</span>
+              {funil.parados > 0 && <span className="crm-funil-kpi--alerta"><b>{funil.parados}</b> parados 7+ dias</span>}
+            </div>
+          </div>
+          <div className="crm-funil-barras">
+            {STATUS.filter((s) => s !== 'A revisar').map((s) => {
+              const n = funil.m[s] || 0
+              const pct = funil.total > 0 ? Math.round((n / funil.total) * 100) : 0
+              const on = funilFiltro === s
+              return (
+                <button key={s} type="button" className={`crm-funil-etapa ${on ? 'on' : ''}`} onClick={() => setFunilFiltro(on ? '' : s)} title={`Filtrar por ${s}`}>
+                  <span className="crm-funil-etapa-top"><i className="crm-funil-dot" style={{ background: STATUS_COR[s] }} />{s}</span>
+                  <b>{n}</b>
+                  <span className="crm-funil-bar"><i style={{ width: `${pct}%`, background: STATUS_COR[s] }} /></span>
+                </button>
+              )
+            })}
+          </div>
+          {funilFiltro && <p className="painel-meta" style={{ marginTop: 8 }}>Mostrando só <b>{funilFiltro}</b>. <button className="crm-busca-clear" style={{ position: 'static', display: 'inline' }} onClick={() => setFunilFiltro('')}>limpar filtro ×</button></p>}
+        </div>
+      )}
+
       {(() => {
         const fu = [...(clientes || [])].map((c) => ({ c, d: diasParado(c) })).map((x) => ({ ...x, s: scoreFollowUp(x.c, x.d) })).filter((x) => x.s > 0).sort((a, b) => b.s - a.s).slice(0, 6)
         if (!fu.length) return null
@@ -1014,7 +1180,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
       })()}
 
       <div className="crm-lista">
-        {[...clientesFiltrados].sort((a, b) => (b.temNovidade ? 1 : 0) - (a.temNovidade ? 1 : 0)).map((c) => {
+        {[...clientesFiltrados].filter((c) => !funilFiltro || c.status === funilFiltro).sort((a, b) => (b.temNovidade ? 1 : 0) - (a.temNovidade ? 1 : 0)).map((c) => {
           const nm = novosMatch(c)
           return (
           <div className={`crm-card ${c.novo ? 'crm-card--novo' : ''} ${c.temNovidade ? 'crm-card--mexeu' : ''}`} key={c.id}>
@@ -1023,6 +1189,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
               {c.status && <span className="crm-status-chip" style={{ background: STATUS_COR[c.status] || '#8a909c' }}>{c.status}</span>}
               {c.temNovidade && <span className="crm-mexeu-tag">🔔 Mexeu na página</span>}
               {c.novo && <span className="crm-novo-tag">✨ Novo · do site</span>}
+              {(c.tags || []).slice(0, 3).map((t) => <span key={t} className="crm-tag-chip">{t}</span>)}
               <span className="painel-meta">{c.whatsapp}</span>
             </div>
             <p className="crm-card-crit">{[c.finalidade, (c.tipos || []).join('/'), (c.bairros || []).slice(0, 2).join(', '), c.precoMax ? 'até ' + formatPreco(c.precoMax) : '', c.prazo ? '⏱ ' + c.prazo : ''].filter(Boolean).join(' · ')}</p>

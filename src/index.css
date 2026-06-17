@@ -2967,6 +2967,47 @@ html[data-theme="dark"] .nav:not(.scrolled) .nav-links a.nav-destaque { color: #
 .crm-tl-txt { display: flex; flex-direction: column; gap: 2px; }
 .crm-tl-txt b { color: #20252e; font-size: 0.92rem; }
 .crm-tl-txt i { font-style: normal; color: #5a616e; font-size: 0.84rem; }
+.crm-tl-item { position: relative; }
+.crm-tl-del { margin-left: auto; flex: none; border: none; background: transparent; color: #b04a4a; cursor: pointer; font-size: 0.82rem; opacity: 0.5; padding: 2px 6px; border-radius: 6px; }
+.crm-tl-del:hover { opacity: 1; background: rgba(176,74,74,0.1); }
+/* #1 registrar atendimento */
+.crm-atend-obs { width: 100%; border: 1px solid rgba(22,26,34,0.16); border-radius: 9px; padding: 9px 12px; font-family: var(--font-body); font-size: 0.88rem; color: #20252e; background: #fff; margin-bottom: 10px; }
+.crm-atend-obs:focus { outline: none; border-color: var(--gold-3); box-shadow: 0 0 0 3px rgba(176,141,87,0.14); }
+.crm-atend-botoes { display: flex; flex-wrap: wrap; gap: 8px; }
+.crm-atend-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(154,123,60,0.4); background: #fff; color: #20252e; font-family: var(--font-head); font-weight: 600; font-size: 0.84rem; padding: 9px 13px; border-radius: 9px; cursor: pointer; transition: background .15s, border-color .15s; }
+.crm-atend-btn:hover:not(:disabled) { background: #faf6ec; border-color: var(--gold-2); }
+.crm-atend-btn:disabled { opacity: 0.5; cursor: default; }
+/* #2 anotações datadas */
+.crm-nota-add { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 12px; }
+.crm-nota-add textarea { flex: 1; border: 1px solid rgba(22,26,34,0.16); border-radius: 9px; padding: 9px 12px; font-family: var(--font-body); font-size: 0.88rem; color: #20252e; background: #fff; resize: vertical; }
+.crm-nota-add textarea:focus { outline: none; border-color: var(--gold-3); box-shadow: 0 0 0 3px rgba(176,141,87,0.14); }
+.crm-notas-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.crm-nota-item { display: flex; gap: 10px; align-items: flex-start; background: #fbf9f4; border: 1px solid rgba(22,26,34,0.08); border-radius: 10px; padding: 10px 12px; }
+.crm-nota-item p { margin: 0 0 3px; color: #20252e; font-size: 0.9rem; line-height: 1.45; white-space: pre-wrap; }
+.crm-nota-item > div { flex: 1; }
+/* #13 etiquetas */
+.crm-tag-chip { font-size: 0.68rem; font-weight: 700; color: #6a4e12; background: #f0e2bf; border: 1px solid rgba(154,123,60,0.4); padding: 3px 9px; border-radius: 100px; letter-spacing: 0.01em; }
+.crm-tags-sel { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.crm-tag-chip--rem { cursor: pointer; }
+.crm-tag-chip--rem:hover { background: #e6d3a3; }
+.crm-tag-add { display: flex; gap: 8px; margin-top: 10px; }
+.crm-tag-add input { flex: 1; border: 1px solid rgba(22,26,34,0.16); border-radius: 9px; padding: 8px 12px; font-family: var(--font-body); font-size: 0.86rem; color: #20252e; background: #fff; }
+.crm-tag-add input:focus { outline: none; border-color: var(--gold-3); box-shadow: 0 0 0 3px rgba(176,141,87,0.14); }
+/* #11 funil */
+.crm-funil { background: #fff; border: 1px solid rgba(22,26,34,0.12); border-radius: 14px; padding: 14px 16px; margin-bottom: 16px; }
+.crm-funil-head { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.crm-funil-kpis { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 0.82rem; color: #5a616e; }
+.crm-funil-kpis b { color: #20252e; }
+.crm-funil-kpi--alerta b { color: #b04a4a; }
+.crm-funil-barras { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 8px; }
+.crm-funil-etapa { display: flex; flex-direction: column; gap: 5px; text-align: left; border: 1px solid rgba(22,26,34,0.1); background: #fbfaf7; border-radius: 10px; padding: 9px 10px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+.crm-funil-etapa:hover { border-color: var(--gold-2); }
+.crm-funil-etapa.on { border-color: var(--gold-3); box-shadow: 0 0 0 2px rgba(176,141,87,0.18); }
+.crm-funil-etapa-top { display: flex; align-items: center; gap: 5px; font-size: 0.7rem; font-weight: 600; color: #5a616e; line-height: 1.2; }
+.crm-funil-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.crm-funil-etapa > b { font-size: 1.25rem; color: #20252e; line-height: 1; }
+.crm-funil-bar { display: block; height: 5px; border-radius: 3px; background: rgba(22,26,34,0.08); overflow: hidden; }
+.crm-funil-bar i { display: block; height: 100%; border-radius: 3px; min-width: 2px; }
 .crm-auditoria { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .crm-auditoria th { text-align: left; font-family: var(--font-head); font-weight: 600; color: #5a616e; padding: 9px 0; width: 42%; vertical-align: top; }
 .crm-auditoria td { color: #20252e; padding: 9px 0; word-break: break-all; }
