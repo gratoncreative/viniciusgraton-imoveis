@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSEO } from '../useSEO'
 import { todosEmpreendimentosTodos, bairrosComEmpreendimentos, linkWhatsApp, CONSTRUTORAS, BLOW_EMPREENDIMENTOS } from '../data'
@@ -62,32 +62,61 @@ export default function PortalLancamentosHome() {
 
   const todos = useMemo(() => todosEmpreendimentosTodos(), [])
   const bairros = useMemo(() => bairrosComEmpreendimentos(), [])
-  const [filtroStatus, setFiltroStatus] = useState('todos')
+
+  // Filtro no topo (estilo das demais páginas) + rolagem infinita
   const [busca, setBusca] = useState('')
+  const [situacao, setSituacao] = useState('')
+  const [tipo, setTipo] = useState('')
+  const [regiao, setRegiao] = useState('')
+  const [dorm, setDorm] = useState(0)
+  const [construtora, setConstrutora] = useState('')
+  const [qtd, setQtd] = useState(12)
+  const sentinelaRef = useRef(null)
 
   const PRIORIDADE = { Lançamento: 0, 'Em obras': 1, Pronto: 2 }
-  const STATUS_TABS = [
-    { key: 'todos', label: 'Todos' },
-    { key: 'Lançamento', label: 'Lançamentos' },
-    { key: 'Em obras', label: 'Em obras' },
-    { key: 'Pronto', label: 'Prontos' },
-  ]
+  const TIPO_OPTS = [['residencial', 'Residencial'], ['comercial', 'Comercial'], ['lote', 'Lote / Terreno']]
 
-  const vitrine = useMemo(() => {
+  const regioes = useMemo(() => [...new Set(todos.map((e) => e.bairro).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')), [todos])
+  const construtoras = useMemo(() => [...new Set(todos.map((e) => e.construtoraNome).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')), [todos])
+
+  const resultado = useMemo(() => {
     const q = busca.trim().toLowerCase()
-    const base = filtroStatus === 'todos' ? todos : todos.filter((e) => e.status === filtroStatus)
-    return base
-      .filter((e) => e.capa)
-      .filter((e) => !q ||
-        (e.nome || '').toLowerCase().includes(q) ||
-        (e.bairro || '').toLowerCase().includes(q) ||
-        (e.construtoraNome || '').toLowerCase().includes(q)
+    return todos
+      .filter((e) =>
+        (!q ||
+          (e.nome || '').toLowerCase().includes(q) ||
+          (e.bairro || '').toLowerCase().includes(q) ||
+          (e.construtoraNome || '').toLowerCase().includes(q) ||
+          (e.tipologias || []).join(' ').toLowerCase().includes(q)) &&
+        (!situacao || e.status === situacao) &&
+        (!tipo || e.tipo === tipo) &&
+        (!regiao || e.bairro === regiao) &&
+        (!dorm || (e.quartosMax || e.quartosMin || 0) >= dorm) &&
+        (!construtora || e.construtoraNome === construtora)
       )
-      .sort((a, b) => (PRIORIDADE[a.status] ?? 9) - (PRIORIDADE[b.status] ?? 9))
-      .slice(0, q ? 60 : 12)
-  }, [todos, filtroStatus, busca])
+      .sort((a, b) => {
+        if (!!b.capa !== !!a.capa) return (b.capa ? 1 : 0) - (a.capa ? 1 : 0) // com foto primeiro
+        return (PRIORIDADE[a.status] ?? 9) - (PRIORIDADE[b.status] ?? 9)
+      })
+  }, [todos, busca, situacao, tipo, regiao, dorm, construtora])
 
-  const contPorStatus = (k) => (k === 'todos' ? todos.length : todos.filter((e) => e.status === k).length)
+  const visiveis = useMemo(() => resultado.slice(0, qtd), [resultado, qtd])
+  const temFiltro = !!(busca || situacao || tipo || regiao || dorm || construtora)
+  const limparFiltros = () => { setBusca(''); setSituacao(''); setTipo(''); setRegiao(''); setDorm(0); setConstrutora('') }
+
+  // ao mexer em qualquer filtro, volta ao começo da lista
+  useEffect(() => { setQtd(12) }, [busca, situacao, tipo, regiao, dorm, construtora])
+
+  // rolagem infinita: carrega +12 quando o sentinela entra na viewport
+  useEffect(() => {
+    const el = sentinelaRef.current
+    if (!el) return
+    const obs = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) setQtd((q) => (q < resultado.length ? Math.min(q + 12, resultado.length) : q))
+    }, { rootMargin: '700px 0px' })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [resultado.length])
 
   const slugBairro = (b) =>
     b.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, '-')
@@ -170,68 +199,96 @@ export default function PortalLancamentosHome() {
         </div>
       </div>
 
-      {/* Vitrine */}
+      {/* Vitrine — todos os empreendimentos com filtro no topo + rolagem infinita */}
       <section className="section--light lan-vitrine">
         <div className="container">
           <div className="lan-vitrine-head">
             <div>
               <span className="eyebrow">Empreendimentos</span>
-              <h2 className="section-title" style={{ marginTop: 4 }}>Lançamentos em destaque</h2>
+              <h2 className="section-title" style={{ marginTop: 4 }}>Todos os lançamentos</h2>
             </div>
-            <Link to="/lancamentos/catalogo" className="btn btn-ghost lan-ver-todos">
-              Catálogo completo <IconArrow width={13} height={13} />
-            </Link>
           </div>
 
-          {/* Busca */}
-          <div className="lan-busca-wrap">
-            <svg className="lan-busca-ico" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-            <input
-              type="search"
-              className="lan-busca"
-              placeholder="Buscar por nome, bairro ou construtora…"
-              value={busca}
-              onChange={e => setBusca(e.target.value)}
-              aria-label="Buscar empreendimentos"
-            />
-            {busca && (
-              <button className="lan-busca-clear" onClick={() => setBusca('')} aria-label="Limpar busca">✕</button>
-            )}
-          </div>
-
-          {/* Tabs V2 */}
-          <div className="lan-tabs lan-tabs--v2">
-            {STATUS_TABS.map((t) => {
-              const cor = STATUS_TAB_COR[t.key]
-              return (
-                <button
-                  key={t.key}
-                  className={`lan-tab lan-tab-v2${filtroStatus === t.key ? ' lan-tab-v2--ativo' : ''}`}
-                  onClick={() => setFiltroStatus(t.key)}
-                >
-                  {cor && <span className="lan-tab-v2-dot" style={{ background: cor }} />}
-                  {t.label}
-                  <span className="lan-tab-v2-count">{contPorStatus(t.key)}</span>
-                </button>
-              )
-            })}
-          </div>
-
-          {vitrine.length > 0 ? (
-            <div className="lan-grid">
-              {vitrine.map((e) => <CardEmpLan key={`${e.construtoraSlug}--${e.slug}`} e={e} />)}
+          {/* Filtro no topo */}
+          <div className="lan-filtrobar">
+            <div className="lan-busca-wrap lan-filtrobar-busca">
+              <svg className="lan-busca-ico" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <input
+                type="search"
+                className="lan-busca"
+                placeholder="Buscar empreendimento pelo nome, bairro ou construtora…"
+                value={busca}
+                onChange={(e) => setBusca(e.target.value)}
+                aria-label="Buscar empreendimentos"
+              />
+              {busca && <button className="lan-busca-clear" onClick={() => setBusca('')} aria-label="Limpar busca">✕</button>}
             </div>
+            <div className="lan-filtros-row">
+              <label className="lan-filtro-sel">
+                <span>Situação</span>
+                <select value={situacao} onChange={(e) => setSituacao(e.target.value)}>
+                  <option value="">Todas</option>
+                  <option value="Lançamento">Lançamento</option>
+                  <option value="Em obras">Em obras</option>
+                  <option value="Pronto">Pronto</option>
+                </select>
+              </label>
+              <label className="lan-filtro-sel">
+                <span>Tipo</span>
+                <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
+                  <option value="">Todos</option>
+                  {TIPO_OPTS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+                </select>
+              </label>
+              <label className="lan-filtro-sel">
+                <span>Região</span>
+                <select value={regiao} onChange={(e) => setRegiao(e.target.value)}>
+                  <option value="">Todos os bairros</option>
+                  {regioes.map((b) => <option key={b} value={b}>{b}</option>)}
+                </select>
+              </label>
+              <label className="lan-filtro-sel">
+                <span>Dormitórios</span>
+                <select value={dorm} onChange={(e) => setDorm(+e.target.value)}>
+                  <option value={0}>Qualquer</option>
+                  {[1, 2, 3, 4].map((q) => <option key={q} value={q}>{q}+ dormitórios</option>)}
+                </select>
+              </label>
+              <label className="lan-filtro-sel">
+                <span>Construtora</span>
+                <select value={construtora} onChange={(e) => setConstrutora(e.target.value)}>
+                  <option value="">Todas</option>
+                  {construtoras.map((c) => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </label>
+            </div>
+            <div className="lan-filtro-resumo">
+              <span><b>{resultado.length}</b> {resultado.length === 1 ? 'empreendimento' : 'empreendimentos'}</span>
+              {temFiltro && <button type="button" className="lan-filtro-limpar" onClick={limparFiltros}>limpar filtros ✕</button>}
+            </div>
+          </div>
+
+          {resultado.length > 0 ? (
+            <>
+              <div className="lan-grid">
+                {visiveis.map((e) => <CardEmpLan key={`${e.construtoraSlug}--${e.slug}`} e={e} />)}
+              </div>
+              {qtd < resultado.length && (
+                <>
+                  <div ref={sentinelaRef} aria-hidden="true" style={{ height: 1 }} />
+                  <div style={{ textAlign: 'center', marginTop: 28 }}>
+                    <button type="button" className="btn btn-ghost" onClick={() => setQtd((q) => Math.min(q + 12, resultado.length))}>
+                      Carregar mais ({resultado.length - qtd} restantes)
+                    </button>
+                  </div>
+                </>
+              )}
+            </>
           ) : (
             <p className="section-sub" style={{ textAlign: 'center', margin: '32px auto' }}>
-              Nenhum empreendimento nesta categoria no momento.
+              Nenhum empreendimento encontrado com esses filtros. <button type="button" className="lan-filtro-limpar" onClick={limparFiltros}>Limpar filtros</button>
             </p>
           )}
-
-          <div style={{ textAlign: 'center', marginTop: 36 }}>
-            <Link to="/lancamentos/catalogo" className="btn btn-gold">
-              Ver todos os {todos.length} empreendimentos com filtros <IconArrow width={14} height={14} />
-            </Link>
-          </div>
         </div>
       </section>
 
