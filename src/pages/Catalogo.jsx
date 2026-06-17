@@ -299,7 +299,7 @@ export default function Catalogo() {
   // sugestões de autocomplete da busca: ruas (o que o cliente digita) + bairros
   const sugestoesBusca = useMemo(() => {
     const ruas = new Set(), bairros = new Set()
-    for (const im of TODOS) { if (im.rua) ruas.add(im.rua); if (im.bairro) bairros.add(im.bairro) }
+    for (const im of TODOS) { const r = (im.rua || '').trim(); const b = (im.bairro || '').trim(); if (r) ruas.add(r); if (b) bairros.add(b) }
     // dedup final (uma rua pode ter o mesmo nome de um bairro — evita key duplicada no datalist)
     return [...new Set([
       ...[...ruas].sort((a, b) => a.localeCompare(b, 'pt-BR')).slice(0, 700),

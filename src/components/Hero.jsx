@@ -1,10 +1,8 @@
 import { useEffect, useRef } from 'react'
-import Scene3D from './Scene3D'
-import HeroSkyline from './HeroSkyline'
 import HeroBusca from './HeroBusca'
 
-// Capa unificada: bio do Vinícius (esquerda) + card de busca (direita),
-// sobre a foto do imóvel da capa, com escurecimento e parallax.
+// Capa estilo portal: FOTO lifestyle no fundo de toda a seção + card de busca
+// flutuando por cima, à esquerda. Parallax sutil na foto ao mover o mouse.
 export default function Hero() {
   const heroRef = useRef(null)
 
@@ -29,11 +27,9 @@ export default function Hero() {
   }, [])
 
   return (
-    <header className="hero" id="topo" ref={heroRef}>
-      <div className="hero-bg" />
-      <div className="hero-bg-tint" />
-      <HeroSkyline />
-      <Scene3D />
+    <header className="hero hero--foto" id="topo" ref={heroRef}>
+      <img className="hero-foto-bg" src="/casa-conceito.jpg" alt="Imóvel de alto padrão em Uberlândia" loading="eager" decoding="async" />
+      <div className="hero-foto-scrim" aria-hidden="true" />
 
       <div className="container hero-grid2">
         <div className="hero-card hero-in">
@@ -46,17 +42,9 @@ export default function Hero() {
             <span>Consultor credenciado · Rotina Imobiliária</span>
           </div>
         </div>
-
-        <figure className="hero-foto">
-          <img src="/casa-conceito.jpg" alt="Imóvel de alto padrão em Uberlândia" fetchPriority="high" />
-          <figcaption>Curadoria de imóveis em Uberlândia · do alto padrão ao primeiro imóvel</figcaption>
-        </figure>
       </div>
 
-      <div className="scroll-hint">
-        <div className="mouse" />
-        Role para explorar
-      </div>
+      <p className="hero-foto-cap">Curadoria de imóveis em Uberlândia · do alto padrão ao primeiro imóvel</p>
     </header>
   )
 }

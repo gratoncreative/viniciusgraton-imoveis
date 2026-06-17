@@ -8524,13 +8524,21 @@ html[data-theme="claro"] .catalogo .cat-head { margin-bottom: 18px; }
 .cat-bairro-chip.on { color: #1C2A44; background: #fff; border-color: var(--gold-2); box-shadow: inset 0 0 0 1px var(--gold-2); }
 html[data-theme="claro"] .cat-count { font-family: var(--font-head); font-weight: 700; color: #5b606a; }
 
-/* ── Fase 3: hero estilo portal (card de busca + foto lifestyle full-bleed) ── */
-.hero-foto { position: relative; z-index: 4; margin: 0; border-radius: 20px; overflow: hidden; box-shadow: 0 44px 100px -52px rgba(10,14,22,.55); aspect-ratio: 16/11; width: 100%; max-height: 560px; }
-.hero-foto img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.2s var(--ease); }
-.hero-foto:hover img { transform: scale(1.04); }
-.hero-foto figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 26px 22px 16px; font-family: var(--font-head); font-size: .9rem; font-weight: 600; color: #fff; background: linear-gradient(transparent, rgba(10,14,22,.7)); }
-@media (max-width: 900px) {
-  .hero-foto { aspect-ratio: 16/9; max-height: 320px; }
+/* ── Fase 3: hero com FOTO lifestyle de fundo (full-bleed) + card de busca à esquerda ── */
+.hero.hero--foto { min-height: min(90vh, 780px); padding-top: 116px; padding-bottom: 40px; overflow: hidden; align-items: center; }
+.hero-foto-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transform: translate(calc(var(--px,0) * -14px), calc(var(--py,0) * -8px)) scale(1.06); transition: transform .5s var(--ease); }
+.hero-foto-scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(10,14,22,.34) 0%, rgba(10,14,22,.10) 44%, rgba(10,14,22,0) 70%),
+    linear-gradient(0deg, rgba(10,14,22,.30), transparent 28%); }
+.hero.hero--foto .hero-grid2 { position: relative; z-index: 3; max-width: var(--maxw); grid-template-columns: clamp(360px, 36vw, 520px); justify-content: start; align-items: center; }
+.hero.hero--foto .hero-card { background: rgba(255,255,255,.97); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); box-shadow: 0 44px 100px -44px rgba(10,14,22,.62); }
+.hero-foto-cap { position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; z-index: 2; width: 100%; max-width: var(--maxw); padding: 40px clamp(22px,3.2vw,56px) 18px; margin: 0 auto; font-family: var(--font-head); font-size: .88rem; font-weight: 600; color: rgba(255,255,255,.92); text-align: right; text-shadow: 0 1px 10px rgba(10,14,22,.5); }
+@media (max-width: 760px) {
+  .hero.hero--foto { min-height: auto; }
+  .hero.hero--foto .hero-grid2 { grid-template-columns: 1fr; }
+  .hero-foto-scrim { background: linear-gradient(0deg, rgba(10,14,22,.5), rgba(10,14,22,.2)); }
+  .hero-foto-cap { display: none; }
 }
 
 /* ── Fase 6: grade SEO de bairros (rodapé denso de portal) ── */
