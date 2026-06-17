@@ -18,7 +18,7 @@ const WA_MSG =
 const CENARIOS = [
   { nome: 'Pessimista', ocup: '65% · ~20 dias/mês', valor: 'R$ 4.000', cor: '#8a8f99' },
   { nome: 'Realista', ocup: '85% · ~25 dias/mês', valor: 'R$ 5.000', cor: '#1C2A44', destaque: true },
-  { nome: 'Otimista', ocup: '100% · ~30 dias/mês', valor: 'R$ 6.000', cor: '#9A7B3C' },
+  { nome: 'Otimista', ocup: '100% · ~30 dias/mês', valor: 'R$ 6.000', cor: '#C20020' },
 ]
 
 const ANCORAS = [
