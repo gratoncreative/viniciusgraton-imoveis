@@ -3,6 +3,7 @@ import Hero from '../components/Hero'
 import { useSEO } from '../useSEO'
 
 const Novidades = lazy(() => import('../components/Novidades'))
+const VistosRecentemente = lazy(() => import('../components/VistosRecentemente'))
 const Destaque = lazy(() => import('../components/Destaque'))
 const CategoriasRapidas = lazy(() => import('../components/CategoriasRapidas'))
 const FerramentasHome = lazy(() => import('../components/FerramentasHome'))
@@ -64,6 +65,7 @@ export default function Home() {
     <main className="tema-claro">
       <Hero />
       <Suspense fallback={null}>
+        <VistosRecentemente />
         <Novidades />
         <Destaque limite={8} />
         <CategoriasRapidas />

@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
-import { IMOVEIS, fotosDe, formatPreco, formatArea } from '../data'
+import { IMOVEIS, fotosDe, formatPreco, formatArea, linkWhatsApp } from '../data'
 import { onImgError } from '../img'
 import { useSEO } from '../useSEO'
-import { IconArrow, IconClose } from '../components/icons'
+import { IconArrow, IconClose, IconWhats } from '../components/icons'
 
 const rs = (n) => (n > 0 ? n : 0)
 const precoM2 = (im) => (im.preco > 0 && im.area > 0 ? im.preco / im.area : 0)
@@ -25,6 +25,7 @@ export default function Comparar() {
   const [sel, setSel] = useState([])
   const toggle = (cod) => setSel((s) => s.includes(cod) ? s.filter((x) => x !== cod) : (s.length >= 4 ? s : [...s, cod]))
   const escolhidos = sel.map((c) => IMOVEIS.find((i) => i.codigo === c)).filter(Boolean)
+  const msgRecomenda = `Olá Vinícius! Estou comparando estes imóveis e queria a sua opinião sobre qual vale mais a pena pra mim:\n${escolhidos.map((im) => `• ${im.tipo} no ${im.bairro} — ${formatPreco(im.preco)} (cód. ${im.codigo})`).join('\n')}`
 
   return (
     <main className="pagina section--light det comparar-pg">
@@ -38,7 +39,8 @@ export default function Comparar() {
         </Reveal>
 
         {escolhidos.length >= 2 && (
-          <div className="cmp-scroll" style={{ marginBottom: 30 }}>
+          <>
+          <div className="cmp-scroll" style={{ marginBottom: 18 }}>
             <table className="cmp-table comparar-table">
               <thead><tr><th></th>{escolhidos.map((im) => (
                 <th key={im.codigo}>
@@ -53,6 +55,13 @@ export default function Comparar() {
               </tbody>
             </table>
           </div>
+          <div className="comparar-cta">
+            <p>Em dúvida entre {escolhidos.length === 2 ? 'os dois' : `esses ${escolhidos.length}`}? Eu analiso seu momento e te digo qual faz mais sentido.</p>
+            <a className="btn btn-gold" href={linkWhatsApp(msgRecomenda)} target="_blank" rel="noopener noreferrer">
+              <IconWhats width={18} height={18} /> Qual você recomenda, Vinícius?
+            </a>
+          </div>
+          </>
         )}
 
         <p className="cat-count">{sel.length}/4 selecionados {sel.length > 0 && <button className="condo-limpar" onClick={() => setSel([])}>limpar</button>}</p>

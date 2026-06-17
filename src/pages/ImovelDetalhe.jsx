@@ -16,6 +16,7 @@ import { useSEO } from '../useSEO'
 import AdminImovelBar from '../components/AdminImovelBar'
 import BaixarFotosImovel from '../components/BaixarFotosImovel'
 import { jaCurtiu, alternarCurtida } from '../engajamento'
+import { registrarVisto } from '../vistos'
 // Lazy.. o estudo do m² (componente pesado + fontes premium) só carrega ao abrir
 const EstudoModal = lazy(() => import('../components/EstudoModal'))
 
@@ -330,7 +331,7 @@ export default function ImovelDetalhe() {
   const [copiado, setCopiado] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [fav, setFav] = useState(false)
-  useEffect(() => { if (im?.codigo) setFav(jaCurtiu(im.codigo)) }, [im?.codigo])
+  useEffect(() => { if (im?.codigo) { setFav(jaCurtiu(im.codigo)); registrarVisto(im.codigo) } }, [im?.codigo])
   const toggleFav = () => {
     if (!im?.codigo) return
     const novo = !fav

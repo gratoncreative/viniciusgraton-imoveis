@@ -1219,6 +1219,24 @@ html[data-theme="claro"] .promo-imovel-media { background: linear-gradient(150de
 .im-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; align-items: stretch; }
 @media (max-width: 1280px) { .im-grid { grid-template-columns: repeat(3, 1fr); } }
 .im-grid > * { height: 100%; }
+
+/* —— Faixa "Visto recentemente" (histórico local) —— */
+.vistos { padding: 38px 0 6px; }
+.vistos-head { margin-bottom: 16px; }
+.vistos-tit { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.3rem, 2.6vw, 1.7rem); color: var(--text); margin: 4px 0 0; }
+.vistos-row { display: flex; gap: 16px; overflow-x: auto; padding: 4px 2px 14px; scroll-snap-type: x mandatory; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
+.vistos-row::-webkit-scrollbar { height: 8px; }
+.vistos-row::-webkit-scrollbar-thumb { background: rgba(154,123,60,0.3); border-radius: 100px; }
+.vistos-card { flex: 0 0 clamp(228px, 62vw, 264px); scroll-snap-align: start; }
+.vistos-card > * { height: 100%; }
+/* dentro do catálogo (full-height): neutraliza o container e reduz o espaçamento */
+.cat-main .vistos { padding: 0 0 16px; }
+.cat-main .vistos .container { max-width: none; padding: 0; }
+.cat-main .vistos-tit { font-size: 1.15rem; }
+
+/* CTA "Qual você recomenda?" no comparador */
+.comparar-cta { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; background: linear-gradient(165deg, #fefdfb, #f6f1e6); border: 1px solid rgba(154,123,60,0.26); border-radius: 16px; padding: 22px; margin-bottom: 30px; }
+.comparar-cta p { margin: 0; color: var(--text-soft); font-size: 0.98rem; max-width: 520px; }
 .im-media { aspect-ratio: 4/3; }
 .im-tag { position: absolute; top: 14px; left: 14px; z-index: 2; font-family: var(--font-head); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 6px 12px; border-radius: 100px; background: rgba(7,10,17,0.62); border: 1px solid var(--gold-3); color: var(--gold-1); backdrop-filter: blur(6px); transform: translateZ(46px); }
 .im-novo { position: absolute; top: 14px; right: 14px; z-index: 3; font-family: var(--font-head); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 5px 11px; border-radius: 100px; background: rgba(60,35,3,0.88); color: #fef0bc; border: 1px solid rgba(198,161,91,0.45); backdrop-filter: blur(6px); transform: translateZ(50px); box-shadow: 0 4px 16px -6px rgba(0,0,0,0.55); }

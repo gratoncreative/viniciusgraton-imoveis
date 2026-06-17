@@ -7,6 +7,7 @@ import AviseMe from '../components/AviseMe'
 import FiltroSelect from '../components/FiltroSelect'
 import FiltroPills from '../components/FiltroPills'
 import InputMoeda from '../components/InputMoeda'
+import VistosRecentemente from '../components/VistosRecentemente'
 import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, linkWhatsApp, WA } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconClose } from '../components/icons'
@@ -432,6 +433,7 @@ export default function Catalogo() {
         </aside>
 
         <div className="cat-main" data-lenis-prevent ref={catMainRef}>
+        <VistosRecentemente excluir={null} />
         <div className="cat-tipos">
           {TIPO_CHIPS.map((c) => (
             <button key={c.grupo} type="button" className={`cat-tipo ${f.grupo === c.grupo ? 'on' : ''}`} onClick={() => toggleGrupo(c.grupo)}>
