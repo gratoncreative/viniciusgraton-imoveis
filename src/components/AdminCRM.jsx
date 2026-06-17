@@ -37,7 +37,7 @@ function calcularTop3(matchesList, m2Mediana) {
 
 const api = (payload) => fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) }).then((r) => r.json().then((j) => ({ status: r.status, j })))
 
-const VAZIO = { id: '', nome: '', whatsapp: '', finalidade: 'Comprar', tipos: [], bairros: [], precoMin: '', precoMax: '', quartosMin: '', suitesMin: '', vagasMin: '', areaMin: '', obs: '', nota: '', sugeridos: [], papeis: [], tags: [], atendimentos: [], notas: [] }
+const VAZIO = { id: '', nome: '', whatsapp: '', email: '', finalidade: 'Comprar', tipos: [], bairros: [], precoMin: '', precoMax: '', quartosMin: '', suitesMin: '', vagasMin: '', areaMin: '', obs: '', nota: '', sugeridos: [], papeis: [], tags: [], atendimentos: [], notas: [] }
 
 // #1 — tipos de atendimento que o Vinícius registra (um clique = log com data)
 const ATEND_TIPOS = [
@@ -578,6 +578,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
               <div className="admin-fields">
                 <label className="admin-field"><span>Nome (opcional)</span><input value={sel.nome} onChange={(e) => setF('nome', e.target.value)} /></label>
                 <label className="admin-field"><span>WhatsApp (obrigatório)</span><input value={sel.whatsapp} onChange={(e) => setF('whatsapp', e.target.value)} placeholder="34 99999-9999" /></label>
+                <label className="admin-field"><span>E-mail <span className="painel-meta">(o cliente pode informar na página dele)</span></span><input type="email" value={sel.email || ''} onChange={(e) => setF('email', e.target.value)} placeholder="cliente@email.com" /></label>
                 <label className="admin-field"><span>Finalidade</span>
                   <select value={sel.finalidade} onChange={(e) => setF('finalidade', e.target.value)}><option>Comprar</option><option>Alugar</option><option>Investir</option></select>
                 </label>

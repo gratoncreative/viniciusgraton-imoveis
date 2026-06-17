@@ -28,6 +28,7 @@ export async function onRequestGet({ env, request }) {
       sugeridos: v.sugeridos || [],
       feedback: v.feedback || {},
       foto: v.foto || '',
+      temEmail: !!v.email, // #16 — só p/ saber se ainda pedimos o e-mail (não expõe o valor)
     },
   })
 }

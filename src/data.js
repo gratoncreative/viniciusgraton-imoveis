@@ -21,7 +21,21 @@ export const CONFIG = {
   // o retorno de sucesso para: https://viniciusgraton.com.br/estudo/{codigo}?pago=1
   // Vazio = botão de pagar fica oculto (só o admin baixa). Ver memória do estudo.
   linkPagamentoEstudo: '',
+  // #7 — Avaliações do Google (prova social honesta). Preencha com os números REAIS
+  // do seu perfil do Google Empresa. Enquanto googleRating = 0, NADA aparece no site
+  // nem no schema (nunca inventamos nota). Ex.: googleRating: 4.9, googleReviewCount: 38.
+  googleRating: 0,
+  googleReviewCount: 0,
+  googleBusinessUrl: '', // link do seu perfil/avaliações no Google (opcional)
 }
+
+// #6 — Depoimentos reais de clientes. NÃO invente: deixe vazio até ter histórias verdadeiras.
+// O bloco na home só aparece quando há pelo menos 1 item aqui. Modelo de cada item:
+//   { nome: 'Mariana S.', texto: 'O Vinícius...', contexto: 'Comprou apê no Santa Mônica', nota: 5 }
+// (nota é opcional, de 1 a 5). Cole os depoimentos reais que receber e eles entram no ar.
+export const DEPOIMENTOS = [
+  // { nome: '', texto: '', contexto: '', nota: 5 },
+]
 
 // aceita uma mensagem personalizada por contexto; usa a padrão se nenhuma for passada
 export const linkWhatsApp = (msg) =>

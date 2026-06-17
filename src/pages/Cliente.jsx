@@ -18,6 +18,20 @@ export default function Cliente() {
   const [feedback, setFeedback] = useState({})
   const [salvo, setSalvo] = useState(false)
   const timer = useRef(0)
+  // #16 — e-mail opcional, pedido só aqui (2º contato)
+  const [emailVal, setEmailVal] = useState('')
+  const [emailEstado, setEmailEstado] = useState('') // '' | 'enviando' | 'ok'
+  const [emailFechado, setEmailFechado] = useState(() => { try { return !!localStorage.getItem('vg_cli_email_' + (token || '')) } catch { return false } })
+  const marcarEmailVisto = () => { try { localStorage.setItem('vg_cli_email_' + (token || ''), '1') } catch {} }
+  const enviarEmail = () => {
+    const em = emailVal.trim()
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) return
+    setEmailEstado('enviando')
+    fetch('/api/cliente-refina', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ t: token, email: em }) })
+      .then(() => { setEmailEstado('ok'); marcarEmailVisto() })
+      .catch(() => setEmailEstado(''))
+  }
+  const fecharEmail = () => { setEmailFechado(true); marcarEmailVisto() }
 
   // laudo m²: modal, autenticação e pagamento
   const [laudoModal, setLaudoModal] = useState(null)   // { im, est } | null
@@ -210,6 +224,25 @@ export default function Cliente() {
 
       <section className="section--light">
         <div className="container">
+          {cli && !cli.temEmail && !emailFechado && (
+            emailEstado === 'ok' ? (
+              <div className="cli-email-card cli-email-card--ok">
+                <span>✓ Pronto! Vou te avisar por e-mail quando entrar algo com a sua cara.</span>
+              </div>
+            ) : (
+              <div className="cli-email-card">
+                <button type="button" className="cli-email-x" onClick={fecharEmail} aria-label="Fechar">✕</button>
+                <div className="cli-email-txt">
+                  <b>Quer que eu te avise por e-mail?</b>
+                  <span>Quando entrar um imóvel novo com o seu perfil{bairroFiltro ? ` no ${bairroFiltro}` : ''}, eu te aviso. É opcional — seu WhatsApp já está comigo.</span>
+                </div>
+                <div className="cli-email-form">
+                  <input type="email" inputMode="email" placeholder="seu@email.com" value={emailVal} onChange={(e) => setEmailVal(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') enviarEmail() }} />
+                  <button type="button" className="btn btn-gold" disabled={emailEstado === 'enviando' || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(emailVal.trim())} onClick={enviarEmail}>{emailEstado === 'enviando' ? 'Enviando…' : 'Quero receber'}</button>
+                </div>
+              </div>
+            )
+          )}
           {visiveis.length === 0 ? (
             <div className="cat-vazio">
               {bairroFiltro ? (

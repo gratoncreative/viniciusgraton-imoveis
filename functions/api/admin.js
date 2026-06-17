@@ -349,6 +349,7 @@ export async function onRequestPost({ env, request }) {
     const novo = {
       id, criadoEm: reg.criadoEm || Date.now(), atualizadoEm: Date.now(),
       nome: lim(c.nome, 80), whatsapp: wa, finalidade: lim(c.finalidade, 20),
+      email: lim(c.email, 120) || reg.email || '',
       tipos: arrStr(c.tipos, 8, 30), bairros: arrStr(c.bairros, 40, 60),
       precoMin: Number(c.precoMin) || 0, precoMax: Number(c.precoMax) || 0,
       quartosMin: Number(c.quartosMin) || 0, suitesMin: Number(c.suitesMin) || 0,

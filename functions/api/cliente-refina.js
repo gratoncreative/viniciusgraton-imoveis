@@ -38,6 +38,11 @@ export async function onRequestPost({ env, request }) {
       }
       reg.feedback = fb
     }
+    // #16 — e-mail opcional, pedido só na página do cliente (2º contato). Validação simples.
+    if (typeof b.email === 'string') {
+      const em = b.email.trim().slice(0, 120)
+      if (!em || /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) reg.email = em
+    }
     reg.refinadoEm = Date.now()
     reg.atualizadoEm = Date.now()
     reg.ultimaAcaoEm = Date.now()

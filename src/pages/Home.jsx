@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react'
 import Hero from '../components/Hero'
 import { useSEO } from '../useSEO'
+import { CONFIG } from '../data'
 
 const Novidades = lazy(() => import('../components/Novidades'))
 const VistosRecentemente = lazy(() => import('../components/VistosRecentemente'))
@@ -8,6 +9,7 @@ const Destaque = lazy(() => import('../components/Destaque'))
 const CategoriasRapidas = lazy(() => import('../components/CategoriasRapidas'))
 const FerramentasHome = lazy(() => import('../components/FerramentasHome'))
 const CorretorBanner = lazy(() => import('../components/CorretorBanner'))
+const Depoimentos = lazy(() => import('../components/Depoimentos'))
 const VenderCta = lazy(() => import('../components/VenderCta'))
 const BlogHome = lazy(() => import('../components/BlogHome'))
 
@@ -56,6 +58,15 @@ export default function Home() {
         jobTitle: 'Consultor de Imóveis',
         worksFor: { '@type': 'Organization', name: 'Rotina Imobiliária', url: 'https://www.rotina.com.br', identifier: 'CRECI PJ 132' },
       },
+      // #7 — estrelas do Google só entram no schema quando há nota REAL configurada
+      ...(CONFIG.googleRating > 0 && CONFIG.googleReviewCount > 0 ? {
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: CONFIG.googleRating,
+          reviewCount: CONFIG.googleReviewCount,
+          bestRating: 5,
+        },
+      } : {}),
     })
     document.head.appendChild(el)
     return () => { document.getElementById('home-schema')?.remove() }
@@ -71,6 +82,7 @@ export default function Home() {
         <CategoriasRapidas />
         <FerramentasHome />
         <CorretorBanner />
+        <Depoimentos />
         <VenderCta />
         <BlogHome />
       </Suspense>
