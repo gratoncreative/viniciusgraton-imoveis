@@ -300,10 +300,18 @@ export default function Catalogo() {
   const sugestoesBusca = useMemo(() => {
     const ruas = new Set(), bairros = new Set()
     for (const im of TODOS) { if (im.rua) ruas.add(im.rua); if (im.bairro) bairros.add(im.bairro) }
-    return [
+    // dedup final (uma rua pode ter o mesmo nome de um bairro — evita key duplicada no datalist)
+    return [...new Set([
       ...[...ruas].sort((a, b) => a.localeCompare(b, 'pt-BR')).slice(0, 700),
       ...[...bairros].sort((a, b) => a.localeCompare(b, 'pt-BR')),
-    ]
+    ])]
+  }, [TODOS])
+
+  // Bairros mais buscados (por volume de imóveis) — faixa de chips acima dos resultados (estilo portal)
+  const topBairros = useMemo(() => {
+    const cont = new Map()
+    for (const im of TODOS) { const b = (im.bairro || '').trim(); if (b) cont.set(b, (cont.get(b) || 0) + 1) }
+    return [...cont.entries()].sort((a, b) => b[1] - a[1]).slice(0, 14).map(([b]) => b)
   }, [TODOS])
 
   const lista = useMemo(() => {
@@ -379,9 +387,17 @@ export default function Catalogo() {
       <div className="container">
         <Reveal>
           <div className="cat-head">
-            <span className="eyebrow">Imóveis da Rotina Imobiliária · Uberlândia</span>
-            <h1 className="section-title">Imóveis à venda em <em>destaque na Rotina</em></h1>
-            <p className="section-sub" style={{ marginTop: 12 }}>
+            <nav className="cat-bread" aria-label="Navegação">
+              <Link to="/">Início</Link>
+              <span aria-hidden="true">›</span>
+              <span>Imóveis à venda{f.bairros.length === 1 ? ` em ${f.bairros[0]}` : ' em Uberlândia'}</span>
+            </nav>
+            <h1 className="cat-h1">
+              {carregandoFeed && !feed.length
+                ? <>Imóveis à venda em <em>Uberlândia</em></>
+                : <><b>{lista.length.toLocaleString('pt-BR')}</b> {lista.length === 1 ? 'imóvel' : 'imóveis'} à venda em <em>{f.bairros.length === 1 ? f.bairros[0] : 'Uberlândia'}</em></>}
+            </h1>
+            <p className="cat-head-sub">
               Imóveis da carteira da <b>Rotina Imobiliária</b>, com o meu atendimento pessoal do começo ao fim. Use os filtros para encontrar o que combina com você.
             </p>
           </div>
@@ -536,6 +552,26 @@ export default function Catalogo() {
               {novosHoje.map((im) => <CardImovel key={im.codigo} im={im} />)}
             </div>
             <div className="cat-hoje-sep"><span>Todos os imóveis</span></div>
+          </div>
+        )}
+
+        {/* faixa de bairros mais buscados (estilo portal) — refino geográfico rápido */}
+        {topBairros.length > 0 && (
+          <div className="cat-bairros-strip" role="list" aria-label="Bairros mais buscados">
+            {topBairros.map((b) => {
+              const ativo = f.bairros.length === 1 && f.bairros[0] === b
+              return (
+                <button
+                  key={b}
+                  type="button"
+                  role="listitem"
+                  className={`cat-bairro-chip${ativo ? ' on' : ''}`}
+                  onClick={() => up('bairros', ativo ? '' : b)}
+                >
+                  {b}
+                </button>
+              )
+            })}
           </div>
         )}
 

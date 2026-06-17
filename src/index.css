@@ -8429,3 +8429,97 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
   .lou-stats { gap: 10px; }
   .lou-stat { min-width: 0; flex: 1; }
 }
+
+/* ════════════════════════════════════════════════════════════════════════
+   REDESIGN "PORTAL" — estrutura/densidade/UX do Chaves na Mão com a marca VG
+   (base clara, dourado como única cor de ação, cards chapados e escaneáveis).
+   Tudo escopado em html[data-theme="claro"] e em classes de PRODUTO para não
+   afetar admin/ferramentas/modais. Não renomeia tokens --gold-*.
+   ════════════════════════════════════════════════════════════════════════ */
+html[data-theme="claro"] {
+  --radius-card: 12px;
+  --radius-img: 8px;
+  --shadow-card: 0 1px 3px rgba(10,14,22,.05), 0 6px 16px -10px rgba(10,14,22,.16);
+  --shadow-card-hover: 0 12px 30px -12px rgba(10,14,22,.24);
+  --gap-secao: 80px;
+}
+
+/* ── Fase 1: card de imóvel chapado (sem tilt 3D, sem dourado, sombra neutra) ── */
+html[data-theme="claro"] .im-card {
+  transform: none;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  border-color: var(--border);
+  transition: transform .2s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
+  will-change: auto;
+}
+html[data-theme="claro"] .im-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: #e4dccb;
+}
+html[data-theme="claro"] .im-card .card-media { border-radius: var(--radius-card) var(--radius-card) 0 0; transform: none; }
+html[data-theme="claro"] .im-card .card-media img { transform: none; transition: transform .5s var(--ease); }
+html[data-theme="claro"] .im-card:hover .card-media img { transform: scale(1.045); }
+html[data-theme="claro"] .im-card .card-body { transform: none; }
+html[data-theme="claro"] .im-card .im-preco { transform: none; font-weight: 800; }
+/* preços e specs com o "peso de portal" (Manrope bold), dourado fica fora dos números */
+html[data-theme="claro"] .im-spec b { font-weight: 800; }
+html[data-theme="claro"] .im-linha-preco,
+html[data-theme="claro"] .im-preco { font-weight: 800; }
+/* card horizontal (linha) — mesma pele chapada */
+html[data-theme="claro"] .im-linha {
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border);
+  transition: transform .2s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
+}
+html[data-theme="claro"] .im-linha:hover { transform: translateY(-2px); box-shadow: var(--shadow-card-hover); border-color: #e4dccb; }
+
+/* ── Fase 2: navbar branca fixa estilo portal (item ativo = pílula dourada) ── */
+html[data-theme="claro"] .nav,
+html[data-theme="claro"] .nav.scrolled {
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: none;
+  box-shadow: none;
+}
+html[data-theme="claro"] .nav.scrolled { box-shadow: 0 4px 18px -14px rgba(10,14,22,.45); }
+/* marca e textos escuros sobre o branco */
+html[data-theme="claro"] .nav .brand-name,
+html[data-theme="claro"] .nav .nav-conta { color: #1C2A44; }
+html[data-theme="claro"] .nav .brand-sub { color: #8a8170; }
+/* links: pílula (sem o sublinhado dourado), ativo com contorno dourado */
+html[data-theme="claro"] .nav .nav-links a {
+  color: #2f2a22; font-weight: 600; padding: 8px 14px; border-radius: 999px; background: none; box-shadow: none;
+}
+html[data-theme="claro"] .nav .nav-links a::after { display: none; }
+html[data-theme="claro"] .nav .nav-links a .nav-ico { opacity: .7; color: inherit; }
+html[data-theme="claro"] .nav .nav-links a:hover { color: #1C2A44; background: var(--marfim, #F4EFE6); box-shadow: none; }
+html[data-theme="claro"] .nav .nav-links a:hover .nav-ico { color: var(--gold-3); opacity: 1; }
+html[data-theme="claro"] .nav .nav-links a.is-active {
+  color: #1C2A44; background: #fff; box-shadow: none;
+  border: 1px solid var(--gold-2); padding: 7px 13px;
+}
+html[data-theme="claro"] .nav .nav-links a.is-active .nav-ico { color: var(--gold-3); opacity: 1; }
+/* conta/admin com hover sutil sobre claro */
+html[data-theme="claro"] .nav .nav-conta:hover { color: #0A0E16; }
+
+/* ── Fase 4: busca estilo portal (breadcrumb + H1 com contagem + chips de bairro) ── */
+html[data-theme="claro"] .catalogo .cat-head { margin-bottom: 18px; }
+.cat-bread { display: flex; align-items: center; gap: 8px; font-size: .82rem; color: #8a8f99; margin-bottom: 8px; font-family: var(--font-head); }
+.cat-bread a { color: #8a8f99; }
+.cat-bread a:hover { color: #1C2A44; text-decoration: underline; }
+.cat-bread span[aria-hidden] { color: #c7c2b6; }
+.cat-h1 { font-family: var(--font-head); font-weight: 800; font-size: clamp(1.5rem, 3.2vw, 2.15rem); line-height: 1.12; color: #1C2A44; letter-spacing: -0.01em; margin: 0; }
+.cat-h1 b { font-weight: 800; }
+.cat-h1 em { font-style: normal; color: #1C2A44; }
+.cat-head-sub { max-width: 640px; color: #5b606a; font-size: .98rem; line-height: 1.55; margin: 8px 0 0; }
+/* faixa de chips de bairro rolável horizontalmente */
+.cat-bairros-strip { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 10px; margin: 0 0 4px; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
+.cat-bairros-strip::-webkit-scrollbar { height: 6px; }
+.cat-bairros-strip::-webkit-scrollbar-thumb { background: #e0dccf; border-radius: 6px; }
+.cat-bairro-chip { flex: 0 0 auto; font-family: var(--font-head); font-size: .85rem; font-weight: 600; color: #2f2a22; background: #fff; border: 1px solid var(--border); border-radius: 999px; padding: 7px 15px; cursor: pointer; white-space: nowrap; transition: background .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease); }
+.cat-bairro-chip:hover { background: var(--marfim, #F4EFE6); border-color: #e4dccb; }
+.cat-bairro-chip.on { color: #1C2A44; background: #fff; border-color: var(--gold-2); box-shadow: inset 0 0 0 1px var(--gold-2); }
+html[data-theme="claro"] .cat-count { font-family: var(--font-head); font-weight: 700; color: #5b606a; }

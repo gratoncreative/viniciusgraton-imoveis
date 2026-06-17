@@ -1,4 +1,3 @@
-import { useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { formatPreco, formatArea, resumoImovel, truncar, linkWhatsApp, waImovel, oportunidade, ehEsquina, parcelaEstimada } from '../data'
 import PrecoGate from './PrecoGate'
@@ -49,31 +48,7 @@ function Spec({ icon, valor, label }) {
 }
 
 export default function CardImovel({ im, variante, overlayLabel }) {
-  const ref = useRef(null)
-  const raf = useRef(0)
   const navigate = useNavigate()
-
-  const onMove = (e) => {
-    const el = ref.current
-    if (!el) return
-    const r = el.getBoundingClientRect()
-    const mx = (e.clientX - r.left) / r.width
-    const my = (e.clientY - r.top) / r.height
-    cancelAnimationFrame(raf.current)
-    raf.current = requestAnimationFrame(() => {
-      el.style.setProperty('--ry', `${(mx - 0.5) * 7}deg`)
-      el.style.setProperty('--rx', `${(0.5 - my) * 5}deg`)
-      el.style.setProperty('--act', '1')
-    })
-  }
-  const onLeave = () => {
-    const el = ref.current
-    if (!el) return
-    cancelAnimationFrame(raf.current)
-    el.style.setProperty('--ry', '0deg')
-    el.style.setProperty('--rx', '0deg')
-    el.style.setProperty('--act', '0')
-  }
 
   const ehApto = /apart|kit|studio|stúdio|loft|flat|cobertura/i.test(im.tipo || '')
   const temAndar = im.andar !== undefined && im.andar !== null && im.andar !== ''
@@ -150,13 +125,10 @@ export default function CardImovel({ im, variante, overlayLabel }) {
 
   return (
     <article
-      ref={ref}
       className={`card-imovel im-card card-clickable ${im.impulsionado ? 'im-pub-on' : ''}`}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
       onClick={irParaImovel}
     >
-      <div className="card-media im-media" data-depth>
+      <div className="card-media im-media">
         <img src={im.img} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} loading="lazy" decoding="async" onError={onImgError} />
         <span className="im-tag">{im.tipo}{ehEsquina(im) && <em className="im-tag-esq">· Esquina</em>}</span>
         {im.novo && <span className="im-novo">Novo</span>}
@@ -202,7 +174,6 @@ export default function CardImovel({ im, variante, overlayLabel }) {
           </a>
         </div>
       </div>
-      <span className="card-glare" aria-hidden="true" />
     </article>
   )
 }
