@@ -548,26 +548,6 @@ export default function Catalogo() {
         )}
 
 
-        {/* faixa de bairros mais buscados (estilo portal) — refino geográfico rápido */}
-        {topBairros.length > 0 && (
-          <div className="cat-bairros-strip" role="list" aria-label="Bairros mais buscados">
-            {topBairros.map((b) => {
-              const ativo = f.bairros.length === 1 && f.bairros[0] === b
-              return (
-                <button
-                  key={b}
-                  type="button"
-                  role="listitem"
-                  className={`cat-bairro-chip${ativo ? ' on' : ''}`}
-                  onClick={() => up('bairros', ativo ? '' : b)}
-                >
-                  {b}
-                </button>
-              )
-            })}
-          </div>
-        )}
-
         <p className="cat-count">{carregandoFeed && !feed.length ? 'Carregando imóveis da Rotina…' : `${lista.length} ${lista.length === 1 ? 'imóvel encontrado' : 'imóveis encontrados'}`}</p>
 
         {lista.length ? (
