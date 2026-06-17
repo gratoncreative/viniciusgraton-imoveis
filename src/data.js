@@ -214,10 +214,16 @@ const _blowToCard = (e) => ({
 
 export const todosEmpreendimentosBlow = () => BLOW_EMPREENDIMENTOS.map(_blowToCard)
 
-export const todosEmpreendimentosTodos = () => [
-  ...todosEmpreendimentos(),
-  ...todosEmpreendimentosBlow(),
-]
+// Junta as duas fontes (construtoras.json + Blow) removendo duplicatas do mesmo
+// empreendimento (ex.: Mirah, Moove, Santa Maria) que aparecem nas duas. Mantém a
+// versão de construtoras.json (cujo card linka certo para /construtoras/:slug/:projeto).
+export const todosEmpreendimentosTodos = () => {
+  const _k = (e) => `${String(e.nome || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '')}|${String(e.bairro || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '')}`
+  const base = todosEmpreendimentos()
+  const vistos = new Set(base.map(_k))
+  const blow = todosEmpreendimentosBlow().filter((e) => !vistos.has(_k(e)))
+  return [...base, ...blow]
+}
 
 export const bairrosComEmpreendimentos = () => {
   const todos = todosEmpreendimentosTodos()

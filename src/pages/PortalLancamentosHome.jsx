@@ -10,7 +10,6 @@ import { isLancLivre, getLancVistos, markLancVisto, LANC_LIMIT } from '../compon
 const WA_PORTAL = 'Olá Vinícius! Acessei o portal de lançamentos e gostaria de saber mais sobre os empreendimentos disponíveis em Uberlândia.'
 
 const STATUS_COR = { 'Lançamento': '#4fa3e0', 'Em obras': '#f59e0b', 'Pronto': '#56c27d' }
-const STATUS_TAB_COR = { 'todos': null, 'Lançamento': '#4fa3e0', 'Em obras': '#f59e0b', 'Pronto': '#56c27d' }
 
 export function CardEmpLan({ e }) {
   const nav = useNavigate()
