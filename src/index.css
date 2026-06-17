@@ -8672,3 +8672,19 @@ html[data-theme="claro"] .condos-hero .condos-hero-search input::placeholder { c
 /* contagem no topo da vitrine de lançamentos (espelha o condo-contagem) */
 .lan-contagem { font-family: var(--font-head); font-weight: 700; color: #5b606a; font-size: .95rem; display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; }
 .lan-contagem b { color: #1C2A44; }
+
+/* ── /ferramentas: identidade dos cards em PETRÓLEO (acento da casa), sem vermelho ── */
+/* chip de ícone da seção e do card: petróleo suave; preenche no hover/ativo */
+html[data-theme="claro"] .ferr-sec-ico { background: rgba(28,42,68,0.07); border: 1px solid rgba(28,42,68,0.16); color: #1C2A44; }
+html[data-theme="claro"] .ferr-card3-ico { background: rgba(28,42,68,0.06); border: 1px solid rgba(28,42,68,0.14); color: #1C2A44; }
+html[data-theme="claro"] .ferr-card3:hover .ferr-card3-ico,
+html[data-theme="claro"] .ferr-card3.on .ferr-card3-ico { background: #1C2A44; border-color: transparent; color: #FFFFFF; }
+html[data-theme="claro"] .ferr-card3:hover { border-color: rgba(28,42,68,0.40); box-shadow: 0 14px 32px -16px rgba(28,42,68,0.22); }
+html[data-theme="claro"] .ferr-card3.on { background: #FBFAF8; border-color: #1C2A44; box-shadow: 0 0 0 1.5px #1C2A44, 0 14px 32px -16px rgba(10,14,22,0.26); }
+html[data-theme="claro"] .ferr-card3:hover .ferr-card3-arrow { color: #1C2A44; }
+/* título sem sublinhado (mais limpo) */
+html[data-theme="claro"] .ferr-card3-tit b { text-decoration: none; }
+/* selos: Popular e PRO em petróleo (vermelho continua exclusivo de oportunidade) */
+html[data-theme="claro"] .ferr-badge-popular { background: rgba(28,42,68,0.08); color: #1C2A44; border: 1px solid rgba(28,42,68,0.2); }
+html[data-theme="claro"] .ferr-badge-pro,
+html[data-theme="claro"] .ferr-badge-pro-sm { background: #1C2A44; color: #FFFFFF; -webkit-text-fill-color: #FFFFFF; border-color: transparent; }
