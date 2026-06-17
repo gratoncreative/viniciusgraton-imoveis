@@ -667,8 +667,10 @@ export function EstudoContent({ estudo, im, onClose }) {
     <>
       {/* ── Cabeçalho ─────────────────────────────────────────────────────── */}
       <header className="ep-header">
+        <div className="ep-header-bar" />
         <div className="ep-container ep-header-inner">
           <div className="ep-header-marca">
+            <span className="ep-marca-eyebrow">Estudo de valor do m² · método NBR 14653</span>
             <span className="ep-marca-nome">Vinícius Graton</span>
             <span className="ep-marca-papel">Consultor da Rotina Imobiliária</span>
           </div>
@@ -678,9 +680,9 @@ export function EstudoContent({ estudo, im, onClose }) {
             <span className="ep-meta-data">{fmtData(estudo.data)}</span>
           </div>
           <div className="ep-header-nav print-hide">
-            <button className="ep-baixar" onClick={baixarEstudo} disabled={pagando} title={liberado ? 'Baixar o estudo em PDF' : 'Pagar R$ 4,90 e baixar o estudo em PDF (entrega automática + e-mail)'}>
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" /></svg>
-              {pagando ? 'Abrindo pagamento…' : liberado ? 'Baixar PDF' : 'Baixar PDF · R$ 4,90'}
+            <button className={`ep-baixar${liberado ? '' : ' ep-baixar--cta'}`} onClick={baixarEstudo} disabled={pagando} title={liberado ? 'Baixar o estudo completo em PDF' : 'Pagar R$ 4,90 e baixar o estudo completo em PDF (entrega na hora + e-mail)'}>
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" /></svg>
+              {pagando ? 'Abrindo pagamento…' : liberado ? 'Baixar estudo completo (PDF)' : 'Baixar estudo completo · R$ 4,90'}
             </button>
             {onClose
               ? <button className="ep-back" onClick={onClose}>

@@ -126,11 +126,11 @@ export default function PortalLancamentosHome() {
     <main className="pagina lan-portal">
       {/* Hero */}
       <section className="lan-hero">
+        <div className="lan-hero-bg" aria-hidden="true" />
+        <div className="lan-hero-veil" aria-hidden="true" />
         <div className="container lan-hero-inner">
           <Reveal>
-            <span className="eyebrow" style={{ justifyContent: 'center', color: 'var(--gold-2)' }}>
-              Portal de Lançamentos · Uberlândia
-            </span>
+            <span className="eyebrow lan-hero-eyebrow">Portal de Lançamentos · Uberlândia</span>
             <h1 className="lan-hero-title">
               Lançamentos de Uberlândia<br />
               <em>com curadoria de consultor</em>
@@ -138,65 +138,25 @@ export default function PortalLancamentosHome() {
             <p className="lan-hero-sub">
               Acompanho mais de {Math.floor(totalConstrutoras / 5) * 5} construtoras — filtro, comparo e indico só o que faz sentido para o seu perfil, com análise independente.
             </p>
+            <div className="lan-hero-stats">
+              <span><b>{totalConstrutoras}</b> construtoras</span>
+              <i aria-hidden="true" />
+              <span><b>{todos.length}</b> empreendimentos</span>
+              <i aria-hidden="true" />
+              <span><b>{bairros.length}</b> bairros</span>
+            </div>
             <div className="lan-hero-ctas">
-              <Link to="/lancamentos/catalogo" className="btn btn-gold">
-                Ver catálogo completo <IconArrow width={15} height={15} />
-              </Link>
+              <button type="button" className="btn btn-gold" onClick={() => document.querySelector('.lan-vitrine')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
+                Ver empreendimentos <IconArrow width={15} height={15} />
+              </button>
               <a href={linkWhatsApp(WA_PORTAL)} className="btn btn-ghost" target="_blank" rel="noopener noreferrer">
                 <IconWhats width={16} height={16} /> Falar com o consultor
               </a>
             </div>
           </Reveal>
         </div>
+        <span className="lan-hero-scroll" aria-hidden="true" />
       </section>
-
-      {/* Stats bar — dark cards */}
-      <div className="lan-stats-bar lan-stats-bar--v2">
-        <div className="container lan-stats-inner lan-stats-inner--v2">
-          <div className="lan-stat-v2">
-            <span className="lan-stat-v2-ico" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-              </svg>
-            </span>
-            <div className="lan-stat-v2-txt">
-              <b>{totalConstrutoras}</b>
-              <span>construtoras</span>
-            </div>
-          </div>
-          <div className="lan-stat-v2">
-            <span className="lan-stat-v2-ico" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-              </svg>
-            </span>
-            <div className="lan-stat-v2-txt">
-              <b>{todos.length}</b>
-              <span>empreendimentos</span>
-            </div>
-          </div>
-          <div className="lan-stat-v2">
-            <span className="lan-stat-v2-ico" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
-              </svg>
-            </span>
-            <div className="lan-stat-v2-txt">
-              <b>{bairros.length}</b>
-              <span>bairros cobertos</span>
-            </div>
-          </div>
-          <div className="lan-stat-v2">
-            <span className="lan-stat-v2-ico" aria-hidden="true">
-              <IconShield width={22} height={22} />
-            </span>
-            <div className="lan-stat-v2-txt">
-              <b>100%</b>
-              <span>com curadoria</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Vitrine — todos os empreendimentos com filtro no topo + rolagem infinita */}
       <section className="section--light lan-vitrine">
