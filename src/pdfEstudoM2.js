@@ -119,9 +119,12 @@ async function montar(estudo, charts = {}) {
   const linhaKV = (rot, val, dest) => { ensure(20); draw(238, 238, 238); doc.setLineWidth(0.5); doc.line(M, y + 5, PW - M, y + 5); set(9.3, 'normal', SOFT); doc.text(T(rot), M, y); set(dest ? 10.5 : 9.3, dest ? 'bold' : 'normal', NAVY); doc.text(T(String(val)), PW - M, y, { align: 'right' }); y += 20 }
   const addChart = (titulo, ch) => {
     if (!ch || !ch.dataUrl) return
-    let iw = Math.min(PW - 2 * M, 420), ih = iw * (ch.h / ch.w)
+    let ratio = (ch.h > 0 && ch.w > 0) ? ch.h / ch.w : 0.62
+    if (!isFinite(ratio) || ratio <= 0) ratio = 0.62
+    ratio = Math.min(1, Math.max(0.45, ratio)) // proporção sã (nunca esticado/gigante)
+    let iw = Math.min(PW - 2 * M, 420), ih = iw * ratio
     const maxH = FOOTER_TOP - CONTENT_TOP - 50
-    if (ih > maxH) { ih = maxH; iw = ih * (ch.w / ch.h) }
+    if (ih > maxH) { ih = maxH; iw = ih / ratio }
     ensure(34 + ih + 6); secao(titulo)
     try { doc.addImage(ch.dataUrl, 'PNG', M + (PW - 2 * M - iw) / 2, y, iw, ih) } catch {}
     y += ih + 12
@@ -184,11 +187,15 @@ async function montar(estudo, charts = {}) {
   y += 4
   // ═══ 7. Tratamento estatístico ═══
   secao('Tratamento estatístico'); pars(TX.tratamento)
-  ensure(20); set(9.5, 'bold', NAVY); doc.text('Estatística da amostra (R$/m² homogeneizado):', M, y); y += 16
-  linhaKV('Média', m2(st.media)); linhaKV('Mediana (adotada)', m2(st.mediana), true)
-  linhaKV('Desvio-padrão', m2(st.dp)); linhaKV('Coeficiente de variação (CV)', pct1((st.cv || 0) * 100))
-  if (st.min) linhaKV('Mínimo / Máximo', `${m2(st.min)}  a  ${m2(st.max)}`)
-  linhaKV('Faixa de referência (R$/m²)', `${m2(estudo.campoMin || st.min)}  a  ${m2(estudo.campoMax || st.max)}`)
+  if (st.media > 0) {
+    ensure(20); set(9.5, 'bold', NAVY); doc.text('Estatística da amostra (R$/m² homogeneizado):', M, y); y += 16
+    linhaKV('Média', m2(st.media)); linhaKV('Mediana (adotada)', m2(st.mediana), true)
+    linhaKV('Desvio-padrão', m2(st.dp)); linhaKV('Coeficiente de variação (CV)', pct1((st.cv || 0) * 100))
+    if (st.min) linhaKV('Mínimo / Máximo', `${m2(st.min)}  a  ${m2(st.max)}`)
+    linhaKV('Faixa de referência (R$/m²)', `${m2(estudo.campoMin || st.min)}  a  ${m2(estudo.campoMax || st.max)}`)
+  } else {
+    par('Amostra insuficiente de comparáveis para o tratamento estatístico completo neste caso; adotou-se a referência de índice de mercado do bairro, com a faixa indicada na capa.')
+  }
   // ═══ 8. Grau ═══
   secao('Grau de fundamentação (autoavaliação)')
   par(`Pelos indicadores objetivos deste estudo — ${estudo.n} dados de mercado e CV de ${pct1((st.cv || 0) * 100)} — a robustez se posiciona em GRAU ${estudo.grau || 'I'} nesta autoavaliação simplificada. Isto NÃO é o enquadramento oficial da NBR 14653, que exige profissional habilitado, vistoria e laudo assinado.`)
@@ -208,11 +215,13 @@ async function montar(estudo, charts = {}) {
       cols.forEach(([t, w], i) => { doc.text(T(t), i >= 2 ? x + w - 8 : x, y, { align: i >= 2 ? 'right' : 'left' }); x += w }); y += 13
     }
     drawHead()
+    // trunca texto que não cabe na coluna (evita invadir a coluna seguinte)
+    const clip = (txt, maxW, sz) => { doc.setFontSize(sz); let s = String(txt); if (doc.getTextWidth(s) <= maxW) return s; while (s.length > 1 && doc.getTextWidth(s + '…') > maxW) s = s.slice(0, -1); return s + '…' }
     const linhas = tw.slice(0, 16)
     linhas.forEach((t, idx) => {
       ensure(15); if (idx % 2) { fill(250, 248, 243); doc.rect(M, y - 10, PW - 2 * M, 15, 'F') }
       set(7.4, 'normal', INK); let x = M + 6
-      const vals = [String(idx + 1), t.bairro || '-', `${Math.round(t.area || 0)} m²`, brl(t.valor), m2(t.valorM2), m2(t.valorHomM2)]
+      const vals = [String(idx + 1), clip(t.bairro || '-', cols[1][1] - 10, 7.4), `${Math.round(t.area || 0)} m²`, brl(t.valor), m2(t.valorM2), m2(t.valorHomM2)]
       vals.forEach((v, i) => { doc.text(T(v), i >= 2 ? x + cols[i][1] - 8 : x, y, { align: i >= 2 ? 'right' : 'left' }); x += cols[i][1] }); y += 15
     })
     y += 2; set(7, 'italic', MUTE); ensure(12)
