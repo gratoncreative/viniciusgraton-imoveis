@@ -8581,6 +8581,40 @@ html[data-theme="claro"] .ferr-pill--pro.on { background: var(--gold-grad); colo
 .im-card .card-body { display: flex; flex-direction: column; }
 .im-card .card-body .im-actions { margin-top: auto; padding-top: 16px; }
 
+/* ── Botões de AÇÃO que eram vermelhos → gradiente branco translúcido + letra escura ──
+   (botões de calculadora, CTAs de anúncio/promo, login, etc. Os "pills ativos" de
+   seleção continuam vermelhos como indicador.) */
+html[data-theme="claro"] .cg-btn,
+html[data-theme="claro"] .preco-gate--card .pg-cta,
+html[data-theme="claro"] .preco-gate--detalhe .pg-cta,
+html[data-theme="claro"] .adslot-cta,
+html[data-theme="claro"] .promo-texto-cta,
+html[data-theme="claro"] .mm-btn--ouro,
+html[data-theme="claro"] .corr-countdown-btn,
+html[data-theme="claro"] .lg-btn {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F1EEE8 100%);
+  color: #1C2A44;
+  border: 1px solid #E6E4DF;
+  box-shadow: 0 6px 16px -10px rgba(10,14,22,.22);
+  -webkit-text-fill-color: #1C2A44;
+}
+html[data-theme="claro"] .cg-btn:hover,
+html[data-theme="claro"] .preco-gate--card .pg-cta:hover,
+html[data-theme="claro"] .preco-gate--detalhe .pg-cta:hover,
+html[data-theme="claro"] .adslot-cta:hover,
+html[data-theme="claro"] .promo-texto-cta:hover,
+html[data-theme="claro"] .mm-btn--ouro:hover,
+html[data-theme="claro"] .corr-countdown-btn:hover,
+html[data-theme="claro"] .lg-btn:hover {
+  background: linear-gradient(180deg, #FFFFFF 0%, #E9E5DD 100%);
+  border-color: #d4d1c9;
+  color: #0A0E16;
+}
+/* ícones desses botões em vermelho (acento) sobre o claro */
+html[data-theme="claro"] .cg-btn svg,
+html[data-theme="claro"] .adslot-cta svg,
+html[data-theme="claro"] .promo-texto-cta svg { color: #EB0128; }
+
 /* ── Padronização /lancamentos = /condominios (mesmo hero + mesmo filtro) ── */
 /* lançamentos reusa o hero do condomínios, só troca a foto de fundo */
 .condos-hero.condos-hero--lanc {
