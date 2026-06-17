@@ -6,11 +6,7 @@ import { CONFIG } from '../data'
 const Novidades = lazy(() => import('../components/Novidades'))
 const VistosRecentemente = lazy(() => import('../components/VistosRecentemente'))
 const Destaque = lazy(() => import('../components/Destaque'))
-const CategoriasRapidas = lazy(() => import('../components/CategoriasRapidas'))
-const FerramentasHome = lazy(() => import('../components/FerramentasHome'))
-const CorretorBanner = lazy(() => import('../components/CorretorBanner'))
 const Depoimentos = lazy(() => import('../components/Depoimentos'))
-const VenderCta = lazy(() => import('../components/VenderCta'))
 const BlogHome = lazy(() => import('../components/BlogHome'))
 
 export default function Home() {
@@ -79,11 +75,7 @@ export default function Home() {
         <VistosRecentemente />
         <Novidades />
         <Destaque limite={8} />
-        <CategoriasRapidas />
-        <FerramentasHome />
-        <CorretorBanner />
         <Depoimentos />
-        <VenderCta />
         <BlogHome />
       </Suspense>
     </main>

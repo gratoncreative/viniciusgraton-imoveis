@@ -504,14 +504,6 @@ export default function Catalogo() {
             Com filtro ativo, o resultado da pesquisa é prioridade (fica em cima) e o
             "visto recentemente" desce para o fim da lista. */}
         {semFiltros && <VistosRecentemente excluir={null} />}
-        <div className="cat-tipos">
-          {TIPO_CHIPS.map((c) => (
-            <button key={c.grupo} type="button" className={`cat-tipo ${f.grupo === c.grupo ? 'on' : ''}`} onClick={() => toggleGrupo(c.grupo)}>
-              <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={c.d} /></svg>
-              <span>{c.label}</span>
-            </button>
-          ))}
-        </div>
 
         {/* CTA: estudo do m² de qualquer imóvel (mesmo fora do site) */}
         <Link to="/avaliar" className="cat-avaliar-cta">
@@ -555,18 +547,6 @@ export default function Catalogo() {
           </section>
         )}
 
-        {semFiltros && novosHoje.length > 0 && (
-          <div className="cat-hoje">
-            <div className="cat-hoje-head">
-              <span className="eyebrow">Atualizado hoje</span>
-              <h2 className="cat-hoje-h2">Chegaram em <em>{diaLabel}</em></h2>
-            </div>
-            <div className="cat-grid">
-              {novosHoje.map((im) => <CardImovel key={im.codigo} im={im} />)}
-            </div>
-            <div className="cat-hoje-sep"><span>Todos os imóveis</span></div>
-          </div>
-        )}
 
         {/* faixa de bairros mais buscados (estilo portal) — refino geográfico rápido */}
         {topBairros.length > 0 && (
