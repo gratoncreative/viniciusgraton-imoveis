@@ -44,23 +44,31 @@ export default function CatalogoLancamentos() {
 
   const todos = useMemo(() => todosEmpreendimentosTodos(), [])
   const bairros = useMemo(() => bairrosComEmpreendimentos().map((b) => b.bairro).sort((a, b) => a.localeCompare(b, 'pt-BR')), [])
+  // lista de construtoras (incorporadoras) p/ navegar por empreendimento
+  const construtoras = useMemo(
+    () => [...new Set(todos.map((e) => e.construtoraNome).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')),
+    [todos]
+  )
 
   const [busca, setBusca] = useState('')
   const [status, setStatus] = useState([])
   const [bairroSel, setBairroSel] = useState([])
   const [bairroQ, setBairroQ] = useState('')
+  const [construtoraSel, setConstrutoraSel] = useState([])
+  const [construtoraQ, setConstrutoraQ] = useState('')
   const [quartosFiltro, setQuartosFiltro] = useState(null)
   const [tipoFiltro, setTipoFiltro] = useState([])
+  const [ordem, setOrdem] = useState('relevancia')
   const [novidNome, setNovidNome] = useState('')
   const [novidFone, setNovidFone] = useState('')
   const [novidPerfil, setNovidPerfil] = useState('')
   const [novidOk, setNovidOk] = useState(false)
   const [novidErro, setNovidErro] = useState('')
 
-  const temFiltro = busca || status.length || bairroSel.length || quartosFiltro || tipoFiltro.length
+  const temFiltro = busca || status.length || bairroSel.length || construtoraSel.length || quartosFiltro || tipoFiltro.length
 
   const limpar = () => {
-    setBusca(''); setStatus([]); setBairroSel([]); setBairroQ(''); setQuartosFiltro(null); setTipoFiltro([])
+    setBusca(''); setStatus([]); setBairroSel([]); setBairroQ(''); setConstrutoraSel([]); setConstrutoraQ(''); setQuartosFiltro(null); setTipoFiltro([])
   }
 
   const toggleArr = (arr, set, val) =>
@@ -71,6 +79,12 @@ export default function CatalogoLancamentos() {
     const q = bairroQ.toLowerCase()
     return bairros.filter((b) => b.toLowerCase().includes(q))
   }, [bairros, bairroQ])
+
+  const construtorasFiltradas = useMemo(() => {
+    if (!construtoraQ.trim()) return construtoras
+    const q = construtoraQ.toLowerCase()
+    return construtoras.filter((c) => c.toLowerCase().includes(q))
+  }, [construtoras, construtoraQ])
 
   const resultado = useMemo(() => {
     let lista = todos
@@ -86,6 +100,7 @@ export default function CatalogoLancamentos() {
     }
     if (status.length) lista = lista.filter((e) => status.includes(e.status))
     if (bairroSel.length) lista = lista.filter((e) => bairroSel.includes(e.bairro))
+    if (construtoraSel.length) lista = lista.filter((e) => construtoraSel.includes(e.construtoraNome))
     if (quartosFiltro) {
       lista = lista.filter((e) => {
         if (e.quartosMin === null && e.quartosMax === null) return false
@@ -95,8 +110,19 @@ export default function CatalogoLancamentos() {
       })
     }
     if (tipoFiltro.length) lista = lista.filter((e) => tipoFiltro.includes(e.tipo))
+    // ordenação (preço não está disponível nos dados; ordenamos pelo que temos)
+    if (ordem !== 'relevancia') {
+      const rankStatus = { 'Lançamento': 0, 'Em obras': 1, 'Pronto': 2 }
+      const cmp = {
+        nome: (a, b) => (a.nome || '').localeCompare(b.nome || '', 'pt-BR'),
+        bairro: (a, b) => (a.bairro || '').localeCompare(b.bairro || '', 'pt-BR') || (a.nome || '').localeCompare(b.nome || '', 'pt-BR'),
+        construtora: (a, b) => (a.construtoraNome || '').localeCompare(b.construtoraNome || '', 'pt-BR') || (a.nome || '').localeCompare(b.nome || '', 'pt-BR'),
+        status: (a, b) => (rankStatus[a.status] ?? 9) - (rankStatus[b.status] ?? 9) || (a.nome || '').localeCompare(b.nome || '', 'pt-BR'),
+      }[ordem]
+      if (cmp) lista = [...lista].sort(cmp)
+    }
     return lista
-  }, [todos, busca, status, bairroSel, quartosFiltro, tipoFiltro])
+  }, [todos, busca, status, bairroSel, construtoraSel, quartosFiltro, tipoFiltro, ordem])
 
   const enviarNovidades = (ev) => {
     ev.preventDefault()
@@ -286,6 +312,61 @@ export default function CatalogoLancamentos() {
             </div>
           </div>
 
+          {/* CONSTRUTORA — checkbox list com search (navegar por incorporadora) */}
+          <div className="cat-filtro-bloco">
+            <div className="cat-filtro-bloco-head">
+              <h3 className="cat-filtro-titulo">
+                Construtora
+                {construtoraSel.length > 0 && <span className="cat-filtro-count">{construtoraSel.length}</span>}
+              </h3>
+              {construtoraSel.length > 0 && (
+                <button className="cat-filtro-clear" onClick={() => { setConstrutoraSel([]); setConstrutoraQ('') }}>Limpar</button>
+              )}
+            </div>
+
+            <div className="cat-bairro-busca-wrap">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <circle cx="10" cy="10" r="7"/><path d="m20 20-3.5-3.5"/>
+              </svg>
+              <input
+                className="cat-bairro-busca"
+                type="search"
+                placeholder="Buscar construtora…"
+                value={construtoraQ}
+                onChange={(e) => setConstrutoraQ(e.target.value)}
+              />
+              {construtoraQ && (
+                <button className="cat-bairro-busca-x" onClick={() => setConstrutoraQ('')} aria-label="Limpar">×</button>
+              )}
+            </div>
+
+            {construtoraSel.length > 0 && (
+              <div className="cat-bairro-selecionados">
+                {construtoraSel.map((c) => (
+                  <span key={c} className="cat-bairro-tag">
+                    {c}
+                    <button className="cat-bairro-tag-x" onClick={() => setConstrutoraSel(construtoraSel.filter((x) => x !== c))} aria-label={`Remover ${c}`}>×</button>
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <div className="cat-bairro-lista">
+              {construtorasFiltradas.length === 0 && <p className="cat-bairro-vazio">Nenhuma construtora encontrada</p>}
+              {construtorasFiltradas.map((c) => (
+                <label key={c} className={`cat-bairro-item${construtoraSel.includes(c) ? ' cat-bairro-item--on' : ''}`}>
+                  <span className={`cat-bairro-cb${construtoraSel.includes(c) ? ' cat-bairro-cb--on' : ''}`} aria-hidden="true">
+                    {construtoraSel.includes(c) && (
+                      <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 6l3 3 5-5"/></svg>
+                    )}
+                  </span>
+                  <input type="checkbox" className="sr-only" checked={construtoraSel.includes(c)} onChange={() => toggleArr(construtoraSel, setConstrutoraSel, c)} />
+                  <span className="cat-bairro-nome">{c}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
           {temFiltro && (
             <button className="btn btn-ghost cat-btn-limpar" onClick={limpar}>
               Limpar todos os filtros
@@ -346,6 +427,19 @@ export default function CatalogoLancamentos() {
         </aside>
 
         <div className="cat-resultado">
+          <div className="cat-lan-toolbar">
+            <span className="cat-lan-toolbar-count">{resultado.length} empreendimento{resultado.length !== 1 ? 's' : ''}</span>
+            <label className="cat-lan-ordenar">
+              <span>Ordenar</span>
+              <select value={ordem} onChange={(e) => setOrdem(e.target.value)} aria-label="Ordenar empreendimentos">
+                <option value="relevancia">Mais relevantes</option>
+                <option value="nome">Nome (A–Z)</option>
+                <option value="status">Status (lançamento → pronto)</option>
+                <option value="bairro">Bairro (A–Z)</option>
+                <option value="construtora">Construtora (A–Z)</option>
+              </select>
+            </label>
+          </div>
           {resultado.length > 0 ? (
             <div className="lan-grid lan-grid--cat">
               {resultado.map((e, idx) => (
