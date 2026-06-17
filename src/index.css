@@ -8523,3 +8523,23 @@ html[data-theme="claro"] .catalogo .cat-head { margin-bottom: 18px; }
 .cat-bairro-chip:hover { background: var(--marfim, #F4EFE6); border-color: #e4dccb; }
 .cat-bairro-chip.on { color: #1C2A44; background: #fff; border-color: var(--gold-2); box-shadow: inset 0 0 0 1px var(--gold-2); }
 html[data-theme="claro"] .cat-count { font-family: var(--font-head); font-weight: 700; color: #5b606a; }
+
+/* ── Fase 3: hero estilo portal (card de busca + foto lifestyle full-bleed) ── */
+.hero-foto { position: relative; z-index: 4; margin: 0; border-radius: 20px; overflow: hidden; box-shadow: 0 44px 100px -52px rgba(10,14,22,.55); aspect-ratio: 16/11; width: 100%; max-height: 560px; }
+.hero-foto img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.2s var(--ease); }
+.hero-foto:hover img { transform: scale(1.04); }
+.hero-foto figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 26px 22px 16px; font-family: var(--font-head); font-size: .9rem; font-weight: 600; color: #fff; background: linear-gradient(transparent, rgba(10,14,22,.7)); }
+@media (max-width: 900px) {
+  .hero-foto { aspect-ratio: 16/9; max-height: 320px; }
+}
+
+/* ── Fase 6: grade SEO de bairros (rodapé denso de portal) ── */
+.cat-seo-bairros { margin: 48px 0 8px; padding-top: 32px; border-top: 1px solid var(--border); }
+.cat-seo-tit { font-family: var(--font-display); font-size: clamp(1.2rem, 2.4vw, 1.5rem); color: #1C2A44; margin: 0 0 18px; }
+.cat-seo-tit em { font-style: italic; color: var(--gold-3); }
+.cat-seo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px 18px; }
+.cat-seo-link { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-family: var(--font-head); font-size: .9rem; color: #2f2a22; padding: 7px 2px; border-bottom: 1px solid transparent; transition: color .18s var(--ease), border-color .18s var(--ease); }
+.cat-seo-link:hover { color: #1C2A44; border-bottom-color: var(--gold-2); }
+.cat-seo-link span { font-size: .72rem; font-weight: 700; color: #fff; background: #1C2A44; border-radius: 999px; padding: 2px 8px; min-width: 22px; text-align: center; }
+@media (max-width: 760px) { .cat-seo-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 440px) { .cat-seo-grid { grid-template-columns: 1fr; } }

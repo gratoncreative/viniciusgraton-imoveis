@@ -1,11 +1,7 @@
 import { useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
 import Scene3D from './Scene3D'
 import HeroSkyline from './HeroSkyline'
 import HeroBusca from './HeroBusca'
-import CardImovel from './CardImovel'
-import { IMOVEIS } from '../data'
-import { IconArrow } from './icons'
 
 // Capa unificada: bio do Vinícius (esquerda) + card de busca (direita),
 // sobre a foto do imóvel da capa, com escurecimento e parallax.
@@ -51,17 +47,10 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="hero-destaques hero-in">
-          <div className="hero-destaques-top">
-            <span className="eyebrow">Oportunidades em destaque</span>
-            <Link className="hero-destaques-link" to="/imoveis">Ver todos <IconArrow /></Link>
-          </div>
-          <div className="hero-destaques-grid">
-            {IMOVEIS.slice(0, 2).map((im) => (
-              <CardImovel key={im.codigo} im={im} />
-            ))}
-          </div>
-        </div>
+        <figure className="hero-foto">
+          <img src="/casa-conceito.jpg" alt="Imóvel de alto padrão em Uberlândia" fetchPriority="high" />
+          <figcaption>Curadoria de imóveis em Uberlândia · do alto padrão ao primeiro imóvel</figcaption>
+        </figure>
       </div>
 
       <div className="scroll-hint">

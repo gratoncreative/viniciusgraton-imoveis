@@ -9,7 +9,7 @@ import FiltroPills from '../components/FiltroPills'
 import InputMoeda from '../components/InputMoeda'
 import VistosRecentemente from '../components/VistosRecentemente'
 import AdminImovelEditor from '../components/AdminImovelEditor'
-import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, linkWhatsApp, WA, aplicarOverrideEmUm } from '../data'
+import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, BAIRROS_SEO, linkWhatsApp, WA, aplicarOverrideEmUm } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconClose } from '../components/icons'
 
@@ -308,11 +308,24 @@ export default function Catalogo() {
   }, [TODOS])
 
   // Bairros mais buscados (por volume de imóveis) — faixa de chips acima dos resultados (estilo portal)
+  const contBairros = useMemo(() => {
+    const cont = new Map()
+    for (const im of TODOS) { const b = (im.bairro || '').trim(); if (b) cont.set(b.toLowerCase(), (cont.get(b.toLowerCase()) || 0) + 1) }
+    return cont
+  }, [TODOS])
   const topBairros = useMemo(() => {
     const cont = new Map()
     for (const im of TODOS) { const b = (im.bairro || '').trim(); if (b) cont.set(b, (cont.get(b) || 0) + 1) }
     return [...cont.entries()].sort((a, b) => b[1] - a[1]).slice(0, 14).map(([b]) => b)
   }, [TODOS])
+  // Grade SEO: imóveis por bairro de Uberlândia (links internos p/ /imoveis/uberlandia/:slug)
+  const bairrosSeoGrid = useMemo(() =>
+    BAIRROS_SEO
+      .map((b) => ({ ...b, n: contBairros.get(b.nome.toLowerCase()) || 0 }))
+      .filter((b) => b.n > 0)
+      .sort((a, b) => b.n - a.n)
+      .slice(0, 48)
+  , [contBairros])
 
   const lista = useMemo(() => {
     let r = TODOS.filter((im) => {
@@ -614,6 +627,20 @@ export default function Catalogo() {
 
         {/* Com busca/filtro ativo, "visto recentemente" aparece aqui embaixo — nunca acima dos resultados. */}
         {!semFiltros && <VistosRecentemente excluir={null} />}
+
+        {/* Grade SEO de bairros (estilo portal) — links internos por bairro de Uberlândia */}
+        {bairrosSeoGrid.length > 12 && (
+          <section className="cat-seo-bairros" aria-label="Imóveis por bairro em Uberlândia">
+            <h2 className="cat-seo-tit">Imóveis à venda nos bairros mais procurados de <em>Uberlândia</em></h2>
+            <div className="cat-seo-grid">
+              {bairrosSeoGrid.map((b) => (
+                <Link key={b.slug} to={`/imoveis/uberlandia/${b.slug}`} className="cat-seo-link">
+                  Imóveis no {b.nome} <span>{b.n}</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         <AviseMe />
         </div>
