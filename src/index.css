@@ -8581,9 +8581,9 @@ html[data-theme="claro"] .ferr-pill--pro.on { background: var(--gold-grad); colo
 .im-card .card-body { display: flex; flex-direction: column; }
 .im-card .card-body .im-actions { margin-top: auto; padding-top: 16px; }
 
-/* ── Botões de AÇÃO que eram vermelhos → gradiente branco translúcido + letra escura ──
-   (botões de calculadora, CTAs de anúncio/promo, login, etc. Os "pills ativos" de
-   seleção continuam vermelhos como indicador.) */
+/* ══ COR DOS BOTÕES/ETIQUETAS: petróleo + texto branco. VERMELHO só nos selos de
+   OPORTUNIDADE (preço caiu / abaixo do mercado). ══ */
+/* botões de ação (calculadora, CTAs, login, promo) -> petróleo + branco */
 html[data-theme="claro"] .cg-btn,
 html[data-theme="claro"] .preco-gate--card .pg-cta,
 html[data-theme="claro"] .preco-gate--detalhe .pg-cta,
@@ -8592,11 +8592,12 @@ html[data-theme="claro"] .promo-texto-cta,
 html[data-theme="claro"] .mm-btn--ouro,
 html[data-theme="claro"] .corr-countdown-btn,
 html[data-theme="claro"] .lg-btn {
-  background: linear-gradient(180deg, #FFFFFF 0%, #F1EEE8 100%);
-  color: #1C2A44;
-  border: 1px solid #E6E4DF;
-  box-shadow: 0 6px 16px -10px rgba(10,14,22,.22);
-  -webkit-text-fill-color: #1C2A44;
+  background: #1C2A44;
+  background-image: none;
+  color: #FFFFFF;
+  -webkit-text-fill-color: #FFFFFF;
+  border: 1px solid transparent;
+  box-shadow: 0 10px 26px -12px rgba(28,42,68,.5);
 }
 html[data-theme="claro"] .cg-btn:hover,
 html[data-theme="claro"] .preco-gate--card .pg-cta:hover,
@@ -8605,15 +8606,57 @@ html[data-theme="claro"] .adslot-cta:hover,
 html[data-theme="claro"] .promo-texto-cta:hover,
 html[data-theme="claro"] .mm-btn--ouro:hover,
 html[data-theme="claro"] .corr-countdown-btn:hover,
-html[data-theme="claro"] .lg-btn:hover {
-  background: linear-gradient(180deg, #FFFFFF 0%, #E9E5DD 100%);
-  border-color: #d4d1c9;
-  color: #0A0E16;
-}
-/* ícones desses botões em vermelho (acento) sobre o claro */
+html[data-theme="claro"] .lg-btn:hover { background: #0A0E16; border-color: transparent; color: #FFFFFF; }
 html[data-theme="claro"] .cg-btn svg,
 html[data-theme="claro"] .adslot-cta svg,
-html[data-theme="claro"] .promo-texto-cta svg { color: #EB0128; }
+html[data-theme="claro"] .promo-texto-cta svg { color: #FFFFFF; }
+
+/* etiquetas sobre a foto (tipo / publicidade / novo) -> petróleo + branco (não vermelho) */
+html[data-theme="claro"] .im-tag,
+html[data-theme="claro"] .im-pub,
+html[data-theme="claro"] .im-novo { background: #1C2A44; color: #FFFFFF; border: 1px solid rgba(255,255,255,0.18); }
+html[data-theme="claro"] .im-pub:hover { background: #0A0E16; }
+
+/* pills de filtro ATIVOS -> petróleo + branco (vermelho fica só p/ oportunidade) */
+html[data-theme="claro"] .ferr-pill.on,
+html[data-theme="claro"] .ferr-pill--pro.on,
+html[data-theme="claro"] .fp-pill.on,
+html[data-theme="claro"] .cb-chip.on,
+html[data-theme="claro"] .condo-chip.on,
+html[data-theme="claro"] .mf-modo-btn.on,
+html[data-theme="claro"] .mf-aba.on,
+html[data-theme="claro"] .ff-pills button.on,
+html[data-theme="claro"] .cat-pager-n.on {
+  background: #1C2A44; background-image: none; color: #FFFFFF; border-color: transparent;
+}
+
+/* ÚNICO vermelho: selos de oportunidade (preço caiu / abaixo do mercado) */
+html[data-theme="claro"] .im-selo--off,
+html[data-theme="claro"] .im-selo--mercado { background: #EB0128; color: #FFFFFF; border: 1px solid transparent; }
+
+/* ── /lancamentos + /condominios: hero em FUNDO BRANCO (sem banda escura) ──
+   título/stats/filtros direto no branco, integrados ao conteúdo da página. */
+html[data-theme="claro"] .condos-hero,
+html[data-theme="claro"] .condos-hero.condos-hero--lanc {
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--border);
+  padding-top: clamp(96px, 10vw, 130px);
+  padding-bottom: 30px;
+}
+html[data-theme="claro"] .condos-hero::before { display: none; }
+html[data-theme="claro"] .condos-hero .condos-hero-title { color: #1C2A44; -webkit-text-fill-color: #1C2A44; }
+html[data-theme="claro"] .condos-hero .condos-hero-desc { color: #5b606a; }
+/* faixa de stats: pílula clara com borda neutra */
+html[data-theme="claro"] .condos-hero-stats { background: #FFFFFF; border: 1px solid var(--border); -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: 0 8px 22px -14px rgba(10,14,22,.22); }
+html[data-theme="claro"] .condos-hero-stats span { color: #5b606a; }
+html[data-theme="claro"] .condos-hero-stats b { color: #1C2A44; }
+html[data-theme="claro"] .condos-hero-stats i { background: var(--border); }
+/* busca + filtros do hero: campos off-white com borda definida (visíveis no branco) */
+html[data-theme="claro"] .condos-hero .condos-hero-search,
+html[data-theme="claro"] .condos-hero .condos-hf { background: #F7F6F3; border: 1px solid #E6E4DF; }
+html[data-theme="claro"] .condos-hero .condos-hero-search input,
+html[data-theme="claro"] .condos-hero .condos-hf select { color: #1C2A44; }
+html[data-theme="claro"] .condos-hero .condos-hero-search input::placeholder { color: #8A8F99; }
 
 /* ── Padronização /lancamentos = /condominios (mesmo hero + mesmo filtro) ── */
 /* lançamentos reusa o hero do condomínios, só troca a foto de fundo */
