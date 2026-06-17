@@ -98,6 +98,13 @@ export default function Condominios() {
               pelo nome, filtre pelo seu perfil e escolha onde você sonha em morar; eu faço a curadoria e
               levanto os terrenos e imóveis disponíveis pra você.
             </p>
+            <div className="condos-hero-stats">
+              <span><b>{base.length}</b> condomínios</span>
+              <i aria-hidden="true" />
+              <span><b>{ZONAS.length}</b> regiões</span>
+              <i aria-hidden="true" />
+              <span><b>{TIPOS.length}</b> tipos</span>
+            </div>
           </Reveal>
 
           {/* Busca */}
