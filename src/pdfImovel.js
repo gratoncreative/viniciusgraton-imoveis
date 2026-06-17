@@ -12,20 +12,28 @@ const SOFT = [110, 118, 130]
 const TEXT = [38, 44, 58]
 
 const proxied = (u) => (u && /^https?:/.test(u) ? `/api/foto?u=${encodeURIComponent(u)}` : u)
-const carregarImg = (url) => new Promise((res) => {
+// carrega a imagem com timeout — uma foto lenta/quebrada nunca trava a geração do PDF
+const carregarImg = (url, ms = 7000) => new Promise((res) => {
   const i = new Image(); i.crossOrigin = 'anonymous'
-  i.onload = () => res(i); i.onerror = () => res(null); i.src = url
+  let pronto = false
+  const fim = (v) => { if (!pronto) { pronto = true; res(v) } }
+  i.onload = () => fim(i); i.onerror = () => fim(null)
+  setTimeout(() => fim(null), ms)
+  i.src = url
 })
 
+// devolve dataURL ou null (canvas "tainted"/erro nunca aborta o PDF inteiro)
 function jpegFit(img, tw, th) {
-  const c = document.createElement('canvas'); c.width = tw; c.height = th
-  const ctx = c.getContext('2d')
-  const ir = img.naturalWidth / img.naturalHeight, r = tw / th
-  let sw, sh, sx, sy
-  if (ir > r) { sh = img.naturalHeight; sw = sh * r; sx = (img.naturalWidth - sw) / 2; sy = 0 }
-  else { sw = img.naturalWidth; sh = sw / r; sx = 0; sy = (img.naturalHeight - sh) / 2 }
-  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, tw, th)
-  return c.toDataURL('image/jpeg', 0.88)
+  try {
+    const c = document.createElement('canvas'); c.width = tw; c.height = th
+    const ctx = c.getContext('2d')
+    const ir = img.naturalWidth / img.naturalHeight, r = tw / th
+    let sw, sh, sx, sy
+    if (ir > r) { sh = img.naturalHeight; sw = sh * r; sx = (img.naturalWidth - sw) / 2; sy = 0 }
+    else { sw = img.naturalWidth; sh = sw / r; sx = 0; sy = (img.naturalHeight - sh) / 2 }
+    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, tw, th)
+    return c.toDataURL('image/jpeg', 0.88)
+  } catch { return null }
 }
 
 export async function gerarPdfImovel(im, fotos, beneficios) {
@@ -111,33 +119,36 @@ export async function gerarPdfImovel(im, fotos, beneficios) {
   header(); footer()
 
   // Foto de capa — full width, grande
-  const capUrl = fotos[0] ? await carregarImg(proxied(fotos[0])) : null
-  const capaH = capUrl ? 290 : 0
-  if (capUrl) {
-    doc.addImage(jpegFit(capUrl, 1060, 580), 'JPEG', 0, 48, PW, capaH)
-    // overlay degradê na base da foto para o título aparecer sobre ela
-    fill(...DARK)
-    for (let i = 0; i < 60; i++) {
-      doc.setFillColor(22, 26, 34, Math.round(i * 3))
-      doc.rect(0, 48 + capaH - 60 + i, PW, 1, 'F')
-    }
+  const capImg = fotos[0] ? await carregarImg(proxied(fotos[0])) : null
+  const capData = capImg ? jpegFit(capImg, 1060, 580) : null
+  const capaH = capData ? 290 : 0
+  if (capData) {
+    doc.addImage(capData, 'JPEG', 0, 48, PW, capaH)
+    // overlay escuro translúcido na base da foto p/ o título ficar legível (GState, sem CMYK)
+    try {
+      if (doc.GState) {
+        doc.setGState(new doc.GState({ opacity: 0.55 }))
+        fill(...DARK); doc.rect(0, 48 + capaH - 78, PW, 78, 'F')
+        doc.setGState(new doc.GState({ opacity: 1 }))
+      }
+    } catch {}
   }
 
   // Badge de tipo no canto superior esquerdo da foto
-  if (capUrl && im.tipo) {
+  if (capData && im.tipo) {
     fill(...GOLD); doc.roundedRect(M, 56, doc.getTextWidth((im.tipo || '').toUpperCase()) + 22, 20, 3, 3, 'F')
     set(8, 'bold', [...DARK]); doc.text((im.tipo || '').toUpperCase(), M + 11, 70)
   }
 
   // Código no canto superior direito da foto
-  if (capUrl && im.codigo) {
+  if (capData && im.codigo) {
     set(8, 'normal', [200, 210, 225]); doc.text(`Cód. ${im.codigo}`, PW - M, 70, { align: 'right' })
   }
 
   // Título sobre a foto (ou abaixo se não tiver foto)
-  const tituloY = capUrl ? 48 + capaH - 24 : 70
-  const tituloTxt = `${im.tipo || 'Imóvel'} no ${im.bairro || ''}`
-  if (capUrl) {
+  const tituloY = capData ? 48 + capaH - 24 : 70
+  const tituloTxt = `${im.titulo || (im.tipo || 'Imóvel') + ' no ' + (im.bairro || '')}`
+  if (capData) {
     set(22, 'bold', [255, 255, 255]); doc.text(tituloTxt, M, tituloY)
     set(9, 'normal', [200, 208, 220]); doc.text(`${im.cidade || 'Uberlândia'} — ${im.uf || 'MG'}`, M, tituloY + 14)
   } else {
@@ -145,7 +156,7 @@ export async function gerarPdfImovel(im, fotos, beneficios) {
     set(9, 'normal', [...SOFT]); doc.text(`${im.cidade || 'Uberlândia'} — ${im.uf || 'MG'} · Cód. ${im.codigo}`, M, tituloY + 14)
   }
 
-  let y = 48 + capaH + (capUrl ? 18 : 40)
+  let y = 48 + capaH + (capData ? 18 : 40)
 
   // ── Bloco de preço ───────────────────────────────────────────────────────
   const precoBoxH = 54
@@ -198,7 +209,8 @@ export async function gerarPdfImovel(im, fotos, beneficios) {
     if (y + ch > PH - 46) { nova(); y = 60 }
     for (let j = 0; j < subFotos.length; j++) {
       const img = await carregarImg(proxied(subFotos[j]))
-      if (img) doc.addImage(jpegFit(img, Math.round(cw * 2), Math.round(ch * 2)), 'JPEG', M + j * (cw + gap), y, cw, ch)
+      const d = img && jpegFit(img, Math.round(cw * 2), Math.round(ch * 2))
+      if (d) doc.addImage(d, 'JPEG', M + j * (cw + gap), y, cw, ch)
     }
     y += ch + 16
   }
@@ -273,10 +285,11 @@ export async function gerarPdfImovel(im, fotos, beneficios) {
 
     for (const u of galerias) {
       const img = await carregarImg(proxied(u))
-      if (!img) continue
+      const d = img && jpegFit(img, Math.round(cw2 * 2.2), Math.round(ch2 * 2.2))
+      if (!d) continue
       if (col2 === 0 && y + ch2 > PH - 46) { nova(); y = 60 }
       const x = M + col2 * (cw2 + gap2)
-      doc.addImage(jpegFit(img, Math.round(cw2 * 2.2), Math.round(ch2 * 2.2)), 'JPEG', x, y, cw2, ch2)
+      doc.addImage(d, 'JPEG', x, y, cw2, ch2)
       col2++
       if (col2 >= cols2) { col2 = 0; y += ch2 + gap2 }
     }

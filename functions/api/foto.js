@@ -26,12 +26,11 @@ export async function onRequestGet({ request }) {
   if (!r.ok) return new Response('imagem nao encontrada', { status: r.status })
   const ct = r.headers.get('content-type') || 'image/jpeg'
   if (!/^image\//.test(ct)) return new Response('nao e imagem', { status: 415 })
-  const origem = request.headers.get('origin') || ''
-  const corsOrigin = origem === 'https://viniciusgraton.com.br' ? origem : 'null'
+  // imagem pública (sem credenciais) — CORS liberado p/ o canvas/PDF não "taintar"
   return new Response(r.body, {
     headers: {
       'content-type': ct,
-      'access-control-allow-origin': corsOrigin,
+      'access-control-allow-origin': '*',
       'cache-control': 'public, max-age=86400',
     },
   })

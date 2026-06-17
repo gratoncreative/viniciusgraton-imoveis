@@ -687,7 +687,7 @@ export default function ImovelDetalhe() {
                   {ap.paras.map((p, i) => <p key={i}>{p}</p>)}
                 </div>
                 <div className="det-apresenta-assina">
-                  <img src="/vinicius-graton-cutout.png" alt="" className="det-apresenta-foto" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+                  <img src="/vinicius-graton.jpg" alt="Vinícius Graton" className="det-apresenta-foto" loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none' }} />
                   <span><b>Vinícius Graton</b><i>Consultor de imóveis · Rotina Imobiliária</i></span>
                 </div>
                 {temDescricao && (
@@ -792,7 +792,7 @@ export default function ImovelDetalhe() {
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3M16 5h3v3M14 11l5.5-5.5"/></svg>
                   Simular
                 </Link>
-                <a href={linkWhatsApp(waImovel(im))} className="det-btn-acao" target="_blank" rel="noopener noreferrer">
+                <a href={linkWhatsApp(`Olá Vinícius! Quero agendar uma visita ao imóvel cód. ${im.codigo} (${im.titulo || `${im.tipo} no ${im.bairro}`}${im.preco > 0 ? ` · ${formatPreco(im.preco)}` : ''}). Qual a sua disponibilidade para me mostrar?`)} className="det-btn-acao" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
                   Agendar visita
                 </a>

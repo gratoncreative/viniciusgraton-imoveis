@@ -73,7 +73,8 @@ export default function Galeria({ fotos = [], alt = '' }) {
                 fetchpriority={n === 0 ? 'high' : 'auto'}
                 decoding="async"
                 referrerPolicy="no-referrer"
-                onError={onImgError}
+                onLoad={(e) => e.currentTarget.parentElement.classList.add('gal-tile--ok')}
+                onError={(e) => { e.currentTarget.parentElement.classList.add('gal-tile--ok'); onImgError(e) }}
               />
               {verMais && <span className="gal-mais">+{total - capa.length}<i>Ver mais fotos</i></span>}
             </button>

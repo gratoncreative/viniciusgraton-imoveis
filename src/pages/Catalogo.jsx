@@ -220,9 +220,11 @@ export default function Catalogo() {
   const toggleGrupo = (g) => {
     const p = new URLSearchParams(params)
     p.delete('tipo')
-    if (f.grupo === g) p.delete('grupo')
-    else p.set('grupo', g)
+    const selecionando = f.grupo !== g
+    if (selecionando) p.set('grupo', g); else p.delete('grupo')
     setParams(p, { replace: true })
+    // feedback claro: rola até a contagem/resultados (no celular eles ficam abaixo da dobra)
+    if (selecionando) requestAnimationFrame(() => { setTimeout(() => document.querySelector('.cat-count')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60) })
   }
 
   const up = (k, v) => {
