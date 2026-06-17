@@ -605,6 +605,18 @@ export function EstudoContent({ estudo, im, onClose }) {
       } catch {}
     }
     if (_adminLogado()) { setLiberado(true); limparUrl(); return }
+    // o Mercado Pago nem sempre devolve collection_id/payment_id na volta — às vezes só status=approved.
+    // Sem id não dá pra re-verificar no servidor, mas como o conteúdo do estudo já está na tela (gate leve),
+    // liberamos o download mesmo assim (o e-mail só sai quando há id, pois exige re-verificação).
+    const aprovadoSemId = !payId && (sp.get('collection_status') === 'approved' || sp.get('status') === 'approved')
+    if (!payId && !aprovadoSemId) { limparUrl(); return }
+    if (aprovadoSemId) {
+      try { localStorage.setItem('vg_estudo_pago', String(Date.now())) } catch {}
+      setLiberado(true)
+      entregarEstudo('')
+      limparUrl()
+      return
+    }
     fetch(`/api/estudo-verificar?payment_id=${encodeURIComponent(payId)}&codigo=${encodeURIComponent(codigoEstudo)}`)
       .then(r => r.json())
       .then(j => {

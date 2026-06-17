@@ -375,7 +375,7 @@ export default function Cliente() {
             const origemUrl = `${window.location.origin}/cliente/${token}?codigo=${mIm.codigo}`
             const r = await fetch('/api/laudo-pagar', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ codigo: String(mIm.codigo), origemUrl }) })
             const j = await r.json()
-            if (j.naoConfigurado) { window.open(linkWhatsApp(`Quero o laudo técnico do m² do imóvel cód. ${mIm.codigo} (R$ 250)`), '_blank'); setLaudoPagando(false); return }
+            if (j.naoConfigurado) { window.open(linkWhatsApp(`Quero o laudo técnico do m² do imóvel cód. ${mIm.codigo} (R$ 29,90)`), '_blank'); setLaudoPagando(false); return }
             if (j.ok && j.url) { window.location.href = j.url; return }
           } catch {}
           setLaudoPagando(false)
@@ -446,8 +446,7 @@ export default function Cliente() {
                     <div className="cli-modal-pay">
                       <p className="cli-modal-pay-label">Laudo técnico em PDF · metodologia bancária NBR 14653</p>
                       <div className="cli-modal-pay-preco">
-                        <span className="cli-modal-pay-antes">R$ 399</span>
-                        <span className="cli-modal-pay-atual">R$ 250</span>
+                        <span className="cli-modal-pay-atual">R$ 29,90</span>
                       </div>
                       <ul className="cli-modal-pay-items">
                         {mEst.n > 0 && <li>Todos os {mEst.n} imóveis do mesmo tipo no {mIm.bairro}, com preço, área e homogeneização detalhada</li>}
@@ -466,17 +465,17 @@ export default function Cliente() {
                           <input type="tel" className="cli-modal-wa-input" placeholder="(34) 99999-9999" value={laudoWa} onChange={e => setLaudoWa(e.target.value)} />
                           <button type="button" className="cli-modal-pay-btn" disabled={laudoWa.replace(/\D/g,'').length < 8 || laudoPagando} onClick={salvarWaEPagar}>
                             <span>📄 Quero o laudo e entrar na negociação com dados</span>
-                            <span className="cli-modal-pay-btn-sub">R$ 250 · entrega imediata · minha decisão precisa de dados reais</span>
+                            <span className="cli-modal-pay-btn-sub">R$ 29,90 · entrega imediata · minha decisão precisa de dados reais</span>
                           </button>
                         </div>
                       ) : (
                         <button type="button" className="cli-modal-pay-btn" disabled={laudoPagando} onClick={iniciarPagamento}>
                           <span>{laudoPagando ? 'Aguarde…' : '📄 Quero o laudo e entrar na negociação com dados'}</span>
-                          <span className="cli-modal-pay-btn-sub">R$ 250 · entrega imediata · minha decisão precisa de dados reais</span>
+                          <span className="cli-modal-pay-btn-sub">R$ 29,90 · entrega imediata · minha decisão precisa de dados reais</span>
                         </button>
                       )}
 
-                      <p className="cli-modal-pay-promo">⏳ Preço promocional · válido por tempo limitado</p>
+                      <p className="cli-modal-pay-promo">Pagamento único · entrega imediata em PDF</p>
                     </div>
                   </>
                 )}

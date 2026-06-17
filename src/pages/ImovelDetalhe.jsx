@@ -340,6 +340,11 @@ export default function ImovelDetalhe() {
   const imBase = local || imApi || feedItem
   // aplica o override do admin por cima (edição no site sobrevive ao sync diário)
   const im = useMemo(() => (imBase && ovImovel ? aplicarOverrideEmUm(imBase, ovImovel) : imBase), [imBase, ovImovel])
+  // imóvel marcado como "oculto" pelo admin: some também da página direta (só o admin enxerga p/ reverter)
+  const ocultoPublico = useMemo(() => {
+    if (!ovImovel || !ovImovel.oculto) return false
+    try { return !localStorage.getItem('vg_admin_token') } catch { return true }
+  }, [ovImovel])
 
   // se NADA carregou ainda, tenta de novo sozinho a cada 5s (até 3x) — nunca fica preso
   useEffect(() => {
@@ -371,6 +376,7 @@ export default function ImovelDetalhe() {
     description: im ? resumoImovel(im) : 'Imóvel à venda em Uberlândia-MG. Consultoria personalizada com Vinícius Graton.',
     path: `/imovel/${codigo}`,
     image: ogImg,
+    noindex: ocultoPublico,
   })
   const [pdfProc, setPdfProc] = useState(false)
   const [copiado, setCopiado] = useState(false)
@@ -446,7 +452,7 @@ export default function ImovelDetalhe() {
 
   // Dados estruturados (SEO / rich results no Google)
   useEffect(() => {
-    if (!im) return
+    if (!im || ocultoPublico) return
     const origin = window.location.origin
     const abs = (u) => (u && u.startsWith('http') ? u : origin + u)
     const agente = {
@@ -520,7 +526,7 @@ export default function ImovelDetalhe() {
     el.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': [data, breadcrumb] })
     document.head.appendChild(el)
     return () => { document.getElementById('ld-imovel')?.remove() }
-  }, [im, fotos])
+  }, [im, fotos, ocultoPublico])
 
   if (!im) {
     if (buscando || tentativa < 3) {
@@ -548,6 +554,20 @@ export default function ImovelDetalhe() {
           <h1 className="section-title">Imóvel não encontrado</h1>
           <p className="section-sub" style={{ margin: '12px 0 28px' }}>
             Esse imóvel pode ter sido vendido ou saído do catálogo.
+          </p>
+          <Link className="btn btn-gold" to="/imoveis">Ver imóveis disponíveis <IconArrow /></Link>
+        </div>
+      </main>
+    )
+  }
+
+  if (ocultoPublico) {
+    return (
+      <main className="section--light det-vazio">
+        <div className="container" style={{ textAlign: 'center' }}>
+          <h1 className="section-title">Imóvel indisponível</h1>
+          <p className="section-sub" style={{ margin: '12px 0 28px' }}>
+            Este imóvel não está disponível no momento. Veja outras opções na nossa seleção.
           </p>
           <Link className="btn btn-gold" to="/imoveis">Ver imóveis disponíveis <IconArrow /></Link>
         </div>
