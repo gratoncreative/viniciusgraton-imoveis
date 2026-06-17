@@ -8559,6 +8559,22 @@ html[data-theme="claro"] .cat-grid { grid-template-columns: repeat(auto-fill, mi
 .post-artigo { max-width: 820px; margin-inline: auto; }
 .post-lead { max-width: 820px; margin-inline: auto; }
 
+/* ── /ferramentas: hero CLARO (branco) estilo Chaves — antes era banda escura ── */
+html[data-theme="claro"] .ferr-hero {
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--border);
+}
+html[data-theme="claro"] .ferr-hero .ferr-hero-titulo { color: #1C2A44; -webkit-text-fill-color: #1C2A44; }
+html[data-theme="claro"] .ferr-hero .ferr-hero-sub { color: #5b606a; }
+/* eyebrow e <em> continuam vermelhos (acento) — legíveis sobre o branco */
+/* pills: brancas com borda neutra + texto escuro; ativa em vermelho (igual Chaves) */
+html[data-theme="claro"] .ferr-pill { background: #FFFFFF; border: 1.5px solid var(--border); color: #2f2a22; box-shadow: none; }
+html[data-theme="claro"] .ferr-pill:hover { background: var(--ivory, #F4F2EE); border-color: #d4d1c9; color: #1C2A44; box-shadow: none; }
+html[data-theme="claro"] .ferr-pill.on { background: var(--gold-grad); color: #FFFFFF; border-color: transparent; }
+html[data-theme="claro"] .ferr-pill--pro { background: #FFFFFF; border-color: rgba(194,0,32,0.35); color: #C20020; }
+html[data-theme="claro"] .ferr-pill--pro:hover { border-color: #EB0128; color: #EB0128; background: var(--ivory, #F4F2EE); }
+html[data-theme="claro"] .ferr-pill--pro.on { background: var(--gold-grad); color: #FFFFFF; border-color: transparent; }
+
 /* ── Padronização /lancamentos = /condominios (mesmo hero + mesmo filtro) ── */
 /* lançamentos reusa o hero do condomínios, só troca a foto de fundo */
 .condos-hero.condos-hero--lanc {

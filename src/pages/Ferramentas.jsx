@@ -544,6 +544,14 @@ export default function Ferramentas() {
     try { setIsCorretor(!!localStorage.getItem('vg_corretor')) } catch {}
   }, [])
 
+  // Sistema CLARO (igual ao resto do site) — garante a página branca, estilo Chaves
+  useEffect(() => {
+    const html = document.documentElement
+    const anterior = html.getAttribute('data-theme')
+    html.setAttribute('data-theme', 'claro')
+    return () => { html.setAttribute('data-theme', anterior || 'claro') }
+  }, [])
+
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') setModalAtiva(null) }
     window.addEventListener('keydown', onKey)
