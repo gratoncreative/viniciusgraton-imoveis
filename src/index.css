@@ -396,8 +396,8 @@ html[data-theme="claro"] .blog-cor-2 { background: linear-gradient(135deg, #F4EF
 html[data-theme="claro"] .section--light .eyebrow { color: #1C2A44; }
 html[data-theme="claro"] .hero-busca-campo select { background: #FFFFFF; color: #2A2F38; border-color: rgba(28,42,68,0.2); }
 /* Lista de imóveis — botão dourado -> petróleo; link dourado -> marinho */
-html[data-theme="claro"] .im-cta { background: #1C2A44; color: #FFFFFF; box-shadow: 0 10px 30px -12px rgba(28,42,68,.5); }
-html[data-theme="claro"] .im-card:hover .im-cta { background: #0A0E16; box-shadow: 0 18px 44px -8px rgba(28,42,68,.5); }
+html[data-theme="claro"] .im-cta { background: #EB0128; color: #FFFFFF; box-shadow: 0 10px 30px -12px rgba(235,1,40,.45); }
+html[data-theme="claro"] .im-card:hover .im-cta { background: #C20020; box-shadow: 0 18px 44px -8px rgba(235,1,40,.45); }
 html[data-theme="claro"] .im-ver { color: #1C2A44; }
 html[data-theme="claro"] .im-card:hover .im-ver { color: #0A0E16; }
 /* Modal de filtro — labels/borda/notas legíveis */
@@ -1725,7 +1725,8 @@ html[data-theme="dark"] .det-novo-tag { color: #60a5fa; }
 /* card vertical: selos de oportunidade empilhados no topo-esquerdo, ABAIXO da tag/publicidade (antes ficavam centralizados e colidiam com a tag em cards estreitos) */
 .im-media .im-selos { top: 50px; left: 14px; right: auto; transform: translateZ(48px); flex-direction: column; align-items: flex-start; justify-content: flex-start; max-width: calc(100% - 28px); }
 .im-pub-on .im-media .im-selos { top: 84px; }
-.im-selo { font-family: var(--font-head); font-weight: 700; font-size: 0.68rem; letter-spacing: 0.07em; text-transform: uppercase; padding: 5px 11px; border-radius: 999px; white-space: nowrap; box-shadow: 0 6px 16px -8px rgba(0,0,0,0.5); }
+.im-selo { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-head); font-weight: 700; font-size: 0.6rem; letter-spacing: 0.01em; text-transform: none; padding: 3px 9px 3px 7px; border-radius: 999px; white-space: nowrap; box-shadow: 0 4px 12px -7px rgba(0,0,0,0.45); }
+.im-selo svg { flex: none; width: 11px; height: 11px; opacity: .95; }
 .im-selo--off { background: #1f8a4c; color: #fff; }
 .im-selo--mercado { background: rgba(60,35,3,0.88); color: #fef0bc; border: 1px solid rgba(10, 14, 22,0.45); backdrop-filter: blur(6px); }
 .det-selos { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 12px; }

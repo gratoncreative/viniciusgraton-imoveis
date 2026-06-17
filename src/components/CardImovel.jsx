@@ -12,10 +12,11 @@ const plural = (n, s, p) => (n > 1 ? p : s)
 // contexto. Nada de número solto (ex.: "-11%"); sempre rotular ("Preço caiu 11%").
 function SelosOportunidade({ op }) {
   if (!op || (!op.temDesconto && !op.abaixoMercado)) return null
+  const setaBaixo = <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 5v14M19 12l-7 7-7-7" /></svg>
   return (
     <div className="im-selos">
-      {op.temDesconto && <span className="im-selo im-selo--off">Preço caiu {op.pctDesconto}%</span>}
-      {op.abaixoMercado && <span className="im-selo im-selo--mercado">Abaixo do mercado</span>}
+      {op.temDesconto && <span className="im-selo im-selo--off">{setaBaixo}Preço caiu {op.pctDesconto}%</span>}
+      {op.abaixoMercado && <span className="im-selo im-selo--mercado">{setaBaixo}Abaixo do mercado</span>}
     </div>
   )
 }
@@ -114,7 +115,7 @@ export default function CardImovel({ im, variante, overlayLabel }) {
             <div className="im-actions">
               <Link className="im-ver" to={`/imovel/${im.codigo}`} onClick={(e) => e.stopPropagation()}>Ver detalhes</Link>
               <a className="im-cta" href={linkWhatsApp(waImovel(im))} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
-                <IconWhats width={18} height={18} /> Tenho interesse
+                <IconWhats width={18} height={18} /> Contatar
               </a>
             </div>
           </div>
@@ -170,7 +171,7 @@ export default function CardImovel({ im, variante, overlayLabel }) {
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
           >
-            <IconWhats width={18} height={18} /> Tenho interesse
+            <IconWhats width={18} height={18} /> Contatar
           </a>
         </div>
       </div>
