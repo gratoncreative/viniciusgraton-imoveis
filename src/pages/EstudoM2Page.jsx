@@ -95,6 +95,11 @@ export function buildEstudo(im, est) {
     simples: !!est.simples,
     baseLabel: est.baseLabel,
     fontes: est.fontes,
+    // dados técnicos extras p/ o PDF completo (memória de cálculo, tabela, campo de arbítrio)
+    campoMin: est.campoMin, campoMax: est.campoMax, nDesc: est.nDesc || 0, escopo: est.escopo || '',
+    parametros: est.parametros || null,
+    fatoresAplicados: est.fatoresAplicados || [], limitacoes: est.limitacoes || [],
+    refIPD: est.refIPD || 0, refFonte: est.refFonte || '', refRef: est.refRef || '',
   }
 }
 
