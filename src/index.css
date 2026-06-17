@@ -1331,6 +1331,8 @@ html[data-theme="claro"] .promo-imovel-media { background: linear-gradient(150de
 .fs-check.on { background: var(--gold-3); border-color: var(--gold-3); }
 .fs-check.on::after { content: ''; position: absolute; left: 5px; top: 1px; width: 4px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
 .fs-vazio { padding: 12px; text-align: center; color: var(--text-mute); font-size: 0.86rem; }
+.fs-grupo { padding: 9px 12px 4px; font-family: var(--font-head); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-3); pointer-events: none; }
+.fs-grupo:not(:first-child) { margin-top: 4px; border-top: 1px solid var(--border); padding-top: 9px; }
 .fs-limpar { width: 100%; margin-top: 6px; padding: 8px; background: none; border: none; border-top: 1px solid var(--border); color: var(--gold-3); font-family: var(--font-head); font-weight: 600; font-size: 0.82rem; cursor: pointer; }
 .cat-rail .cat-busca { flex: 0 0 auto; min-width: 0; }
 .cat-main { min-width: 0; }

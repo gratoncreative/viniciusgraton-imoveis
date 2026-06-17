@@ -93,17 +93,26 @@ export default function FiltroSelect({ icon, placeholder, options = [], value, m
             <input className="fs-busca" autoFocus type="search" placeholder="Buscar bairro…" value={q} onChange={(e) => setQ(e.target.value)} />
           )}
           <ul className="fs-opts">
-            {lista.map((o) => {
-              const on = multiple ? arr.map(String).includes(String(o.value)) : String(value) === String(o.value)
-              return (
-                <li key={String(o.value)}>
-                  <button type="button" className={`fs-opt ${on ? 'on' : ''}`} onClick={() => escolher(o.value)}>
-                    {multiple && <span className={`fs-check ${on ? 'on' : ''}`} aria-hidden="true" />}
-                    <span className="fs-opt-txt">{o.label}</span>
-                  </button>
-                </li>
-              )
-            })}
+            {(() => {
+              const out = []
+              let ultimoGrupo = null
+              for (const o of lista) {
+                if (o.grupo && o.grupo !== ultimoGrupo) {
+                  ultimoGrupo = o.grupo
+                  out.push(<li key={'g:' + o.grupo} className="fs-grupo" aria-hidden="true">{o.grupo}</li>)
+                }
+                const on = multiple ? arr.map(String).includes(String(o.value)) : String(value) === String(o.value)
+                out.push(
+                  <li key={String(o.value)}>
+                    <button type="button" className={`fs-opt ${on ? 'on' : ''}`} onClick={() => escolher(o.value)}>
+                      {multiple && <span className={`fs-check ${on ? 'on' : ''}`} aria-hidden="true" />}
+                      <span className="fs-opt-txt">{o.label}</span>
+                    </button>
+                  </li>
+                )
+              }
+              return out
+            })()}
             {lista.length === 0 && <li className="fs-vazio">Nada encontrado</li>}
           </ul>
           {multiple && arr.length > 0 && (

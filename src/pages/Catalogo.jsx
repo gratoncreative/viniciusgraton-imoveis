@@ -38,7 +38,13 @@ const FIco = ({ n }) => (
 )
 
 const AREAS = [50, 80, 100, 150, 200, 250, 300, 400, 500, 750, 1000]
-const CARACS = ['Piscina', 'Churrasqueira', 'Academia', 'Salão de festas', 'Playground', 'Portaria 24h', 'Elevador', 'Varanda gourmet', 'Sacada', 'Closet', 'Mobiliado', 'Lavabo', 'Energia solar']
+// características agrupadas (estilo Rotina: Lazer / Conforto / Segurança / Estrutura)
+const CARACS = [
+  { v: 'Piscina', g: 'Lazer' }, { v: 'Churrasqueira', g: 'Lazer' }, { v: 'Academia', g: 'Lazer' }, { v: 'Salão de festas', g: 'Lazer' }, { v: 'Playground', g: 'Lazer' },
+  { v: 'Varanda gourmet', g: 'Conforto' }, { v: 'Sacada', g: 'Conforto' }, { v: 'Closet', g: 'Conforto' }, { v: 'Mobiliado', g: 'Conforto' }, { v: 'Lavabo', g: 'Conforto' },
+  { v: 'Portaria 24h', g: 'Segurança' }, { v: 'Portão eletrônico', g: 'Segurança' }, { v: 'Interfone', g: 'Segurança' }, { v: 'Alarme', g: 'Segurança' },
+  { v: 'Elevador', g: 'Estrutura' }, { v: 'Energia solar', g: 'Estrutura' }, { v: 'Área de serviço', g: 'Estrutura' }, { v: 'Jardim', g: 'Estrutura' },
+]
 
 
 const blobDe = (im) => {
@@ -403,7 +409,7 @@ export default function Catalogo() {
           <FiltroSelect icon={<FIco n="area" />} placeholder="Área mín. (m²)" neutral={0} value={f.area} onChange={(v) => up('area', v)}
             options={[{ value: 0, label: 'Qualquer área' }, ...AREAS.map((n) => ({ value: n, label: `${n.toLocaleString('pt-BR')}+ m²` }))]} />
           <FiltroSelect icon={<FIco n="carac" />} placeholder="Características" multiple searchable multiNoun="características" value={f.carac} onChange={setCarac}
-            options={CARACS.map((c) => ({ value: c, label: c }))} />
+            options={CARACS.map((c) => ({ value: c.v, label: c.v, grupo: c.g }))} />
           <FiltroSelect icon={<FIco n="ordem" />} placeholder="Mais recentes" neutral="recentes" value={f.ordem} onChange={(v) => up('ordem', v)}
             options={[{ value: 'recentes', label: 'Mais recentes' }, { value: 'menor', label: 'Menor preço' }, { value: 'maior', label: 'Maior preço' }, { value: 'area-maior', label: 'Maior área' }, { value: 'area-menor', label: 'Menor área' }]} />
         </div>
