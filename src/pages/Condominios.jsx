@@ -94,9 +94,7 @@ export default function Condominios() {
             <span className="condos-hero-eyebrow">Morar em condomínio fechado</span>
             <h2 className="condos-hero-title">Os condomínios fechados de <em>Uberlândia</em></h2>
             <p className="condos-hero-desc">
-              Reuni os principais condomínios horizontais da cidade — casas, lotes e chácaras. Busque
-              pelo nome, filtre pelo seu perfil e escolha onde você sonha em morar; eu faço a curadoria e
-              levanto os terrenos e imóveis disponíveis pra você.
+              Casas, lotes e chácaras nos principais condomínios fechados de Uberlândia.
             </p>
             <div className="condos-hero-stats">
               <span><b>{base.length}</b> condomínios</span>

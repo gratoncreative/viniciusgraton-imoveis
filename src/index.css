@@ -8673,6 +8673,7 @@ html[data-theme="claro"] .condos-hero .condos-hero-search input::placeholder { c
 /* contagem no topo da vitrine de lançamentos (espelha o condo-contagem) */
 .lan-contagem { font-family: var(--font-head); font-weight: 700; color: #5b606a; font-size: .95rem; display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; }
 .lan-contagem b { color: #1C2A44; }
+.lan-contagem-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 16px; }
 
 /* ── /ferramentas: identidade dos cards em PETRÓLEO (acento da casa), sem vermelho ── */
 /* chip de ícone da seção e do card: petróleo suave; preenche no hover/ativo */

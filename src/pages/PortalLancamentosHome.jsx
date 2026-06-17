@@ -135,7 +135,7 @@ export default function PortalLancamentosHome() {
             <span className="condos-hero-eyebrow">Portal de Lançamentos · Uberlândia</span>
             <h2 className="condos-hero-title">Lançamentos de <em>Uberlândia</em></h2>
             <p className="condos-hero-desc">
-              Acompanho mais de {Math.floor(totalConstrutoras / 5) * 5} construtoras — filtro, comparo e indico só o que faz sentido para o seu perfil, com análise independente.
+              Filtro, comparo e indico só o que faz sentido para o seu perfil — com análise independente.
             </p>
             <div className="condos-hero-stats">
               <span><b>{totalConstrutoras}</b> construtoras</span>
@@ -202,18 +202,12 @@ export default function PortalLancamentosHome() {
         </div>
       </section>
 
-      {/* Vitrine — todos os empreendimentos com filtro no topo + rolagem infinita */}
+      {/* Vitrine — grade direta (sem cabeçalho redundante); só uma contagem fina */}
       <section className="section--light lan-vitrine">
         <div className="container">
-          <div className="lan-vitrine-head">
-            <div>
-              <span className="eyebrow">Empreendimentos</span>
-              <h2 className="section-title" style={{ marginTop: 4 }}>Todos os lançamentos</h2>
-            </div>
-            <span className="lan-contagem">
-              <b>{resultado.length}</b> {resultado.length === 1 ? 'empreendimento' : 'empreendimentos'}
-              {temFiltro && <button type="button" className="lan-filtro-limpar" onClick={limparFiltros}>limpar ✕</button>}
-            </span>
+          <div className="lan-contagem-bar">
+            <span className="lan-contagem"><b>{resultado.length}</b> {resultado.length === 1 ? 'empreendimento' : 'empreendimentos'}</span>
+            {temFiltro && <button type="button" className="lan-filtro-limpar" onClick={limparFiltros}>limpar filtros ✕</button>}
           </div>
 
           {resultado.length > 0 ? (
