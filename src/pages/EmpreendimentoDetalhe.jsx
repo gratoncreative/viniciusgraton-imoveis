@@ -4,6 +4,7 @@ import Galeria from '../components/Galeria'
 import AviseMe from '../components/AviseMe'
 import { getEmpreendimento, linkWhatsApp } from '../data'
 import { useSEO } from '../useSEO'
+import { useEventoLancamento } from '../eventoLancamento'
 import { IconWhats, IconArrow, IconPin, IconShield, IconBuilding } from '../components/icons'
 
 const ytId = (u = '') => {
@@ -22,6 +23,14 @@ export default function EmpreendimentoDetalhe() {
       : 'Empreendimento não encontrado.',
     path: `/construtoras/${slug}/${projeto}`,
   })
+
+  // #12 — schema.org/Event (entrega prevista) quando há data parseável e ainda não foi entregue
+  useEventoLancamento(e ? {
+    nome: e.projeto.nome, status: e.projeto.status, entrega: e.projeto.entrega,
+    bairro: e.projeto.bairro, endereco: e.projeto.endereco, capa: e.projeto.capa, preco: e.projeto.preco,
+    construtora: e.construtora.nome,
+    url: typeof window !== 'undefined' ? `${window.location.origin}/construtoras/${slug}/${projeto}` : '',
+  } : null)
 
   if (!e) {
     return (

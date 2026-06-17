@@ -4,6 +4,7 @@ import Reveal from '../components/Reveal'
 import AviseMe from '../components/AviseMe'
 import { getBlowEmpreendimento, linkWhatsApp } from '../data'
 import { useSEO } from '../useSEO'
+import { useEventoLancamento } from '../eventoLancamento'
 import { IconWhats, IconArrow, IconPin, IconShield, IconBuilding } from '../components/icons'
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
@@ -66,6 +67,14 @@ export default function BlowEmpreendimentoDetalhe() {
       : 'Empreendimento não encontrado.',
     path: `/lancamentos/empreendimento/blow/${slug}`,
   })
+
+  // #12 — schema.org/Event (entrega prevista) quando há data e ainda não foi entregue
+  useEventoLancamento(e ? {
+    nome: e.nome, status: e.status, entrega: e.dataEntrega,
+    bairro: e.bairro, endereco: e.endereco, capa: e.capa,
+    construtora: e.construtoraNome,
+    url: typeof window !== 'undefined' ? `${window.location.origin}/lancamentos/empreendimento/blow/${slug}` : '',
+  } : null)
 
   if (!e) {
     return (

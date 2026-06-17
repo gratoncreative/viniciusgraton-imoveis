@@ -2800,6 +2800,15 @@ html[data-theme="dark"] .admin-alerta-stale code { background: rgba(255,255,255,
 /* MapLibre */
 .mapa-frame-ml { height: 520px; border-radius: 18px; overflow: hidden; border: 1px solid rgba(154,123,60,0.22); box-shadow: 0 18px 44px -24px rgba(0,0,0,0.6); margin-top: 28px; }
 .mapa-dica { text-align: center; color: #6a7484; font-size: 0.9rem; margin: 14px 0 0; }
+/* #10 filtros do mapa */
+.mapa-filtros { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: flex-end; justify-content: center; margin-top: 20px; }
+.mapa-filtro { display: flex; flex-direction: column; gap: 4px; }
+.mapa-filtro span { font-size: 0.74rem; font-weight: 600; color: var(--text-mute); letter-spacing: 0.02em; padding-left: 2px; }
+.mapa-filtro select { border: 1px solid var(--border); border-radius: 10px; padding: 9px 12px; font-family: var(--font-body); font-size: 0.88rem; color: var(--text); background: var(--surface, #fff); min-width: 140px; cursor: pointer; }
+.mapa-filtro select:focus { outline: none; border-color: var(--gold-2); box-shadow: 0 0 0 3px rgba(198,161,91,0.18); }
+.mapa-filtro-cont { font-size: 0.82rem; color: var(--text-soft); padding-bottom: 9px; }
+.mapa-filtro-limpar { border: none; background: none; color: var(--gold-3, #9A7B3C); font-weight: 600; font-size: 0.82rem; cursor: pointer; padding: 0 2px 9px; }
+.mapa-filtro-limpar:hover { text-decoration: underline; }
 .maplibregl-ctrl-group { background: #131924 !important; border: 1px solid rgba(154,123,60,0.22) !important; box-shadow: none !important; }
 .maplibregl-ctrl-group button { background: transparent !important; border-bottom-color: rgba(255,255,255,0.08) !important; }
 .maplibregl-ctrl-group button:hover { background: rgba(154,123,60,0.14) !important; }

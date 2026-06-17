@@ -175,14 +175,27 @@ export default function Mapa() {
   const mapaRef = useRef(null)
   const listaRef = useRef(null)
 
+  // #10 — filtros do mapa (tipo, preço máx, quartos)
+  const [tipoF, setTipoF] = useState('')
+  const [precoMaxF, setPrecoMaxF] = useState(0)
+  const [quartosF, setQuartosF] = useState(0)
+  const tiposDisp = useMemo(() => [...new Set(IMOVEIS.map((i) => i.tipo).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')), [])
+  const filtrosAtivos = !!tipoF || !!precoMaxF || !!quartosF
+  const imoveisFiltrados = useMemo(() => IMOVEIS.filter((im) =>
+    (!tipoF || im.tipo === tipoF) &&
+    (!precoMaxF || (im.preco > 0 && im.preco <= precoMaxF)) &&
+    (!quartosF || (im.quartos || 0) >= quartosF)
+  ), [tipoF, precoMaxF, quartosF])
+
   const porBairro = useMemo(() => {
     const m = {}
-    for (const im of IMOVEIS) { if (im.bairro) (m[im.bairro] = m[im.bairro] || []).push(im) }
+    for (const im of imoveisFiltrados) { if (im.bairro) (m[im.bairro] = m[im.bairro] || []).push(im) }
     return Object.entries(m).sort((a, b) => b[1].length - a[1].length)
-  }, [])
+  }, [imoveisFiltrados])
 
   const [bairroSel, setBairroSel] = useState(null)
   const lista = useMemo(() => porBairro.find(([b]) => b === bairroSel)?.[1] || [], [porBairro, bairroSel])
+  const PRECO_BANDS = [[300000, 'até R$ 300 mil'], [500000, 'até R$ 500 mil'], [800000, 'até R$ 800 mil'], [1200000, 'até R$ 1,2 mi'], [2000000, 'até R$ 2 mi']]
 
   const geojson = useMemo(() => ({
     type: 'FeatureCollection',
@@ -291,6 +304,14 @@ export default function Mapa() {
     return () => { mapaRef.current = null; map.remove() }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Atualiza os pontos do mapa quando os filtros mudam
+  useEffect(() => {
+    const map = mapaRef.current
+    if (!map) return
+    const aplicar = () => { const src = map.getSource('bairros'); if (src) src.setData(geojson) }
+    if (map.isStyleLoaded()) aplicar(); else map.once('load', aplicar)
+  }, [geojson])
+
   return (
     <main className="pagina section--light det mapa-pg">
       <div className="container">
@@ -305,12 +326,41 @@ export default function Mapa() {
           </div>
         </Reveal>
 
+        <div className="mapa-filtros">
+          <label className="mapa-filtro">
+            <span>Tipo</span>
+            <select value={tipoF} onChange={(e) => setTipoF(e.target.value)}>
+              <option value="">Todos</option>
+              {tiposDisp.map((t) => <option key={t} value={t}>{t}</option>)}
+            </select>
+          </label>
+          <label className="mapa-filtro">
+            <span>Preço</span>
+            <select value={precoMaxF} onChange={(e) => setPrecoMaxF(+e.target.value)}>
+              <option value={0}>Qualquer</option>
+              {PRECO_BANDS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+            </select>
+          </label>
+          <label className="mapa-filtro">
+            <span>Quartos</span>
+            <select value={quartosF} onChange={(e) => setQuartosF(+e.target.value)}>
+              <option value={0}>Qualquer</option>
+              {[1, 2, 3, 4].map((q) => <option key={q} value={q}>{q}+ quartos</option>)}
+            </select>
+          </label>
+          <span className="mapa-filtro-cont">{imoveisFiltrados.length} imóveis · {porBairro.length} bairros</span>
+          {filtrosAtivos && <button type="button" className="mapa-filtro-limpar" onClick={() => { setTipoF(''); setPrecoMaxF(0); setQuartosF(0) }}>limpar ×</button>}
+        </div>
+
         <div className="mapa-frame-ml" ref={mapEl} />
 
         {!bairroSel && (
           <p className="mapa-dica">
-            ↑ Clique em qualquer bairro no mapa para ver os imóveis disponíveis
+            ↑ Clique em qualquer bairro no mapa para ver os imóveis disponíveis{filtrosAtivos ? ' (já filtrados)' : ''}
           </p>
+        )}
+        {bairroSel && lista.length === 0 && (
+          <p className="mapa-dica">Nenhum imóvel em <strong>{bairroSel}</strong> com esses filtros. Ajuste ou <button type="button" className="mapa-filtro-limpar" onClick={() => { setTipoF(''); setPrecoMaxF(0); setQuartosF(0) }}>limpe os filtros</button>.</p>
         )}
 
         <div ref={listaRef} style={{ scrollMarginTop: 80 }}>
