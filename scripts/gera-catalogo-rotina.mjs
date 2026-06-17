@@ -5,6 +5,13 @@ import fs from 'node:fs'
 const n = (v) => { const x = parseInt(String(v == null ? '' : v).replace(/[^\d-]/g, ''), 10); return isFinite(x) ? x : 0 }
 const f = (v) => { const x = parseFloat(String(v == null ? '' : v).replace(',', '.')); return isFinite(x) ? x : 0 }
 const ehApto = (t) => /apart|kit|studio|stúdio|loft|flat|cobertura/i.test(t || '')
+// extrai só o NOME da rua (sem número/complemento/bairro) — privacidade + autocomplete limpo
+const ruaLimpa = (e) => {
+  if (!e) return ''
+  let s = String(e).split(/[,–-]| n[º°.]/i)[0].trim()   // antes de vírgula/traço/"nº"
+  s = s.replace(/\s+\d{1,6}[a-z]?\s*$/i, '').trim()       // tira número no fim, se sobrou
+  return s.length >= 4 ? s.slice(0, 80) : ''
+}
 
 async function getCodes() {
   const r = await fetch('https://www.rotina.com.br/sitemap.xml')
@@ -43,6 +50,9 @@ async function fetchImovel(cod) {
       img: im.urlfotoprincipal || '',
       rotina: true,
     }
+    // rua (logradouro) p/ o filtro de busca por rua — SEM o número (privacidade)
+    const rua = ruaLimpa(im.endereco)
+    if (rua) rec.rua = rua
     if (ehApto(rec.tipo)) {
       if (String(im.numeroandar || '') !== '') rec.andar = n(im.numeroandar)
       rec.elevador = n(im.numeroelevador) > 0

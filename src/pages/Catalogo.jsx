@@ -252,8 +252,9 @@ export default function Catalogo() {
   // Fuse.js: busca fuzzy com tolerância a erros de digitação e acentuação
   const fuse = useMemo(() => new Fuse(TODOS, {
     keys: [
-      { name: 'tipo', weight: 0.3 },
-      { name: 'bairro', weight: 0.4 },
+      { name: 'tipo', weight: 0.25 },
+      { name: 'bairro', weight: 0.35 },
+      { name: 'rua', weight: 0.45 },
       { name: 'codigo', weight: 0.2 },
       { name: 'cidade', weight: 0.1 },
     ],
@@ -274,6 +275,16 @@ export default function Catalogo() {
     const res = fuse.search(q)
     return new Set(res.map((r) => String(r.item.codigo)))
   }, [fuse, f.q, TODOS])
+
+  // sugestões de autocomplete da busca: ruas (o que o cliente digita) + bairros
+  const sugestoesBusca = useMemo(() => {
+    const ruas = new Set(), bairros = new Set()
+    for (const im of TODOS) { if (im.rua) ruas.add(im.rua); if (im.bairro) bairros.add(im.bairro) }
+    return [
+      ...[...ruas].sort((a, b) => a.localeCompare(b, 'pt-BR')).slice(0, 700),
+      ...[...bairros].sort((a, b) => a.localeCompare(b, 'pt-BR')),
+    ]
+  }, [TODOS])
 
   const lista = useMemo(() => {
     let r = TODOS.filter((im) => {
@@ -386,10 +397,15 @@ export default function Catalogo() {
           <input
             className="cat-busca"
             type="search"
-            placeholder="Buscar por código ou bairro"
+            placeholder="Buscar por rua, bairro ou código"
             value={f.q}
             onChange={(e) => up('q', e.target.value)}
+            list="cat-busca-sug"
+            autoComplete="off"
           />
+          <datalist id="cat-busca-sug">
+            {sugestoesBusca.map((s) => <option key={s} value={s} />)}
+          </datalist>
         </div>
 
         {/* Filtros */}
