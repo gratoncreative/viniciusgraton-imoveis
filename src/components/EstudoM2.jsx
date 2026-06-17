@@ -112,7 +112,7 @@ export default function EstudoM2({ im, est, onClose, onLaudo }) {
         Estudo comparativo de mercado, calculado pelo método ABNT NBR 14653 com homogeneização da amostra.
         É uma estimativa de referência — não substitui um laudo com vistoria por profissional credenciado.
       </p>
-      <a className="btn btn-gold em2-cta" href={linkWhatsApp(msg)} target="_blank" rel="noopener">
+      <a className="btn btn-gold em2-cta" href={linkWhatsApp(msg)} target="_blank" rel="noopener noreferrer">
         <IconWhats width={18} height={18} /> Falar sobre o preço com o Vinícius
       </a>
     </div>,

@@ -114,7 +114,7 @@ export default function PortalLancamentosHome() {
               <Link to="/lancamentos/catalogo" className="btn btn-gold">
                 Ver catálogo completo <IconArrow width={15} height={15} />
               </Link>
-              <a href={linkWhatsApp(WA_PORTAL)} className="btn btn-ghost" target="_blank" rel="noopener">
+              <a href={linkWhatsApp(WA_PORTAL)} className="btn btn-ghost" target="_blank" rel="noopener noreferrer">
                 <IconWhats width={16} height={16} /> Falar com o consultor
               </a>
             </div>

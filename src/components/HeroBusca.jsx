@@ -50,7 +50,7 @@ export default function HeroBusca() {
       <div className="hb-campo">
         <span>Bairro ou região</span>
         <FiltroSelect
-          placeholder="Toda Uberlândia" multiple searchable value={bairros} onChange={setBairros}
+          placeholder="Toda Uberlândia" multiple searchable multiNoun="bairros" value={bairros} onChange={setBairros}
           options={bairrosOpts.map((b) => ({ value: b, label: b }))}
         />
       </div>

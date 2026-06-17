@@ -680,7 +680,7 @@ export default function ImovelDetalhe() {
                 {specs.map((s, i) => <Spec key={i} {...s} />)}
               </div>
 
-              <a className="btn btn-gold det-whats" href={linkWhatsApp(waImovel(im))} target="_blank" rel="noopener">
+              <a className="btn btn-gold det-whats" href={linkWhatsApp(waImovel(im))} target="_blank" rel="noopener noreferrer">
                 <IconWhats /> Tenho interesse neste imóvel
               </a>
               <AgendarVisita im={im} />
@@ -713,18 +713,18 @@ export default function ImovelDetalhe() {
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3M16 5h3v3M14 11l5.5-5.5"/></svg>
                   Simular
                 </Link>
-                <a href={linkWhatsApp(waImovel(im))} className="det-btn-acao" target="_blank" rel="noopener">
+                <a href={linkWhatsApp(waImovel(im))} className="det-btn-acao" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
                   Agendar visita
                 </a>
                 {im.tour360 && (
-                  <a href={im.tour360} className="det-btn-acao det-btn-acao--wide" target="_blank" rel="noopener">
+                  <a href={im.tour360} className="det-btn-acao det-btn-acao--wide" target="_blank" rel="noopener noreferrer">
                     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
                     Tour 360°
                   </a>
                 )}
                 {im.video && !/NnAmly9Gb9s/.test(im.video) && (
-                  <a href={ytWatch(im.video)} className="det-btn-acao det-btn-acao--wide" target="_blank" rel="noopener">
+                  <a href={ytWatch(im.video)} className="det-btn-acao det-btn-acao--wide" target="_blank" rel="noopener noreferrer">
                     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
                     Ver vídeo do imóvel
                   </a>
@@ -806,7 +806,7 @@ export default function ImovelDetalhe() {
                   referrerPolicy="no-referrer-when-downgrade"
                 />
               </div>
-              <a className="det-mapa-ampliar" href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`} target="_blank" rel="noopener">
+              <a className="det-mapa-ampliar" href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`} target="_blank" rel="noopener noreferrer">
                 â›¶ Ampliar e explorar a região no Google Maps
               </a>
             </figure>

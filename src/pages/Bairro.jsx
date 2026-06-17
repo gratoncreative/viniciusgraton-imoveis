@@ -79,7 +79,7 @@ export default function Bairro() {
           <h1 className="section-title">Imóveis à venda em <em>{b.nome}</em></h1>
           <p className="construtora-desc">{ed ? ed.intro : b.desc}</p>
           <div className="construtora-hero-acoes">
-            <a className="btn btn-gold" href={linkWhatsApp(`Olá Vinícius! Quero ver imóveis à venda em ${b.nome}, Uberlândia.`)} target="_blank" rel="noopener">
+            <a className="btn btn-gold" href={linkWhatsApp(`Olá Vinícius! Quero ver imóveis à venda em ${b.nome}, Uberlândia.`)} target="_blank" rel="noopener noreferrer">
               <IconWhats /> Quero opções em {b.nome}
             </a>
             <Link className="btn btn-ghost" to={`/imoveis?bairro=${encodeURIComponent(b.nome)}`}>Ver no catálogo <IconArrow /></Link>
@@ -147,7 +147,7 @@ export default function Bairro() {
           ) : (
             <div className="cat-vazio">
               <p>Ainda não tenho um imóvel publicado em {b.nome} — mas tenho acesso a muito mais opções na região. Me conta o que você procura.</p>
-              <a className="btn btn-gold" href={linkWhatsApp(`Olá Vinícius! Procuro imóvel em ${b.nome}, Uberlândia. Pode me ajudar?`)} target="_blank" rel="noopener">
+              <a className="btn btn-gold" href={linkWhatsApp(`Olá Vinícius! Procuro imóvel em ${b.nome}, Uberlândia. Pode me ajudar?`)} target="_blank" rel="noopener noreferrer">
                 <IconWhats /> Me conta o que você procura
               </a>
             </div>

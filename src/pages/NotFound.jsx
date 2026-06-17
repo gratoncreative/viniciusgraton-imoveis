@@ -17,7 +17,7 @@ export default function NotFound() {
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
           <Link className="btn btn-gold" to="/imoveis">Ver imóveis <IconArrow /></Link>
           <Link className="btn btn-ghost" to="/">Voltar ao início</Link>
-          <a className="btn btn-ghost" href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener">
+          <a className="btn btn-ghost" href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener noreferrer">
             <IconWhats /> Falar comigo
           </a>
         </div>

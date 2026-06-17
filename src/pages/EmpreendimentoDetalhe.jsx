@@ -64,10 +64,10 @@ export default function EmpreendimentoDetalhe() {
               <p className="det-subtitulo">Empreendimento {c.nome} — {p.status || 'em Uberlândia'}. {p.endereco}</p>
               {p.preco && <p className="det-preco">{p.preco}</p>}
 
-              <a className="btn btn-gold det-whats" href={linkWhatsApp(wa)} target="_blank" rel="noopener">
+              <a className="btn btn-gold det-whats" href={linkWhatsApp(wa)} target="_blank" rel="noopener noreferrer">
                 <IconWhats /> Tenho interesse — quero visitar
               </a>
-              <a className="btn btn-ghost det-visita" href={linkWhatsApp(`Olá Vinícius! Quero detalhes (plantas, valores e condições) do ${p.nome}, da ${c.nome}.`)} target="_blank" rel="noopener">
+              <a className="btn btn-ghost det-visita" href={linkWhatsApp(`Olá Vinícius! Quero detalhes (plantas, valores e condições) do ${p.nome}, da ${c.nome}.`)} target="_blank" rel="noopener noreferrer">
                 Pedir plantas e valores
               </a>
 

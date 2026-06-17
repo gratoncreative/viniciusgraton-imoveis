@@ -92,7 +92,7 @@ export default function LancamentoBairro() {
           </div>
 
           <div style={{ textAlign: 'center', marginTop: 40 }}>
-            <a href={linkWhatsApp(waMsg)} className="btn btn-gold" target="_blank" rel="noopener">
+            <a href={linkWhatsApp(waMsg)} className="btn btn-gold" target="_blank" rel="noopener noreferrer">
               <IconWhats width={16} height={16} /> Perguntar sobre lançamentos no {bairroNome}
             </a>
           </div>

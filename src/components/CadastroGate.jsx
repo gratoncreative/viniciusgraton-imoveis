@@ -67,7 +67,7 @@ export default function CadastroGate() {
             </div>
             <h3>Preços liberados!</h3>
             <p>Agora você vê o valor de todos os imóveis do site, agora e nas próximas visitas.</p>
-            <a className="cg-btn cg-ok-wa" href={linkWhatsApp(`Oi Vinícius! Sou ${f.nome.trim() || 'um cliente'}, liberei os preços no seu site e quero começar a busca pelo meu imóvel.`)} target="_blank" rel="noopener" onClick={() => setAberto(false)}>
+            <a className="cg-btn cg-ok-wa" href={linkWhatsApp(`Oi Vinícius! Sou ${f.nome.trim() || 'um cliente'}, liberei os preços no seu site e quero começar a busca pelo meu imóvel.`)} target="_blank" rel="noopener noreferrer" onClick={() => setAberto(false)}>
               <IconWhats width={18} height={18} /> Confirmar meu WhatsApp e falar com o Vinícius
             </a>
             <button type="button" className="cg-ok-fechar" onClick={() => setAberto(false)}>Continuar vendo os imóveis</button>

@@ -38,7 +38,7 @@ export default function BannerAds({ orientacao = 'horizontal', intervalo = 5000,
           className={`adslot adslot--c${s.cor ?? 0}`}
           href={href}
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
           initial={{ opacity: 0, ...dir }}
           animate={{ opacity: 1, x: 0, y: 0 }}
           exit={{ opacity: 0, ...{ x: dir.x ? -dir.x : 0, y: dir.y ? -dir.y : 0 } }}

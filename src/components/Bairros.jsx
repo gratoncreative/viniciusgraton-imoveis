@@ -20,7 +20,7 @@ export default function Bairros() {
               className="btn btn-ghost"
               href={linkWhatsApp('Olá Vinícius! Quero saber sobre imóveis no meu bairro de interesse em Uberlândia.')}
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
             >
               Não achou seu bairro? Fale comigo <IconArrow />
             </a>

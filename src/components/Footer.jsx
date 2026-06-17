@@ -43,10 +43,10 @@ export default function Footer() {
             </div>
             <div className="footer-col">
               <h5>Contato</h5>
-              <a href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener">WhatsApp</a>
+              <a href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener noreferrer">WhatsApp</a>
               <a href="tel:+5534991570494">(34) 99157-0494</a>
               <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
-              <a href={CONFIG.instagram} target="_blank" rel="noopener">@viniciusgraton.imoveis</a>
+              <a href={CONFIG.instagram} target="_blank" rel="noopener noreferrer">@viniciusgraton.imoveis</a>
               <span className="footer-end">Av. Afonso Pena, 1535 — Aparecida<br />Uberlândia/MG · Rotina Imobiliária</span>
             </div>
             <div className="footer-col">
@@ -60,8 +60,8 @@ export default function Footer() {
         <div className="footer-bottom">
           <span>© {year} {CONFIG.marca}. Todos os direitos reservados.</span>
           <span style={{ display: 'flex', gap: 16 }}>
-            <a href={CONFIG.instagram} target="_blank" rel="noopener" aria-label="Instagram"><IconInsta width={20} height={20} /></a>
-            <a href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener" aria-label="WhatsApp"><IconWhats width={20} height={20} /></a>
+            <a href={CONFIG.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><IconInsta width={20} height={20} /></a>
+            <a href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><IconWhats width={20} height={20} /></a>
           </span>
         </div>
       </div>

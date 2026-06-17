@@ -121,7 +121,7 @@ export default function Diferenciais() {
           <h3>Pronto pra comprar com quem cuida de você?</h3>
           <p>Me conta o que você procura. Eu trago as opções certas e cuido de tudo, do começo ao fim.</p>
           <div className="dif-cta-acoes">
-            <a className="btn btn-gold" href={linkWhatsApp(WA.hero)} target="_blank" rel="noopener"><IconWhats /> Falar comigo agora</a>
+            <a className="btn btn-gold" href={linkWhatsApp(WA.hero)} target="_blank" rel="noopener noreferrer"><IconWhats /> Falar comigo agora</a>
             <Link className="btn btn-ghost" to="/imoveis">Ver imóveis disponíveis <IconArrow /></Link>
           </div>
         </div>

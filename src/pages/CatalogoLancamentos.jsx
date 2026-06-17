@@ -128,7 +128,7 @@ export default function CatalogoLancamentos() {
     ev.preventDefault()
     const nome = novidNome.trim()
     if (!nome || nome.length < 2) { setNovidErro('Informe seu nome'); return }
-    if (novidFone && soNum(novidFone).length < 10) { setNovidErro('WhatsApp inválido'); return }
+    if (novidFone && soNum(novidFone).length < 11) { setNovidErro('WhatsApp inválido — informe DDD + número (11 dígitos)'); return }
     const partes = [`Olá Vinícius! Me chamo ${nome}`]
     if (novidFone) partes.push(`meu WhatsApp é ${novidFone}`)
     if (novidPerfil) partes.push(`meu perfil: ${novidPerfil}`)
@@ -454,7 +454,7 @@ export default function CatalogoLancamentos() {
           )}
           <div className="cat-wa-cta">
             <p>Não encontrou o perfil ideal? Descrevo o que procura e faço a curadoria personalizada.</p>
-            <a href={linkWhatsApp(WA_CAT)} className="btn btn-gold" target="_blank" rel="noopener">
+            <a href={linkWhatsApp(WA_CAT)} className="btn btn-gold" target="_blank" rel="noopener noreferrer">
               <IconWhats width={16} height={16} /> Falar com o consultor <IconArrow width={13} height={13} />
             </a>
           </div>

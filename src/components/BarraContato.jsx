@@ -31,7 +31,7 @@ export default function BarraContato() {
       <div className="container barra-inner">
         <span className="barra-label">Vendas — fale comigo</span>
         <div className="barra-acoes">
-          <a href={linkWhatsApp(WA.flutuante)} target="_blank" rel="noopener" className="barra-item barra-whats">
+          <a href={linkWhatsApp(WA.flutuante)} target="_blank" rel="noopener noreferrer" className="barra-item barra-whats">
             <IconWhats width={18} height={18} /> WhatsApp
           </a>
           <a href={`tel:+${CONFIG.whatsapp}`} className="barra-item">

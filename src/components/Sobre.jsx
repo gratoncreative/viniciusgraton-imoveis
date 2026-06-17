@@ -41,7 +41,7 @@ export default function Sobre() {
 
           <Reveal delay={0.2}>
             <div className="sobre-banner-acoes">
-              <a className="btn btn-gold" href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener">
+              <a className="btn btn-gold" href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener noreferrer">
                 <IconWhats /> Falar comigo agora
               </a>
               <span className="sobre-selo">

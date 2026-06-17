@@ -84,7 +84,7 @@ export default function PerguntasImovel({ im }) {
             <div className="qa-a">
               <div className="qa-a-in">
                 <p>{item.a}</p>
-                <a className="qa-wa" href={linkWhatsApp(`Olá Vinícius! Sobre o ${im.tipo} no ${im.bairro} (cód. ${im.codigo}).. ${item.q}`)} target="_blank" rel="noopener">
+                <a className="qa-wa" href={linkWhatsApp(`Olá Vinícius! Sobre o ${im.tipo} no ${im.bairro} (cód. ${im.codigo}).. ${item.q}`)} target="_blank" rel="noopener noreferrer">
                   <IconWhats width={15} height={15} /> Falar disso no WhatsApp
                 </a>
               </div>

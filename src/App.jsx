@@ -194,7 +194,7 @@ export default function App() {
       </div>
       <Footer />
 
-      <a className="wa-float" href={linkWhatsApp(WA.flutuante)} target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+      <a className="wa-float" href={linkWhatsApp(WA.flutuante)} target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp">
         <IconWhats />
       </a>
 

@@ -56,7 +56,7 @@ export default function Faq() {
               className="btn btn-gold"
               href={linkWhatsApp('Olá Vinícius! Tenho uma dúvida sobre comprar imóvel. Pode me ajudar?')}
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
             >
               <IconWhats /> Perguntar no WhatsApp
             </a>

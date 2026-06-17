@@ -32,7 +32,7 @@ export default function ParallaxBand({ img, eyebrow, frase, cta, wa, imovel, lig
             {eyebrow && <span className="eyebrow">{eyebrow}</span>}
             <h2 className="band-light-frase">{frase}</h2>
             {cta && (
-              <a className="btn btn-gold band-cta" href={linkWhatsApp(WA[wa])} target="_blank" rel="noopener">
+              <a className="btn btn-gold band-cta" href={linkWhatsApp(WA[wa])} target="_blank" rel="noopener noreferrer">
                 <IconWhats /> {cta}
               </a>
             )}
@@ -79,7 +79,7 @@ export default function ParallaxBand({ img, eyebrow, frase, cta, wa, imovel, lig
         {eyebrow && <span className="band-eyebrow">{eyebrow}</span>}
         <h2 className="band-frase">{frase}</h2>
         {cta && (
-          <a className="btn btn-gold band-cta" href={linkWhatsApp(WA[wa])} target="_blank" rel="noopener">
+          <a className="btn btn-gold band-cta" href={linkWhatsApp(WA[wa])} target="_blank" rel="noopener noreferrer">
             <IconWhats /> {cta}
           </a>
         )}

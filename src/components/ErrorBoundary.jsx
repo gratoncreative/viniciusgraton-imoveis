@@ -54,7 +54,7 @@ function ErroFallback() {
         </div>
         <div className="erro-acoes">
           <button className="btn btn-gold" onClick={() => window.location.reload()}>Atualizar agora</button>
-          <a className="btn btn-ghost" href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener">
+          <a className="btn btn-ghost" href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener noreferrer">
             Falar com {CONFIG.nome.split(' ')[0]}
           </a>
         </div>

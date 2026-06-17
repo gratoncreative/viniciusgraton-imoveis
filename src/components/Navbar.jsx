@@ -136,7 +136,7 @@ export default function Navbar() {
                 <span>Admin</span>
               </Link>
             )}
-            <a className="btn btn-gold" href={linkWhatsApp(WA.navbar)} target="_blank" rel="noopener">
+            <a className="btn btn-gold" href={linkWhatsApp(WA.navbar)} target="_blank" rel="noopener noreferrer">
               <IconWhats /> Falar agora
             </a>
             <button className="nav-toggle" onClick={() => setOpen(true)} aria-label="Abrir menu">
@@ -171,7 +171,7 @@ export default function Navbar() {
             <Link className="mm-btn" to="/sobre" onClick={() => setOpen(false)}>Sobre o Vinícius</Link>
             <Link className="mm-btn" to="/contato" onClick={() => setOpen(false)}>Contato</Link>
           </div>
-          <a className="mm-wa" href={linkWhatsApp(WA.navbar)} target="_blank" rel="noopener" onClick={() => setOpen(false)}>
+          <a className="mm-wa" href={linkWhatsApp(WA.navbar)} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>
             <IconWhats width={20} height={20} /> Falar no WhatsApp
           </a>
         </div>

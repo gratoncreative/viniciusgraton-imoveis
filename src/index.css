@@ -636,9 +636,9 @@ html[data-theme="claro"] .hb-campo .fs-trigger:hover { background: transparent; 
 html[data-theme="claro"] .hb-campo .fs-label { color: #1a1f29; flex: 1; }
 /* Opções do dropdown de bairro/filtros — fundo branco + texto #606366 (seleção via caixinha) */
 html[data-theme="claro"] .fs-pop { background: #FFFFFF; }
-html[data-theme="claro"] .fs-opt { color: #606366; background: transparent; }
+html[data-theme="claro"] .fs-opt { color: #3f4654; background: transparent; }
 html[data-theme="claro"] .fs-opt:hover { background: #F4EFE6; color: #2A2F38; }
-html[data-theme="claro"] .fs-opt.on { background: transparent; color: #606366; border-color: transparent; font-weight: 600; }
+html[data-theme="claro"] .fs-opt.on { background: transparent; color: #1C2A44; border-color: transparent; font-weight: 600; }
 
 /* ════ Heros/banners ESCUROS (imagem de fundo) — título/subtítulo CLAROS ════
    O override amplo "html[data-theme=claro] h1,h2,h3,h4 { color:#0A0E16 }" escurecia
@@ -1584,6 +1584,9 @@ html[data-theme="dark"] .det-novo-tag { color: #60a5fa; }
 /* Selos de oportunidade (legítimos) */
 .im-selos { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); z-index: 3; display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; max-width: 90%; }
 .im-linha .im-selos { top: auto; bottom: 12px; left: 12px; transform: none; justify-content: flex-start; }
+/* card vertical: selos de oportunidade empilhados no topo-esquerdo, ABAIXO da tag/publicidade (antes ficavam centralizados e colidiam com a tag em cards estreitos) */
+.im-media .im-selos { top: 50px; left: 14px; right: auto; transform: translateZ(48px); flex-direction: column; align-items: flex-start; justify-content: flex-start; max-width: calc(100% - 28px); }
+.im-pub-on .im-media .im-selos { top: 84px; }
 .im-selo { font-family: var(--font-head); font-weight: 700; font-size: 0.68rem; letter-spacing: 0.07em; text-transform: uppercase; padding: 5px 11px; border-radius: 999px; white-space: nowrap; box-shadow: 0 6px 16px -8px rgba(0,0,0,0.5); }
 .im-selo--off { background: #1f8a4c; color: #fff; }
 .im-selo--mercado { background: rgba(60,35,3,0.88); color: #fef0bc; border: 1px solid rgba(198,161,91,0.45); backdrop-filter: blur(6px); }

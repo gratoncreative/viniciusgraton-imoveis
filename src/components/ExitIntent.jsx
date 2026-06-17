@@ -37,7 +37,7 @@ export default function ExitIntent() {
         <p>Responde 1 minutinho que eu monto uma seleção sob medida e ela fica salva num link só seu — sem custo e sem compromisso.</p>
         <div className="exit-acoes">
           <Link className="btn btn-gold" to="/encontrar-imovel" onClick={() => setAberto(false)}>Montar minha seleção <IconArrow /></Link>
-          <a className="btn btn-ghost" href={linkWhatsApp(WA.hero)} target="_blank" rel="noopener" onClick={() => setAberto(false)}><IconWhats /> Falar no WhatsApp</a>
+          <a className="btn btn-ghost" href={linkWhatsApp(WA.hero)} target="_blank" rel="noopener noreferrer" onClick={() => setAberto(false)}><IconWhats /> Falar no WhatsApp</a>
         </div>
       </div>
     </div>

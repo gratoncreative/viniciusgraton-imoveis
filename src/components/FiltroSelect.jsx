@@ -90,7 +90,7 @@ export default function FiltroSelect({ icon, placeholder, options = [], value, m
       {open && createPortal(
         <div className="fs-pop" data-lenis-prevent ref={popRef} style={pos ? { position: 'fixed', left: pos.left, width: pos.width, maxHeight: pos.maxH, right: 'auto', top: pos.abrirCima ? 'auto' : pos.top, bottom: pos.abrirCima ? pos.bottom : 'auto', zIndex: 1000 } : { visibility: 'hidden' }}>
           {searchable && (
-            <input className="fs-busca" autoFocus type="search" placeholder="Buscar bairro…" value={q} onChange={(e) => setQ(e.target.value)} />
+            <input className="fs-busca" autoFocus type="search" aria-label={multiNoun !== 'selecionados' ? `Buscar ${multiNoun}` : 'Buscar'} placeholder={(multiNoun !== 'selecionados' ? `Buscar ${multiNoun}` : 'Buscar') + '…'} value={q} onChange={(e) => setQ(e.target.value)} />
           )}
           <ul className="fs-opts">
             {(() => {

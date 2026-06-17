@@ -253,7 +253,7 @@ export default function LancamentoGuia() {
             <h3>Ficou com dúvida em algum ponto?</h3>
             <p>Fale comigo antes de assinar qualquer contrato. Analiso o empreendimento, a construtora e o contrato junto com você, sem custo adicional para o comprador.</p>
           </div>
-          <a href={linkWhatsApp(WA_GUIA)} className="btn btn-gold" target="_blank" rel="noopener">
+          <a href={linkWhatsApp(WA_GUIA)} className="btn btn-gold" target="_blank" rel="noopener noreferrer">
             <IconWhats width={16} height={16} /> Falar com Vinícius <IconArrow width={13} height={13} />
           </a>
         </div>

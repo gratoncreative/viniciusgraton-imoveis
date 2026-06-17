@@ -119,7 +119,7 @@ export default function BlogPost() {
               )
               case 'destaque': return <div className="post-destaque" key={i}>{richText(b.txt)}</div>
               case 'img': case 'imagem': return <figure className="post-fig" key={i}><img src={b.src} alt={b.alt || ''} loading="lazy" referrerPolicy="no-referrer" />{b.legenda && <figcaption>{b.legenda}</figcaption>}</figure>
-              case 'cta': return <div className="post-cta-inline" key={i}><a className="btn btn-gold" href={linkWhatsApp(b.txt || 'Olá Vinícius! Quero falar sobre meu imóvel em Uberlândia.')} target="_blank" rel="noopener"><IconWhats /> {b.label || 'Falar com o Vinícius'}</a></div>
+              case 'cta': return <div className="post-cta-inline" key={i}><a className="btn btn-gold" href={linkWhatsApp(b.txt || 'Olá Vinícius! Quero falar sobre meu imóvel em Uberlândia.')} target="_blank" rel="noopener noreferrer"><IconWhats /> {b.label || 'Falar com o Vinícius'}</a></div>
               case 'faq': return (
                 <div className="post-faq" key={i}>
                   <h2>Perguntas frequentes</h2>
@@ -149,7 +149,7 @@ export default function BlogPost() {
             <b>Quer um acompanhamento de verdade nessa decisão?</b>
             <span>Comigo você tem atenção dedicada do início ao fim — eu cuido de cada detalhe, no seu tempo, até a entrega das chaves. Aqui você não é mais um número.</span>
           </div>
-          <a className="btn btn-gold" href={linkWhatsApp('Olá Vinícius! Li um artigo no seu site e quero tirar uma dúvida / começar a procurar meu imóvel.')} target="_blank" rel="noopener">
+          <a className="btn btn-gold" href={linkWhatsApp('Olá Vinícius! Li um artigo no seu site e quero tirar uma dúvida / começar a procurar meu imóvel.')} target="_blank" rel="noopener noreferrer">
             <IconWhats /> Falar com o Vinícius
           </a>
         </div>

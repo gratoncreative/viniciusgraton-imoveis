@@ -300,7 +300,7 @@ export default function ConverterFotos() {
 
         <div style={{ marginTop: 28, textAlign: 'center', display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
           <Link className="btn btn-ghost" to="/ferramentas">Outras ferramentas <IconArrow /></Link>
-          <a className="btn btn-gold" href={linkWhatsApp('Olá! Usei o conversor de fotos no site e tenho uma dúvida.')} target="_blank" rel="noopener"><IconWhats /> Falar pelo WhatsApp</a>
+          <a className="btn btn-gold" href={linkWhatsApp('Olá! Usei o conversor de fotos no site e tenho uma dúvida.')} target="_blank" rel="noopener noreferrer"><IconWhats /> Falar pelo WhatsApp</a>
         </div>
       </div>
     </main>

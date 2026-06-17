@@ -131,7 +131,7 @@ export default function Cliente() {
         <div className="container" style={{ textAlign: 'center' }}>
           <h1 className="section-title">Seleção não encontrada</h1>
           <p className="section-sub" style={{ margin: '14px auto 24px', maxWidth: 480 }}>Esse link pode ter expirado. Me chama no WhatsApp que eu te mando sua seleção atualizada.</p>
-          <a className="btn btn-gold" href={linkWhatsApp('Olá Vinícius! O link da minha seleção de imóveis não abriu, pode me reenviar?')} target="_blank" rel="noopener"><IconWhats /> Falar com o Vinícius</a>
+          <a className="btn btn-gold" href={linkWhatsApp('Olá Vinícius! O link da minha seleção de imóveis não abriu, pode me reenviar?')} target="_blank" rel="noopener noreferrer"><IconWhats /> Falar com o Vinícius</a>
         </div>
       </main>
     )
@@ -220,7 +220,7 @@ export default function Cliente() {
               ) : (
                 <>
                   <p>Ainda não há imóveis nessa seleção. Me chama que eu garimpei algumas opções especiais pra você.</p>
-                  <a className="btn btn-gold" href={linkWhatsApp(waMsg)} target="_blank" rel="noopener"><IconWhats /> Falar com o Vinícius</a>
+                  <a className="btn btn-gold" href={linkWhatsApp(waMsg)} target="_blank" rel="noopener noreferrer"><IconWhats /> Falar com o Vinícius</a>
                 </>
               )}
             </div>
@@ -319,7 +319,7 @@ export default function Cliente() {
               <b>Gostou de alguma? Bora ver de perto.</b>
               <span>Me diz quais te chamaram atenção que eu organizo as visitas num dia só, no horário melhor pra você.</span>
             </div>
-            <a className="btn btn-gold" href={linkWhatsApp(waMsg)} target="_blank" rel="noopener"><IconWhats /> Agendar visita com o Vinícius</a>
+            <a className="btn btn-gold" href={linkWhatsApp(waMsg)} target="_blank" rel="noopener noreferrer"><IconWhats /> Agendar visita com o Vinícius</a>
           </div>
         </div>
       </section>

@@ -504,7 +504,7 @@ export default function Catalogo() {
             <p>Não encontrei imóveis com esses filtros. Deixa eu achar pra você?</p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
               <Link className="btn btn-gold" to="/encontrar-imovel">Encontrar meu imóvel</Link>
-              <a className="btn btn-ghost" href={linkWhatsApp(WA.imoveis)} target="_blank" rel="noopener">
+              <a className="btn btn-ghost" href={linkWhatsApp(WA.imoveis)} target="_blank" rel="noopener noreferrer">
                 <IconWhats /> Me chamar no WhatsApp
               </a>
             </div>

@@ -190,7 +190,7 @@ export default function FerramentaRotina() {
               <h4>{im.tipo} no {im.bairro}</h4>
               <p className="rt-specs">{specsLinha(im)}</p>
               {im.valor && <p className="rt-valor">{im.valor}{im.operacao === 'locação' ? '/mês' : ''}</p>}
-              <a className="rt-link" href={im.link} target="_blank" rel="noopener">Abrir no site da Rotina ↗</a>
+              <a className="rt-link" href={im.link} target="_blank" rel="noopener noreferrer">Abrir no site da Rotina ↗</a>
             </div>
           </div>
 

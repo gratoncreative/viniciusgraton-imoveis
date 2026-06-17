@@ -49,7 +49,7 @@ export default function ConstrutoraDetalhe() {
           {c.segmento && <p className="construtora-seg">{c.segmento}</p>}
           <p className="construtora-desc">{c.descricao}</p>
           <div className="construtora-hero-acoes">
-            <a className="btn btn-gold" href={linkWhatsApp(waConstrutora(c))} target="_blank" rel="noopener">
+            <a className="btn btn-gold" href={linkWhatsApp(waConstrutora(c))} target="_blank" rel="noopener noreferrer">
               <IconWhats /> Falar com o Vinícius
             </a>
             {c.instagram && (

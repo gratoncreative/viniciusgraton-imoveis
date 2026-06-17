@@ -61,7 +61,7 @@ export default function Contato() {
                 </p>
 
                 <div className="contact-list">
-                  <a className="contact-row" href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener">
+                  <a className="contact-row" href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener noreferrer">
                     <span className="ci"><IconWhats width={20} height={20} /></span>
                     <span><b>WhatsApp</b><span>{fmtPhone(CONFIG.whatsapp)}</span></span>
                   </a>
@@ -69,7 +69,7 @@ export default function Contato() {
                     <span className="ci"><IconMail width={20} height={20} /></span>
                     <span><b>E-mail</b><span>{CONFIG.email}</span></span>
                   </a>
-                  <a className="contact-row" href={CONFIG.instagram} target="_blank" rel="noopener">
+                  <a className="contact-row" href={CONFIG.instagram} target="_blank" rel="noopener noreferrer">
                     <span className="ci"><IconInsta width={20} height={20} /></span>
                     <span><b>Instagram</b><span>@viniciusgraton.imoveis</span></span>
                   </a>
@@ -85,7 +85,7 @@ export default function Contato() {
                   <span className="lead-ok-ico"><IconWhats width={30} height={30} /></span>
                   <h3>Recebido!</h3>
                   <p>Seu contato foi registrado e eu já abri o WhatsApp pra gente conversar. Se não abriu, é só me chamar direto.</p>
-                  <a className="btn btn-gold" href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener">
+                  <a className="btn btn-gold" href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener noreferrer">
                     <IconWhats /> Falar no WhatsApp
                   </a>
                 </div>

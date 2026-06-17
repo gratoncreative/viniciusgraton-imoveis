@@ -108,6 +108,7 @@ export default function Anunciar() {
   const [consent, setConsent] = useState(false)
   const placaTxt = placa.quer ? 'Sim, quero a placa VENDE-SE (grátis)' : 'Não, por enquanto'
   const [estado, setEstado] = useState('idle') // idle | enviando | ok | erro
+  const [validMsg, setValidMsg] = useState('')
   const set = (k) => (e) => setF((s) => ({ ...s, [k]: e.target.value }))
   const setNum = (k) => (v) => setF((s) => ({ ...s, [k]: v }))
 
@@ -126,7 +127,10 @@ export default function Anunciar() {
 
   const enviar = async (e) => {
     e.preventDefault()
-    if (!f.nome.trim() || !f.fone.trim() || !consent) return
+    if (!f.nome.trim() || !f.fone.trim()) { setValidMsg('Preencha seu nome e WhatsApp para eu te enviar a avaliação.'); return }
+    if (!f.bairro.trim()) { setValidMsg('Informe ao menos o bairro do imóvel — preciso dele para avaliar.'); return }
+    if (!consent) { setValidMsg('Marque o consentimento para eu poder entrar em contato.'); return }
+    setValidMsg('')
     setEstado('enviando')
     const payload = {
       ...f,
@@ -286,6 +290,7 @@ export default function Anunciar() {
             <p><b>Fica tudo comigo, com segurança.</b> Seus dados e fotos vão direto para a minha avaliação — não são publicados automaticamente. Eu seleciono a dedo os imóveis que represento para garantir qualidade e excelência aos meus clientes.</p>
           </div>
 
+          {validMsg && <p className="anunciar-erro">{validMsg}</p>}
           {estado === 'erro' && <p className="anunciar-erro">Ops, algo falhou no envio. Tente de novo ou me chame direto no WhatsApp {CONFIG.telefone || ''}.</p>}
 
           <button type="submit" className="btn btn-gold lead-submit" disabled={estado === 'enviando' || !consent}>

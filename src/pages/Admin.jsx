@@ -90,7 +90,7 @@ function LeadCard({ lead, token, onSair, onMudou }) {
   return (
     <div className="painel-card">
       <b>{lead.nome} <span className={`lead-badge lead-badge--${cor}`}>{status}</span></b>
-      <span>{lead.fone ? <a href={waLink(lead.fone)} target="_blank" rel="noopener">{lead.fone}</a> : <i style={{ color: 'var(--text-mute)' }}>sem telefone</i>}</span>
+      <span>{lead.fone ? <a href={waLink(lead.fone)} target="_blank" rel="noopener noreferrer">{lead.fone}</a> : <i style={{ color: 'var(--text-mute)' }}>sem telefone</i>}</span>
       <span className="painel-meta">{[lead.objetivo, lead.bairro || lead.cod, lead.origem, lead.data ? new Date(lead.data).toLocaleDateString('pt-BR') : ''].filter(Boolean).join(' · ')}</span>
       {lead.detalhes && <p className="painel-meta" style={{ marginTop: 4 }}>💬 {lead.detalhes}</p>}
       <div className="lead-status">
@@ -355,9 +355,9 @@ function ImoveisPub({ token, onSair, alvo, onAbriu }) {
               <p className="calc-nota">Guardado só no seu painel (servidor, com login). Nunca aparece no site, nem no código, nem para o cliente.</p>
               <div className="admin-owner-acoes">
                 {linkProp
-                  ? <a className="btn btn-gold" href={linkProp} target="_blank" rel="noopener"><IconWhats width={17} height={17} /> Chamar o proprietário</a>
+                  ? <a className="btn btn-gold" href={linkProp} target="_blank" rel="noopener noreferrer"><IconWhats width={17} height={17} /> Chamar o proprietário</a>
                   : <span className="painel-meta">Preencha o telefone acima pra liberar o WhatsApp.</span>}
-                <a className="admin-btn" href={`/imovel/${sel}`} target="_blank" rel="noopener">Ver perfil público do imóvel <IconArrow width={14} height={14} /></a>
+                <a className="admin-btn" href={`/imovel/${sel}`} target="_blank" rel="noopener noreferrer">Ver perfil público do imóvel <IconArrow width={14} height={14} /></a>
               </div>
               <p className="calc-nota">A mensagem já vai pronta: me apresento como consultor da Rotina, digo que tenho cliente com interesse de compra e pergunto sobre as chaves (com quem estão, se está ocupado/vago) pra agendar a visita.</p>
             </div>
@@ -675,8 +675,8 @@ export default function Admin() {
                     {im.descricao && <p className="aprovar-banner-desc">{im.descricao}</p>}
                     <div className="aprovar-banner-acoes">
                       <button className="btn btn-gold" onClick={() => aprovarImovel(im.codigo, true)}>✓ Aprovar e publicar</button>
-                      <a className="admin-btn" href={`/imovel/${im.codigo}`} target="_blank" rel="noopener">Pré-visualizar</a>
-                      <a className="admin-btn admin-btn--imoview" href={`https://app.imoview.com.br/Imovel/Detalhes/${im.codigo}`} target="_blank" rel="noopener">↗ Conferir no Imoview</a>
+                      <a className="admin-btn" href={`/imovel/${im.codigo}`} target="_blank" rel="noopener noreferrer">Pré-visualizar</a>
+                      <a className="admin-btn admin-btn--imoview" href={`https://app.imoview.com.br/Imovel/Detalhes/${im.codigo}`} target="_blank" rel="noopener noreferrer">↗ Conferir no Imoview</a>
                       <button className="admin-btn" onClick={() => { setImovelAlvo(im.codigo); setAba('imoveis'); setSubImovel('publicados') }}>🔒 Proprietário / editar</button>
                     </div>
                   </div>
@@ -692,7 +692,7 @@ export default function Admin() {
                   <div>
                     <b>{a.nome} {a.aprovado && <span className="admin-tag-ok">aprovado</span>}</b>
                     <span className="painel-meta">{a.data ? new Date(a.data).toLocaleString('pt-BR') : ''} · {a.finalidade} · {a.tipo} · {a.bairro || 'sem bairro'}</span>
-                    <span className="painel-meta"><a href={waLink(a.fone)} target="_blank" rel="noopener">{a.fone}</a>{a.email ? ` · ${a.email}` : ''}</span>
+                    <span className="painel-meta"><a href={waLink(a.fone)} target="_blank" rel="noopener noreferrer">{a.fone}</a>{a.email ? ` · ${a.email}` : ''}</span>
                   </div>
                   <div className="admin-card-acoes">
                     <button className="admin-btn admin-btn--ok" onClick={() => aprovar(a._key, !a.aprovado)}>{a.aprovado ? 'Desaprovar' : 'Aprovar'}</button>
@@ -709,7 +709,7 @@ export default function Admin() {
                 {(a.fotos || []).length > 0 && (
                   <div className="admin-fotos">
                     {a.fotos.map((src, i) => (
-                      <a className="admin-foto" key={i} href={src} download={`imovel-${a.nome}-${i + 1}.jpg`} target="_blank" rel="noopener">
+                      <a className="admin-foto" key={i} href={src} download={`imovel-${a.nome}-${i + 1}.jpg`} target="_blank" rel="noopener noreferrer">
                         <img src={src} loading="lazy" alt={`Foto ${i + 1}`} />
                       </a>
                     ))}
@@ -750,13 +750,13 @@ export default function Admin() {
             {blogViews && Object.keys(blogViews).length ? (
               <ul className="admin-rank">
                 {Object.entries(blogViews).sort((a, b) => b[1] - a[1]).slice(0, 15).map(([slug, n]) => (
-                  <li key={slug}><a href={`/blog/${slug}`} target="_blank" rel="noopener">{slug.replace(/-/g, ' ')}</a><b>{n} {n === 1 ? 'leitura' : 'leituras'}</b></li>
+                  <li key={slug}><a href={`/blog/${slug}`} target="_blank" rel="noopener noreferrer">{slug.replace(/-/g, ' ')}</a><b>{n} {n === 1 ? 'leitura' : 'leituras'}</b></li>
                 ))}
               </ul>
             ) : <p className="section-sub">Ainda sem leituras registradas. Conforme o site recebe visitas, o ranking aparece aqui.</p>}
             <div className="admin-info-box">
               <p><b>Visão de acessos do site.</b> Aqui mostro o que o próprio site registra em tempo real (leituras do blog, leads e cadastros). Para o relatório completo de visitas, origem do tráfego, dispositivos e tempo de navegação, abra o Google Analytics.</p>
-              <a className="btn btn-ghost" href="https://analytics.google.com/" target="_blank" rel="noopener">Abrir o Google Analytics ↗</a>
+              <a className="btn btn-ghost" href="https://analytics.google.com/" target="_blank" rel="noopener noreferrer">Abrir o Google Analytics ↗</a>
             </div>
           </section>
         )}
@@ -768,7 +768,7 @@ export default function Admin() {
               <div className="admin-news-acoes">
                 <button className="btn btn-ghost" onClick={copiarEmails}>Copiar e-mails</button>
                 <button className="btn btn-ghost" onClick={exportarNews}>Exportar CSV</button>
-                <a className="btn btn-ghost" href="https://dashboard.mailerlite.com/subscribers" target="_blank" rel="noopener">Abrir MailerLite ↗</a>
+                <a className="btn btn-ghost" href="https://dashboard.mailerlite.com/subscribers" target="_blank" rel="noopener noreferrer">Abrir MailerLite ↗</a>
               </div>
             </div>
             {(dados?.news || []).length ? (

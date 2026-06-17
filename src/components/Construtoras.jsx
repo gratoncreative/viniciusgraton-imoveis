@@ -27,7 +27,7 @@ export default function Construtoras() {
                 className="construtora-marca"
                 to={`/construtoras/${c.slug}`}
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
                 aria-label={`Ver empreendimentos da ${c.nome}`}
               >
                 <span className="construtora-marca-nome">{c.nome}</span>

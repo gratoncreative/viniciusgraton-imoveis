@@ -137,7 +137,7 @@ export default function CardImovel({ im, variante, overlayLabel }) {
             </div>
             <div className="im-actions">
               <Link className="im-ver" to={`/imovel/${im.codigo}`} onClick={(e) => e.stopPropagation()}>Ver detalhes</Link>
-              <a className="im-cta" href={linkWhatsApp(waImovel(im))} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()}>
+              <a className="im-cta" href={linkWhatsApp(waImovel(im))} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
                 <IconWhats width={18} height={18} /> Tenho interesse
               </a>
             </div>
@@ -189,7 +189,7 @@ export default function CardImovel({ im, variante, overlayLabel }) {
             className="im-cta"
             href={linkWhatsApp(waImovel(im))}
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
           >
             <IconWhats width={18} height={18} /> Tenho interesse

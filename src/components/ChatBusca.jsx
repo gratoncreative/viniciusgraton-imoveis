@@ -113,7 +113,7 @@ export default function ChatBusca() {
 
         <div className="cb-sucesso-wa">
           <p>O Vinícius já recebeu seu contato e vai te chamar. Quer adiantar?</p>
-          <a className="btn btn-gold" href={waVinicius} target="_blank" rel="noopener">Falar com o Vinícius no WhatsApp</a>
+          <a className="btn btn-gold" href={waVinicius} target="_blank" rel="noopener noreferrer">Falar com o Vinícius no WhatsApp</a>
         </div>
       </motion.div>
     )
@@ -216,7 +216,7 @@ export default function ChatBusca() {
                 <input autoFocus type="tel" inputMode="tel" value={ans.whatsapp} onChange={(e) => setAns((a) => ({ ...a, whatsapp: e.target.value }))} placeholder="34 99999-9999" maxLength={20} />
                 <input type="text" name="site" value="" onChange={() => {}} tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1 }} />
                 <button type="submit" className="btn btn-gold" disabled={enviando}>{enviando ? 'Enviando…' : 'Ver minha seleção'}</button>
-                <p className="cb-consent">Ao enviar, você concorda com a <a href="/privacidade" target="_blank" rel="noopener">Política de Privacidade</a>. Seus dados ficam só com o Vinícius.</p>
+                <p className="cb-consent">Ao enviar, você concorda com a <a href="/privacidade" target="_blank" rel="noopener noreferrer">Política de Privacidade</a>. Seus dados ficam só com o Vinícius.</p>
               </form>
             )}
 

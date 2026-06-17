@@ -259,7 +259,7 @@ function CTAFinal() {
             organizar as ideias e traçar o caminho certo pra você.
           </p>
           <div className="qs-cta-final-acoes">
-            <a className="btn btn-gold" href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener">
+            <a className="btn btn-gold" href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener noreferrer">
               <IconWhats /> Falar pelo WhatsApp
             </a>
             <span className="sobre-selo">

@@ -99,7 +99,7 @@ export default function Impulsionar() {
           {erro && <p className="rt-erro">{erro}</p>}
           {waFallback ? (
             <>
-              <a className="btn btn-gold imp-btn" href={linkWhatsApp(waMsg)} target="_blank" rel="noopener"><IconWhats /> Quero impulsionar (falar no WhatsApp)</a>
+              <a className="btn btn-gold imp-btn" href={linkWhatsApp(waMsg)} target="_blank" rel="noopener noreferrer"><IconWhats /> Quero impulsionar (falar no WhatsApp)</a>
               <p className="imp-nota">O pagamento online está sendo ativado. Por enquanto, clique acima que eu organizo o impulsionamento com você na hora.</p>
             </>
           ) : (

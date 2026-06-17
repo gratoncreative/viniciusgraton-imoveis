@@ -287,7 +287,7 @@ export default function BlowEmpreendimentoDetalhe() {
                           href={linkWhatsApp(`${waBase} Quero mais informações sobre o Ap ${u.ap} (${fmtPreco(u.valor)}, ${fmtArea(u.area)}).`)}
                           className="empd-unid-btn"
                           target="_blank"
-                          rel="noopener"
+                          rel="noopener noreferrer"
                         >
                           <IconWhats width={14} height={14} /> Tenho interesse neste ap
                         </a>
@@ -322,7 +322,7 @@ export default function BlowEmpreendimentoDetalhe() {
                       </div>
                     ))}
                   </div>
-                  <a href={waFinanc} className="btn btn-ghost" style={{ fontSize: '0.88rem' }} target="_blank" rel="noopener">
+                  <a href={waFinanc} className="btn btn-ghost" style={{ fontSize: '0.88rem' }} target="_blank" rel="noopener noreferrer">
                     Simular financiamento com o consultor
                   </a>
                 </div>
@@ -511,22 +511,22 @@ export default function BlowEmpreendimentoDetalhe() {
                 </div>
               )}
 
-              <a href={waVisita} className="btn btn-gold empd-aside-cta" target="_blank" rel="noopener">
+              <a href={waVisita} className="btn btn-gold empd-aside-cta" target="_blank" rel="noopener noreferrer">
                 <IconWhats width={16} height={16} /> Tenho interesse — quero visitar
               </a>
-              <a href={waInfos} className="btn btn-ghost empd-aside-ghost" target="_blank" rel="noopener">
+              <a href={waInfos} className="btn btn-ghost empd-aside-ghost" target="_blank" rel="noopener noreferrer">
                 Pedir plantas e condições
               </a>
 
               {(e.pdfApresentacao || e.pdfTabela) && (
                 <div className="empd-aside-pdfs">
                   {e.pdfApresentacao && (
-                    <a href={e.pdfApresentacao} target="_blank" rel="noopener" className="empd-aside-pdf-btn">
+                    <a href={e.pdfApresentacao} target="_blank" rel="noopener noreferrer" className="empd-aside-pdf-btn">
                       📄 Book / Apresentação PDF
                     </a>
                   )}
                   {e.pdfTabela && (
-                    <a href={e.pdfTabela} target="_blank" rel="noopener" className="empd-aside-pdf-btn">
+                    <a href={e.pdfTabela} target="_blank" rel="noopener noreferrer" className="empd-aside-pdf-btn">
                       📋 Tabela de preços PDF
                     </a>
                   )}

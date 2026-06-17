@@ -225,7 +225,7 @@ function PainelView({ conta, onSair }) {
           </p>
         </div>
         <div className="conta-hero-acoes">
-          <a className="btn btn-gold" href={`https://wa.me/5534991570494?text=${encodeURIComponent(`Olá Vinícius! Sou ${conta.nome || ''} e quero atendimento prioritário.`)}`} target="_blank" rel="noopener"><IconWhats /> Atendimento prioritário</a>
+          <a className="btn btn-gold" href={`https://wa.me/5534991570494?text=${encodeURIComponent(`Olá Vinícius! Sou ${conta.nome || ''} e quero atendimento prioritário.`)}`} target="_blank" rel="noopener noreferrer"><IconWhats /> Atendimento prioritário</a>
           <button className="btn btn-ghost" onClick={onSair}>Sair</button>
         </div>
       </header>

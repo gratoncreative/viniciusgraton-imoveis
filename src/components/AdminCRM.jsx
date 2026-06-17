@@ -625,7 +625,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                           <button className={`admin-btn admin-btn--mini ${jaIncluido ? 'admin-btn--ok' : ''}`} onClick={() => toggleSug(cod)}>
                             {jaIncluido ? '✓ Incluído' : '+ Incluir'}
                           </button>
-                          <a className="admin-btn admin-btn--mini" href={`/imovel/${cod}`} target="_blank" rel="noopener">Ver</a>
+                          <a className="admin-btn admin-btn--mini" href={`/imovel/${cod}`} target="_blank" rel="noopener noreferrer">Ver</a>
                         </div>
                       </div>
                     )
@@ -720,7 +720,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                         {fotos.length > 1 && <button type="button" className="crm-prev-seta crm-prev-seta--l" onClick={(e) => { e.stopPropagation(); setPrevSlide(s => (s - 1 + fotos.length) % fotos.length) }}>‹</button>}
                         {fotos.length > 1 && <button type="button" className="crm-prev-seta crm-prev-seta--r" onClick={(e) => { e.stopPropagation(); setPrevSlide(s => (s + 1) % fotos.length) }}>›</button>}
                         {fotos.length > 1 && <span className="crm-prev-cnt">{slide + 1} / {fotos.length}</span>}
-                        <a className="crm-prev-ver" href={`/imovel/${pim.codigo}`} target="_blank" rel="noopener" title="Abrir imóvel completo com todas as fotos">
+                        <a className="crm-prev-ver" href={`/imovel/${pim.codigo}`} target="_blank" rel="noopener noreferrer" title="Abrir imóvel completo com todas as fotos">
                           {fotos.length <= 1 ? '🔗 Ver todas as fotos' : `🔗 Página do imóvel`}
                         </a>
                       </div>
@@ -816,7 +816,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                               <span className="crm-bairro-link-acoes">
                                 <button className="admin-btn admin-btn--mini" onClick={() => window.open(lb(b), '_blank', 'noopener')}>Abrir</button>
                                 <button className="admin-btn admin-btn--mini" onClick={() => navigator.clipboard?.writeText(lb(b))}>Copiar link</button>
-                                <a className="admin-btn admin-btn--ok admin-btn--mini" href={waLink(sel.whatsapp, msgBairro(b))} target="_blank" rel="noopener">WhatsApp</a>
+                                <a className="admin-btn admin-btn--ok admin-btn--mini" href={waLink(sel.whatsapp, msgBairro(b))} target="_blank" rel="noopener noreferrer">WhatsApp</a>
                               </span>
                             </div>
                           )
@@ -1003,7 +1003,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                 <div className="crm-fu-item" key={c.id}>
                   <span className="crm-fu-info"><b>{c.nome || 'Sem nome'}</b><i>{motivoFollowUp(c, d)}</i></span>
                   <span className="crm-fu-acoes">
-                    <a className="admin-btn admin-btn--ok admin-btn--mini" href={waLink(c.whatsapp, `Olá${c.nome ? ' ' + c.nome.split(' ')[0] : ''}! Aqui é o Vinícius. Passando pra saber como está sua busca — separei novidades que podem te interessar.`)} target="_blank" rel="noopener">WhatsApp</a>
+                    <a className="admin-btn admin-btn--ok admin-btn--mini" href={waLink(c.whatsapp, `Olá${c.nome ? ' ' + c.nome.split(' ')[0] : ''}! Aqui é o Vinícius. Passando pra saber como está sua busca — separei novidades que podem te interessar.`)} target="_blank" rel="noopener noreferrer">WhatsApp</a>
                     <button className="admin-btn admin-btn--mini" onClick={() => abrir(c)}>Abrir</button>
                   </span>
                 </div>
@@ -1034,8 +1034,8 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                 {STATUS.map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
               <button className="admin-btn" onClick={() => abrir(c)}>Abrir / editar</button>
-              <a className="admin-btn" href={`${window.location.origin}/cliente/${c.id}`} target="_blank" rel="noopener">Página</a>
-              <a className="admin-btn admin-btn--ok" href={waLink(c.whatsapp, `Olá${c.nome ? ' ' + c.nome.split(' ')[0] : ''}! Aqui é o Vinícius. Separei uma seleção de imóveis pensando no que você procura: ${window.location.origin}/cliente/${c.id}`)} target="_blank" rel="noopener">WhatsApp</a>
+              <a className="admin-btn" href={`${window.location.origin}/cliente/${c.id}`} target="_blank" rel="noopener noreferrer">Página</a>
+              <a className="admin-btn admin-btn--ok" href={waLink(c.whatsapp, `Olá${c.nome ? ' ' + c.nome.split(' ')[0] : ''}! Aqui é o Vinícius. Separei uma seleção de imóveis pensando no que você procura: ${window.location.origin}/cliente/${c.id}`)} target="_blank" rel="noopener noreferrer">WhatsApp</a>
               <button className="admin-btn admin-btn--del" onClick={() => excluir(c.id)}>Excluir</button>
             </div>
           </div>
@@ -1057,7 +1057,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
                 <p className="painel-meta">❤️ {(c.favoritos || []).length} favoritos · 👁 {(c.historico || []).length} visitados · {new Date(c.atualizadoEm || 0).toLocaleDateString('pt-BR')}</p>
                 <div className="crm-card-acoes">
                   <button className="btn btn-gold admin-btn--mini" onClick={() => adicionarAoCRM(c)}>+ Adicionar ao CRM</button>
-                  <a className="admin-btn" href={waLink(c.fone, `Olá${c.nome ? ' ' + c.nome.split(' ')[0] : ''}! Aqui é o Vinícius. Vi que você criou conta no meu site, posso te ajudar na busca?`)} target="_blank" rel="noopener">WhatsApp</a>
+                  <a className="admin-btn" href={waLink(c.fone, `Olá${c.nome ? ' ' + c.nome.split(' ')[0] : ''}! Aqui é o Vinícius. Vi que você criou conta no meu site, posso te ajudar na busca?`)} target="_blank" rel="noopener noreferrer">WhatsApp</a>
                   {onExcluirCadastro && <button className="admin-btn admin-btn--del" onClick={() => onExcluirCadastro(c)}>Excluir</button>}
                 </div>
               </div>
