@@ -23,10 +23,11 @@ export default function BlogHome() {
   const fonte = views && totalViews > 0
     ? [...posts].sort((a, b) => (views[b.slug] || 0) - (views[a.slug] || 0))
     : [...posts].sort((a, b) => String(b.data || '').localeCompare(String(a.data || '')))
-  const sel = fonte.slice(0, 7)
-  if (sel.length < 4) return null
-  const feat = sel[0]
-  const resto = sel.slice(1, 7)
+  if (fonte.length < 4) return null
+  const feat = fonte[0]
+  // 8 cards: múltiplo de 4/2/1 (colunas fixas por dispositivo no CSS) -> a grade
+  // SEMPRE fecha as linhas, sem espaço em branco em nenhuma tela.
+  const resto = fonte.slice(1, 9)
   const vw = (s) => (views && views[s]) || 0
 
   return (
@@ -55,7 +56,7 @@ export default function BlogHome() {
           </Link>
         </Reveal>
 
-        <div className="post-grid" style={{ marginTop: 24 }}>
+        <div className="post-grid blog-home-grid" style={{ marginTop: 24 }}>
           {resto.map((p) => <CardPost key={p.slug} p={p} views={vw(p.slug)} />)}
         </div>
 

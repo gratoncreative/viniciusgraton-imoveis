@@ -8675,6 +8675,12 @@ html[data-theme="claro"] .condos-hero .condos-hero-search input::placeholder { c
 .lan-contagem b { color: #1C2A44; }
 .lan-contagem-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 16px; }
 
+/* Preview do blog na home: colunas FIXAS por dispositivo (4/2/1) + 8 cards =
+   grade sempre cheia, sem espaço em branco em nenhuma tela. */
+.blog-home-grid { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 1024px) { .blog-home-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px)  { .blog-home-grid { grid-template-columns: 1fr; } }
+
 /* ── /ferramentas: identidade dos cards em PETRÓLEO (acento da casa), sem vermelho ── */
 /* chip de ícone da seção e do card: petróleo suave; preenche no hover/ativo */
 html[data-theme="claro"] .ferr-sec-ico { background: rgba(28,42,68,0.07); border: 1px solid rgba(28,42,68,0.16); color: #1C2A44; }
