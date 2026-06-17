@@ -7773,30 +7773,32 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .ep-pg--loading { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; min-height:60vh; color:var(--ep-mid); }
 .ep-spinner { width:32px; height:32px; border-radius:50%; border:2.5px solid var(--ep-line); border-top-color:var(--ep-brass); animation:ep-spin .8s linear infinite; }
 
-/* ── Cabeçalho ── */
+/* ── Cabeçalho (hero do estudo) — maior, com mais impacto ── */
 .ep-header { background:var(--ep-card); border-bottom:1px solid var(--ep-line); }
+.ep-header--hero { background:linear-gradient(180deg, var(--ep-card), rgba(198,161,91,0.06)); }
 .ep-header-bar { height:3px; background:linear-gradient(90deg, var(--ep-brass) 0%, var(--ep-teal) 55%, transparent 100%); }
-.ep-header-inner { display:grid; grid-template-columns:1fr auto auto; align-items:center; gap:16px; padding:12px 0; }
-.ep-header-marca { display:flex; flex-direction:column; gap:2px; }
-.ep-marca-nome { font-family:'Fraunces', 'Playfair Display', Georgia, serif; font-size:.92rem; font-weight:600; color:var(--ep-hi); }
-.ep-marca-papel { font-size:.68rem; color:var(--ep-low); }
-.ep-header-meta { display:flex; flex-direction:column; align-items:flex-end; gap:1px; }
-.ep-meta-label { font-size:.58rem; text-transform:uppercase; letter-spacing:.1em; color:var(--ep-low); }
-.ep-meta-num { font-family:'Montserrat', system-ui, sans-serif; font-size:.82rem; color:var(--ep-brass); font-weight:500; }
-.ep-meta-data { font-size:.68rem; color:var(--ep-mid); }
-.ep-header-nav { display:flex; align-items:center; gap:8px; }
-.ep-marca-eyebrow { font-size:.6rem; text-transform:uppercase; letter-spacing:.12em; color:var(--ep-brass); font-weight:700; margin-bottom:1px; }
+.ep-header-inner { display:flex; align-items:center; justify-content:space-between; gap:18px 24px; flex-wrap:wrap; padding:22px 0; }
+.ep-header-marca { display:flex; flex-direction:column; gap:6px; min-width:0; }
+.ep-marca-eyebrow { display:inline-flex; align-items:center; gap:7px; font-size:.66rem; text-transform:uppercase; letter-spacing:.14em; color:var(--ep-brass); font-weight:700; }
+.ep-marca-titulo { font-family:'Fraunces','Playfair Display',Georgia,serif; font-size:clamp(1.5rem, 3.4vw, 2rem); font-weight:600; color:var(--ep-hi); margin:0; line-height:1.08; }
+.ep-marca-papel { font-size:.76rem; color:var(--ep-mid); }
+.ep-marca-papel b { color:var(--ep-hi); font-weight:600; }
+.ep-header-nav { display:flex; align-items:center; gap:10px; }
+/* botão de download — CTA forte, em duas linhas, com ícone */
 .ep-baixar {
   position:relative; overflow:hidden;
-  display:inline-flex; align-items:center; gap:8px;
-  font-family:var(--font-head); font-size:.82rem; font-weight:700; letter-spacing:.01em;
-  color:#20160a; background:linear-gradient(135deg, #E3D2A8, var(--ep-brass), #9A7B3C);
-  padding:10px 18px; border-radius:10px; border:1px solid transparent; cursor:pointer;
-  box-shadow:0 6px 16px -8px rgba(154,123,60,.6); transition:transform .18s, box-shadow .18s, filter .18s;
+  display:inline-flex; align-items:center; gap:11px;
+  font-family:var(--font-head); cursor:pointer; text-align:left;
+  color:#20160a; background:linear-gradient(135deg, #E9DBB8, #C6A15B 55%, #9A7B3C);
+  padding:11px 22px 11px 13px; border-radius:14px; border:1px solid transparent;
+  box-shadow:0 10px 24px -8px rgba(154,123,60,.7); transition:transform .18s, box-shadow .18s, filter .18s;
 }
-.ep-baixar:hover { transform:translateY(-2px); filter:brightness(1.06); box-shadow:0 14px 30px -10px rgba(198,161,91,.85); }
-.ep-baixar:disabled { opacity:.7; cursor:default; }
-.ep-baixar svg { flex:none; }
+.ep-baixar:hover { transform:translateY(-2px); filter:brightness(1.05); box-shadow:0 18px 36px -10px rgba(198,161,91,.95); }
+.ep-baixar:disabled { opacity:.75; cursor:default; }
+.ep-baixar-ico { flex:none; width:38px; height:38px; display:grid; place-items:center; border-radius:11px; background:rgba(32,22,10,.16); color:#20160a; }
+.ep-baixar-txt { display:flex; flex-direction:column; align-items:flex-start; line-height:1.15; }
+.ep-baixar-txt b { font-size:.96rem; font-weight:800; letter-spacing:.005em; }
+.ep-baixar-txt i { font-style:normal; font-size:.72rem; font-weight:600; opacity:.82; }
 /* brilho que varre o botão periodicamente (chama atenção) */
 .ep-baixar::after { content:''; position:absolute; top:0; left:-130%; width:55%; height:100%; background:linear-gradient(100deg, transparent, rgba(255,255,255,.6), transparent); transform:skewX(-18deg); animation:epSheen 3.6s ease-in-out infinite; pointer-events:none; }
 @keyframes epSheen { 0%, 12% { left:-130% } 36%, 100% { left:160% } }

@@ -666,24 +666,27 @@ export function EstudoContent({ estudo, im, onClose, bloquearAteLiberar = false 
 
   return (
     <>
-      {/* ── Cabeçalho ─────────────────────────────────────────────────────── */}
-      <header className="ep-header">
+      {/* ── Cabeçalho (hero do estudo) ───────────────────────────────────── */}
+      <header className="ep-header ep-header--hero">
         <div className="ep-header-bar" />
         <div className="ep-container ep-header-inner">
           <div className="ep-header-marca">
-            <span className="ep-marca-eyebrow">Estudo de valor do m² · método NBR 14653</span>
-            <span className="ep-marca-nome">Vinícius Graton</span>
-            <span className="ep-marca-papel">Consultor da Rotina Imobiliária</span>
-          </div>
-          <div className="ep-header-meta">
-            <span className="ep-meta-label">Estudo</span>
-            <span className="ep-meta-num">#{estudo.numero}</span>
-            <span className="ep-meta-data">{fmtData(estudo.data)}</span>
+            <span className="ep-marca-eyebrow">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              Análise técnica · método ABNT NBR 14653
+            </span>
+            <h1 className="ep-marca-titulo">Estudo do valor do m²</h1>
+            <span className="ep-marca-papel">por <b>Vinícius Graton</b> · Consultor da Rotina Imobiliária · Estudo #{estudo.numero} · {fmtData(estudo.data)}</span>
           </div>
           <div className="ep-header-nav print-hide">
             <button className={`ep-baixar${liberado ? '' : ' ep-baixar--cta'}`} onClick={baixarEstudo} disabled={pagando} title={liberado ? 'Baixar o estudo completo em PDF' : 'Pagar R$ 4,90 e baixar o estudo completo em PDF (entrega na hora + e-mail)'}>
-              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" /></svg>
-              {pagando ? 'Abrindo pagamento…' : liberado ? 'Baixar estudo completo (PDF)' : 'Baixar estudo completo · R$ 4,90'}
+              <span className="ep-baixar-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" /></svg>
+              </span>
+              <span className="ep-baixar-txt">
+                <b>{pagando ? 'Abrindo pagamento…' : liberado ? 'Baixar estudo completo' : 'Quero o estudo completo'}</b>
+                <i>{pagando ? 'aguarde um instante…' : liberado ? 'PDF · download imediato' : 'PDF na hora + e-mail · R$ 4,90'}</i>
+              </span>
             </button>
             {onClose
               ? <button className="ep-back" onClick={onClose}>
@@ -697,7 +700,6 @@ export function EstudoContent({ estudo, im, onClose, bloquearAteLiberar = false 
             }
           </div>
         </div>
-        <div className="ep-header-bar" />
       </header>
 
       <div className={bloqueado ? 'ep-locked' : undefined} aria-hidden={bloqueado ? 'true' : undefined}>
