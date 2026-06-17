@@ -173,20 +173,6 @@ export default function Anunciar() {
 
   return (
     <main className="anunciar-pg2 section--light">
-      {/* Cabeçalho enxuto — vai direto ao cadastro */}
-      <section className="anu-head2">
-        <div className="container">
-          <Reveal>
-            <span className="eyebrow" style={{ justifyContent: 'center' }}>Quero vender ou alugar</span>
-            <h1 className="anu-head2-tit">Cadastre seu imóvel <em>sem dor de cabeça</em></h1>
-            <p className="anu-head2-sub">
-              <IconShield width={16} height={16} /> Grátis e sem compromisso · avalio pelo valor justo, faço as fotos, divulgo e conduzo a negociação. Preencha abaixo que eu te retorno.
-            </p>
-            <p className="anu-hero-imp">Já tem um anúncio no site? <Link to="/impulsionar">Impulsione e ganhe destaque →</Link></p>
-          </Reveal>
-        </div>
-      </section>
-
       <div className="container anunciar-corpo">
         {/* FORMULÁRIO — em destaque, logo no topo */}
         <div id="cadastrar" className="anu-form-wrap">

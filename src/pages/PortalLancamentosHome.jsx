@@ -13,13 +13,16 @@ const STATUS_COR = { 'Lançamento': '#4fa3e0', 'Em obras': '#f59e0b', 'Pronto': 
 
 export function CardEmpLan({ e }) {
   const nav = useNavigate()
-  const url = `/construtoras/${e.construtoraSlug}/${e.slug}`
+  // empreendimento com landing dedicada (ex.: Louis) linka direto pra ela, sem o limite de visitas
+  const landing = e.landingPath || null
+  const url = landing || `/construtoras/${e.construtoraSlug}/${e.slug}`
   const key = `${e.construtoraSlug}--${e.slug}`
   const tip = e.tipologias && e.tipologias.length > 0 ? e.tipologias[0] : null
   const tipCurt = tip ? (tip.length > 64 ? tip.slice(0, 64) + '…' : tip) : null
 
   const handleClick = (ev) => {
     ev.preventDefault()
+    if (landing) { nav(url); return } // landing própria: livre (lead magnet)
     if (isLancLivre()) { markLancVisto(key); nav(url); return }
     const vistos = getLancVistos()
     if (vistos.has(key)) { nav(url); return }
@@ -94,6 +97,7 @@ export default function PortalLancamentosHome() {
         (!construtora || e.construtoraNome === construtora)
       )
       .sort((a, b) => {
+        if (!!b.destaqueTopo !== !!a.destaqueTopo) return (b.destaqueTopo ? 1 : 0) - (a.destaqueTopo ? 1 : 0) // campanha no topo
         if (!!b.capa !== !!a.capa) return (b.capa ? 1 : 0) - (a.capa ? 1 : 0) // com foto primeiro
         return (PRIORIDADE[a.status] ?? 9) - (PRIORIDADE[b.status] ?? 9)
       })

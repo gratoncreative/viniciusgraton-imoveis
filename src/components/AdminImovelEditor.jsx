@@ -26,13 +26,28 @@ const resizeToDataUrl = (file, max = 1400, q = 0.82) => new Promise((resolve, re
   reader.readAsDataURL(file)
 })
 
-export default function AdminImovelEditor({ im, onSaved }) {
+const baseDe = (im) => ({
+  titulo: im.titulo || '', tipo: im.tipo || '', finalidade: im.finalidade || '', bairro: im.bairro || '', cidade: im.cidade || '',
+  endereco: im.endereco || '', pontoReferencia: im.pontoReferencia || '', descricao: im.descricao || '',
+  preco: im.preco || 0, precoAnterior: im.precoAnterior || 0, quartos: im.quartos || 0, suites: im.suites || 0,
+  banheiros: im.banheiros || 0, vagas: im.vagas || 0, area: im.area || 0, areaLote: im.areaLote || 0, condominio: im.condominio || 0,
+  andar: (im.andar ?? '') === '' ? '' : im.andar, elevador: !!im.elevador, video: im.video || '', tour360: im.tour360 || '',
+  destaque: !!im.destaque, oculto: false, fotos: fotosDe(im),
+})
+
+// Editor de anúncio do admin. Dois modos:
+//  • Não-controlado (padrão, página de detalhe): mostra o botão flutuante "Editar anúncio".
+//  • Controlado (a partir da listagem /imoveis): some o FAB; o pai abre passando `controlled`,
+//    `open` e `onClose`. Ao salvar, dispara onSaved(campos) — o pai reflete no card na hora.
+export default function AdminImovelEditor({ im, onSaved, controlled = false, open: openProp, onClose }) {
   const [isAdmin, setIsAdmin] = useState(false)
-  const [open, setOpen] = useState(false)
+  const [openInner, setOpenInner] = useState(false)
   const [form, setForm] = useState(null)
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [msg, setMsg] = useState('')
+
+  const open = controlled ? !!openProp : openInner
 
   useEffect(() => {
     const check = () => setIsAdmin(!!localStorage.getItem(LSK))
@@ -40,11 +55,32 @@ export default function AdminImovelEditor({ im, onSaved }) {
     window.addEventListener('storage', check)
     return () => window.removeEventListener('storage', check)
   }, [])
-  useEffect(() => { setOpen(false); setForm(null); setMsg('') }, [im?.codigo])
+
+  // Carrega o formulário ao abrir (e quando troca de imóvel sem fechar). Busca o que já
+  // está salvo no KV para refletir exatamente a edição anterior.
+  useEffect(() => {
+    if (!open || !im) { if (!open) { setForm(null); setMsg('') } return }
+    let vivo = true
+    setForm(baseDe(im)); setMsg('')
+    const tk = localStorage.getItem(LSK)
+    ;(async () => {
+      try {
+        const r = await fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'imovel-get', token: tk, codigo: im.codigo }) })
+        const j = await r.json()
+        if (vivo && j.ok && j.registro && j.registro.campos) {
+          const c = j.registro.campos
+          setForm((f) => ({ ...f, ...c, fotos: (Array.isArray(c.fotos) && c.fotos.length) ? c.fotos : f.fotos }))
+        }
+      } catch {}
+    })()
+    return () => { vivo = false }
+  }, [open, im?.codigo])
 
   if (!isAdmin || !im) return null
   const token = localStorage.getItem(LSK)
   const codigo = im.codigo
+
+  const fechar = () => { if (controlled) onClose && onClose(); else setOpenInner(false) }
 
   const post = async (action, extra = {}) => {
     const r = await fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action, token, codigo, ...extra }) })
@@ -53,27 +89,6 @@ export default function AdminImovelEditor({ im, onSaved }) {
   }
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }))
-
-  const abrir = async () => {
-    setOpen(true); setMsg('')
-    const base = {
-      titulo: im.titulo || '', tipo: im.tipo || '', finalidade: im.finalidade || '', bairro: im.bairro || '', cidade: im.cidade || '',
-      endereco: im.endereco || '', pontoReferencia: im.pontoReferencia || '', descricao: im.descricao || '',
-      preco: im.preco || 0, precoAnterior: im.precoAnterior || 0, quartos: im.quartos || 0, suites: im.suites || 0,
-      banheiros: im.banheiros || 0, vagas: im.vagas || 0, area: im.area || 0, areaLote: im.areaLote || 0, condominio: im.condominio || 0,
-      andar: (im.andar ?? '') === '' ? '' : im.andar, elevador: !!im.elevador, video: im.video || '', tour360: im.tour360 || '',
-      destaque: !!im.destaque, oculto: false, fotos: fotosDe(im),
-    }
-    setForm(base)
-    // carrega o que já está salvo no KV (reflete exatamente a edição anterior)
-    try {
-      const { j } = await post('imovel-get')
-      if (j.ok && j.registro && j.registro.campos) {
-        const c = j.registro.campos
-        setForm((f) => ({ ...f, ...c, fotos: (Array.isArray(c.fotos) && c.fotos.length) ? c.fotos : f.fotos }))
-      }
-    } catch {}
-  }
 
   const addFoto = async (file) => {
     if (!file) return
@@ -107,6 +122,7 @@ export default function AdminImovelEditor({ im, onSaved }) {
       if (j.ok) {
         setMsg('✓ Anúncio atualizado e no ar')
         onSaved && onSaved(j.campos || campos)
+        if (controlled) setTimeout(fechar, 700)
       } else setMsg(j.msg || 'Não consegui salvar.')
     } catch { setMsg('Falha de conexão. Tente de novo.') }
     setSaving(false)
@@ -116,17 +132,19 @@ export default function AdminImovelEditor({ im, onSaved }) {
 
   return (
     <>
-      <button className="aie-fab" onClick={() => (open ? setOpen(false) : abrir())} title="Editar este anúncio (admin)">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" /></svg>
-        Editar anúncio
-      </button>
+      {!controlled && (
+        <button className="aie-fab" onClick={() => setOpenInner((v) => !v)} title="Editar este anúncio (admin)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" /></svg>
+          Editar anúncio
+        </button>
+      )}
 
       {open && form && (
-        <div className="aie-overlay" onClick={(e) => { if (e.target === e.currentTarget) setOpen(false) }}>
+        <div className="aie-overlay" onClick={(e) => { if (e.target === e.currentTarget) fechar() }}>
           <div className="aie-modal" role="dialog" aria-label="Editar anúncio">
             <div className="aie-head">
               <h3>Editar anúncio · cód. {codigo}</h3>
-              <button className="aie-x" onClick={() => setOpen(false)} aria-label="Fechar">✕</button>
+              <button className="aie-x" onClick={fechar} aria-label="Fechar">✕</button>
             </div>
 
             <div className="aie-body">
@@ -200,7 +218,7 @@ export default function AdminImovelEditor({ im, onSaved }) {
 
             <div className="aie-foot">
               {msg && <span className={`aie-msg${msg.startsWith('✓') ? ' aie-msg--ok' : ''}`}>{msg}</span>}
-              <button className="aie-cancelar" onClick={() => setOpen(false)}>Fechar</button>
+              <button className="aie-cancelar" onClick={fechar}>Fechar</button>
               <button className="aie-salvar" onClick={salvar} disabled={saving || uploading}>{saving ? 'Salvando…' : 'Salvar anúncio'}</button>
             </div>
           </div>

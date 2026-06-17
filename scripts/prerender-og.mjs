@@ -325,6 +325,70 @@ for (const c of construtoras) {
 }
 console.log(`✓ prerender empreendimentos: ${nemp} páginas em dist/construtoras/{construtora}/{empreendimento}/`)
 
+// ===== Landing dedicada do Louis (lançamento) — SEO forte p/ captação de leads =====
+function renderLouis() {
+  const url = `${SITE}/lancamentos/louis-studios-umuarama`
+  const titulo = 'Louis Studios Umuarama — Investir ao lado da UFU e dos hospitais'
+  const desc = trunc('Louis Living Experience: studios de 35 a 37 m² no Umuarama, Uberlândia — ao lado do Campus UFU, do Hospital do Câncer e do HCU. A partir de R$ 387.000, entrada de R$ 38.700, gestão Housi e locação por temporada. Renda estimada de R$ 4.000 a R$ 6.000/mês.')
+  const image = `${SITE}/lancamentos/louis/og.jpg`
+  const ld = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': ['Product', 'Residence'],
+        name: 'Louis Living Experience — Studios no Umuarama',
+        description: 'Studios de 35 a 37 m² no bairro Umuarama, Uberlândia/MG, ao lado do Campus Umuarama da UFU, do Hospital do Câncer e do Hospital de Clínicas (HCU). Locação por temporada com gestão Housi.',
+        image: [`${SITE}/lancamentos/louis/tower.jpg`, image],
+        brand: { '@type': 'Brand', name: 'Select Construtora' },
+        url,
+        address: { '@type': 'PostalAddress', streetAddress: 'Rua Dr. Luiz Antônio Waack, 1.163', addressLocality: 'Uberlândia', addressRegion: 'MG', addressCountry: 'BR' },
+        offers: { '@type': 'Offer', priceCurrency: 'BRL', price: '387000', availability: 'https://schema.org/InStock', url, seller: { '@type': 'RealEstateAgent', name: 'Vinícius Graton — Rotina Imobiliária' } },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Início', item: `${SITE}/` },
+          { '@type': 'ListItem', position: 2, name: 'Lançamentos', item: `${SITE}/lancamentos` },
+          { '@type': 'ListItem', position: 3, name: 'Louis Studios Umuarama', item: url },
+        ],
+      },
+    ],
+  }
+  const body = `<main class="pre-seo">` +
+    `<h1>Louis Living Experience — studios para investir no Umuarama, Uberlândia</h1>` +
+    `<p>Lançamento da Select Construtora no bairro Umuarama, em Uberlândia/MG, na Rua Dr. Luiz Antônio Waack, 1.163. Studios de 35,53 a 37,09 m² privativos, pensados para investimento e locação por temporada com gestão profissional da Housi.</p>` +
+    `<ul>` +
+    `<li>Valor da unidade a partir de R$ 387.000</li>` +
+    `<li>Sinal (entrada) de R$ 38.700 + 36 parcelas de R$ 998 + 3 balões anuais de R$ 15.840</li>` +
+    `<li>Renda estimada de temporada entre R$ 4.000 e R$ 6.000 por mês (cenários de referência, não garantidos)</li>` +
+    `<li>Gestão de locação Housi · locação por temporada (Airbnb) autorizada em convenção</li>` +
+    `</ul>` +
+    `<h2>Por que o Umuarama</h2>` +
+    `<p>Ao lado do Campus Umuarama da UFU (cerca de 20 mil alunos), do Hospital do Câncer de Uberlândia (mais de 8.200 pacientes) e do Hospital de Clínicas (HCU), terceiro maior hospital universitário do Brasil. Demanda constante de estudantes, profissionais da saúde e acompanhantes de pacientes o ano inteiro.</p>` +
+    `<p>Atendimento com Vinícius Graton, consultor da Rotina Imobiliária. Receba a tabela de preços e a disponibilidade por andar.</p>` +
+    `<p><a href="/lancamentos">Ver outros lançamentos de Uberlândia</a></p></main>`
+  return baseHtml
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)} | Vinícius Graton</title>`)
+    .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
+    .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${esc(url)}$2`)
+    .replace(/(<meta property="og:image" content=")[^"]*(")/, `$1${esc(image)}$2`)
+    .replace(/(<meta property="og:type" content=")[^"]*(")/, `$1article$2`)
+    .replace(/(<meta name="twitter:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
+    .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${esc(image)}$2`)
+    .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
+    .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
+    .replace('<div id="root"></div>', `<div id="root">${body}</div>`)
+}
+{
+  const dir = resolve(DIST, 'lancamentos', 'louis-studios-umuarama')
+  mkdirSync(dir, { recursive: true })
+  writeFileSync(resolve(dir, 'index.html'), renderLouis())
+  console.log('✓ prerender landing Louis: dist/lancamentos/louis-studios-umuarama/')
+}
+
 // ===== posts do blog — HTML estático com OG + JSON-LD + corpo COMPLETO do post =====
 
 // Converte markdown bold **texto** → <strong>texto</strong>
@@ -521,6 +585,8 @@ const urls = [
     img: p.capa ? abs(p.capa) : '',
     imgTitle: `${p.nome} · ${c.nome}, Uberlândia`,
   }))),
+  { loc: `${SITE}/lancamentos`, freq: 'weekly', pri: '0.8' },
+  { loc: `${SITE}/lancamentos/louis-studios-umuarama`, freq: 'weekly', pri: '0.9', img: `${SITE}/lancamentos/louis/og.jpg`, imgTitle: 'Louis Living Experience — studios no Umuarama, Uberlândia' },
   { loc: `${SITE}/contato`, freq: 'monthly', pri: '0.5' },
   ...bairrosSeo.map((b) => ({ loc: `${SITE}/imoveis/uberlandia/${b.slug}`, freq: 'weekly', pri: '0.7' })),
   { loc: `${SITE}/privacidade`, freq: 'yearly', pri: '0.2' },

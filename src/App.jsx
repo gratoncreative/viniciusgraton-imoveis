@@ -43,6 +43,7 @@ const ConstrutoraDetalhe = lazy(() => import('./pages/ConstrutoraDetalhe'))
 const EmpreendimentoDetalhe = lazy(() => import('./pages/EmpreendimentoDetalhe'))
 const BlowEmpreendimentoDetalhe = lazy(() => import('./pages/BlowEmpreendimentoDetalhe'))
 const PortalLancamentosHome = lazy(() => import('./pages/PortalLancamentosHome'))
+const LancamentoLouis = lazy(() => import('./pages/LancamentoLouis'))
 const CatalogoLancamentos = lazy(() => import('./pages/CatalogoLancamentos'))
 const LancamentoGuia = lazy(() => import('./pages/LancamentoGuia'))
 const LancamentoBairro = lazy(() => import('./pages/LancamentoBairro'))
@@ -150,6 +151,8 @@ export default function App() {
               <Route path="/sobre" element={<QuemSou />} />
               <Route path="/regioes" element={<Regioes />} />
               <Route path="/lancamentos" element={<PortalLancamentosHome />} />
+              <Route path="/lancamentos/louis-studios-umuarama" element={<LancamentoLouis />} />
+              <Route path="/louis" element={<Navigate to="/lancamentos/louis-studios-umuarama" replace />} />
               <Route path="/lancamentos/catalogo" element={<CatalogoLancamentos />} />
               <Route path="/lancamentos/guia" element={<LancamentoGuia />} />
               <Route path="/lancamentos/bairros/:slug" element={<LancamentoBairro />} />

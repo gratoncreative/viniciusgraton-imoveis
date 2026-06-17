@@ -190,7 +190,9 @@ export const todosEmpreendimentos = () =>
         tipo: _tipo(p),
         quartosMin: q ? q.min : null,
         quartosMax: q ? q.max : null,
-        url: `/lancamentos/empreendimento/${c.slug}/${p.slug}`,
+        landingPath: p.landingPath || null, // landing dedicada (ex.: Louis) — o card linka direto pra ela
+        destaqueTopo: !!p.destaqueTopo, // empreendimento em campanha aparece no topo do portal
+        url: p.landingPath || `/lancamentos/empreendimento/${c.slug}/${p.slug}`,
       }
     })
   )

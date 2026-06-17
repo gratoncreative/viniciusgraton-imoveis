@@ -8,7 +8,8 @@ import FiltroSelect from '../components/FiltroSelect'
 import FiltroPills from '../components/FiltroPills'
 import InputMoeda from '../components/InputMoeda'
 import VistosRecentemente from '../components/VistosRecentemente'
-import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, linkWhatsApp, WA } from '../data'
+import AdminImovelEditor from '../components/AdminImovelEditor'
+import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, linkWhatsApp, WA, aplicarOverrideEmUm } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconClose } from '../components/icons'
 
@@ -111,6 +112,18 @@ export default function Catalogo() {
     return () => { vivo = false }
   }, [])
 
+  // Overrides do painel (edições do admin / ocultar) — aplicados em TODA a listagem, não só
+  // nos curados. Assim, quando o admin edita um imóvel a partir da grade, a mudança vale no
+  // catálogo inteiro (qualquer imóvel da Rotina), igual à página de detalhe.
+  const [ovMap, setOvMap] = useState(null)
+  useEffect(() => {
+    let vivo = true
+    fetch('/api/imoveis-pub').then((r) => (r.ok ? r.json() : null))
+      .then((d) => { if (vivo && d) setOvMap(d.ov ? d.ov : d) })
+      .catch(() => {})
+    return () => { vivo = false }
+  }, [])
+
   // une o feed com os imóveis curados do bundle (estes têm prioridade, com galeria/descrição completas)
   const TODOS = useMemo(() => {
     const mapa = new Map()
@@ -121,8 +134,14 @@ export default function Catalogo() {
       const base = mapa.get(cod)
       mapa.set(cod, base ? { ...base, ...im } : im)
     }
-    return [...mapa.values()]
-  }, [feed])
+    let arr = [...mapa.values()]
+    if (ovMap && typeof ovMap === 'object') {
+      arr = arr
+        .filter((im) => !(ovMap[String(im.codigo)] && ovMap[String(im.codigo)].oculto)) // ocultados somem
+        .map((im) => { const o = ovMap[String(im.codigo)]; return o ? aplicarOverrideEmUm(im, o) : im })
+    }
+    return arr
+  }, [feed, ovMap])
   const BAIRROS_TODOS = useMemo(() => [...new Set(TODOS.map((i) => (i.bairro || '').trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')), [TODOS])
 
   // —— DESTAQUE no topo do catálogo (curadoria do admin; até 3) ——
@@ -131,6 +150,7 @@ export default function Catalogo() {
   const [destaqueCods, setDestaqueCods] = useState([])
   const [destaqueMsg, setDestaqueMsg] = useState('')
   const [destaqueOk, setDestaqueOk] = useState(false)
+  const [editando, setEditando] = useState(null) // imóvel sendo editado pelo admin (a partir da grade)
   const catMainRef = useRef(null)
   useEffect(() => {
     const check = () => setIsAdmin(!!localStorage.getItem(ADMIN_LSK))
@@ -451,7 +471,10 @@ export default function Catalogo() {
         </aside>
 
         <div className="cat-main" data-lenis-prevent ref={catMainRef}>
-        <VistosRecentemente excluir={null} />
+        {/* "Visto recentemente" só aparece no topo quando NÃO há busca/filtro ativo.
+            Com filtro ativo, o resultado da pesquisa é prioridade (fica em cima) e o
+            "visto recentemente" desce para o fim da lista. */}
+        {semFiltros && <VistosRecentemente excluir={null} />}
         <div className="cat-tipos">
           {TIPO_CHIPS.map((c) => (
             <button key={c.grupo} type="button" className={`cat-tipo ${f.grupo === c.grupo ? 'on' : ''}`} onClick={() => toggleGrupo(c.grupo)}>
@@ -487,7 +510,12 @@ export default function Catalogo() {
                 {destaqueImoveis.map((im) => (
                   <div className="cat-card-wrap cat-card-wrap--destaque" key={im.codigo}>
                     <CardImovel im={im} />
-                    {isAdmin && <button type="button" className="cat-destacar-bar cat-destacar-bar--rem" onClick={() => toggleDestaque(im.codigo)}>✕ remover do destaque</button>}
+                    {isAdmin && (
+                      <div className="cat-admin-acoes">
+                        <button type="button" className="cat-destacar-bar cat-destacar-bar--rem" onClick={() => toggleDestaque(im.codigo)}>✕ remover destaque</button>
+                        <button type="button" className="cat-editar-bar" onClick={() => setEditando(im)} title="Editar fotos, título e dados (admin)">✎ Editar</button>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -520,7 +548,10 @@ export default function Catalogo() {
               isAdmin ? (
                 <div className="cat-card-wrap" key={im.codigo}>
                   <CardImovel im={im} />
-                  <button type="button" className="cat-destacar-bar" onClick={() => toggleDestaque(im.codigo)} title="Destacar este imóvel no topo do catálogo">★ Destacar no topo</button>
+                  <div className="cat-admin-acoes">
+                    <button type="button" className="cat-destacar-bar" onClick={() => toggleDestaque(im.codigo)} title="Destacar este imóvel no topo do catálogo">★ Destacar</button>
+                    <button type="button" className="cat-editar-bar" onClick={() => setEditando(im)} title="Editar fotos, título e dados (admin)">✎ Editar</button>
+                  </div>
                 </div>
               ) : (
                 <CardImovel key={im.codigo} im={im} />
@@ -545,9 +576,28 @@ export default function Catalogo() {
           </div>
         )}
 
+        {/* Com busca/filtro ativo, "visto recentemente" aparece aqui embaixo — nunca acima dos resultados. */}
+        {!semFiltros && <VistosRecentemente excluir={null} />}
+
         <AviseMe />
         </div>
         </div>
+
+        {/* Editor de anúncio (admin) — aberto a partir do botão ✎ Editar em qualquer card.
+            Ao salvar, reflete na hora em toda a listagem via ovMap. */}
+        {isAdmin && editando && (
+          <AdminImovelEditor
+            im={editando}
+            controlled
+            open={!!editando}
+            onClose={() => setEditando(null)}
+            onSaved={(campos) => {
+              const cod = String(editando.codigo)
+              setOvMap((prev) => ({ ...(prev || {}), [cod]: { ...((prev && prev[cod]) || {}), ...campos } }))
+              if (campos && campos.oculto && destaqueCods.includes(cod)) toggleDestaque(cod)
+            }}
+          />
+        )}
       </div>
     </main>
   )
