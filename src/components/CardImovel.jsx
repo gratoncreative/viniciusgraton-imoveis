@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { formatPreco, formatArea, resumoImovel, truncar, linkWhatsApp, waImovel, oportunidade, ehEsquina } from '../data'
+import { formatPreco, formatArea, resumoImovel, truncar, linkWhatsApp, waImovel, oportunidade, ehEsquina, parcelaEstimada } from '../data'
 import PrecoGate from './PrecoGate'
 import { IconWhats, ICONS } from './icons'
 import Engajamento from './Engajamento'
@@ -89,6 +89,7 @@ export default function CardImovel({ im, variante, overlayLabel }) {
   ].filter(Boolean)
 
   const op = oportunidade(im)
+  const parc = parcelaEstimada(im.preco)
   const irParaImovel = () => navigate(`/imovel/${im.codigo}`)
 
   // ——— variante horizontal (listagem estilo portal): foto à esquerda, infos à direita ———
@@ -176,6 +177,11 @@ export default function CardImovel({ im, variante, overlayLabel }) {
         <div className="im-specs">
           {specs.map((s, i) => <Spec key={i} {...s} />)}
         </div>
+        {parc > 0 && (
+          <p className="im-parcela" title="Estimativa: entrada de 20%, 420 meses, ~11,19% a.a. (tabela Price). Sujeito a análise de crédito.">
+            ou financie a partir de <b>R$ {parc.toLocaleString('pt-BR')}</b>/mês <i>· estimativa</i>
+          </p>
+        )}
         <div className="im-actions">
           <Link
             className="im-ver"

@@ -217,6 +217,18 @@ export const formatPreco = (v) => {
 export const formatArea = (a) =>
   a ? `${a.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} m²` : null
 
+// Parcela mensal ESTIMADA p/ referência no card (tabela Price, entrada 20%,
+// 420 meses, ~11,19% a.a. — base do SimuladorFinanciamento). Só orientativo.
+export const parcelaEstimada = (preco) => {
+  const p = Number(preco) || 0
+  if (p < 50000) return 0
+  const pv = p * 0.8
+  const i = Math.pow(1 + 0.1119, 1 / 12) - 1
+  const n = 420
+  const parc = (pv * i) / (1 - Math.pow(1 + i, -n))
+  return isFinite(parc) && parc > 0 ? Math.round(parc) : 0
+}
+
 // Sinais de OPORTUNIDADE — 100% legítimos e verificáveis (sem preço inventado):
 //  - desconto real: só quando o proprietário registra um "preço anterior" maior que o atual
 //  - abaixo do mercado: preço/m² do imóvel < m² médio do bairro (fontes públicas IPD/ZAP)

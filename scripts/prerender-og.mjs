@@ -371,8 +371,13 @@ function renderPost(post) {
     headline: post.titulo, description: post.resumo, image: [image],
     datePublished: post.data, dateModified: post.atualizado || post.data,
     inLanguage: 'pt-BR', mainEntityOfPage: url,
-    author: { '@type': 'Person', name: 'Vinícius Graton', url: SITE },
-    publisher: { '@type': 'RealEstateAgent', name: 'Vinícius Graton Imóveis', areaServed: 'Uberlândia - MG' },
+    author: {
+      '@type': 'Person', name: 'Vinícius Graton', url: `${SITE}/sobre`,
+      jobTitle: 'Consultor de Imóveis', worksFor: { '@type': 'Organization', name: 'Rotina Imobiliária', identifier: 'CRECI PJ 132' },
+      description: 'Consultor de imóveis em Uberlândia/MG, vinculado à Rotina Imobiliária. Atende compra, venda e investimento com curadoria e acompanhamento do início à entrega das chaves.',
+      sameAs: ['https://www.instagram.com/viniciusgraton.imoveis/'],
+    },
+    publisher: { '@type': 'RealEstateAgent', name: 'Vinícius Graton Imóveis', areaServed: 'Uberlândia - MG', logo: { '@type': 'ImageObject', url: `${SITE}/icon-512.png` } },
     ...(post.keyword ? { keywords: post.keyword } : {}),
   }]
   if (faq && (faq.perguntas || []).length) {
