@@ -132,6 +132,38 @@ function Destaque({ icon, titulo, sub }) {
   )
 }
 
+// Custo de aquisição na própria página do imóvel — tira o "susto da escritura" (#8)
+// Mesmos parâmetros do CalcCustos em /ferramentas: ITBI 2% + cartório 1,2% + avaliação ~R$3.500.
+const brl0 = (n) => (isFinite(n) ? n : 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })
+function CustoAquisicao({ preco }) {
+  const p = Number(preco) || 0
+  if (p < 50000) return null
+  const itbi = p * 0.02
+  const cartorio = p * 0.012
+  const avaliacao = 3500
+  const extras = itbi + cartorio + avaliacao
+  return (
+    <details className="det-custo">
+      <summary>
+        <span className="det-custo-sum">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 2v20l2-1.5L10 22l2-1.5L14 22l2-1.5L18 22V2l-2 1.5L14 2l-2 1.5L10 2 8 3.5 6 2zM9 7h6M9 11h6M9 15h4"/></svg>
+          Custo real de comprar <i>· além do preço</i>
+        </span>
+        <b>+{brl0(extras)}</b>
+      </summary>
+      <ul className="det-custo-lista">
+        <li><span>ITBI — 2% (Uberlândia)</span><b>{brl0(itbi)}</b></li>
+        <li><span>Escritura + registro (estimativa)</span><b>{brl0(cartorio)}</b></li>
+        <li><span>Avaliação bancária (estimativa)</span><b>{brl0(avaliacao)}</b></li>
+        <li className="det-custo-total"><span>Custo total estimado</span><b>{brl0(p + extras)}</b></li>
+      </ul>
+      <p className="det-custo-nota">
+        Estimativa para você não se assustar no cartório. O ITBI pode ser reduzido no SFH; a avaliação é cobrada pelo banco no financiamento. <Link to="/simulador-financiamento">Simular financiamento completo →</Link>
+      </p>
+    </details>
+  )
+}
+
 
 // mensagens descontraídas que giram enquanto o imóvel carrega
 const MSG_LOAD = [
@@ -690,6 +722,8 @@ export default function ImovelDetalhe() {
               <div className="det-specs">
                 {specs.map((s, i) => <Spec key={i} {...s} />)}
               </div>
+
+              <CustoAquisicao preco={im.preco} />
 
               <a className="btn btn-gold det-whats" href={linkWhatsApp(waImovel(im))} target="_blank" rel="noopener noreferrer">
                 <IconWhats /> Tenho interesse neste imóvel

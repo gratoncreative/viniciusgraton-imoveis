@@ -1238,6 +1238,29 @@ html[data-theme="claro"] .promo-imovel-media { background: linear-gradient(150de
 .comparar-cta { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; background: linear-gradient(165deg, #fefdfb, #f6f1e6); border: 1px solid rgba(154,123,60,0.26); border-radius: 16px; padding: 22px; margin-bottom: 30px; }
 .comparar-cta p { margin: 0; color: var(--text-soft); font-size: 0.98rem; max-width: 520px; }
 
+/* custo de aquisição na página do imóvel (#8) */
+.det-custo { margin: 0 0 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface, #fff); overflow: hidden; }
+.det-custo > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 13px 16px; font-family: var(--font-head); }
+.det-custo > summary::-webkit-details-marker { display: none; }
+.det-custo-sum { display: inline-flex; align-items: center; gap: 9px; font-size: 0.92rem; font-weight: 600; color: #1C2A44; }
+.det-custo-sum svg { color: var(--gold-3, #9A7B3C); flex: 0 0 auto; }
+.det-custo-sum i { font-style: normal; font-weight: 500; color: var(--text-mute); font-size: 0.82rem; }
+.det-custo > summary > b { color: var(--gold-3, #9A7B3C); font-size: 0.98rem; white-space: nowrap; }
+.det-custo[open] > summary { border-bottom: 1px solid var(--border); }
+.det-custo-lista { list-style: none; margin: 0; padding: 6px 16px 2px; }
+.det-custo-lista li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; font-size: 0.9rem; color: var(--text-soft); border-bottom: 1px dashed var(--border); }
+.det-custo-lista li b { color: #1C2A44; font-weight: 600; }
+.det-custo-lista li:last-child { border-bottom: none; }
+.det-custo-total { margin-top: 2px; font-weight: 600; }
+.det-custo-total span, .det-custo-total b { color: #1C2A44 !important; font-size: 0.98rem !important; }
+.det-custo-nota { margin: 4px 16px 14px; font-size: 0.78rem; line-height: 1.5; color: var(--text-mute); }
+.det-custo-nota a { color: var(--gold-3, #9A7B3C); font-weight: 600; white-space: nowrap; }
+
+/* estimar rentabilidade pelo m² do bairro (#15) */
+.calc-bairro-box { display: grid; grid-template-columns: 1fr 110px; gap: 10px; align-items: end; padding: 12px; margin-bottom: 4px; background: linear-gradient(165deg, #fefdfb, #f6f1e6); border: 1px solid rgba(154,123,60,0.22); border-radius: 12px; }
+.calc-bairro-aplicar { grid-column: 1 / -1; cursor: pointer; border: 1px solid rgba(154,123,60,0.4); background: #fff; color: #1C2A44; font-family: var(--font-head); font-weight: 600; font-size: 0.82rem; padding: 9px 12px; border-radius: 9px; transition: background var(--ease, .2s), border-color var(--ease, .2s); }
+.calc-bairro-aplicar:hover { background: #faf6ec; border-color: var(--gold-2, #C6A15B); }
+
 /* parcela estimada no card do imóvel (#4) */
 .im-parcela { margin: -2px 0 12px; font-size: 0.82rem; color: var(--text-soft); line-height: 1.3; }
 .im-parcela b { color: #1C2A44; font-weight: 700; }
