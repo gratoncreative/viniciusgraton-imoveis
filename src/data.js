@@ -16,6 +16,11 @@ export const CONFIG = {
   googleClientId: '522410029650-rrsga1dakfh4j3b5bqqepp1ha0bnfc5d.apps.googleusercontent.com',
   // Imagem realista da capa — imóvel elegante com verde (troque por uma foto sua quando quiser)
   heroImg: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=1920&auto=format&fit=crop',
+  // Link de pagamento (R$ 4,90) p/ baixar o estudo do m². Cole aqui um link do
+  // Mercado Pago / Stripe (NUNCA chave secreta). Configure no painel do provedor
+  // o retorno de sucesso para: https://viniciusgraton.com.br/estudo/{codigo}?pago=1
+  // Vazio = botão de pagar fica oculto (só o admin baixa). Ver memória do estudo.
+  linkPagamentoEstudo: '',
 }
 
 // aceita uma mensagem personalizada por contexto; usa a padrão se nenhuma for passada

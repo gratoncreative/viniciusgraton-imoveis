@@ -7493,7 +7493,16 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .ep-meta-label { font-size:.58rem; text-transform:uppercase; letter-spacing:.1em; color:var(--ep-low); }
 .ep-meta-num { font-family:'Montserrat', system-ui, sans-serif; font-size:.82rem; color:var(--ep-brass); font-weight:500; }
 .ep-meta-data { font-size:.68rem; color:var(--ep-mid); }
-.ep-header-nav { display:flex; align-items:center; }
+.ep-header-nav { display:flex; align-items:center; gap:8px; }
+.ep-baixar {
+  display:inline-flex; align-items:center; gap:7px;
+  font-family:var(--font-head); font-size:.76rem; font-weight:700; letter-spacing:.01em;
+  color:#20160a; background:linear-gradient(135deg, var(--ep-brass), #b8862f);
+  padding:7px 14px; border-radius:8px; border:1px solid transparent; cursor:pointer;
+  box-shadow:0 6px 16px -8px rgba(154,123,60,.6); transition:transform .18s, box-shadow .18s, filter .18s;
+}
+.ep-baixar:hover { transform:translateY(-1px); filter:brightness(1.05); box-shadow:0 10px 22px -8px rgba(154,123,60,.7); }
+.ep-baixar svg { flex:none; }
 .ep-back {
   display:inline-flex; align-items:center; gap:6px;
   font-size:.76rem; color:var(--ep-mid); text-decoration:none;
@@ -7788,6 +7797,10 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
   .ep-radar-svg    { max-width: 260px; }
   .ep-assina-wa    { background: #1a9e4a !important; }
   .ep-spinner      { display: none; }
+  /* ao imprimir o estudo aberto no MODAL, mostra só ele (esconde a página e outros portais) */
+  body.estudo-aberto > *:not(.em-overlay) { display: none !important; }
+  body.estudo-aberto .em-overlay { position: static !important; display: block !important; background: #fff !important; overflow: visible !important; padding: 0 !important; }
+  body.estudo-aberto .em-panel { max-height: none !important; overflow: visible !important; box-shadow: none !important; border-radius: 0 !important; width: 100% !important; }
 }
 
 /* ── Movimento reduzido ── */

@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
-import { getImovel, estudoM2 } from '../data'
+import { getImovel, estudoM2, CONFIG } from '../data'
 import bairrosM2 from '../bairros-m2.json'
 import {
   haversine, azimuth, calcStats, calcGrau,
@@ -549,9 +549,38 @@ function Secao({ num, titulo, sub, children, print }) {
 }
 
 // ══ CONTEÚDO DO ESTUDO ════════════════════════════════════════════════════════
+// ── Liberação do download do estudo ──────────────────────────────────────────
+// Grátis p/ o admin logado (token válido) ou p/ quem pagou (R$ 4,90, flag local
+// gravada no retorno ?pago=1 do provedor). Gate "leve": o conteúdo já é visível
+// na tela — o que se paga é o PDF formatado.
+const _adminLogado = () => {
+  try { const t = localStorage.getItem('vg_admin_token'); if (!t || t.indexOf('.') < 0) return false; const exp = Number(t.split('.')[0]); return !!exp && Date.now() < exp } catch { return false }
+}
+const _estudoPago = () => { try { const t = Number(localStorage.getItem('vg_estudo_pago') || 0); return t > 0 && (Date.now() - t) < 6 * 3600 * 1000 } catch { return false } }
+export const podeBaixarEstudo = () => _adminLogado() || _estudoPago()
+
 export function EstudoContent({ estudo, im, onClose }) {
   const [hovT, setHovT] = useState(null)
+  const [liberado, setLiberado] = useState(() => podeBaixarEstudo())
   const { avaliando, testemunhas, stats, grau, adotadoM2, valorTotal, valMin, valMax, diffPct, veredito } = estudo
+
+  // retorno do pagamento (?pago=1): libera, marca a flag e dispara o download
+  useEffect(() => {
+    let sp; try { sp = new URLSearchParams(window.location.search) } catch { return }
+    if (sp && sp.get('pago')) {
+      try { localStorage.setItem('vg_estudo_pago', String(Date.now())) } catch {}
+      setLiberado(true)
+      const t = setTimeout(() => { try { window.print() } catch {} }, 900)
+      return () => clearTimeout(t)
+    }
+  }, [])
+
+  const baixarEstudo = () => {
+    if (podeBaixarEstudo()) { try { window.print() } catch {} ; return }
+    if (CONFIG.linkPagamentoEstudo) { window.location.href = CONFIG.linkPagamentoEstudo; return }
+    const wa = `Olá Vinícius! Quero baixar o estudo de valor cód. ${estudo.numero} (${avaliando.tipo} no ${avaliando.bairro}) em PDF.`
+    window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(wa)}`, '_blank', 'noopener noreferrer')
+  }
 
   const corVerd = veredito === 'abaixo' ? 'up' : veredito === 'acima' ? 'down' : 'neu'
   const textoVerd = veredito === 'abaixo'
@@ -583,6 +612,10 @@ export function EstudoContent({ estudo, im, onClose }) {
             <span className="ep-meta-data">{fmtData(estudo.data)}</span>
           </div>
           <div className="ep-header-nav print-hide">
+            <button className="ep-baixar" onClick={baixarEstudo} title={liberado ? 'Baixar o estudo em PDF' : 'Baixar o estudo em PDF (R$ 4,90)'}>
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" /></svg>
+              {liberado ? 'Baixar PDF' : 'Baixar PDF · R$ 4,90'}
+            </button>
             {onClose
               ? <button className="ep-back" onClick={onClose}>
                   <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
