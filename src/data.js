@@ -110,7 +110,7 @@ export const IMOVEIS_INFO = { geradoEm: destaqueData.geradoEm, fonte: destaqueDa
 
 // Aplica os overrides do painel (campos editados / ocultar) vindos de /api/imoveis-pub.
 // Só campos PÚBLICOS do anúncio — dados do proprietário NUNCA chegam aqui.
-const CAMPOS_OVERRIDE = ['preco', 'precoAnterior', 'tipo', 'bairro', 'quartos', 'suites', 'banheiros', 'vagas', 'area', 'andar', 'elevador', 'descricao', 'destaque']
+const CAMPOS_OVERRIDE = ['preco', 'precoAnterior', 'tipo', 'bairro', 'finalidade', 'cidade', 'quartos', 'suites', 'banheiros', 'vagas', 'area', 'areaLote', 'condominio', 'andar', 'elevador', 'titulo', 'descricao', 'endereco', 'pontoReferencia', 'video', 'tour360', 'destaque']
 export function aplicarOverridesImoveis(mapa, aprovados) {
   // Reinsere no site os imóveis pendentes que o Vinícius já aprovou (lista vinda do KV).
   const apSet = new Set((aprovados || []).map(String))
@@ -135,6 +135,18 @@ export function aplicarOverridesImoveis(mapa, aprovados) {
     if (o && o.oculto) IMOVEIS.splice(i, 1)
   }
   marcarDemoImpulsionados() // mantém a vitrine impulsionada após aplicar overrides
+}
+
+// Aplica o override de UM imóvel (vindo de /api/imoveis-pub) sobre o objeto im.
+// Usado na página de detalhe para que a edição do admin valha em QUALQUER imóvel
+// (inclusive os que não estão no bundle curado). Devolve uma cópia mesclada.
+export function aplicarOverrideEmUm(im, o) {
+  if (!im || !o || o.oculto) return im
+  const out = { ...im }
+  for (const f of CAMPOS_OVERRIDE) if (f in o && o[f] !== '' && o[f] != null) out[f] = o[f]
+  if (Array.isArray(o.fotos) && o.fotos.length) { out.fotos = o.fotos; out.img = o.fotos[0] }
+  if (o.destaque && o.destaqueAte) out.destaque = Date.now() < Number(o.destaqueAte)
+  return out
 }
 
 // Construtoras de Uberlândia (vitrine + página por construtora)

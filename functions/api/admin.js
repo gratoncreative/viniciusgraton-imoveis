@@ -246,20 +246,29 @@ export async function onRequestPost({ env, request }) {
   if (action === 'imovel-save') {
     const codigo = String(b.codigo || '').slice(0, 12)
     if (!codigo) return json({ error: 'codigo' }, 400)
-    const o = b.owner && typeof b.owner === 'object' ? b.owner : {}
-    const owner = { nome: String(o.nome || '').slice(0, 120), email: String(o.email || '').slice(0, 160), fone: String(o.fone || '').slice(0, 40) }
+    const existing = await env.ENGAGEMENT.get('imovel:' + codigo, 'json') || {}
+    // owner só é sobrescrito se vier no payload; senão preserva o que já existe (o editor de anúncio não mexe nele)
+    const o = b.owner && typeof b.owner === 'object' ? b.owner : null
+    const owner = o
+      ? { nome: String(o.nome || '').slice(0, 120), email: String(o.email || '').slice(0, 160), fone: String(o.fone || '').slice(0, 40) }
+      : (existing.owner || { nome: '', email: '', fone: '' })
     const c = b.campos && typeof b.campos === 'object' ? b.campos : {}
     const campos = {}
-    for (const k of ['preco', 'precoAnterior', 'quartos', 'suites', 'banheiros', 'vagas', 'area']) if (k in c) campos[k] = Number(c[k]) || 0
-    for (const k of ['tipo', 'bairro', 'descricao']) if (k in c) campos[k] = String(c[k] || '').slice(0, 3000)
+    for (const k of ['preco', 'precoAnterior', 'quartos', 'suites', 'banheiros', 'vagas', 'area', 'condominio', 'areaLote']) if (k in c) campos[k] = Number(c[k]) || 0
+    for (const k of ['tipo', 'bairro', 'finalidade', 'cidade']) if (k in c) campos[k] = String(c[k] || '').slice(0, 60)
+    if ('titulo' in c) campos.titulo = String(c.titulo || '').slice(0, 140)
+    if ('descricao' in c) campos.descricao = String(c.descricao || '').slice(0, 3000)
+    for (const k of ['endereco', 'pontoReferencia']) if (k in c) campos[k] = String(c[k] || '').slice(0, 200)
+    for (const k of ['video', 'tour360']) if (k in c) campos[k] = String(c[k] || '').slice(0, 400)
     for (const k of ['destaque', 'oculto']) if (k in c) campos[k] = !!c[k]
     // apartamento: andar (0 = térreo) e elevador (true/false). Só grava se informado.
     if (c.andar !== '' && c.andar !== null && c.andar !== undefined) campos.andar = Number(c.andar) || 0
     if (typeof c.elevador === 'boolean') campos.elevador = c.elevador
-    if (Array.isArray(c.fotos)) campos.fotos = c.fotos.filter((s) => typeof s === 'string').slice(0, 40).map((s) => s.slice(0, 300))
-    const existing = await env.ENGAGEMENT.get('imovel:' + codigo, 'json') || {}
-    await env.ENGAGEMENT.put('imovel:' + codigo, JSON.stringify({ ...existing, owner, campos, atualizadoEm: Date.now() }))
-    return json({ ok: true })
+    if (Array.isArray(c.fotos)) campos.fotos = c.fotos.filter((s) => typeof s === 'string').slice(0, 40).map((s) => s.slice(0, 400))
+    // mescla sobre o que já estava salvo (edições parciais não apagam o resto)
+    const camposFinais = { ...(existing.campos || {}), ...campos }
+    await env.ENGAGEMENT.put('imovel:' + codigo, JSON.stringify({ ...existing, owner, campos: camposFinais, atualizadoEm: Date.now() }))
+    return json({ ok: true, campos: camposFinais })
   }
 
   // Upload de foto nova do imóvel: recebe data URL (já redimensionada no navegador),

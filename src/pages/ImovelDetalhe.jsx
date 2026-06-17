@@ -9,11 +9,12 @@ import PrecoGate from '../components/PrecoGate'
 import PerguntasImovel from '../components/PerguntasImovel'
 import {
   getImovel, fotosDe, formatPreco, formatArea, resumoImovel, subtituloImovel,
-  destaquesImovel, ehCondominio, IMOVEIS, linkWhatsApp, waImovel, CONFIG, BAIRROS, oportunidade, estudoM2,
+  destaquesImovel, ehCondominio, IMOVEIS, linkWhatsApp, waImovel, CONFIG, BAIRROS, oportunidade, estudoM2, aplicarOverrideEmUm,
 } from '../data'
 import { IconWhats, IconArrow, IconPin, IconShield, IconHeart, ICONS } from './../components/icons'
 import { useSEO } from '../useSEO'
 import AdminImovelBar from '../components/AdminImovelBar'
+import AdminImovelEditor from '../components/AdminImovelEditor'
 import BaixarFotosImovel from '../components/BaixarFotosImovel'
 import { jaCurtiu, alternarCurtida } from '../engajamento'
 import { registrarVisto } from '../vistos'
@@ -310,6 +311,16 @@ export default function ImovelDetalhe() {
   }, [])
   const feedItem = useMemo(() => feed.find((i) => String(i.codigo) === String(codigo)) || null, [feed, codigo])
 
+  // Override do admin (edição feita no site) — vale para QUALQUER imóvel, não só os curados
+  const [ovImovel, setOvImovel] = useState(null)
+  useEffect(() => {
+    let vivo = true
+    fetch('/api/imoveis-pub').then((r) => (r.ok ? r.json() : null))
+      .then((j) => { if (vivo && j && j.ov) setOvImovel(j.ov[String(codigo)] || null) })
+      .catch(() => {})
+    return () => { vivo = false }
+  }, [codigo])
+
   // dados completos (galeria, 360, mapa) vêm da API — com timeout de 9s pra nunca travar
   useEffect(() => {
     if (local) { setImApi(null); return }
@@ -326,7 +337,9 @@ export default function ImovelDetalhe() {
   }, [codigo, local, tentativa])
 
   // mostra o feed na hora; quando a API completa chega, troca pela versão completa
-  const im = local || imApi || feedItem
+  const imBase = local || imApi || feedItem
+  // aplica o override do admin por cima (edição no site sobrevive ao sync diário)
+  const im = useMemo(() => (imBase && ovImovel ? aplicarOverrideEmUm(imBase, ovImovel) : imBase), [imBase, ovImovel])
 
   // se NADA carregou ainda, tenta de novo sozinho a cada 5s (até 3x) — nunca fica preso
   useEffect(() => {
@@ -620,6 +633,7 @@ export default function ImovelDetalhe() {
   return (
     <>
     <AdminImovelBar im={im} />
+    <AdminImovelEditor im={im} onSaved={(campos) => setOvImovel(campos)} />
     <main className="section--light det imovel-pg">
       <div className="container">
         <nav className="det-bread">
@@ -675,7 +689,7 @@ export default function ImovelDetalhe() {
           <aside className={`det-info det-info--claro${mounted ? ' det-mounted' : ''}`}>
             <Reveal>
               <p className="det-local"><IconPin width={15} height={15} /> {im.cidade} — {im.uf} · Cód. {im.codigo}</p>
-              <h1 className="det-titulo">{im.tipo} no {im.bairro}</h1>
+              <h1 className="det-titulo">{im.titulo || `${im.tipo} no ${im.bairro}`}</h1>
               <p className="det-subtitulo">{subtituloImovel(im)}</p>
               {im.impulsionado && (
                 <Link to="/impulsionar" className="det-pub">
