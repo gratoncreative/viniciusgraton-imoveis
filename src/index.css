@@ -703,6 +703,84 @@ html[data-theme="claro"] .ferr-pro-plano--dest .ferr-pro-plano-preco { color: #0
 html[data-theme="claro"] .ferr-pro-plano--dest .ferr-pro-plano-cta { color: #9A7B3C; }
 html[data-theme="claro"] .ferr-pro-ativo span { color: #2A2F38; }
 
+/* ───────────────────────────────────────────────────────────────────────────
+   /ferramentas no tema CLARO — os cards .ferr-card3 e as caixas de seção foram
+   desenhados para tema escuro (navy #181e2c) e ficavam cansativos sobre a página
+   clara. Aqui ganham fundo branco/marfim, ícone em pastilha dourada e texto
+   petróleo/grafite — mais ilustrativo e fácil de ler. (NÃO mexe no hero/pills.)
+   ─────────────────────────────────────────────────────────────────────────── */
+/* caixa de cada seção */
+html[data-theme="claro"] .ferr-section { background: var(--surface); border-color: var(--border); box-shadow: 0 1px 2px rgba(22,26,34,0.03); }
+html[data-theme="claro"] .ferr-sec-ico { background: rgba(198,161,91,0.12); border-color: rgba(198,161,91,0.28); color: #9A7B3C; }
+html[data-theme="claro"] .ferr-sec-titulo { color: #1C2A44; }
+html[data-theme="claro"] .ferr-sec-sub { color: var(--text-soft); }
+html[data-theme="claro"] .ferr-sec-count { background: var(--surface-2); border-color: var(--border); color: var(--text-mute); }
+/* card da ferramenta */
+html[data-theme="claro"] .ferr-card3 { background: #FFFFFF; border-color: var(--border); box-shadow: 0 1px 2px rgba(22,26,34,0.04); }
+html[data-theme="claro"] .ferr-card3:hover { background: #FFFFFF; border-color: rgba(154,123,60,0.42); box-shadow: 0 14px 32px -16px rgba(28,42,68,0.2); transform: translateY(-2px); }
+html[data-theme="claro"] .ferr-card3.on { background: var(--surface-2); border-color: var(--gold-3); box-shadow: 0 0 0 1.5px var(--gold-3), 0 14px 32px -16px rgba(154,123,60,0.28); }
+html[data-theme="claro"] .ferr-card3.locked { background: var(--surface); border-color: var(--border); }
+html[data-theme="claro"] .ferr-card3.locked:hover { background: #FFFFFF; border-color: rgba(154,123,60,0.35); }
+/* ícone em pastilha dourada clara (SVG herda via currentColor) */
+html[data-theme="claro"] .ferr-card3-ico { background: rgba(198,161,91,0.12); border-color: rgba(198,161,91,0.28); color: #9A7B3C; }
+html[data-theme="claro"] .ferr-card3:hover .ferr-card3-ico,
+html[data-theme="claro"] .ferr-card3.on .ferr-card3-ico { background: var(--gold-grad); border-color: transparent; color: #20160a; }
+html[data-theme="claro"] .ferr-card3.locked .ferr-card3-ico { color: var(--text-mute); background: var(--surface-2); border-color: var(--border); }
+/* textos */
+html[data-theme="claro"] .ferr-card3-tit b { color: #1C2A44; text-decoration-color: rgba(154,123,60,0.45); }
+html[data-theme="claro"] .ferr-card3-body i { color: var(--text-soft); }
+html[data-theme="claro"] .ferr-card3.locked .ferr-card3-tit b { color: #2A2F38; }
+html[data-theme="claro"] .ferr-card3.locked .ferr-card3-body i { color: var(--text-mute); }
+html[data-theme="claro"] .ferr-card3-arrow { color: var(--text-mute); }
+html[data-theme="claro"] .ferr-card3:hover .ferr-card3-arrow { color: #9A7B3C; }
+/* badge "Popular" — verde mais escuro p/ contraste no claro */
+html[data-theme="claro"] .ferr-badge-popular { background: rgba(31,138,76,0.12); color: #1f8a4c; border-color: rgba(31,138,76,0.3); }
+/* painel e modal das calculadoras — clareados (eram navy escuro) */
+html[data-theme="claro"] .ferr-painel-ativo,
+html[data-theme="claro"] .ferr-modal { background: #FFFFFF; border-color: var(--gold-3); box-shadow: 0 24px 60px -24px rgba(28,42,68,0.28); }
+html[data-theme="claro"] .ferr-painel-hd,
+html[data-theme="claro"] .ferr-modal-hd,
+html[data-theme="claro"] .ferr-modal-cta { border-color: var(--border) !important; }
+html[data-theme="claro"] .ferr-painel-ico,
+html[data-theme="claro"] .ferr-modal-ico { background: rgba(198,161,91,0.12); border-color: rgba(198,161,91,0.28); color: #9A7B3C; }
+html[data-theme="claro"] .ferr-modal-tit { color: #1C2A44; }
+html[data-theme="claro"] .ferr-painel-fechar,
+html[data-theme="claro"] .ferr-modal-fechar { border-color: var(--border); background: var(--surface-2); color: var(--text-soft); }
+html[data-theme="claro"] .ferr-painel-ativo .calc-campo span,
+html[data-theme="claro"] .ferr-modal-body .calc-campo span { color: var(--text-soft); }
+html[data-theme="claro"] .ferr-painel-ativo .calc-campo,
+html[data-theme="claro"] .ferr-modal-body .calc-campo { border-bottom-color: var(--border); }
+html[data-theme="claro"] .ferr-painel-ativo .calc-input,
+html[data-theme="claro"] .ferr-modal-body .calc-input { background: var(--surface-2); border-color: var(--border); }
+html[data-theme="claro"] .ferr-painel-ativo .calc-input input, html[data-theme="claro"] .ferr-painel-ativo .calc-input select,
+html[data-theme="claro"] .ferr-modal-body .calc-input input, html[data-theme="claro"] .ferr-modal-body .calc-input select { color: #1C2A44; color-scheme: light; }
+html[data-theme="claro"] .ferr-painel-ativo .calc-input select option,
+html[data-theme="claro"] .ferr-modal-body .calc-input select option { background: #FFFFFF; color: #1C2A44; }
+html[data-theme="claro"] .ferr-painel-ativo .calc-suf,
+html[data-theme="claro"] .ferr-modal-body .calc-suf { color: var(--text-mute); }
+html[data-theme="claro"] .ferr-painel-ativo .calc-painel-tit { color: #1C2A44; }
+html[data-theme="claro"] .ferr-painel-ativo .calc-result,
+html[data-theme="claro"] .ferr-modal-body .calc-result { background: var(--surface-2); border-color: var(--border); }
+html[data-theme="claro"] .ferr-painel-ativo .calc-result-top span,
+html[data-theme="claro"] .ferr-modal-body .calc-result-top span { color: var(--text-soft); }
+html[data-theme="claro"] .ferr-painel-ativo .calc-result-top b,
+html[data-theme="claro"] .ferr-modal-body .calc-result-top b { color: #9A7B3C; }
+html[data-theme="claro"] .ferr-painel-ativo .calc-result ul li,
+html[data-theme="claro"] .ferr-modal-body .calc-result ul li { border-bottom-color: var(--border); }
+html[data-theme="claro"] .ferr-painel-ativo .calc-result ul li span,
+html[data-theme="claro"] .ferr-modal-body .calc-result ul li span { color: var(--text-soft); }
+html[data-theme="claro"] .ferr-painel-ativo .calc-result ul li b,
+html[data-theme="claro"] .ferr-modal-body .calc-result ul li b { color: #1C2A44; }
+html[data-theme="claro"] .ferr-painel-ativo .calc-nota, html[data-theme="claro"] .ferr-painel-ativo .section-sub,
+html[data-theme="claro"] .ferr-modal-body .calc-nota, html[data-theme="claro"] .ferr-modal-body .section-sub { color: var(--text-mute); }
+html[data-theme="claro"] .ferr-painel-ativo .check-grupo h4 { color: #1C2A44; }
+html[data-theme="claro"] .ferr-painel-ativo .check-item { color: var(--text); border-bottom-color: var(--border); }
+html[data-theme="claro"] .ferr-painel-ativo .check-item.on span { color: var(--text-mute); }
+html[data-theme="claro"] .ferr-painel-ativo .check-bar { background: var(--surface-2); }
+html[data-theme="claro"] .ferr-painel-ativo .ficha-preview { background: var(--surface-2); color: var(--text); border-color: var(--border); }
+html[data-theme="claro"] .calc-cta { border-top-color: var(--border); }
+html[data-theme="claro"] .calc-cta span { color: var(--text-soft); }
+
 /* /condominios — filtros sobre o hero ESCURO ficavam transparentes/ilegíveis.
    Fundo branco sólido + texto escuro (nítido sobre a imagem escura do hero). */
 html[data-theme="claro"] .condos-hero-search,
