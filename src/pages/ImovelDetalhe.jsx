@@ -611,10 +611,20 @@ export default function ImovelDetalhe() {
             {fotos.length > 0 && <BaixarFotosImovel im={im} fotos={fotos} galeria />}
             {(() => { const ap = apresentacao(im); return (
               <div className="det-apresenta">
+                <span className="det-apresenta-eyebrow">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3l2.1 5.4L20 9.3l-4 4 1 6-5-2.8L7 19.3l1-6-4-4 5.9-.9z" /></svg>
+                  Análise do consultor
+                </span>
                 <h2 className="det-apresenta-tit">Por que esse imóvel vale a sua visita</h2>
-                {ap.paras.map((p, i) => <p key={i}>{p}</p>)}
+                <div className="det-apresenta-corpo">
+                  {ap.paras.map((p, i) => <p key={i}>{p}</p>)}
+                </div>
+                <div className="det-apresenta-assina">
+                  <img src="/vinicius-graton-cutout.png" alt="" className="det-apresenta-foto" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+                  <span><b>Vinícius Graton</b><i>Consultor de imóveis · Rotina Imobiliária</i></span>
+                </div>
                 {temDescricao && (
-                  <>
+                  <div className="det-apre-bloco-desc">
                     <span className="det-apre-sub">Descrição do imóvel</span>
                     <div className="det-apre-desc">
                       {paragrafos.map((p, i) => {
@@ -622,7 +632,7 @@ export default function ImovelDetalhe() {
                         return <p key={i} className={isTopico ? 'det-apre-topico' : ''}>{isTopico ? `— ${p}` : p}</p>
                       })}
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
             ) })()}
@@ -764,15 +774,8 @@ export default function ImovelDetalhe() {
           </aside>
         </div>
 
-        {/* Destaques (benefícios) */}
-        {destaques.length > 0 && (
-          <div className="det-destaques">
-            <h2 className="det-rel-titulo">Destaques deste imóvel</h2>
-            <div className="det-dest-grid">
-              {destaques.map((d, i) => <Destaque key={i} {...d} />)}
-            </div>
-          </div>
-        )}
+        {/* "Destaques deste imóvel" removido: os mesmos itens já aparecem no topo
+            (specs + chips no painel de info), evitando repetição. */}
 
         {grupos.length > 0 && (
           <div className="det-carac">

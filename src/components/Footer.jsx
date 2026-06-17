@@ -22,9 +22,9 @@ export default function Footer() {
         <div className="footer-top">
           <div className="footer-brand">
             <Link to="/" className="brand">
-              <img className="brand-mark" src="/favicon.svg" alt="" />
+              <span className="brand-mark" aria-hidden="true"><b>VG</b></span>
               <span className="brand-text">
-                <span className="brand-name">{CONFIG.nome}</span>
+                <span className="brand-name">Vinícius <em>Graton</em></span>
                 <span className="brand-sub">Imóveis · Uberlândia</span>
               </span>
             </Link>
