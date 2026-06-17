@@ -2,6 +2,8 @@ import { useState, useMemo, useEffect, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
 import { getImovel, estudoM2, CONFIG } from '../data'
+import { getConta } from '../conta'
+import { gerarPdfEstudoM2, gerarPdfEstudoM2Blob } from '../pdfEstudoM2'
 import bairrosM2 from '../bairros-m2.json'
 import {
   haversine, azimuth, calcStats, calcGrau,
@@ -564,22 +566,74 @@ export function EstudoContent({ estudo, im, onClose }) {
   const [liberado, setLiberado] = useState(() => podeBaixarEstudo())
   const { avaliando, testemunhas, stats, grau, adotadoM2, valorTotal, valMin, valMax, diffPct, veredito } = estudo
 
-  // retorno do pagamento (?pago=1): libera, marca a flag e dispara o download
+  const [pagando, setPagando] = useState(false)
+  const codigoEstudo = estudo.numero || im.codigo
+
+  // entrega automática: baixa o PDF e (se houver e-mail no cadastro) envia por e-mail
+  const entregarEstudo = async (paymentId) => {
+    try {
+      const blob = await gerarPdfEstudoM2Blob(estudo)
+      const fname = `estudo-m2-${codigoEstudo}.pdf`
+      const url = URL.createObjectURL(blob)
+      const aEl = document.createElement('a'); aEl.href = url; aEl.download = fname
+      document.body.appendChild(aEl); aEl.click()
+      setTimeout(() => { document.body.removeChild(aEl); URL.revokeObjectURL(url) }, 1200)
+      const c = getConta()
+      if (c?.email && paymentId) {
+        const reader = new FileReader()
+        reader.readAsDataURL(blob)
+        reader.onload = () => {
+          const b64 = String(reader.result).split(',')[1]
+          fetch('/api/estudo-email', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: c.email, nome: c.nome, pdf_b64: b64, filename: fname, codigo: codigoEstudo, payment_id: paymentId }) }).catch(() => {})
+        }
+      }
+    } catch {}
+  }
+
+  // retorno do pagamento (?pago=1): VERIFICA no servidor antes de liberar, então
+  // entrega o PDF automaticamente (download + e-mail) e limpa a URL.
   useEffect(() => {
     let sp; try { sp = new URLSearchParams(window.location.search) } catch { return }
-    if (sp && sp.get('pago')) {
-      try { localStorage.setItem('vg_estudo_pago', String(Date.now())) } catch {}
-      setLiberado(true)
-      const t = setTimeout(() => { try { window.print() } catch {} }, 900)
-      return () => clearTimeout(t)
+    if (!sp || !sp.get('pago')) return
+    const payId = (sp.get('collection_id') || sp.get('payment_id') || '').replace(/\D/g, '')
+    const limparUrl = () => {
+      try {
+        const p = new URLSearchParams(window.location.search)
+        ;['pago', 'collection_id', 'payment_id', 'collection_status', 'payment_type', 'merchant_order_id', 'preference_id', 'status', 'external_reference', 'site_id', 'processing_mode'].forEach(k => p.delete(k))
+        const qs = p.toString()
+        window.history.replaceState(null, '', window.location.pathname + (qs ? '?' + qs : ''))
+      } catch {}
     }
-  }, [])
+    if (_adminLogado()) { setLiberado(true); limparUrl(); return }
+    fetch(`/api/estudo-verificar?payment_id=${encodeURIComponent(payId)}&codigo=${encodeURIComponent(codigoEstudo)}`)
+      .then(r => r.json())
+      .then(j => {
+        if (j && j.ok) {
+          try { localStorage.setItem('vg_estudo_pago', String(Date.now())) } catch {}
+          setLiberado(true)
+          entregarEstudo(payId)
+        }
+        limparUrl()
+      })
+      .catch(() => limparUrl())
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const baixarEstudo = () => {
-    if (podeBaixarEstudo()) { try { window.print() } catch {} ; return }
-    if (CONFIG.linkPagamentoEstudo) { window.location.href = CONFIG.linkPagamentoEstudo; return }
-    const wa = `Olá Vinícius! Quero baixar o estudo de valor cód. ${estudo.numero} (${avaliando.tipo} no ${avaliando.bairro}) em PDF.`
-    window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(wa)}`, '_blank', 'noopener noreferrer')
+  const baixarEstudo = async () => {
+    if (podeBaixarEstudo()) { gerarPdfEstudoM2(estudo); return }
+    if (pagando) return
+    setPagando(true)
+    try {
+      const r = await fetch('/api/estudo-pagar', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ codigo: codigoEstudo, origemUrl: window.location.href }) })
+      const j = await r.json()
+      if (j.ok && j.url) { window.location.href = j.url; return }
+      // pagamento não configurado / falha → fallback WhatsApp
+      const wa = `Olá Vinícius! Quero baixar o estudo de valor cód. ${codigoEstudo} (${avaliando.tipo} no ${avaliando.bairro}) em PDF.`
+      window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(wa)}`, '_blank', 'noopener noreferrer')
+    } catch {
+      const wa = `Olá Vinícius! Quero baixar o estudo de valor cód. ${codigoEstudo} em PDF.`
+      window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(wa)}`, '_blank', 'noopener noreferrer')
+    }
+    setPagando(false)
   }
 
   const corVerd = veredito === 'abaixo' ? 'up' : veredito === 'acima' ? 'down' : 'neu'
@@ -612,9 +666,9 @@ export function EstudoContent({ estudo, im, onClose }) {
             <span className="ep-meta-data">{fmtData(estudo.data)}</span>
           </div>
           <div className="ep-header-nav print-hide">
-            <button className="ep-baixar" onClick={baixarEstudo} title={liberado ? 'Baixar o estudo em PDF' : 'Baixar o estudo em PDF (R$ 4,90)'}>
+            <button className="ep-baixar" onClick={baixarEstudo} disabled={pagando} title={liberado ? 'Baixar o estudo em PDF' : 'Pagar R$ 4,90 e baixar o estudo em PDF (entrega automática + e-mail)'}>
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" /></svg>
-              {liberado ? 'Baixar PDF' : 'Baixar PDF · R$ 4,90'}
+              {pagando ? 'Abrindo pagamento…' : liberado ? 'Baixar PDF' : 'Baixar PDF · R$ 4,90'}
             </button>
             {onClose
               ? <button className="ep-back" onClick={onClose}>
