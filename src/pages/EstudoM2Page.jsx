@@ -561,6 +561,42 @@ const _adminLogado = () => {
 const _estudoPago = () => { try { const t = Number(localStorage.getItem('vg_estudo_pago') || 0); return t > 0 && (Date.now() - t) < 6 * 3600 * 1000 } catch { return false } }
 export const podeBaixarEstudo = () => _adminLogado() || _estudoPago()
 
+// Rasteriza um <svg> da tela em PNG self-contained (inlina os estilos) p/ embutir no PDF
+function svgParaPng(svgEl, scale = 2) {
+  return new Promise((resolve) => {
+    if (!svgEl) return resolve(null)
+    try {
+      const rect = svgEl.getBoundingClientRect()
+      let w = svgEl.clientWidth || rect.width, h = svgEl.clientHeight || rect.height
+      if (!w || !h) { const vb = (svgEl.getAttribute('viewBox') || '0 0 400 400').split(/[\s,]+/); w = +vb[2] || 400; h = +vb[3] || 400 }
+      const clone = svgEl.cloneNode(true)
+      clone.setAttribute('width', w); clone.setAttribute('height', h); clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+      const orig = svgEl.querySelectorAll('*'), cl = clone.querySelectorAll('*')
+      const props = ['fill', 'stroke', 'stroke-width', 'opacity', 'fill-opacity', 'stroke-opacity', 'color', 'font-family', 'font-size', 'font-weight', 'text-anchor', 'stroke-dasharray']
+      for (let i = 0; i < orig.length && i < cl.length; i++) { const cs = getComputedStyle(orig[i]); for (const p of props) { const v = cs.getPropertyValue(p); if (v) cl[i].style.setProperty(p, v) } }
+      const xml = new XMLSerializer().serializeToString(clone)
+      const src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(xml)))
+      const img = new Image()
+      const to = setTimeout(() => resolve(null), 4500)
+      img.onload = () => { clearTimeout(to); try { const c = document.createElement('canvas'); c.width = Math.round(w * scale); c.height = Math.round(h * scale); const ctx = c.getContext('2d'); ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, c.width, c.height); ctx.drawImage(img, 0, 0, c.width, c.height); resolve({ dataUrl: c.toDataURL('image/png'), w, h }) } catch { resolve(null) } }
+      img.onerror = () => { clearTimeout(to); resolve(null) }
+      img.src = src
+    } catch { resolve(null) }
+  })
+}
+// captura os gráficos que estão na tela do estudo (radar + 2 charts) p/ o PDF
+async function capturarGraficos() {
+  try {
+    const svgs = document.querySelectorAll('.ep-chart-svg')
+    const [radar, scatter, dist] = await Promise.all([
+      svgParaPng(document.querySelector('.ep-radar-svg')),
+      svgParaPng(svgs[0]),
+      svgParaPng(svgs[1]),
+    ])
+    return { radar, scatter, dist }
+  } catch { return {} }
+}
+
 export function EstudoContent({ estudo, im, onClose, bloquearAteLiberar = false }) {
   const [hovT, setHovT] = useState(null)
   const [liberado, setLiberado] = useState(() => podeBaixarEstudo())
@@ -573,7 +609,8 @@ export function EstudoContent({ estudo, im, onClose, bloquearAteLiberar = false 
   // entrega automática: baixa o PDF e (se houver e-mail no cadastro) envia por e-mail
   const entregarEstudo = async (paymentId) => {
     try {
-      const blob = await gerarPdfEstudoM2Blob(estudo)
+      const graficos = await capturarGraficos()
+      const blob = await gerarPdfEstudoM2Blob(estudo, graficos)
       const fname = `estudo-m2-${codigoEstudo}.pdf`
       const url = URL.createObjectURL(blob)
       const aEl = document.createElement('a'); aEl.href = url; aEl.download = fname
@@ -632,7 +669,7 @@ export function EstudoContent({ estudo, im, onClose, bloquearAteLiberar = false 
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const baixarEstudo = async () => {
-    if (podeBaixarEstudo()) { gerarPdfEstudoM2(estudo); return }
+    if (podeBaixarEstudo()) { capturarGraficos().then((g) => gerarPdfEstudoM2(estudo, g)); return }
     if (pagando) return
     setPagando(true)
     try {
