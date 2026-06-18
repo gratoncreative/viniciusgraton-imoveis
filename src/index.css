@@ -8837,3 +8837,33 @@ html[data-theme="claro"] .lou-hero .lou-lead b { color: #FFFFFF; }
 .lou-pg .lou-hero-cta svg { width: 18px; height: 18px; flex: none; }
 /* botões mais elegantes: peso e respiro harmônicos */
 .lou-cond-cta .btn, .lou-cond-cta .lou-btn-ghost--dark { font-size: 0.95rem; padding: 14px 20px; gap: 9px; }
+
+/* ============================================================
+   REGRA GLOBAL DE BOTÕES (pedido do Vinícius):
+   TODO botão é fundo NAVY (#1C2A44) + texto branco  OU  fundo VERMELHO (#EB0128) + texto branco.
+   Nada de botão "fantasma"/contorno ou só texto. Vale no site (imóveis, detalhe, etc.).
+   - Navegação/secundário -> NAVY.  - WhatsApp/Contatar/ação de contato -> VERMELHO.
+   ============================================================ */
+/* secundários/navegação -> NAVY cheio */
+html[data-theme="claro"] .btn-ghost,
+html[data-theme="claro"] .det-btn-acao {
+  background: #1C2A44; border: 1px solid #1C2A44; color: #FFFFFF;
+}
+html[data-theme="claro"] .btn-ghost:hover,
+html[data-theme="claro"] .det-btn-acao:hover {
+  background: #0A0E16; border-color: #0A0E16; color: #FFFFFF;
+}
+html[data-theme="claro"] .btn-ghost svg,
+html[data-theme="claro"] .det-btn-acao svg { color: #FFFFFF; }
+/* "Ver detalhes": era só texto -> vira botão NAVY cheio */
+html[data-theme="claro"] .im-ver {
+  background: #1C2A44; color: #FFFFFF; padding: 10px 18px; border-radius: 10px;
+  text-decoration: none; display: inline-flex; align-items: center;
+}
+html[data-theme="claro"] .im-card:hover .im-ver,
+html[data-theme="claro"] .section--light .im-ver { background: #0A0E16; color: #FFFFFF; text-decoration: none; }
+/* WhatsApp/contato no detalhe -> VERMELHO (igual ao "Contatar" do card) */
+html[data-theme="claro"] .det-whats { background: #EB0128; }
+html[data-theme="claro"] .det-whats:hover { background: #C20020; }
+html[data-theme="claro"] .det-whats svg { color: #FFFFFF; }
+/* estado "copiado" do detalhe pode seguir verde (feedback), não é CTA */
