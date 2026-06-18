@@ -10,7 +10,8 @@ export default function Destaque({ limite = 6 }) {
   if (!IMOVEIS.length) return null
   // a publicidade entra MISTURADA na grade (regra: anúncio no formato de card da
   // página). Abrimos 1 vaga p/ ela e mantemos o total preenchendo as linhas.
-  const lista = IMOVEIS.slice(0, Math.max(0, limite - 1))
+  // mais NOVOS primeiro (imóveis recém-chegados, flag `novo`); mantém a ordem nos demais
+  const lista = [...IMOVEIS].sort((a, b) => (b.novo ? 1 : 0) - (a.novo ? 1 : 0)).slice(0, Math.max(0, limite - 1))
   const PROMO_POS = Math.min(2, lista.length)
 
   return (

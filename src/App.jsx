@@ -57,7 +57,6 @@ const Impulsionar = lazy(() => import('./pages/Impulsionar'))
 const LaudoPage = lazy(() => import('./pages/LaudoPage'))
 const EstudoM2Page = lazy(() => import('./pages/EstudoM2Page'))
 const EstudoAvulso = lazy(() => import('./pages/EstudoAvulso'))
-const AnalisarUrlPage = lazy(() => import('./pages/AnalisarUrlPage'))
 const Mercado = lazy(() => import('./pages/Mercado'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
@@ -163,7 +162,6 @@ export default function App() {
               <Route path="/ferramentas" element={<Ferramentas />} />
               <Route path="/ferramentas/converter" element={<ConverterFotos />} />
               <Route path="/ferramentas/pdf-para-jpg" element={<PdfParaJpg />} />
-              <Route path="/ferramentas/analisar-imovel" element={<AnalisarUrlPage />} />
               <Route path="/simulador-financiamento" element={<SimuladorFinanciamento />} />
               <Route path="/ferramentas/transcrever" element={<TranscreverPage />} />
               <Route path="/ferramentas/gerar-imagem" element={<GerarImagemPage />} />

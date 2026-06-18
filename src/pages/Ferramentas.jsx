@@ -78,7 +78,6 @@ const SECOES = [
 
 const TOOLS = [
   // comprador
-  { id: 'analisar-url',  nome: 'Analisar imóvel por link',   desc: 'Cole o link do ZAP, Viva Real ou Rotina e veja se o preço faz sentido.', icon: 'link', sec: 'comprador', popular: true, to: '/ferramentas/analisar-imovel' },
   { id: 'financiamento', nome: 'Simulador de financiamento', desc: 'Parcela, juros, renda e custos · SAC e Price.', icon: 'bank',    sec: 'comprador',     popular: true, to: '/simulador-financiamento' },
   { id: 'capacidade',    nome: 'Quanto consigo financiar?',  desc: 'O imóvel que cabe na sua renda.',              icon: 'chart',   sec: 'comprador',     popular: true },
   { id: 'renda',         nome: 'Renda necessária',           desc: 'Qual renda o banco exige para esse imóvel.',   icon: 'wallet',  sec: 'comprador'  },
