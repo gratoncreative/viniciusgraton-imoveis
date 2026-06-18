@@ -502,14 +502,14 @@ export default function Catalogo() {
         {/* "Visto recentemente" NÃO aparece mais aqui — fica só na Minha área
             (/conta), exclusiva do cliente logado. */}
 
-        {/* CTA: estudo do m² de qualquer imóvel (mesmo fora do site) */}
-        <Link to="/avaliar" className="cat-avaliar-cta">
+        {/* CTA: simulador de financiamento (parcela, renda, custos) */}
+        <Link to="/simulador-financiamento" className="cat-avaliar-cta">
           <span className="cat-avaliar-ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-3 3 3 5-6"/></svg>
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><rect x="7" y="6" width="10" height="4" rx="1"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 17.5h.01M12 17.5h.01M16 17.5h.01"/></svg>
           </span>
           <span className="cat-avaliar-txt">
-            <b>Esse imóvel vale o que pedem?</b>
-            <i>Avalie <u>qualquer imóvel</u> — até de outro site. Estudo do valor do m² com dados reais do bairro.</i>
+            <b>Quanto fica a parcela desse imóvel?</b>
+            <i>Simule o <u>financiamento</u> em 30 segundos — parcela, renda necessária e custos. SAC e Price.</i>
           </span>
           <span className="cat-avaliar-seta" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
