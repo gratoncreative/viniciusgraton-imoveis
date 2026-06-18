@@ -564,7 +564,9 @@ const _adminLogado = () => {
   try { const t = localStorage.getItem('vg_admin_token'); if (!t || t.indexOf('.') < 0) return false; const exp = Number(t.split('.')[0]); return !!exp && Date.now() < exp } catch { return false }
 }
 const _estudoPago = () => { try { const t = Number(localStorage.getItem('vg_estudo_pago') || 0); return t > 0 && (Date.now() - t) < 6 * 3600 * 1000 } catch { return false } }
-export const podeBaixarEstudo = () => _adminLogado() || _estudoPago()
+// Estudo do m² GRATUITO: resultado completo + PDF liberados para todos, sem paywall.
+// (para voltar a cobrar, restaurar: _adminLogado() || _estudoPago())
+export const podeBaixarEstudo = () => true
 
 // Rasteriza um <svg> da tela em PNG self-contained (inlina os estilos) p/ embutir no PDF
 function svgParaPng(svgEl, scale = 2) {

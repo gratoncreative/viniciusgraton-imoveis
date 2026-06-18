@@ -135,7 +135,7 @@ export default function EstudoAvulso() {
             Calcular o estudo do m²
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
           </button>
-          <p className="eav-nota">O resultado aparece na hora. Os <b>números exatos</b> e o laudo em PDF saem após o pagamento de <b>R$ 4,90</b> — liberação automática + envio por e-mail. <Link to="/imoveis">← Voltar aos imóveis</Link></p>
+          <p className="eav-nota">O resultado aparece na hora, com os <b>números exatos</b> e o laudo em PDF — <b>de graça</b>. <Link to="/imoveis">← Voltar aos imóveis</Link></p>
         </div>
       </div>
     </main>
