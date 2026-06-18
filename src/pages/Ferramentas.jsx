@@ -70,8 +70,6 @@ const SECOES = [
   { id: 'comprador',     titulo: 'Para compradores',       sub: 'Simule, planeje e calcule antes de fechar',         icon: 'home'   },
   { id: 'investidor',    titulo: 'Para investidores',       sub: 'Analise rentabilidade, retorno e ganho de capital', icon: 'trend'  },
   { id: 'financiamento', titulo: 'Financiamento e FGTS',    sub: 'Simule o uso do fundo e amortize com precisão',     icon: 'bank'   },
-  { id: 'fotos',         titulo: 'Fotos e imagens',         sub: 'Endireite, marque e converta fotos sem sair do navegador', icon: 'camera' },
-  { id: 'explorar',      titulo: 'Explorar o mercado',      sub: 'Compare imóveis e explore o mercado visual',        icon: 'map'    },
 ]
 
 const TOOLS = [
@@ -93,25 +91,26 @@ const TOOLS = [
   // financiamento
   { id: 'fgts',          nome: 'Simulador de FGTS',         desc: 'Como o FGTS reduz a entrada e a parcela.',     icon: 'safe',  sec: 'financiamento' },
   { id: 'amortizacao',   nome: 'Amortização com FGTS',      desc: 'Quanto o FGTS encurta o financiamento.',       icon: 'scissors',    sec: 'financiamento' },
-  // fotos e imagens
-  { id: 'endireitar',    nome: 'Endireitar foto',           desc: 'Corrija a inclinação e a rotação de fotos.',   icon: 'rotate',  sec: 'fotos', needsSub: true },
-  { id: 'marca-agua',    nome: "Marca d'água em fotos",     desc: 'Adicione seu logo ou texto em cada foto.',     icon: 'droplet',    sec: 'fotos', needsSub: true },
-  { id: 'redimensionar', nome: 'Redimensionar foto',        desc: 'Reduza o tamanho para WhatsApp ou portal.',    icon: 'resize',    sec: 'fotos', needsSub: true },
-  { id: 'converter',     nome: 'Conversor de fotos',        desc: 'JPG · PNG · WebP · AVIF em lote.',             icon: 'fileimg',    sec: 'fotos', needsSub: true, to: '/ferramentas/converter' },
-  { id: 'pdf-jpg',      nome: 'PDF para JPG',              desc: 'Converta cada página do PDF em JPG de alta definição.', icon: 'pdf', sec: 'fotos', popular: true, to: '/ferramentas/pdf-para-jpg' },
-  { id: 'transcrever',  nome: 'Transcrever vídeo/áudio',   desc: 'Tour em vídeo ou áudio → texto, legenda e descrição. No navegador.', icon: 'mic', sec: 'fotos', popular: true, to: '/ferramentas/transcrever' },
-  { id: 'gerar-imagem', nome: 'Gerar imagem com IA',        desc: 'Capas de artigo, posts de bairro e peças de lançamento por IA.', icon: 'sparkles', sec: 'fotos', needsSub: true, to: '/ferramentas/gerar-imagem' },
-  { id: 'editar-foto',  nome: 'Editar foto com IA',         desc: 'Remover objeto, mobiliar ambiente vazio e trocar o céu.', icon: 'wand', sec: 'fotos', needsSub: true, to: '/ferramentas/editar-foto' },
-  // explorar
-  { id: 'comparar',      nome: 'Comparar imóveis',          desc: 'Compare até 3 imóveis lado a lado.',           icon: 'compare', sec: 'explorar', needsSub: true, to: '/comparar' },
-  { id: 'mapa',          nome: 'Mapa de imóveis',           desc: 'Explore imóveis por região de Uberlândia.',    icon: 'map',     sec: 'explorar', needsSub: true, to: '/mapa'     },
-  // pro
+  // ── Área do Corretor (PRO) — todas exclusivas para assinantes ──
+  // carros-chefe do corretor primeiro
   { id: 'acm',           nome: 'ACM — Avaliação de imóvel', desc: 'Faixa de preço pelo m² do bairro.',            icon: 'appraise',    sec: 'pro', pro: true },
   { id: 'comissao',      nome: 'Calculadora de comissão',   desc: 'Comissão e divisão corretor / imobiliária.',   icon: 'coins',   sec: 'pro', pro: true },
   { id: 'ficha',         nome: 'Ficha de avaliação',        desc: 'Resumo do imóvel pronto para compartilhar.',   icon: 'clipboard',     sec: 'pro', pro: true },
-  { id: 'melhorar',      nome: 'Melhorar fotos com IA',     desc: 'HDR, contraste e nitidez automáticos.',        icon: 'sparkles',  sec: 'pro', pro: true, toPro: true },
-  { id: 'remover',       nome: 'Remover marca d\'água com IA', desc: 'Remove logos e marcas de fotos em lote.',   icon: 'eraser',    sec: 'pro', pro: true, toPro: true },
   { id: 'impulsionar',   nome: 'Impulsionar anúncio',       desc: 'Destaque seu imóvel por 7, 15 ou 30 dias.',    icon: 'rocket',  sec: 'pro', pro: true, to: '/impulsionar' },
+  // fotos e imagens
+  { id: 'melhorar',      nome: 'Melhorar fotos com IA',     desc: 'HDR, contraste e nitidez automáticos.',        icon: 'sparkles',  sec: 'pro', pro: true, toPro: true },
+  { id: 'editar-foto',  nome: 'Editar foto com IA',         desc: 'Remover objeto, mobiliar ambiente vazio e trocar o céu.', icon: 'wand', sec: 'pro', needsSub: true, to: '/ferramentas/editar-foto' },
+  { id: 'gerar-imagem', nome: 'Gerar imagem com IA',        desc: 'Capas de artigo, posts de bairro e peças de lançamento por IA.', icon: 'sparkles', sec: 'pro', needsSub: true, to: '/ferramentas/gerar-imagem' },
+  { id: 'remover',       nome: 'Remover marca d\'água com IA', desc: 'Remove logos e marcas de fotos em lote.',   icon: 'eraser',    sec: 'pro', pro: true, toPro: true },
+  { id: 'marca-agua',    nome: "Marca d'água em fotos",     desc: 'Adicione seu logo ou texto em cada foto.',     icon: 'droplet',    sec: 'pro', needsSub: true },
+  { id: 'endireitar',    nome: 'Endireitar foto',           desc: 'Corrija a inclinação e a rotação de fotos.',   icon: 'rotate',  sec: 'pro', needsSub: true },
+  { id: 'redimensionar', nome: 'Redimensionar foto',        desc: 'Reduza o tamanho para WhatsApp ou portal.',    icon: 'resize',    sec: 'pro', needsSub: true },
+  { id: 'converter',     nome: 'Conversor de fotos',        desc: 'JPG · PNG · WebP · AVIF em lote.',             icon: 'fileimg',    sec: 'pro', needsSub: true, to: '/ferramentas/converter' },
+  { id: 'pdf-jpg',      nome: 'PDF para JPG',              desc: 'Converta cada página do PDF em JPG de alta definição.', icon: 'pdf', sec: 'pro', needsSub: true, to: '/ferramentas/pdf-para-jpg' },
+  { id: 'transcrever',  nome: 'Transcrever vídeo/áudio',   desc: 'Tour em vídeo ou áudio → texto, legenda e descrição. No navegador.', icon: 'mic', sec: 'pro', needsSub: true, to: '/ferramentas/transcrever' },
+  // explorar o mercado
+  { id: 'comparar',      nome: 'Comparar imóveis',          desc: 'Compare até 3 imóveis lado a lado.',           icon: 'compare', sec: 'pro', needsSub: true, to: '/comparar' },
+  { id: 'mapa',          nome: 'Mapa de imóveis',           desc: 'Explore imóveis por região de Uberlândia.',    icon: 'map',     sec: 'pro', needsSub: true, to: '/mapa'     },
 ]
 
 const PILLS = [
@@ -119,8 +118,6 @@ const PILLS = [
   { id: 'comprador',     label: 'Comprador'       },
   { id: 'investidor',    label: 'Investidor'      },
   { id: 'financiamento', label: 'Financiamento'   },
-  { id: 'fotos',         label: 'Fotos'           },
-  { id: 'explorar',      label: 'Explorar'        },
   { id: 'pro',           label: '✦ Corretor PRO' },
 ]
 
@@ -626,7 +623,7 @@ export default function Ferramentas() {
               Portal de ferramentas
             </span>
             <h1 className="ferr-hero-titulo">Calcule, compare e <em>decida com segurança</em></h1>
-            <p className="ferr-hero-sub">{TOOLS.filter(t => !t.pro).length} ferramentas gratuitas · {TOOLS.filter(t => t.pro).length} exclusivas para corretores</p>
+            <p className="ferr-hero-sub">{TOOLS.filter(t => !t.pro && !t.needsSub).length} ferramentas gratuitas · {TOOLS.filter(t => t.pro || t.needsSub).length} exclusivas para corretores</p>
           </div>
           <nav className="ferr-pills" aria-label="Filtrar ferramentas por categoria">
             {PILLS.map((p) => (
