@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Página personalizada do cliente (CRM). Público, acessado por um token
  * impossível de adivinhar (?t=<id>). Devolve SÓ dados seguros para montar a
@@ -8,6 +9,7 @@ const json = (o, s = 200) => new Response(JSON.stringify(o), {
 })
 
 export async function onRequestGet({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   const id = (new URL(request.url).searchParams.get('t') || '').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)
   if (!id || !(env && env.ENGAGEMENT)) return json({ error: 'nao-encontrado' }, 404)
   const v = await env.ENGAGEMENT.get('crm:' + id, 'json').catch(() => null)

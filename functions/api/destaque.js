@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Cloudflare Pages Function — imóveis em DESTAQUE no topo do catálogo.
  * Leitura PÚBLICA (só os códigos). A escrita é feita pelo /api/admin (com token),
@@ -11,6 +12,7 @@ const json = (o, s = 200) => new Response(JSON.stringify(o), {
 })
 
 export async function onRequestGet({ env }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
     if (!env || !env.ENGAGEMENT || typeof env.ENGAGEMENT.get !== 'function') return json({ codigos: [] })
     const v = await env.ENGAGEMENT.get('config:catalogo-topo', 'json')

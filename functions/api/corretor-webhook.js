@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Webhook do Mercado Pago para assinaturas da Área do Corretor.
  * Ativa o código de acesso automaticamente quando MP notifica pagamento aprovado,

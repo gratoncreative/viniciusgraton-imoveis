@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Cloudflare Pages Function — overrides PÚBLICOS dos imóveis publicados.
  * Devolve SOMENTE os campos do anúncio editados no painel (preço, descrição, etc.)
@@ -11,6 +12,7 @@ const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'f
 const CAMPOS = ['preco', 'precoAnterior', 'baixouEm', 'tipo', 'bairro', 'finalidade', 'cidade', 'quartos', 'suites', 'banheiros', 'vagas', 'area', 'areaLote', 'condominio', 'andar', 'elevador', 'titulo', 'descricao', 'endereco', 'pontoReferencia', 'video', 'tour360', 'destaque', 'destaqueAte', 'oculto', 'fotos']
 
 export async function onRequestGet({ env }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   if (!temKV(env)) return json({ ov: {}, ap: [] })
   const lista = await env.ENGAGEMENT.list({ prefix: 'imovel:' })
   const ov = {}

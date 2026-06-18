@@ -1,6 +1,8 @@
+import { kvStore } from '../_lib/store.js'
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { 'content-type': 'application/json', 'access-control-allow-origin': '*' } })
 
 export async function onRequestGet({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   const url = new URL(request.url)
   const id = url.searchParams.get('id')
   if (!id || !/^[a-z0-9-]{8,}$/i.test(id)) return json({ error: 'id-invalido' }, 400)

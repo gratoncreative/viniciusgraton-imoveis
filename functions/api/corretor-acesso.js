@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Valida o código de acesso da Área do Corretor.
  * Aceita códigos dinâmicos no KV (pagos e trials de 24h) e o código fixo ROTINA_CODIGO como fallback.
@@ -14,6 +15,7 @@ const json = (o, s = 200) => new Response(JSON.stringify(o), {
 })
 
 export async function onRequestPost({ request, env }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   let body = {}
   try { body = await request.json() } catch {}
   const codigo = String(body.codigo || '').trim()

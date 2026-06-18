@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Captura de inscritos da newsletter (base para e-mail marketing / MailerLite).
  * Guarda no KV (news:<ts>-<rand>). Público, com campo-isca anti-spam.
@@ -26,6 +27,7 @@ async function enviarMailerLite(env, email, nome) {
 }
 
 export async function onRequestPost({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   const b = await request.json().catch(() => ({}))
   if (b.site) return json({ ok: true }) // bot
   const email = lim(b.email, 140).trim().toLowerCase()

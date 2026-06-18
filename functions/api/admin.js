@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Cloudflare Pages Function — Painel ADMIN do Vinícius (seguro).
  *
@@ -84,6 +85,7 @@ async function getAuth(env) {
 }
 
 export async function onRequestPost({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
   if (!originOk(request)) return json({ error: 'origem' }, 403)
   const email = String(env.ADMIN_EMAIL || ADMIN_EMAIL_DEFAULT).trim().toLowerCase()

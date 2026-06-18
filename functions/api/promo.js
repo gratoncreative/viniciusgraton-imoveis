@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Cloudflare Pages Function — leitura PÚBLICA da peça de publicidade editável.
  *   GET /api/promo -> { ok:true, promo: {...} | null }
@@ -13,6 +14,7 @@ const json = (o, s = 200, cache = 0) =>
   })
 
 export async function onRequestGet({ env }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
     if (!env || !env.ENGAGEMENT || typeof env.ENGAGEMENT.get !== 'function') {
       return json({ ok: true, promo: null })

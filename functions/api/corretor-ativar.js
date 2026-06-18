@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Ativa o código de acesso após pagamento aprovado no Mercado Pago.
  * Chamado automaticamente quando o usuário retorna da tela de pagamento do MP.
@@ -27,6 +28,7 @@ function gerarCodigo(prefixo) {
 }
 
 export async function onRequestPost({ request, env }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   const token = String((env && env.MP_ACCESS_TOKEN) || '').trim()
   if (!token) return json({ ok: false, erro: 'Serviço não configurado.' })
   if (!env || !env.ENGAGEMENT) return json({ ok: false, erro: 'KV indisponível.' })

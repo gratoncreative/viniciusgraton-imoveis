@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * "Minha seleção" — conecta a ÁREA DO CLIENTE (conta) à página personalizada.
  * O visitante logado tem favoritos (sincronizados em conta:<token>). Este
@@ -14,6 +15,7 @@ const lim = (v, n) => String(v == null ? '' : v).slice(0, n)
 const objToFinal = (o) => { const s = (o || '').toLowerCase(); if (s.includes('alug')) return 'Alugar'; if (s.includes('invest')) return 'Investir'; return 'Comprar' }
 
 export async function onRequestPost({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
     if (!temKV(env)) return json({ ok: true, token: '', persistido: false })
     const b = await request.json().catch(() => ({}))

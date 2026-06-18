@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Cloudflare Pages Function — login do cliente por e-mail + senha.
  * Senha guardada com hash PBKDF2 (nunca em texto puro). O token da conta é
@@ -22,6 +23,7 @@ async function derivar(senha, saltHex) {
 }
 
 export async function onRequestPost({ request, env }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
   if (!originOk(request)) return json({ error: 'origem' }, 403)
   const b = await request.json().catch(() => ({}))

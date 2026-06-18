@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Envia o ESTUDO do valor do m² por email (Resend) após pagamento aprovado.
  *   POST /api/estudo-email { email, nome?, pdf_b64, filename, codigo, payment_id }
@@ -23,6 +24,7 @@ async function verificarPagamento(env, paymentId, codigo) {
 }
 
 export async function onRequestPost({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
     const key = String((env && env.RESEND_KEY) || '').trim()
     if (!key) return json({ ok: false, semEmail: true })

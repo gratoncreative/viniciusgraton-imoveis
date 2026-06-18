@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Cria a cobrança no Mercado Pago para assinatura da Área do Corretor.
  * O preço é definido AQUI (servidor) — nunca confia no cliente.
@@ -31,6 +32,7 @@ const temKV = (env) => !!(env && env.ENGAGEMENT)
 const lim = (s, n) => String(s || '').trim().slice(0, n)
 
 export async function onRequestPost({ request, env }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   const token = String((env && env.MP_ACCESS_TOKEN) || '').trim()
   if (!token) return json({ ok: false, naoConfigurado: true })
 

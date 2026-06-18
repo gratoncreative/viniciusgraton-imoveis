@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Cloudflare Pages Function — ferramenta interna do corretor (área Rotina).
  * Recebe o código de um imóvel da Rotina, busca os dados públicos no site da
@@ -161,6 +162,7 @@ const FALLBACK = (bairro) => [
 ]
 
 export async function onRequestGet({ request, env }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   const url = new URL(request.url)
   const codigo = (url.searchParams.get('codigo') || '').replace(/\D/g, '')
   if (!codigo) return json({ erro: 'Informe o código do imóvel.' }, 400)

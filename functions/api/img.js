@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Cloudflare Pages Function — serve as fotos enviadas pelo painel admin.
  *
@@ -16,6 +17,7 @@ const b64ToBytes = (b64) => {
 }
 
 export async function onRequestGet({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   const id = new URL(request.url).searchParams.get('id') || ''
   if (!/^imgupload:[a-zA-Z0-9]{1,12}:[a-f0-9-]{8,40}$/.test(id)) {
     return new Response('id inválido', { status: 400 })

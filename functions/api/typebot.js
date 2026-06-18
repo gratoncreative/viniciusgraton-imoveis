@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Ponte Typebot -> CRM. O Typebot (nuvem ou self-host) chama este webhook ao
  * fim do fluxo e os dados caem direto no CRM do Vinícius (origem 'typebot',
@@ -25,6 +26,7 @@ const lista = (v, max, n) => {
 const objToFinal = (o) => { const s = (o || '').toLowerCase(); if (s.includes('alug')) return 'Alugar'; if (s.includes('invest')) return 'Investir'; return 'Comprar' }
 
 export async function onRequestPost({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
     const url = new URL(request.url)
     const segredo = String((env && env.TYPEBOT_KEY) || '').trim()

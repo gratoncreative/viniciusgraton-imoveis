@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Cloudflare Pages Function — engajamento por imóvel (curtidas / compartilhamentos / leads).
  * Persistente e compartilhado entre todos os visitantes via Workers KV (binding ENGAGEMENT).
@@ -57,6 +58,7 @@ async function getEng(env, cod, preco, boost) {
 }
 
 export async function onRequestGet({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
     const url = new URL(request.url)
     // leituras do blog (todas de uma vez): /api/eng?blogviews=1 -> { views: { slug: n } }
@@ -85,6 +87,7 @@ export async function onRequestGet({ env, request }) {
 }
 
 export async function onRequestPost({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
     const body = await request.json().catch(() => ({}))
     const { cod, tipo } = body

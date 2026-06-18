@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Chat de qualificação ("Encontre seu imóvel") — público.
  * Recebe as respostas do visitante, cria um cliente no CRM já qualificado
@@ -19,6 +20,7 @@ const num = (v) => Math.max(0, Math.min(99999999, Number(v) || 0))
 const arrStr = (a, max, n) => (Array.isArray(a) ? a.filter((x) => typeof x === 'string').slice(0, max).map((x) => lim(x, n)) : [])
 
 export async function onRequestPost({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
     const b = await request.json().catch(() => ({}))
     // campo-isca: bot preenche, humano não vê. Devolve ok silenciosamente.

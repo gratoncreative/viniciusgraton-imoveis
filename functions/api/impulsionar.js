@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Impulsionamento pago de anúncio — Mercado Pago (Checkout Pro).
  *
@@ -65,6 +66,7 @@ async function ativarDestaque(env, codigo, dias, paymentId) {
 }
 
 export async function onRequestPost({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   const url = new URL(request.url)
   const token = String(env.MP_ACCESS_TOKEN || '').trim()
 
@@ -120,6 +122,7 @@ export async function onRequestPost({ env, request }) {
 
 // MP às vezes valida o webhook por GET
 export async function onRequestGet({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   const url = new URL(request.url)
   if (url.searchParams.get('type') === 'payment' || url.searchParams.get('topic') === 'payment' || url.searchParams.get('evento') === 'mp') {
     return onRequestPost({ env, request })

@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Cloudflare Pages Function — contas dos clientes (área do cliente).
  * Sincroniza perfil + favoritos + histórico no KV (binding ENGAGEMENT) e
@@ -16,6 +17,7 @@ const ORIGIN = 'https://viniciusgraton.com.br'
 const originOk = (req) => { const o = req.headers.get('origin'); return !o || o === ORIGIN }
 
 export async function onRequestPost({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
     if (!originOk(request)) return json({ error: 'origem' }, 403)
     const b = await request.json().catch(() => ({}))
@@ -52,6 +54,7 @@ export async function onRequestPost({ env, request }) {
 }
 
 export async function onRequestGet({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
     const url = new URL(request.url)
     const token = str(url.searchParams.get('token'), 60)

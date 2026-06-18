@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Cloudflare Pages Function — login com Google (gratuito, sem segredo).
  * Recebe o ID token (JWT) emitido pelo botão do Google Identity Services no
@@ -38,6 +39,7 @@ async function getSignKey(env) {
 }
 
 export async function onRequestPost({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
   if (!originOk(request)) return json({ error: 'origem' }, 403)
   const b = await request.json().catch(() => ({}))

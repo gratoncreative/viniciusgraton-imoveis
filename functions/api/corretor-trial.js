@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Ativa o teste gratuito de 24h da Área do Corretor.
  * Uma única vez por número de WhatsApp — validado no KV.
@@ -24,6 +25,7 @@ function gerarCodigo() {
 }
 
 export async function onRequestPost({ request, env }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
     if (!env || !env.ENGAGEMENT) return json({ ok: false, erro: 'Serviço indisponível.' })
 

@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * O PRÓPRIO cliente refina o perfil pela página /cliente/<token>.
  * Público (token UUID impossível de adivinhar). Atualiza SÓ campos de
@@ -7,6 +8,7 @@
 const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } })
 
 export async function onRequestPost({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
     if (!(env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function')) return json({ error: 'kv' }, 503)
     const b = await request.json().catch(() => ({}))

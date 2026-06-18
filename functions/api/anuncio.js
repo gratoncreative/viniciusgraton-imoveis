@@ -1,3 +1,4 @@
+import { kvStore } from '../_lib/store.js'
 /**
  * Cloudflare Pages Function — cadastro de imóvel pelo proprietário (moderação).
  * O proprietário envia os dados + fotos (alta resolução). Tudo fica salvo no KV
@@ -12,6 +13,7 @@ const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, header
 const str = (v, n) => String(v || '').slice(0, n)
 
 export async function onRequestPost({ env, request }) {
+  env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
     const body = await request.json().catch(() => ({}))
     if (body.site) return json({ ok: true }) // honeypot (bot)
