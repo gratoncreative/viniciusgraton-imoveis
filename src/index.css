@@ -8729,3 +8729,10 @@ html[data-theme="claro"] .ferr-card3-tit b { text-decoration: none; }
 html[data-theme="claro"] .ferr-badge-popular { background: rgba(28,42,68,0.08); color: #1C2A44; border: 1px solid rgba(28,42,68,0.2); }
 html[data-theme="claro"] .ferr-badge-pro,
 html[data-theme="claro"] .ferr-badge-pro-sm { background: #1C2A44; color: #FFFFFF; -webkit-text-fill-color: #FFFFFF; border-color: transparent; }
+
+/* ===== Publicidade editável (admin) — botão de edição + estado pausado ===== */
+.promo-imovel, .promo-texto { position: relative; }
+.promo-edit-btn { position: absolute; bottom: 12px; right: 12px; z-index: 12; display: inline-flex; align-items: center; gap: 4px; background: #1C2A44; color: #FFFFFF; border: 1px solid rgba(255,255,255,0.32); border-radius: 8px; padding: 5px 11px; font-family: var(--font-head); font-weight: 700; font-size: 0.72rem; cursor: pointer; box-shadow: 0 6px 16px -8px rgba(0,0,0,0.6); transition: background .16s, transform .16s; }
+.promo-edit-btn:hover { background: #0A0E16; transform: translateY(-1px); }
+.promo-texto .promo-edit-btn { bottom: auto; top: 10px; right: 10px; }
+.promo-pausada { outline: 2px dashed rgba(235,1,40,0.6); outline-offset: 3px; opacity: 0.7; }

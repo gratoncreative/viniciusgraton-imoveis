@@ -271,6 +271,31 @@ export async function onRequestPost({ env, request }) {
     return json({ ok: true, campos: camposFinais })
   }
 
+  // ————— Publicidade editável (peça de lançamento) — admin —————
+  if (action === 'promo-get') {
+    const v = await env.ENGAGEMENT.get('config:promo', 'json')
+    return json({ ok: true, promo: v || null })
+  }
+  if (action === 'promo-save') {
+    const p = b.promo && typeof b.promo === 'object' ? b.promo : {}
+    const lim = (s, n) => String(s == null ? '' : s).slice(0, n)
+    const promo = {
+      ativo: p.ativo !== false,
+      capa: lim(p.capa, 400),
+      selo: lim(p.selo, 40),
+      titulo: lim(p.titulo, 80),
+      subtitulo: lim(p.subtitulo, 160),
+      descricao: lim(p.descricao, 300),
+      precoLabel: lim(p.precoLabel, 60),
+      ctaTexto: lim(p.ctaTexto, 40),
+      ctaUrl: lim(p.ctaUrl, 600),
+      waMsg: lim(p.waMsg, 600),
+      atualizadoEm: Date.now(),
+    }
+    await env.ENGAGEMENT.put('config:promo', JSON.stringify(promo))
+    return json({ ok: true, promo })
+  }
+
   // Upload de foto nova do imóvel: recebe data URL (já redimensionada no navegador),
   // guarda a imagem no KV do próprio dono e devolve a URL pública servida por /api/img.
   if (action === 'img-upload') {
