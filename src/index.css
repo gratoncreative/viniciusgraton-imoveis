@@ -8959,3 +8959,59 @@ html[data-theme="claro"] .cat-bairro-chip.on {
 }
 html[data-theme="claro"] .cat-tipo.on svg, html[data-theme="claro"] .fp-pill.on svg,
 html[data-theme="claro"] .ff-pills button.on svg { color: #FFFFFF !important; }
+
+/* ============================================================
+   🔒 PÁGINA DE FERRAMENTAS — REGRA TRAVADA POR SENHA (mesma senha da regra de ouro).
+   Pedido do Vinícius: TODOS os elementos da página /ferramentas têm
+   FUNDO VERMELHO #eb0128 e CONTEÚDO (ícone/texto) BRANCO.
+   (Só os blocos/elementos — o fundo da página continua branco.)
+   Pills de filtro em repouso ficam claros pra manter o indicador de "ativo".
+   So altera com senha (hash em memory/regra-ouro-botoes.md).
+   ============================================================ */
+/* faixas de seção (a navy "Área do Corretor" e similares) -> vermelho */
+html[data-theme="claro"] .ferramentas-pg .ferr-sec-hd,
+html[data-theme="claro"] .ferramentas-pg .ferr-sec-hd--pro,
+html[data-theme="claro"] .ferramentas-pg .ferr-sec-hd--free {
+  background: #eb0128 !important;
+  border-color: transparent !important;
+}
+html[data-theme="claro"] .ferramentas-pg .ferr-sec-titulo,
+html[data-theme="claro"] .ferramentas-pg .ferr-sec-hd .ferr-sec-titulo,
+html[data-theme="claro"] .ferramentas-pg .ferr-sec-hd .ferr-sec-sub { color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF !important; }
+/* quadrado de ícone da faixa (o do print, com a estrela) e o contador -> branco sobre vermelho */
+html[data-theme="claro"] .ferramentas-pg .ferr-sec-ico,
+html[data-theme="claro"] .ferramentas-pg .ferr-sec-count {
+  background: rgba(255,255,255,0.18) !important;
+  border-color: rgba(255,255,255,0.45) !important;
+  color: #FFFFFF !important;
+}
+html[data-theme="claro"] .ferramentas-pg .ferr-sec-ico svg { color: #FFFFFF !important; }
+/* selo PRO branco na faixa -> mantém branco, texto vermelho */
+html[data-theme="claro"] .ferramentas-pg .ferr-sec-hd .ferr-badge-pro {
+  background: #FFFFFF !important; color: #eb0128 !important; -webkit-text-fill-color: #eb0128 !important;
+}
+/* pill de categoria ATIVO -> vermelho + branco (era navy) */
+html[data-theme="claro"] .ferramentas-pg .ferr-pill.on {
+  background: #eb0128 !important; border-color: #eb0128 !important; color: #FFFFFF !important;
+}
+html[data-theme="claro"] .ferramentas-pg .ferr-pill.on svg { color: #FFFFFF !important; }
+/* quadrados de ícone dos cards de ferramenta -> fundo vermelho + ícone branco */
+html[data-theme="claro"] .ferramentas-pg .ferr-card3-ico,
+html[data-theme="claro"] .ferramentas-pg .ferr-card3.on .ferr-card3-ico {
+  background: #eb0128 !important; border-color: transparent !important; color: #FFFFFF !important;
+}
+html[data-theme="claro"] .ferramentas-pg .ferr-card3-ico svg { color: #FFFFFF !important; }
+/* card selecionado: contorno vermelho */
+html[data-theme="claro"] .ferramentas-pg .ferr-card3.on {
+  border-color: #eb0128 !important; box-shadow: 0 0 0 1.5px #eb0128, 0 14px 32px -16px rgba(235,1,40,0.26) !important;
+}
+/* selos PRO/popular pequenos -> fundo vermelho + branco */
+html[data-theme="claro"] .ferramentas-pg .ferr-badge-pro-sm,
+html[data-theme="claro"] .ferramentas-pg .ferr-badge-popular {
+  background: #eb0128 !important; border-color: transparent !important; color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF !important;
+}
+/* botão de assinatura (quando reativado) -> vermelho + branco */
+html[data-theme="claro"] .ferramentas-pg .ferr-pro-cta-btn {
+  background: #eb0128 !important; border-color: #eb0128 !important; color: #FFFFFF !important;
+}
+html[data-theme="claro"] .ferramentas-pg .ferr-pro-cta-btn svg { color: #FFFFFF !important; }
