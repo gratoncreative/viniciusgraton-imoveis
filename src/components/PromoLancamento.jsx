@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 import { linkWhatsApp } from '../data'
 import { IconWhats } from './icons'
 import AdminPromoEditor from './AdminPromoEditor'
@@ -18,7 +19,7 @@ const DEFAULTS = {
   descricao: 'Gestão Housi · rentabilidade 1,5% a.m. · mensais R$ 2.000 + intermediárias.',
   precoLabel: 'Entrada R$ 41.400',
   ctaTexto: 'Quero saber mais',
-  ctaUrl: '',
+  ctaUrl: '/lancamentos/louis-studios-umuarama',
   waMsg: 'Olá Vinícius! Vi o lançamento Louis Studios (Studios próximos ao Campus UFU Umuarama) e quero saber mais sobre as unidades, entrada, parcelas e rentabilidade.',
 }
 
@@ -50,9 +51,19 @@ export default function PromoLancamento({ variante = 'linha' }) {
     return () => { window.removeEventListener('storage', onAdmin); window.removeEventListener('vg-promo', onPromo) }
   }, [])
 
-  const href = (cfg.ctaUrl && cfg.ctaUrl.trim()) ? cfg.ctaUrl.trim() : linkWhatsApp(cfg.waMsg || DEFAULTS.waMsg)
-  const abrir = () => window.open(href, '_blank', 'noopener')
+  const nav = useNavigate()
+  const destino = (cfg.ctaUrl && cfg.ctaUrl.trim()) ? cfg.ctaUrl.trim() : linkWhatsApp(cfg.waMsg || DEFAULTS.waMsg)
+  const interno = /^\/[^/]/.test(destino) // caminho interno do site (ex.: /lancamentos/…) → abre a landing, não o WhatsApp
+  const href = destino
+  const abrir = () => { if (interno) nav(destino); else window.open(destino, '_blank', 'noopener') }
   const onSaved = (p) => { const novo = { ...DEFAULTS, ...p }; _promoCache = novo; setCfg(novo); setImgOk(true); window.dispatchEvent(new CustomEvent('vg-promo', { detail: p })) }
+  // CTA: navega interno (Link, mesma aba) ou abre externo (WhatsApp/site). O ícone segue o destino.
+  const IconeCta = () => interno
+    ? <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+    : <IconWhats width={18} height={18} />
+  const Cta = ({ className, children }) => interno
+    ? <Link to={destino} className={className} onClick={(e) => e.stopPropagation()}>{children}</Link>
+    : <a className={className} href={href} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>{children}</a>
 
   // pausada: some para o público; o admin continua vendo (esmaecida) para reativar
   if (cfg.ativo === false && !isAdmin) return null
@@ -95,10 +106,10 @@ export default function PromoLancamento({ variante = 'linha' }) {
             <h3 className="promo-texto-tit">{cfg.titulo}</h3>
             <p className="promo-texto-sub">{cfg.subtitulo}</p>
           </div>
-          <a className="promo-texto-cta" href={href} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+          <Cta className="promo-texto-cta">
             {cfg.ctaTexto}
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-          </a>
+          </Cta>
           {EditBtn}
         </article>
         {Editor}
@@ -120,9 +131,7 @@ export default function PromoLancamento({ variante = 'linha' }) {
             <p className="im-local">{cfg.subtitulo}</p>
             {cfg.descricao && <p className="im-desc">{cfg.descricao}</p>}
             <div className="im-actions">
-              <a className="im-cta" href={href} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
-                <IconWhats width={18} height={18} /> {cfg.ctaTexto}
-              </a>
+              <Cta className="im-cta"><IconeCta /> {cfg.ctaTexto}</Cta>
             </div>
           </div>
         </article>
@@ -151,9 +160,7 @@ export default function PromoLancamento({ variante = 'linha' }) {
               {cfg.precoLabel && <span className="promo-imovel-preco">{cfg.precoLabel}</span>}
             </div>
             <div className="im-actions">
-              <a className="im-cta" href={href} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
-                <IconWhats width={18} height={18} /> {cfg.ctaTexto}
-              </a>
+              <Cta className="im-cta"><IconeCta /> {cfg.ctaTexto}</Cta>
             </div>
           </div>
         </div>
