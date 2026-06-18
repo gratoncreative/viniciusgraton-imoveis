@@ -8763,3 +8763,32 @@ html[data-theme="claro"] .promo-imovel--card .im-tag {
   background: linear-gradient(135deg, #E3D2A8, #C6A15B);
   color: #1C2A44; border-color: rgba(255,255,255,.35);
 }
+
+/* ===== Skin CLARO da ferramenta "Melhorar fotos" (.mf) — padrão do site mesmo dentro do admin escuro ===== */
+.mf { background: #FAF8F4; border: 1px solid #E7E2D8; border-radius: 16px; padding: clamp(16px,2vw,24px); color: #2A2F38; }
+.mf .mf-intro h3 { color: #0A0E16; }
+.mf .mf-intro .section-sub { color: #5b626e; }
+.mf .mf-painel { background: #FFFFFF; border-color: #E7E2D8; }
+.mf .mf-abas { background: #F4F2EE; border-bottom-color: #E7E2D8; }
+.mf .mf-aba { color: #5b626e; }
+.mf .mf-aba:hover:not(.on) { background: #ECE8E0; color: #1C2A44; }
+.mf .mf-aba.on { background: #1C2A44; color: #FFFFFF; }
+.mf .mf-grupo { background: #FFFFFF; border-color: #E7E2D8; box-shadow: 0 8px 22px -18px rgba(28,42,68,.35); }
+.mf .mf-grupo--ia { background: #FAF7F1; border-color: #E7E2D8; }
+.mf .mf-grupo-tit { color: #1C2A44; border-bottom-color: #ECE8E0; }
+.mf .mf-slider { color: #5b626e; }
+.mf .mf-slider span b { color: #0A0E16; }
+.mf .mf-campo { color: #5b626e; }
+.mf .mf-campo input { background: #FFFFFF; border-color: #E7E2D8; color: #2A2F38; }
+.mf .mf-sel { color: #2A2F38; }
+.mf .mf-sel select { color-scheme: light; background: #FFFFFF; color: #2A2F38; border-color: #E7E2D8; }
+.mf .mf-sel select option { background: #FFFFFF; color: #2A2F38; }
+.mf .mf-filtro { background: #FFFFFF; border-color: #E7E2D8; color: #2A2F38; }
+.mf .mf-filtro:hover { border-color: #EB0128; color: #C20020; }
+.mf .mf-modo-btn { background: #FFFFFF; border-color: #E7E2D8; color: #5b626e; }
+.mf .mf-modo-btn:hover:not(.on) { background: #F4F2EE; color: #1C2A44; border-color: #D8D2C6; }
+.mf .mf-modo-btn.on { background: #1C2A44; color: #FFFFFF; border-color: transparent; }
+.mf .mf-acoes-bar { background: #FFFFFF; border-color: #E7E2D8; box-shadow: 0 18px 40px -22px rgba(28,42,68,.4); }
+.mf .mf-acoes-info { color: #5b626e; }
+.mf .mf-nota { color: #8a909b; }
+.mf .mf-vitrine-cta { background: #FAF7F1; border-color: #E7E2D8; color: #2A2F38; }
