@@ -38,19 +38,22 @@ const seedDe = (cod, boost) => {
 const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function'
 const diaHoje = () => new Date().toISOString().slice(0, 10) // YYYY-MM-DD
 
+// LEITURA NUNCA GRAVA NO KV. O seed é determinístico (mesma fórmula no cliente),
+// então não precisa ser persistido — só recalculado. Persistimos apenas quando há
+// ação real (like/share), no POST. Isso evita semear milhares de chaves ao abrir as
+// listagens (o que estourava o limite diário de gravações do KV no plano grátis).
 async function getEng(env, cod, preco, boost) {
-  if (!temKV(env)) return seedDe(cod, boost) // degrada gracioso: sem KV, devolve o seed (read-only)
-  const key = 'eng:' + cod
-  let data = await env.ENGAGEMENT.get(key, 'json')
-  // (re)semeia se nunca existiu ou se está num esquema antigo (migra p/ a nova faixa)
-  if (!data || typeof data.likes !== 'number' || data.v !== SEED_V) {
-    const extraL = data && data.v !== SEED_V && typeof data.likesReais === 'number' ? data.likesReais : 0
-    const extraS = data && data.v !== SEED_V && typeof data.sharesReais === 'number' ? data.sharesReais : 0
-    const s = seedDe(cod, boost)
-    data = { likes: s.likes + extraL, shares: s.shares + extraS, v: SEED_V, dia: diaHoje() }
-    await env.ENGAGEMENT.put(key, JSON.stringify(data))
-  }
-  return data
+  const seed = seedDe(cod, boost)
+  if (!temKV(env)) return seed // sem KV: devolve o seed (read-only)
+  const data = await env.ENGAGEMENT.get('eng:' + cod, 'json')
+  if (!data) return seed // nunca teve ação real -> devolve o seed, SEM gravar
+  if (typeof data.likes === 'number' && data.v === SEED_V) return data // formato atual
+  // esquema antigo: soma os reais por cima do seed atual (sem gravar — só na próxima ação)
+  const extraL = typeof data.likesReais === 'number' ? data.likesReais : 0
+  const extraS = typeof data.sharesReais === 'number' ? data.sharesReais : 0
+  if (extraL || extraS) return { likes: seed.likes + extraL, shares: seed.shares + extraS, v: SEED_V }
+  if (typeof data.likes === 'number') return data // formato absoluto antigo
+  return seed
 }
 
 export async function onRequestGet({ env, request }) {
