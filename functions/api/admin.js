@@ -792,6 +792,6 @@ export async function onRequestPost({ env, request }) {
   return json({ error: 'acao desconhecida' }, 400)
   } catch (e) {
     console.error('admin.js catch:', e)
-    return json({ error: 'interno', msg: 'Erro interno: ' + String((e && e.message) || e).slice(0, 200) }, 500)
+    return json({ error: 'interno', msg: 'Erro interno no servidor. Tente novamente.' }, 500)
   }
 }
