@@ -177,8 +177,8 @@ export default function PortalLancamentosHome() {
 
           {resultado.length > 0 ? (
             <>
-              <div className="lan-lista">
-                {visiveis.map((e) => <CardEmpLan key={`${e.construtoraSlug}--${e.slug}`} e={e} variante="linha" />)}
+              <div className="lan-grid">
+                {visiveis.map((e) => <CardEmpLan key={`${e.construtoraSlug}--${e.slug}`} e={e} />)}
               </div>
               {qtd < resultado.length && (
                 <>

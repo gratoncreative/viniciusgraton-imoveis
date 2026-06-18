@@ -290,22 +290,39 @@ export async function onRequestPost({ env, request }) {
     // HTML scraping (ZAP, Viva Real, OLX, outros)
     if (!dados) {
       let html
+      // cabeçalhos de navegador "completos" — aumentam a chance de passar por WAFs
+      // simples. Portais grandes (ZAP/Viva Real/OLX) usam anti-bot forte (DataDome)
+      // e podem devolver 403 mesmo assim → nesse caso cai no preenchimento manual.
+      const navHeaders = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+        'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
+        'Upgrade-Insecure-Requests': '1',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'none',
+        'Sec-Fetch-User': '?1',
+        'Sec-Ch-Ua': '"Google Chrome";v="125", "Chromium";v="125", "Not.A/Brand";v="24"',
+        'Sec-Ch-Ua-Mobile': '?0',
+        'Sec-Ch-Ua-Platform': '"Windows"',
+        'Cache-Control': 'max-age=0',
+      }
       try {
-        const res = await fetch(safeUrl, {
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language': 'pt-BR,pt;q=0.9',
-          },
-          signal: AbortSignal.timeout(9000),
-        })
-        if (!res.ok) return json({ ok: false, erro: `A página devolveu erro ${res.status}. Verifique se o link está correto.` }, 422)
+        let res = await fetch(safeUrl, { headers: navHeaders, redirect: 'follow', signal: AbortSignal.timeout(10000) })
+        // 1 retry leve em caso de bloqueio momentâneo (403/429/503)
+        if ([403, 429, 503].includes(res.status)) {
+          res = await fetch(safeUrl, { headers: { ...navHeaders, Referer: 'https://www.google.com/' }, redirect: 'follow', signal: AbortSignal.timeout(10000) })
+        }
+        if (res.status === 403 || res.status === 401 || res.status === 429) {
+          return json({ ok: false, bloqueado: true, erro: 'Esse portal bloqueou a leitura automática (proteção anti-robô). É só preencher os campos abaixo na mão — leva 1 minutinho.' }, 422)
+        }
+        if (!res.ok) return json({ ok: false, erro: `Não consegui abrir esse link (erro ${res.status}). Confira o endereço ou preencha os campos abaixo na mão.` }, 422)
         html = await res.text()
         if (html.length > 900000) html = html.slice(0, 900000)
       } catch (e) {
         const msg = String(e.message || '').toLowerCase()
-        if (msg.includes('timeout') || msg.includes('timed out')) return json({ ok: false, erro: 'A página demorou muito para responder. Tente novamente.' }, 422)
-        return json({ ok: false, erro: `Não foi possível acessar a URL.` }, 422)
+        if (msg.includes('timeout') || msg.includes('timed out')) return json({ ok: false, erro: 'A página demorou muito para responder. Tente de novo ou preencha os campos na mão.' }, 422)
+        return json({ ok: false, erro: 'Não consegui acessar esse link. Preencha os campos abaixo na mão.' }, 422)
       }
 
       // Strategy 1: __NEXT_DATA__ (ZAP, Viva Real)
