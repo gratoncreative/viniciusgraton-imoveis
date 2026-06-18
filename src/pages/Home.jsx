@@ -4,7 +4,6 @@ import { useSEO } from '../useSEO'
 import { CONFIG } from '../data'
 
 const Novidades = lazy(() => import('../components/Novidades'))
-const VistosRecentemente = lazy(() => import('../components/VistosRecentemente'))
 const Destaque = lazy(() => import('../components/Destaque'))
 const Depoimentos = lazy(() => import('../components/Depoimentos'))
 const BlogHome = lazy(() => import('../components/BlogHome'))
@@ -72,7 +71,6 @@ export default function Home() {
     <main className="tema-claro">
       <Hero />
       <Suspense fallback={null}>
-        <VistosRecentemente />
         <Novidades />
         <Destaque limite={8} />
         <Depoimentos />

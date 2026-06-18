@@ -44,7 +44,9 @@ export default function Hero() {
         </div>
       </div>
 
-      <p className="hero-foto-cap">Curadoria de imóveis em Uberlândia · do alto padrão ao primeiro imóvel</p>
+      <p className="hero-foto-cap">
+        <span className="hero-foto-cap-chip">Curadoria de imóveis em Uberlândia · <em>do alto padrão ao primeiro imóvel</em></span>
+      </p>
     </header>
   )
 }

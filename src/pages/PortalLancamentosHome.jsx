@@ -11,7 +11,7 @@ const WA_PORTAL = 'Olá Vinícius! Acessei o portal de lançamentos e gostaria d
 
 const STATUS_COR = { 'Lançamento': '#4fa3e0', 'Em obras': '#f59e0b', 'Pronto': '#56c27d' }
 
-export function CardEmpLan({ e }) {
+export function CardEmpLan({ e, variante }) {
   const nav = useNavigate()
   // empreendimento com landing dedicada (ex.: Louis) linka direto pra ela, sem o limite de visitas
   const landing = e.landingPath || null
@@ -19,6 +19,7 @@ export function CardEmpLan({ e }) {
   const key = `${e.construtoraSlug}--${e.slug}`
   const tip = e.tipologias && e.tipologias.length > 0 ? e.tipologias[0] : null
   const tipCurt = tip ? (tip.length > 64 ? tip.slice(0, 64) + '…' : tip) : null
+  const tipLinha = tip ? (tip.length > 110 ? tip.slice(0, 110) + '…' : tip) : null
 
   const handleClick = (ev) => {
     ev.preventDefault()
@@ -32,6 +33,31 @@ export function CardEmpLan({ e }) {
     }
     markLancVisto(key)
     nav(url)
+  }
+
+  // Variante LINHA — card horizontal de largura cheia (foto à esquerda). Empilhados,
+  // ocupam 100% da largura → a lista nunca deixa espaço vazio em nenhuma tela.
+  if (variante === 'linha') {
+    return (
+      <Link to={url} className="lan-row" onClick={handleClick}>
+        <div className="lan-row-capa">
+          {e.capa
+            ? <img src={e.capa} alt={`${e.nome} — ${e.bairro || 'Uberlândia'}`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
+            : <span className="lan-card-semfoto"><IconBuilding width={30} height={30} /></span>}
+          <span className="lan-row-status" style={{ background: STATUS_COR[e.status] || '#666' }}>{e.status}</span>
+        </div>
+        <div className="lan-row-main">
+          <span className="lan-card-const">{e.construtoraNome}</span>
+          <strong className="lan-row-nome">{e.nome}</strong>
+          <span className="lan-card-bairro"><IconPin width={12} height={12} />{e.bairro || 'Uberlândia'}</span>
+          {tipLinha && <span className="lan-row-tip">{tipLinha}</span>}
+        </div>
+        <div className="lan-row-aside">
+          {e.preco && <span className="lan-row-preco">{e.preco}</span>}
+          <span className="lan-card-cta">Ver empreendimento <IconArrow width={13} height={13} /></span>
+        </div>
+      </Link>
+    )
   }
 
   return (
@@ -65,50 +91,36 @@ export default function PortalLancamentosHome() {
   const todos = useMemo(() => todosEmpreendimentosTodos(), [])
   const bairros = useMemo(() => bairrosComEmpreendimentos(), [])
 
-  // Filtro no topo (estilo das demais páginas) + rolagem infinita
+  // Busca por nome/bairro/construtora (filtro único) + rolagem infinita
   const [busca, setBusca] = useState('')
-  const [situacao, setSituacao] = useState('')
-  const [tipo, setTipo] = useState('')
-  const [regiao, setRegiao] = useState('')
-  const [dorm, setDorm] = useState(0)
-  const [construtora, setConstrutora] = useState('')
   const [qtd, setQtd] = useState(12)
   const sentinelaRef = useRef(null)
 
   const PRIORIDADE = { Lançamento: 0, 'Em obras': 1, Pronto: 2 }
-  const TIPO_OPTS = [['residencial', 'Residencial'], ['comercial', 'Comercial'], ['lote', 'Lote / Terreno']]
-
-  const regioes = useMemo(() => [...new Set(todos.map((e) => e.bairro).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')), [todos])
-  const construtoras = useMemo(() => [...new Set(todos.map((e) => e.construtoraNome).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')), [todos])
 
   const resultado = useMemo(() => {
     const q = busca.trim().toLowerCase()
     return todos
       .filter((e) =>
-        (!q ||
-          (e.nome || '').toLowerCase().includes(q) ||
-          (e.bairro || '').toLowerCase().includes(q) ||
-          (e.construtoraNome || '').toLowerCase().includes(q) ||
-          (e.tipologias || []).join(' ').toLowerCase().includes(q)) &&
-        (!situacao || e.status === situacao) &&
-        (!tipo || e.tipo === tipo) &&
-        (!regiao || e.bairro === regiao) &&
-        (!dorm || (e.quartosMax || e.quartosMin || 0) >= dorm) &&
-        (!construtora || e.construtoraNome === construtora)
+        !q ||
+        (e.nome || '').toLowerCase().includes(q) ||
+        (e.bairro || '').toLowerCase().includes(q) ||
+        (e.construtoraNome || '').toLowerCase().includes(q) ||
+        (e.tipologias || []).join(' ').toLowerCase().includes(q)
       )
       .sort((a, b) => {
         if (!!b.destaqueTopo !== !!a.destaqueTopo) return (b.destaqueTopo ? 1 : 0) - (a.destaqueTopo ? 1 : 0) // campanha no topo
         if (!!b.capa !== !!a.capa) return (b.capa ? 1 : 0) - (a.capa ? 1 : 0) // com foto primeiro
         return (PRIORIDADE[a.status] ?? 9) - (PRIORIDADE[b.status] ?? 9)
       })
-  }, [todos, busca, situacao, tipo, regiao, dorm, construtora])
+  }, [todos, busca])
 
   const visiveis = useMemo(() => resultado.slice(0, qtd), [resultado, qtd])
-  const temFiltro = !!(busca || situacao || tipo || regiao || dorm || construtora)
-  const limparFiltros = () => { setBusca(''); setSituacao(''); setTipo(''); setRegiao(''); setDorm(0); setConstrutora('') }
+  const temFiltro = !!busca
+  const limparFiltros = () => setBusca('')
 
-  // ao mexer em qualquer filtro, volta ao começo da lista
-  useEffect(() => { setQtd(12) }, [busca, situacao, tipo, regiao, dorm, construtora])
+  // ao mexer na busca, volta ao começo da lista
+  useEffect(() => { setQtd(12) }, [busca])
 
   // rolagem infinita: carrega +12 quando o sentinela entra na viewport
   useEffect(() => {
@@ -146,58 +158,11 @@ export default function PortalLancamentosHome() {
             </div>
           </Reveal>
 
-          {/* Busca */}
+          {/* Busca — único filtro (por nome, bairro ou construtora) */}
           <div className="condos-hero-search">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
             <input type="search" value={busca} onChange={(e) => setBusca(e.target.value)} placeholder="Buscar empreendimento pelo nome, bairro ou construtora…" aria-label="Buscar empreendimentos" />
             {busca && <button className="condos-search-x" onClick={() => setBusca('')} aria-label="Limpar busca">✕</button>}
-          </div>
-
-          {/* Filtros — dropdowns (mesma posição/estilo de /condominios) */}
-          <div className="condos-hero-filtros">
-            <div className="condos-hf">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-              <select value={situacao} onChange={(e) => setSituacao(e.target.value)} aria-label="Filtrar por situação">
-                <option value="">Situação</option>
-                <option value="Lançamento">Lançamento</option>
-                <option value="Em obras">Em obras</option>
-                <option value="Pronto">Pronto</option>
-              </select>
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-            </div>
-            <div className="condos-hf">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-              <select value={tipo} onChange={(e) => setTipo(e.target.value)} aria-label="Filtrar por tipo">
-                <option value="">Tipo</option>
-                {TIPO_OPTS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-              </select>
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-            </div>
-            <div className="condos-hf">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              <select value={regiao} onChange={(e) => setRegiao(e.target.value)} aria-label="Filtrar por região">
-                <option value="">Região</option>
-                {regioes.map((b) => <option key={b} value={b}>{b}</option>)}
-              </select>
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-            </div>
-            <div className="condos-hf">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M3 18v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5M3 18h18M3 18v3M21 18v3M6 11V8a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v3"/></svg>
-              <select value={dorm} onChange={(e) => setDorm(+e.target.value)} aria-label="Filtrar por dormitórios">
-                <option value={0}>Dormitórios</option>
-                {[1, 2, 3, 4].map((q) => <option key={q} value={q}>{q}+ dormitórios</option>)}
-              </select>
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-            </div>
-            <div className="condos-hf condos-hf--wide">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M4.5 21h6M7.5 21V5M5 5h14.5M8 5L19.5 9.5M16 5v5a1 1 0 0 1-2 0"/></svg>
-              <select value={construtora} onChange={(e) => setConstrutora(e.target.value)} aria-label="Filtrar por construtora">
-                <option value="">Construtora</option>
-                {construtoras.map((c) => <option key={c} value={c}>{c}</option>)}
-              </select>
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-            </div>
-            {temFiltro && <button className="condos-hf-limpar" onClick={limparFiltros}>Limpar</button>}
           </div>
         </div>
       </section>
@@ -212,8 +177,8 @@ export default function PortalLancamentosHome() {
 
           {resultado.length > 0 ? (
             <>
-              <div className="lan-grid">
-                {visiveis.map((e) => <CardEmpLan key={`${e.construtoraSlug}--${e.slug}`} e={e} />)}
+              <div className="lan-lista">
+                {visiveis.map((e) => <CardEmpLan key={`${e.construtoraSlug}--${e.slug}`} e={e} variante="linha" />)}
               </div>
               {qtd < resultado.length && (
                 <>
