@@ -42,7 +42,7 @@ function md5hex(s) {
 }
 
 const ADMIN_EMAIL_DEFAULT = 'contato@viniciusgraton.com.br'
-const TTL_MS = 12 * 60 * 60 * 1000
+const TTL_MS = 30 * 24 * 60 * 60 * 1000 // sessão admin de 30 dias (era 12h — causava "sessão expirada" no uso entre dias)
 const ORIGIN = 'https://viniciusgraton.com.br'
 const originOk = (req) => { const o = req.headers.get('origin'); return !o || o === ORIGIN }
 
