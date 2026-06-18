@@ -84,6 +84,18 @@ async function getAuth(env) {
   try { return await env.ENGAGEMENT.get('admin:auth', 'json') } catch { return null }
 }
 
+// Leitura em LOTE tolerante: usa entries() da facade (1 query no D1 + KV só do legado)
+// quando existir; senão (sem D1) cai no list+get do KV. Evita o "D1 miss + KV get" por
+// chave que dobrava os subrequests e derrubava a ação 'data' (admin "inoperante").
+async function bulkEntries(store, prefix) {
+  if (store && typeof store.entries === 'function') return store.entries({ prefix })
+  const lk = await store.list({ prefix })
+  const vals = await Promise.all((lk.keys || []).map((k) =>
+    store.get(k.name, 'json').then((v) => (v ? { name: k.name, value: v, metadata: k.metadata } : null)).catch(() => null)
+  ))
+  return vals.filter(Boolean)
+}
+
 export async function onRequestPost({ env, request }) {
   env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
@@ -175,36 +187,37 @@ export async function onRequestPost({ env, request }) {
   }
 
   if (action === 'data') {
-    const out = { anuncios: [], leads: [], clientes: [], news: [] }
-    const fontes = [['anuncio:', 'anuncios'], ['lead:', 'leads'], ['conta:', 'clientes'], ['news:', 'news']]
-    // PERFORMANCE: lista os 4 prefixos + 'aprovado:'/'crm:' em paralelo (antes era serial).
-    const [listas, apr, crm] = await Promise.all([
-      Promise.all(fontes.map(([prefix]) => env.ENGAGEMENT.list({ prefix }))),
-      env.ENGAGEMENT.list({ prefix: 'aprovado:' }),
-      env.ENGAGEMENT.list({ prefix: 'crm:' }),
-    ])
-    // busca os valores de cada fonte EM PARALELO (antes era um get serial por chave -> N round-trips).
-    await Promise.all(fontes.map(async ([prefix, arr], idx) => {
-      const keys = listas[idx]?.keys || []
-      const vals = await Promise.all(keys.map((k) =>
-        env.ENGAGEMENT.get(k.name, 'json').then((v) => { if (v) v._key = k.name; return v }).catch(() => null)
-      ))
-      for (const v of vals) if (v) out[arr].push(v)
-    }))
-    out.anuncios.sort((a, b) => (b.ts || 0) - (a.ts || 0))
-    out.leads.sort((a, b) => (b.ts || 0) - (a.ts || 0))
-    out.clientes.sort((a, b) => (b.atualizadoEm || 0) - (a.atualizadoEm || 0))
-    out.news.sort((a, b) => (b.ts || 0) - (a.ts || 0))
-    out.aprovados = (apr?.keys || []).map((k) => k.name.slice('aprovado:'.length))
-    // resumo do CRM — usa metadata do KV (sem carregar o valor completo, que pode ter fotos grandes)
-    const crmKeys = crm?.keys || []
-    out.crmTotal = crmKeys.length
-    out.crmNovos = 0; out.crmNovidades = 0
-    for (const k of crmKeys) {
-      if (k.metadata?.novo) out.crmNovos++
-      if (k.metadata?.temNovidade) out.crmNovidades++
+    try {
+      const out = { anuncios: [], leads: [], clientes: [], news: [] }
+      // leitura em LOTE (entries) corta o double-read D1+KV por chave → não estoura subrequests.
+      // aprovado:/crm: só precisam das CHAVES+metadata (list é barato), não do valor.
+      const [anuncios, leads, contas, news, apr, crm] = await Promise.all([
+        bulkEntries(env.ENGAGEMENT, 'anuncio:'),
+        bulkEntries(env.ENGAGEMENT, 'lead:'),
+        bulkEntries(env.ENGAGEMENT, 'conta:'),
+        bulkEntries(env.ENGAGEMENT, 'news:'),
+        env.ENGAGEMENT.list({ prefix: 'aprovado:' }),
+        env.ENGAGEMENT.list({ prefix: 'crm:' }),
+      ])
+      const push = (arr, ents) => { for (const e of ents) { const v = e.value; if (v) { v._key = e.name; arr.push(v) } } }
+      push(out.anuncios, anuncios); push(out.leads, leads); push(out.clientes, contas); push(out.news, news)
+      out.anuncios.sort((a, b) => (b.ts || 0) - (a.ts || 0))
+      out.leads.sort((a, b) => (b.ts || 0) - (a.ts || 0))
+      out.clientes.sort((a, b) => (b.atualizadoEm || 0) - (a.atualizadoEm || 0))
+      out.news.sort((a, b) => (b.ts || 0) - (a.ts || 0))
+      out.aprovados = (apr?.keys || []).map((k) => k.name.slice('aprovado:'.length))
+      const crmKeys = crm?.keys || []
+      out.crmTotal = crmKeys.length
+      out.crmNovos = 0; out.crmNovidades = 0
+      for (const k of crmKeys) {
+        if (k.metadata?.novo) out.crmNovos++
+        if (k.metadata?.temNovidade) out.crmNovidades++
+      }
+      return json(out)
+    } catch (e) {
+      // nunca derruba o painel inteiro: devolve 200 com o que tem + a causa real
+      return json({ error: 'data', msg: 'Falha ao carregar dados: ' + String((e && e.message) || e).slice(0, 160), anuncios: [], leads: [], clientes: [], news: [], aprovados: [], crmTotal: 0, crmNovos: 0, crmNovidades: 0 }, 200)
     }
-    return json(out)
   }
 
   if (action === 'del') {
@@ -343,12 +356,11 @@ export async function onRequestPost({ env, request }) {
 
   // ————— CRM "Meus clientes" (preferências + sugestões + página personalizada) —————
   if (action === 'crm-list') {
-    const lista = await env.ENGAGEMENT.list({ prefix: 'crm:' })
-    const keys = lista?.keys || []
-    // PERFORMANCE: busca todos os clientes em paralelo (antes era um get serial por chave).
-    const vals = await Promise.all(keys.map((k) => env.ENGAGEMENT.get(k.name, 'json').catch(() => null)))
+    // leitura em LOTE (entries) — evita o double-read D1+KV por chave (subrequests).
+    const ents = await bulkEntries(env.ENGAGEMENT, 'crm:')
     const out = []
-    for (const v of vals) {
+    for (const e of ents) {
+      const v = e.value
       if (!v) continue
       // Strip foto (até ~700KB) e os logs grandes (atendimentos/notas) — carregados sob demanda no crm-get.
       // Mantém tags/status (pequenos) para os chips da lista e um contador de atendimentos.

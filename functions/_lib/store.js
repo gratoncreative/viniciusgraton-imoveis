@@ -106,6 +106,32 @@ export function kvStore(env) {
       }
       return { keys, list_complete: true }
     },
+
+    // LEITURA EM LOTE (chave + valor) — pega TUDO do D1 em 1 query e lê do KV só as
+    // chaves legadas que ainda não estão no D1. Evita o "D1 miss + KV get" por chave
+    // (que dobrava os subrequests e estourava o limite do Cloudflare na ação 'data').
+    async entries(opts) {
+      const prefix = (opts && opts.prefix) || ''
+      const map = new Map() // name -> { name, value, metadata }
+      try {
+        await ensure(db)
+        const res = await db.prepare('SELECT k, v, meta, exp FROM kv WHERE k LIKE ?').bind(prefix.replace(/([%_])/g, '\\$1') + '%').all()
+        const t = now()
+        for (const r of (res.results || [])) {
+          if (r.exp != null && r.exp <= t) continue
+          map.set(r.k, { name: r.k, value: parse(r.v), metadata: r.meta ? parse(r.meta) : undefined })
+        }
+      } catch {}
+      if (kv) {
+        try {
+          const lk = await kv.list({ prefix })
+          const faltam = (lk.keys || []).filter((k) => !map.has(k.name))
+          const vals = await Promise.all(faltam.map((k) => kv.get(k.name, 'json').then((v) => ({ k, v })).catch(() => ({ k, v: null }))))
+          for (const { k, v } of vals) if (v != null) map.set(k.name, { name: k.name, value: v, metadata: k.metadata })
+        } catch {}
+      }
+      return [...map.values()]
+    },
   }
 }
 
