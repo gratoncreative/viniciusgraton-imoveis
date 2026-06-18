@@ -304,7 +304,7 @@ export default function LancamentoLouis() {
                     <option>Ainda estou avaliando</option>
                   </select>
                 </label>
-                <button type="submit" className="btn btn-gold lou-form-btn"><IconWhats /> Quero a tabela e a disponibilidade <IconArrow /></button>
+                <button type="submit" className="btn btn-gold lou-form-btn"><IconWhats /> Quero a tabela e a disponibilidade</button>
                 <p className="lou-disc">Seus dados ficam só comigo, para este atendimento. Sem spam.</p>
               </form>
             )}

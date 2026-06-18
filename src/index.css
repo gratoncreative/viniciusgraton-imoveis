@@ -8826,3 +8826,14 @@ html[data-theme="claro"] .lou-form-sec p,
 html[data-theme="claro"] .lou-cond-cta p { color: rgba(244,239,230,0.82); }
 html[data-theme="claro"] .lou-loc .lou-end { color: var(--gold-2, #EB0128); }
 html[data-theme="claro"] .lou-hero .lou-lead b { color: #FFFFFF; }
+
+/* Botões da landing Louis: ícones SVG sem tamanho explícito estavam estourando
+   (a "seta gigante" de 454px). Padroniza todos os ícones de botão em 18px. */
+.lou-pg .btn svg,
+.lou-pg .lou-btn-ghost svg,
+.lou-pg .lou-btn-wa svg,
+.lou-pg .lou-form-btn svg,
+.lou-pg .lou-cond-cta svg,
+.lou-pg .lou-hero-cta svg { width: 18px; height: 18px; flex: none; }
+/* botões mais elegantes: peso e respiro harmônicos */
+.lou-cond-cta .btn, .lou-cond-cta .lou-btn-ghost--dark { font-size: 0.95rem; padding: 14px 20px; gap: 9px; }
