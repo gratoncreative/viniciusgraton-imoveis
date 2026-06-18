@@ -8815,3 +8815,14 @@ html[data-theme="claro"] .lou-hero .eyebrow,
 html[data-theme="claro"] .lou-loc .eyebrow,
 html[data-theme="claro"] .lou-sec--dark .eyebrow,
 html[data-theme="claro"] .lou-form-sec .eyebrow { color: var(--gold-2, #EB0128); }
+
+/* Fix de contraste Louis (parte 2): a regra global html[data-theme="claro"] p { color: var(--text) }
+   (linha ~73, specificity 0,1,2) deixava TODO parágrafo escuro — inclusive .lou-sub--light, leads,
+   notas e disclaimers das seções ESCURAS. Reassere texto claro nos <p> dessas seções (0,2,2 vence). */
+html[data-theme="claro"] .lou-hero p,
+html[data-theme="claro"] .lou-sec--dark p,
+html[data-theme="claro"] .lou-loc p,
+html[data-theme="claro"] .lou-form-sec p,
+html[data-theme="claro"] .lou-cond-cta p { color: rgba(244,239,230,0.82); }
+html[data-theme="claro"] .lou-loc .lou-end { color: var(--gold-2, #EB0128); }
+html[data-theme="claro"] .lou-hero .lou-lead b { color: #FFFFFF; }
