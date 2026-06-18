@@ -52,7 +52,11 @@ export default function PromoLancamento({ variante = 'linha' }) {
   }, [])
 
   const nav = useNavigate()
-  const destino = (cfg.ctaUrl && cfg.ctaUrl.trim()) ? cfg.ctaUrl.trim() : linkWhatsApp(cfg.waMsg || DEFAULTS.waMsg)
+  // destino do card: link configurado → senão a landing padrão (DEFAULTS) → senão WhatsApp.
+  // (assim, mesmo que a config salva venha com o link vazio, o card ainda abre a landing.)
+  const destino = (cfg.ctaUrl && cfg.ctaUrl.trim())
+    ? cfg.ctaUrl.trim()
+    : (DEFAULTS.ctaUrl || linkWhatsApp(cfg.waMsg || DEFAULTS.waMsg))
   const interno = /^\/[^/]/.test(destino) // caminho interno do site (ex.: /lancamentos/…) → abre a landing, não o WhatsApp
   const href = destino
   const abrir = () => { if (interno) nav(destino); else window.open(destino, '_blank', 'noopener') }
