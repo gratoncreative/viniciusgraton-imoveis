@@ -5213,7 +5213,10 @@ html[data-theme="dark"] .corrbn-nota { color: #6a7485; }
 .ferr-pro-cta-btn { flex: none; align-self: stretch; display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: #1C2A44; color: #fff; font-family: var(--font-head); font-weight: 700; font-size: 1rem; padding: 17px 28px; border-radius: 14px; text-decoration: none; transition: filter .16s, transform .16s; white-space: nowrap; }
 .ferr-pro-cta-btn:hover { filter: brightness(1.14); transform: translateY(-2px); }
 @media (min-width: 980px) { .ferr-pro-cta-btn { align-self: center; } }
-.ferr-pro-box-sep { height: 1px; background: linear-gradient(90deg, transparent, rgba(28,42,68,.16), transparent); margin: 26px 0 22px; }
+.ferr-pro-box-pausa { display: flex; flex-direction: column; gap: 7px; padding: 4px 2px 2px; }
+.ferr-pro-box-pausa b { font-family: var(--font-head); font-size: 1.18rem; color: #0A0E16; }
+.ferr-pro-box-pausa span { font-size: .9rem; color: #5b626e; line-height: 1.55; max-width: 560px; }
+.ferr-pro-box-sep { height: 1px; background: linear-gradient(90deg, transparent, rgba(28,42,68,.16), transparent); margin: 22px 0 22px; }
 .ferr-grid-3--pro { margin: 0; }
 @media (max-width: 600px) { .ferr-pro-planos { width: 100%; } .ferr-pro-plano { flex: 1; min-width: 0; } }
 

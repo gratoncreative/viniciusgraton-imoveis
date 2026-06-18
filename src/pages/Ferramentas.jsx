@@ -65,6 +65,10 @@ const FI = ({ name, size = 22 }) => (
 )
 
 // ─── seções e ferramentas ────────────────────────────────────────────────────
+// ⚠ Assinatura PAUSADA temporariamente (a pedido do Vinícius) até ajustar as
+// ferramentas PRO. Trocar para true reativa planos + CTA "Assinar e desbloquear".
+const ASSINATURA_ATIVA = false
+
 const SECOES = [
   { id: 'pro',           titulo: 'Área do Corretor',        sub: 'Ferramentas exclusivas para profissionais do mercado imobiliário', icon: 'star', pro: true },
   { id: 'comprador',     titulo: 'Para compradores',       sub: 'Simule, planeje e calcule antes de fechar',         icon: 'home'   },
@@ -685,7 +689,7 @@ export default function Ferramentas() {
                   </span>
                   <i>{tool.desc}</i>
                   {isLockMsgOn && (
-                    <span className="ferr-lock-msg">Assine a Área do Corretor para desbloquear.</span>
+                    <span className="ferr-lock-msg">{ASSINATURA_ATIVA ? 'Assine a Área do Corretor para desbloquear.' : 'Em breve · ferramenta em ajustes.'}</span>
                   )}
                 </span>
               </button>
@@ -711,28 +715,35 @@ export default function Ferramentas() {
                   TODAS as ferramentas PRO dentro da própria caixa de assinatura. */}
               {sec.pro && !isCorretor ? (
                 <div className="ferr-pro-box">
-                  <div className="ferr-pro-box-head">
-                    <div className="ferr-pro-box-pitch">
+                  {ASSINATURA_ATIVA ? (
+                    <div className="ferr-pro-box-head">
+                      <div className="ferr-pro-box-pitch">
+                        <b>Ferramentas exclusivas para corretores</b>
+                        <span>Assine a Área do Corretor e desbloqueie ACM, comissão, ficha, IA de fotos e muito mais.</span>
+                      </div>
+                      <div className="ferr-pro-planos">
+                        <Link to="/corretor" className="ferr-pro-plano">
+                          <span className="ferr-pro-plano-nome">Semanal</span>
+                          <b className="ferr-pro-plano-preco">R$ 49,90</b>
+                          <span className="ferr-pro-plano-per">/ 7 dias</span>
+                          <span className="ferr-pro-plano-cta">Assinar agora</span>
+                        </Link>
+                        <Link to="/corretor" className="ferr-pro-plano ferr-pro-plano--dest">
+                          <span className="ferr-pro-plano-badge">Mais popular</span>
+                          <span className="ferr-pro-plano-nome">Mensal</span>
+                          <b className="ferr-pro-plano-preco">R$ 150</b>
+                          <span className="ferr-pro-plano-per">/ 30 dias</span>
+                          <span className="ferr-pro-plano-cta">Assinar agora</span>
+                        </Link>
+                      </div>
+                      <Link className="ferr-pro-cta-btn" to="/corretor">Assinar e desbloquear <IconArrow /></Link>
+                    </div>
+                  ) : (
+                    <div className="ferr-pro-box-pausa">
                       <b>Ferramentas exclusivas para corretores</b>
-                      <span>Assine a Área do Corretor e desbloqueie ACM, comissão, ficha, IA de fotos e muito mais.</span>
+                      <span>Estamos preparando novas ferramentas para a Área do Corretor. As assinaturas voltam em breve.</span>
                     </div>
-                    <div className="ferr-pro-planos">
-                      <Link to="/corretor" className="ferr-pro-plano">
-                        <span className="ferr-pro-plano-nome">Semanal</span>
-                        <b className="ferr-pro-plano-preco">R$ 49,90</b>
-                        <span className="ferr-pro-plano-per">/ 7 dias</span>
-                        <span className="ferr-pro-plano-cta">Assinar agora</span>
-                      </Link>
-                      <Link to="/corretor" className="ferr-pro-plano ferr-pro-plano--dest">
-                        <span className="ferr-pro-plano-badge">Mais popular</span>
-                        <span className="ferr-pro-plano-nome">Mensal</span>
-                        <b className="ferr-pro-plano-preco">R$ 150</b>
-                        <span className="ferr-pro-plano-per">/ 30 dias</span>
-                        <span className="ferr-pro-plano-cta">Assinar agora</span>
-                      </Link>
-                    </div>
-                    <Link className="ferr-pro-cta-btn" to="/corretor">Assinar e desbloquear <IconArrow /></Link>
-                  </div>
+                  )}
                   <div className="ferr-pro-box-sep" aria-hidden="true" />
                   <div className="ferr-grid-3 ferr-grid-3--pro">{grade}</div>
                 </div>
