@@ -292,7 +292,11 @@ export async function onRequestPost({ env, request }) {
       waMsg: lim(p.waMsg, 600),
       atualizadoEm: Date.now(),
     }
-    await env.ENGAGEMENT.put('config:promo', JSON.stringify(promo))
+    try {
+      await env.ENGAGEMENT.put('config:promo', JSON.stringify(promo))
+    } catch (e) {
+      return json({ error: 'kv', msg: 'Não consegui gravar a publicidade (KV): ' + String((e && e.message) || e).slice(0, 180) }, 500)
+    }
     return json({ ok: true, promo })
   }
 
@@ -786,6 +790,6 @@ export async function onRequestPost({ env, request }) {
   return json({ error: 'acao desconhecida' }, 400)
   } catch (e) {
     console.error('admin.js catch:', e)
-    return json({ error: 'interno', msg: 'Erro interno no servidor. Tente novamente.' }, 500)
+    return json({ error: 'interno', msg: 'Erro interno: ' + String((e && e.message) || e).slice(0, 200) }, 500)
   }
 }
