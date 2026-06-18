@@ -25,15 +25,18 @@ export default function Footer() {
               <span className="brand-mark" aria-hidden="true">
                 <svg viewBox="0 0 48 48" width="46" height="46" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <defs>
-                    <linearGradient id="vg-navy-f" x1="7" y1="3" x2="41" y2="46" gradientUnits="userSpaceOnUse">
+                    <clipPath id="vg-tile-f"><rect width="48" height="48" rx="13" /></clipPath>
+                    <linearGradient id="vg-ink-f" x1="0" y1="0" x2="0" y2="1">
                       <stop stopColor="#26365A" />
                       <stop offset="1" stopColor="#0A0E16" />
                     </linearGradient>
                   </defs>
-                  <rect width="48" height="48" rx="13" fill="url(#vg-navy-f)" />
-                  <rect x="0.6" y="0.6" width="46.8" height="46.8" rx="12.4" fill="none" stroke="rgba(255,255,255,0.12)" />
-                  <path d="M14 18.5 L24 12 L34 18.5" stroke="#EB0128" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" />
-                  <text x="24" y="36" textAnchor="middle" fontFamily="'Playfair Display', Georgia, serif" fontSize="18.5" fontWeight="700" fill="#F4F2EE" letterSpacing="0.4">VG</text>
+                  <g clipPath="url(#vg-tile-f)">
+                    <rect width="48" height="48" fill="url(#vg-ink-f)" />
+                    <path fill="#F4F2EE" fillRule="evenodd" d="M24 8.5 L41.5 23 L35.5 23 L35.5 38.5 L12.5 38.5 L12.5 23 L6.5 23 Z M19.7 38.5 L19.7 27.8 L24 31.2 L28.3 27.8 L28.3 38.5 Z" />
+                    <path fill="#EB0128" d="M24 17.6 L27.2 20.8 L24 24 L20.8 20.8 Z" />
+                  </g>
+                  <rect x="0.6" y="0.6" width="46.8" height="46.8" rx="12.4" fill="none" stroke="#F4F2EE" strokeOpacity="0.10" />
                 </svg>
               </span>
               <span className="brand-text">

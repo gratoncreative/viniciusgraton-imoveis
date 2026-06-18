@@ -1,11 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f3d27a"/>
-      <stop offset="1" stop-color="#b8862f"/>
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="14" fill="#0a0e16"/>
-  <path d="M32 13 L50 27 V50 H40 V37 H24 V50 H14 V27 Z" fill="none" stroke="url(#g)" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M32 13 L50 27" stroke="url(#g)" stroke-width="3" stroke-linecap="round"/>
+<svg viewBox="0 0 48 48" width="48" height="48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vinícius Graton Imóveis">
+  <rect width="48" height="48" rx="10" fill="#13203A"/>
+  <path fill="#F4F2EE" fill-rule="evenodd" d="M24 7 L42.5 22.5 L36 22.5 L36 40 L12 40 L12 22.5 L5.5 22.5 Z M19.4 40 L19.4 28.4 L24 32 L28.6 28.4 L28.6 40 Z"/>
+  <path fill="#EB0128" d="M24 16.6 L27.6 20.2 L24 23.8 L20.4 20.2 Z"/>
 </svg>
