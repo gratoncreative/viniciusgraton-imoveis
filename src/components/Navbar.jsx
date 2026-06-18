@@ -52,7 +52,20 @@ const MENU_CARDS = [
 function Brand() {
   return (
     <Link to="/" className="brand" aria-label={CONFIG.marca}>
-      <span className="brand-mark" aria-hidden="true"><b>VG</b></span>
+      <span className="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="46" height="46" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="vg-navy" x1="7" y1="3" x2="41" y2="46" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#26365A" />
+              <stop offset="1" stopColor="#0A0E16" />
+            </linearGradient>
+          </defs>
+          <rect width="48" height="48" rx="13" fill="url(#vg-navy)" />
+          <rect x="0.6" y="0.6" width="46.8" height="46.8" rx="12.4" fill="none" stroke="rgba(255,255,255,0.12)" />
+          <path d="M14 18.5 L24 12 L34 18.5" stroke="#EB0128" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" />
+          <text x="24" y="36" textAnchor="middle" fontFamily="'Playfair Display', Georgia, serif" fontSize="18.5" fontWeight="700" fill="#F4F2EE" letterSpacing="0.4">VG</text>
+        </svg>
+      </span>
       <span className="brand-text">
         <span className="brand-name">Vinícius <em>Graton</em></span>
         <span className="brand-sub">Imóveis · Uberlândia</span>
