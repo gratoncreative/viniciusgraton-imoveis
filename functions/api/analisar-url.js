@@ -267,6 +267,24 @@ async function buscarRotina(codigo) {
   }
 }
 
+// ── Leitor que RENDERIZA a página (Jina AI Reader, grátis) ───────────────────
+// Portais grandes (ZAP/Viva Real/OLX) bloqueiam o fetch direto do nosso servidor
+// (anti-bot DataDome). O r.jina.ai renderiza a página com browser real e devolve
+// o HTML — daí a extração (__NEXT_DATA__/JSON-LD/IA) volta a funcionar. Sem chave
+// funciona (com limite); env.JINA_KEY (grátis) eleva o limite.
+async function lerViaJina(url, env) {
+  try {
+    const headers = { Accept: 'text/html', 'X-Return-Format': 'html', 'X-Timeout': '20' }
+    const k = String((env && env.JINA_KEY) || '').trim()
+    if (k) headers.Authorization = 'Bearer ' + k
+    const r = await fetch('https://r.jina.ai/' + url, { headers, signal: AbortSignal.timeout(24000) })
+    if (!r.ok) return null
+    let t = await r.text()
+    if (t && t.length > 1200000) t = t.slice(0, 1200000)
+    return t || null
+  } catch { return null }
+}
+
 // ── Handler principal ────────────────────────────────────────────────────────
 export async function onRequestPost({ env, request }) {
   try {
@@ -287,69 +305,54 @@ export async function onRequestPost({ env, request }) {
       try { dados = await buscarRotina(rotinaM[1]) } catch {}
     }
 
-    // HTML scraping (ZAP, Viva Real, OLX, outros)
+    // HTML scraping (ZAP, Viva Real, OLX, outros): leitura DIRETA e, se bloquear
+    // ou não extrair, leitura RENDERIZADA via Jina (passa pelo anti-bot).
+    let bloqueado = false
     if (!dados) {
-      let html
-      // cabeçalhos de navegador "completos" — aumentam a chance de passar por WAFs
-      // simples. Portais grandes (ZAP/Viva Real/OLX) usam anti-bot forte (DataDome)
-      // e podem devolver 403 mesmo assim → nesse caso cai no preenchimento manual.
       const navHeaders = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
         'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
         'Upgrade-Insecure-Requests': '1',
-        'Sec-Fetch-Dest': 'document',
-        'Sec-Fetch-Mode': 'navigate',
-        'Sec-Fetch-Site': 'none',
-        'Sec-Fetch-User': '?1',
+        'Sec-Fetch-Dest': 'document', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Site': 'none', 'Sec-Fetch-User': '?1',
         'Sec-Ch-Ua': '"Google Chrome";v="125", "Chromium";v="125", "Not.A/Brand";v="24"',
-        'Sec-Ch-Ua-Mobile': '?0',
-        'Sec-Ch-Ua-Platform': '"Windows"',
-        'Cache-Control': 'max-age=0',
+        'Sec-Ch-Ua-Mobile': '?0', 'Sec-Ch-Ua-Platform': '"Windows"', 'Cache-Control': 'max-age=0',
       }
+      let html = null
       try {
         let res = await fetch(safeUrl, { headers: navHeaders, redirect: 'follow', signal: AbortSignal.timeout(10000) })
-        // 1 retry leve em caso de bloqueio momentâneo (403/429/503)
         if ([403, 429, 503].includes(res.status)) {
           res = await fetch(safeUrl, { headers: { ...navHeaders, Referer: 'https://www.google.com/' }, redirect: 'follow', signal: AbortSignal.timeout(10000) })
         }
-        if (res.status === 403 || res.status === 401 || res.status === 429) {
-          return json({ ok: false, bloqueado: true, erro: 'Esse portal bloqueou a leitura automática (proteção anti-robô). É só preencher os campos abaixo na mão — leva 1 minutinho.' }, 422)
-        }
-        if (!res.ok) return json({ ok: false, erro: `Não consegui abrir esse link (erro ${res.status}). Confira o endereço ou preencha os campos abaixo na mão.` }, 422)
-        html = await res.text()
-        if (html.length > 900000) html = html.slice(0, 900000)
-      } catch (e) {
-        const msg = String(e.message || '').toLowerCase()
-        if (msg.includes('timeout') || msg.includes('timed out')) return json({ ok: false, erro: 'A página demorou muito para responder. Tente de novo ou preencha os campos na mão.' }, 422)
-        return json({ ok: false, erro: 'Não consegui acessar esse link. Preencha os campos abaixo na mão.' }, 422)
+        if ([401, 403, 429].includes(res.status)) bloqueado = true
+        else if (res.ok) { html = await res.text(); if (html.length > 900000) html = html.slice(0, 900000) }
+      } catch { /* sem html → tenta o leitor renderizado abaixo */ }
+
+      // roda as 3 estratégias (NEXT_DATA / JSON-LD / IA) + meta sobre QUALQUER html
+      const extrair = async (h) => {
+        let d = extrairDeNextData(extrairNextData(h))
+        if (!d || !(d.area > 0)) { const ld = extrairDeJsonLd(extrairJsonLd(h)); d = (!d || !(d.area > 0)) ? ld : d }
+        if (!d || (!(d.preco > 0) && !(d.area > 0))) { const ai = await extrairComIA(h, env); d = ai || d }
+        if (d) { const meta = extrairMeta(h); if (!d.fotos?.length && meta.imagem) d.fotos = [meta.imagem]; if (!d.titulo && meta.titulo) d.titulo = meta.titulo }
+        return d
       }
 
-      // Strategy 1: __NEXT_DATA__ (ZAP, Viva Real)
-      dados = extrairDeNextData(extrairNextData(html))
+      if (html) dados = await extrair(html)
 
-      // Strategy 2: JSON-LD
-      if (!dados || !(dados.area > 0)) {
-        const ldDados = extrairDeJsonLd(extrairJsonLd(html))
-        dados = (!dados || !(dados.area > 0)) ? ldDados : dados
-      }
-
-      // Strategy 3: AI fallback
+      // fallback: bloqueou OU não extraiu nada → leitor renderizado (Jina, grátis)
       if (!dados || (!(dados.preco > 0) && !(dados.area > 0))) {
-        const aiDados = await extrairComIA(html, env)
-        dados = aiDados || dados
-      }
-
-      // Complementa com meta tags se faltou imagem ou titulo
-      if (dados) {
-        const meta = extrairMeta(html)
-        if (!dados.fotos?.length && meta.imagem) dados.fotos = [meta.imagem]
-        if (!dados.titulo && meta.titulo) dados.titulo = meta.titulo
+        const jhtml = await lerViaJina(safeUrl, env)
+        if (jhtml) { const d = await extrair(jhtml); if (d && (d.preco > 0 || d.area > 0)) dados = d }
       }
     }
 
     if (!dados || !(dados.area > 0)) {
-      return json({ ok: false, erro: 'Não consegui extrair os dados do imóvel. Tente com o link direto do anúncio (ex: zapimoveis.com.br/…, vivareal.com.br/…, rotina.com.br/…).' }, 422)
+      return json({
+        ok: false, bloqueado,
+        erro: bloqueado
+          ? 'Esse portal bloqueou a leitura (mesmo com o leitor reforçado). É só preencher os campos abaixo na mão — leva 1 minutinho.'
+          : 'Não consegui ler os dados desse link. Preencha os campos abaixo na mão — funciona com qualquer imóvel.',
+      }, 422)
     }
 
     // Normaliza tipo
