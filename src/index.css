@@ -1295,7 +1295,10 @@ html[data-theme="claro"] .promo-imovel-media { background: linear-gradient(150de
 
 /* ===== Imóveis em destaque (listagem real) ===== */
 .im-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; align-items: stretch; }
-@media (max-width: 1280px) { .im-grid { grid-template-columns: repeat(3, 1fr); } }
+/* 4/2/1 colunas — todas divisoras de 8 (Destaque=7+1 publi, Novidades=8) → a grade
+   SEMPRE fecha as linhas, sem buraco em branco em nenhum dispositivo. Nunca usar 3
+   colunas aqui (8 nao e multiplo de 3 → sobraria espaco). */
+@media (max-width: 1024px) { .im-grid { grid-template-columns: repeat(2, 1fr); } }
 .im-grid > * { height: 100%; }
 
 /* —— Faixa "Visto recentemente" (histórico local) —— */
