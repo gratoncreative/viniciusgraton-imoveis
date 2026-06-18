@@ -647,6 +647,53 @@ export default function Ferramentas() {
       <div className="ferr-body container">
         {secoesFiltradas.map((sec) => {
           const tools = TOOLS.filter((t) => t.sec === sec.id)
+          const grade = tools.map((tool) => {
+            const locked     = tool.pro && !isCorretor
+            const subLocked  = tool.needsSub && !isCorretor
+            const isOn       = ativa === tool.id
+            const isLockMsgOn = lockMsg === tool.id
+
+            if (tool.to && !locked && !subLocked) {
+              return (
+                <Link key={tool.id} className="ferr-card3" to={tool.to}>
+                  <span className="ferr-card3-ico"><FI name={tool.icon} /></span>
+                  <span className="ferr-card3-body">
+                    <span className="ferr-card3-tit">
+                      <b>{tool.nome}</b>
+                      {tool.popular && <span className="ferr-badge-popular">Popular</span>}
+                    </span>
+                    <i>{tool.desc}</i>
+                  </span>
+                  <span className="ferr-card3-arrow"><IconArrow /></span>
+                </Link>
+              )
+            }
+
+            return (
+              <button
+                key={tool.id}
+                type="button"
+                className={`ferr-card3${isOn ? ' on' : ''}${isLockMsgOn ? ' lock-pulse' : ''}`}
+                onClick={() => escolher(tool)}
+                aria-label={tool.nome}
+              >
+                <span className="ferr-card3-ico">
+                  <FI name={tool.icon} />
+                </span>
+                <span className="ferr-card3-body">
+                  <span className="ferr-card3-tit">
+                    <b>{tool.nome}</b>
+                    {tool.popular && <span className="ferr-badge-popular">Popular</span>}
+                    {(tool.pro || (tool.needsSub && !isCorretor)) && <span className="ferr-badge-pro-sm">PRO</span>}
+                  </span>
+                  <i>{tool.desc}</i>
+                  {isLockMsgOn && (
+                    <span className="ferr-lock-msg">Assine a Área do Corretor para desbloquear.</span>
+                  )}
+                </span>
+              </button>
+            )
+          })
           return (
             <section key={sec.id} id={sec.id === 'pro' ? 'ferr-pro-section' : undefined} className={`ferr-section${sec.pro ? ' ferr-section--pro' : ''}`}>
 
@@ -663,91 +710,47 @@ export default function Ferramentas() {
                 <span className="ferr-sec-count">{tools.length} ferramenta{tools.length !== 1 ? 's' : ''}</span>
               </div>
 
-              {/* banner de assinatura (PRO não assinante) */}
-              {sec.pro && !isCorretor && (
-                <div className="ferr-pro-banner">
-                  <div className="ferr-pro-banner-txt">
-                    <b>Ferramentas exclusivas para corretores</b>
-                    <span>Assine a Área do Corretor e desbloqueie ACM, comissão, ficha, IA de fotos e muito mais.</span>
-                  </div>
-                  <div className="ferr-pro-banner-planos">
-                    <Link to="/corretor" className="ferr-pro-plano">
-                      <span className="ferr-pro-plano-nome">Semanal</span>
-                      <b className="ferr-pro-plano-preco">R$ 49,90</b>
-                      <span className="ferr-pro-plano-per">/ 7 dias</span>
-                      <span className="ferr-pro-plano-cta">Assinar agora</span>
-                    </Link>
-                    <Link to="/corretor" className="ferr-pro-plano ferr-pro-plano--dest">
-                      <span className="ferr-pro-plano-badge">Mais popular</span>
-                      <span className="ferr-pro-plano-nome">Mensal</span>
-                      <b className="ferr-pro-plano-preco">R$ 150</b>
-                      <span className="ferr-pro-plano-per">/ 30 dias</span>
-                      <span className="ferr-pro-plano-cta">Assinar agora</span>
-                    </Link>
-                  </div>
-                  <Link className="btn btn-gold ferr-pro-btn" to="/corretor">Assinar e desbloquear <IconArrow /></Link>
-                </div>
-              )}
-
-              {/* banner para assinante */}
-              {sec.pro && isCorretor && (
-                <div className="ferr-pro-ativo">
-                  <FI name="star" size={16} />
-                  <span>Você tem acesso à Área do Corretor.</span>
-                  <Link to="/corretor" className="ferr-pro-ativo-link">Ir para o painel completo →</Link>
-                </div>
-              )}
-
-              {/* grade de cards */}
-              <div className="ferr-grid-3">
-                {tools.map((tool) => {
-                  const locked     = tool.pro && !isCorretor
-                  const subLocked  = tool.needsSub && !isCorretor
-                  const isOn       = ativa === tool.id
-                  const isLockMsgOn = lockMsg === tool.id
-
-                  if (tool.to && !locked && !subLocked) {
-                    return (
-                      <Link key={tool.id} className="ferr-card3" to={tool.to}>
-                        <span className="ferr-card3-ico"><FI name={tool.icon} /></span>
-                        <span className="ferr-card3-body">
-                          <span className="ferr-card3-tit">
-                            <b>{tool.nome}</b>
-                            {tool.popular && <span className="ferr-badge-popular">Popular</span>}
-                          </span>
-                          <i>{tool.desc}</i>
-                        </span>
-                        <span className="ferr-card3-arrow"><IconArrow /></span>
+              {/* PRO não assinante: caixa única — pitch + planos + CTA no topo e
+                  TODAS as ferramentas PRO dentro da própria caixa de assinatura. */}
+              {sec.pro && !isCorretor ? (
+                <div className="ferr-pro-box">
+                  <div className="ferr-pro-box-head">
+                    <div className="ferr-pro-box-pitch">
+                      <b>Ferramentas exclusivas para corretores</b>
+                      <span>Assine a Área do Corretor e desbloqueie ACM, comissão, ficha, IA de fotos e muito mais.</span>
+                    </div>
+                    <div className="ferr-pro-planos">
+                      <Link to="/corretor" className="ferr-pro-plano">
+                        <span className="ferr-pro-plano-nome">Semanal</span>
+                        <b className="ferr-pro-plano-preco">R$ 49,90</b>
+                        <span className="ferr-pro-plano-per">/ 7 dias</span>
+                        <span className="ferr-pro-plano-cta">Assinar agora</span>
                       </Link>
-                    )
-                  }
-
-                  return (
-                    <button
-                      key={tool.id}
-                      type="button"
-                      className={`ferr-card3${isOn ? ' on' : ''}${isLockMsgOn ? ' lock-pulse' : ''}`}
-                      onClick={() => escolher(tool)}
-                      aria-label={tool.nome}
-                    >
-                      <span className="ferr-card3-ico">
-                        <FI name={tool.icon} />
-                      </span>
-                      <span className="ferr-card3-body">
-                        <span className="ferr-card3-tit">
-                          <b>{tool.nome}</b>
-                          {tool.popular && <span className="ferr-badge-popular">Popular</span>}
-                          {(tool.pro || (tool.needsSub && !isCorretor)) && <span className="ferr-badge-pro-sm">PRO</span>}
-                        </span>
-                        <i>{tool.desc}</i>
-                        {isLockMsgOn && (
-                          <span className="ferr-lock-msg">Assine a Área do Corretor para desbloquear.</span>
-                        )}
-                      </span>
-                    </button>
-                  )
-                })}
-              </div>
+                      <Link to="/corretor" className="ferr-pro-plano ferr-pro-plano--dest">
+                        <span className="ferr-pro-plano-badge">Mais popular</span>
+                        <span className="ferr-pro-plano-nome">Mensal</span>
+                        <b className="ferr-pro-plano-preco">R$ 150</b>
+                        <span className="ferr-pro-plano-per">/ 30 dias</span>
+                        <span className="ferr-pro-plano-cta">Assinar agora</span>
+                      </Link>
+                    </div>
+                    <Link className="ferr-pro-cta-btn" to="/corretor">Assinar e desbloquear <IconArrow /></Link>
+                  </div>
+                  <div className="ferr-pro-box-sep" aria-hidden="true" />
+                  <div className="ferr-grid-3 ferr-grid-3--pro">{grade}</div>
+                </div>
+              ) : (
+                <>
+                  {sec.pro && isCorretor && (
+                    <div className="ferr-pro-ativo">
+                      <FI name="star" size={16} />
+                      <span>Você tem acesso à Área do Corretor.</span>
+                      <Link to="/corretor" className="ferr-pro-ativo-link">Ir para o painel completo →</Link>
+                    </div>
+                  )}
+                  <div className="ferr-grid-3">{grade}</div>
+                </>
+              )}
             </section>
           )
         })}
