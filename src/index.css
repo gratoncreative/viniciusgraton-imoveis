@@ -8867,3 +8867,95 @@ html[data-theme="claro"] .det-whats { background: #EB0128; }
 html[data-theme="claro"] .det-whats:hover { background: #C20020; }
 html[data-theme="claro"] .det-whats svg { color: #FFFFFF; }
 /* estado "copiado" do detalhe pode seguir verde (feedback), não é CTA */
+
+/* ============================================================
+   🔒 REGRA DE OURO DOS BOTÕES (trancada por senha na memória).
+   TODO botão é uma de 3 opções:
+     Op.1 escuro:   fundo #0b0e16  · letra #fff
+     Op.2 vermelho: fundo #eb0128  · letra #fff
+     Op.3 filtros:  fundo #fff · letra #0b0e16 · borda #eb0128 · ícone #eb0128
+   Este bloco é o ÚLTIMO do arquivo => vence na cascata.
+   So altera os FUNDOS dos BOTÕES (não toca em texto/selo/seção navy).
+   ============================================================ */
+/* --- Op.1: botões escuros => fundo #0b0e16 + letra branca --- */
+html[data-theme="claro"] .btn-gold,
+html[data-theme="claro"] .btn-ghost,
+html[data-theme="claro"] .det-btn-acao,
+html[data-theme="claro"] .im-ver,
+html[data-theme="claro"] .au-btn,
+html[data-theme="claro"] .det-tour-b,
+html[data-theme="claro"] .gal-tour,
+html[data-theme="claro"] .es3-laudo-btn,
+html[data-theme="claro"] .preco-gate--detalhe .pg-cta,
+html[data-theme="claro"] .ferr-pro-cta-btn,
+html[data-theme="claro"] .eav-link-btn,
+html[data-theme="claro"] .cat-editar-bar,
+html[data-theme="claro"] .promo-edit-btn,
+html[data-theme="claro"] .aie-fab,
+html[data-theme="claro"] .mm-btn--ouro,
+html[data-theme="claro"] .mf .mf-aba.on,
+html[data-theme="claro"] .mf .mf-modo-btn.on,
+html[data-theme="claro"] .login-senha-tabs button.on {
+  background: #0b0e16 !important;
+  border-color: #0b0e16 !important;
+  color: #FFFFFF !important;
+}
+html[data-theme="claro"] .btn-gold:hover,
+html[data-theme="claro"] .btn-ghost:hover,
+html[data-theme="claro"] .det-btn-acao:hover,
+html[data-theme="claro"] .im-card:hover .im-ver,
+html[data-theme="claro"] .au-btn:hover,
+html[data-theme="claro"] .det-tour-b:hover,
+html[data-theme="claro"] .gal-tour:hover,
+html[data-theme="claro"] .es3-laudo-btn:hover,
+html[data-theme="claro"] .preco-gate--detalhe .pg-cta:hover,
+html[data-theme="claro"] .ferr-pro-cta-btn:hover,
+html[data-theme="claro"] .eav-link-btn:hover,
+html[data-theme="claro"] .cat-editar-bar:hover,
+html[data-theme="claro"] .promo-edit-btn:hover,
+html[data-theme="claro"] .aie-fab:hover {
+  background: #1C2A44 !important;
+  border-color: #1C2A44 !important;
+  color: #FFFFFF !important;
+}
+/* ícone dentro de botão escuro = branco */
+html[data-theme="claro"] .btn-gold svg, html[data-theme="claro"] .btn-ghost svg,
+html[data-theme="claro"] .det-btn-acao svg, html[data-theme="claro"] .im-ver svg,
+html[data-theme="claro"] .au-btn svg, html[data-theme="claro"] .gal-tour svg,
+html[data-theme="claro"] .es3-laudo-btn svg, html[data-theme="claro"] .ferr-pro-cta-btn svg,
+html[data-theme="claro"] .eav-link-btn svg, html[data-theme="claro"] .aie-fab svg { color: #FFFFFF !important; }
+
+/* --- Op.2: botões de contato/ação => fundo #eb0128 + letra branca --- */
+html[data-theme="claro"] .im-cta,
+html[data-theme="claro"] .det-whats {
+  background: #eb0128 !important;
+  border-color: #eb0128 !important;
+  color: #FFFFFF !important;
+}
+html[data-theme="claro"] .im-cta:hover,
+html[data-theme="claro"] .det-whats:hover { background: #C20020 !important; border-color: #C20020 !important; }
+html[data-theme="claro"] .im-cta svg, html[data-theme="claro"] .det-whats svg { color: #FFFFFF !important; }
+
+/* --- Op.3: botões maiores de FILTRO => branco + texto/borda/ícone vermelho --- */
+html[data-theme="claro"] .cat-tipo,
+html[data-theme="claro"] .fp-pill,
+html[data-theme="claro"] .ff-pills button,
+html[data-theme="claro"] .cat-bairro-chip {
+  background: #FFFFFF;
+  border: 1px solid #eb0128;
+  color: #0b0e16;
+}
+html[data-theme="claro"] .cat-tipo svg, html[data-theme="claro"] .fp-pill svg,
+html[data-theme="claro"] .ff-pills button svg { color: #eb0128; }
+/* filtro ATIVO => preenche vermelho (Op.2), letra branca */
+html[data-theme="claro"] .cat-tipo.on,
+html[data-theme="claro"] .fp-pill.on,
+html[data-theme="claro"] .ff-pills button.on,
+html[data-theme="claro"] .cat-bairro-chip.on {
+  background: #eb0128 !important;
+  border-color: #eb0128 !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+}
+html[data-theme="claro"] .cat-tipo.on svg, html[data-theme="claro"] .fp-pill.on svg,
+html[data-theme="claro"] .ff-pills button.on svg { color: #FFFFFF !important; }
