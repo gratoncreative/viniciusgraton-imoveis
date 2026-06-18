@@ -7848,6 +7848,23 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .eav-calcular:hover { transform: translateY(-2px); filter: brightness(1.05); }
 .eav-nota { margin: 16px 0 0; font-size: 0.82rem; color: var(--text-mute); line-height: 1.55; text-align: center; }
 .eav-nota a { color: var(--gold-3, #C20020); font-weight: 600; }
+
+/* Campo de link com auto-preenchimento (lê o anúncio e preenche o form) */
+.eav-link { margin-bottom: 10px; }
+.eav-link-row { display: flex; gap: 10px; align-items: stretch; }
+.eav-link-row input { flex: 1; min-width: 0; }
+.eav-link-btn { flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 124px; cursor: pointer; border: none; border-radius: 11px; padding: 0 18px; font-family: var(--font-head); font-weight: 700; font-size: 0.9rem; color: #FFFFFF; background: #1C2A44; transition: filter .18s, transform .18s; }
+.eav-link-btn:hover:not(:disabled) { filter: brightness(1.12); transform: translateY(-1px); }
+.eav-link-btn:disabled { opacity: 0.55; cursor: default; }
+.eav-link-spin { width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.35); border-top-color: #fff; animation: eav-spin 0.7s linear infinite; }
+@keyframes eav-spin { to { transform: rotate(360deg); } }
+.eav-link-status { margin: 9px 2px 0; font-size: 0.84rem; line-height: 1.5; font-weight: 600; }
+.eav-link-status--load { color: var(--text-soft); font-weight: 500; }
+.eav-link-status--ok { color: #2E7D55; }
+.eav-link-status--erro { color: #B04A37; font-weight: 500; }
+.eav-ou { display: flex; align-items: center; gap: 12px; margin: 4px 0 14px; color: var(--text-mute); font-size: 0.76rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+.eav-ou::before, .eav-ou::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+@media (max-width: 540px) { .eav-link-row { flex-direction: column; } .eav-link-btn { width: 100%; padding: 12px; } }
 /* CTA 'avalie qualquer imóvel' no catálogo */
 .cat-avaliar-cta { display: flex; align-items: center; gap: 14px; text-decoration: none; margin: 4px 0 22px; padding: 16px 20px; border-radius: 16px; border: 1px solid rgba(10, 14, 22,0.32); background: linear-gradient(135deg, #fefdfb, #f4efe6); box-shadow: 0 10px 30px -20px rgba(28,42,68,0.45); transition: transform .18s var(--ease), box-shadow .18s, border-color .18s; }
 .cat-avaliar-cta:hover { transform: translateY(-2px); border-color: var(--gold-2, #EB0128); box-shadow: 0 16px 36px -18px rgba(10, 14, 22,0.5); }
