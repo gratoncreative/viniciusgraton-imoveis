@@ -13,11 +13,14 @@ const json = (o, s = 200, cache = 0) =>
     },
   })
 
-export async function onRequestGet({ env }) {
+export async function onRequestGet({ env, request }) {
+  // diagnóstico: /api/promo?diag=1 -> diz se o D1 está realmente bindado (DB) e se o KV existe
+  const d1 = !!(env && env.DB && typeof env.DB.prepare === 'function')
+  const kv = !!(env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'function')
   env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
-    if (!env || !env.ENGAGEMENT || typeof env.ENGAGEMENT.get !== 'function') {
-      return json({ ok: true, promo: null })
+    if (request && new URL(request.url).searchParams.get('diag')) {
+      return json({ ok: true, d1, kv, storage: d1 ? 'D1' : (kv ? 'KV' : 'nenhum') })
     }
     const v = await env.ENGAGEMENT.get('config:promo', 'json')
     return json({ ok: true, promo: v || null }, 200, 60)
