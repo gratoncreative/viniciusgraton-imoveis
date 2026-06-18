@@ -8792,3 +8792,26 @@ html[data-theme="claro"] .promo-imovel--card .im-tag {
 .mf .mf-acoes-info { color: #5b626e; }
 .mf .mf-nota { color: #8a909b; }
 .mf .mf-vitrine-cta { background: #FAF7F1; border-color: #E7E2D8; color: #2A2F38; }
+
+/* === Fix de CONTRASTE da landing Louis ===
+   A regra global de tema claro (html[data-theme="claro"] h1,h2,h3 -> escuro, specificity 0,1,2)
+   vencia os títulos das seções ESCURAS do Louis (hero, localização, "quanto rende", formulário,
+   caixa de CTA), deixando texto escuro sobre fundo escuro. Reassere BRANCO onde o fundo é escuro,
+   e mantém a eyebrow no vermelho da marca. */
+html[data-theme="claro"] .lou-hero h1,
+html[data-theme="claro"] .lou-hero h2,
+html[data-theme="claro"] .lou-hero h3,
+html[data-theme="claro"] .lou-hero .lou-marca,
+html[data-theme="claro"] .lou-loc h2,
+html[data-theme="claro"] .lou-loc h3,
+html[data-theme="claro"] .lou-sec--dark h2,
+html[data-theme="claro"] .lou-sec--dark h3,
+html[data-theme="claro"] .lou-form-sec h2,
+html[data-theme="claro"] .lou-form-sec h3,
+html[data-theme="claro"] .lou-cond-cta h3,
+html[data-theme="claro"] .lou-h2--light { color: #FFFFFF; }
+html[data-theme="claro"] .lou-hero .lou-h1 em { color: var(--gold-2, #EB0128); }
+html[data-theme="claro"] .lou-hero .eyebrow,
+html[data-theme="claro"] .lou-loc .eyebrow,
+html[data-theme="claro"] .lou-sec--dark .eyebrow,
+html[data-theme="claro"] .lou-form-sec .eyebrow { color: var(--gold-2, #EB0128); }
