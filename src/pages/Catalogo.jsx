@@ -7,7 +7,6 @@ import AviseMe from '../components/AviseMe'
 import FiltroSelect from '../components/FiltroSelect'
 import FiltroPills from '../components/FiltroPills'
 import InputMoeda from '../components/InputMoeda'
-import VistosRecentemente from '../components/VistosRecentemente'
 import AdminImovelEditor from '../components/AdminImovelEditor'
 import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, BAIRROS_SEO, linkWhatsApp, WA, aplicarOverrideEmUm } from '../data'
 import { useSEO } from '../useSEO'
@@ -500,10 +499,8 @@ export default function Catalogo() {
         </aside>
 
         <div className="cat-main" data-lenis-prevent ref={catMainRef}>
-        {/* "Visto recentemente" só aparece no topo quando NÃO há busca/filtro ativo.
-            Com filtro ativo, o resultado da pesquisa é prioridade (fica em cima) e o
-            "visto recentemente" desce para o fim da lista. */}
-        {semFiltros && <VistosRecentemente excluir={null} />}
+        {/* "Visto recentemente" NÃO aparece mais aqui — fica só na Minha área
+            (/conta), exclusiva do cliente logado. */}
 
         {/* CTA: estudo do m² de qualquer imóvel (mesmo fora do site) */}
         <Link to="/avaliar" className="cat-avaliar-cta">
@@ -584,9 +581,6 @@ export default function Catalogo() {
             </div>
           </div>
         )}
-
-        {/* Com busca/filtro ativo, "visto recentemente" aparece aqui embaixo — nunca acima dos resultados. */}
-        {!semFiltros && <VistosRecentemente excluir={null} />}
 
         {/* Grade SEO de bairros (estilo portal) — links internos por bairro de Uberlândia */}
         {bairrosSeoGrid.length > 12 && (
