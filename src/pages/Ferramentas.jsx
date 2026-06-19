@@ -262,7 +262,11 @@ const RESID_ACM = new Set(['Apartamento', 'Casa', 'Casa Condomínio Fechado', 'C
 function statsACM(bairro, tipo, quartos) {
   const seg = ACM_INDEX.seg || {}
   const qb = quartos === '4' ? '4' : (quartos || '')
-  return (qb && seg[`${bairro}|${tipo}|${qb}`]) || seg[`${bairro}|${tipo}|`] || { n: 0 }
+  const exato = qb && seg[`${bairro}|${tipo}|${qb}`]
+  if (exato) return { ...exato, porQuartos: true }
+  const porTipo = seg[`${bairro}|${tipo}|`]
+  if (porTipo) return { ...porTipo, porQuartos: false }
+  return { n: 0, porQuartos: false }
 }
 
 function BarraFaixa({ min, central, max }) {
@@ -291,9 +295,9 @@ export function CalcACM() {
     const pub = BAIRROS_M2.find((x) => x.bairro === bairro)
     if (cat.n >= 4) {
       const conf = cat.n >= 12 ? 'alta' : cat.n >= 6 ? 'média' : 'baixa'
-      return { ok: true, central: cat.mediana * A, min: cat.p25 * A, max: cat.p75 * A, m2: cat.mediana, fonte: 'seu catálogo (Rotina)', ref: `${cat.n} imóveis`, n: cat.n, conf, origem: 'catalogo' }
+      return { ok: true, central: cat.mediana * A, min: cat.p25 * A, max: cat.p75 * A, m2: cat.mediana, fonte: 'seu catálogo (Rotina)', ref: `${cat.n} imóveis`, n: cat.n, conf, origem: 'catalogo', porQuartos: cat.porQuartos }
     }
-    if (pub && pub.m2 > 0) return { ok: true, central: pub.m2 * A, min: pub.m2 * A * 0.88, max: pub.m2 * A * 1.12, m2: pub.m2, fonte: pub.fonte, ref: pub.ref, n: cat.n, conf: 'referência pública', origem: 'publica' }
+    if (pub && pub.m2 > 0) return { ok: true, central: pub.m2 * A, min: pub.m2 * A * 0.88, max: pub.m2 * A * 1.12, m2: pub.m2, fonte: pub.fonte, ref: pub.ref, n: cat.n, conf: 'referência pública', origem: 'publica', porQuartos: false }
     return { ok: false }
   }, [bairro, tipo, quartos, area, ehResid])
 
@@ -327,7 +331,11 @@ export function CalcACM() {
         {r.ok ? <>
           <Resultado destaque={{ rotulo: 'Referência pela área (m² do bairro)', valor: `${brl(r.min)} a ${brl(r.max)}` }} itens={[
             { rotulo: `m² médio${r.origem === 'catalogo' ? ' (catálogo)' : ''} em ${bairro}`, valor: `${brl(r.m2)}/m²` },
-            { rotulo: 'Amostra', valor: r.origem === 'catalogo' ? `${r.n} imóveis no catálogo` : 'sem imóveis no catálogo' },
+            { rotulo: 'Amostra', valor: r.origem === 'catalogo'
+                ? (r.porQuartos
+                    ? `${r.n} imóveis · ${quartos === '4' ? '4+' : quartos} quartos`
+                    : `${r.n} imóveis · todos os quartos${(ehResid && quartos) ? ` (sem amostra de ${quartos === '4' ? '4+' : quartos}q neste bairro)` : ''}`)
+                : 'sem imóveis no catálogo' },
             { rotulo: 'Precisão da referência', valor: r.conf },
             { rotulo: 'Fonte', valor: `${r.fonte}${r.ref ? ` (${r.ref})` : ''}` },
           ]} />
