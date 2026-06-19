@@ -1,4 +1,5 @@
 import { kvStore } from '../_lib/store.js'
+import { imoviewLogin } from '../_lib/imoview.js'
 /**
  * Cloudflare Pages Function — Painel ADMIN do Vinícius (seguro).
  *
@@ -474,6 +475,99 @@ export async function onRequestPost({ env, request }) {
     const id = String(b.id || '').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 40)
     if (id) await env.ENGAGEMENT.delete('crm:' + id)
     return json({ ok: true })
+  }
+
+  // ── ATENDIMENTOS EM ABERTO (Imoview) → conversão ──────────────────────────
+  // Lista os atendimentos: API oficial (env.IMOVIEW_CHAVE) ou sessão web (fallback).
+  // Inputs do cliente: só force/debug — nenhum texto livre vai pro Imoview. Cache 10min.
+  if (action === 'atendimentos-list') {
+    try {
+      const cache = await env.ENGAGEMENT.get('atend:lista', 'json').catch(() => null)
+      if (!b.force && !b.debug && cache && (Date.now() - (cache.geradoEm || 0)) < 10 * 60 * 1000) {
+        return json({ ok: true, leads: cache.leads || [], geradoEm: cache.geradoEm, source: 'cache' })
+      }
+      const dbg = {}
+      const chave = (env.IMOVIEW_CHAVE || '').trim()
+      let raw = null
+
+      if (chave) {
+        const url = 'https://api.imoview.com.br/Atendimento/RetornarAtendimentos?numeroRegistros=200&numeroPagina=1'
+        const r = await fetch(url, { headers: { chave, accept: 'application/json' }, signal: AbortSignal.timeout(12000) }).catch(() => null)
+        if (r) { dbg.apiStatus = r.status; const txt = await r.text(); if (b.debug) dbg.apiRaw = txt.slice(0, 4000); try { raw = JSON.parse(txt) } catch {} }
+      } else {
+        const ses = await imoviewLogin(env, { debug: b.debug === true })
+        Object.assign(dbg, ses.dbg || {})
+        if (ses.ok) {
+          if (b.debug) {
+            const pg = await fetch(`${ses.baseUrl}/Atendimento`, { headers: { cookie: ses.cookies, 'user-agent': 'Mozilla/5.0' }, signal: AbortSignal.timeout(10000) }).catch(() => null)
+            if (pg) { const h = await pg.text(); dbg.atendimentoSnippet = h.slice(0, 4000); const m = h.match(/\/Atendimento\/(Listar|Pesquisar|Retornar\w*)/gi); dbg.endpointsNoHtml = m ? [...new Set(m)] : [] }
+          } else {
+            for (const path of ['/Atendimento/RetornarAtendimentos', '/Atendimento/ListarAtendimentos', '/Atendimento/Pesquisar', '/Atendimento/RetornarAtendimentosPesquisa']) {
+              const r = await fetch(`${ses.baseUrl}${path}`, { method: 'POST', headers: { cookie: ses.cookies, 'content-type': 'application/json; charset=utf-8', 'x-requested-with': 'XMLHttpRequest', accept: 'application/json' }, body: JSON.stringify({ situacao: 'A', pagina: 1, registrosPorPagina: 200 }), signal: AbortSignal.timeout(10000) }).catch(() => null)
+              if (r && r.ok) { const txt = await r.text(); try { const j = JSON.parse(txt); if (j) { raw = j; dbg.endpoint = path; break } } catch {} }
+            }
+          }
+        }
+      }
+
+      if (b.debug) return json({ ok: !!raw, leads: [], dbg }, 200)
+
+      const arr = Array.isArray(raw) ? raw : (raw && (raw.lista || raw.dados || raw.Data || raw.data || raw.atendimentos || raw.Atendimentos)) || []
+      const pick = (o, ...ks) => { for (const k of ks) { if (o && o[k] != null && o[k] !== '') return o[k] } return '' }
+      const leads = (Array.isArray(arr) ? arr : []).map((a, i) => ({
+        id: String(pick(a, 'codigo', 'Codigo', 'codigoatendimento', 'id', 'Id') || ('a' + i)),
+        nome: String(pick(a, 'nome', 'Nome', 'nomecliente', 'NomeCliente', 'nomeLead') || '').slice(0, 120),
+        fone: String(pick(a, 'celular', 'Celular', 'telefone', 'Telefone', 'fone') || '').slice(0, 40),
+        email: String(pick(a, 'email', 'Email') || '').slice(0, 160),
+        origem: String(pick(a, 'midia', 'Midia', 'origem', 'Origem', 'portal') || '').slice(0, 60),
+        interesse: String(pick(a, 'imovel', 'Imovel', 'tituloimovel', 'imovelInteresse', 'descricao', 'Descricao') || '').slice(0, 300),
+        imovelCod: String(pick(a, 'codigoimovel', 'CodigoImovel', 'imovelCodigo') || '').slice(0, 20),
+        situacao: String(pick(a, 'situacao', 'Situacao', 'etapa', 'Etapa', 'status') || '').slice(0, 60),
+        ultimoContatoEm: String(pick(a, 'dataultimainteracao', 'DataUltimaInteracao', 'dataUltimoContato', 'ultimaInteracao') || '').slice(0, 40),
+        criadoEm: String(pick(a, 'datacadastro', 'DataCadastro', 'data', 'Data') || '').slice(0, 40),
+        historico: String(pick(a, 'observacao', 'Observacao', 'historico', 'anotacoes', 'observacoes') || '').slice(0, 600),
+        corretor: String(pick(a, 'corretor', 'Corretor', 'nomecorretor', 'usuario') || '').slice(0, 80),
+      }))
+      await env.ENGAGEMENT.put('atend:lista', JSON.stringify({ geradoEm: Date.now(), leads })).catch(() => {})
+      return json({ ok: true, leads, geradoEm: Date.now(), total: leads.length })
+    } catch (e) {
+      return json({ ok: false, erro: String((e && e.message) || e).slice(0, 200), leads: [] }, 200)
+    }
+  }
+
+  // Gera mensagem de WhatsApp + plano de ação personalizado p/ UM atendimento (IA Anthropic).
+  if (action === 'atendimento-plano') {
+    const apiKey = (env.ANTHROPIC_API_KEY || '').trim()
+    if (!apiKey) return json({ error: 'config', msg: 'Defina ANTHROPIC_API_KEY na Cloudflare para gerar as mensagens.' }, 503)
+    const lim = (s, n) => String(s == null ? '' : s).slice(0, n)
+    const lead = (b.lead && typeof b.lead === 'object') ? b.lead : null
+    if (!lead) return json({ error: 'lead' }, 400)
+    const id = lim(String(lead.id || '').replace(/[^\w-]/g, ''), 40)
+    if (id && !b.force) { const c = await env.ENGAGEMENT.get('plano:' + id, 'json').catch(() => null); if (c) return json({ ok: true, ...c, source: 'cache' }) }
+    const SYSTEM = 'Você é o assistente de vendas do Vinícius Graton, consultor de imóveis da Rotina Imobiliária em Uberlândia/MG (CRECI em formação). Você escreve mensagens de WhatsApp NA VOZ dele. Regras invioláveis.. (1) trate-o como "consultor"/"consultor da Rotina", NUNCA "corretor"; (2) pontuação sóbria.. use ".." no lugar de dois-pontos e NUNCA travessão; (3) mensagens CURTAS, no máximo 1 emoji; (4) abra com "Me conta.." em primeiro contato ou reaquecimento; (5) TODA mensagem termina com UMA pergunta aberta; (6) tom calmo, sem pressão; (7) cite o imóvel/bairro específico do lead; (8) nunca invente preço, condição ou metragem que não veio na entrada. Objetivo.. converter o atendimento em VISITA agendada. Responda APENAS com um JSON válido (sem markdown), no formato: {"mensagem_whatsapp": "...", "temperatura_confirmada": "quente|morno|frio", "plano": [{"passo": "...", "prazo": "..."}]}'
+    const USER = `Gere a abordagem para este atendimento em aberto.\nNome.. ${lim(lead.nome, 120)}\nImóvel de interesse.. ${lim(lead.interesse, 300)}\nOrigem.. ${lim(lead.origem, 60)}\nSituação.. ${lim(lead.situacao, 60)}\nÚltimo contato.. ${lim(lead.ultimoContatoEm, 40)}\nHistórico.. ${lim(lead.historico, 400)}\nProduza (1) UMA mensagem de WhatsApp pronta pra copiar, respeitando TODAS as regras, e (2) um plano de 1 a 3 passos (próxima ação + prazo).`
+    try {
+      const r = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+        body: JSON.stringify({ model: (env.ATEND_MODEL || 'claude-opus-4-8'), max_tokens: 1200, system: SYSTEM, messages: [{ role: 'user', content: USER }] }),
+        signal: AbortSignal.timeout(30000),
+      })
+      if (!r.ok) return json({ error: 'ia', msg: 'Falha na IA (' + r.status + ')', detalhe: (await r.text()).slice(0, 200) }, 200)
+      const j = await r.json()
+      const blk = (j.content || []).find((c) => c.type === 'text') || {}
+      let out = {}
+      try { out = JSON.parse(String(blk.text || '').replace(/^```json\s*|\s*```$/g, '').trim()) } catch {}
+      const fix = (s) => String(s || '').replace(/([^\d]):\s/g, '$1.. ').replace(/[—–]/g, '..')
+      const plano = {
+        mensagem: fix(lim(out.mensagem_whatsapp || out.mensagem, 2000)),
+        temperatura: out.temperatura_confirmada || out.temperatura || '',
+        passos: (Array.isArray(out.plano) ? out.plano : []).slice(0, 3).map((p) => ({ passo: lim(p && p.passo, 300), prazo: lim(p && p.prazo, 60) })),
+      }
+      if (!plano.mensagem) return json({ error: 'ia', msg: 'A IA não retornou uma mensagem válida. Tente regerar.' }, 200)
+      if (id) await env.ENGAGEMENT.put('plano:' + id, JSON.stringify({ ...plano, geradoEm: Date.now() }), { expirationTtl: 7 * 24 * 3600 }).catch(() => {})
+      return json({ ok: true, ...plano, source: 'ia' })
+    } catch (e) { return json({ error: 'ia', msg: String((e && e.message) || e).slice(0, 200) }, 200) }
   }
 
   // Busca dados do PROPRIETÁRIO via sessão web Imoview (4 passos):

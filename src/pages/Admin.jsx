@@ -8,6 +8,7 @@ import InputMoeda from '../components/InputMoeda'
 const RemoverMarca = lazy(() => import('../components/RemoverMarca'))
 const MelhorarFotos = lazy(() => import('../components/MelhorarFotos'))
 const PostGen = lazy(() => import('../components/PostGen'))
+const AtendimentosPanel = lazy(() => import('../components/AtendimentosPanel'))
 
 const LSK = 'vg_admin_token'
 const waLink = (fone) => { const d = String(fone || '').replace(/\D/g, ''); const full = d.length <= 11 ? '55' + d : d; return `https://wa.me/${full}` }
@@ -574,6 +575,7 @@ export default function Admin() {
     ['imoveis', `Imóveis${aAvaliar ? ` (${aAvaliar} a avaliar)` : ''}`],
     ['leads', `Leads (${leads.length})`],
     ['crm', `Clientes${crmNovidades ? ` 🔔${crmNovidades}` : crmNovos ? ` (${crmNovos} novos)` : ''}`],
+    ['atendimentos', '🔥 Atendimentos'],
     ['news', `Newsletter (${(dados?.news || []).length})`],
     ['acessos', 'Acessos'],
     ['post', '📣 Gerar post'],
@@ -747,6 +749,7 @@ export default function Admin() {
         {aba === 'imoveis' && subImovel === 'publicados' && <ImoveisPub token={token} onSair={sair} alvo={imovelAlvo} onAbriu={() => setImovelAlvo(null)} />}
 
         {aba === 'crm' && <AdminCRM token={token} onSair={sair} cadastros={clientes} onExcluirCadastro={(c) => excluir(c._key, `o cadastro de ${c.nome || 'cliente'}`)} />}
+        {aba === 'atendimentos' && <Suspense fallback={<p className="section-sub">Carregando…</p>}><AtendimentosPanel token={token} onSair={sair} /></Suspense>}
 
         {aba === 'acessos' && (
           <section>

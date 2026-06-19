@@ -9188,3 +9188,33 @@ html[data-theme="dark"] .det-estudo-cta-ico svg { color: #FFFFFF !important; }
 .ficha-cod-msg { margin: 8px 0 0; font-size: 0.8rem; color: #1a7f37; }
 .ficha-acoes { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
 html[data-theme="claro"] .ferr-modal-body .ficha-preview { background: #FBF7F0; color: #2A2F38; border: 1px solid #E4DFD4; }
+
+/* ── Atendimentos (Imoview) no /admin — tema escuro do painel ── */
+.atend-pg { margin-top: 8px; }
+.atend-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.atend-erro { background: rgba(235,1,40,0.12); border: 1px solid rgba(235,1,40,0.4); color: #ffd7dd; border-radius: 10px; padding: 12px 14px; font-size: 0.86rem; }
+.atend-erro-inline { color: #ff9aa6; font-size: 0.8rem; margin-left: 8px; }
+.atend-lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+.atend-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 16px; }
+.atend-card-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.atend-card-top b { color: #f1ede4; font-size: 1rem; }
+.atend-chip { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; background: rgba(198,161,91,0.18); color: #e7cf9e; border: 1px solid rgba(198,161,91,0.4); padding: 3px 9px; border-radius: 100px; }
+.atend-origem { font-size: 0.72rem; color: #a8b2c4; }
+.atend-interesse { color: #dce2ec; font-size: 0.88rem; margin: 8px 0 4px; }
+.atend-acoes { margin-top: 12px; }
+.atend-btn-gerar { background: #0b0e16; color: #fff; border: 1px solid #2a3550; border-radius: 10px; padding: 11px 16px; font-family: var(--font-head); font-weight: 700; font-size: 0.86rem; cursor: pointer; transition: background .16s; }
+.atend-btn-gerar:hover:not(:disabled) { background: #1C2A44; }
+.atend-btn-gerar:disabled { opacity: 0.6; cursor: default; }
+.atend-plano { margin-top: 12px; }
+.atend-temp { display: inline-block; color: #fff; font-size: 0.72rem; font-weight: 800; padding: 3px 10px; border-radius: 100px; margin-bottom: 8px; }
+.atend-msg { white-space: pre-wrap; background: #11151d; color: #e7e9ee; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 14px; font-size: 0.9rem; line-height: 1.55; }
+.atend-msg-acoes { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.atend-btn-copiar, .atend-btn-regerar { background: #1C2A44; color: #fff; border: 1px solid #2a3550; border-radius: 9px; padding: 9px 14px; font-family: var(--font-head); font-weight: 700; font-size: 0.8rem; cursor: pointer; }
+.atend-btn-copiar:hover, .atend-btn-regerar:hover { background: #25324d; }
+.atend-btn-wa { display: inline-flex; align-items: center; gap: 6px; background: #eb0128; color: #fff; border: 1px solid #eb0128; border-radius: 9px; padding: 9px 14px; font-family: var(--font-head); font-weight: 700; font-size: 0.8rem; text-decoration: none; }
+.atend-btn-wa:hover { background: #C20020; }
+.atend-btn-wa svg { color: #fff; }
+.atend-passos { margin: 12px 0 0; padding-left: 18px; }
+.atend-passos li { color: #cfd4dd; font-size: 0.84rem; line-height: 1.5; margin-bottom: 4px; }
+.atend-passos li b { color: #f1ede4; font-weight: 600; }
+.atend-passos li i { color: #a8b2c4; font-style: normal; }
