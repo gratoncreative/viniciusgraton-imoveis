@@ -100,7 +100,7 @@ const TOOLS = [
   // ── Área do Corretor (PRO) — todas exclusivas para assinantes ──
   // carros-chefe do corretor primeiro
   { id: 'acm',           nome: 'Referência de valor pela área', desc: 'Faixa de mercado pelo m² do bairro (não avalia a edificação). Grátis.',            icon: 'appraise',    sec: 'investidor' },
-  { id: 'comissao',      nome: 'Calculadora de comissão',   desc: 'Comissão e divisão corretor / imobiliária.',   icon: 'coins',   sec: 'pro', pro: true },
+  { id: 'comissao',      nome: 'Calculadora de comissão',   desc: 'Comissão (5%) e divisão corretor / imobiliária. Grátis.',   icon: 'coins',   sec: 'investidor' },
   { id: 'ficha',         nome: 'Ficha de avaliação',        desc: 'Resumo do imóvel pronto para compartilhar.',   icon: 'clipboard',     sec: 'pro', pro: true },
   { id: 'impulsionar',   nome: 'Impulsionar anúncio',       desc: 'Destaque seu imóvel por 7, 15 ou 30 dias.',    icon: 'rocket',  sec: 'pro', pro: true, to: '/impulsionar' },
   // fotos e imagens
@@ -353,13 +353,14 @@ export function CalcACM() {
   const totCentral = r.ok ? Math.round(r.referencia * A) : 0
   const qTxt = quartos === '4' ? '4+' : quartos
 
-  const enviarLead = (e) => {
-    e.preventDefault()
-    const nome = lead.nome.trim(), fone = lead.fone.replace(/\D/g, '')
-    if (nome.length < 2 || fone.length < 10) return
-    const ctx = `Avaliação ACM · ${tipo} · ${bairro}${ehResid && quartos ? ` · ${qTxt}q` : ''} · ${area}m² · faixa ${brl(totMin)}–${brl(totMax)}`
-    try { registrarLead({ cod: 'acm-avaliacao', nome, fone, email: '', bairro: ctx }) } catch {}
-    const msg = `Olá Vinícius! Usei a referência de mercado no site e quero a avaliação presencial do meu imóvel.\n\n${tipo} no ${bairro}${ehResid && quartos ? `, ${qTxt} quartos` : ''}, ${area} m².\nReferência pela metragem: ${brl(totMin)} a ${brl(totMax)}.\n\nMeu nome: ${nome}.`
+  const enviarPresencial = () => {
+    let id = null; try { id = JSON.parse(localStorage.getItem(ACM_LEAD_KEY) || 'null') } catch {}
+    let logado = null; try { logado = getCorretorOuAdmin() } catch {}
+    const nome = (lead.nome || (id && id.nome) || (logado && logado.nome) || '').trim()
+    const fone = (lead.fone || (id && id.fone) || '').replace(/\D/g, '')
+    const ctx = `AVALIAÇÃO PRESENCIAL (via ferramenta ACM) · ${tipo} · ${bairro}${ehResid && quartos ? ` · ${qTxt}q` : ''} · ${area}m² · faixa ${brl(totMin)}–${brl(totMax)}`
+    try { registrarLead({ cod: 'acm-avaliacao', nome: nome || '(sem nome)', fone, email: '', bairro: ctx }) } catch {}
+    const msg = `Olá Vinícius! *[Ferramenta de referência de valor — site]*\nQuero a *avaliação presencial* do meu imóvel.\n\n${tipo} no ${bairro}${ehResid && quartos ? `, ${qTxt} quartos` : ''}, ${area} m².\nReferência pela metragem (site): ${brl(totMin)} a ${brl(totMax)}.${nome ? `\n\nMeu nome: ${nome}.` : ''}`
     setLeadOk(true)
     window.open(linkWhatsApp(msg), '_blank', 'noopener')
   }
@@ -450,15 +451,11 @@ export function CalcACM() {
             <button type="button" className="acm-pdf-btn" onClick={baixarPdf}>Baixar PDF da referência</button>
           </div>
           {!leadOk ? (
-            <form className="acm-lead" onSubmit={enviarLead}>
+            <div className="acm-lead">
               <p className="acm-lead-tit">Quer a avaliação <b>presencial</b> (com a edificação)? Eu vou até o imóvel e fecho o preço justo.</p>
-              <div className="acm-lead-row">
-                <input placeholder="Seu nome" value={lead.nome} onChange={(e) => setLead((p) => ({ ...p, nome: e.target.value }))} />
-                <input type="tel" inputMode="tel" placeholder="WhatsApp (com DDD)" value={lead.fone} onChange={(e) => setLead((p) => ({ ...p, fone: e.target.value }))} />
-              </div>
-              <button type="submit" className="acm-lead-btn"><IconWhats width={18} height={18} /> Quero a avaliação presencial</button>
-            </form>
-          ) : <p className="acm-lead-ok">✓ Recebi seus dados! Abri o WhatsApp pra gente combinar a visita ao imóvel.</p>}
+              <button type="button" className="acm-lead-btn" onClick={enviarPresencial}><IconWhats width={18} height={18} /> Quero a avaliação presencial</button>
+            </div>
+          ) : <p className="acm-lead-ok">✓ Abri o WhatsApp com seus dados pra gente combinar a visita ao imóvel.</p>}
         </> : <p className="section-sub">Ainda não há comparáveis para <b>{bairro}</b> nesse recorte. Tente "Qualquer" em quartos/outro tipo, ou fale comigo para uma <b>avaliação presencial</b>.</p>}
         {nota('Método comparativo direto de dados de mercado (NBR 14653) sobre a carteira da Rotina: comparáveis do mesmo tipo, homogeneizados (vaga + área), saneados por Tukey/Chauvenet; referência = média saneada; faixa = campo de arbítrio ±15%. Baseado em preços anunciados — é referência da ÁREA, não substitui a avaliação presencial da edificação.')}
         </>}
