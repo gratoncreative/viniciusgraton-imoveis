@@ -48,7 +48,7 @@ const PLACA_TAMANHOS = [
 const PlacaPreview = ({ modelo }) => {
   if (modelo === 'premium') return (
     <svg viewBox="0 0 200 130" className="placa-svg" aria-hidden="true">
-      <rect x="3" y="3" width="194" height="124" rx="8" fill="#11151d" stroke="#b8862f" strokeWidth="2" />
+      <rect x="3" y="3" width="194" height="124" rx="8" fill="#212b3d" stroke="#b8862f" strokeWidth="2" />
       <rect x="13" y="13" width="174" height="104" rx="5" fill="none" stroke="#3a3322" />
       <text x="100" y="50" textAnchor="middle" fontFamily="Arial" fontSize="30" fontWeight="800" fill="#e0b556" letterSpacing="1">VENDE-SE</text>
       <line x1="55" y1="64" x2="145" y2="64" stroke="#b8862f" strokeWidth="1.5" />
@@ -59,7 +59,7 @@ const PlacaPreview = ({ modelo }) => {
   if (modelo === 'minimal') return (
     <svg viewBox="0 0 200 130" className="placa-svg" aria-hidden="true">
       <rect x="3" y="3" width="194" height="124" rx="8" fill="#f4f1e8" stroke="#d9c9a0" strokeWidth="2" />
-      <text x="100" y="60" textAnchor="middle" fontFamily="Arial" fontSize="33" fontWeight="800" fill="#11151d" letterSpacing="1">VENDE-SE</text>
+      <text x="100" y="60" textAnchor="middle" fontFamily="Arial" fontSize="33" fontWeight="800" fill="#212b3d" letterSpacing="1">VENDE-SE</text>
       <line x1="70" y1="72" x2="130" y2="72" stroke="#b8862f" strokeWidth="3" />
       <text x="100" y="99" textAnchor="middle" fontFamily="Arial" fontSize="12" fill="#3a4150">Vinícius Graton · {FONE_PLACA}</text>
     </svg>
@@ -69,7 +69,7 @@ const PlacaPreview = ({ modelo }) => {
       <rect x="3" y="3" width="194" height="124" rx="8" fill="#fff" stroke="#b8862f" strokeWidth="2" />
       <path d="M3 11a8 8 0 0 1 8-8h178a8 8 0 0 1 8 8v26H3z" fill="#b8862f" />
       <text x="100" y="28" textAnchor="middle" fontFamily="Arial" fontSize="22" fontWeight="800" fill="#fff" letterSpacing="1">VENDE-SE</text>
-      <text x="100" y="68" textAnchor="middle" fontFamily="Georgia, serif" fontStyle="italic" fontSize="16" fill="#11151d">Vinícius Graton</text>
+      <text x="100" y="68" textAnchor="middle" fontFamily="Georgia, serif" fontStyle="italic" fontSize="16" fill="#212b3d">Vinícius Graton</text>
       <text x="100" y="86" textAnchor="middle" fontFamily="Arial" fontSize="10" fill="#5a616e" letterSpacing="1">CONSULTOR DE IMÓVEIS · UBERLÂNDIA</text>
       <text x="100" y="110" textAnchor="middle" fontFamily="Arial" fontSize="14" fontWeight="700" fill="#b8862f">WhatsApp {FONE_PLACA}</text>
     </svg>

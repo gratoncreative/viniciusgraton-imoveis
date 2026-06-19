@@ -28,7 +28,7 @@ export default function Footer() {
                     <clipPath id="vg-tile-f"><rect width="48" height="48" rx="13" /></clipPath>
                     <linearGradient id="vg-ink-f" x1="0" y1="0" x2="0" y2="1">
                       <stop stopColor="#26365A" />
-                      <stop offset="1" stopColor="#0A0E16" />
+                      <stop offset="1" stopColor="#212b3d" />
                     </linearGradient>
                   </defs>
                   <g clipPath="url(#vg-tile-f)">
