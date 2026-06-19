@@ -1,7 +1,6 @@
 import { useEffect, useState, useMemo } from 'react'
 import { IMOVEIS, BAIRROS_TODOS, filtrarParaCliente, formatPreco, getImovel, oportunidade, ehEsquina, fotosDe } from '../data'
 import InputMoeda from './InputMoeda'
-import CrmOportunidades from './CrmOportunidades'
 import { agruparPorSetor } from '../bairros-setores'
 
 const TIPOS_CRM = ['Apartamento', 'Casa', 'Casa em condomínio', 'Chácara', 'Cobertura', 'Galpão', 'Kitnet/Studio', 'Lote', 'Sala comercial', 'Terreno']
@@ -1048,8 +1047,7 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
     )
   }, [clientes, busca])
 
-  // #11 — relatório do funil: quantos em cada etapa + conversão
-  const [funilFiltro, setFunilFiltro] = useState('')
+  // #11 — relatório do funil: quantos em cada etapa + conversão (só leitura, não filtra)
   const funil = useMemo(() => {
     const lista = clientes || []
     const m = {}; STATUS.forEach((s) => { m[s] = 0 })
@@ -1146,45 +1144,20 @@ export default function AdminCRM({ token, onSair, cadastros = [], onExcluirCadas
             {STATUS.filter((s) => s !== 'A revisar').map((s) => {
               const n = funil.m[s] || 0
               const pct = funil.total > 0 ? Math.round((n / funil.total) * 100) : 0
-              const on = funilFiltro === s
               return (
-                <button key={s} type="button" className={`crm-funil-etapa ${on ? 'on' : ''}`} onClick={() => setFunilFiltro(on ? '' : s)} title={`Filtrar por ${s}`}>
+                <div key={s} className="crm-funil-etapa" style={{ cursor: 'default' }}>
                   <span className="crm-funil-etapa-top"><i className="crm-funil-dot" style={{ background: STATUS_COR[s] }} />{s}</span>
                   <b>{n}</b>
                   <span className="crm-funil-bar"><i style={{ width: `${pct}%`, background: STATUS_COR[s] }} /></span>
-                </button>
+                </div>
               )
             })}
           </div>
-          {funilFiltro && <p className="painel-meta" style={{ marginTop: 8 }}>Mostrando só <b>{funilFiltro}</b>. <button className="crm-busca-clear" style={{ position: 'static', display: 'inline' }} onClick={() => setFunilFiltro('')}>limpar filtro ×</button></p>}
         </div>
       )}
 
-      <CrmOportunidades clientes={clientes || []} cadastros={cadastros} linkCliente={linkCliente} token={token} onMudou={carregar} />
-
-      {(() => {
-        const fu = [...(clientes || [])].map((c) => ({ c, d: diasParado(c) })).map((x) => ({ ...x, s: scoreFollowUp(x.c, x.d) })).filter((x) => x.s > 0).sort((a, b) => b.s - a.s).slice(0, 6)
-        if (!fu.length) return null
-        return (
-          <div className="crm-followup">
-            <b className="crm-fu-tit">⏰ Seu follow-up de hoje · {fu.length} {fu.length === 1 ? 'pessoa' : 'pessoas'} pra chamar</b>
-            <div className="crm-fu-lista">
-              {fu.map(({ c, d }) => (
-                <div className="crm-fu-item" key={c.id}>
-                  <span className="crm-fu-info"><b>{c.nome || 'Sem nome'}</b><i>{motivoFollowUp(c, d)}</i></span>
-                  <span className="crm-fu-acoes">
-                    <a className="admin-btn admin-btn--ok admin-btn--mini" href={waLink(c.whatsapp, `Olá${c.nome ? ' ' + c.nome.split(' ')[0] : ''}! Aqui é o Vinícius. Passando pra saber como está sua busca — separei novidades que podem te interessar.`)} target="_blank" rel="noopener noreferrer">WhatsApp</a>
-                    <button className="admin-btn admin-btn--mini" onClick={() => abrir(c)}>Abrir</button>
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )
-      })()}
-
       <div className="crm-lista">
-        {[...clientesFiltrados].filter((c) => !funilFiltro || c.status === funilFiltro).sort((a, b) => (b.temNovidade ? 1 : 0) - (a.temNovidade ? 1 : 0)).map((c) => {
+        {[...clientesFiltrados].sort((a, b) => (b.temNovidade ? 1 : 0) - (a.temNovidade ? 1 : 0)).map((c) => {
           const nm = novosMatch(c)
           return (
           <div className={`crm-card ${c.novo ? 'crm-card--novo' : ''} ${c.temNovidade ? 'crm-card--mexeu' : ''}`} key={c.id}>
