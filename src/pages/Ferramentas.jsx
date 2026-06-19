@@ -10,16 +10,13 @@ import { formatBRL } from '../extenso'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow } from '../components/icons'
 
-// Ferramentas "de página" que agora abrem INLINE no modal (lazy — fora do bundle inicial).
-const EditarFotoPage = lazy(() => import('./EditarFotoPage'))
-const GerarImagemPage = lazy(() => import('./GerarImagemPage'))
+// Ferramentas "de página" que abrem INLINE no modal (lazy — fora do bundle inicial).
 const ConverterFotos = lazy(() => import('./ConverterFotos'))
 const PdfParaJpgPage = lazy(() => import('./PdfParaJpgPage'))
 const TranscreverPage = lazy(() => import('./TranscreverPage'))
 const CompararPage = lazy(() => import('./Comparar'))
 const MapaPage = lazy(() => import('./Mapa'))
 const ImpulsionarPage = lazy(() => import('./Impulsionar'))
-const MelhorarFotosTool = lazy(() => import('../components/MelhorarFotos'))
 const RemoverMarcaTool = lazy(() => import('../components/RemoverMarca'))
 
 // ─── helpers numéricos ──────────────────────────────────────────────────────
@@ -115,9 +112,6 @@ const TOOLS = [
   { id: 'comissao',      nome: 'Calculadora de comissão',   desc: 'Comissão (5%) e divisão corretor / imobiliária. Grátis.',   icon: 'coins',   sec: 'investidor' },
   { id: 'impulsionar',   nome: 'Impulsionar anúncio',       desc: 'Destaque seu imóvel por 7, 15 ou 30 dias.',    icon: 'rocket',  sec: 'pro', pro: true, to: '/impulsionar' },
   // fotos e imagens
-  { id: 'melhorar',      nome: 'Melhorar fotos com IA',     desc: 'HDR, contraste e nitidez automáticos.',        icon: 'sparkles',  sec: 'pro', pro: true, toPro: true },
-  { id: 'editar-foto',  nome: 'Editar foto com IA',         desc: 'Remover objeto, mobiliar ambiente vazio e trocar o céu.', icon: 'wand', sec: 'pro', needsSub: true, to: '/ferramentas/editar-foto' },
-  { id: 'gerar-imagem', nome: 'Gerar imagem com IA',        desc: 'Capas de artigo, posts de bairro e peças de lançamento por IA.', icon: 'sparkles', sec: 'pro', needsSub: true, to: '/ferramentas/gerar-imagem' },
   { id: 'remover',       nome: 'Remover marca d\'água com IA', desc: 'Remove logos e marcas de fotos em lote.',   icon: 'eraser',    sec: 'pro', pro: true, toPro: true },
   { id: 'marca-agua',    nome: "Marca d'água em fotos",     desc: 'Adicione seu logo ou texto em cada foto.',     icon: 'droplet',    sec: 'pro', needsSub: true },
   { id: 'endireitar',    nome: 'Endireitar foto',           desc: 'Corrija a inclinação e a rotação de fotos.',   icon: 'rotate',  sec: 'pro', needsSub: true },
@@ -746,8 +740,7 @@ const RENDER = {
   checklist: Checklist, acm: CalcACM, comissao: CalcComissao,
   endireitar: EndireitarFoto, 'marca-agua': MarcaDAguaFoto, redimensionar: RedimensionarFoto,
   // ferramentas que antes navegavam — agora inline no modal (lazy)
-  melhorar: MelhorarFotosTool, remover: RemoverMarcaTool,
-  'editar-foto': EditarFotoPage, 'gerar-imagem': GerarImagemPage, converter: ConverterFotos,
+  remover: RemoverMarcaTool, converter: ConverterFotos,
   'pdf-jpg': PdfParaJpgPage, transcrever: TranscreverPage, comparar: CompararPage,
   mapa: MapaPage, impulsionar: ImpulsionarPage,
 }

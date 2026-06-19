@@ -8,7 +8,6 @@ import { CalcComissao, CalcACM } from './Ferramentas'
 import FerramentaRotina from '../components/FerramentaRotina'
 import { IconShield, IconArrow } from '../components/icons'
 
-const MelhorarFotos = lazy(() => import('../components/MelhorarFotos'))
 const PostGen = lazy(() => import('../components/PostGen'))
 const RemoverMarca = lazy(() => import('../components/RemoverMarca'))
 
@@ -50,7 +49,6 @@ const TOOLS = [
   { id: 'legenda',  nome: 'Legenda para portais',    desc: 'Gera descrição profissional para OLX, ZAP e VivaReal em segundos.',           icon: 'doc',     dor: 'Você gasta quanto tempo descrevendo o mesmo imóvel em três portais? Aqui você gera uma legenda completa e profissional em segundos — e adapta para cada portal sem digitar nada de novo.' },
   { id: 'objecoes', nome: 'Script de objeções',      desc: 'Respostas prontas para as objeções mais comuns no WhatsApp.',                 icon: 'msg',     dor: '"Vou pensar." "Tá caro." "Não é a hora." Essas frases travam a maioria dos corretores. O script dá a você a resposta certa, no tom certo, para cada objeção — sem parecer forçado e sem perder o cliente.' },
   { id: 'captacao', nome: 'Checklist de captação',   desc: 'Lista completa do que verificar na captação de um novo imóvel.',              icon: 'list',    dor: 'Já perdeu uma captação porque chegou sem as perguntas certas ou esqueceu de verificar a documentação? O checklist garante que você não deixa nenhum detalhe de lado — e demonstra profissionalismo desde a primeira visita.' },
-  { id: 'fotos',    nome: 'Estúdio de fotos',        desc: 'Endireitar, filtros, super-resolução com IA e sem marca.',                   icon: 'camera',  dor: 'Foto torta ou escura mata o anúncio antes de o cliente clicar. Com IA, você endireita, melhora o contraste e aumenta a resolução direto no navegador — sem Photoshop, sem precisar enviar para edição.' },
   { id: 'post',     nome: 'Estúdio de publicidade',  desc: 'Posts para Story e Feed com 6 estilos de design, em lote.',                  icon: 'megafone', dor: 'Fazer um post profissional para Instagram leva horas se feito manualmente. A ferramenta gera posts para Story e Feed em 6 estilos diferentes, em lote, em menos de 1 minuto — você fica ativo nas redes sem abrir o Canva.' },
   { id: 'roteiro',  nome: 'Roteiro de vídeo',        desc: 'Gera roteiro completo para gravar o vídeo do imóvel de forma profissional.', icon: 'video',   dor: 'Vídeo amador espanta comprador. Um roteiro profissional guia você pelos cômodos na ordem certa, destaca os pontos fortes do imóvel e termina com um CTA que converte — sem improviso, sem editar depois.' },
   { id: 'marca',    nome: 'Remover marcas das fotos', desc: 'Remove logotipos e marcas com IA, direto no navegador.',                    icon: 'varinha', dor: 'Recebeu uma boa foto do imóvel que veio com o logo da imobiliária concorrente? Com IA, a marca sai em segundos — foto limpa, pronta para usar nos seus anúncios sem precisar tirar foto nova.' },
@@ -59,8 +57,6 @@ const TOOLS = [
   { id: 'agenda',   nome: 'Planner de visitas',      desc: 'Organize sua agenda de visitas do dia com horários e observações.',           icon: 'clock',   dor: 'Confusão de horário é uma das maiores causas de cancelamento de visita. O planner organiza seu dia com horários, endereços e observações de cada cliente — você vai a cada visita preparado e no horário.' },
 ]
 const ATALHOS = [
-  { to: '/ferramentas/editar-foto',  nome: 'Editar foto com IA',    desc: 'Remover objeto, mobiliar ambiente vazio, trocar o céu.', icon: 'varinha' },
-  { to: '/ferramentas/gerar-imagem', nome: 'Gerar imagem com IA',   desc: 'Capas de artigo, posts de bairro e peças de lançamento.', icon: 'camera'  },
   { to: '/ferramentas/transcrever',  nome: 'Transcrever vídeo/áudio', desc: 'Tour ou áudio → texto, legenda e descrição.',          icon: 'doc'     },
   { to: '/ferramentas/converter', nome: 'Conversor de fotos',  desc: 'JPG, PNG, WebP e AVIF em lote.',              icon: 'swap'    },
   { to: '/impulsionar',           nome: 'Impulsionar anúncio', desc: 'Destaque pago para o seu imóvel nos buscadores.', icon: 'foguete' },
@@ -72,7 +68,6 @@ const CORES = {
   legenda:  { bg: 'linear-gradient(135deg,#071535 0%,#0c2250 100%)', glow: 'rgba(59,130,246,0.26)'  },
   objecoes: { bg: 'linear-gradient(135deg,#042320 0%,#063533 100%)', glow: 'rgba(20,184,166,0.28)'  },
   captacao: { bg: 'linear-gradient(135deg,#042012 0%,#063d1d 100%)', glow: 'rgba(34,197,94,0.26)'   },
-  fotos:    { bg: 'linear-gradient(135deg,#1a1000 0%,#302000 100%)', glow: 'rgba(245,158,11,0.3)'   },
   post:     { bg: 'linear-gradient(135deg,#240818 0%,#3d0e28 100%)', glow: 'rgba(236,72,153,0.26)'  },
   roteiro:  { bg: 'linear-gradient(135deg,#1f0606 0%,#34080a 100%)', glow: 'rgba(239,68,68,0.28)'   },
   marca:    { bg: 'linear-gradient(135deg,#0c0a26 0%,#181445 100%)', glow: 'rgba(99,102,241,0.3)'   },
@@ -493,7 +488,6 @@ const RENDER = {
   rotina: FerramentaRotina,
   comissao: CalcComissao,
   acm: CalcACM,
-  fotos: MelhorarFotos,
   post: PostGen,
   marca: RemoverMarca,
   legenda: LegendaPortais,
@@ -1033,7 +1027,7 @@ export default function Corretor() {
       : 'Área do corretor — Ferramentas profissionais | Rotina Imobiliária',
     description: toolData
       ? toolData.desc
-      : 'Área exclusiva para corretores: abordagem por código, estúdio de fotos com IA, publicidade, legenda para portais, script de objeções, checklist de captação e mais.',
+      : 'Área exclusiva para corretores: abordagem por código, publicidade, legenda para portais, script de objeções, checklist de captação e mais.',
     path: toolId ? `/corretor/${toolId}` : '/corretor',
   })
 
