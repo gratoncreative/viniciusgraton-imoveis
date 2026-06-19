@@ -164,8 +164,8 @@ export default function Anunciar() {
             WhatsApp pra gente conversar.
           </p>
           <p className="section-sub" style={{ margin: '0 auto 28px' }}>
-            Aprovado, seu imóvel também será <b>cadastrado e divulgado no site da Rotina Imobiliária</b> —
-            mais de 30 anos de mercado em Uberlândia, ampliando o alcance e a credibilidade do seu anúncio.
+            Aprovado, seu imóvel também <b>pode ser cadastrado e divulgado no site da Rotina Imobiliária</b> —
+            mais de 30 anos de mercado em Uberlândia — e em portais parceiros, ampliando o alcance e a credibilidade do seu anúncio.
           </p>
           <Link className="btn btn-gold" to="/">Voltar ao início <IconArrow /></Link>
           <div className="anu-parceria">
@@ -189,7 +189,7 @@ export default function Anunciar() {
               <span className="eyebrow" style={{ justifyContent: 'center' }}>É rápido</span>
               <h2 className="section-title">Cadastre seu imóvel</h2>
               <p className="section-sub" style={{ marginTop: 12 }}>Preencha os dados e mande as fotos. <b>Cadastrar é grátis e sem compromisso.</b></p>
-              <p className="section-sub" style={{ marginTop: 10 }}>Além daqui, seu imóvel também é publicado no <b>site da Rotina Imobiliária</b> e nos nossos parceiros <b>Chaves na Mão</b> e <b>Grupo OLX</b> — <b>com impulsionamento</b> para alcançar muito mais compradores.</p>
+              <p className="section-sub" style={{ marginTop: 10 }}>Além daqui, imóveis selecionados também <b>podem ser publicados</b> no <b>site da Rotina Imobiliária</b> e em portais parceiros como <b>Chaves na Mão</b> e <b>Grupo OLX</b>, com <b>possibilidade de impulsionamento</b> para alcançar mais compradores.</p>
             </div>
           </Reveal>
 
