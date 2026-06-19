@@ -96,6 +96,26 @@ async function bulkEntries(store, prefix) {
   return vals.filter(Boolean)
 }
 
+// Auto-cadastra o PROPRIETÁRIO captado como contato no sistema (aparece no /admin → Leads).
+// Chave determinística por imóvel (lead:prop-<cod>) → atualiza sem duplicar.
+async function registrarProprietario(env, cod, owner) {
+  try {
+    const key = 'lead:prop-' + cod
+    const prev = await env.ENGAGEMENT.get(key, 'json').catch(() => null)
+    const lead = {
+      tipo: 'lead', papel: 'proprietario',
+      nome: String(owner.nome || '').slice(0, 120),
+      fone: String(owner.fone || '').slice(0, 40),
+      email: String(owner.email || '').slice(0, 160),
+      bairro: `Proprietário (captação) · imóvel ${cod}`,
+      cod, imovel: cod,
+      ts: (prev && prev.ts) || Date.now(),
+      atualizadoEm: Date.now(),
+    }
+    await env.ENGAGEMENT.put(key, JSON.stringify(lead))
+  } catch {}
+}
+
 export async function onRequestPost({ env, request }) {
   env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
@@ -680,6 +700,7 @@ export async function onRequestPost({ env, request }) {
 
           if (owner.nome || owner.fone) {
             await env.ENGAGEMENT.put('imovel:'+cod, JSON.stringify({...(saved||{}), owner, atualizadoEm:Date.now()}))
+            await registrarProprietario(env, cod, owner) // auto-cadastra no sistema (Leads)
             return json({ ok:true, owner, source:'imoview-web', ...(isDebug?{dbg}:{}) })
           }
           if (isDebug) return json({ ok:false, source:'parse-falhou', dbg })
@@ -729,6 +750,7 @@ export async function onRequestPost({ env, request }) {
     }
     const existing = await env.ENGAGEMENT.get('imovel:' + cod, 'json') || {}
     await env.ENGAGEMENT.put('imovel:' + cod, JSON.stringify({ ...existing, owner, atualizadoEm: Date.now() }))
+    if (owner.nome || owner.fone) await registrarProprietario(env, cod, owner) // auto-cadastra no sistema
     return json({ ok: true, owner })
   }
 
