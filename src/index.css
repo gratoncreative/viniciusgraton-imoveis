@@ -9060,3 +9060,43 @@ html[data-theme="dark"] .det-estudo-cta-ico {
 .det-estudo-cta-ico svg,
 html[data-theme="claro"] .det-estudo-cta-ico svg,
 html[data-theme="dark"] .det-estudo-cta-ico svg { color: #FFFFFF !important; }
+
+/* ============================================================
+   /anunciar — campos no estilo CLARO da marca (pedido do Vinícius):
+   labels MAIÚSCULAS navy + asterisco, campos bege arredondados, chevron dourado.
+   Substitui o visual escuro herdado de .lead-form. Independente de tema.
+   ============================================================ */
+.anunciar-form { background: transparent !important; border: none !important; backdrop-filter: none !important; padding: 0 !important; color: #2A2F38 !important; }
+/* blocos/fieldsets -> cartão claro */
+.anunciar-form .anu-grupo { background: #FFFFFF !important; border: 1px solid #E4DFD4 !important; }
+.anunciar-form .anu-grupo.placa-bloco { background: #FBF7F0 !important; border-color: #E7DEC9 !important; }
+.anunciar-form .anu-grupo-tit { color: #1C2A44 !important; }
+.anunciar-form .anu-grupo-tit i { color: #7a8190 !important; }
+/* labels -> maiúsculas navy com espaçamento */
+.anunciar-form label > span {
+  text-transform: uppercase; letter-spacing: 0.09em; font-family: var(--font-head);
+  font-weight: 700; font-size: 0.74rem; color: #1C2A44 !important;
+}
+.anunciar-form label > span i { text-transform: none; letter-spacing: 0; font-weight: 400; color: #8a8377 !important; }
+/* campos -> bege arredondado, texto navy, placeholder ameno */
+.anunciar-form input,
+.anunciar-form select,
+.anunciar-form textarea {
+  background: #ECE7DD !important; border: 1px solid #E0D8C8 !important; color: #2A2F38 !important;
+  border-radius: 10px !important; padding: 15px 18px !important; font-size: 1.02rem !important;
+}
+.anunciar-form input::placeholder,
+.anunciar-form textarea::placeholder { color: #9c958a !important; }
+.anunciar-form input:focus,
+.anunciar-form select:focus,
+.anunciar-form textarea:focus { border-color: #eb0128 !important; background: #F1EDE4 !important; outline: none; }
+/* chevron dourado/quente no select (igual ao print) */
+.anunciar-form select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23B0A07F' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important; background-position: right 16px center !important; padding-right: 42px !important;
+}
+.anunciar-form select option { background: #FFFFFF !important; color: #2A2F38 !important; }
+/* moeda (CampoMoeda) e demais wrappers herdam o claro */
+.anunciar-form .calc-input { background: #ECE7DD !important; border: 1px solid #E0D8C8 !important; border-radius: 10px !important; }
+.anunciar-form .calc-input input { color: #2A2F38 !important; }
+.anunciar-form .calc-campo > span { color: #1C2A44 !important; text-transform: uppercase; letter-spacing: 0.09em; font-weight: 700; font-size: 0.74rem; font-family: var(--font-head); }
