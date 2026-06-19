@@ -54,11 +54,11 @@ export default function AtendimentosPanel({ token, onSair }) {
             <div className="atend-card" key={l.id}>
               <div className="atend-card-top">
                 <b>{l.nome || 'Sem nome'}</b>
-                {l.situacao && <span className="atend-chip">{l.situacao}</span>}
+                {l.fase && <span className="atend-chip">{l.fase}</span>}
                 {l.origem && <span className="atend-origem">{l.origem}</span>}
               </div>
               {l.interesse && <p className="atend-interesse">🏠 {l.interesse}{l.imovelCod ? ` · cód ${l.imovelCod}` : ''}</p>}
-              <p className="painel-meta">{[l.fone, l.ultimoContatoEm && `último contato ${l.ultimoContatoEm}`].filter(Boolean).join(' · ')}</p>
+              <p className="painel-meta">{[l.fone, l.id && `atend. ${l.id}`, l.ultimoContatoEm && `último contato ${l.ultimoContatoEm}`].filter(Boolean).join(' · ')}</p>
 
               {!pl.mensagem ? (
                 <div className="atend-acoes">

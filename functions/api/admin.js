@@ -117,6 +117,56 @@ async function registrarProprietario(env, cod, owner) {
   } catch {}
 }
 
+// Parser do HTML de /Atendimento/Pesquisar (lista renderizada). Resiliente, baseado nos
+// rótulos visíveis: "Atendimento N", nome, WhatsApp, e-mail, Situação, Fase, Mídia, Corretor.
+function parseAtendimentosHtml(html) {
+  let txt = String(html || '')
+    .replace(/<\s*(br|\/p|\/div|\/li|\/tr|\/h\d|\/td|\/span|\/a)\b[^>]*>/gi, '\n')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&')
+    .replace(/&([aeiou])acute;/gi, '$1́').normalize('NFC')
+    .replace(/&[a-z]+;/gi, ' ')
+    .replace(/[ \t]+/g, ' ').replace(/ *\n */g, '\n').replace(/\n{2,}/g, '\n')
+  const re = /Atendimento\s+(\d{4,})/g
+  const marks = []
+  let m
+  while ((m = re.exec(txt))) marks.push({ idx: m.index, cod: m[1] })
+  const leads = []
+  for (let i = 0; i < marks.length; i++) {
+    const start = marks[i].idx
+    const end = i + 1 < marks.length ? marks[i + 1].idx : txt.length
+    const before = txt.slice(Math.max(0, start - 600), start)
+    const tituloM = before.match(/((?:VENDA|LOCA[ÇC][ÃA]O|ALUGUEL)\s*\|[^\n]+)\s*$/i)
+    const seg = txt.slice(start, end)
+    const get = (label) => { const mm = seg.match(new RegExp(label + '\\s*[:.]?\\s*([^\\n]+)', 'i')); return mm ? mm[1].trim() : '' }
+    const foneM = seg.match(/\(\d{2}\)\s?\d{4,5}[-.\s]?\d{4}/)
+    const emailM = seg.match(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i)
+    const linhas = seg.split('\n').map((s) => s.trim()).filter(Boolean)
+    let nome = ''
+    for (let k = 1; k < linhas.length; k++) {
+      const L = linhas[k]
+      if (/^\(\d{2}\)/.test(L) || /@/.test(L) || /^(Situa|Fase|M[íi]dia|Usu[áa]rio|Corretor|Gerente|Unidade|Quartos|Vagas|Carrinho|Visitas|Proposta|Indicadores|A[çc][õo]es|Term[ôo]metro)/i.test(L)) continue
+      nome = L; break
+    }
+    leads.push({
+      id: marks[i].cod,
+      nome: nome.slice(0, 120),
+      fone: foneM ? foneM[0].trim() : '',
+      email: emailM ? emailM[0] : '',
+      origem: get('M[íi]dia de origem').slice(0, 60),
+      interesse: (tituloM ? tituloM[1].trim() : '').slice(0, 300),
+      imovelCod: '',
+      situacao: get('Situa[çc][ãa]o').slice(0, 60),
+      fase: get('Fase atendimento').slice(0, 80),
+      ultimoContatoEm: get('[ÚU]ltima intera[çc][ãa]o').slice(0, 40),
+      criadoEm: '',
+      historico: '',
+      corretor: get('Corretor').slice(0, 80),
+    })
+  }
+  return leads
+}
+
 export async function onRequestPost({ env, request }) {
   env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
@@ -489,28 +539,43 @@ export async function onRequestPost({ env, request }) {
       const dbg = {}
       const chave = (env.IMOVIEW_CHAVE || '').trim()
       let raw = null
+      let leadsHtml = null
 
       if (chave) {
         const url = 'https://api.imoview.com.br/Atendimento/RetornarAtendimentos?numeroRegistros=200&numeroPagina=1'
         const r = await fetch(url, { headers: { chave, accept: 'application/json' }, signal: AbortSignal.timeout(12000) }).catch(() => null)
         if (r) { dbg.apiStatus = r.status; const txt = await r.text(); if (b.debug) dbg.apiRaw = txt.slice(0, 4000); try { raw = JSON.parse(txt) } catch {} }
       } else {
+        // Sem chave da API → sessão web. Endpoint real (descoberto inspecionando o "PESQUISAR"
+        // em app.imoview.com.br/Atendimento): GET /Atendimento/Pesquisar devolve o HTML da lista
+        // renderizada (Finalidade=2 Venda, Situacao=1 Em atendimento). Paginamos e parseamos.
         const ses = await imoviewLogin(env, { debug: b.debug === true })
         Object.assign(dbg, ses.dbg || {})
         if (ses.ok) {
-          if (b.debug) {
-            const pg = await fetch(`${ses.baseUrl}/Atendimento`, { headers: { cookie: ses.cookies, 'user-agent': 'Mozilla/5.0' }, signal: AbortSignal.timeout(10000) }).catch(() => null)
-            if (pg) { const h = await pg.text(); dbg.atendimentoSnippet = h.slice(0, 4000); const m = h.match(/\/Atendimento\/(Listar|Pesquisar|Retornar\w*)/gi); dbg.endpointsNoHtml = m ? [...new Set(m)] : [] }
-          } else {
-            for (const path of ['/Atendimento/RetornarAtendimentos', '/Atendimento/ListarAtendimentos', '/Atendimento/Pesquisar', '/Atendimento/RetornarAtendimentosPesquisa']) {
-              const r = await fetch(`${ses.baseUrl}${path}`, { method: 'POST', headers: { cookie: ses.cookies, 'content-type': 'application/json; charset=utf-8', 'x-requested-with': 'XMLHttpRequest', accept: 'application/json' }, body: JSON.stringify({ situacao: 'A', pagina: 1, registrosPorPagina: 200 }), signal: AbortSignal.timeout(10000) }).catch(() => null)
-              if (r && r.ok) { const txt = await r.text(); try { const j = JSON.parse(txt); if (j) { raw = j; dbg.endpoint = path; break } } catch {} }
-            }
+          const qs = (pag) => `Finalidade=2&Situacao=1&Termometro=-1&CodigoUnidade=0&CodigoMotivoDescarte=Todos&Pagina=${pag}&Ordenacao=0&Funil=0`
+          const headers = { cookie: ses.cookies, 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', 'x-requested-with': 'XMLHttpRequest', accept: 'text/html, */*; q=0.01', referer: `${ses.baseUrl}/Atendimento` }
+          leadsHtml = []
+          const vistos = new Set()
+          for (let pag = 1; pag <= 12; pag++) {
+            const r = await fetch(`${ses.baseUrl}/Atendimento/Pesquisar?${qs(pag)}`, { headers, signal: AbortSignal.timeout(12000) }).catch(() => null)
+            if (!r || !r.ok) { if (b.debug) dbg['pag' + pag] = r ? r.status : 'erro'; break }
+            const html = await r.text()
+            if (pag === 1 && b.debug) { dbg.status = r.status; dbg.htmlLen = html.length; dbg.snippet = html.slice(0, 3000) }
+            const ls = parseAtendimentosHtml(html)
+            let novos = 0
+            for (const l of ls) { if (!vistos.has(l.id)) { vistos.add(l.id); leadsHtml.push(l); novos++ } }
+            if (novos === 0) break
           }
+          dbg.total = leadsHtml.length
         }
       }
 
-      if (b.debug) return json({ ok: !!raw, leads: [], dbg }, 200)
+      if (b.debug) return json({ ok: !!(raw || (leadsHtml && leadsHtml.length)), leads: (leadsHtml || []).slice(0, 3), dbg }, 200)
+
+      if (leadsHtml) {
+        await env.ENGAGEMENT.put('atend:lista', JSON.stringify({ geradoEm: Date.now(), leads: leadsHtml })).catch(() => {})
+        return json({ ok: true, leads: leadsHtml, geradoEm: Date.now(), total: leadsHtml.length })
+      }
 
       const arr = Array.isArray(raw) ? raw : (raw && (raw.lista || raw.dados || raw.Data || raw.data || raw.atendimentos || raw.Atendimentos)) || []
       const pick = (o, ...ks) => { for (const k of ks) { if (o && o[k] != null && o[k] !== '') return o[k] } return '' }
@@ -545,7 +610,7 @@ export async function onRequestPost({ env, request }) {
     const id = lim(String(lead.id || '').replace(/[^\w-]/g, ''), 40)
     if (id && !b.force) { const c = await env.ENGAGEMENT.get('plano:' + id, 'json').catch(() => null); if (c) return json({ ok: true, ...c, source: 'cache' }) }
     const SYSTEM = 'Você é o assistente de vendas do Vinícius Graton, consultor de imóveis da Rotina Imobiliária em Uberlândia/MG (CRECI em formação). Você escreve mensagens de WhatsApp NA VOZ dele. Regras invioláveis.. (1) trate-o como "consultor"/"consultor da Rotina", NUNCA "corretor"; (2) pontuação sóbria.. use ".." no lugar de dois-pontos e NUNCA travessão; (3) mensagens CURTAS, no máximo 1 emoji; (4) abra com "Me conta.." em primeiro contato ou reaquecimento; (5) TODA mensagem termina com UMA pergunta aberta; (6) tom calmo, sem pressão; (7) cite o imóvel/bairro específico do lead; (8) nunca invente preço, condição ou metragem que não veio na entrada. Objetivo.. converter o atendimento em VISITA agendada. Responda APENAS com um JSON válido (sem markdown), no formato: {"mensagem_whatsapp": "...", "temperatura_confirmada": "quente|morno|frio", "plano": [{"passo": "...", "prazo": "..."}]}'
-    const USER = `Gere a abordagem para este atendimento em aberto.\nNome.. ${lim(lead.nome, 120)}\nImóvel de interesse.. ${lim(lead.interesse, 300)}\nOrigem.. ${lim(lead.origem, 60)}\nSituação.. ${lim(lead.situacao, 60)}\nÚltimo contato.. ${lim(lead.ultimoContatoEm, 40)}\nHistórico.. ${lim(lead.historico, 400)}\nProduza (1) UMA mensagem de WhatsApp pronta pra copiar, respeitando TODAS as regras, e (2) um plano de 1 a 3 passos (próxima ação + prazo).`
+    const USER = `Gere a abordagem para este atendimento em aberto.\nNome.. ${lim(lead.nome, 120)}\nImóvel de interesse.. ${lim(lead.interesse, 300)}\nOrigem.. ${lim(lead.origem, 60)}\nSituação.. ${lim(lead.situacao, 60)}\nFase do atendimento.. ${lim(lead.fase, 80)}\nÚltimo contato.. ${lim(lead.ultimoContatoEm, 40)}\nHistórico.. ${lim(lead.historico, 400)}\nA "Fase do atendimento" indica em que ponto do funil o lead está (ex.. "Lead qualificado" = já conversou e tem perfil; "Seleção dos imóveis" = está vendo opções; "Primeiro contato" = ainda não falou). Adapte o tom e o próximo passo à fase.\nProduza (1) UMA mensagem de WhatsApp pronta pra copiar, respeitando TODAS as regras, e (2) um plano de 1 a 3 passos (próxima ação + prazo).`
     try {
       const r = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
