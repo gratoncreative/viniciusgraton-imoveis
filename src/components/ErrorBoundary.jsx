@@ -26,17 +26,26 @@ function CasaObra() {
   )
 }
 
-function ErroFallback() {
-  const [seg, setSeg] = useState(30)
+const RELOAD_FLAG = 'vg_erro_reload'
 
-  // SEMPRE: contagem regressiva de 30s e recarrega a página automaticamente ao zerar.
+// Erros de "chunk velho" após um deploy novo: o import() dinâmico de uma rota aponta
+// pra um arquivo com hash antigo que não existe mais. São transitórios — basta recarregar.
+function ehErroDeChunk(err) {
+  const msg = (err && (err.message || String(err))) || ''
+  const nome = err && err.name
+  return nome === 'ChunkLoadError' ||
+    /dynamically imported module|importing a module script failed|failed to fetch dynamically imported module|error loading dynamically imported|loading chunk|loading css chunk/i.test(msg)
+}
+
+// Fallback amigável. autoReload só na 1ª vez (evita loop infinito em erro persistente).
+function ErroFallback({ chunk }) {
+  const [seg, setSeg] = useState(6)
   useEffect(() => {
+    if (!chunk) return // erro real: NÃO recarrega em loop — só mostra a tela com os botões
     if (seg <= 0) { window.location.reload(); return }
     const t = setTimeout(() => setSeg((s) => s - 1), 1000)
     return () => clearTimeout(t)
-  }, [seg])
-
-  const mmss = `0:${String(Math.max(0, seg)).padStart(2, '0')}`
+  }, [seg, chunk])
 
   return (
     <main className="section--light det-vazio erro-tela">
@@ -45,13 +54,16 @@ function ErroFallback() {
         <span className="eyebrow" style={{ justifyContent: 'center' }}>Voltando ao ar</span>
         <h1 className="section-title">Opa! Estamos atualizando o site</h1>
         <p className="section-sub" style={{ margin: '14px auto 18px', maxWidth: 520 }}>
-          Acabaram de chegar <b>novos imóveis</b> e estou colocando tudo no ar pra você. A página
-          atualiza sozinha em alguns segundos — ou toque em atualizar.
+          {chunk
+            ? <>Acabaram de chegar <b>novos imóveis</b> e estou colocando tudo no ar pra você. Já vou recarregar pra pegar a versão nova.</>
+            : <>Tive um probleminha pra abrir isso. Toque em <b>Atualizar agora</b> — se persistir, me chame que eu resolvo rapidinho.</>}
         </p>
-        <div className="erro-contador" role="status" aria-live="polite">
-          <span className="erro-spin" aria-hidden="true" />
-          Atualizando automaticamente em <b>{mmss}</b>
-        </div>
+        {chunk && (
+          <div className="erro-contador" role="status" aria-live="polite">
+            <span className="erro-spin" aria-hidden="true" />
+            Atualizando automaticamente em <b>0:{String(Math.max(0, seg)).padStart(2, '0')}</b>
+          </div>
+        )}
         <div className="erro-acoes">
           <button className="btn btn-gold" onClick={() => window.location.reload()}>Atualizar agora</button>
           <a className="btn btn-ghost" href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener noreferrer">
@@ -63,21 +75,33 @@ function ErroFallback() {
   )
 }
 
-// Evita "tela branca da morte": se qualquer componente lançar erro em runtime,
-// mostra um fallback amigável (com contagem que recarrega sozinho) em vez de quebrar tudo.
+// Evita "tela branca da morte". Para erro de CHUNK (deploy novo) recarrega UMA vez na hora
+// (guarda em sessionStorage p/ não repetir). Para erro REAL, mostra a tela sem auto-reload
+// em loop. O flag é limpo por App.jsx quando o app fica saudável alguns segundos.
 export default class ErrorBoundary extends Component {
-  state = { erro: false }
+  state = { erro: false, chunk: false }
 
-  static getDerivedStateFromError() {
-    return { erro: true }
+  static getDerivedStateFromError(error) {
+    return { erro: true, chunk: ehErroDeChunk(error) }
   }
 
   componentDidCatch(error, info) {
     if (typeof console !== 'undefined') console.error('ErrorBoundary:', error, info)
+    if (ehErroDeChunk(error)) {
+      try {
+        if (!sessionStorage.getItem(RELOAD_FLAG)) {
+          sessionStorage.setItem(RELOAD_FLAG, '1')
+          window.location.reload() // chunk antigo: recarrega já (pega o index/chunks novos)
+        }
+      } catch { try { window.location.reload() } catch {} }
+    }
   }
 
   render() {
     if (!this.state.erro) return this.props.children
-    return <ErroFallback />
+    // se já recarregou nesta sessão e ainda deu chunk-error, não fica em loop: mostra estático
+    let jaTentou = false
+    try { jaTentou = !!sessionStorage.getItem(RELOAD_FLAG) } catch {}
+    return <ErroFallback chunk={this.state.chunk && !jaTentou} />
   }
 }

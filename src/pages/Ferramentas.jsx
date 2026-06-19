@@ -293,7 +293,7 @@ export function CalcACM() {
       const conf = cat.n >= 12 ? 'alta' : cat.n >= 6 ? 'média' : 'baixa'
       return { ok: true, central: cat.mediana * A, min: cat.p25 * A, max: cat.p75 * A, m2: cat.mediana, fonte: 'seu catálogo (Rotina)', ref: `${cat.n} imóveis`, n: cat.n, conf, origem: 'catalogo' }
     }
-    if (pub) return { ok: true, central: pub.m2 * A, min: pub.m2 * A * 0.88, max: pub.m2 * A * 1.12, m2: pub.m2, fonte: pub.fonte, ref: pub.ref, n: cat.n, conf: 'referência pública', origem: 'publica' }
+    if (pub && pub.m2 > 0) return { ok: true, central: pub.m2 * A, min: pub.m2 * A * 0.88, max: pub.m2 * A * 1.12, m2: pub.m2, fonte: pub.fonte, ref: pub.ref, n: cat.n, conf: 'referência pública', origem: 'publica' }
     return { ok: false }
   }, [bairro, tipo, quartos, area, ehResid])
 
@@ -309,8 +309,10 @@ export function CalcACM() {
   }
 
   const baixarPdf = async () => {
-    const { gerarPdfACM } = await import('../pdfACM')
-    gerarPdfACM({ bairro, tipo, quartos: ehResid ? quartos : '', area: +area || 0, min: r.min, max: r.max, m2: r.m2, fonte: r.fonte, ref: r.ref, conf: r.conf, dataTxt: new Date().toLocaleDateString('pt-BR') })
+    try {
+      const { gerarPdfACM } = await import('../pdfACM')
+      gerarPdfACM({ bairro, tipo, quartos: ehResid ? quartos : '', area: +area || 0, min: r.min, max: r.max, m2: r.m2, fonte: r.fonte, ref: r.ref, conf: r.conf, dataTxt: new Date().toLocaleDateString('pt-BR') })
+    } catch { alert('Não consegui gerar o PDF agora. Tente novamente em instantes.') }
   }
 
   return (

@@ -78,6 +78,13 @@ export default function App() {
     return () => { vivo = false }
   }, [])
 
+  // Se o app ficou saudável alguns segundos, limpa o flag de "já recarregei por chunk velho"
+  // (ErrorBoundary) — assim um PRÓXIMO deploy ainda pode recarregar 1x automaticamente.
+  useEffect(() => {
+    const t = setTimeout(() => { try { sessionStorage.removeItem('vg_erro_reload') } catch {} }, 8000)
+    return () => clearTimeout(t)
+  }, [])
+
   // (Google Analytics é carregado em src/analytics.js — com filtro do dono e anonimização)
 
   // sobe ao topo e registra a visualização de página
