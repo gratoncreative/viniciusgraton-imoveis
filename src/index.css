@@ -9015,3 +9015,30 @@ html[data-theme="claro"] .ferramentas-pg .ferr-pro-cta-btn {
   background: #eb0128 !important; border-color: #eb0128 !important; color: #FFFFFF !important;
 }
 html[data-theme="claro"] .ferramentas-pg .ferr-pro-cta-btn svg { color: #FFFFFF !important; }
+
+/* ============================================================
+   /anunciar — botões legíveis conforme a REGRA DE OURO.
+   "Enviar para avaliação" (ação WhatsApp) -> Op.2 vermelho + branco.
+   Toggles "Quero a placa / Agora não" -> Op.3 (filtro): branco + borda/texto
+   vermelho; ATIVO preenche vermelho. Independente de tema (claro/dark).
+   ============================================================ */
+.lead-submit,
+html[data-theme="claro"] .lead-submit,
+html[data-theme="dark"] .lead-submit {
+  background: #eb0128 !important; background-image: none !important;
+  border: 1px solid #eb0128 !important; color: #FFFFFF !important;
+}
+.lead-submit svg { color: #FFFFFF !important; }
+.lead-submit:hover:not(:disabled) { background: #C20020 !important; border-color: #C20020 !important; }
+.lead-submit:disabled { opacity: 0.6 !important; cursor: not-allowed; } /* branco sobre vermelho segue legível */
+
+.placa-toggle,
+html[data-theme="claro"] .placa-toggle,
+html[data-theme="dark"] .placa-toggle {
+  background: #FFFFFF !important; color: #0b0e16 !important; border: 1px solid #eb0128 !important;
+}
+.placa-toggle.on,
+html[data-theme="claro"] .placa-toggle.on,
+html[data-theme="dark"] .placa-toggle.on {
+  background: #eb0128 !important; color: #FFFFFF !important; border-color: #eb0128 !important;
+}
