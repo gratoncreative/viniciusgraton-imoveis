@@ -96,7 +96,7 @@ const TOOLS = [
   { id: 'amortizacao',   nome: 'Amortização com FGTS',      desc: 'Quanto o FGTS encurta o financiamento.',       icon: 'scissors',    sec: 'financiamento' },
   // ── Área do Corretor (PRO) — todas exclusivas para assinantes ──
   // carros-chefe do corretor primeiro
-  { id: 'acm',           nome: 'ACM — Avaliação de imóvel', desc: 'Faixa de preço pelo m² do bairro.',            icon: 'appraise',    sec: 'pro', pro: true },
+  { id: 'acm',           nome: 'ACM — Referência pela área', desc: 'Faixa de referência da área pelo m² do bairro (não avalia a edificação).',            icon: 'appraise',    sec: 'pro', pro: true },
   { id: 'comissao',      nome: 'Calculadora de comissão',   desc: 'Comissão e divisão corretor / imobiliária.',   icon: 'coins',   sec: 'pro', pro: true },
   { id: 'ficha',         nome: 'Ficha de avaliação',        desc: 'Resumo do imóvel pronto para compartilhar.',   icon: 'clipboard',     sec: 'pro', pro: true },
   { id: 'impulsionar',   nome: 'Impulsionar anúncio',       desc: 'Destaque seu imóvel por 7, 15 ou 30 dias.',    icon: 'rocket',  sec: 'pro', pro: true, to: '/impulsionar' },
@@ -254,13 +254,14 @@ export function FichaAvaliacao() {
 }
 export function CalcACM() {
   const ord = useMemo(() => [...BAIRROS_M2].sort((a, b) => a.bairro.localeCompare(b.bairro, 'pt-BR')), [])
-  const [bairro, setBairro] = useState(ord[0]?.bairro || ''); const [area, setArea] = useState('120'); const [estado, setEstado] = useState('0')
+  const [bairro, setBairro] = useState(ord[0]?.bairro || ''); const [area, setArea] = useState('120')
   const r = useMemo(() => {
     const reg = BAIRROS_M2.find((x) => x.bairro === bairro); const m2 = reg?.m2 || 0
-    const central = m2 * (+area || 0) * (1 + (+estado / 100))
-    return { m2, central, min: central * 0.93, max: central * 1.07, fonte: reg?.fonte, ref: reg?.ref }
-  }, [bairro, area, estado])
-  return (<div className="calc-grid"><div className="calc-form"><Select label="Bairro" valor={bairro} onChange={setBairro} opcoes={ord.map((x) => x.bairro)} /><Campo label="Área privativa" sufixo="m²" valor={area} onChange={setArea} /><Select label="Estado do imóvel" valor={estado} onChange={setEstado} opcoes={[{ v: '8', t: 'Novo / lançamento' }, { v: '4', t: 'Reformado' }, { v: '0', t: 'Bem conservado' }, { v: '-10', t: 'Precisa de reforma' }]} /></div><div>{r.m2 ? <Resultado destaque={{ rotulo: 'Preço sugerido', valor: brl(r.central) }} itens={[{ rotulo: 'Faixa de mercado', valor: `${brl(r.min)} a ${brl(r.max)}` }, { rotulo: `m² médio em ${bairro}`, valor: brl(r.m2) }, { rotulo: 'Fonte do m²', valor: `${r.fonte || '—'}${r.ref ? ` (${r.ref})` : ''}` }]} /> : <p className="section-sub">Ainda não há um valor de referência <b>oficial confirmado</b> para <b>{bairro}</b>. Para esse bairro, faça uma <b>avaliação presencial</b>.</p>}{nota('Estimativa pela mediana do bairro × área, ajustada pelo estado, de fontes públicas (IPD e ZAP). É um ponto de partida — a avaliação presencial fecha o preço.')}</div></div>)
+    const central = m2 * (+area || 0)
+    // faixa larga de propósito: é só referência da ÁREA pelo m², não avalia a edificação
+    return { m2, central, min: central * 0.88, max: central * 1.12, fonte: reg?.fonte, ref: reg?.ref }
+  }, [bairro, area])
+  return (<div className="calc-grid"><div className="calc-form"><Select label="Bairro" valor={bairro} onChange={setBairro} opcoes={ord.map((x) => x.bairro)} /><Campo label="Área (m²)" sufixo="m²" valor={area} onChange={setArea} /></div><div>{r.m2 ? <><Resultado destaque={{ rotulo: 'Referência pela área (m² do bairro)', valor: `${brl(r.min)} a ${brl(r.max)}` }} itens={[{ rotulo: `m² médio em ${bairro}`, valor: brl(r.m2) }, { rotulo: 'Área informada', valor: `${+area || 0} m²` }, { rotulo: 'Fonte do m²', valor: `${r.fonte || '—'}${r.ref ? ` (${r.ref})` : ''}` }]} /><div className="acm-aviso"><b>⚠ Isto é só uma referência da área, pelo m² médio do bairro.</b> Ela <b>não avalia a edificação</b> — acabamento, conservação, reforma, andar, vista e posição mudam muito o valor real. A avaliação da edificação é <b>presencial</b>: eu, Vinícius, vou até o imóvel e fecho o preço justo. É só me chamar aqui embaixo.</div></> : <p className="section-sub">Ainda não há um valor de referência <b>oficial confirmado</b> para <b>{bairro}</b>. Para esse bairro, faça uma <b>avaliação presencial</b> comigo.</p>}{nota('Cálculo: m² médio do bairro × área, de fontes públicas (IPD e ZAP). É um ponto de partida da ÁREA — não inclui a avaliação da edificação, que é presencial.')}</div></div>)
 }
 
 function CalcRenda() {

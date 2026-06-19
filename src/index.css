@@ -9114,3 +9114,7 @@ html[data-theme="dark"] .det-estudo-cta-ico svg { color: #FFFFFF !important; }
 .anu-parceria { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 38px auto 0; padding-top: 26px; border-top: 1px solid #E4DFD4; max-width: 280px; }
 .anu-parceria span { font-family: var(--font-head); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #8a8377; }
 .anu-parceria img { width: 158px; height: auto; opacity: 0.95; }
+
+/* Aviso da ferramenta ACM — deixa claro que é referência da área, não avaliação da edificação */
+.acm-aviso { margin-top: 14px; padding: 13px 15px; border-radius: 12px; background: #FBF7F0; border-left: 3px solid #eb0128; color: #2A2F38; font-size: 0.86rem; line-height: 1.5; }
+.acm-aviso b { color: #1C2A44; }
