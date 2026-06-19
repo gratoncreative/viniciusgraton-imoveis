@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import CampoMoeda from '../components/CampoMoeda'
 import { BAIRROS_IMOVEL, linkWhatsApp, estudoM2ACM } from '../data'
 import { registrarLead } from '../engajamento'
+import { getCorretorOuAdmin } from '../corretor'
 import BAIRROS_M2 from '../bairros-m2.json'
 import ACM_INDEX from '../acm-m2.json'
 import { formatBRL } from '../extenso'
@@ -98,7 +99,7 @@ const TOOLS = [
   { id: 'amortizacao',   nome: 'Amortização com FGTS',      desc: 'Quanto o FGTS encurta o financiamento.',       icon: 'scissors',    sec: 'financiamento' },
   // ── Área do Corretor (PRO) — todas exclusivas para assinantes ──
   // carros-chefe do corretor primeiro
-  { id: 'acm',           nome: 'ACM — Referência pela área', desc: 'Faixa de referência da área pelo m² do bairro (não avalia a edificação).',            icon: 'appraise',    sec: 'pro', pro: true },
+  { id: 'acm',           nome: 'Referência de valor pela área', desc: 'Faixa de mercado pelo m² do bairro (não avalia a edificação). Grátis.',            icon: 'appraise',    sec: 'investidor' },
   { id: 'comissao',      nome: 'Calculadora de comissão',   desc: 'Comissão e divisão corretor / imobiliária.',   icon: 'coins',   sec: 'pro', pro: true },
   { id: 'ficha',         nome: 'Ficha de avaliação',        desc: 'Resumo do imóvel pronto para compartilhar.',   icon: 'clipboard',     sec: 'pro', pro: true },
   { id: 'impulsionar',   nome: 'Impulsionar anúncio',       desc: 'Destaque seu imóvel por 7, 15 ou 30 dias.',    icon: 'rocket',  sec: 'pro', pro: true, to: '/impulsionar' },
@@ -289,6 +290,13 @@ function carregarAcmBase() {
 const GRAU_TXT = { III: 'referência consistente', II: 'referência moderada', I: 'referência preliminar' }
 const fmtBaseData = (iso) => { if (!iso) return ''; const [y, m, d] = String(iso).slice(0, 10).split('-'); return `${d}/${m}/${y}` }
 
+// Portão de lead da ACM pública: corretor/admin logado OU quem já informou WhatsApp aqui.
+const ACM_LEAD_KEY = 'vg_acm_lead'
+function acmIdentificado() {
+  try { if (getCorretorOuAdmin()) return true } catch {}
+  try { return !!localStorage.getItem(ACM_LEAD_KEY) } catch { return false }
+}
+
 const ESCOPO_TXT = {
   'bairro+quartos': (b, q) => `${b}, ${q} quartos`,
   bairro: (b) => `${b} (todos os quartos)`,
@@ -307,7 +315,19 @@ export function CalcACM() {
   const [lead, setLead] = useState({ nome: '', fone: '' })
   const [leadOk, setLeadOk] = useState(false)
   const [verComp, setVerComp] = useState(false)
+  const [ident, setIdent] = useState(acmIdentificado) // portão de lead (público)
+  const [gate, setGate] = useState({ nome: '', fone: '' })
   const ehResid = RESID_ACM.has(tipo)
+
+  const entrarGate = (e) => {
+    e.preventDefault()
+    const nome = gate.nome.trim(), fone = gate.fone.replace(/\D/g, '')
+    if (nome.length < 2 || fone.length < 10) return
+    try { registrarLead({ cod: 'acm-publico', nome, fone, email: '', bairro: `Usou a referência de valor · ${tipo} · ${bairro}${ehResid && quartos ? ` · ${quartos === '4' ? '4+' : quartos}q` : ''} · ${area}m²` }) } catch {}
+    try { localStorage.setItem(ACM_LEAD_KEY, JSON.stringify({ nome, fone, ts: Date.now() })) } catch {}
+    setLead((p) => ({ nome: p.nome || nome, fone: p.fone || gate.fone }))
+    setIdent(true)
+  }
 
   useEffect(() => { let vivo = true; carregarAcmBase().then((d) => { if (vivo && d) setBase(d) }); return () => { vivo = false } }, [])
 
@@ -362,6 +382,18 @@ export function CalcACM() {
         {!base && <p className="acm-loading">Carregando base de comparáveis…</p>}
       </div>
       <div>
+        {!ident ? (
+          <form className="acm-gate" onSubmit={entrarGate}>
+            <h3 className="acm-gate-tit">Veja sua referência de mercado — grátis</h3>
+            <p className="acm-gate-sub">Escolha o imóvel ao lado e informe seu nome + WhatsApp pra liberar o resultado na hora. Sem custo.</p>
+            <div className="acm-lead-row">
+              <input placeholder="Seu nome" value={gate.nome} onChange={(e) => setGate((p) => ({ ...p, nome: e.target.value }))} />
+              <input type="tel" inputMode="tel" placeholder="WhatsApp (com DDD)" value={gate.fone} onChange={(e) => setGate((p) => ({ ...p, fone: e.target.value }))} />
+            </div>
+            <button type="submit" className="acm-gate-btn">Ver a referência grátis <IconArrow width={16} height={16} /></button>
+            <p className="acm-gate-nota">Liberação imediata. Seu contato fica só comigo — não compartilho com ninguém.</p>
+          </form>
+        ) : <>
         {r.ok ? <>
           <Resultado destaque={{ rotulo: 'Faixa de referência pela metragem', valor: `${brl(totMin)} a ${brl(totMax)}` }} itens={[
             { rotulo: 'R$/m² de referência', valor: `${brl(r.referencia)}/m²` },
@@ -427,7 +459,8 @@ export function CalcACM() {
             </form>
           ) : <p className="acm-lead-ok">✓ Recebi seus dados! Abri o WhatsApp pra gente combinar a visita ao imóvel.</p>}
         </> : <p className="section-sub">Ainda não há comparáveis para <b>{bairro}</b> nesse recorte. Tente "Qualquer" em quartos/outro tipo, ou fale comigo para uma <b>avaliação presencial</b>.</p>}
-        {nota('Método comparativo direto de dados de mercado (NBR 14653) sobre a carteira da Rotina: comparáveis do mesmo tipo, homogeneizados (vaga + área), saneados por Chauvenet; referência = média saneada; faixa = campo de arbítrio ±15%. Baseado em preços anunciados — é referência da ÁREA, não substitui a avaliação presencial da edificação.')}
+        {nota('Método comparativo direto de dados de mercado (NBR 14653) sobre a carteira da Rotina: comparáveis do mesmo tipo, homogeneizados (vaga + área), saneados por Tukey/Chauvenet; referência = média saneada; faixa = campo de arbítrio ±15%. Baseado em preços anunciados — é referência da ÁREA, não substitui a avaliação presencial da edificação.')}
+        </>}
       </div>
     </div>
   )

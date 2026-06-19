@@ -9164,3 +9164,12 @@ html[data-theme="dark"] .det-estudo-cta-ico svg { color: #FFFFFF !important; }
 .acm-fatores ul { margin: 10px 0 0; padding-left: 18px; }
 .acm-fatores li { font-size: 0.82rem; color: #4a5160; line-height: 1.5; margin-bottom: 4px; }
 .acm-base-data { margin-top: 10px; font-size: 0.76rem; color: #8a8377; }
+
+/* Portão de lead da ACM pública (não logado informa nome + WhatsApp p/ ver) */
+.acm-gate { padding: 20px; border: 1px solid #E4DFD4; border-radius: 14px; background: #FBF7F0; }
+.acm-gate-tit { margin: 0 0 6px; font-family: var(--font-head); font-weight: 800; font-size: 1.05rem; color: #1C2A44; }
+.acm-gate-sub { margin: 0 0 14px; font-size: 0.88rem; color: #4a5160; line-height: 1.5; }
+.acm-gate-btn { width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #0b0e16; color: #fff; border: 1px solid #0b0e16; border-radius: 11px; padding: 13px 18px; font-family: var(--font-head); font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: background .16s; }
+.acm-gate-btn:hover { background: #1C2A44; border-color: #1C2A44; }
+.acm-gate-btn svg { color: #fff; }
+.acm-gate-nota { margin: 10px 0 0; font-size: 0.76rem; color: #8a8377; text-align: center; }
