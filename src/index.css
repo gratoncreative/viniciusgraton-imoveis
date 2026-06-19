@@ -9144,3 +9144,23 @@ html[data-theme="dark"] .det-estudo-cta-ico svg { color: #FFFFFF !important; }
 .acm-lead-btn svg { color: #FFFFFF; }
 .acm-lead-ok { margin-top: 16px; padding: 14px 16px; border-radius: 12px; background: #ECF7EE; border: 1px solid #BfE3C6; color: #1a7f37; font-weight: 600; font-size: 0.9rem; }
 @media (max-width: 560px) { .acm-lead-row { grid-template-columns: 1fr; } }
+
+/* ACM técnico: loading, comparáveis, sensibilidade, metodologia */
+.acm-loading { margin-top: 10px; font-size: 0.8rem; color: #8a8377; font-style: italic; }
+.acm-comps { margin-top: 14px; }
+.acm-comps-toggle { background: none; border: none; padding: 0; cursor: pointer; font-family: var(--font-head); font-weight: 700; font-size: 0.84rem; color: #1C2A44; }
+.acm-comps-toggle:hover { color: #eb0128; }
+.acm-comps-lista { list-style: none; margin: 12px 0 0; padding: 0; border: 1px solid #E4DFD4; border-radius: 12px; overflow: hidden; }
+.acm-comps-lista li { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 10px 14px; font-size: 0.84rem; color: #2A2F38; border-bottom: 1px solid #EFEAE0; }
+.acm-comps-lista li:last-child { border-bottom: none; }
+.acm-comp-d { color: #5a6172; }
+.acm-comp-v { font-weight: 700; color: #1C2A44; white-space: nowrap; }
+.acm-comp-v i { font-weight: 400; font-style: normal; color: #8a8377; font-size: 0.78rem; }
+.acm-comp-desc { color: #8a8377 !important; font-style: italic; font-size: 0.78rem !important; }
+.acm-sensi { margin-top: 12px; font-size: 0.84rem; color: #4a5160; }
+.acm-sensi b { color: #1C2A44; }
+.acm-fatores { margin-top: 12px; }
+.acm-fatores summary { cursor: pointer; font-family: var(--font-head); font-weight: 700; font-size: 0.84rem; color: #1C2A44; }
+.acm-fatores ul { margin: 10px 0 0; padding-left: 18px; }
+.acm-fatores li { font-size: 0.82rem; color: #4a5160; line-height: 1.5; margin-bottom: 4px; }
+.acm-base-data { margin-top: 10px; font-size: 0.76rem; color: #8a8377; }

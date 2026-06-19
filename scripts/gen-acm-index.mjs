@@ -51,3 +51,16 @@ for (const [key, arr] of grupos) {
 const out = { gerado: cat.geradoEm || null, fonte: cat.fonte || 'Rotina Imobiliária', seg }
 writeFileSync(join(root, 'src/acm-m2.json'), JSON.stringify(out))
 console.log(`acm-m2.json: ${mantidos} segmentos (de ${grupos.size}) · ${imoveis.length} imóveis lidos`)
+
+// public/acm-base.json — base ENXUTA de comparáveis (só Venda + campos que o motor
+// estudoM2 usa). Carregada sob demanda pela ferramenta ACM p/ rodar o MCDDM real
+// (comparáveis + homogeneização) sem pôr o catálogo de 2 MB no bundle.
+const base = imoveis
+  .filter((i) => i.finalidade === 'Venda' && Number(i.area) > 0 && Number(i.preco) > 0)
+  .map((i) => ({
+    codigo: i.codigo, tipo: i.tipo, bairro: i.bairro,
+    area: Number(i.area), preco: Number(i.preco),
+    quartos: Number(i.quartos) || 0, vagas: Number(i.vagas) || 0,
+  }))
+writeFileSync(join(root, 'public/acm-base.json'), JSON.stringify({ gerado: cat.geradoEm || null, fonte: cat.fonte || 'Rotina Imobiliária', total: base.length, imoveis: base }))
+console.log(`acm-base.json: ${base.length} imóveis à venda (base de comparáveis)`)

@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import CampoMoeda from '../components/CampoMoeda'
-import { BAIRROS_IMOVEL, linkWhatsApp } from '../data'
+import { BAIRROS_IMOVEL, linkWhatsApp, estudoM2ACM } from '../data'
 import { registrarLead } from '../engajamento'
 import BAIRROS_M2 from '../bairros-m2.json'
 import ACM_INDEX from '../acm-m2.json'
@@ -279,35 +279,66 @@ function BarraFaixa({ min, central, max }) {
   )
 }
 
+// Base ENXUTA de comparáveis (só Venda) — carregada sob demanda (não vai no bundle).
+let _acmBase = null, _acmBaseProm = null
+function carregarAcmBase() {
+  if (_acmBase) return Promise.resolve(_acmBase)
+  if (!_acmBaseProm) _acmBaseProm = fetch('/acm-base.json').then((r) => r.json()).then((d) => { _acmBase = d; return d }).catch(() => { _acmBaseProm = null; return null })
+  return _acmBaseProm
+}
+const GRAU_TXT = { III: 'referência consistente', II: 'referência moderada', I: 'referência preliminar' }
+const fmtBaseData = (iso) => { if (!iso) return ''; const [y, m, d] = String(iso).slice(0, 10).split('-'); return `${d}/${m}/${y}` }
+
+const ESCOPO_TXT = {
+  'bairro+quartos': (b, q) => `${b}, ${q} quartos`,
+  bairro: (b) => `${b} (todos os quartos)`,
+  'cidade+quartos': (_b, q) => `Uberlândia, ${q} quartos (sem amostra no bairro)`,
+  cidade: () => 'Uberlândia (sem amostra no bairro)',
+  indice: (b) => `${b} — índice público`,
+}
+
 export function CalcACM() {
   const ord = useMemo(() => [...BAIRROS_M2].sort((a, b) => a.bairro.localeCompare(b.bairro, 'pt-BR')), [])
   const [bairro, setBairro] = useState(ord[0]?.bairro || '')
   const [tipo, setTipo] = useState('Apartamento')
   const [quartos, setQuartos] = useState('')
   const [area, setArea] = useState('120')
+  const [base, setBase] = useState(_acmBase)
   const [lead, setLead] = useState({ nome: '', fone: '' })
   const [leadOk, setLeadOk] = useState(false)
+  const [verComp, setVerComp] = useState(false)
   const ehResid = RESID_ACM.has(tipo)
+
+  useEffect(() => { let vivo = true; carregarAcmBase().then((d) => { if (vivo && d) setBase(d) }); return () => { vivo = false } }, [])
 
   const r = useMemo(() => {
     const A = +area || 0
-    const cat = statsACM(bairro, tipo, ehResid ? quartos : '')
-    const pub = BAIRROS_M2.find((x) => x.bairro === bairro)
-    if (cat.n >= 4) {
-      const conf = cat.n >= 12 ? 'alta' : cat.n >= 6 ? 'média' : 'baixa'
-      return { ok: true, central: cat.mediana * A, min: cat.p25 * A, max: cat.p75 * A, m2: cat.mediana, fonte: 'seu catálogo (Rotina)', ref: `${cat.n} imóveis`, n: cat.n, conf, origem: 'catalogo', porQuartos: cat.porQuartos }
+    if (base && Array.isArray(base.imoveis)) {
+      const e = estudoM2ACM({ tipo, bairro, area: A, quartos: ehResid ? quartos : '' }, base.imoveis)
+      if (e.ok) return { ...e, motor: 'estudo', A, geradoBase: base.gerado }
     }
-    if (pub && pub.m2 > 0) return { ok: true, central: pub.m2 * A, min: pub.m2 * A * 0.88, max: pub.m2 * A * 1.12, m2: pub.m2, fonte: pub.fonte, ref: pub.ref, n: cat.n, conf: 'referência pública', origem: 'publica', porQuartos: false }
+    // fallback instantâneo (índice pré-computado) enquanto a base de comparáveis não chega
+    const seg = statsACM(bairro, tipo, ehResid ? quartos : '')
+    const pub = BAIRROS_M2.find((x) => x.bairro === bairro)
+    if (seg.n >= 4) return { ok: true, motor: 'indice', A, referencia: seg.mediana, campoMin: seg.p25, campoMax: seg.p75, n: seg.n, escopo: 'indice', simples: true }
+    if (pub && pub.m2 > 0) return { ok: true, motor: 'indice', A, referencia: pub.m2, campoMin: Math.round(pub.m2 * 0.92), campoMax: Math.round(pub.m2 * 1.08), n: 0, escopo: 'indice', simples: true, refFonte: pub.fonte, refRef: pub.ref }
     return { ok: false }
-  }, [bairro, tipo, quartos, area, ehResid])
+  }, [bairro, tipo, quartos, area, ehResid, base])
+
+  // totais (R$) a partir do R$/m²
+  const A = +area || 0
+  const totMin = r.ok ? Math.round(r.campoMin * A) : 0
+  const totMax = r.ok ? Math.round(r.campoMax * A) : 0
+  const totCentral = r.ok ? Math.round(r.referencia * A) : 0
+  const qTxt = quartos === '4' ? '4+' : quartos
 
   const enviarLead = (e) => {
     e.preventDefault()
     const nome = lead.nome.trim(), fone = lead.fone.replace(/\D/g, '')
     if (nome.length < 2 || fone.length < 10) return
-    const ctx = `Avaliação ACM · ${tipo} · ${bairro}${ehResid && quartos ? ` · ${quartos}q` : ''} · ${area}m² · faixa ${brl(r.min)}–${brl(r.max)}`
+    const ctx = `Avaliação ACM · ${tipo} · ${bairro}${ehResid && quartos ? ` · ${qTxt}q` : ''} · ${area}m² · faixa ${brl(totMin)}–${brl(totMax)}`
     try { registrarLead({ cod: 'acm-avaliacao', nome, fone, email: '', bairro: ctx }) } catch {}
-    const msg = `Olá Vinícius! Usei a ferramenta de referência e quero a avaliação presencial do meu imóvel.\n\n${tipo} no ${bairro}${ehResid && quartos ? `, ${quartos} quartos` : ''}, ${area} m².\nReferência pela área: ${brl(r.min)} a ${brl(r.max)}.\n\nMeu nome: ${nome}.`
+    const msg = `Olá Vinícius! Usei a referência de mercado no site e quero a avaliação presencial do meu imóvel.\n\n${tipo} no ${bairro}${ehResid && quartos ? `, ${qTxt} quartos` : ''}, ${area} m².\nReferência pela metragem: ${brl(totMin)} a ${brl(totMax)}.\n\nMeu nome: ${nome}.`
     setLeadOk(true)
     window.open(linkWhatsApp(msg), '_blank', 'noopener')
   }
@@ -315,9 +346,11 @@ export function CalcACM() {
   const baixarPdf = async () => {
     try {
       const { gerarPdfACM } = await import('../pdfACM')
-      gerarPdfACM({ bairro, tipo, quartos: ehResid ? quartos : '', area: +area || 0, min: r.min, max: r.max, m2: r.m2, fonte: r.fonte, ref: r.ref, conf: r.conf, dataTxt: new Date().toLocaleDateString('pt-BR') })
+      gerarPdfACM({ bairro, tipo, quartos: ehResid ? qTxt : '', area: A, r, totMin, totMax, totCentral, dataTxt: new Date().toLocaleDateString('pt-BR') })
     } catch { alert('Não consegui gerar o PDF agora. Tente novamente em instantes.') }
   }
+
+  const comps = (r.comparaveis || []).filter((c) => !c.descartado)
 
   return (
     <div className="calc-grid">
@@ -326,27 +359,66 @@ export function CalcACM() {
         <Select label="Tipo de imóvel" valor={tipo} onChange={setTipo} opcoes={TIPOS_ACM} />
         {ehResid && <Select label="Quartos" valor={quartos} onChange={setQuartos} opcoes={[{ v: '', t: 'Qualquer' }, { v: '1', t: '1 quarto' }, { v: '2', t: '2 quartos' }, { v: '3', t: '3 quartos' }, { v: '4', t: '4+ quartos' }]} />}
         <Campo label="Área (m²)" sufixo="m²" valor={area} onChange={setArea} />
+        {!base && <p className="acm-loading">Carregando base de comparáveis…</p>}
       </div>
       <div>
         {r.ok ? <>
-          <Resultado destaque={{ rotulo: 'Referência pela área (m² do bairro)', valor: `${brl(r.min)} a ${brl(r.max)}` }} itens={[
-            { rotulo: `m² médio${r.origem === 'catalogo' ? ' (catálogo)' : ''} em ${bairro}`, valor: `${brl(r.m2)}/m²` },
-            { rotulo: 'Amostra', valor: r.origem === 'catalogo'
-                ? (r.porQuartos
-                    ? `${r.n} imóveis · ${quartos === '4' ? '4+' : quartos} quartos`
-                    : `${r.n} imóveis · todos os quartos${(ehResid && quartos) ? ` (sem amostra de ${quartos === '4' ? '4+' : quartos}q neste bairro)` : ''}`)
-                : 'sem imóveis no catálogo' },
-            { rotulo: 'Precisão da referência', valor: r.conf },
-            { rotulo: 'Fonte', valor: `${r.fonte}${r.ref ? ` (${r.ref})` : ''}` },
+          <Resultado destaque={{ rotulo: 'Faixa de referência pela metragem', valor: `${brl(totMin)} a ${brl(totMax)}` }} itens={[
+            { rotulo: 'R$/m² de referência', valor: `${brl(r.referencia)}/m²` },
+            { rotulo: 'Valor central', valor: brl(totCentral) },
+            ...(r.vendaEst ? [{ rotulo: 'Estimativa de fechamento (~−10%)', valor: brl(Math.round(r.vendaEst * A)) }] : []),
+            ...(r.motor === 'estudo' ? [
+              { rotulo: 'Fundamentação', valor: r.grauFund ? `Grau ${r.grauFund} · ${GRAU_TXT[r.grauFund]}` : 'amostra pequena' },
+              { rotulo: 'Precisão (IC 80%)', valor: r.grauPrec ? `Grau ${r.grauPrec} · ±${r.ic80 ? r.ic80.amplPct : '—'}%` : (r.ic80 ? `±${r.ic80.amplPct}% (sem classificação)` : '—') },
+              { rotulo: 'Comparáveis', valor: `${r.n} usados${r.nDesc ? ` · ${r.nDesc} descartado` : ''} — ${ESCOPO_TXT[r.escopo] ? ESCOPO_TXT[r.escopo](bairro, qTxt) : bairro}` },
+              { rotulo: 'Dispersão (CV)', valor: `${Math.round((r.cv || 0) * 100)}%` },
+            ] : [
+              { rotulo: 'Base', valor: r.refFonte ? `índice público (${r.refFonte}${r.refRef ? ', ' + r.refRef : ''})` : `catálogo · ${r.n} imóveis` },
+            ]),
           ]} />
-          <BarraFaixa min={r.min} central={r.central} max={r.max} />
-          <div className="acm-aviso"><b>⚠ Isto é só uma referência da área, pelo m² do bairro.</b> Ela <b>não avalia a edificação</b> — acabamento, conservação, reforma, andar, vista e posição mudam muito o valor real. A avaliação da edificação é <b>presencial</b>: eu, Vinícius, vou até o imóvel e fecho o preço justo.</div>
+          <BarraFaixa min={totMin} central={totCentral} max={totMax} />
+
+          {r.motor === 'estudo' && comps.length > 0 && (
+            <div className="acm-comps">
+              <button type="button" className="acm-comps-toggle" onClick={() => setVerComp((v) => !v)}>
+                {verComp ? '▲ Ocultar' : '▼ Ver'} exemplos dos imóveis comparáveis usados
+              </button>
+              {verComp && (
+                <ul className="acm-comps-lista">
+                  {comps.slice(0, 8).map((c, i) => (
+                    <li key={i}>
+                      <span className="acm-comp-d">{c.bairro} · {c.area} m²{c.vagas ? ` · ${c.vagas} vaga${c.vagas > 1 ? 's' : ''}` : ''}</span>
+                      <span className="acm-comp-v">{brl(c.preco)} <i>· {brl(Math.round(c.m2))}/m² homog.</i></span>
+                    </li>
+                  ))}
+                  {r.nDesc > 0 && <li className="acm-comp-desc">+ {r.nDesc} descartado no saneamento estatístico (Chauvenet)</li>}
+                </ul>
+              )}
+            </div>
+          )}
+
+          {r.motor === 'estudo' && (
+            <p className="acm-sensi">Sensibilidade: cada <b>+10 m²</b> ≈ <b>{brl(Math.round(r.referencia * 10))}</b>{!RESID_ACM.has(tipo) ? '' : ' · cada vaga de garagem ≈ R$ 32.000'}.</p>
+          )}
+
+          <div className="acm-aviso">
+            <b>⚠ Referência pela metragem, com base em preços ANUNCIADOS</b> de imóveis semelhantes na região (costumam ficar acima do valor de fechamento). <b>Não avalia a edificação</b> — conservação, acabamento, reforma, andar, vista e benfeitorias mudam muito o valor real. O valor formal exige <b>avaliação presencial</b>: eu, Vinícius, vou até o imóvel.
+          </div>
+
+          {r.fatores && r.fatores.length > 0 && (
+            <details className="acm-fatores">
+              <summary>Como calculei (metodologia)</summary>
+              <ul>{r.fatores.map((f, i) => <li key={i}>{f}</li>)}</ul>
+              {r.geradoBase && <p className="acm-base-data">Base de mercado atualizada em {fmtBaseData(r.geradoBase)} · método comparativo (NBR 14653) sobre a carteira da Rotina.</p>}
+            </details>
+          )}
+
           <div className="acm-acoes">
             <button type="button" className="acm-pdf-btn" onClick={baixarPdf}>Baixar PDF da referência</button>
           </div>
           {!leadOk ? (
             <form className="acm-lead" onSubmit={enviarLead}>
-              <p className="acm-lead-tit">Quer a avaliação <b>presencial</b> (com a edificação)? Eu vou até o imóvel.</p>
+              <p className="acm-lead-tit">Quer a avaliação <b>presencial</b> (com a edificação)? Eu vou até o imóvel e fecho o preço justo.</p>
               <div className="acm-lead-row">
                 <input placeholder="Seu nome" value={lead.nome} onChange={(e) => setLead((p) => ({ ...p, nome: e.target.value }))} />
                 <input type="tel" inputMode="tel" placeholder="WhatsApp (com DDD)" value={lead.fone} onChange={(e) => setLead((p) => ({ ...p, fone: e.target.value }))} />
@@ -354,8 +426,8 @@ export function CalcACM() {
               <button type="submit" className="acm-lead-btn"><IconWhats width={18} height={18} /> Quero a avaliação presencial</button>
             </form>
           ) : <p className="acm-lead-ok">✓ Recebi seus dados! Abri o WhatsApp pra gente combinar a visita ao imóvel.</p>}
-        </> : <p className="section-sub">Ainda não há referência para <b>{bairro}</b> nesse recorte. Tente "Qualquer" em quartos, ou fale comigo para uma <b>avaliação presencial</b>.</p>}
-        {nota('Cálculo: mediana de R$/m² dos imóveis à venda no catálogo (bairro/tipo/quartos); sem amostra suficiente, usa o m² público (IPD/ZAP). A faixa vem dos percentis 25–75. É referência da ÁREA — não inclui a avaliação da edificação, que é presencial.')}
+        </> : <p className="section-sub">Ainda não há comparáveis para <b>{bairro}</b> nesse recorte. Tente "Qualquer" em quartos/outro tipo, ou fale comigo para uma <b>avaliação presencial</b>.</p>}
+        {nota('Método comparativo direto de dados de mercado (NBR 14653) sobre a carteira da Rotina: comparáveis do mesmo tipo, homogeneizados (vaga + área), saneados por Chauvenet; referência = média saneada; faixa = campo de arbítrio ±15%. Baseado em preços anunciados — é referência da ÁREA, não substitui a avaliação presencial da edificação.')}
       </div>
     </div>
   )

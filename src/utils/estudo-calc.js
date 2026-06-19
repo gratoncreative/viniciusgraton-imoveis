@@ -54,6 +54,72 @@ export function calcGrau(n, cv) {
   return 'I'
 }
 
+// ════════════════════════════════════════════════════════════════════════════
+//  NBR 14653-2 — graus e saneamento (usados pela ferramenta ACM "referência pela área")
+//  Mantidos separados de calcGrau() pra NÃO mexer no Estudo do m² já existente.
+// ════════════════════════════════════════════════════════════════════════════
+
+// erf/erfc por aproximação de Abramowitz & Stegun 7.1.26 (erro < 1.5e-7)
+function _erf(x) {
+  const s = x < 0 ? -1 : 1
+  x = Math.abs(x)
+  const t = 1 / (1 + 0.3275911 * x)
+  const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x)
+  return s * y
+}
+// Probabilidade de uma observação ficar além de z desvios (cauda dupla por simetria)
+const _Q = (z) => 0.5 * (1 - _erf(z / Math.SQRT2))
+
+// t de Student para IC 80% bicaudal (t_{0,90; n-1}); z=1,2816 p/ n grande
+function _t80(n) {
+  const tab = { 2: 3.078, 3: 1.886, 4: 1.638, 5: 1.533, 6: 1.476, 7: 1.440, 8: 1.415, 9: 1.397, 10: 1.383, 12: 1.363, 15: 1.341, 20: 1.325, 25: 1.316 }
+  if (n >= 30) return 1.2816
+  if (tab[n]) return tab[n]
+  let v = tab[2]
+  for (const k of Object.keys(tab).map(Number).sort((a, b) => a - b)) if (k <= n) v = tab[k]
+  return v
+}
+
+/**
+ * Grau de FUNDAMENTAÇÃO (NBR 14653-2, tratamento por fatores) pelo nº de dados usados.
+ * III >= 12, II >= 5, I >= 3, abaixo de 3 não classifica.
+ */
+export function calcGrauFundamentacao(n) {
+  if (n >= 12) return 'III'
+  if (n >= 5) return 'II'
+  if (n >= 3) return 'I'
+  return null
+}
+
+/**
+ * Grau de PRECISÃO pela amplitude do intervalo de confiança de 80% em torno da MÉDIA.
+ * amplitude = (Lsup - Linf) / média:  III <= 30%, II <= 40%, I <= 50%, acima não classifica.
+ * Retorna { grau, amplPct, icMin, icMax } ou null.
+ */
+export function calcGrauPrecisao(media, dp, n) {
+  if (!(media > 0) || !(n >= 3) || !(dp >= 0)) return null
+  const semi = _t80(n) * dp / Math.sqrt(n)
+  const ampl = (2 * semi) / media
+  const grau = ampl <= 0.30 ? 'III' : ampl <= 0.40 ? 'II' : ampl <= 0.50 ? 'I' : null
+  return { grau, amplPct: Math.round(ampl * 100), icMin: media - semi, icMax: media + semi }
+}
+
+/**
+ * Critério de Chauvenet: índice do dado a descartar (o de maior desvio) quando o nº
+ * esperado de observações tão extremas (n·2·Q(z)) é < 0,5. Senão, -1 (nada a descartar).
+ * Uma rodada, no máximo 1 descarte, piso de 3 dados.
+ */
+export function chauvenetCorte(vals) {
+  const n = vals.length
+  if (n < 4) return -1 // piso de 3: só descarta se sobrarem >= 3
+  const media = vals.reduce((s, v) => s + v, 0) / n
+  const dp = Math.sqrt(vals.reduce((s, v) => s + (v - media) ** 2, 0) / (n - 1))
+  if (!(dp > 0)) return -1
+  let idx = -1, maxz = 0
+  vals.forEach((v, i) => { const z = Math.abs(v - media) / dp; if (z > maxz) { maxz = z; idx = i } })
+  return (idx >= 0 && n * 2 * _Q(maxz) < 0.5) ? idx : -1
+}
+
 // ── Formatadores ──────────────────────────────────────────────────────────────
 
 export const fmtBRL = v =>

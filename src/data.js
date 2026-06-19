@@ -1,3 +1,4 @@
+import { chauvenetCorte, calcGrauFundamentacao, calcGrauPrecisao } from './utils/estudo-calc'
 // =============================================================
 //  CONFIG CENTRAL — dados reais do negócio
 // =============================================================
@@ -398,6 +399,100 @@ export function estudoM2(im, base) {
     fontes: _fontesM2(refRow),
     comparaveis: usarObj.slice(0, 40),
     parametros: { vagaValor: VAGA_VALOR, fatorOferta: FATOR_OFERTA, expArea: EXP_AREA },
+  }
+}
+
+// Variação da NBR p/ a ferramenta ACM "referência pela área" (sem imóvel-código).
+// Monta um pseudo-imóvel (bairro/tipo/quartos/área) e roda o MCDDM com:
+//  - saneamento por Critério de Chauvenet (no lugar do ±30%);
+//  - tendência central = MÉDIA saneada (mediana fica como leitura auxiliar);
+//  - filtro de validade de fatores (produto 0,50–2,00);
+//  - campo de arbítrio fixo ±15% + IC 80% (grau de precisão);
+//  - graus de fundamentação/precisão NBR, com TETO em Grau II (base é 100% anúncio).
+export function estudoM2ACM({ tipo, bairro, area, quartos } = {}, base) {
+  const A = Number(area)
+  if (!(A > 0) || !tipo || !bairro || !Array.isArray(base)) return { ok: false }
+  const grupo = _tipoGrupo(tipo)
+  const ehTer = grupo === 'terreno'
+  const norm = _norm(bairro)
+  const qb = quartos === '4' ? '4' : (quartos || '')
+  const refRow = (bairrosM2 || []).find((x) => _norm(x.bairro) === norm)
+  const refIPD = _m2Bairro(bairro)
+
+  const fArea = (a) => Math.min(1.15, Math.max(0.85, Math.pow(a / A, EXP_AREA)))
+  const m2homog = (x) => {
+    let preco = x.preco
+    if (!ehTer && x.vagas > 0) preco = Math.max(x.preco * 0.6, x.preco - x.vagas * VAGA_VALOR)
+    return (preco / x.area) * fArea(x.area)
+  }
+  const okTipo = (x) => _tipoGrupo(x.tipo) === grupo && x.preco > 0 && x.area > 0
+  const okQ = (x) => !qb || (qb === '4' ? (x.quartos || 0) >= 4 : String(x.quartos || 0) === qb)
+  const det = (x) => {
+    const m2bruto = x.preco / x.area
+    const m2 = m2homog(x)
+    return { codigo: String(x.codigo), bairro: x.bairro, area: x.area, preco: x.preco, vagas: x.vagas || 0, quartos: x.quartos || 0, m2bruto, m2, fator: m2bruto > 0 ? m2 / m2bruto : 1 }
+  }
+
+  // afrouxa o recorte só o necessário: bairro+quartos -> bairro -> cidade+quartos -> cidade
+  let escopo = 'bairro+quartos'
+  let objs = base.filter((x) => okTipo(x) && _norm(x.bairro) === norm && okQ(x)).map(det)
+  if (objs.length < 5) { objs = base.filter((x) => okTipo(x) && _norm(x.bairro) === norm).map(det); escopo = 'bairro' }
+  if (objs.length < 5 && qb) { objs = base.filter((x) => okTipo(x) && okQ(x)).map(det); escopo = 'cidade+quartos' }
+  if (objs.length < 5) { objs = base.filter(okTipo).map(det); escopo = 'cidade' }
+  objs = objs.filter((o) => o.m2 > 0 && o.fator >= 0.50 && o.fator <= 2.00).sort((a, b) => a.m2 - b.m2)
+
+  if (objs.length < 3) {
+    if (!(refIPD > 0)) return { ok: false }
+    return {
+      ok: true, simples: true, escopo: 'indice', referencia: refIPD, mediana: refIPD, dp: 0, cv: 0, n: 0, nDesc: 0,
+      campoMin: Math.round(refIPD * 0.92), campoMax: Math.round(refIPD * 1.08), ic80: null, vendaEst: Math.round(refIPD * FATOR_OFERTA),
+      grauFund: null, grauPrec: null, comparaveis: [], refFonte: refRow && refRow.fonte, refRef: refRow && refRow.ref,
+      parametros: { vagaValor: VAGA_VALOR, fatorOferta: FATOR_OFERTA, expArea: EXP_AREA },
+      fatores: ['Poucos comparáveis no recorte — usamos o índice de mercado público do bairro como referência.'],
+    }
+  }
+
+  // saneamento ROBUSTO (preços de anúncio têm erros de área/preço): fences de Tukey
+  // (1,5·IQR) + limites absolutos de R$/m², depois um passe de Chauvenet. Sem isso, a
+  // média é destruída por outliers grosseiros (ex.: área digitada errada).
+  const ms = objs.map((o) => o.m2).slice().sort((a, b) => a - b)
+  const q1 = _quantil(ms, 0.25), q3 = _quantil(ms, 0.75), iqr = q3 - q1
+  const lo = Math.max(500, q1 - 1.5 * iqr), hi = Math.min(60000, q3 + 1.5 * iqr)
+  objs.forEach((o) => { if (o.m2 < lo || o.m2 > hi) o.descartado = true })
+  let usar = objs.filter((o) => !o.descartado)
+  if (usar.length < 3) { objs.forEach((o) => { o.descartado = false }); usar = objs } // não dá pra sanear: usa tudo
+  // passe extra de Chauvenet sobre o conjunto já limpo (remove 1 ponto espúrio residual)
+  if (usar.length >= 4) {
+    const corte = chauvenetCorte(usar.map((o) => o.m2))
+    if (corte >= 0) { usar[corte].descartado = true; usar = usar.filter((o) => !o.descartado) }
+  }
+  const vals = usar.map((o) => o.m2)
+  const n = vals.length
+  const media = vals.reduce((s, v) => s + v, 0) / n
+  const mediana = _quantil(vals, 0.5)
+  const dp = Math.sqrt(vals.reduce((s, v) => s + (v - media) ** 2, 0) / Math.max(n - 1, 1))
+  const cv = media > 0 ? dp / media : 0
+  const prec = calcGrauPrecisao(media, dp, n)
+  let fund = calcGrauFundamentacao(n)
+  if (fund === 'III') fund = 'II' // teto: base 100% anúncio (não escritura)
+
+  const nDesc = objs.filter((o) => o.descartado).length
+  return {
+    ok: true, escopo, n, nDesc,
+    referencia: Math.round(media), mediana: Math.round(mediana), dp: Math.round(dp), cv,
+    campoMin: Math.round(media * 0.85), campoMax: Math.round(media * 1.15),
+    vendaEst: Math.round(media * FATOR_OFERTA),
+    ic80: prec ? { min: Math.round(prec.icMin), max: Math.round(prec.icMax), amplPct: prec.amplPct } : null,
+    grauFund: fund, grauPrec: prec ? prec.grau : null,
+    comparaveis: objs.slice(0, 60),
+    refIPD, refFonte: refRow && refRow.fonte, refRef: refRow && refRow.ref,
+    parametros: { vagaValor: VAGA_VALOR, fatorOferta: FATOR_OFERTA, expArea: EXP_AREA },
+    fatores: [
+      `Só imóveis do mesmo tipo (${tipo})${qb ? `, ${qb === '4' ? '4+' : qb} quartos` : ''} — ${escopo.startsWith('bairro') ? bairro : 'cidade (sem amostra no bairro)'}`,
+      !ehTer ? `Vaga descontada (~${formatPreco(VAGA_VALOR)} cada) antes do m²` : 'Sem fator vaga (terreno)',
+      `Fator área (economia de escala) — heurística do app, base ${Math.round(A)} m²`,
+      `Saneamento robusto (Tukey 1,5·IQR + Chauvenet) — ${nDesc} imóvel(is) fora do padrão descartado(s)`,
+    ],
   }
 }
 
