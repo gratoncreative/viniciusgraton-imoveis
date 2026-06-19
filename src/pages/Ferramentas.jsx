@@ -558,7 +558,8 @@ export default function Ferramentas() {
   })
 
   useEffect(() => {
-    try { setIsCorretor(!!localStorage.getItem('vg_corretor')) } catch {}
+    // admin (vg_admin_token) tem acesso total — destrava todas as ferramentas
+    try { setIsCorretor(!!localStorage.getItem('vg_corretor') || !!localStorage.getItem('vg_admin_token')) } catch {}
   }, [])
 
   // Sistema CLARO (igual ao resto do site) — garante a página branca, estilo Chaves
