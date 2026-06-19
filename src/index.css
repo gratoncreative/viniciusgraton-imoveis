@@ -9109,3 +9109,8 @@ html[data-theme="dark"] .det-estudo-cta-ico svg { color: #FFFFFF !important; }
 .anunciar-form .det-trust svg { color: #eb0128 !important; }
 .anunciar-form .lead-consent, .anunciar-form .lead-consent span { color: #4a5160 !important; }
 .anunciar-form .lead-consent a { color: #1C2A44 !important; }
+
+/* Bloco "Em parceria com" + logo Rotina na tela de sucesso do /anunciar */
+.anu-parceria { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 38px auto 0; padding-top: 26px; border-top: 1px solid #E4DFD4; max-width: 280px; }
+.anu-parceria span { font-family: var(--font-head); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #8a8377; }
+.anu-parceria img { width: 158px; height: auto; opacity: 0.95; }

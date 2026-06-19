@@ -158,12 +158,20 @@ export default function Anunciar() {
         <div className="container" style={{ maxWidth: 640, textAlign: 'center' }}>
           <span className="aviseme-ico" style={{ margin: '0 auto 18px' }}><IconWhats width={28} height={28} /></span>
           <h1 className="section-title">Recebido, {f.nome.trim().split(' ')[0]}!</h1>
-          <p className="section-sub" style={{ margin: '16px auto 28px' }}>
+          <p className="section-sub" style={{ margin: '16px auto 20px' }}>
             Seu imóvel entrou para <b>avaliação</b>. Eu analiso as informações e as fotos com cuidado e, se for um imóvel
             com o padrão de qualidade que entrego aos meus clientes, faço a curadoria e cuido da divulgação. Já abri o
             WhatsApp pra gente conversar.
           </p>
+          <p className="section-sub" style={{ margin: '0 auto 28px' }}>
+            Aprovado, seu imóvel também será <b>cadastrado e divulgado no site da Rotina Imobiliária</b> —
+            mais de 30 anos de mercado em Uberlândia, ampliando o alcance e a credibilidade do seu anúncio.
+          </p>
           <Link className="btn btn-gold" to="/">Voltar ao início <IconArrow /></Link>
+          <div className="anu-parceria">
+            <span>Em parceria com</span>
+            <img src="/rotina-logo.png" alt="Rotina Imobiliária" loading="lazy" />
+          </div>
         </div>
       </main>
     )
