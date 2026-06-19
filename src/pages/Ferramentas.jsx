@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import CampoMoeda from '../components/CampoMoeda'
-import { BAIRROS_IMOVEL, linkWhatsApp, estudoM2ACM } from '../data'
+import { BAIRROS_IMOVEL, linkWhatsApp, estudoM2ACM, getImovel } from '../data'
 import { registrarLead } from '../engajamento'
 import { getCorretorOuAdmin } from '../corretor'
 import BAIRROS_M2 from '../bairros-m2.json'
@@ -250,11 +250,98 @@ export function CalcComissao() {
   return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor da venda" valor={valor} onChange={setValor} /><label className="calc-campo"><span>Comissão (fixa)</span><div className="calc-input"><input type="text" value={`${COMISSAO_PCT}%`} readOnly tabIndex={-1} aria-label="Comissão fixa de 5%" /></div></label><Campo label="Parte do corretor" sufixo="%" valor={corretor} onChange={setCorretor} step="5" /></div><div><Resultado destaque={{ rotulo: `Comissão total (${COMISSAO_PCT}%)`, valor: brl(r.total) }} itens={[{ rotulo: 'Parte do corretor', valor: brl(r.parteCorretor) }, { rotulo: 'Parte da imobiliária/captação', valor: brl(r.parteImob) }]} />{nota('Comissão fixada em 5% sobre o valor da venda. A divisão corretor/imobiliária varia por contrato.')}</div></div>)
 }
 export function FichaAvaliacao() {
-  const [f, setF] = useState({ tipo: 'Casa', bairro: '', area: '', quartos: '', suites: '', vagas: '', estado: 'Bem conservado', preco: 0, dif: '' })
-  const set = (k) => (e) => setF((s) => ({ ...s, [k]: e.target.value }))
-  const texto = `${f.tipo}${f.bairro ? ` no ${f.bairro}` : ''} — Uberlândia\n${[f.area && `${f.area} m²`, f.quartos && `${f.quartos} quartos`, f.suites && `${f.suites} suíte(s)`, f.vagas && `${f.vagas} vagas`].filter(Boolean).join(' · ')}\nEstado: ${f.estado}${f.preco ? `\nValor: ${formatBRL(f.preco)}` : ''}${f.dif ? `\nDiferenciais: ${f.dif}` : ''}\n\nFale com Vinícius Graton — Consultor de Imóveis em Uberlândia.`
-  const copiar = () => { try { navigator.clipboard.writeText(texto) } catch {} }
-  return (<div className="calc-grid"><div className="calc-form"><Select label="Tipo" valor={f.tipo} onChange={set('tipo')} opcoes={['Casa', 'Apartamento', 'Casa em condomínio', 'Terreno', 'Comercial']} /><label className="calc-campo"><span>Bairro</span><div className="calc-input"><input value={f.bairro} onChange={set('bairro')} list="bf" /><datalist id="bf">{BAIRROS_IMOVEL.map((b) => <option key={b} value={b} />)}</datalist></div></label><div className="calc-form" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}><Campo label="Área (m²)" valor={f.area} onChange={set('area')} /><Campo label="Quartos" valor={f.quartos} onChange={set('quartos')} /><Campo label="Suítes" valor={f.suites} onChange={set('suites')} /><Campo label="Vagas" valor={f.vagas} onChange={set('vagas')} /></div><CampoMoeda label="Preço pretendido" valor={f.preco} onChange={(v) => setF((s) => ({ ...s, preco: v }))} /><label className="calc-campo"><span>Diferenciais</span><div className="calc-input"><input value={f.dif} onChange={set('dif')} placeholder="Reforma, sol da manhã, andar alto..." /></div></label></div><div><div className="ficha-preview">{texto}</div><div style={{ display: 'flex', gap: 10, marginTop: 12, flexWrap: 'wrap' }}><button className="btn btn-gold" type="button" onClick={copiar}>Copiar resumo</button><a className="btn btn-ghost" href={`https://wa.me/?text=${encodeURIComponent(texto)}`} target="_blank" rel="noopener noreferrer">Enviar no WhatsApp</a></div>{nota('Gera um resumo pronto para divulgar o imóvel. Ferramenta de apoio ao corretor.')}</div></div>)
+  const [f, setF] = useState({ codigo: '', finalidade: 'Venda', tipo: 'Casa', bairro: '', area: '', quartos: '', suites: '', banheiros: '', vagas: '', andar: '', estado: 'Bem conservado', preco: 0, dif: '' })
+  const [copied, setCopied] = useState(false)
+  const [cod, setCod] = useState('')
+  const [codMsg, setCodMsg] = useState('')
+  const set = (k) => (e) => setF((s) => ({ ...s, [k]: e.target.value })) // inputs crus (evento)
+  const setV = (k) => (v) => setF((s) => ({ ...s, [k]: v }))             // Campo/Select (valor)
+
+  const plural = (n, sing, plu) => { const v = parseInt(n, 10); return v > 0 ? `${v} ${v === 1 ? sing : plu}` : '' }
+
+  const preencher = () => {
+    const c = cod.trim()
+    if (!c) return
+    const im = getImovel(c)
+    if (!im) { setCodMsg('Código não encontrado no catálogo.'); return }
+    setF((s) => ({
+      ...s, codigo: String(im.codigo), finalidade: im.finalidade || s.finalidade, tipo: im.tipo || s.tipo,
+      bairro: im.bairro || '', area: im.area || '', quartos: im.quartos || '', suites: im.suites || '',
+      banheiros: im.banheiros || '', vagas: im.vagas || '', preco: im.preco || 0,
+    }))
+    setCodMsg(`✓ Dados do imóvel ${im.codigo} preenchidos — edite o que quiser.`)
+  }
+
+  const caracs = [
+    plural(f.quartos, 'quarto', 'quartos'),
+    plural(f.suites, 'suíte', 'suítes'),
+    plural(f.banheiros, 'banheiro', 'banheiros'),
+    plural(f.vagas, 'vaga', 'vagas'),
+    f.area && `${f.area} m²`,
+    f.andar && `${f.andar}º andar`,
+  ].filter(Boolean).join(' · ')
+
+  // assina com quem está logado: outro corretor cadastrado usa o próprio nome;
+  // o Vinícius/admin (ou público) usa a assinatura da marca (consultor da Rotina).
+  const eu = (() => { try { return getCorretorOuAdmin() } catch { return null } })()
+  const assina = (!eu || eu.tipo === 'admin' || /graton/i.test(eu.nome || ''))
+    ? 'Vinícius Graton, consultor da Rotina Imobiliária em Uberlândia.'
+    : `${eu.nome}, Rotina Imobiliária${eu.creci ? ` (CRECI ${eu.creci})` : ''}.`
+
+  const linhas = [
+    f.codigo ? `Cód. ${f.codigo}` : '',
+    `${f.tipo}${f.finalidade ? ` para ${f.finalidade.toLowerCase()}` : ''}${f.bairro ? ` no ${f.bairro}` : ''} .. Uberlândia`,
+    caracs,
+    `Estado.. ${f.estado}`,
+    f.preco ? `Valor.. ${formatBRL(f.preco)}${f.finalidade === 'Aluguel' ? '/mês' : ''}` : '',
+    f.dif ? `Diferenciais.. ${f.dif}` : '',
+  ].filter(Boolean)
+  const texto = `${linhas.join('\n')}\n\nQuer agendar uma visita? Me chame.\n${assina}`
+
+  const copiar = async () => {
+    try { await navigator.clipboard.writeText(texto); setCopied(true); setTimeout(() => setCopied(false), 2000) }
+    catch {
+      try { const ta = document.createElement('textarea'); ta.value = texto; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); setCopied(true); setTimeout(() => setCopied(false), 2000) } catch {}
+    }
+  }
+
+  return (
+    <div className="calc-grid">
+      <div className="calc-form">
+        <label className="calc-campo"><span>Preencher do catálogo <i>(opcional)</i></span>
+          <div className="ficha-cod">
+            <input value={cod} onChange={(e) => setCod(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), preencher())} placeholder="Código do imóvel" inputMode="numeric" />
+            <button type="button" className="ficha-cod-btn" onClick={preencher}>Buscar</button>
+          </div>
+        </label>
+        {codMsg && <p className="ficha-cod-msg">{codMsg}</p>}
+        <div className="anu-mini-grid" style={{ gridTemplateColumns: '1fr 1fr' }}>
+          <Select label="Finalidade" valor={f.finalidade} onChange={setV('finalidade')} opcoes={['Venda', 'Aluguel']} />
+          <Select label="Tipo" valor={f.tipo} onChange={setV('tipo')} opcoes={TIPOS_ACM} />
+        </div>
+        <label className="calc-campo"><span>Bairro</span><div className="calc-input"><input value={f.bairro} onChange={set('bairro')} list="bf" placeholder="Ex.. Santa Mônica" /><datalist id="bf">{BAIRROS_IMOVEL.map((b) => <option key={b} value={b} />)}</datalist></div></label>
+        <div className="anu-mini-grid" style={{ gridTemplateColumns: '1fr 1fr 1fr' }}>
+          <Campo label="Área (m²)" valor={f.area} onChange={setV('area')} min="1" step="1" />
+          <Campo label="Quartos" valor={f.quartos} onChange={setV('quartos')} min="0" step="1" />
+          <Campo label="Suítes" valor={f.suites} onChange={setV('suites')} min="0" step="1" />
+          <Campo label="Banheiros" valor={f.banheiros} onChange={setV('banheiros')} min="0" step="1" />
+          <Campo label="Vagas" valor={f.vagas} onChange={setV('vagas')} min="0" step="1" />
+          <Campo label="Andar" valor={f.andar} onChange={setV('andar')} min="0" step="1" />
+        </div>
+        <Select label="Estado" valor={f.estado} onChange={setV('estado')} opcoes={['Novo', 'Bem conservado', 'Necessita reforma', 'Em reforma']} />
+        <CampoMoeda label="Preço pretendido" valor={f.preco} onChange={(v) => setF((s) => ({ ...s, preco: v }))} />
+        <label className="calc-campo"><span>O que torna este imóvel especial?</span><div className="calc-input"><input value={f.dif} onChange={set('dif')} placeholder="Ex.. reforma recente, varanda ampla, sol da manhã, vista..." /></div></label>
+      </div>
+      <div>
+        <div className="ficha-preview">{texto}</div>
+        <div className="ficha-acoes">
+          <button className="btn btn-gold" type="button" onClick={copiar}>{copied ? '✓ Copiado!' : 'Copiar resumo'}</button>
+          <a className="btn btn-red" href={`https://wa.me/?text=${encodeURIComponent(texto)}`} target="_blank" rel="noopener noreferrer"><IconWhats width={18} height={18} /> Enviar no WhatsApp</a>
+        </div>
+        {nota('Gera um resumo pronto pra divulgar o imóvel. Apoio ao corretor — você edita tudo antes de enviar.')}
+      </div>
+    </div>
+  )
 }
 const TIPOS_ACM = ['Apartamento', 'Casa', 'Casa Condomínio Fechado', 'Cobertura', 'Terreno', 'Terreno Condomínio Fechado', 'Loja', 'Sala']
 const RESID_ACM = new Set(['Apartamento', 'Casa', 'Casa Condomínio Fechado', 'Cobertura', 'Kitnet', 'Flat'])
