@@ -9042,3 +9042,14 @@ html[data-theme="claro"] .placa-toggle.on,
 html[data-theme="dark"] .placa-toggle.on {
   background: #eb0128 !important; color: #FFFFFF !important; border-color: #eb0128 !important;
 }
+
+/* CTA "Estudo do valor do m²" no detalhe do imóvel — quadrado do ícone (gráfico)
+   -> fundo vermelho #eb0128 + ícone branco (pedido do Vinícius). */
+.det-estudo-cta-ico,
+html[data-theme="claro"] .det-estudo-cta-ico,
+html[data-theme="dark"] .det-estudo-cta-ico {
+  background: #eb0128 !important; border-color: #eb0128 !important; color: #FFFFFF !important;
+}
+.det-estudo-cta-ico svg,
+html[data-theme="claro"] .det-estudo-cta-ico svg,
+html[data-theme="dark"] .det-estudo-cta-ico svg { color: #FFFFFF !important; }
