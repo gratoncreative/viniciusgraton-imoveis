@@ -5294,15 +5294,16 @@ html[data-theme="dark"] .corrbn-nota { color: #6a7485; }
 .ferr-footer-links .btn-ghost:hover { color: #f1ede4; border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.06); }
 
 /* modal de calculadora (investidor) */
-.ferr-modal-backdrop { position: fixed; inset: 0; z-index: 1000; background: rgba(5,8,16,0.78); backdrop-filter: blur(4px); display: flex; align-items: flex-start; justify-content: center; padding: 32px 16px 40px; overflow-y: auto; animation: fadeIn 0.2s var(--ease); }
-.ferr-modal { width: min(640px, 94vw); background: #141820; border: 1.5px solid var(--gold-3); border-radius: 18px; box-shadow: 0 32px 80px -20px rgba(0,0,0,0.7), 0 0 0 1px rgba(10, 14, 22,0.08); animation: painelEntra 0.28s var(--ease) both; flex-shrink: 0; }
-.ferr-modal-hd { display: flex; align-items: center; gap: 12px; padding: 20px 24px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.ferr-modal-backdrop { position: fixed; inset: 0; z-index: 1000; background: rgba(5,8,16,0.78); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 24px 16px; overflow-y: auto; animation: fadeIn 0.2s var(--ease); }
+/* modal responsivo: largura conforme o dispositivo, altura máxima e corpo rolável */
+.ferr-modal { width: min(760px, 96vw); max-height: calc(100dvh - 48px); display: flex; flex-direction: column; background: #141820; border: 1.5px solid var(--gold-3); border-radius: 18px; box-shadow: 0 32px 80px -20px rgba(0,0,0,0.7), 0 0 0 1px rgba(10, 14, 22,0.08); animation: painelEntra 0.28s var(--ease) both; flex-shrink: 0; overflow: hidden; }
+.ferr-modal-hd { flex: 0 0 auto; display: flex; align-items: center; gap: 12px; padding: 20px 24px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
 .ferr-modal-ico { flex: none; width: 38px; height: 38px; display: grid; place-items: center; border-radius: 9px; background: rgba(10, 14, 22,0.12); border: 1px solid rgba(10, 14, 22,0.22); color: var(--gold-2); }
 .ferr-modal-tit { flex: 1; font-family: var(--font-head); font-size: 1.05rem; font-weight: 700; margin: 0; color: #f1ede4; }
 .ferr-modal-fechar { margin-left: 4px; flex: none; width: 34px; height: 34px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #8490a0; cursor: pointer; display: grid; place-items: center; transition: all 0.15s; }
 .ferr-modal-fechar:hover { background: rgba(255,255,255,0.1); color: #dfe3ea; }
-.ferr-modal-body { padding: 24px; }
-.ferr-modal-cta { margin: 0 !important; padding: 16px 24px 20px !important; border-top: 1px solid rgba(255,255,255,0.08) !important; }
+.ferr-modal-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 24px; }
+.ferr-modal-cta { flex: 0 0 auto; margin: 0 !important; padding: 16px 24px 20px !important; border-top: 1px solid rgba(255,255,255,0.08) !important; }
 .ferr-modal-body .calc-campo span { color: #b0bac8; }
 .ferr-modal-body .calc-campo { border-bottom-color: rgba(255,255,255,0.1); }
 .ferr-modal-body .calc-input { background: #1e2434; border-color: rgba(255,255,255,0.14); }
@@ -5333,7 +5334,8 @@ html[data-theme="dark"] .corrbn-nota { color: #6a7485; }
   .ferr-pro-plano { flex: 1; }
   .calc-cta { flex-direction: column; }
   .calc-cta .btn { width: 100%; justify-content: center; }
-  .ferr-modal-backdrop { padding: 16px 8px 24px; }
+  .ferr-modal-backdrop { padding: 12px 8px; align-items: flex-start; }
+  .ferr-modal { max-height: calc(100dvh - 24px); }
   .ferr-modal-hd { padding: 16px 16px 12px; }
   .ferr-modal-body { padding: 16px; }
   .ferr-modal-cta { padding: 12px 16px 16px !important; }
