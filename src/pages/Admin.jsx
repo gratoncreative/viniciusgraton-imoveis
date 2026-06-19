@@ -443,15 +443,11 @@ function ImoveisPub({ token, onSair, alvo, onAbriu }) {
 export default function Admin() {
   useSEO({ title: 'Painel administrativo', description: 'Área restrita do Vinícius Graton.', path: '/admin', noindex: true })
 
-  // Admin é sempre escuro — força dark independente da preferência do visitante
+  // Admin espelha o site: tema CLARO (igual ao resto). Força claro independente da preferência.
   useEffect(() => {
     const html = document.documentElement
-    const prev = html.getAttribute('data-theme')
-    html.setAttribute('data-theme', 'dark')
-    return () => {
-      const pref = (() => { try { return localStorage.getItem('vg-tema') } catch { return null } })()
-      html.setAttribute('data-theme', pref === 'claro' ? 'light' : 'dark')
-    }
+    html.setAttribute('data-theme', 'claro')
+    return () => { html.setAttribute('data-theme', 'claro') }
   }, [])
 
   const [token, setToken] = useState(() => { try { return localStorage.getItem(LSK) || '' } catch { return '' } })

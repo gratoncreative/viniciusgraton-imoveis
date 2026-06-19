@@ -9218,3 +9218,50 @@ html[data-theme="claro"] .ferr-modal-body .ficha-preview { background: #FBF7F0; 
 .atend-passos li { color: #cfd4dd; font-size: 0.84rem; line-height: 1.5; margin-bottom: 4px; }
 .atend-passos li b { color: #f1ede4; font-weight: 600; }
 .atend-passos li i { color: #a8b2c4; font-style: normal; }
+
+/* ════════════════════════════════════════════════════════════
+   ADMIN — TEMA CLARO (espelha o site)
+   O /admin passou a usar data-theme="claro". As regras base já são
+   claras; aqui consertamos os poucos elementos cujo FUNDO/TEXTO era
+   escuro na base (modais, chips, atendimentos, editor de marca) e que
+   assumiam o painel escuro. Tudo escopado em html[data-theme="claro"].
+   ════════════════════════════════════════════════════════════ */
+
+/* Chips de filtro do CRM — alinhados aos chips claros do site (.condo-chip/.admin-aba) */
+html[data-theme="claro"] .crm-chip { background: rgba(22,26,34,0.05); color: #3a4150; border-color: rgba(22,26,34,0.14); }
+html[data-theme="claro"] .crm-chip:hover:not(.on) { background: rgba(22,26,34,0.09); border-color: var(--gold-3); color: #1C2A44; }
+
+/* Busca do CRM (base era translúcida p/ fundo escuro) */
+html[data-theme="claro"] .crm-busca { background: #FFFFFF; border-color: #E6E4DF; color: #2A2F38; }
+html[data-theme="claro"] .crm-busca:focus { background: #FFFFFF; border-color: var(--gold-2); }
+html[data-theme="claro"] .admin-busca input::placeholder { color: #8A8F99; }
+
+/* Botões de estado (regra de ouro Op.1: fundo escuro + letra branca) */
+html[data-theme="claro"] .lead-status-b.on,
+html[data-theme="claro"] .admin-subaba.on { background: #0b0e16; color: #FFFFFF; border-color: transparent; }
+
+/* Spinner do painel em vermelho da marca */
+html[data-theme="claro"] .admin-spinner-svg circle { stroke: #EB0128; }
+
+/* Placeholders de imagem no admin (ficam atrás de fotos) */
+html[data-theme="claro"] .admin-foto-item,
+html[data-theme="claro"] .admin-im-foto { background: #F4F2EE; }
+
+/* Top 3 do CRM */
+html[data-theme="claro"] .crm-top3-item { background: #FAFAF8; }
+
+/* Modal de laudo (filhos usam var() e já adaptam ao claro) */
+html[data-theme="claro"] .crm-laudo-modal { background: #FFFFFF; border-color: #E6E4DF; }
+
+/* Atendimentos (aba 🔥) — cards/mensagem/passos eram p/ fundo escuro */
+html[data-theme="claro"] .atend-card { background: #FAFAF8; border-color: #E6E4DF; }
+html[data-theme="claro"] .atend-card-top b,
+html[data-theme="claro"] .atend-passos li b { color: #0A0E16; }
+html[data-theme="claro"] .atend-chip { background: #F4F2EE; color: #1C2A44; border-color: #E6E4DF; }
+html[data-theme="claro"] .atend-interesse { color: #2A2F38; }
+html[data-theme="claro"] .atend-origem,
+html[data-theme="claro"] .atend-passos li i { color: #8A8F99; }
+html[data-theme="claro"] .atend-passos li { color: #5b606a; }
+html[data-theme="claro"] .atend-msg { background: #F4F2EE; color: #2A2F38; border-color: #E6E4DF; }
+html[data-theme="claro"] .atend-erro { background: rgba(235,1,40,0.07); border-color: rgba(235,1,40,0.28); color: #C20020; }
+html[data-theme="claro"] .atend-erro-inline { color: #C20020; }
