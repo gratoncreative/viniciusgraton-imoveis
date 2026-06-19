@@ -62,7 +62,9 @@ const NotFound = lazy(() => import('./pages/NotFound'))
 
 export default function App() {
   const { pathname } = useLocation()
-  const [ovKey, setOvKey] = useState('base')
+  // Overrides dos imóveis: ao carregar, mutam IMOVEIS no lugar e disparam UM re-render.
+  // NÃO usamos isso como `key` da árvore (remontar fechava modais/ferramentas no meio do uso).
+  const [, aplicarOvRender] = useState(0)
   const lenisRef = useRef(null)
 
   // Busca os overrides do painel (edições / ocultar) e aplica nos imóveis publicados.
@@ -71,8 +73,8 @@ export default function App() {
     let vivo = true
     fetch('/api/imoveis-pub')
       .then((r) => r.json())
-      .then((d) => { if (!vivo) return; const ov = d && d.ov ? d.ov : d; aplicarOverridesImoveis(ov, d && d.ap); setOvKey('ov') })
-      .catch(() => { if (vivo) setOvKey('ov') })
+      .then((d) => { if (!vivo) return; const ov = d && d.ov ? d.ov : d; aplicarOverridesImoveis(ov, d && d.ap); aplicarOvRender((n) => n + 1) })
+      .catch(() => {})
     return () => { vivo = false }
   }, [])
 
@@ -138,7 +140,7 @@ export default function App() {
       <a href="#conteudo" className="skip-link">Pular para o conteúdo</a>
       <ScrollProgress />
       <Navbar />
-      <div id="conteudo" tabIndex={-1} key={ovKey}>
+      <div id="conteudo" tabIndex={-1}>
         <ErrorBoundary>
           <Suspense fallback={<div className="rota-load" aria-busy="true"><span className="rota-spinner" /></div>}>
             <Routes>
