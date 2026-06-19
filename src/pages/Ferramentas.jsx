@@ -243,10 +243,11 @@ function Checklist() {
 }
 
 // ─── ferramentas PRO ─────────────────────────────────────────────────────────
+const COMISSAO_PCT = 5 // comissão fixa do padrão da casa
 export function CalcComissao() {
-  const [valor, setValor] = useState(500000); const [com, setCom] = useState('6'); const [corretor, setCorretor] = useState('50')
-  const r = useMemo(() => { const total = valor * ((+com || 0) / 100); const parteCorretor = total * ((+corretor || 0) / 100); return { total, parteCorretor, parteImob: total - parteCorretor } }, [valor, com, corretor])
-  return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor da venda" valor={valor} onChange={setValor} /><Campo label="Comissão" sufixo="%" valor={com} onChange={setCom} step="0.5" /><Campo label="Parte do corretor" sufixo="%" valor={corretor} onChange={setCorretor} step="5" /></div><div><Resultado destaque={{ rotulo: 'Comissão total', valor: brl(r.total) }} itens={[{ rotulo: 'Parte do corretor', valor: brl(r.parteCorretor) }, { rotulo: 'Parte da imobiliária/captação', valor: brl(r.parteImob) }]} />{nota('Ferramenta de apoio ao corretor. Percentuais e divisões variam por contrato e imobiliária.')}</div></div>)
+  const [valor, setValor] = useState(500000); const [corretor, setCorretor] = useState('50')
+  const r = useMemo(() => { const total = valor * (COMISSAO_PCT / 100); const parteCorretor = total * ((+corretor || 0) / 100); return { total, parteCorretor, parteImob: total - parteCorretor } }, [valor, corretor])
+  return (<div className="calc-grid"><div className="calc-form"><CampoMoeda label="Valor da venda" valor={valor} onChange={setValor} /><label className="calc-campo"><span>Comissão (fixa)</span><div className="calc-input"><input type="text" value={`${COMISSAO_PCT}%`} readOnly tabIndex={-1} aria-label="Comissão fixa de 5%" /></div></label><Campo label="Parte do corretor" sufixo="%" valor={corretor} onChange={setCorretor} step="5" /></div><div><Resultado destaque={{ rotulo: `Comissão total (${COMISSAO_PCT}%)`, valor: brl(r.total) }} itens={[{ rotulo: 'Parte do corretor', valor: brl(r.parteCorretor) }, { rotulo: 'Parte da imobiliária/captação', valor: brl(r.parteImob) }]} />{nota('Comissão fixada em 5% sobre o valor da venda. A divisão corretor/imobiliária varia por contrato.')}</div></div>)
 }
 export function FichaAvaliacao() {
   const [f, setF] = useState({ tipo: 'Casa', bairro: '', area: '', quartos: '', suites: '', vagas: '', estado: 'Bem conservado', preco: 0, dif: '' })
