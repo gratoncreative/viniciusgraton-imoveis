@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams, Navigate } from 'react-router-dom'
 import { useSEO } from '../useSEO'
 import { getCorretor, salvarCorretor, sairCorretor } from '../corretor'
 import { registrarLead } from '../engajamento'
-import { CalcComissao, CalcACM, FichaAvaliacao } from './Ferramentas'
+import { CalcComissao, CalcACM } from './Ferramentas'
 import FerramentaRotina from '../components/FerramentaRotina'
 import { IconShield, IconArrow } from '../components/icons'
 
@@ -56,7 +56,6 @@ const TOOLS = [
   { id: 'marca',    nome: 'Remover marcas das fotos', desc: 'Remove logotipos e marcas com IA, direto no navegador.',                    icon: 'varinha', dor: 'Recebeu uma boa foto do imóvel que veio com o logo da imobiliária concorrente? Com IA, a marca sai em segundos — foto limpa, pronta para usar nos seus anúncios sem precisar tirar foto nova.' },
   { id: 'comissao', nome: 'Calculadora de comissão', desc: 'Comissão, repasse e líquido de uma venda.',                                  icon: 'percent', dor: 'Saber exatamente quanto você vai receber antes de fechar muda a negociação. Calcule comissão total, repasse para a imobiliária e seu líquido em segundos — sem improvisação na hora de assinar.' },
   { id: 'acm',      nome: 'Análise de mercado (ACM)', desc: 'Faixa de referência da área pelo m² do bairro — não avalia a edificação.',       icon: 'chart',   dor: 'Proprietário acha que o imóvel vale mais do que o mercado paga? Com a ACM, você abre a conversa com a referência do m² real do bairro — dado concreto, com fonte. A edificação (acabamento, conservação) entra na avaliação presencial.' },
-  { id: 'ficha',    nome: 'Ficha de avaliação',      desc: 'Resumo formatado do imóvel para enviar ao cliente.',                         icon: 'edit',    dor: 'Passar as informações do imóvel via WhatsApp em texto corrido parece amador. A ficha gera um resumo profissional formatado, pronto para enviar ao cliente em segundos — você chega na frente.' },
   { id: 'agenda',   nome: 'Planner de visitas',      desc: 'Organize sua agenda de visitas do dia com horários e observações.',           icon: 'clock',   dor: 'Confusão de horário é uma das maiores causas de cancelamento de visita. O planner organiza seu dia com horários, endereços e observações de cada cliente — você vai a cada visita preparado e no horário.' },
 ]
 const ATALHOS = [
@@ -79,7 +78,6 @@ const CORES = {
   marca:    { bg: 'linear-gradient(135deg,#0c0a26 0%,#181445 100%)', glow: 'rgba(99,102,241,0.3)'   },
   comissao: { bg: 'linear-gradient(135deg,#181200 0%,#2a1e00 100%)', glow: 'rgba(234,179,8,0.3)'    },
   acm:      { bg: 'linear-gradient(135deg,#021d26 0%,#053040 100%)', glow: 'rgba(6,182,212,0.28)'   },
-  ficha:    { bg: 'linear-gradient(135deg,#081228 0%,#10213e 100%)', glow: 'rgba(130,120,255,0.26)' },
   agenda:   { bg: 'linear-gradient(135deg,#100828 0%,#1c1042 100%)', glow: 'rgba(139,92,246,0.3)'   },
   swap:     { bg: 'linear-gradient(135deg,#0a1f10 0%,#103320 100%)', glow: 'rgba(74,222,128,0.26)'  },
   foguete:  { bg: 'linear-gradient(135deg,#1f1200 0%,#341d00 100%)', glow: 'rgba(251,146,60,0.3)'   },
@@ -495,7 +493,6 @@ const RENDER = {
   rotina: FerramentaRotina,
   comissao: CalcComissao,
   acm: CalcACM,
-  ficha: FichaAvaliacao,
   fotos: MelhorarFotos,
   post: PostGen,
   marca: RemoverMarca,
