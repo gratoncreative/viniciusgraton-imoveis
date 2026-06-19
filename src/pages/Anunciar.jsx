@@ -189,6 +189,7 @@ export default function Anunciar() {
               <span className="eyebrow" style={{ justifyContent: 'center' }}>É rápido</span>
               <h2 className="section-title">Cadastre seu imóvel</h2>
               <p className="section-sub" style={{ marginTop: 12 }}>Preencha os dados e mande as fotos. <b>Cadastrar é grátis e sem compromisso.</b></p>
+              <p className="section-sub" style={{ marginTop: 10 }}>Além daqui, seu imóvel também é publicado no <b>site da Rotina Imobiliária</b> e nos nossos parceiros <b>Chaves na Mão</b> e <b>Grupo OLX</b> — <b>com impulsionamento</b> para alcançar muito mais compradores.</p>
             </div>
           </Reveal>
 
