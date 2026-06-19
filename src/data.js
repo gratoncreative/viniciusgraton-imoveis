@@ -362,10 +362,17 @@ export function estudoM2(im, base) {
     }
   }
 
-  // saneamento estatístico: descarta fora de ±30% da mediana e recalcula
-  const med0 = _quantil(comps, 0.5)
-  const saneObj = objs.filter((o) => o.m2 >= med0 * 0.7 && o.m2 <= med0 * 1.3)
-  const usarObj = saneObj.length >= 3 ? saneObj : objs
+  // saneamento ROBUSTO: fences de Tukey (1,5·IQR) + limites absolutos por tipo + 1 passe
+  // de Chauvenet. Mais resistente a erros de área/preço da carteira que o corte ±30%.
+  const _q1 = _quantil(comps, 0.25), _q3 = _quantil(comps, 0.75), _iqr = _q3 - _q1
+  const _absLo = ehTer ? 30 : 500, _absHi = ehTer ? 30000 : 60000
+  const _lo = Math.max(_absLo, _q1 - 1.5 * _iqr), _hi = Math.min(_absHi, _q3 + 1.5 * _iqr)
+  let usarObj = objs.filter((o) => o.m2 >= _lo && o.m2 <= _hi)
+  if (usarObj.length < 3) usarObj = objs
+  if (usarObj.length >= 4) {
+    const _c = chauvenetCorte(usarObj.map((o) => o.m2))
+    if (_c >= 0) usarObj = usarObj.filter((_, i) => i !== _c)
+  }
   const usar = usarObj.map((o) => o.m2)
   const nDesc = comps.length - usar.length
   const mediana = _quantil(usar, 0.5)
@@ -389,7 +396,7 @@ export function estudoM2(im, base) {
       'Ajuste de mercado · preço de anúncio convertido para estimativa real de venda',
       !ehTer ? `Fator vaga · valor das vagas (~${formatPreco(VAGA_VALOR)} cada) descontado antes do m²` : 'Sem fator vaga (terreno)',
       `Fator área · homogeneização pela área do imóvel (${Math.round(areaSubj)} m²), economia de escala`,
-      `Saneamento estatístico · ${nDesc} imóvel(is) fora de ±30% da mediana descartado(s)`,
+      `Saneamento robusto · Tukey (1,5·IQR) + Chauvenet · ${nDesc} imóvel(is) fora do padrão descartado(s)`,
       'Campo de arbítrio (intervalo) calculado pelo desvio padrão da amostra',
     ],
     limitacoes: [
@@ -457,7 +464,8 @@ export function estudoM2ACM({ tipo, bairro, area, quartos } = {}, base) {
   // média é destruída por outliers grosseiros (ex.: área digitada errada).
   const ms = objs.map((o) => o.m2).slice().sort((a, b) => a - b)
   const q1 = _quantil(ms, 0.25), q3 = _quantil(ms, 0.75), iqr = q3 - q1
-  const lo = Math.max(500, q1 - 1.5 * iqr), hi = Math.min(60000, q3 + 1.5 * iqr)
+  const absLo = ehTer ? 30 : 500, absHi = ehTer ? 30000 : 60000
+  const lo = Math.max(absLo, q1 - 1.5 * iqr), hi = Math.min(absHi, q3 + 1.5 * iqr)
   objs.forEach((o) => { if (o.m2 < lo || o.m2 > hi) o.descartado = true })
   let usar = objs.filter((o) => !o.descartado)
   if (usar.length < 3) { objs.forEach((o) => { o.descartado = false }); usar = objs } // não dá pra sanear: usa tudo
