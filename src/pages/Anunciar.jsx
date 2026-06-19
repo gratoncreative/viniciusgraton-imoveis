@@ -169,7 +169,7 @@ export default function Anunciar() {
           </p>
           <Link className="btn btn-gold" to="/">Voltar ao início <IconArrow /></Link>
           <div className="anu-parceria">
-            <span>Em parceria com</span>
+            <span>Consultor na</span>
             <img src="/rotina-logo.png" alt="Rotina Imobiliária" loading="lazy" />
           </div>
         </div>
