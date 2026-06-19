@@ -26,8 +26,8 @@ export default function CorretorBanner() {
                 {FEATS.map((f) => <li key={f}>{f}</li>)}
               </ul>
               <div className="corrbn-acoes">
-                <Link to="/corretor" className="btn btn-gold">Testar 24h grátis →</Link>
-                <span className="corrbn-nota">Sem cartão. Acesso imediato.</span>
+                <Link to="/corretor" className="btn btn-gold">Cadastre-se grátis →</Link>
+                <span className="corrbn-nota">Grátis. Sem cartão. Acesso imediato.</span>
               </div>
             </div>
 

@@ -534,8 +534,9 @@ const PLANOS = [
 ]
 
 function GateCorretor({ onOk }) {
-  const [aba, setAba] = useState('teste')
+  const [aba, setAba] = useState('cadastro')
   const [fTeste, setFTeste] = useState({ nome: '', fone: '' })
+  const [fCad, setFCad] = useState({ nome: '', fone: '', creci: '', email: '', imobiliaria: '' })
   const [fAcesso, setFAcesso] = useState({ nome: '', fone: '', creci: '', email: '', codigo: '' })
   const [fCheckout, setFCheckout] = useState({ nome: '', fone: '', email: '', creci: '' })
   const [planoSel, setPlanoSel] = useState('mensal')
@@ -547,6 +548,7 @@ function GateCorretor({ onOk }) {
   const [hoverTool, setHoverTool] = useState(null)
 
   const setT = (k) => (e) => setFTeste(p => ({ ...p, [k]: k === 'fone' ? mascaraFone(e.target.value) : e.target.value }))
+  const setCad = (k) => (e) => setFCad(p => ({ ...p, [k]: k === 'fone' ? mascaraFone(e.target.value) : e.target.value }))
   const setA = (k) => (e) => setFAcesso(p => ({ ...p, [k]: k === 'fone' ? mascaraFone(e.target.value) : e.target.value }))
   const setC = (k) => (e) => setFCheckout(p => ({ ...p, [k]: k === 'fone' ? mascaraFone(e.target.value) : e.target.value }))
 
@@ -614,6 +616,26 @@ function GateCorretor({ onOk }) {
     setEnviando(false)
   }
 
+  const cadastrarGratis = async (e) => {
+    e.preventDefault()
+    const nome = fCad.nome.trim()
+    if (nome.length < 3) { setErro('Informe seu nome completo.'); return }
+    if (soNum(fCad.fone).length < 10) { setErro('WhatsApp inválido (com DDD).'); return }
+    setErro(''); setEnviando(true)
+    try {
+      const r = await fetch('/api/corretor-cadastro', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ nome, fone: soNum(fCad.fone), creci: fCad.creci.trim(), email: fCad.email.trim(), imobiliaria: fCad.imobiliaria.trim() }),
+      })
+      const res = await r.json()
+      if (!res.ok) { setErro(res.erro || 'Não foi possível concluir o cadastro.'); setEnviando(false); return }
+      try { registrarLead({ cod: 'corretor-cadastro', nome, fone: soNum(fCad.fone), email: fCad.email.trim(), bairro: `Corretor cadastrado${fCad.creci ? ' · CRECI ' + fCad.creci : ''}${fCad.imobiliaria ? ' · ' + fCad.imobiliaria : ''}` }) } catch {}
+      // mostra o código primeiro; só loga ao clicar em "Entrar" (senão o app pula a tela do código)
+      setCodigoAtivado({ codigo: res.codigo, plano: 'gratis', expiresAt: null, nome: res.nome || nome, login: { nome: res.nome || nome, creci: fCad.creci.trim(), rotina: true, fone: soNum(fCad.fone), email: fCad.email.trim(), expiresAt: null, tipo: 'gratis' } })
+    } catch { setErro('Falha de conexão. Tente novamente.') }
+    setEnviando(false)
+  }
+
   const entrarComCodigo = async (e) => {
     e.preventDefault()
     const nome = fAcesso.nome.trim()
@@ -665,23 +687,26 @@ function GateCorretor({ onOk }) {
   }
 
   if (codigoAtivado) {
-    const planoNome = codigoAtivado.plano === 'semanal' ? 'Semanal (7 dias)' : codigoAtivado.plano === 'mensal' ? 'Mensal (30 dias)' : codigoAtivado.plano
+    const ehGratis = codigoAtivado.plano === 'gratis'
+    const planoNome = codigoAtivado.plano === 'semanal' ? 'Semanal (7 dias)' : codigoAtivado.plano === 'mensal' ? 'Mensal (30 dias)' : ehGratis ? 'Acesso gratuito · sem prazo' : codigoAtivado.plano
     return (
       <div className="corr-gate-wrap">
         <div className="corr-trial-ok">
           <div className="corr-trial-ok-ico">✓</div>
-          <h2>Pagamento aprovado!</h2>
-          <p>Seu código de acesso foi gerado. Guarde-o em local seguro — ele libera todas as ferramentas pelo período contratado.</p>
+          <h2>{ehGratis ? 'Cadastro concluído!' : 'Pagamento aprovado!'}</h2>
+          <p>{ehGratis
+            ? <>Suas ferramentas já estão liberadas. <b>Guarde seu código</b> — é com ele que você entra de novo em qualquer dispositivo.</>
+            : 'Seu código de acesso foi gerado. Guarde-o em local seguro — ele libera todas as ferramentas pelo período contratado.'}</p>
           <div className="corr-codigo-box">
             <span className="corr-codigo-label">Seu código de acesso</span>
             <strong className="corr-codigo-val">{codigoAtivado.codigo}</strong>
             <span className="corr-codigo-plano">{planoNome}</span>
             {codigoAtivado.expiresAt && <span className="corr-trial-expira">Válido até {fmtData(codigoAtivado.expiresAt)}</span>}
           </div>
-          <button className="btn btn-gold" style={{ marginTop: 20 }} onClick={() => onOk(getCorretor())}>
+          <button className="btn btn-gold" style={{ marginTop: 20 }} onClick={() => { if (codigoAtivado.login) salvarCorretor(codigoAtivado.login); onOk(getCorretor()) }}>
             Entrar na área agora <IconArrow />
           </button>
-          <p style={{ fontSize: '0.78rem', color: 'var(--text-mute)', marginTop: 12 }}>O código foi salvo para login rápido. Na próxima vez, use-o na aba "Já tenho código".</p>
+          <p style={{ fontSize: '0.78rem', color: 'var(--text-mute)', marginTop: 12 }}>Anote seu código — use-o na aba "Já tenho código" para entrar em outro dispositivo.</p>
         </div>
       </div>
     )
@@ -704,10 +729,10 @@ function GateCorretor({ onOk }) {
   return (
     <>
     <div className="corr-trust-bar">
-      <span><b>✓</b> 24h grátis</span>
+      <span><b>✓</b> 100% grátis</span>
       <span><b>✓</b> Sem cartão</span>
       <span><b>✓</b> Acesso imediato</span>
-      <span><b>✓</b> 12 ferramentas</span>
+      <span><b>✓</b> Todas as ferramentas</span>
     </div>
     <div className="corr-gate-wrap">
       <div className="corr-pitch">
@@ -736,78 +761,41 @@ function GateCorretor({ onOk }) {
       </div>
 
       <div className="corr-form-area">
-        {/* Planos */}
-        <p style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-mute)', marginBottom: 10, marginTop: 28 }}>Escolha seu plano</p>
-        <div className="corr-planos-v2">
-          {PLANOS.map((p) => (
-            <button
-              key={p.id}
-              type="button"
-              className={`corr-plano-v2 ${planoSel === p.id ? 'corr-plano-v2--sel' : ''} ${p.popular ? 'corr-plano-v2--popular' : ''}`}
-              onClick={() => setPlanoSel(p.id)}
-            >
-              {p.popular && <span className="corr-plano-badge">Mais popular</span>}
-              <span className="corr-plano-v2-periodo">{p.periodo}</span>
-              <span className="corr-plano-v2-preco">{p.preco}<small>{p.sub}</small></span>
-              <span className="corr-plano-v2-pordia">{p.porDia}</span>
-              <span className="corr-plano-v2-detalhe">{p.detalhe}</span>
-              <span className="corr-plano-v2-economia">{p.economia}</span>
-              <ul className="corr-plano-v2-items">
-                {p.beneficios.map((b, i) => <li key={i}>{b}</li>)}
-              </ul>
-            </button>
-          ))}
-        </div>
-
-        {/* Tabs */}
-        <div className="corr-tabs" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr' }}>
-          <button className={`corr-tab ${aba === 'teste' ? 'corr-tab--ativo' : ''}`} onClick={() => { setAba('teste'); setErro('') }}>
-            🎁 Testar grátis
+        {/* Tabs — cadastro grátis + login por código */}
+        <div className="corr-tabs" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+          <button className={`corr-tab ${aba === 'cadastro' ? 'corr-tab--ativo' : ''}`} onClick={() => { setAba('cadastro'); setErro('') }}>
+            🎁 Cadastrar grátis
           </button>
-          <button className={`corr-tab ${aba === 'assinar' ? 'corr-tab--ativo' : ''}`} onClick={() => { setAba('assinar'); setErro('') }} style={{ borderLeft: '1px solid var(--border)', borderRight: '1px solid var(--border)' }}>
-            Assinar plano
-          </button>
-          <button className={`corr-tab ${aba === 'acesso' ? 'corr-tab--ativo' : ''}`} onClick={() => { setAba('acesso'); setErro('') }}>
+          <button className={`corr-tab ${aba === 'acesso' ? 'corr-tab--ativo' : ''}`} onClick={() => { setAba('acesso'); setErro('') }} style={{ borderLeft: '1px solid var(--border)' }}>
             Já tenho código
           </button>
         </div>
 
-        {aba === 'teste' && (
-          <form className="lead-form conta-form corr-form" onSubmit={ativarTeste}>
-            <h3>Ativar teste gratuito</h3>
-            <p className="conta-form-promessa">Sem cartão. Sem cobrança. Acesso total por <b>24 horas</b> — só precisamos do seu nome e WhatsApp.</p>
-            <label><span>Nome completo *</span><input value={fTeste.nome} onChange={setT('nome')} required placeholder="Seu nome" /></label>
-            <label><span>WhatsApp *</span><input type="tel" inputMode="tel" value={fTeste.fone} onChange={setT('fone')} required placeholder="(34) 99999-9999" /></label>
-            {erro && <p className="lead-erro">{erro}</p>}
-            <button type="submit" className="btn btn-gold lead-submit" disabled={enviando}>
-              <IconShield width={18} height={18} /> {enviando ? 'Ativando…' : 'Ativar 24h grátis'} <IconArrow />
-            </button>
-            <p className="lead-note">Uma vez por número de WhatsApp. Após as 24h, escolha um plano para continuar.</p>
-          </form>
-        )}
-
-        {aba === 'assinar' && (
-          <form className="lead-form conta-form corr-form" onSubmit={irParaCheckout}>
-            <h3>Assinar — plano {PLANOS.find(p => p.id === planoSel)?.periodo}</h3>
-            <p className="conta-form-promessa">Você será redirecionado ao Mercado Pago. Após o pagamento, o código chega automaticamente.</p>
-            <label><span>Nome completo *</span><input value={fCheckout.nome} onChange={setC('nome')} required placeholder="Seu nome" /></label>
+        {aba === 'cadastro' && (
+          <form className="lead-form conta-form corr-form" onSubmit={cadastrarGratis}>
+            <h3>Cadastre-se grátis</h3>
+            <p className="conta-form-promessa">Sem cartão, sem mensalidade. Preencha e <b>libere na hora todas as ferramentas</b> — você recebe um código pra entrar de novo quando quiser.</p>
+            <label><span>Nome completo *</span><input value={fCad.nome} onChange={setCad('nome')} required placeholder="Seu nome" /></label>
             <div className="conta-form-row">
-              <label><span>WhatsApp *</span><input type="tel" inputMode="tel" value={fCheckout.fone} onChange={setC('fone')} required placeholder="(34) 99999-9999" /></label>
-              <label><span>CRECI <i>(se tiver)</i></span><input value={fCheckout.creci} onChange={setC('creci')} placeholder="MG-00000" /></label>
+              <label><span>WhatsApp *</span><input type="tel" inputMode="tel" value={fCad.fone} onChange={setCad('fone')} required placeholder="(34) 99999-9999" /></label>
+              <label><span>CRECI <i>(se tiver)</i></span><input value={fCad.creci} onChange={setCad('creci')} placeholder="MG-00000" /></label>
             </div>
-            <label><span>E-mail <i>(para receber o código)</i></span><input type="email" value={fCheckout.email} onChange={setC('email')} placeholder="voce@email.com" /></label>
+            <div className="conta-form-row">
+              <label><span>Imobiliária <i>(opcional)</i></span><input value={fCad.imobiliaria} onChange={setCad('imobiliaria')} placeholder="Onde você atua" /></label>
+              <label><span>E-mail <i>(opcional)</i></span><input type="email" value={fCad.email} onChange={setCad('email')} placeholder="voce@email.com" /></label>
+            </div>
             {erro && <p className="lead-erro">{erro}</p>}
             <button type="submit" className="btn btn-gold lead-submit" disabled={enviando}>
-              {enviando ? 'Redirecionando…' : `Pagar ${PLANOS.find(p => p.id === planoSel)?.preco} no Mercado Pago`} <IconArrow />
+              <IconShield width={18} height={18} /> {enviando ? 'Liberando…' : 'Cadastrar e liberar ferramentas'} <IconArrow />
             </button>
-            <p className="lead-note">Pix, cartão de crédito e boleto. Código gerado automaticamente após aprovação.</p>
+            <p className="lead-note">100% gratuito. Seus dados ficam comigo — não compartilho com terceiros.</p>
           </form>
         )}
 
         {aba === 'acesso' && (
           <form className="lead-form conta-form corr-form" onSubmit={entrarComCodigo}>
             <h3>Entrar com código</h3>
-            <p className="conta-form-promessa">Digite o código recebido após o pagamento para liberar o acesso.</p>
+            <p className="conta-form-promessa">Já se cadastrou? Digite o código que você recebeu para liberar o acesso neste dispositivo.</p>
             <label><span>Código de acesso *</span><input value={fAcesso.codigo} onChange={setA('codigo')} placeholder="Código recebido por e-mail ou WhatsApp" autoComplete="off" required /></label>
             <label><span>Nome completo *</span><input value={fAcesso.nome} onChange={setA('nome')} required /></label>
             <div className="conta-form-row">
