@@ -5359,37 +5359,44 @@ html[data-theme="dark"] .placa-card i { color: #9298a6; }
 /* ─────────────────────────────────────────
    AdminImovelBar — só visível para admin
 ───────────────────────────────────────── */
-.adm-bar { position: sticky; top: 68px; z-index: 101; background: #150f00; border-bottom: 2px solid var(--gold-2); }
-.adm-bar-strip { display: flex; align-items: center; gap: 10px; padding: 7px clamp(16px,3vw,40px); flex-wrap: wrap; }
-.adm-bar-label { font-size: 0.7rem; color: var(--gold-1); font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; flex: 1; min-width: 0; }
-.adm-bar-btn { padding: 5px 13px; border-radius: 6px; border: 1px solid rgba(10, 14, 22,0.45); background: rgba(10, 14, 22,0.11); color: var(--gold-1); font-size: 0.76rem; font-weight: 700; cursor: pointer; transition: background .16s; white-space: nowrap; }
-.adm-bar-btn:hover { background: rgba(10, 14, 22,0.24); }
-.adm-bar-wa { background: rgba(37,211,102,0.09); border-color: rgba(37,211,102,0.38); color: #25d366; text-decoration: none; }
-.adm-bar-wa:hover { background: rgba(37,211,102,0.17); color: #25d366; }
-.adm-panel { padding: 14px clamp(16px,3vw,40px) 18px; background: #100a00; border-bottom: 1px solid var(--border); }
-.adm-status { font-size: 0.82rem; color: var(--text-mute); margin: 0 0 10px; }
-.adm-status--ok { color: #4ec567; }
+/* Paleta CLARA da marca (pedido do Vinícius — o fundo preto era ruim).
+   Fundo branco/marfim, texto navy, botões na regra de ouro (Op.1/2/3). */
+.adm-bar { position: sticky; top: 68px; z-index: 101; background: #FFFFFF; border-bottom: 2px solid #eb0128; box-shadow: 0 6px 18px -12px rgba(10,14,22,0.25); }
+.adm-bar-strip { display: flex; align-items: center; gap: 10px; padding: 8px clamp(16px,3vw,40px); flex-wrap: wrap; }
+.adm-bar-label { font-size: 0.7rem; color: #eb0128; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; flex: 1; min-width: 0; }
+/* "Proprietário" (toggle) -> Op.3: branco + texto navy + borda vermelha */
+.adm-bar-btn { padding: 6px 13px; border-radius: 8px; border: 1px solid #eb0128; background: #FFFFFF; color: #0b0e16; font-size: 0.76rem; font-weight: 700; cursor: pointer; transition: background .16s, color .16s; white-space: nowrap; }
+.adm-bar-btn:hover { background: #FCEBEE; }
+/* "WhatsApp →" -> Op.2: vermelho cheio + branco */
+.adm-bar-wa { background: #eb0128; border: 1px solid #eb0128; color: #FFFFFF; text-decoration: none; }
+.adm-bar-wa:hover { background: #C20020; border-color: #C20020; color: #FFFFFF; }
+.adm-panel { padding: 16px clamp(16px,3vw,40px) 20px; background: #F8F6F2; border-bottom: 1px solid #E4DFD4; }
+.adm-status { font-size: 0.82rem; color: #5a6172; margin: 0 0 12px; }
+.adm-status--ok { color: #1a7f37; font-weight: 600; }
 .adm-status--load { display: flex; align-items: center; gap: 8px; }
-.adm-status--load::before { content: ''; width: 10px; height: 10px; border: 2px solid var(--gold-2); border-top-color: transparent; border-radius: 50%; animation: adm-spin .7s linear infinite; flex-shrink: 0; }
+.adm-status--load::before { content: ''; width: 10px; height: 10px; border: 2px solid #eb0128; border-top-color: transparent; border-radius: 50%; animation: adm-spin .7s linear infinite; flex-shrink: 0; }
 @keyframes adm-spin { to { transform: rotate(360deg); } }
-.adm-owner-view { display: flex; flex-direction: column; gap: 7px; }
-.adm-field { display: flex; align-items: baseline; gap: 10px; font-size: 0.84rem; }
-.adm-field label { color: var(--text-mute); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.07em; min-width: 68px; flex-shrink: 0; }
-.adm-field span { color: #dce2ec; }
-.adm-field a { color: var(--gold-1); text-decoration: none; }
-.adm-field a:hover { text-decoration: underline; }
-.adm-acoes { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
-.adm-btn { padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: var(--text-soft); font-size: 0.77rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: border-color .15s, color .15s; white-space: nowrap; display: inline-flex; align-items: center; }
-.adm-btn:hover { border-color: var(--gold-2); color: var(--gold-1); }
-.adm-btn--gold { background: rgba(10, 14, 22,0.16); border-color: rgba(10, 14, 22,0.48); color: var(--gold-1); }
-.adm-btn--gold:hover { background: rgba(10, 14, 22,0.26); }
+.adm-owner-view { display: flex; flex-direction: column; gap: 8px; }
+.adm-field { display: flex; align-items: baseline; gap: 10px; font-size: 0.86rem; }
+.adm-field label { color: #5a6172; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.07em; min-width: 68px; flex-shrink: 0; font-weight: 700; }
+.adm-field span { color: #1C2A44; font-weight: 600; }
+.adm-field a { color: #1C2A44; text-decoration: none; font-weight: 600; }
+.adm-field a:hover { color: #eb0128; text-decoration: underline; }
+.adm-acoes { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; align-items: center; }
+/* botões utilitários (Editar / Atualizar / Cancelar) -> Op.3: branco + navy + borda vermelha */
+.adm-btn { padding: 8px 15px; border-radius: 9px; border: 1px solid #eb0128; background: #FFFFFF; color: #0b0e16; font-size: 0.78rem; font-weight: 700; cursor: pointer; text-decoration: none; transition: background .15s, color .15s, border-color .15s, opacity .15s; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }
+.adm-btn:hover { background: #FCEBEE; }
+/* "Salvar" (primário) -> Op.1: navy escuro + branco */
+.adm-btn--gold { background: #0b0e16; border-color: #0b0e16; color: #FFFFFF; }
+.adm-btn--gold:hover { background: #1C2A44; border-color: #1C2A44; color: #FFFFFF; }
 .adm-btn--gold:disabled { opacity: 0.45; cursor: default; }
-.adm-btn--wa { background: rgba(37,211,102,0.09); border-color: rgba(37,211,102,0.38); color: #25d366; }
-.adm-btn--wa:hover { background: rgba(37,211,102,0.17); color: #25d366; border-color: rgba(37,211,102,0.55); }
+/* "Enviar WhatsApp ao proprietário" -> Op.2: vermelho cheio + branco */
+.adm-btn--wa { background: #eb0128; border-color: #eb0128; color: #FFFFFF; }
+.adm-btn--wa:hover { background: #C20020; color: #FFFFFF; border-color: #C20020; }
 .adm-form { display: flex; flex-direction: column; gap: 8px; max-width: 400px; }
-.adm-input { padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: #dce2ec; font-size: 0.84rem; outline: none; transition: border-color .14s; width: 100%; box-sizing: border-box; }
-.adm-input::placeholder { color: var(--text-mute); }
-.adm-input:focus { border-color: var(--gold-2); }
+.adm-input { padding: 9px 13px; border-radius: 9px; border: 1px solid #E4DFD4; background: #FFFFFF; color: #2A2F38; font-size: 0.86rem; outline: none; transition: border-color .14s; width: 100%; box-sizing: border-box; }
+.adm-input::placeholder { color: #9aa0ab; }
+.adm-input:focus { border-color: #eb0128; }
 
 /* ============================================================
    CRM TOP 3 — painel de custo-benefício
