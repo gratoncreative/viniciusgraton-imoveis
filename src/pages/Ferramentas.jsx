@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect } from 'react'
+import { useState, useMemo, useRef, useEffect, lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
 import CampoMoeda from '../components/CampoMoeda'
 import { BAIRROS_IMOVEL, linkWhatsApp, estudoM2ACM } from '../data'
@@ -9,6 +9,18 @@ import ACM_INDEX from '../acm-m2.json'
 import { formatBRL } from '../extenso'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow } from '../components/icons'
+
+// Ferramentas "de página" que agora abrem INLINE no modal (lazy — fora do bundle inicial).
+const EditarFotoPage = lazy(() => import('./EditarFotoPage'))
+const GerarImagemPage = lazy(() => import('./GerarImagemPage'))
+const ConverterFotos = lazy(() => import('./ConverterFotos'))
+const PdfParaJpgPage = lazy(() => import('./PdfParaJpgPage'))
+const TranscreverPage = lazy(() => import('./TranscreverPage'))
+const CompararPage = lazy(() => import('./Comparar'))
+const MapaPage = lazy(() => import('./Mapa'))
+const ImpulsionarPage = lazy(() => import('./Impulsionar'))
+const MelhorarFotosTool = lazy(() => import('../components/MelhorarFotos'))
+const RemoverMarcaTool = lazy(() => import('../components/RemoverMarca'))
 
 // ─── helpers numéricos ──────────────────────────────────────────────────────
 const brl  = (n) => (isFinite(n) ? n : 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })
@@ -733,6 +745,11 @@ const RENDER = {
   entrada: CalcEntrada, ganho: CalcGanho, valorm2: CalcValorM2, score: CalcScore,
   checklist: Checklist, acm: CalcACM, comissao: CalcComissao,
   endireitar: EndireitarFoto, 'marca-agua': MarcaDAguaFoto, redimensionar: RedimensionarFoto,
+  // ferramentas que antes navegavam — agora inline no modal (lazy)
+  melhorar: MelhorarFotosTool, remover: RemoverMarcaTool,
+  'editar-foto': EditarFotoPage, 'gerar-imagem': GerarImagemPage, converter: ConverterFotos,
+  'pdf-jpg': PdfParaJpgPage, transcrever: TranscreverPage, comparar: CompararPage,
+  mapa: MapaPage, impulsionar: ImpulsionarPage,
 }
 
 // ─── componente principal ────────────────────────────────────────────────────
@@ -775,32 +792,15 @@ export default function Ferramentas() {
   const ModalAtiva = modalAtiva ? RENDER[modalAtiva] : null
 
   const escolher = (tool) => {
-    if (tool.needsSub && !isCorretor) {
+    // não-logado em ferramenta PRO/assinatura: leva pro bloco de acesso (sem abrir)
+    if ((tool.pro || tool.needsSub || tool.toPro) && !isCorretor) {
       setLockMsg(tool.id)
       setTimeout(() => {
         document.getElementById('ferr-pro-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }, 60)
       return
     }
-    if (tool.to) return
-    if (tool.toPro) {
-      if (isCorretor) {
-        window.location.href = '/corretor'
-        return
-      }
-      setLockMsg(tool.id)
-      setTimeout(() => {
-        document.getElementById('ferr-pro-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }, 60)
-      return
-    }
-    if (tool.pro && !isCorretor) {
-      setLockMsg(tool.id)
-      setTimeout(() => {
-        document.getElementById('ferr-pro-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }, 60)
-      return
-    }
+    // tudo abre INLINE no modal (não redireciona mais pra outra página)
     setLockMsg(null)
     setModalAtiva(tool.id)
     setAtiva(null)
@@ -846,22 +846,6 @@ export default function Ferramentas() {
             const subLocked  = tool.needsSub && !isCorretor
             const isOn       = ativa === tool.id
             const isLockMsgOn = lockMsg === tool.id
-
-            if (tool.to && !locked && !subLocked) {
-              return (
-                <Link key={tool.id} className="ferr-card3" to={tool.to}>
-                  <span className="ferr-card3-ico"><FI name={tool.icon} /></span>
-                  <span className="ferr-card3-body">
-                    <span className="ferr-card3-tit">
-                      <b>{tool.nome}</b>
-                      {tool.popular && <span className="ferr-badge-popular">Popular</span>}
-                    </span>
-                    <i>{tool.desc}</i>
-                  </span>
-                  <span className="ferr-card3-arrow"><IconArrow /></span>
-                </Link>
-              )
-            }
 
             return (
               <button
@@ -988,7 +972,9 @@ export default function Ferramentas() {
                 </button>
               </div>
               <div className="ferr-modal-body" data-lenis-prevent>
-                <ModalAtiva />
+                <Suspense fallback={<p className="acm-loading">Carregando ferramenta…</p>}>
+                  <ModalAtiva />
+                </Suspense>
               </div>
               <div className="calc-cta ferr-modal-cta">
                 <span>Quer que eu faça essa conta com os números reais e te mostre as melhores opções?</span>
