@@ -883,7 +883,7 @@ export default function Ferramentas() {
 
         {/* ── MODAL DE CALCULADORA (investidor) ── */}
         {modalAtiva && ModalAtiva && modalAtual && (
-          <div className="ferr-modal-backdrop" onClick={() => setModalAtiva(null)}>
+          <div className="ferr-modal-backdrop" data-lenis-prevent onClick={() => setModalAtiva(null)}>
             <div className="ferr-modal" onClick={(e) => e.stopPropagation()}>
               <div className="ferr-modal-hd">
                 <span className="ferr-modal-ico"><FI name={modalAtual.icon} size={20} /></span>
@@ -892,7 +892,7 @@ export default function Ferramentas() {
                   <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
                 </button>
               </div>
-              <div className="ferr-modal-body">
+              <div className="ferr-modal-body" data-lenis-prevent>
                 <ModalAtiva />
               </div>
               <div className="calc-cta ferr-modal-cta">
