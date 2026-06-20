@@ -8321,7 +8321,7 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .lou-h2--light { color: #FFFFFF; }
 .lou-sub { max-width: 640px; color: #555a63; font-size: 1.04rem; line-height: 1.6; margin: 0 0 30px; }
 .lou-sub--light { color: rgba(244,239,230,0.78); }
-.eyebrow--gold { color: var(--gold-2, #EB0128); }
+.eyebrow--gold { color: #FF4D67; }
 .lou-disc { font-size: 0.78rem; color: #8a8f99; line-height: 1.5; margin-top: 14px; }
 
 /* HERO */
@@ -8331,16 +8331,16 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
     radial-gradient(90% 80% at 0% 100%, rgba(28,42,68,0.9), transparent 60%),
     linear-gradient(160deg, #212b3d, #212b3d 60%, #212b3d); }
 .lou-hero-grid { position: relative; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(24px, 4vw, 60px); align-items: center; }
-.lou-eyebrow { display: inline-block; font-family: var(--font-head); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-2, #EB0128); margin-bottom: 16px; }
+.lou-eyebrow { display: inline-block; font-family: var(--font-head); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #FF4D67; margin-bottom: 16px; }
 .lou-h1 { font-size: clamp(2rem, 5vw, 3.3rem); line-height: 1.06; color: #fff; margin: 0 0 18px; }
-.lou-h1 em { color: var(--gold-2, #EB0128); font-style: italic; }
+.lou-h1 em { color: #FF4D67; font-style: italic; }
 .lou-marca { display: block; font-size: clamp(2.6rem, 7vw, 4.4rem); letter-spacing: 0.04em; line-height: 1; color: #fff; }
 .lou-marca-sub { display: block; font-family: var(--font-head); font-weight: 400; font-size: 0.92rem; letter-spacing: 0.36em; text-transform: lowercase; color: rgba(244,239,230,0.6); margin: 2px 0 18px; }
 .lou-lead { max-width: 560px; color: rgba(244,239,230,0.82); font-size: 1.06rem; line-height: 1.62; margin: 0 0 26px; }
 .lou-lead b { color: #fff; }
 .lou-stats { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 28px; }
 .lou-stat { background: rgba(255,255,255,0.05); border: 1px solid rgba(10, 14, 22,0.28); border-radius: 14px; padding: 12px 18px; min-width: 130px; }
-.lou-stat strong { display: block; font-family: var(--font-display); font-size: 1.18rem; color: var(--gold-2, #EB0128); line-height: 1.1; }
+.lou-stat strong { display: block; font-family: var(--font-display); font-size: 1.18rem; color: #FFFFFF; line-height: 1.1; }
 .lou-stat span { font-size: 0.76rem; color: rgba(244,239,230,0.66); }
 .lou-hero-cta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
 .lou-btn-wa { display: inline-flex; align-items: center; gap: 9px; }
@@ -8368,13 +8368,13 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .lou-cen { position: relative; background: rgba(255,255,255,0.05); border: 1px solid rgba(10, 14, 22,0.25); border-radius: 18px; padding: 28px 24px; text-align: center; }
 .lou-cen--on { background: var(--gold-grad, linear-gradient(135deg,#EB0128,#C20020)); border-color: transparent; color: #FFFFFF; transform: translateY(-6px); box-shadow: 0 24px 50px -26px rgba(33, 43, 61,0.6); }
 .lou-cen-tag { display: inline-block; font-family: var(--font-head); font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(244,239,230,0.7); margin-bottom: 10px; }
-.lou-cen--on .lou-cen-tag { color: rgba(32,22,10,0.7); }
+.lou-cen--on .lou-cen-tag { color: rgba(255,255,255,0.88); }
 .lou-cen-val { display: block; font-family: var(--font-display); font-size: 2.2rem; color: #fff; line-height: 1; }
 .lou-cen-val i { font-size: 0.9rem; font-style: normal; color: rgba(244,239,230,0.6); margin-left: 3px; }
 .lou-cen--on .lou-cen-val { color: #FFFFFF; }
-.lou-cen--on .lou-cen-val i { color: rgba(32,22,10,0.6); }
+.lou-cen--on .lou-cen-val i { color: rgba(255,255,255,0.82); }
 .lou-cen-ocup { display: block; font-size: 0.84rem; color: rgba(244,239,230,0.66); margin-top: 8px; }
-.lou-cen--on .lou-cen-ocup { color: rgba(32,22,10,0.72); }
+.lou-cen--on .lou-cen-ocup { color: rgba(255,255,255,0.9); }
 .lou-nota { max-width: 720px; font-size: 0.86rem; color: rgba(244,239,230,0.62); line-height: 1.55; margin: 24px 0 0; }
 
 /* CONDIÇÕES */
@@ -8397,7 +8397,7 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .lou-loc-fig img { width: 100%; height: 100%; object-fit: cover; }
 .lou-loc::after { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(10,14,22,0.82), rgba(10,14,22,0.9)); }
 .lou-loc-in { position: relative; z-index: 2; }
-.lou-end { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-head); font-weight: 600; color: var(--gold-2, #EB0128); margin: 0 0 26px; }
+.lou-end { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-head); font-weight: 600; color: #FF4D67; margin: 0 0 26px; }
 .lou-ancoras { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 .lou-anc { background: rgba(255,255,255,0.06); border: 1px solid rgba(10, 14, 22,0.22); border-radius: 14px; padding: 22px 20px; backdrop-filter: blur(2px); }
 .lou-anc h3 { font-family: var(--font-display); font-size: 1.12rem; color: #fff; margin: 0 0 7px; }
@@ -8832,11 +8832,11 @@ html[data-theme="claro"] .lou-form-sec h2,
 html[data-theme="claro"] .lou-form-sec h3,
 html[data-theme="claro"] .lou-cond-cta h3,
 html[data-theme="claro"] .lou-h2--light { color: #FFFFFF; }
-html[data-theme="claro"] .lou-hero .lou-h1 em { color: var(--gold-2, #EB0128); }
+html[data-theme="claro"] .lou-hero .lou-h1 em { color: #FF4D67; }
 html[data-theme="claro"] .lou-hero .eyebrow,
 html[data-theme="claro"] .lou-loc .eyebrow,
 html[data-theme="claro"] .lou-sec--dark .eyebrow,
-html[data-theme="claro"] .lou-form-sec .eyebrow { color: var(--gold-2, #EB0128); }
+html[data-theme="claro"] .lou-form-sec .eyebrow { color: #FF4D67; }
 
 /* Fix de contraste Louis (parte 2): a regra global html[data-theme="claro"] p { color: var(--text) }
    (linha ~73, specificity 0,1,2) deixava TODO parágrafo escuro — inclusive .lou-sub--light, leads,
@@ -8846,7 +8846,7 @@ html[data-theme="claro"] .lou-sec--dark p,
 html[data-theme="claro"] .lou-loc p,
 html[data-theme="claro"] .lou-form-sec p,
 html[data-theme="claro"] .lou-cond-cta p { color: rgba(244,239,230,0.82); }
-html[data-theme="claro"] .lou-loc .lou-end { color: var(--gold-2, #EB0128); }
+html[data-theme="claro"] .lou-loc .lou-end { color: #FF4D67; }
 html[data-theme="claro"] .lou-hero .lou-lead b { color: #FFFFFF; }
 
 /* Botões da landing Louis: ícones SVG sem tamanho explícito estavam estourando
