@@ -8318,30 +8318,30 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 }
 
 /* ═══════════════════════ LANDING LOUIS (lançamento) ═══════════════════════ */
-.lou-pg { background: #fff; }
-.lou-h2 { font-family: var(--font-display); font-size: clamp(1.7rem, 3.5vw, 2.5rem); color: #1C2A44; line-height: 1.1; margin: 0 0 10px; }
+.lou-pg { background: #F4F1EC; }
+.lou-h2 { font-family: var(--font-display); font-size: clamp(1.7rem, 3.5vw, 2.5rem); color: #243B3E; line-height: 1.1; margin: 0 0 10px; }
 .lou-h2--light { color: #FFFFFF; }
-.lou-sub { max-width: 640px; color: #555a63; font-size: 1.04rem; line-height: 1.6; margin: 0 0 30px; }
-.lou-sub--light { color: rgba(244,239,230,0.78); }
-.eyebrow--gold { color: #FF4D67; }
+.lou-sub { max-width: 640px; color: #5C6B6D; font-size: 1.04rem; line-height: 1.6; margin: 0 0 30px; }
+.lou-sub--light { color: rgba(244,241,236,0.82); }
+.eyebrow--gold { color: #A65A37; }
 .lou-disc { font-size: 0.78rem; color: #8a8f99; line-height: 1.5; margin-top: 14px; }
 
 /* HERO */
-.lou-hero { position: relative; overflow: hidden; background: #212b3d; color: #FFFFFF; padding: clamp(64px, 9vw, 120px) 0 clamp(48px, 7vw, 90px); }
+.lou-hero { position: relative; overflow: hidden; background: #173E44; color: #FFFFFF; padding: clamp(64px, 9vw, 120px) 0 clamp(48px, 7vw, 90px); }
 .lou-hero-bg { position: absolute; inset: 0; background:
-    radial-gradient(120% 90% at 80% 0%, rgba(10, 14, 22,0.22), transparent 55%),
-    radial-gradient(90% 80% at 0% 100%, rgba(28,42,68,0.9), transparent 60%),
-    linear-gradient(160deg, #212b3d, #212b3d 60%, #212b3d); }
+    radial-gradient(120% 90% at 82% 0%, rgba(166,90,55,0.30), transparent 55%),
+    radial-gradient(90% 80% at 0% 100%, rgba(11,38,42,0.7), transparent 60%),
+    linear-gradient(160deg, #1B454C, #173E44 60%, #123238); }
 .lou-hero-grid { position: relative; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(24px, 4vw, 60px); align-items: center; }
-.lou-eyebrow { display: inline-block; font-family: var(--font-head); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #FF4D67; margin-bottom: 16px; }
+.lou-eyebrow { display: inline-block; font-family: var(--font-head); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #E6D6BE; margin-bottom: 16px; }
 .lou-h1 { font-size: clamp(2rem, 5vw, 3.3rem); line-height: 1.06; color: #fff; margin: 0 0 18px; }
-.lou-h1 em { color: #FF4D67; font-style: italic; }
+.lou-h1 em { color: #E8A578; font-style: italic; }
 .lou-marca { display: block; font-size: clamp(2.6rem, 7vw, 4.4rem); letter-spacing: 0.04em; line-height: 1; color: #fff; }
 .lou-marca-sub { display: block; font-family: var(--font-head); font-weight: 400; font-size: 0.92rem; letter-spacing: 0.36em; text-transform: lowercase; color: rgba(244,239,230,0.6); margin: 2px 0 18px; }
 .lou-lead { max-width: 560px; color: rgba(244,239,230,0.82); font-size: 1.06rem; line-height: 1.62; margin: 0 0 26px; }
 .lou-lead b { color: #fff; }
 .lou-stats { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 28px; }
-.lou-stat { background: rgba(255,255,255,0.05); border: 1px solid rgba(10, 14, 22,0.28); border-radius: 14px; padding: 12px 18px; min-width: 130px; }
+.lou-stat { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.16); border-radius: 14px; padding: 12px 18px; min-width: 130px; }
 .lou-stat strong { display: block; font-family: var(--font-display); font-size: 1.18rem; color: #FFFFFF; line-height: 1.1; }
 .lou-stat span { font-size: 0.76rem; color: rgba(244,239,230,0.66); }
 .lou-hero-cta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
@@ -8351,24 +8351,24 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .lou-btn-ghost--dark { color: #1C2A44; border-color: rgba(28,42,68,0.32); }
 .lou-btn-ghost--dark:hover { background: rgba(28,42,68,0.06); border-color: #1C2A44; }
 .lou-hero-fig { position: relative; display: flex; justify-content: center; }
-.lou-hero-fig::before { content: ''; position: absolute; z-index: 0; width: 78%; height: 62%; right: 2%; top: 16%; background: radial-gradient(circle, rgba(235,1,40,0.20), transparent 70%); filter: blur(46px); }
+.lou-hero-fig::before { content: ''; position: absolute; z-index: 0; width: 78%; height: 62%; right: 2%; top: 16%; background: radial-gradient(circle, rgba(166,90,55,0.34), transparent 70%); filter: blur(46px); }
 .lou-hero-fig img { position: relative; z-index: 1; width: 100%; max-width: 470px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 44px 90px -34px rgba(33, 43, 61,0.85); }
 
 /* SEÇÕES genéricas */
 .lou-sec { padding: clamp(54px, 7vw, 92px) 0; }
-.lou-sec--dark { background: #1C2A44; color: #FFFFFF; }
+.lou-sec--dark { background: #173E44; color: #FFFFFF; }
 
 /* POR QUE */
 .lou-porques { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 6px; }
 .lou-card { height: 100%; background: #fff; border: 1px solid #ece6d8; border-radius: 16px; padding: 26px 22px; box-shadow: 0 18px 40px -32px rgba(28,42,68,0.5); }
-.lou-card-ico { display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 13px; background: var(--gold-grad, linear-gradient(135deg,#EB0128,#C20020)); color: #FFFFFF; margin-bottom: 16px; }
-.lou-card h3 { font-family: var(--font-display); font-size: 1.16rem; color: #1C2A44; margin: 0 0 8px; line-height: 1.2; }
+.lou-card-ico { display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 13px; background: linear-gradient(135deg, #C2693C, #9E5232); color: #FFFFFF; margin-bottom: 16px; }
+.lou-card h3 { font-family: var(--font-display); font-size: 1.16rem; color: #243B3E; margin: 0 0 8px; line-height: 1.2; }
 .lou-card p { font-size: 0.92rem; color: #5b606a; line-height: 1.55; margin: 0; }
 
 /* CENÁRIOS */
 .lou-cenarios { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 4px 0 8px; }
-.lou-cen { position: relative; background: rgba(255,255,255,0.05); border: 1px solid rgba(10, 14, 22,0.25); border-radius: 18px; padding: 28px 24px; text-align: center; }
-.lou-cen--on { background: var(--gold-grad, linear-gradient(135deg,#EB0128,#C20020)); border-color: transparent; color: #FFFFFF; transform: translateY(-6px); box-shadow: 0 24px 50px -26px rgba(33, 43, 61,0.6); }
+.lou-cen { position: relative; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.18); border-radius: 18px; padding: 28px 24px; text-align: center; }
+.lou-cen--on { background: linear-gradient(135deg, #C2693C, #9E5232); border-color: transparent; color: #FFFFFF; transform: translateY(-6px); box-shadow: 0 24px 50px -26px rgba(11,38,42,0.6); }
 .lou-cen-tag { display: inline-block; font-family: var(--font-head); font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(244,239,230,0.7); margin-bottom: 10px; }
 .lou-cen--on .lou-cen-tag { color: rgba(255,255,255,0.88); }
 .lou-cen-val { display: block; font-family: var(--font-display); font-size: 2.2rem; color: #fff; line-height: 1; }
@@ -8384,9 +8384,9 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .lou-cond-lista { list-style: none; padding: 0; margin: 0 0 8px; border-top: 1px solid #ece6d8; }
 .lou-cond-lista li { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 14px 2px; border-bottom: 1px solid #ece6d8; }
 .lou-cond-lista span { color: #6b7077; font-size: 0.96rem; }
-.lou-cond-lista b { font-family: var(--font-display); font-size: 1.12rem; color: #1C2A44; text-align: right; }
-.lou-cond-lista b i { font-style: normal; font-size: 0.78rem; color: #C20020; }
-.lou-cond-cta { background: #1C2A44; color: #FFFFFF; border-radius: 20px; padding: 32px 28px; }
+.lou-cond-lista b { font-family: var(--font-display); font-size: 1.12rem; color: #243B3E; text-align: right; }
+.lou-cond-lista b i { font-style: normal; font-size: 0.78rem; color: #A65A37; }
+.lou-cond-cta { background: #173E44; color: #FFFFFF; border-radius: 20px; padding: 32px 28px; }
 .lou-cond-cta h3 { font-family: var(--font-display); font-size: 1.4rem; color: #fff; margin: 0 0 10px; }
 .lou-cond-cta p { font-size: 0.96rem; color: rgba(244,239,230,0.8); line-height: 1.55; margin: 0 0 20px; }
 .lou-cond-cta .btn { width: 100%; justify-content: center; margin-bottom: 10px; }
@@ -8397,11 +8397,11 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .lou-loc { position: relative; color: #FFFFFF; padding: clamp(54px, 7vw, 96px) 0; overflow: hidden; }
 .lou-loc-fig { position: absolute; inset: 0; z-index: 0; }
 .lou-loc-fig img { width: 100%; height: 100%; object-fit: cover; }
-.lou-loc::after { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(10,14,22,0.82), rgba(10,14,22,0.9)); }
+.lou-loc::after { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(18,50,56,0.82), rgba(18,50,56,0.93)); }
 .lou-loc-in { position: relative; z-index: 2; }
-.lou-end { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-head); font-weight: 600; color: #FF4D67; margin: 0 0 26px; }
+.lou-end { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-head); font-weight: 600; color: #E8A578; margin: 0 0 26px; }
 .lou-ancoras { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-.lou-anc { background: rgba(255,255,255,0.06); border: 1px solid rgba(10, 14, 22,0.22); border-radius: 14px; padding: 22px 20px; backdrop-filter: blur(2px); }
+.lou-anc { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16); border-radius: 14px; padding: 22px 20px; backdrop-filter: blur(2px); }
 .lou-anc h3 { font-family: var(--font-display); font-size: 1.12rem; color: #fff; margin: 0 0 7px; }
 .lou-anc p { font-size: 0.9rem; color: rgba(244,239,230,0.74); line-height: 1.55; margin: 0; }
 
@@ -8424,16 +8424,16 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .lou-vis-nota { font-size: 0.78rem; color: #8a8f99; margin: 18px 0 0; }
 
 /* FORM */
-.lou-form-sec { background: #212b3d; color: #FFFFFF; padding: clamp(54px, 7vw, 96px) 0; background-image: radial-gradient(100% 100% at 100% 0%, rgba(10, 14, 22,0.18), transparent 55%); }
+.lou-form-sec { background: #173E44; color: #FFFFFF; padding: clamp(54px, 7vw, 96px) 0; background-image: radial-gradient(100% 100% at 100% 0%, rgba(166,90,55,0.16), transparent 55%); }
 .lou-form-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 4vw, 56px); align-items: center; }
-.lou-form { background: rgba(255,255,255,0.05); border: 1px solid rgba(10, 14, 22,0.28); border-radius: 20px; padding: 28px; }
+.lou-form { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.18); border-radius: 20px; padding: 28px; }
 .lou-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
 .lou-form input, .lou-form select { width: 100%; background: rgba(255,255,255,0.96); border: 1px solid #d8d2c4; border-radius: 11px; padding: 13px 14px; font-size: 0.96rem; color: #1C2A44; font-family: var(--font-body); }
 .lou-form-lbl { display: block; font-size: 0.82rem; color: rgba(244,239,230,0.72); margin-bottom: 16px; }
 .lou-form-lbl select { margin-top: 6px; }
 .lou-form-btn { width: 100%; justify-content: center; }
-.lou-form-ok { background: rgba(255,255,255,0.06); border: 1px solid rgba(10, 14, 22,0.3); border-radius: 20px; padding: 32px 28px; text-align: center; }
-.lou-form-ok-ico { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: var(--gold-grad, linear-gradient(135deg,#EB0128,#C20020)); color: #FFFFFF; margin-bottom: 14px; }
+.lou-form-ok { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.18); border-radius: 20px; padding: 32px 28px; text-align: center; }
+.lou-form-ok-ico { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #C2693C, #9E5232); color: #FFFFFF; margin-bottom: 14px; }
 .lou-form-ok h3 { font-family: var(--font-display); color: #fff; font-size: 1.5rem; margin: 0 0 8px; }
 .lou-form-ok p { color: rgba(244,239,230,0.8); line-height: 1.55; margin: 0; }
 .lou-form-sec .lou-disc { color: rgba(244,239,230,0.55); }
@@ -8441,7 +8441,7 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 /* RODAPÉ informativo */
 .lou-rodape { padding: 28px 0 48px; }
 .lou-rodape p { font-size: 0.8rem; color: #8a8f99; line-height: 1.6; max-width: 900px; margin: 0 auto; text-align: center; }
-.lou-rodape a { color: #C20020; font-weight: 600; }
+.lou-rodape a { color: #A65A37; font-weight: 600; }
 
 /* RESPONSIVO */
 @media (max-width: 900px) {
@@ -8834,11 +8834,13 @@ html[data-theme="claro"] .lou-form-sec h2,
 html[data-theme="claro"] .lou-form-sec h3,
 html[data-theme="claro"] .lou-cond-cta h3,
 html[data-theme="claro"] .lou-h2--light { color: #FFFFFF; }
-html[data-theme="claro"] .lou-hero .lou-h1 em { color: #FF4D67; }
+html[data-theme="claro"] .lou-hero .lou-h1 em { color: #E8A578; }
+/* eyebrows: terracota nas seções CLARAS (creme); creme-quente nas seções ESCURAS (teal) */
+html[data-theme="claro"] .lou-pg .eyebrow { color: #A65A37; }
 html[data-theme="claro"] .lou-hero .eyebrow,
 html[data-theme="claro"] .lou-loc .eyebrow,
 html[data-theme="claro"] .lou-sec--dark .eyebrow,
-html[data-theme="claro"] .lou-form-sec .eyebrow { color: #FF4D67; }
+html[data-theme="claro"] .lou-form-sec .eyebrow { color: #E6D6BE; }
 
 /* Fix de contraste Louis (parte 2): a regra global html[data-theme="claro"] p { color: var(--text) }
    (linha ~73, specificity 0,1,2) deixava TODO parágrafo escuro — inclusive .lou-sub--light, leads,
@@ -8848,8 +8850,9 @@ html[data-theme="claro"] .lou-sec--dark p,
 html[data-theme="claro"] .lou-loc p,
 html[data-theme="claro"] .lou-form-sec p,
 html[data-theme="claro"] .lou-cond-cta p { color: rgba(244,239,230,0.82); }
-html[data-theme="claro"] .lou-loc .lou-end { color: #FF4D67; }
+html[data-theme="claro"] .lou-loc .lou-end { color: #E8A578; }
 html[data-theme="claro"] .lou-hero .lou-lead b { color: #FFFFFF; }
+/* (CTAs do Louis -> vermelho ficam no bloco final do arquivo, com !important p/ vencer o btn-gold travado) */
 
 /* Botões da landing Louis: ícones SVG sem tamanho explícito estavam estourando
    (a "seta gigante" de 454px). Padroniza todos os ícones de botão em 18px. */
@@ -9280,3 +9283,24 @@ html[data-theme="claro"] .atend-passos li { color: #5b606a; }
 html[data-theme="claro"] .atend-msg { background: #F4F2EE; color: #2A2F38; border-color: #E6E4DF; }
 html[data-theme="claro"] .atend-erro { background: rgba(235,1,40,0.07); border-color: rgba(235,1,40,0.28); color: #C20020; }
 html[data-theme="claro"] .atend-erro-inline { color: #C20020; }
+
+/* ════════════════════════════════════════════════════════════
+   LOUIS — paleta do empreendimento (creme/terracota/teal) vence
+   os overrides globais (.section--light branco, btn-gold #212b3d).
+   Fica por ÚLTIMO no arquivo de propósito (ordem da cascata).
+   ════════════════════════════════════════════════════════════ */
+html[data-theme="claro"] .lou-pg { background: #F4F1EC; }
+html[data-theme="claro"] .lou-pg .lou-sec.section--light,
+html[data-theme="claro"] .lou-pg .lou-sec--vis.section--light { background: #F4F1EC; }
+/* cards continuam brancos pra destacar sobre o creme */
+html[data-theme="claro"] .lou-pg .lou-card { background: #FFFFFF; }
+/* CTAs do Louis levam ao WhatsApp => VERMELHO (Op.2), como a própria regra de ouro manda
+   ("WhatsApp/Contatar -> VERMELHO"). !important p/ vencer o default btn-gold (#212b3d!important). */
+html[data-theme="claro"] .lou-pg .lou-btn-wa,
+html[data-theme="claro"] .lou-pg .lou-form-btn,
+html[data-theme="claro"] .lou-pg .lou-cond-cta .btn { background: #eb0128 !important; color: #FFFFFF !important; border-color: transparent !important; }
+html[data-theme="claro"] .lou-pg .lou-btn-wa:hover,
+html[data-theme="claro"] .lou-pg .lou-form-btn:hover,
+html[data-theme="claro"] .lou-pg .lou-cond-cta .btn:hover { background: #C20020 !important; border-color: transparent !important; }
+html[data-theme="claro"] .lou-pg .lou-btn-wa svg,
+html[data-theme="claro"] .lou-pg .lou-form-btn svg { color: #FFFFFF !important; }
