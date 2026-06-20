@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-06-19T10:55:35.658Z",
+  "geradoEm": "2026-06-20T09:35:25.306Z",
   "fonte": "blow",
   "empreendimentos": [
     {
@@ -3595,7 +3595,7 @@
         }
       ],
       "pdfApresentacao": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/88987372-60fd-4c00-8314-0311937d6e56/5e32dd6d-4a66-4d78-8863-99256decc463",
-      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/88987372-60fd-4c00-8314-0311937d6e56/de6cc9e6-7423-481e-bfbc-e1be91b81e5d",
+      "pdfTabela": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/88987372-60fd-4c00-8314-0311937d6e56/12271ac7-e3f4-4161-af30-1c1b89dfb33e",
       "tipologias": [
         "4 a 5 quartos"
       ],
@@ -4050,7 +4050,7 @@
         }
       ],
       "pdfApresentacao": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/dc711681-c3a8-4f3e-b19d-85cb0b044faf/d9d3d713-3b15-4e45-b242-54c9cf658582",
-      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/dc711681-c3a8-4f3e-b19d-85cb0b044faf/c150ff30-22fd-449d-bc68-36d633ff3ac1",
+      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/dc711681-c3a8-4f3e-b19d-85cb0b044faf/824360fc-f4d9-4a5c-981a-5043ce012073",
       "tipologias": [
         "3 quartos"
       ],
