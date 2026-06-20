@@ -9,7 +9,6 @@ import { isLancLivre, getLancVistos, markLancVisto, LANC_LIMIT } from '../compon
 
 const WA_PORTAL = 'Olá Vinícius! Acessei o portal de lançamentos e gostaria de saber mais sobre os empreendimentos disponíveis em Uberlândia.'
 
-const STATUS_COR = { 'Lançamento': '#4fa3e0', 'Em obras': '#f59e0b', 'Pronto': '#56c27d' }
 
 export function CardEmpLan({ e, variante }) {
   const nav = useNavigate()
@@ -44,7 +43,7 @@ export function CardEmpLan({ e, variante }) {
           {e.capa
             ? <img src={e.capa} alt={`${e.nome} — ${e.bairro || 'Uberlândia'}`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
             : <span className="lan-card-semfoto"><IconBuilding width={30} height={30} /></span>}
-          <span className="lan-row-status" style={{ background: STATUS_COR[e.status] || '#666' }}>{e.status}</span>
+          <span className="lan-row-status">{e.status}</span>
         </div>
         <div className="lan-row-main">
           <span className="lan-card-const">{e.construtoraNome}</span>
@@ -66,7 +65,7 @@ export function CardEmpLan({ e, variante }) {
         {e.capa
           ? <img src={e.capa} alt={`${e.nome} — ${e.bairro || 'Uberlândia'}`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
           : <span className="lan-card-semfoto"><IconBuilding width={32} height={32} /></span>}
-        <span className="lan-card-status" style={{ background: STATUS_COR[e.status] || '#666' }}>{e.status}</span>
+        <span className="lan-card-status">{e.status}</span>
       </div>
       <div className="lan-card-body">
         <span className="lan-card-const">{e.construtoraNome}</span>
