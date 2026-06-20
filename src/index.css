@@ -8348,8 +8348,9 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .lou-btn-ghost:hover { background: rgba(244,239,230,0.1); border-color: #F4EFE6; }
 .lou-btn-ghost--dark { color: #1C2A44; border-color: rgba(28,42,68,0.32); }
 .lou-btn-ghost--dark:hover { background: rgba(28,42,68,0.06); border-color: #1C2A44; }
-.lou-hero-fig { display: flex; justify-content: center; }
-.lou-hero-fig img { width: 100%; max-width: 380px; border-radius: 16px; filter: drop-shadow(0 30px 60px rgba(33, 43, 61,0.55)); }
+.lou-hero-fig { position: relative; display: flex; justify-content: center; }
+.lou-hero-fig::before { content: ''; position: absolute; z-index: 0; width: 78%; height: 62%; right: 2%; top: 16%; background: radial-gradient(circle, rgba(235,1,40,0.20), transparent 70%); filter: blur(46px); }
+.lou-hero-fig img { position: relative; z-index: 1; width: 100%; max-width: 470px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 44px 90px -34px rgba(33, 43, 61,0.85); }
 
 /* SEÇÕES genéricas */
 .lou-sec { padding: clamp(54px, 7vw, 92px) 0; }
@@ -8407,8 +8408,18 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .lou-gal { position: relative; margin: 0; border-radius: 14px; overflow: hidden; background: #f1ece1; }
 .lou-gal img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .lou-gal--big { grid-row: span 2; }
-.lou-gal--big img { object-fit: contain; background: #212b3d; }
-.lou-gal figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 12px; font-size: 0.78rem; color: #fff; background: linear-gradient(transparent, rgba(10,14,22,0.72)); }
+.lou-gal--big img { object-fit: cover; }
+.lou-gal figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 12px; font-size: 0.78rem; color: #fff; background: linear-gradient(transparent, rgba(33,43,61,0.78)); }
+
+/* STUDIOS & LAZER — mosaico de renders oficiais */
+.lou-sec--vis .lou-sub { margin-bottom: 22px; }
+.lou-visuais { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 232px; gap: 14px; margin-top: 6px; }
+.lou-vis { position: relative; margin: 0; border-radius: 16px; overflow: hidden; background: #ece6da; box-shadow: 0 18px 40px -32px rgba(28,42,68,0.5); }
+.lou-vis img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s var(--ease); }
+.lou-vis:hover img { transform: scale(1.05); }
+.lou-vis--wide { grid-column: span 2; }
+.lou-vis figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 16px 13px; font-family: var(--font-head); font-weight: 600; font-size: 0.92rem; color: #fff; background: linear-gradient(transparent, rgba(33,43,61,0.9)); }
+.lou-vis-nota { font-size: 0.78rem; color: #8a8f99; margin: 18px 0 0; }
 
 /* FORM */
 .lou-form-sec { background: #212b3d; color: #FFFFFF; padding: clamp(54px, 7vw, 96px) 0; background-image: radial-gradient(100% 100% at 100% 0%, rgba(10, 14, 22,0.18), transparent 55%); }
@@ -8442,6 +8453,7 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
   .lou-ancoras { grid-template-columns: 1fr; }
   .lou-galeria { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 180px; }
   .lou-gal--big { grid-column: span 2; grid-row: span 1; height: 280px; }
+  .lou-visuais { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 190px; }
   .lou-form-wrap { grid-template-columns: 1fr; }
 }
 @media (max-width: 520px) {

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import { useSEO } from '../useSEO'
 import { CONFIG, linkWhatsApp } from '../data'
+import { onImgError } from '../img'
 import { registrarLead } from '../engajamento'
 import { IconWhats, IconArrow, IconPin } from '../components/icons'
 
@@ -33,6 +34,18 @@ const PORQUES = [
   { ico: 'M20 7h-9M14 17H5M17 3v8M7 13v8M3 7a2 2 0 1 0 4 0 2 2 0 0 0-4 0M17 7a2 2 0 1 0 4 0 2 2 0 0 0-4 0', t: 'Gestão Housi, sem dor de cabeça', d: 'A Housi cuida da locação por temporada de ponta a ponta — anúncio, reservas, limpeza e repasse. Você recebe sem administrar nada.' },
   { ico: 'M3 3v18h18M7 14l3-3 3 3 5-6', t: 'Locação por temporada autorizada', d: 'Locação de curta estadia (Airbnb) prevista em convenção do condomínio — modelo pensado desde o projeto para render mais que o aluguel tradicional.' },
   { ico: 'M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6', t: 'Entrada acessível, no lançamento', d: 'A partir de R$ 38.700 de sinal e parcelamento direto com a construtora, comprando ainda na planta — o melhor preço da curva.' },
+]
+
+// Renders oficiais (extraídos do book da Select) — studios + lazer do prédio
+const VISUAIS = [
+  { img: 'pool.jpg', t: 'Piscina & rooftop', wide: true },
+  { img: 'living.jpg', t: 'Living do studio' },
+  { img: 'kitchen.jpg', t: 'Cozinha integrada' },
+  { img: 'bedroom.jpg', t: 'Dormitório' },
+  { img: 'gym.jpg', t: 'Academia' },
+  { img: 'gourmet.jpg', t: 'Espaço gourmet', wide: true },
+  { img: 'lounge.jpg', t: 'Lounge & coworking', wide: true },
+  { img: 'entrance.jpg', t: 'Entrada e fachada', wide: true },
 ]
 
 function Stat({ k, v }) {
@@ -178,6 +191,26 @@ export default function LancamentoLouis() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ---------- STUDIOS & LAZER (renders) ---------- */}
+      <section className="lou-sec lou-sec--vis section--light">
+        <div className="container">
+          <Reveal>
+            <span className="eyebrow">Studios & lazer</span>
+            <h2 className="lou-h2">Um produto desenhado para render</h2>
+            <p className="lou-sub">Studios prontos para morar ou alugar por temporada, com lazer completo no prédio — exatamente a estrutura que o hóspede procura e que mantém a ocupação alta o ano inteiro.</p>
+          </Reveal>
+          <div className="lou-visuais">
+            {VISUAIS.map((v) => (
+              <figure key={v.img} className={`lou-vis ${v.wide ? 'lou-vis--wide' : ''}`}>
+                <img src={`/lancamentos/louis/${v.img}`} alt={`Louis Living Experience — ${v.t}`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
+                <figcaption>{v.t}</figcaption>
+              </figure>
+            ))}
+          </div>
+          <p className="lou-vis-nota">Imagens de render meramente ilustrativas, fornecidas pela Select Construtora.</p>
         </div>
       </section>
 
