@@ -8350,9 +8350,13 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .lou-btn-ghost:hover { background: rgba(244,239,230,0.1); border-color: #F4EFE6; }
 .lou-btn-ghost--dark { color: #1C2A44; border-color: rgba(28,42,68,0.32); }
 .lou-btn-ghost--dark:hover { background: rgba(28,42,68,0.06); border-color: #1C2A44; }
-.lou-hero-fig { position: relative; display: flex; justify-content: center; }
-.lou-hero-fig::before { content: ''; position: absolute; z-index: 0; width: 78%; height: 62%; right: 2%; top: 16%; background: radial-gradient(circle, rgba(166,90,55,0.34), transparent 70%); filter: blur(46px); }
-.lou-hero-fig img { position: relative; z-index: 1; width: 100%; max-width: 470px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 44px 90px -34px rgba(33, 43, 61,0.85); }
+.lou-hero-fig { position: relative; display: flex; justify-content: center; align-items: flex-end; }
+/* halo terracota quente atrás da torre */
+.lou-hero-fig::before { content: ''; position: absolute; z-index: 0; width: 72%; height: 58%; right: 6%; top: 18%; background: radial-gradient(circle, rgba(166,90,55,0.22), transparent 70%); filter: blur(50px); }
+/* a torre tem fundo teal igual ao hero; sem caixa — bordas esfumadas pra "flutuar" no fundo */
+.lou-hero-fig img { position: relative; z-index: 1; width: 100%; max-width: 520px; border: none; border-radius: 0; box-shadow: none;
+  -webkit-mask-image: radial-gradient(135% 116% at 50% 48%, #000 72%, transparent 100%);
+  mask-image: radial-gradient(135% 116% at 50% 48%, #000 72%, transparent 100%); }
 
 /* SEÇÕES genéricas */
 .lou-sec { padding: clamp(54px, 7vw, 92px) 0; }

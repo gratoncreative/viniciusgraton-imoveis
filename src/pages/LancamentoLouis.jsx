@@ -165,7 +165,7 @@ export default function LancamentoLouis() {
             </Reveal>
           </div>
           <div className="lou-hero-fig">
-            <img src="/lancamentos/louis/tower.jpg" alt="Render do edifício Louis Living Experience, no Umuarama, Uberlândia" loading="eager" />
+            <img src="/lancamentos/louis/torre-louis.jpg" alt="Render do edifício Louis Living Experience, no Umuarama, Uberlândia" loading="eager" />
           </div>
         </div>
       </section>
