@@ -309,6 +309,8 @@ html[data-theme="claro"] .footer-col h5,
 html[data-theme="claro"] .footer-end,
 html[data-theme="claro"] .footer-bottom { color: rgba(244,239,230,0.62); }
 html[data-theme="claro"] .footer .brand-name { color: rgba(244,239,230,0.95); }
+/* "Graton" do rodapé é vermelho sobre o rodapé escuro -> champanhe-pálido (claro). O logo da navbar (fundo branco) segue vermelho. */
+html[data-theme="claro"] .footer .brand-name em { color: #FF4D67; }
 /* A3 — selects/options nativos claros */
 html[data-theme="claro"] select { color-scheme: light; }
 html[data-theme="claro"] select option { background: #FFFFFF; color: #2A2F38; }
