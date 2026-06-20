@@ -214,6 +214,37 @@ export default function LancamentoLouis() {
         </div>
       </section>
 
+      {/* ---------- VÍDEOS & MATERIAL ---------- */}
+      <section className="lou-sec section--light">
+        <div className="container">
+          <Reveal>
+            <span className="eyebrow">Veja por dentro</span>
+            <h2 className="lou-h2">Vídeos e material completo</h2>
+            <p className="lou-sub">Um tour pelo Louis e pela região — e o book oficial da Select com plantas, tipologias e lazer, pra você analisar com calma.</p>
+          </Reveal>
+          <div className="lou-videos">
+            <video className="lou-video lou-video--port" controls preload="metadata" playsInline poster="/lancamentos/louis/entrance.jpg">
+              <source src="/lancamentos/louis/louis-tour-1.mp4" type="video/mp4" />
+              Seu navegador não suporta vídeo.
+            </video>
+            <video className="lou-video lou-video--land" controls preload="metadata" playsInline poster="/lancamentos/louis/pool.jpg">
+              <source src="/lancamentos/louis/louis-tour-2.mp4" type="video/mp4" />
+              Seu navegador não suporta vídeo.
+            </video>
+          </div>
+          <a className="lou-material" href="/lancamentos/louis/louis-book.pdf" target="_blank" rel="noopener noreferrer">
+            <span className="lou-material-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6M12 18v-6M9 15l3 3 3-3" /></svg>
+            </span>
+            <span className="lou-material-txt">
+              <b>Book completo do Louis (PDF)</b>
+              <i>Plantas, tipologias, lazer e apresentação oficial da Select · 4 MB</i>
+            </span>
+            <span className="lou-material-go">Abrir →</span>
+          </a>
+        </div>
+      </section>
+
       {/* ---------- RENDA ESTIMADA ---------- */}
       <section className="lou-sec lou-sec--dark">
         <div className="container">

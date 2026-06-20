@@ -8427,6 +8427,20 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .lou-vis figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 16px 13px; font-family: var(--font-head); font-weight: 600; font-size: 0.92rem; color: #fff; background: linear-gradient(transparent, rgba(33,43,61,0.9)); }
 .lou-vis-nota { font-size: 0.78rem; color: #8a8f99; margin: 18px 0 0; }
 
+/* VÍDEOS + MATERIAL (book PDF) */
+.lou-videos { display: flex; flex-direction: column; align-items: center; gap: 18px; margin: 8px 0 24px; }
+/* aspect-ratio força a proporção (sem distorção, mesmo com display:block) */
+.lou-video { display: block; border-radius: 16px; border: 1px solid #E4DACB; background: #173E44; box-shadow: 0 18px 40px -30px rgba(36,59,62,0.55); }
+.lou-video--port { aspect-ratio: 480 / 848; height: min(64vh, 600px); width: auto; max-width: 94vw; }
+.lou-video--land { aspect-ratio: 832 / 464; width: min(620px, 100%); height: auto; }
+.lou-material { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; background: #fff; border: 1px solid #E4DACB; border-radius: 16px; padding: 18px 22px; text-decoration: none; box-shadow: 0 18px 40px -32px rgba(36,59,62,0.4); transition: border-color .18s var(--ease), transform .18s var(--ease); }
+.lou-material:hover { border-color: #A65A37; transform: translateY(-2px); }
+.lou-material-ico { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 13px; background: linear-gradient(135deg, #C2693C, #9E5232); color: #fff; }
+.lou-material-txt { flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.lou-material-txt b { font-family: var(--font-display); color: #243B3E; font-size: 1.08rem; }
+.lou-material-txt i { font-style: normal; color: #5C6B6D; font-size: 0.86rem; }
+.lou-material-go { flex: none; font-family: var(--font-head); font-weight: 700; color: #A65A37; }
+
 /* FORM */
 .lou-form-sec { background: #173E44; color: #FFFFFF; padding: clamp(54px, 7vw, 96px) 0; background-image: radial-gradient(100% 100% at 100% 0%, rgba(166,90,55,0.16), transparent 55%); }
 .lou-form-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 4vw, 56px); align-items: center; }
