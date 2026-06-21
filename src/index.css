@@ -3534,20 +3534,24 @@ html[data-theme="dark"] .nav:not(.scrolled) .nav-links a.nav-destaque { color: #
 .mf-vitrine-card b { font-family: var(--font-head); font-size: 0.95rem; color: var(--graphite); font-weight: 700; }
 .mf-vitrine-card small { font-size: 0.8rem; color: var(--stone); line-height: 1.45; }
 .mf-vitrine-cta { font-size: 0.85rem; color: var(--graphite); margin: 14px 0 0; padding: 11px 14px; border-radius: 11px; background: rgba(10, 14, 22,0.1); border: 1px solid rgba(10, 14, 22,0.28); }
-.mf-tiras { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 18px; }
-.mf-tira { position: relative; width: 76px; height: 56px; border-radius: 9px; overflow: hidden; border: 2px solid transparent; padding: 0; cursor: pointer; background: none; }
-.mf-tira.on { border-color: var(--gold-2); }
+/* RAIL de miniaturas — sempre visível, rola sozinho (a página não desce) */
+.mf-tiras { display: flex; flex-direction: column; gap: 8px; margin: 0; position: sticky; top: 84px; max-height: calc(100vh - 104px); overflow-y: auto; padding-right: 4px; scrollbar-width: thin; }
+.mf-tira { position: relative; width: 100%; aspect-ratio: 4 / 3; height: auto; border-radius: 9px; overflow: hidden; border: 2px solid transparent; padding: 0; cursor: pointer; background: none; flex: none; }
+.mf-tira.on { border-color: var(--gold-2); box-shadow: 0 0 0 2px var(--gold-2); }
 .mf-tira img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mf-tira-n { position: absolute; bottom: 2px; left: 3px; font-size: 0.62rem; font-weight: 700; color: #fff; background: rgba(33,43,61,0.7); border-radius: 5px; padding: 0 5px; line-height: 1.5; }
 .mf-tira-x { position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; border-radius: 50%; background: rgba(33, 43, 61,0.6); color: #fff; font-size: 13px; line-height: 18px; text-align: center; }
-.mf-edit { display: grid; grid-template-columns: minmax(300px, 460px) 1fr; gap: 24px; align-items: start; }
-@media (min-width: 821px) { .mf-preview { position: sticky; top: 84px; } }
-@media (max-width: 820px) { .mf-edit { grid-template-columns: 1fr; } }
+/* 3 colunas: rail de fotos · preview · painel — cabe na tela, sem rolar a página */
+.mf-edit { display: grid; grid-template-columns: 104px minmax(0, 1fr) minmax(380px, 600px); gap: 20px; align-items: start; }
+@media (min-width: 1025px) { .mf-preview { position: sticky; top: 84px; } .mf-painel { position: sticky; top: 84px; max-height: calc(100vh - 104px); overflow-y: auto; } }
+@media (max-width: 1024px) { .mf-edit { grid-template-columns: 96px minmax(0, 1fr); } .mf-painel { grid-column: 1 / -1; } }
+@media (max-width: 640px) { .mf-edit { grid-template-columns: 1fr; } .mf-tiras { flex-direction: row; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; max-height: none; position: static; } .mf-tira { width: 84px; flex: none; } .mf-preview { position: static; } }
 /* ferramentas distribuídas em colunas (masonry) — não tudo numa coluna estreita */
 .mf-controles { display: block; columns: 250px auto; column-gap: 14px; }
 .mf-controles > .mf-grupo { break-inside: avoid; margin: 0 0 14px; display: inline-block; width: 100%; }
 @media (max-width: 820px) { .mf-controles { columns: auto; } }
 .mf-canvas-wrap { position: relative; display: inline-block; max-width: 100%; }
-.mf-canvas { max-width: 100%; height: auto; border-radius: 12px; display: block; box-shadow: 0 16px 44px -22px rgba(33, 43, 61,0.55); background: #212b3d; }
+.mf-canvas { max-width: 100%; height: auto; max-height: 60vh; border-radius: 12px; display: block; margin: 0 auto; box-shadow: 0 16px 44px -22px rgba(33, 43, 61,0.55); background: #212b3d; }
 .mf-grade { position: absolute; inset: 0; pointer-events: none; }
 .mf-grade span { position: absolute; background: rgba(255,255,255,0.32); }
 .mf-grade span:nth-child(1) { left: 33.33%; top: 0; bottom: 0; width: 1px; }
@@ -3629,7 +3633,7 @@ html[data-theme="dark"] .nav:not(.scrolled) .nav-links a.nav-destaque { color: #
 .ouvir-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 100px; border: 1px solid rgba(10, 14, 22,0.4); background: rgba(10, 14, 22,0.1); color: #8a6a1f; font-family: var(--font-head); font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: background .2s, border-color .2s; }
 .ouvir-btn:hover { background: rgba(10, 14, 22,0.2); border-color: var(--gold-2); }
 .ouvir-btn--mini { padding: 10px 14px; }
-.mf-tiras { max-height: 168px; overflow-y: auto; }
+/* (rail de miniaturas: estilos no bloco principal .mf-tiras, acima) */
 
 /* Botões de ferramentas do imóvel (PDF + estudo m²) */
 .det-ferramentas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0 4px; }

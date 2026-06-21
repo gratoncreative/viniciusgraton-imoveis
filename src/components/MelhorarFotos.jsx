@@ -12,7 +12,7 @@ const PREVIEW_MAX = 900   // resolução do preview (rápido)
 const EXPORT_MAX = 2560   // teto da resolução base na exportação
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
-const PADRAO = { angle: 0, brilho: 1.05, contraste: 1.09, satur: 1.12, nitidez: 0.6, suave: 0, realces: 0, sombras: 0, vibrar: 0, wb: true, temp: 0, vinheta: 0, escala: 1 }
+const PADRAO = { angle: 0, brilho: 1.05, contraste: 1.09, satur: 1.12, nitidez: 0.6, suave: 0, realces: 0, sombras: 0, vibrar: 0, wb: true, temp: 0, vinheta: 0, escala: 1, formato: { ratio: 'orig', fill: 'blur' } }
 
 // analisa a foto (histograma) e devolve os ajustes ideais — "auto-melhorar"
 function autoConfig(img) {
@@ -203,7 +203,7 @@ function aplicarMarca(canvas, wm, logoImg) {
   return canvas
 }
 function exportarCanvas(img, s) {
-  const base = processar(img, s, EXPORT_MAX)
+  const base = enquadrar(processar(img, s, EXPORT_MAX), s.formato)
   if ((s.escala || 1) <= 1) return base
   const out = document.createElement('canvas')
   out.width = Math.round(base.width * s.escala); out.height = Math.round(base.height * s.escala)
@@ -220,6 +220,28 @@ function coverDraw(ctx, img, x, y, w, h) {
   if (ir > r) { sh = ih; sw = sh * r; sx = (iw - sw) / 2; sy = 0 }
   else { sw = iw; sh = sw / r; sx = 0; sy = (ih - sh) / 2 }
   ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h)
+}
+
+// ——— enquadramento: leva a foto a uma proporção alvo (ex.: vertical → 16:9 deitado) ———
+const RATIOS = { orig: 0, '16:9': 16 / 9, '4:3': 4 / 3, '3:2': 3 / 2, '1:1': 1, '9:16': 9 / 16 }
+function enquadrar(src, fmt) {
+  const ar = RATIOS[(fmt && fmt.ratio) || 'orig']
+  if (!ar) return src // 'orig' → não mexe na proporção
+  const sw = src.width, sh = src.height
+  let W, H
+  if (ar >= 1) { H = Math.max(sh, Math.round(sw / ar)); W = Math.round(H * ar) }
+  else { W = Math.max(sw, Math.round(sh * ar)); H = Math.round(W / ar) }
+  const out = document.createElement('canvas'); out.width = W; out.height = H
+  const ctx = out.getContext('2d'); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'
+  const fill = (fmt && fmt.fill) || 'blur'
+  if (fill === 'crop') { coverDraw(ctx, src, 0, 0, W, H); return out } // preenche cortando as bordas
+  if (fill === 'blur') {
+    ctx.save(); ctx.filter = `blur(${Math.max(8, Math.round(Math.min(W, H) * 0.05))}px) brightness(0.86)`
+    coverDraw(ctx, src, -40, -40, W + 80, H + 80); ctx.restore() // fundo: a própria foto borrada
+  } else { ctx.fillStyle = fill === 'cor' ? (fmt.cor || '#1C2A44') : '#ffffff'; ctx.fillRect(0, 0, W, H) }
+  const e = Math.min(W / sw, H / sh), w = Math.round(sw * e), h = Math.round(sh * e)
+  ctx.drawImage(src, Math.round((W - w) / 2), Math.round((H - h) / 2), w, h) // foto inteira, centralizada
+  return out
 }
 
 // ——— vídeo (slideshow 9:16): cada foto centralizada sobre fundo desfocado dela mesma ———
@@ -341,7 +363,8 @@ export default function MelhorarFotos() {
       const W = Math.round(foto.img.width * esc), H = Math.round(foto.img.height * esc)
       cv.width = W; cv.height = H; ctx.drawImage(foto.img, 0, 0, W, H)
     } else {
-      const c = processar(foto.img, foto.s, PREVIEW_MAX)
+      let c = processar(foto.img, foto.s, PREVIEW_MAX)
+      c = enquadrar(c, foto.s.formato)
       if (wm.on) aplicarMarca(c, wm, wmLogoRef.current)
       cv.width = c.width; cv.height = c.height
       ctx.drawImage(c, 0, 0)
@@ -502,7 +525,8 @@ export default function MelhorarFotos() {
     }
   }
   const restaurar = () => setS({ ...PADRAO, angle: foto ? foto.s.angle : 0 })
-  const aplicarTodas = () => { if (foto) { const r = foto.s; setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, brilho: r.brilho, contraste: r.contraste, satur: r.satur, nitidez: r.nitidez, suave: r.suave, realces: r.realces, sombras: r.sombras, vibrar: r.vibrar, temp: r.temp, vinheta: r.vinheta, wb: r.wb, escala: r.escala } }))) } }
+  const aplicarTodas = () => { if (foto) { const r = foto.s; setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, brilho: r.brilho, contraste: r.contraste, satur: r.satur, nitidez: r.nitidez, suave: r.suave, realces: r.realces, sombras: r.sombras, vibrar: r.vibrar, temp: r.temp, vinheta: r.vinheta, wb: r.wb, escala: r.escala, formato: { ...(r.formato || {}) } } }))) } }
+  const aplicarFormatoTodas = () => { if (foto) { const f = foto.s.formato || { ratio: 'orig', fill: 'blur' }; setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, formato: { ...f } } }))) } }
   const remover = (i) => { setFotos((fs) => fs.filter((_, k) => k !== i)); setAtual((a) => (a >= fotos.length - 1 ? fotos.length - 2 : a)) }
 
   const baixarCanvas = async (canvas, nome) => {
@@ -577,7 +601,17 @@ export default function MelhorarFotos() {
       {foto && !modoLimpar && (
         <div className="mf-editor">
           <div className="mf-edit">
-            {/* COLUNA ESQUERDA: preview + filmstrip */}
+            {/* RAIL: miniaturas sempre visíveis (rola sozinho, cabe até 30 fotos) */}
+            <div className="mf-tiras" role="listbox" aria-label="Suas fotos">
+              {fotos.map((ft, i) => (
+                <button key={i} className={`mf-tira ${i === atual ? 'on' : ''}`} onClick={() => setAtual(i)} title={ft.name}>
+                  <img src={ft.img.src} alt={ft.name} />
+                  <span className="mf-tira-n">{i + 1}</span>
+                  <span className="mf-tira-x" onClick={(e) => { e.stopPropagation(); remover(i) }}>×</span>
+                </button>
+              ))}
+            </div>
+            {/* COLUNA CENTRO: preview */}
             <div className="mf-preview">
               <div className="mf-canvas-wrap">
                 <canvas ref={previewRef} className="mf-canvas" />
@@ -590,14 +624,6 @@ export default function MelhorarFotos() {
                   👁 Segurar p/ ver original
                 </button>
                 <label className="mf-check"><input type="checkbox" checked={grade} onChange={(e) => setGrade(e.target.checked)} /> Grade de nível</label>
-              </div>
-              <div className="mf-tiras">
-                {fotos.map((ft, i) => (
-                  <button key={i} className={`mf-tira ${i === atual ? 'on' : ''}`} onClick={() => setAtual(i)} title={ft.name}>
-                    <img src={ft.img.src} alt={ft.name} />
-                    <span className="mf-tira-x" onClick={(e) => { e.stopPropagation(); remover(i) }}>×</span>
-                  </button>
-                ))}
               </div>
             </div>
 
@@ -630,6 +656,29 @@ export default function MelhorarFotos() {
                       <div className="mf-botoes">
                         <button className="admin-btn admin-btn--mini" onClick={autoAngulo}>🎯 Auto-endireitar</button>
                         <button className="admin-btn admin-btn--mini" onClick={autoAnguloTodas}>🎯 Endireitar TODAS</button>
+                      </div>
+                    </div>
+                    <div className="mf-grupo">
+                      <div className="mf-grupo-tit">📐 Formato (vertical → horizontal)</div>
+                      <p className="mf-nota" style={{ marginTop: 0 }}>Deixa fotos em pé na horizontal (e vice-versa), pra padronizar o álbum. Vale individual ou em massa.</p>
+                      <div className="mf-modo-sel">
+                        {[['orig', 'Original'], ['16:9', '16:9'], ['4:3', '4:3'], ['1:1', '1:1'], ['9:16', '9:16']].map(([v, l]) => (
+                          <button key={v} type="button" className={`mf-modo-btn${((foto.s.formato && foto.s.formato.ratio) || 'orig') === v ? ' on' : ''}`} onClick={() => setS({ formato: { ...(foto.s.formato || {}), ratio: v } })}>{l}</button>
+                        ))}
+                      </div>
+                      {((foto.s.formato && foto.s.formato.ratio) || 'orig') !== 'orig' && (
+                        <>
+                          <label className="mf-nota" style={{ margin: '10px 0 4px' }}>Preencher as laterais:</label>
+                          <div className="mf-modo-sel">
+                            {[['blur', 'Desfoque'], ['branco', 'Branco'], ['cor', 'Marinho'], ['crop', 'Cortar']].map(([v, l]) => (
+                              <button key={v} type="button" className={`mf-modo-btn${((foto.s.formato && foto.s.formato.fill) || 'blur') === v ? ' on' : ''}`} onClick={() => setS({ formato: { ...(foto.s.formato || {}), fill: v } })}>{l}</button>
+                            ))}
+                          </div>
+                          <p className="mf-nota">Desfoque = fundo borrado da própria foto (padrão de portal). Cortar preenche tudo, mas corta as bordas.</p>
+                        </>
+                      )}
+                      <div className="mf-botoes" style={{ marginTop: 8 }}>
+                        <button className="admin-btn admin-btn--mini" onClick={aplicarFormatoTodas}>✓ Aplicar formato a TODAS</button>
                       </div>
                     </div>
                     <div className="mf-grupo">
