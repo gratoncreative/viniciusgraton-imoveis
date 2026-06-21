@@ -3547,6 +3547,19 @@ html[data-theme="dark"] .nav:not(.scrolled) .nav-links a.nav-destaque { color: #
 @media (min-width: 1025px) { .mf-preview { position: sticky; top: 84px; } }
 @media (max-width: 1024px) { .mf-edit { grid-template-columns: 96px minmax(0, 1fr); } .mf-painel { grid-column: 1 / -1; } }
 @media (max-width: 640px) { .mf-edit { grid-template-columns: 1fr; } .mf-tiras { flex-direction: row; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; max-height: none; position: static; } .mf-tira { width: 84px; flex: none; } .mf-preview { position: static; } }
+/* Bancada vazia (sem foto): área de arrastar no centro + painel já montado ao lado */
+.mf-edit--vazio { grid-template-columns: minmax(0, 1fr) minmax(360px, 560px); }
+@media (max-width: 1024px) { .mf-edit--vazio { grid-template-columns: 1fr; } }
+.mf-dropzone { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; min-height: 360px; height: 100%; padding: 36px; border: 2px dashed #cdd3dd; border-radius: 16px; background: #fbfcfe; color: #5b626e; cursor: pointer; transition: border-color .18s, background .18s, color .18s; }
+.mf-dropzone:hover, .mf-dropzone.on { border-color: var(--gold-2); background: #fff; color: #1C2A44; }
+.mf-dropzone svg { color: var(--gold-3); }
+.mf-dropzone b { font-family: var(--font-head); font-size: 1.18rem; color: #1C2A44; }
+.mf-dropzone span { font-size: 0.95rem; }
+.mf-dropzone small { font-size: 0.8rem; color: #8a909c; margin-top: 6px; }
+.mf-painel-vazio { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 40px 22px; color: #5b626e; }
+.mf-painel-vazio-ico { font-size: 2.1rem; }
+.mf-painel-vazio b { font-family: var(--font-head); color: #1C2A44; font-size: 1.05rem; }
+.mf-painel-vazio p { font-size: 0.9rem; line-height: 1.55; margin: 0; max-width: 320px; }
 /* ferramentas distribuídas em colunas (masonry) — não tudo numa coluna estreita */
 .mf-controles { display: block; columns: 250px auto; column-gap: 14px; }
 .mf-controles > .mf-grupo { break-inside: avoid; margin: 0 0 14px; display: inline-block; width: 100%; }

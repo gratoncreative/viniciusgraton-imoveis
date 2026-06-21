@@ -313,6 +313,7 @@ export default function MelhorarFotos() {
   const redesenharRef = useRef(null)
   const inputFotosRef = useRef(null)
   const [modoLimpar, setModoLimpar] = useState(false)
+  const [arrastando, setArrastando] = useState(false)
   const fotosRef = useRef(fotos); fotosRef.current = fotos
 
   // Vitrine.. ferramentas do estúdio, exibidas já na chegada (antes do upload).
@@ -329,8 +330,8 @@ export default function MelhorarFotos() {
   const navigate = useNavigate()
   const abrirCom = (abaAlvo) => { setAba(abaAlvo); inputFotosRef.current?.click() }
 
-  const subir = (e) => {
-    const arr = [...(e.target.files || [])]; e.target.value = ''
+  const processarArquivos = (fileList) => {
+    const arr = [...(fileList || [])]
     arr.forEach((file) => {
       if (!/^image\//.test(file.type)) return
       const fr = new FileReader()
@@ -349,6 +350,8 @@ export default function MelhorarFotos() {
       fr.readAsDataURL(file)
     })
   }
+  const subir = (e) => { processarArquivos(e.target.files); e.target.value = '' }
+  const onDrop = (e) => { e.preventDefault(); setArrastando(false); if (e.dataTransfer.files && e.dataTransfer.files.length) processarArquivos(e.dataTransfer.files) }
 
   const foto = atual >= 0 ? fotos[atual] : null
   const setS = (patch) => setFotos((fs) => fs.map((ft, i) => i === atual ? { ...ft, s: { ...ft.s, ...patch } } : ft))
@@ -376,6 +379,9 @@ export default function MelhorarFotos() {
     const t = setTimeout(redesenhar, 60)
     return () => clearTimeout(t)
   }, [redesenhar, foto?.s, atual])
+
+  // pré-carrega o chunk da ferramenta "Remover marca" pra ela abrir instantânea
+  useEffect(() => { import('./RemoverMarca').catch(() => {}) }, [])
 
   const buscarPorCodigo = async () => {
     const cod = codigoImovel.trim()
@@ -573,21 +579,7 @@ export default function MelhorarFotos() {
         <span>📤 Selecionar fotos</span>
       </label>
 
-      {!foto && !modoLimpar && (
-        <div className="mf-vitrine">
-          <p className="mf-vitrine-tit">Tudo o que você faz aqui, com o mesmo envio:</p>
-          <div className="mf-vitrine-grid">
-            {FERRAMENTAS_VITRINE.map((f) => (
-              <button key={f.aba || f.to || 'limpar'} type="button" className="mf-vitrine-card" onClick={() => f.to ? navigate(f.to) : f.limpar ? setModoLimpar(true) : abrirCom(f.aba)}>
-                <span className="mf-vitrine-ico" aria-hidden="true">{f.ico}</span>
-                <b>{f.nome}</b>
-                <small>{f.desc}</small>
-              </button>
-            ))}
-          </div>
-          <p className="mf-vitrine-cta">Envie suas fotos uma vez — todas as ferramentas acima trabalham com o mesmo envio, em abas, na mesma tela.</p>
-        </div>
-      )}
+      {/* vitrine removida — a página abre direto na bancada (editor pronto) */}
 
       {modoLimpar && (
         <div className="mf-limpar">
@@ -598,33 +590,46 @@ export default function MelhorarFotos() {
         </div>
       )}
 
-      {foto && !modoLimpar && (
+      {!modoLimpar && (
         <div className="mf-editor">
-          <div className="mf-edit">
-            {/* RAIL: miniaturas sempre visíveis (rola sozinho, cabe até 30 fotos) */}
-            <div className="mf-tiras" role="listbox" aria-label="Suas fotos" data-lenis-prevent>
-              {fotos.map((ft, i) => (
-                <button key={i} className={`mf-tira ${i === atual ? 'on' : ''}`} onClick={() => setAtual(i)} title={ft.name}>
-                  <img src={ft.img.src} alt={ft.name} />
-                  <span className="mf-tira-n">{i + 1}</span>
-                  <span className="mf-tira-x" onClick={(e) => { e.stopPropagation(); remover(i) }}>×</span>
-                </button>
-              ))}
-            </div>
-            {/* COLUNA CENTRO: preview */}
+          <div className={`mf-edit ${foto ? '' : 'mf-edit--vazio'}`}>
+            {/* RAIL: miniaturas (aparece quando há fotos) */}
+            {foto && (
+              <div className="mf-tiras" role="listbox" aria-label="Suas fotos" data-lenis-prevent>
+                {fotos.map((ft, i) => (
+                  <button key={i} className={`mf-tira ${i === atual ? 'on' : ''}`} onClick={() => setAtual(i)} title={ft.name}>
+                    <img src={ft.img.src} alt={ft.name} />
+                    <span className="mf-tira-n">{i + 1}</span>
+                    <span className="mf-tira-x" onClick={(e) => { e.stopPropagation(); remover(i) }}>×</span>
+                  </button>
+                ))}
+              </div>
+            )}
+            {/* COLUNA CENTRO: foto carregada ou área de arrastar */}
             <div className="mf-preview">
-              <div className="mf-canvas-wrap">
-                <canvas ref={previewRef} className="mf-canvas" />
-                {grade && !verOriginal && (
-                  <div className="mf-grade" aria-hidden="true"><span /><span /><span /><span /></div>
-                )}
-              </div>
-              <div className="mf-preview-acoes">
-                <button className="admin-btn" onMouseDown={() => setVerOriginal(true)} onMouseUp={() => setVerOriginal(false)} onMouseLeave={() => setVerOriginal(false)} onTouchStart={() => setVerOriginal(true)} onTouchEnd={() => setVerOriginal(false)}>
-                  👁 Segurar p/ ver original
-                </button>
-                <label className="mf-check"><input type="checkbox" checked={grade} onChange={(e) => setGrade(e.target.checked)} /> Grade de nível</label>
-              </div>
+              {foto ? (
+                <>
+                  <div className="mf-canvas-wrap">
+                    <canvas ref={previewRef} className="mf-canvas" />
+                    {grade && !verOriginal && (
+                      <div className="mf-grade" aria-hidden="true"><span /><span /><span /><span /></div>
+                    )}
+                  </div>
+                  <div className="mf-preview-acoes">
+                    <button className="admin-btn" onMouseDown={() => setVerOriginal(true)} onMouseUp={() => setVerOriginal(false)} onMouseLeave={() => setVerOriginal(false)} onTouchStart={() => setVerOriginal(true)} onTouchEnd={() => setVerOriginal(false)}>
+                      👁 Segurar p/ ver original
+                    </button>
+                    <label className="mf-check"><input type="checkbox" checked={grade} onChange={(e) => setGrade(e.target.checked)} /> Grade de nível</label>
+                  </div>
+                </>
+              ) : (
+                <div className={`mf-dropzone ${arrastando ? 'on' : ''}`} onClick={() => inputFotosRef.current?.click()} onDragOver={(e) => { e.preventDefault(); setArrastando(true) }} onDragLeave={() => setArrastando(false)} onDrop={onDrop}>
+                  <svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" /></svg>
+                  <b>Arraste as fotos do imóvel aqui</b>
+                  <span>ou clique para selecionar — quantas quiser, em lote</span>
+                  <small>🔒 Tudo acontece no seu navegador. As fotos não saem do seu computador.</small>
+                </div>
+              )}
             </div>
 
             {/* COLUNA DIREITA: painel em abas */}
@@ -634,10 +639,18 @@ export default function MelhorarFotos() {
                   <button key={id} className={`mf-aba ${aba === id ? 'on' : ''}`} onClick={() => setAba(id)}>{nome}</button>
                 ))}
                 <button className="mf-aba" onClick={() => setModoLimpar(true)}>🧽 Remover marca</button>
+                <button className="mf-aba" onClick={() => navigate('/ferramentas/editar-foto')}>🛋️ Remover objeto</button>
               </div>
 
               <div className="mf-aba-conteudo">
-                {aba === 'ajustes' && (
+                {!foto && (
+                  <div className="mf-painel-vazio">
+                    <span className="mf-painel-vazio-ico" aria-hidden="true">🛠️</span>
+                    <b>Ferramentas prontas</b>
+                    <p>Ajustes, formato (deitar / em pé), IA, marca d'água, exportação e vídeo — tudo já carregado. Solte suas fotos pra começar a operar.</p>
+                  </div>
+                )}
+                {foto && aba === 'ajustes' && (
                   <>
                     <div className="mf-grupo mf-grupo--ia">
                       <div className="mf-grupo-tit">🪄 Melhoria automática</div>
@@ -702,7 +715,7 @@ export default function MelhorarFotos() {
                   </>
                 )}
 
-                {aba === 'ia' && (
+                {foto && aba === 'ia' && (
                   <div className="mf-grupo mf-grupo--ia">
                     <div className="mf-grupo-tit">🤖 Super-resolução com IA <span className="mf-beta">Beta</span></div>
                     <p className="mf-nota" style={{ marginTop: 0 }}>Pra fotos de baixa resolução. Uma IA open-source recompõe o detalhe (não é só ampliar). Roda no seu navegador — a 1ª vez baixa o modelo.</p>
@@ -713,7 +726,7 @@ export default function MelhorarFotos() {
                   </div>
                 )}
 
-                {aba === 'marca' && (
+                {foto && aba === 'marca' && (
                   <div className="mf-grupo">
                     <div className="mf-grupo-tit">💧 Marca d'água</div>
                     <label className="mf-check"><input type="checkbox" checked={wm.on} onChange={(e) => setWm({ ...wm, on: e.target.checked })} /> Inserir marca d'água nas fotos</label>
@@ -770,7 +783,7 @@ export default function MelhorarFotos() {
                   </div>
                 )}
 
-                {aba === 'export' && (
+                {foto && aba === 'export' && (
                   <div className="mf-grupo">
                     <div className="mf-grupo-tit">📤 Exportação</div>
                     <div className="mf-campo">
@@ -793,7 +806,7 @@ export default function MelhorarFotos() {
                   </div>
                 )}
 
-                {aba === 'video' && (
+                {foto && aba === 'video' && (
                   <div className="mf-grupo">
                     <div className="mf-grupo-tit">🎬 Vídeo de apresentação</div>
                     <div className="mf-campo">
@@ -838,6 +851,7 @@ export default function MelhorarFotos() {
             </div>
           </div>
 
+          {foto && <>
           {/* GUIA SEO DE NOME */}
           <div className="mf-seo-panel">
             <div className="mf-seo-panel-corpo">
@@ -911,6 +925,7 @@ export default function MelhorarFotos() {
             <button className="admin-btn" onClick={baixarUma} disabled={baixando}>{baixando === 'uma' ? 'Gerando…' : '⬇ Baixar esta'}</button>
             <button className="btn btn-gold" onClick={baixarTodas} disabled={baixando}>{baixando === 'todas' ? 'Baixando…' : `⬇ Baixar todas (${fotos.length})`}</button>
           </div>
+          </>}
         </div>
       )}
     </div>
