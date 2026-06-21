@@ -3541,9 +3541,10 @@ html[data-theme="dark"] .nav:not(.scrolled) .nav-links a.nav-destaque { color: #
 .mf-tira img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .mf-tira-n { position: absolute; bottom: 2px; left: 3px; font-size: 0.62rem; font-weight: 700; color: #fff; background: rgba(33,43,61,0.7); border-radius: 5px; padding: 0 5px; line-height: 1.5; }
 .mf-tira-x { position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; border-radius: 50%; background: rgba(33, 43, 61,0.6); color: #fff; font-size: 13px; line-height: 18px; text-align: center; }
-/* 3 colunas: rail de fotos · preview · painel — cabe na tela, sem rolar a página */
+/* 3 colunas: rail de fotos · preview · painel. O painel flui em altura total (todas as
+   ferramentas 100% visíveis); a página rola normalmente. Foto e miniaturas ficam fixas. */
 .mf-edit { display: grid; grid-template-columns: 104px minmax(0, 1fr) minmax(380px, 600px); gap: 20px; align-items: start; }
-@media (min-width: 1025px) { .mf-preview { position: sticky; top: 84px; } .mf-painel { position: sticky; top: 84px; max-height: calc(100vh - 104px); overflow-y: auto; } }
+@media (min-width: 1025px) { .mf-preview { position: sticky; top: 84px; } }
 @media (max-width: 1024px) { .mf-edit { grid-template-columns: 96px minmax(0, 1fr); } .mf-painel { grid-column: 1 / -1; } }
 @media (max-width: 640px) { .mf-edit { grid-template-columns: 1fr; } .mf-tiras { flex-direction: row; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; max-height: none; position: static; } .mf-tira { width: 84px; flex: none; } .mf-preview { position: static; } }
 /* ferramentas distribuídas em colunas (masonry) — não tudo numa coluna estreita */
