@@ -200,9 +200,11 @@ const CONDOMINIOS = [
 ]
 
 function urlTag({ loc, changefreq, priority, lastmod }) {
+  // barra final = forma que o servidor entrega (evita o hop 308 /x -> /x/)
+  const path = loc === '/' ? '/' : loc.replace(/\/+$/, '') + '/'
   return [
     '  <url>',
-    `    <loc>${SITE}${loc}</loc>`,
+    `    <loc>${SITE}${path}</loc>`,
     lastmod ? `    <lastmod>${lastmod}</lastmod>` : '',
     changefreq ? `    <changefreq>${changefreq}</changefreq>` : '',
     priority ? `    <priority>${priority}</priority>` : '',

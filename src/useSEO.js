@@ -26,7 +26,8 @@ export function useSEO({ title, description, path, noindex, image }) {
     setMeta('name', 'description', description)
     setMeta('property', 'og:title', title || CONFIG.marca)
     setMeta('property', 'og:description', description)
-    const url = SITE + (path || window.location.pathname)
+    const rawPath = path || window.location.pathname
+    const url = SITE + (rawPath === '/' ? '/' : rawPath.replace(/\/+$/, '') + '/')
     setMeta('property', 'og:url', url)
     if (image) {
       // Open Graph/Twitter exigem URL absoluta — caminho relativo (/imoveis/x.jpg)

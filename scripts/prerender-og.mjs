@@ -57,6 +57,8 @@ const abs = (u) => (u && u.startsWith('http') ? u : SITE + u)
 // Imagem social TEM que ser do próprio imóvel. O CDN da Rotina usa o padrão
 // .../Imoveis/{codigo}/... — se a foto aponta para outro código (dado
 // inconsistente do feed) ou não existe, devolve null para cair no fallback.
+// barra final na URL canônica (forma que o servidor entrega — evita o hop 308 /x -> /x/)
+const slash = (u) => { const m = String(u).match(/^([^?#]*)([?#].*)?$/); return m[1].replace(/\/+$/, '') + '/' + (m[2] || '') }
 const FALLBACK_IMG = `${SITE}/casa-conceito.jpg`
 const imgDoImovel = (im) => {
   if (!im.img) return null
@@ -141,7 +143,7 @@ function render(im) {
   const titulo = `${im.tipo} ${im.bairro} · ${precoTit}${areaTit} · Uberlândia`
   const descUnica = descricaoUnica(im)
   const desc = trunc(descUnica)
-  const url = `${SITE}/imovel/${im.codigo}`
+  const url = slash(`${SITE}/imovel/${im.codigo}`)
   const ownImg = imgDoImovel(im)
   const image = ownImg ? abs(ownImg) : FALLBACK_IMG
   const ld = {
@@ -263,7 +265,7 @@ function renderBairro(b) {
   const stats = bairroStats(b)
   const titulo = `Imóveis à venda em ${b.nome}, Uberlândia`
   const desc = stats.desc
-  const url = `${SITE}/imoveis/uberlandia/${b.slug}`
+  const url = slash(`${SITE}/imoveis/uberlandia/${b.slug}`)
   const graph = [
     { '@type': 'CollectionPage', name: titulo, description: desc, url, about: { '@type': 'Place', name: `${b.nome}, Uberlândia, MG` } },
     { '@type': 'BreadcrumbList', itemListElement: [
@@ -300,7 +302,7 @@ console.log(`✓ prerender bairros: ${nb} páginas em dist/imoveis/uberlandia/{b
 function renderEmpre(c, p) {
   const titulo = `${p.nome} · ${c.nome}, ${p.bairro || 'Uberlândia'}`
   const desc = trunc(`${p.descricao || ''} Fale com o Vinícius Graton e agende uma visita ao ${p.nome}, da ${c.nome}, em Uberlândia.`)
-  const url = `${SITE}/construtoras/${c.slug}/${p.slug}`
+  const url = slash(`${SITE}/construtoras/${c.slug}/${p.slug}`)
   const image = p.capa ? abs(p.capa) : `${SITE}/vinicius-graton.jpg`
   const ld = {
     '@context': 'https://schema.org',
@@ -355,7 +357,7 @@ console.log(`✓ prerender empreendimentos: ${nemp} páginas em dist/construtora
 
 // ===== Landing dedicada do Louis (lançamento) — SEO forte p/ captação de leads =====
 function renderLouis() {
-  const url = `${SITE}/lancamentos/louis-studios-umuarama`
+  const url = slash(`${SITE}/lancamentos/louis-studios-umuarama`)
   const titulo = 'Louis Studios Umuarama — Investir ao lado da UFU e dos hospitais'
   const desc = trunc('Louis Living Experience: studios de 35 a 37 m² no Umuarama, Uberlândia — ao lado do Campus UFU, do Hospital do Câncer e do HCU. A partir de R$ 387.000, entrada de R$ 38.700, gestão Housi e locação por temporada. Renda estimada de R$ 4.000 a R$ 6.000/mês.')
   const image = `${SITE}/lancamentos/louis/og.jpg`
@@ -453,7 +455,7 @@ function blogBodySeo(post) {
 }
 
 function renderPost(post) {
-  const url = `${SITE}/blog/${post.slug}`
+  const url = slash(`${SITE}/blog/${post.slug}`)
   const titulo = `${post.titulo} | Vinícius Graton`
   const desc = trunc(post.resumo || '', 160)
   const image = post.capa ? abs(post.capa) : `${SITE}/og/blog.png`
@@ -590,7 +592,7 @@ const PAGINAS_FIXAS = [
   },
 ]
 function renderFixa(p) {
-  const url = `${SITE}/${p.rota}`
+  const url = slash(`${SITE}/${p.rota}`)
   let html = baseHtml
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(p.titulo)} | Vinícius Graton</title>`)
     .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(p.desc)}$2`)
@@ -659,7 +661,7 @@ const urlset = (list) =>
     const imgBlock = u.img
       ? `\n    <image:image>\n      <image:loc>${esc(u.img)}</image:loc>\n      <image:title>${esc(u.imgTitle)}</image:title>\n    </image:image>`
       : ''
-    return `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>${imgBlock}\n  </url>`
+    return `  <url>\n    <loc>${slash(u.loc)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>${imgBlock}\n  </url>`
   }).join('\n') +
   `\n</urlset>\n`
 writeFileSync(resolve(DIST, 'sitemap-geral.xml'), urlset(urls))
