@@ -21,6 +21,8 @@ const Regioes = lazy(() => import('./pages/Regioes'))
 const FaleComigo = lazy(() => import('./pages/FaleComigo'))
 const Ferramentas = lazy(() => import('./pages/Ferramentas'))
 const ConverterFotos = lazy(() => import('./pages/ConverterFotos'))
+const EstudioFotos = lazy(() => import('./pages/EstudioFotos'))
+const EditarFotoPage = lazy(() => import('./pages/EditarFotoPage'))
 const PdfParaJpg = lazy(() => import('./pages/PdfParaJpgPage'))
 const SimuladorFinanciamento = lazy(() => import('./pages/SimuladorFinanciamento'))
 const TranscreverPage = lazy(() => import('./pages/TranscreverPage'))
@@ -168,6 +170,8 @@ export default function App() {
               <Route path="/lancamentos/empreendimento/blow/:slug" element={<BlowEmpreendimentoDetalhe />} />
               <Route path="/ferramentas" element={<Ferramentas />} />
               <Route path="/ferramentas/converter" element={<ConverterFotos />} />
+              <Route path="/ferramentas/estudio-de-fotos" element={<EstudioFotos />} />
+              <Route path="/ferramentas/editar-foto" element={<EditarFotoPage />} />
               <Route path="/ferramentas/pdf-para-jpg" element={<PdfParaJpg />} />
               <Route path="/simulador-financiamento" element={<SimuladorFinanciamento />} />
               <Route path="/ferramentas/transcrever" element={<TranscreverPage />} />

@@ -23,6 +23,7 @@ const STATIC = [
   { loc: '/lancamentos', changefreq: 'weekly', priority: '0.8', lastmod: TODAY },
   { loc: '/lancamentos/louis-studios-umuarama', changefreq: 'weekly', priority: '0.9', lastmod: TODAY },
   { loc: '/ferramentas', changefreq: 'monthly', priority: '0.6' },
+  { loc: '/ferramentas/estudio-de-fotos', changefreq: 'monthly', priority: '0.7' },
   { loc: '/corretor', changefreq: 'monthly', priority: '0.6' },
   { loc: '/privacidade', changefreq: 'yearly', priority: '0.3' },
 ]

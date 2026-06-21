@@ -502,6 +502,14 @@ for (const post of blogTodos) {
 console.log(`✓ prerender blog: ${np2} posts (base + extra) em dist/blog/{slug}/index.html`)
 
 // páginas fixas com capa/OG própria (não a foto do Vinícius)
+const FAQ_ESTUDIO = [
+  { q: 'Como deixar uma foto de imóvel tirada em pé na horizontal?', a: "Suba a foto no estúdio, abra Ajustes e Formato e escolha 16:9 (deitado). As laterais ficam com fundo desfocado da própria foto, branco ou cortando as bordas. Dá pra aplicar em todas as fotos de uma vez." },
+  { q: 'Preciso instalar algum programa ou pagar?', a: 'Não. É grátis e roda 100% no navegador, no computador ou no celular, sem criar conta.' },
+  { q: 'As fotos são enviadas para algum servidor?', a: 'Não. Todo o processamento acontece no seu próprio aparelho — as imagens não saem dele.' },
+  { q: 'Dá para editar várias fotos de uma vez?', a: "Sim. Suba o álbum inteiro, ajuste uma foto e use Aplicar a todas para repetir o mesmo tratamento em todas, e baixe tudo de uma vez." },
+  { q: 'O que dá para fazer com as fotos do imóvel?', a: "Endireitar a inclinação, melhorar luz, cor e nitidez, converter vertical em horizontal, aplicar marca d'água e exportar em JPG, PNG ou WebP." },
+  { q: 'Serve para foto de celular, para anúncio e WhatsApp?', a: 'Sim. É feito para fotos de imóvel — deixa o anúncio mais profissional e padronizado para portais, Instagram e WhatsApp.' },
+]
 const PAGINAS_FIXAS = [
   {
     rota: 'encontrar-imovel',
@@ -560,6 +568,26 @@ const PAGINAS_FIXAS = [
       `<nav>${bairrosSeo.map((b) => `<a href="/imoveis/uberlandia/${b.slug}">${esc(b.nome)}</a>`).join(' · ')}</nav>` +
       `</main>`,
   },
+  {
+    rota: 'ferramentas/estudio-de-fotos',
+    titulo: 'Estúdio de fotos de imóvel — melhorar, endireitar e deixar na horizontal',
+    desc: "Ferramenta grátis para melhorar fotos de imóvel: endireitar, ajustar luz e cor, converter foto vertical em horizontal, marca d'água em lote e exportar em JPG, PNG ou WebP. Roda no navegador, sem enviar suas fotos.",
+    image: `${SITE}/vinicius-graton.jpg`, w: 1200, h: 900,
+    body: `<main class="pre-seo"><h1>Estúdio de fotos de imóvel</h1>` +
+      `<p>Ferramenta gratuita para melhorar as fotos do seu imóvel direto no navegador: endireitar a inclinação, ajustar luz, cor e nitidez, converter foto vertical em horizontal (16:9, 4:3 ou 1:1), aplicar marca d'água em lote e exportar em JPG, PNG ou WebP. As imagens não saem do seu aparelho.</p>` +
+      `<h2>Perguntas frequentes</h2>` +
+      FAQ_ESTUDIO.map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('') +
+      `<p><a href="/ferramentas">Ver todas as ferramentas</a> · <a href="/ferramentas/converter">Conversor de fotos</a></p>` +
+      `</main>`,
+    ld: {
+      '@context': 'https://schema.org',
+      '@graph': [
+        { '@type': 'WebApplication', '@id': `${SITE}/ferramentas/estudio-de-fotos#app`, name: 'Estúdio de fotos de imóvel', url: `${SITE}/ferramentas/estudio-de-fotos`, applicationCategory: 'MultimediaApplication', operatingSystem: 'Web', inLanguage: 'pt-BR', offers: { '@type': 'Offer', price: '0', priceCurrency: 'BRL' }, featureList: ['Endireitar e corrigir inclinação', 'Melhorar luz, cor e nitidez', 'Converter foto vertical em horizontal', "Marca d'água em lote", 'Exportar em JPG, PNG ou WebP'], provider: { '@type': 'Person', name: 'Vinícius Graton', url: SITE } },
+        { '@type': 'FAQPage', '@id': `${SITE}/ferramentas/estudio-de-fotos#faq`, mainEntity: FAQ_ESTUDIO.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+        { '@type': 'BreadcrumbList', itemListElement: [ { '@type': 'ListItem', position: 1, name: 'Início', item: `${SITE}/` }, { '@type': 'ListItem', position: 2, name: 'Ferramentas', item: `${SITE}/ferramentas` }, { '@type': 'ListItem', position: 3, name: 'Estúdio de fotos de imóvel', item: `${SITE}/ferramentas/estudio-de-fotos` } ] },
+      ],
+    },
+  },
 ]
 function renderFixa(p) {
   const url = `${SITE}/${p.rota}`
@@ -577,6 +605,7 @@ function renderFixa(p) {
     .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${esc(p.desc)}$2`)
     .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${esc(p.image)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
+  if (p.ld) html = html.replace('</head>', `<script type="application/ld+json">${JSON.stringify(p.ld)}</script>\n</head>`)
   if (p.body) html = html.replace('<div id="root"></div>', `<div id="root">${p.body}</div>`)
   return html
 }

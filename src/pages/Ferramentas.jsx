@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef, useEffect, lazy, Suspense } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import CampoMoeda from '../components/CampoMoeda'
 import { BAIRROS_IMOVEL, linkWhatsApp, estudoM2ACM } from '../data'
 import { registrarLead } from '../engajamento'
@@ -112,6 +112,7 @@ const TOOLS = [
   { id: 'comissao',      nome: 'Calculadora de comissão',   desc: 'Comissão (5%) e divisão corretor / imobiliária. Grátis.',   icon: 'coins',   sec: 'investidor' },
   { id: 'impulsionar',   nome: 'Impulsionar anúncio',       desc: 'Destaque seu imóvel por 7, 15 ou 30 dias.',    icon: 'rocket',  sec: 'pro', pro: true, to: '/impulsionar' },
   // fotos e imagens
+  { id: 'estudio',       nome: 'Estúdio de fotos de imóvel', desc: 'Endireita, clareia, deixa na horizontal e marca em lote. Grátis, no navegador.', icon: 'fileimg',    sec: 'pro', popular: true, nav: true, to: '/ferramentas/estudio-de-fotos' },
   { id: 'remover',       nome: 'Remover marca d\'água com IA', desc: 'Remove logos e marcas de fotos em lote.',   icon: 'eraser',    sec: 'pro', pro: true, toPro: true },
   { id: 'marca-agua',    nome: "Marca d'água em fotos",     desc: 'Adicione seu logo ou texto em cada foto.',     icon: 'droplet',    sec: 'pro', needsSub: true },
   { id: 'endireitar',    nome: 'Endireitar foto',           desc: 'Corrija a inclinação e a rotação de fotos.',   icon: 'rotate',  sec: 'pro', needsSub: true },
@@ -753,6 +754,7 @@ export default function Ferramentas() {
   const [lockMsg, setLockMsg] = useState(null)
   const [modalAtiva, setModalAtiva] = useState(null)
   const painelRef = useRef(null)
+  const navigate = useNavigate()
 
   useSEO({
     title: 'Ferramentas e calculadoras de imóveis — Uberlândia',
@@ -793,8 +795,9 @@ export default function Ferramentas() {
       }, 60)
       return
     }
-    // tudo abre INLINE no modal (não redireciona mais pra outra página)
+    // páginas próprias (ex.: Estúdio de fotos) navegam pra sua URL; o resto abre inline no modal
     setLockMsg(null)
+    if (tool.nav && tool.to) { navigate(tool.to); return }
     setModalAtiva(tool.id)
     setAtiva(null)
   }

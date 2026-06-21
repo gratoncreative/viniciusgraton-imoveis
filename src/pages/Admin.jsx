@@ -869,7 +869,14 @@ export default function Admin() {
 
         {aba === 'post' && <Suspense fallback={<p className="section-sub">Carregando…</p>}><PostGen /></Suspense>}
 
-        {aba === 'fotos' && <Suspense fallback={<p className="section-sub">Carregando…</p>}><MelhorarFotos /></Suspense>}
+        {aba === 'fotos' && (
+          <Suspense fallback={<p className="section-sub">Carregando…</p>}>
+            <p className="section-sub" style={{ margin: '0 0 10px' }}>
+              💡 Agora também tem página própria: <a href="/ferramentas/estudio-de-fotos" target="_blank" rel="noopener noreferrer"><b>abrir o estúdio em tela cheia</b></a> (pública, ótima pra compartilhar).
+            </p>
+            <MelhorarFotos />
+          </Suspense>
+        )}
 
         {aba === 'marca' && <Suspense fallback={<p className="section-sub">Carregando…</p>}><RemoverMarca /></Suspense>}
 
