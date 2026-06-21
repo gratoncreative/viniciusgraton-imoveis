@@ -3580,6 +3580,8 @@ html[data-theme="dark"] .nav:not(.scrolled) .nav-links a.nav-destaque { color: #
 .mf-modo-btn { flex: 1; padding: 7px 6px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; color: var(--text-mute); font-size: 0.78rem; cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
 .mf-modo-btn.on { background: var(--gold-grad); color: #FFFFFF; border-color: transparent; font-weight: 700; }
 .mf-modo-btn:hover:not(.on) { background: rgba(255,255,255,0.1); color: var(--text); border-color: var(--gold-2); }
+.mf-modo-sel--wrap { flex-wrap: wrap; }
+.mf-modo-sel--wrap .mf-modo-btn { flex: 1 1 28%; }
 .mf-filtros { display: flex; flex-wrap: wrap; gap: 7px; }
 .mf-filtro { padding: 7px 13px; border-radius: 100px; border: 1px solid var(--border); background: var(--surface); color: var(--text-soft); font-family: var(--font-head); font-weight: 600; font-size: 0.82rem; cursor: pointer; transition: border-color .15s, color .15s, background .15s; }
 .mf-filtro:hover { border-color: var(--gold-3); color: var(--gold-2); }
@@ -8829,6 +8831,7 @@ html[data-theme="claro"] .promo-imovel--card .im-tag {
 .mf .mf-aba.on { background: #1C2A44; color: #FFFFFF; }
 .mf .mf-grupo { background: #FFFFFF; border-color: #E7E2D8; box-shadow: 0 8px 22px -18px rgba(28,42,68,.35); }
 .mf .mf-grupo--ia { background: #FAF7F1; border-color: #E7E2D8; }
+.mf .mf-grupo--destaque { background: #FBF7EF; border-color: var(--gold-2); box-shadow: 0 8px 22px -16px rgba(180, 140, 60, 0.4); }
 .mf .mf-grupo-tit { color: #1C2A44; border-bottom-color: #ECE8E0; }
 .mf .mf-slider { color: #5b626e; }
 .mf .mf-slider span b { color: #212b3d; }

@@ -644,6 +644,29 @@ export default function MelhorarFotos() {
                       <p className="mf-nota" style={{ marginTop: 0 }}>Analiso a foto e aplico luz, contraste, cor, nitidez, suavização e endireitamento ideais pra ela.</p>
                       <button className="btn btn-gold" onClick={autoMelhorarTodas}>🪄 Auto-melhorar tudo</button>
                     </div>
+                    <div className="mf-grupo mf-grupo--destaque">
+                      <div className="mf-grupo-tit">📐 Formato — vertical ⇄ horizontal</div>
+                      <p className="mf-nota" style={{ marginTop: 0 }}>Pra portais/sites que só aceitam foto <b>deitada</b>: escolha o formato e a foto é reenquadrada sem distorcer. Vale só pra esta foto ou pra <b>TODAS</b> de uma vez.</p>
+                      <div className="mf-modo-sel mf-modo-sel--wrap">
+                        {[['orig', 'Original'], ['16:9', 'Deitada 16:9'], ['4:3', 'Deitada 4:3'], ['1:1', 'Quadrada 1:1'], ['9:16', 'Em pé 9:16']].map(([v, l]) => (
+                          <button key={v} type="button" className={`mf-modo-btn${((foto.s.formato && foto.s.formato.ratio) || 'orig') === v ? ' on' : ''}`} onClick={() => setS({ formato: { ...(foto.s.formato || {}), ratio: v } })}>{l}</button>
+                        ))}
+                      </div>
+                      {((foto.s.formato && foto.s.formato.ratio) || 'orig') !== 'orig' && (
+                        <>
+                          <label className="mf-nota" style={{ margin: '10px 0 4px' }}>Preencher as laterais (pra foto não distorcer):</label>
+                          <div className="mf-modo-sel mf-modo-sel--wrap">
+                            {[['blur', 'Desfoque'], ['branco', 'Branco'], ['cor', 'Marinho'], ['crop', 'Cortar (corta bordas)']].map(([v, l]) => (
+                              <button key={v} type="button" className={`mf-modo-btn${((foto.s.formato && foto.s.formato.fill) || 'blur') === v ? ' on' : ''}`} onClick={() => setS({ formato: { ...(foto.s.formato || {}), fill: v } })}>{l}</button>
+                            ))}
+                          </div>
+                          <p className="mf-nota">Desfoque = fundo borrado da própria foto (padrão de portal, fica elegante). Branco = barras brancas. Cortar preenche tudo, mas corta as bordas.</p>
+                        </>
+                      )}
+                      <div className="mf-botoes" style={{ marginTop: 8 }}>
+                        <button className="admin-btn admin-btn--mini" onClick={aplicarFormatoTodas}>✓ Aplicar este formato a TODAS</button>
+                      </div>
+                    </div>
                     <div className="mf-grupo">
                       <div className="mf-grupo-tit">Filtros (clique pra ver na hora)</div>
                       <div className="mf-filtros">
@@ -656,29 +679,6 @@ export default function MelhorarFotos() {
                       <div className="mf-botoes">
                         <button className="admin-btn admin-btn--mini" onClick={autoAngulo}>🎯 Auto-endireitar</button>
                         <button className="admin-btn admin-btn--mini" onClick={autoAnguloTodas}>🎯 Endireitar TODAS</button>
-                      </div>
-                    </div>
-                    <div className="mf-grupo">
-                      <div className="mf-grupo-tit">📐 Formato (vertical → horizontal)</div>
-                      <p className="mf-nota" style={{ marginTop: 0 }}>Deixa fotos em pé na horizontal (e vice-versa), pra padronizar o álbum. Vale individual ou em massa.</p>
-                      <div className="mf-modo-sel">
-                        {[['orig', 'Original'], ['16:9', '16:9'], ['4:3', '4:3'], ['1:1', '1:1'], ['9:16', '9:16']].map(([v, l]) => (
-                          <button key={v} type="button" className={`mf-modo-btn${((foto.s.formato && foto.s.formato.ratio) || 'orig') === v ? ' on' : ''}`} onClick={() => setS({ formato: { ...(foto.s.formato || {}), ratio: v } })}>{l}</button>
-                        ))}
-                      </div>
-                      {((foto.s.formato && foto.s.formato.ratio) || 'orig') !== 'orig' && (
-                        <>
-                          <label className="mf-nota" style={{ margin: '10px 0 4px' }}>Preencher as laterais:</label>
-                          <div className="mf-modo-sel">
-                            {[['blur', 'Desfoque'], ['branco', 'Branco'], ['cor', 'Marinho'], ['crop', 'Cortar']].map(([v, l]) => (
-                              <button key={v} type="button" className={`mf-modo-btn${((foto.s.formato && foto.s.formato.fill) || 'blur') === v ? ' on' : ''}`} onClick={() => setS({ formato: { ...(foto.s.formato || {}), fill: v } })}>{l}</button>
-                            ))}
-                          </div>
-                          <p className="mf-nota">Desfoque = fundo borrado da própria foto (padrão de portal). Cortar preenche tudo, mas corta as bordas.</p>
-                        </>
-                      )}
-                      <div className="mf-botoes" style={{ marginTop: 8 }}>
-                        <button className="admin-btn admin-btn--mini" onClick={aplicarFormatoTodas}>✓ Aplicar formato a TODAS</button>
                       </div>
                     </div>
                     <div className="mf-grupo">
