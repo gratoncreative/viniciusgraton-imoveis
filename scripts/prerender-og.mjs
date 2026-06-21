@@ -224,30 +224,58 @@ const bairrosSeo = [...new Set([...editoriais, ...imoveis.map((im) => im.bairro)
   .filter(Boolean)
   .map((nome) => ({ nome, slug: slugify(nome) }))
 
-function bairroBody(b) {
-  const doBairro = [...imoveis, ...feed].filter((im) => im.bairro && slugify(im.bairro) === b.slug).slice(0, 24)
+const _fmtC = (v) => v >= 1e6 ? `R$ ${(v / 1e6).toFixed(v % 1e6 === 0 ? 0 : 1).replace('.', ',')} mi` : v > 0 ? `R$ ${Math.round(v / 1000)} mil` : ''
+const _fmtM2 = (v) => `R$ ${Math.round(v).toLocaleString('pt-BR')}/m²`
+
+// Estatísticas reais do bairro (catálogo) → meta única, FAQ hiperlocal e FAQPage no HTML estático
+function bairroStats(b) {
+  const todos = [...imoveis, ...feed].filter((im) => im.bairro && slugify(im.bairro) === b.slug)
+  const precos = todos.filter((im) => im.preco > 0 && im.preco < 5e7).map((im) => im.preco).sort((a, z) => a - z)
+  const m2 = todos.filter((im) => im.preco > 0 && im.area > 0).map((im) => im.preco / im.area).filter((v) => v >= 1000 && v <= 30000).sort((a, z) => a - z)
+  const m2med = m2.length ? m2[Math.floor(m2.length / 2)] : 0
+  const pct = (a, p) => a.length ? a[Math.min(a.length - 1, Math.floor(a.length * p))] : 0
+  const precoLo = pct(precos, 0.1), precoHi = pct(precos, 0.9) // faixa típica (sem outliers)
+  const m2lo = pct(m2, 0.1), m2hi = pct(m2, 0.9)
+  const nApto = todos.filter((im) => /apart|kit|st[uú]dio|loft|flat|cobertura/i.test(im.tipo || '')).length
+  const nCasa = todos.filter((im) => /casa|sobrado/i.test(im.tipo || '')).length
+  const nLote = todos.filter((im) => /lote|terreno/i.test(im.tipo || '')).length
+  const faq = []
+  if (m2.length >= 3) faq.push({ q: `Quanto custa o metro quadrado no ${b.nome}?`, a: `Considerando os imóveis à venda hoje no ${b.nome}, o preço fica em torno de ${_fmtM2(m2med)} (a maioria entre ${_fmtM2(m2lo)} e ${_fmtM2(m2hi)}). É uma referência de mercado a partir dos anúncios; para avaliar um imóvel específico, fale com o Vinícius Graton.` })
+  if (precos.length) faq.push({ q: `Quanto custa um imóvel no ${b.nome}, Uberlândia?`, a: `Os imóveis à venda no ${b.nome} vão de ${_fmtC(precoLo)} a ${_fmtC(precoHi)}${todos.length >= 3 ? `, com ${todos.length} opções na curadoria agora` : ''}.` })
+  const tp = []; if (nApto) tp.push(`${nApto} ${nApto === 1 ? 'apartamento' : 'apartamentos'}`); if (nCasa) tp.push(`${nCasa} ${nCasa === 1 ? 'casa' : 'casas'}`); if (nLote) tp.push(`${nLote} ${nLote === 1 ? 'lote/terreno' : 'lotes/terrenos'}`)
+  if (tp.length) faq.push({ q: `Tem apartamento ou casa à venda no ${b.nome}?`, a: `No momento há ${tp.join(', ')} à venda no ${b.nome}. Veja todas no catálogo ou fale com o Vinícius Graton para opções que cabem no seu perfil.` })
+  const desc = `${todos.length ? `${todos.length} imóveis à venda em ${b.nome}, Uberlândia` : `Imóveis à venda em ${b.nome}, Uberlândia`}${precos.length ? ` de ${_fmtC(precoLo)} a ${_fmtC(precoHi)}` : ''}.${m2.length >= 3 ? ` Preço médio ${_fmtM2(m2med)}.` : ''} Curadoria de Vinícius Graton.`.slice(0, 158)
+  return { doBairro: todos.slice(0, 24), faq, desc }
+}
+
+function bairroBody(b, stats) {
+  const { doBairro, faq } = stats
   const outros = bairrosSeo.filter((x) => x.slug !== b.slug).slice(0, 30)
   return `<main class="pre-seo"><h1>Imóveis à venda em ${esc(b.nome)}, Uberlândia</h1>` +
     `<p>Veja imóveis à venda em ${esc(b.nome)}, Uberlândia - MG, com o atendimento pessoal do Vinícius Graton, consultor da Rotina Imobiliária.. do primeiro contato à entrega das chaves.</p>` +
     (doBairro.length ? `<ul>${doBairro.map((im) => `<li><a href="/imovel/${esc(im.codigo)}">${esc(im.tipo)} no ${esc(im.bairro)} · ${esc(formatPreco(im.preco))} (cód. ${esc(im.codigo)})</a></li>`).join('')}</ul>` : '') +
-    `<p><a href="/imoveis">Ver todos os imóveis em Uberlândia</a></p>` +
+    (faq.length ? `<section><h2>Perguntas sobre imóveis no ${esc(b.nome)}</h2>${faq.map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}</section>` : '') +
+    `<p>Ferramentas: <a href="/mercado">preço do m² por bairro em Uberlândia</a> · <a href="/ferramentas">calculadoras e estudo do m²</a> · <a href="/imoveis">todos os imóveis em Uberlândia</a></p>` +
     `<nav><h2>Imóveis em outros bairros de Uberlândia</h2>${outros.map((x) => `<a href="/imoveis/uberlandia/${x.slug}">${esc(x.nome)}</a>`).join(' · ')}</nav></main>`
 }
 
 function renderBairro(b) {
+  const stats = bairroStats(b)
   const titulo = `Imóveis à venda em ${b.nome}, Uberlândia`
-  const desc = `Casas e apartamentos à venda em ${b.nome}, Uberlândia, com Vinícius Graton, consultor credenciado da Rotina Imobiliária. Veja as opções e fale comigo.`
+  const desc = stats.desc
   const url = `${SITE}/imoveis/uberlandia/${b.slug}`
-  const ld = {
-    '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name: titulo,
-    description: desc,
-    url,
-    about: { '@type': 'Place', name: `${b.nome}, Uberlândia, MG` },
-  }
+  const graph = [
+    { '@type': 'CollectionPage', name: titulo, description: desc, url, about: { '@type': 'Place', name: `${b.nome}, Uberlândia, MG` } },
+    { '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Início', item: `${SITE}/` },
+      { '@type': 'ListItem', position: 2, name: 'Imóveis', item: `${SITE}/imoveis` },
+      { '@type': 'ListItem', position: 3, name: b.nome, item: url },
+    ] },
+  ]
+  if (stats.faq.length) graph.push({ '@type': 'FAQPage', mainEntity: stats.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) })
+  const ld = { '@context': 'https://schema.org', '@graph': graph }
   return baseHtml
-    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)} | Vinícius Graton</title>`)
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)} — preços e guia | Vinícius Graton</title>`)
     .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
     .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
     .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
@@ -256,7 +284,7 @@ function renderBairro(b) {
     .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
     .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
-    .replace('<div id="root"></div>', `<div id="root">${bairroBody(b)}</div>`)
+    .replace('<div id="root"></div>', `<div id="root">${bairroBody(b, stats)}</div>`)
 }
 
 let nb = 0

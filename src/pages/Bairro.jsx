@@ -13,10 +13,31 @@ export default function Bairro() {
   const b = getBairroSeo(slug)
   const ed = getBairroEditorial(slug)
 
+  // ── Dados REAIS do bairro (catálogo) → meta única, FAQ e schema hiperlocais ──
+  const lista = b ? imoveisDoBairro(b.nome) : []
+  const fmtC = (v) => v >= 1e6 ? `R$ ${(v / 1e6).toFixed(v % 1e6 === 0 ? 0 : 1).replace('.', ',')} mi` : v > 0 ? `R$ ${Math.round(v / 1000)} mil` : ''
+  const fmtM2 = (v) => `R$ ${Math.round(v).toLocaleString('pt-BR')}/m²`
+  const precos = lista.filter((im) => im.preco > 0 && im.preco < 5e7).map((im) => im.preco).sort((a, z) => a - z)
+  const m2 = lista.filter((im) => im.preco > 0 && im.area > 0).map((im) => im.preco / im.area).filter((v) => v >= 1000 && v <= 30000).sort((a, z) => a - z)
+  const m2med = m2.length ? m2[Math.floor(m2.length / 2)] : 0
+  const pct = (a, p) => a.length ? a[Math.min(a.length - 1, Math.floor(a.length * p))] : 0
+  const precoLo = pct(precos, 0.1), precoHi = pct(precos, 0.9) // faixa típica (sem outliers)
+  const m2lo = pct(m2, 0.1), m2hi = pct(m2, 0.9)
+  const nApto = lista.filter((im) => /apart|kit|st[uú]dio|loft|flat|cobertura/i.test(im.tipo || '')).length
+  const nCasa = lista.filter((im) => /casa|sobrado/i.test(im.tipo || '')).length
+  const nLote = lista.filter((im) => /lote|terreno/i.test(im.tipo || '')).length
+  // FAQ hiperlocal a partir de DADO real (única por bairro — não duplica entre páginas)
+  const faq = []
+  if (b && m2.length >= 3) faq.push({ q: `Quanto custa o metro quadrado no ${b.nome}?`, a: `Considerando os imóveis à venda hoje no ${b.nome}, o preço fica em torno de ${fmtM2(m2med)} (a maioria entre ${fmtM2(m2lo)} e ${fmtM2(m2hi)}). É uma referência de mercado a partir dos anúncios — para avaliar um imóvel específico, use o estudo do m² ou fale comigo.` })
+  if (b && precos.length) faq.push({ q: `Quanto custa um imóvel no ${b.nome}, Uberlândia?`, a: `Os imóveis à venda no ${b.nome} vão de ${fmtC(precoLo)} a ${fmtC(precoHi)}${lista.length >= 3 ? `, com ${lista.length} opções na curadoria agora` : ''}.` })
+  const tp = []; if (nApto) tp.push(`${nApto} ${nApto === 1 ? 'apartamento' : 'apartamentos'}`); if (nCasa) tp.push(`${nCasa} ${nCasa === 1 ? 'casa' : 'casas'}`); if (nLote) tp.push(`${nLote} ${nLote === 1 ? 'lote/terreno' : 'lotes/terrenos'}`)
+  if (b && tp.length) faq.push({ q: `Tem apartamento ou casa à venda no ${b.nome}?`, a: `No momento tenho ${tp.join(', ')} à venda no ${b.nome}. Veja todas no catálogo filtrado por bairro ou me chame no WhatsApp que eu trago opções que cabem no seu perfil.` })
+  if (b && ed && ed.perfil) faq.push({ q: `Vale a pena morar no ${b.nome}?`, a: `${ed.perfil}${ed.destaques && ed.destaques.length ? ` Destaques do bairro: ${ed.destaques.slice(0, 3).join(', ')}.` : ''}` })
+
   useSEO({
-    title: b ? `Imóveis à venda em ${b.nome}, Uberlândia — guia do bairro` : 'Bairro não encontrado',
+    title: b ? `Imóveis à venda em ${b.nome}, Uberlândia — preços e guia do bairro` : 'Bairro não encontrado',
     description: b
-      ? `${ed ? ed.intro.slice(0, 150) : b.desc} Casas e apartamentos à venda em ${b.nome}, Uberlândia, com Vinícius Graton.`
+      ? `${lista.length ? `${lista.length} imóveis à venda em ${b.nome}, Uberlândia` : `Imóveis à venda em ${b.nome}, Uberlândia`}${precos.length ? ` de ${fmtC(precoLo)} a ${fmtC(precoHi)}` : ''}.${m2.length >= 3 ? ` Preço médio ${fmtM2(m2med)}.` : ''} Curadoria de Vinícius Graton.`.slice(0, 158)
       : 'Bairro não encontrado.',
     path: `/imoveis/uberlandia/${slug || ''}`,
   })
@@ -46,6 +67,10 @@ export default function Bairro() {
             { '@type': 'ListItem', position: 3, name: b.nome, item: url },
           ],
         },
+        ...(faq.length ? [{
+          '@type': 'FAQPage',
+          mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+        }] : []),
       ],
     })
     document.head.appendChild(el)
@@ -64,7 +89,6 @@ export default function Bairro() {
     )
   }
 
-  const lista = imoveisDoBairro(b.nome)
   const outros = BAIRROS_SEO.filter((x) => x.slug !== b.slug)
   const fotoInfo = getBairroFotoInfo(slug)
 
@@ -155,6 +179,25 @@ export default function Bairro() {
           <AviseMe contexto={b.nome} />
         </div>
       </section>
+
+      {faq.length > 0 && (
+        <section className="section--light bairro-faq">
+          <div className="container">
+            <h2 className="det-rel-titulo">Perguntas sobre imóveis no {b.nome}</h2>
+            <div className="bairro-faq-lista">
+              {faq.map((f, i) => (
+                <div className="bairro-faq-item" key={i}>
+                  <h3 className="bairro-faq-q">{f.q}</h3>
+                  <p className="bairro-faq-a">{f.a}</p>
+                </div>
+              ))}
+            </div>
+            <p className="bairro-faq-links">
+              Ferramentas: <Link to="/mercado">preço do m² por bairro em Uberlândia</Link> · <Link to="/ferramentas">calculadoras e estudo do m²</Link> · <Link to={`/imoveis?bairro=${encodeURIComponent(b.nome)}`}>ver imóveis no {b.nome}</Link>
+            </p>
+          </div>
+        </section>
+      )}
 
       <section className="construtora-outras">
         <div className="container">

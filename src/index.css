@@ -9322,3 +9322,11 @@ html[data-theme="claro"] .lou-pg .lou-form-btn:hover,
 html[data-theme="claro"] .lou-pg .lou-cond-cta .btn:hover { background: #C20020 !important; border-color: transparent !important; }
 html[data-theme="claro"] .lou-pg .lou-btn-wa svg,
 html[data-theme="claro"] .lou-pg .lou-form-btn svg { color: #FFFFFF !important; }
+
+/* ── FAQ hiperlocal da página de bairro (dado real do catálogo + long-tail/AI) ── */
+.bairro-faq-lista { display: grid; gap: 14px; margin: 6px 0 20px; max-width: 880px; }
+.bairro-faq-item { background: #fff; border: 1px solid #E6E4DF; border-radius: 14px; padding: 16px 20px; box-shadow: 0 12px 30px -26px rgba(33,43,61,0.4); }
+.bairro-faq-q { font-family: var(--font-head); font-weight: 700; font-size: 1.02rem; color: #1C2A44; margin: 0 0 6px; }
+.bairro-faq-a { color: #5b606a; font-size: 0.95rem; line-height: 1.6; margin: 0; }
+.bairro-faq-links { font-size: 0.9rem; color: #6a7280; margin: 4px 0 0; }
+.bairro-faq-links a { color: #C20020; font-weight: 600; }
