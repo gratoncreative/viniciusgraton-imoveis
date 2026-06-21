@@ -6,7 +6,6 @@
   Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(), usb=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   Content-Security-Policy: default-src 'self'; img-src 'self' data: blob: https:; media-src 'self' blob: data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com; font-src 'self' https://fonts.gstatic.com data:; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' blob: https://www.googletagmanager.com https://cdn.jsdelivr.net https://accounts.google.com; worker-src 'self' blob:; connect-src 'self' blob: https://cdn.jsdelivr.net https://*.google-analytics.com https://*.googletagmanager.com https://*.analytics.google.com https://accounts.google.com https://huggingface.co https://*.huggingface.co https://*.hf.co https://cdn-lfs.huggingface.co https://*.xethub.hf.co; frame-src https://www.google.com https://maps.google.com https://www.youtube.com https://www.youtube-nocookie.com https://accounts.google.com; frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self'
-  X-Robots-Tag: noai, noimageai
 
 # HTML nunca em cache: o index sempre aponta pros chunks (com hash) da versão atual.
 # Evita "chunk velho" preso no cache do navegador depois de um deploy (tela de erro em loop).
@@ -44,17 +43,19 @@
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Catálogo de imóveis: 30 min, serve stale enquanto revalida
+# Catálogo de imóveis: 30 min, serve stale enquanto revalida. noindex: é dado bruto, não página.
 /catalogo.json
   Cache-Control: public, max-age=1800, stale-while-revalidate=3600
+  X-Robots-Tag: noindex
 
 # Preview de posts do blog: 1h, serve stale 2h (regenerado só em build)
 /blog-preview.json
   Cache-Control: public, max-age=3600, stale-while-revalidate=7200
 
-# Novidades do dia: 30 min (sync diário às 05h)
+# Novidades do dia: 30 min (sync diário às 05h). noindex: dado bruto, não página.
 /novidades.json
   Cache-Control: public, max-age=1800, stale-while-revalidate=3600
+  X-Robots-Tag: noindex
 
 # Imagens e ícones estáticos na raiz
 /*.svg

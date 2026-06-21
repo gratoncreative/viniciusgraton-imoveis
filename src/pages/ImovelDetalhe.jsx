@@ -372,7 +372,7 @@ export default function ImovelDetalhe() {
     return cand
   })()
   useSEO({
-    title: im ? `${im.tipo} ${im.bairro} · ${formatPreco(im.preco)}${im.area > 0 ? ` · ${Math.round(im.area)} m²` : ''} · Uberlândia` : 'Imóvel em Uberlândia',
+    title: im ? `${im.tipo} à venda no ${im.bairro}, Uberlândia${im.area > 0 ? ` · ${Math.round(im.area)} m²` : ''}` : 'Imóvel à venda em Uberlândia',
     description: im ? resumoImovel(im) : 'Imóvel à venda em Uberlândia-MG. Consultoria personalizada com Vinícius Graton.',
     path: `/imovel/${codigo}`,
     image: ogImg,
@@ -709,7 +709,7 @@ export default function ImovelDetalhe() {
           <aside className={`det-info det-info--claro${mounted ? ' det-mounted' : ''}`}>
             <Reveal>
               <p className="det-local"><IconPin width={15} height={15} /> {im.cidade} — {im.uf} · Cód. {im.codigo}</p>
-              <h1 className="det-titulo">{im.titulo || `${im.tipo} no ${im.bairro}`}</h1>
+              <h1 className="det-titulo">{`${im.tipo} à venda no ${im.bairro}, Uberlândia`}</h1>
               <p className="det-subtitulo">{subtituloImovel(im)}</p>
               {im.impulsionado && (
                 <Link to="/impulsionar" className="det-pub">

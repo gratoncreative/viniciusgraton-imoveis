@@ -5,7 +5,9 @@
  */
 
 const SITE = 'https://viniciusgraton.com.br'
-const TODAY = new Date().toISOString().slice(0, 10)
+// Sentinela. NÃO computar a data no escopo de módulo: no Worker da Cloudflare o
+// relógio só existe dentro do handler (com I/O) — no módulo new Date() volta 1970-01-01.
+const TODAY = '@today'
 
 const STATIC = [
   { loc: '/', changefreq: 'weekly', priority: '1.0', lastmod: TODAY },
@@ -209,14 +211,15 @@ function urlTag({ loc, changefreq, priority, lastmod }) {
 
 export async function onRequestGet({ request }) {
   const origin = new URL(request.url).origin
+  const today = new Date().toISOString().slice(0, 10) // data real só existe aqui (dentro do handler)
   const parts = []
 
-  // Páginas estáticas
-  for (const p of STATIC) parts.push(urlTag(p))
+  // Páginas estáticas (resolve a sentinela @today pela data real)
+  for (const p of STATIC) parts.push(urlTag(p.lastmod === TODAY ? { ...p, lastmod: today } : p))
 
   // Bairros
   for (const b of BAIRROS) {
-    parts.push(urlTag({ loc: `/imoveis/uberlandia/${b}`, changefreq: 'weekly', priority: '0.8', lastmod: TODAY }))
+    parts.push(urlTag({ loc: `/imoveis/uberlandia/${b}`, changefreq: 'weekly', priority: '0.8', lastmod: today }))
   }
 
   // Construtoras
@@ -248,7 +251,7 @@ export async function onRequestGet({ request }) {
             loc: `/imovel/${im.codigo}`,
             changefreq: 'weekly',
             priority: '0.8',
-            lastmod: TODAY,
+            lastmod: today,
           }))
         }
       }
