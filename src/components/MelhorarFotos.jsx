@@ -602,7 +602,7 @@ export default function MelhorarFotos() {
         <div className="mf-editor">
           <div className="mf-edit">
             {/* RAIL: miniaturas sempre visíveis (rola sozinho, cabe até 30 fotos) */}
-            <div className="mf-tiras" role="listbox" aria-label="Suas fotos">
+            <div className="mf-tiras" role="listbox" aria-label="Suas fotos" data-lenis-prevent>
               {fotos.map((ft, i) => (
                 <button key={i} className={`mf-tira ${i === atual ? 'on' : ''}`} onClick={() => setAtual(i)} title={ft.name}>
                   <img src={ft.img.src} alt={ft.name} />
