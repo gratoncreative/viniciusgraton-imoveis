@@ -12,7 +12,7 @@ const PREVIEW_MAX = 900   // resolução do preview (rápido)
 const EXPORT_MAX = 2560   // teto da resolução base na exportação
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
-const PADRAO = { angle: 0, brilho: 1.05, contraste: 1.09, satur: 1.12, nitidez: 0.6, suave: 0, realces: 0, sombras: 0, vibrar: 0, wb: true, temp: 0, vinheta: 0, escala: 1, formato: { ratio: 'orig', fill: 'blur' } }
+const PADRAO = { angle: 0, brilho: 1.05, contraste: 1.09, satur: 1.12, nitidez: 0.6, suave: 0, realces: 0, sombras: 0, vibrar: 0, wb: true, temp: 0, vinheta: 0, escala: 1, formato: { ratio: 'orig', fill: 'blur', zoom: 1, px: 0.5, py: 0.5 } }
 
 // analisa a foto (histograma) e devolve os ajustes ideais — "auto-melhorar"
 function autoConfig(img) {
@@ -234,7 +234,15 @@ function enquadrar(src, fmt) {
   const out = document.createElement('canvas'); out.width = W; out.height = H
   const ctx = out.getContext('2d'); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'
   const fill = (fmt && fmt.fill) || 'blur'
-  if (fill === 'crop') { coverDraw(ctx, src, 0, 0, W, H); return out } // preenche cortando as bordas
+  if (fill === 'crop') {
+    // preenche o quadro inteiro com a foto; zoom (≥1) e foco (px/py 0..1) escolhem a área
+    const zoom = Math.max(1, fmt.zoom || 1)
+    const escCobrir = Math.max(W / sw, H / sh) * zoom
+    const dw = sw * escCobrir, dh = sh * escCobrir
+    const px = fmt.px == null ? 0.5 : fmt.px, py = fmt.py == null ? 0.5 : fmt.py
+    ctx.drawImage(src, Math.round(-(dw - W) * px), Math.round(-(dh - H) * py), Math.round(dw), Math.round(dh))
+    return out
+  }
   if (fill === 'blur') {
     ctx.save(); ctx.filter = `blur(${Math.max(8, Math.round(Math.min(W, H) * 0.05))}px) brightness(0.86)`
     coverDraw(ctx, src, -40, -40, W + 80, H + 80); ctx.restore() // fundo: a própria foto borrada
@@ -667,13 +675,21 @@ export default function MelhorarFotos() {
                       </div>
                       {((foto.s.formato && foto.s.formato.ratio) || 'orig') !== 'orig' && (
                         <>
-                          <label className="mf-nota" style={{ margin: '10px 0 4px' }}>Preencher as laterais (pra foto não distorcer):</label>
+                          <label className="mf-nota" style={{ margin: '10px 0 4px' }}>Como preencher o quadro:</label>
                           <div className="mf-modo-sel mf-modo-sel--wrap">
-                            {[['blur', 'Desfoque'], ['branco', 'Branco'], ['cor', 'Marinho'], ['crop', 'Cortar (corta bordas)']].map(([v, l]) => (
+                            {[['blur', 'Desfoque'], ['branco', 'Branco'], ['cor', 'Marinho'], ['crop', 'Preencher (zoom)']].map(([v, l]) => (
                               <button key={v} type="button" className={`mf-modo-btn${((foto.s.formato && foto.s.formato.fill) || 'blur') === v ? ' on' : ''}`} onClick={() => setS({ formato: { ...(foto.s.formato || {}), fill: v } })}>{l}</button>
                             ))}
                           </div>
-                          <p className="mf-nota">Desfoque = fundo borrado da própria foto (padrão de portal, fica elegante). Branco = barras brancas. Cortar preenche tudo, mas corta as bordas.</p>
+                          <p className="mf-nota">Desfoque = fundo borrado da própria foto (padrão de portal). Branco/Marinho = barras lisas. <b>Preencher</b> = a foto ocupa o quadro inteiro; ajuste o zoom e a posição abaixo.</p>
+                          {((foto.s.formato && foto.s.formato.fill) || 'blur') === 'crop' && (
+                            <div style={{ marginTop: 6 }}>
+                              <Slider label="Zoom" val={foto.s.formato?.zoom ?? 1} min={1} max={3} step={0.05} on={(v) => setS({ formato: { ...(foto.s.formato || {}), zoom: v } })} fmt={(v) => v.toFixed(2) + '×'} />
+                              <Slider label="Posição horizontal" val={foto.s.formato?.px ?? 0.5} min={0} max={1} step={0.01} on={(v) => setS({ formato: { ...(foto.s.formato || {}), px: v } })} fmt={(v) => v < 0.45 ? '← esquerda' : v > 0.55 ? 'direita →' : 'centro'} />
+                              <Slider label="Posição vertical" val={foto.s.formato?.py ?? 0.5} min={0} max={1} step={0.01} on={(v) => setS({ formato: { ...(foto.s.formato || {}), py: v } })} fmt={(v) => v < 0.45 ? '↑ topo' : v > 0.55 ? 'base ↓' : 'centro'} />
+                              <p className="mf-nota">Aumente o zoom e mexa nas posições pra enquadrar exatamente a parte da foto que você quer mostrar.</p>
+                            </div>
+                          )}
                         </>
                       )}
                       <div className="mf-botoes" style={{ marginTop: 8 }}>
