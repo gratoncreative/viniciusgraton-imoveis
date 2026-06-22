@@ -320,7 +320,8 @@ export default function MelhorarFotos() {
   const wmLogoRef = useRef(null)
   const redesenharRef = useRef(null)
   const inputFotosRef = useRef(null)
-  const upscalerRef = useRef(null) // modelo de IA carregado uma vez (reaproveitado no lote)
+  const upscalerRef = useRef(null) // { up, device } — modelo de IA carregado uma vez (reaproveitado no lote)
+  const forcarWasmRef = useRef(false) // após uma falha do WebGPU, processa em CPU/wasm (mais lento, porém estável)
   const [modoLimpar, setModoLimpar] = useState(false)
   const [arrastando, setArrastando] = useState(false)
   const fotosRef = useRef(fotos); fotosRef.current = fotos
@@ -363,6 +364,7 @@ export default function MelhorarFotos() {
   const onDrop = (e) => { e.preventDefault(); setArrastando(false); if (e.dataTransfer.files && e.dataTransfer.files.length) processarArquivos(e.dataTransfer.files) }
 
   const foto = atual >= 0 ? fotos[atual] : null
+  const iaRodando = !!ia && (ia.fase === 'carregando' || ia.fase === 'processando') // bloqueia só enquanto processa; no erro destrava p/ "Tentar de novo"
   const setS = (patch) => setFotos((fs) => fs.map((ft, i) => i === atual ? { ...ft, s: { ...ft.s, ...patch } } : ft))
 
   // redesenha o preview quando muda a foto/ajustes
@@ -421,66 +423,107 @@ export default function MelhorarFotos() {
   const autoMelhorarTodas = () => setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, ...autoConfig(ft.img) } })))
 
   // ——— Super-resolução com IA (open source, no navegador) ———
-  // carrega o modelo só uma vez e reaproveita (essencial pra processar em lote)
-  const carregarUpscaler = async () => {
-    if (upscalerRef.current) return upscalerRef.current
+  // monta o pipeline para um backend específico (webgpu = rápido; wasm = estável)
+  const construirUpscaler = async (device) => {
     const tf = await import('@huggingface/transformers')
     const { pipeline, env } = tf
     env.allowLocalModels = false
     env.allowRemoteModels = true
     env.useBrowserCache = true
-    let up
-    try { up = await pipeline('image-to-image', 'Xenova/swin2SR-classical-sr-x2-64', { device: 'webgpu' }) }
-    catch { up = await pipeline('image-to-image', 'Xenova/swin2SR-classical-sr-x2-64') }
-    upscalerRef.current = up
+    // single-thread no wasm: dispensa SharedArrayBuffer/COOP-COEP (mesma escolha do RemoverMarca)
+    try { if (env.backends?.onnx?.wasm) env.backends.onnx.wasm.numThreads = 1 } catch { /* ignora */ }
+    const up = await pipeline('image-to-image', 'Xenova/swin2SR-classical-sr-x2-64', device ? { device } : {})
     return up
   }
-  // roda a IA numa imagem e devolve uma nova <img> maior e mais nítida
-  const rodarUpscale = async (up, img) => {
-    // reduz a entrada (o modelo é pesado) — o x2 da IA recompõe o detalhe
+  // carrega o modelo só uma vez e reaproveita. Tenta WebGPU; se já falhou antes (ou não monta), usa wasm.
+  const carregarUpscaler = async () => {
+    if (upscalerRef.current) return upscalerRef.current
+    let entry = null
+    if (!forcarWasmRef.current && typeof navigator !== 'undefined' && navigator.gpu) {
+      try { entry = { up: await construirUpscaler('webgpu'), device: 'webgpu' } } catch { entry = null }
+    }
+    if (!entry) entry = { up: await construirUpscaler('wasm'), device: 'wasm' }
+    upscalerRef.current = entry
+    return entry
+  }
+  // prepara a imagem de entrada (reduz — o modelo é pesado; o x2 da IA recompõe o detalhe)
+  const blobEntrada = async (img) => {
     const sc = Math.min(1, 768 / Math.max(img.width, img.height))
     const pre = document.createElement('canvas')
     pre.width = Math.round(img.width * sc); pre.height = Math.round(img.height * sc)
     pre.getContext('2d').drawImage(img, 0, 0, pre.width, pre.height)
-    const blob = await canvasParaBlob(pre, 'png')
-    const url = URL.createObjectURL(blob)
-    const out = await up(url)
-    URL.revokeObjectURL(url)
-    const canvas = out.toCanvas ? out.toCanvas() : (() => { const cc = document.createElement('canvas'); cc.width = out.width; cc.height = out.height; cc.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(out.data.length === out.width * out.height * 4 ? out.data : out.rgba().data), out.width, out.height), 0, 0); return cc })()
-    return carregarImagem(canvas.toDataURL('image/jpeg', 0.95))
+    return canvasParaBlob(pre, 'png')
   }
+  // converte a saída da IA (RawImage) numa <img>, SEMPRE via canvas real do DOM.
+  // (out.toCanvas() pode devolver um OffscreenCanvas — sem toDataURL — e quebrar.)
+  const saidaParaImg = async (out) => {
+    const img4 = out.channels === 4 ? out : (typeof out.rgba === 'function' ? out.rgba() : out)
+    const w = img4.width, h = img4.height
+    const c = document.createElement('canvas'); c.width = w; c.height = h
+    c.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(img4.data), w, h), 0, 0)
+    const blob = await canvasParaBlob(c, 'jpeg')
+    const url = URL.createObjectURL(blob)
+    const novo = await carregarImagem(url)
+    setTimeout(() => URL.revokeObjectURL(url), 8000)
+    return novo
+  }
+  // roda a IA numa imagem e devolve uma nova <img> maior e mais nítida.
+  // Se o WebGPU quebrar em RUNTIME (instância perdida), descarta-o, força wasm e tenta 1x.
+  const rodarUpscale = async (img) => {
+    const blob = await blobEntrada(img)
+    const tentar = async () => {
+      const { up } = await carregarUpscaler()
+      const url = URL.createObjectURL(blob)
+      try { return await up(url) } finally { URL.revokeObjectURL(url) }
+    }
+    let out
+    try {
+      out = await tentar()
+    } catch (e) {
+      if (upscalerRef.current?.device === 'webgpu') {
+        try { upscalerRef.current.up?.dispose?.() } catch { /* ignora */ }
+        upscalerRef.current = null
+        forcarWasmRef.current = true // resto do lote já vai direto pro wasm
+        out = await tentar() // agora em CPU/wasm
+      } else {
+        throw e
+      }
+    }
+    return saidaParaImg(out)
+  }
+  const msgErroIA = (e) => 'A IA não rodou neste navegador (' + (e?.message || e) + '). Tente de novo ou use a ampliação 2× normal — também melhora bastante.'
   const melhorarIA = async () => {
-    if (!foto || ia) return
+    if (!foto || iaRodando) return
     setIa({ fase: 'carregando', msg: 'Carregando a IA… (a 1ª vez baixa o modelo, ~alguns MB)' })
     try {
-      const up = await carregarUpscaler()
+      await carregarUpscaler()
       setIa({ fase: 'processando', msg: 'Recuperando a foto com IA… pode levar alguns segundos.' })
-      const novo = await rodarUpscale(up, foto.img)
+      const novo = await rodarUpscale(foto.img)
       setFotos((fs) => fs.map((ft, i) => i === atual ? { ...ft, img: novo, s: { ...ft.s, escala: 1 } } : ft))
       setIa({ fase: 'pronto', msg: '✓ Foto recuperada com IA! Agora ela está maior e mais nítida.' })
       setTimeout(() => setIa(null), 3000)
     } catch (e) {
-      setIa({ fase: 'erro', msg: 'A IA não rodou neste navegador (' + (e.message || e) + '). Use a ampliação 2× normal — também melhora bastante.' })
+      setIa({ fase: 'erro', msg: msgErroIA(e) })
     }
   }
   // melhora a qualidade de TODAS as fotos, uma a uma, reaproveitando o mesmo modelo
   const melhorarIATodas = async () => {
-    if (!fotos.length || ia) return
+    if (!fotos.length || iaRodando) return
     const imgs = fotos.map((f) => f.img) // imagens originais no momento do clique
     const total = imgs.length
     setIa({ fase: 'carregando', msg: `Carregando a IA… vou processar ${total} foto(s).`, pct: 0 })
     try {
-      const up = await carregarUpscaler()
+      await carregarUpscaler()
       for (let i = 0; i < total; i++) {
         setIa({ fase: 'processando', msg: `Recuperando a foto ${i + 1} de ${total} com IA…`, pct: Math.round((i / total) * 100) })
-        const novo = await rodarUpscale(up, imgs[i])
+        const novo = await rodarUpscale(imgs[i])
         setFotos((fs) => fs.map((ft, k) => k === i ? { ...ft, img: novo, s: { ...ft.s, escala: 1 } } : ft))
         await esperar(30) // deixa a interface respirar entre as fotos
       }
       setIa({ fase: 'pronto', msg: `✓ ${total} foto(s) recuperada(s) com IA! Agora estão maiores e mais nítidas.`, pct: 100 })
       setTimeout(() => setIa(null), 3500)
     } catch (e) {
-      setIa({ fase: 'erro', msg: 'A IA não rodou neste navegador (' + (e.message || e) + '). Use a ampliação 2× normal — também melhora bastante.' })
+      setIa({ fase: 'erro', msg: msgErroIA(e) })
     }
   }
 
@@ -777,11 +820,11 @@ export default function MelhorarFotos() {
                     <div className="mf-grupo-tit">🤖 Melhorar qualidade com IA <span className="mf-beta">Beta</span></div>
                     <p className="mf-nota" style={{ marginTop: 0 }}>Pra fotos de baixa resolução/qualidade. Uma IA open-source recompõe o detalhe (não é só ampliar) e deixa a foto maior e mais nítida. Roda no seu navegador — a 1ª vez baixa o modelo (~alguns MB).</p>
                     <div className="mf-botoes-col">
-                      <button className="btn btn-gold" onClick={melhorarIA} disabled={!!ia}>
-                        {ia ? (ia.fase === 'carregando' ? 'Carregando IA…' : ia.fase === 'processando' ? 'Processando…' : ia.fase === 'pronto' ? '✓ Pronto!' : 'Tentar de novo') : '✨ Melhorar esta foto'}
+                      <button className="btn btn-gold" onClick={melhorarIA} disabled={iaRodando}>
+                        {iaRodando ? (ia.fase === 'carregando' ? 'Carregando IA…' : 'Processando…') : ia?.fase === 'erro' ? '↻ Tentar de novo (esta foto)' : ia?.fase === 'pronto' ? '✓ Pronto!' : '✨ Melhorar esta foto'}
                       </button>
-                      <button className="btn btn-gold" onClick={melhorarIATodas} disabled={!!ia}>
-                        {ia ? 'Aguarde…' : `🚀 Melhorar a qualidade de TODAS (${fotos.length})`}
+                      <button className="btn btn-gold" onClick={melhorarIATodas} disabled={iaRodando}>
+                        {iaRodando ? 'Aguarde…' : ia?.fase === 'erro' ? `↻ Tentar TODAS de novo (${fotos.length})` : `🚀 Melhorar a qualidade de TODAS (${fotos.length})`}
                       </button>
                     </div>
                     {ia && typeof ia.pct === 'number' && (ia.fase === 'carregando' || ia.fase === 'processando') ? (
