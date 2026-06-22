@@ -21,13 +21,11 @@ env.useBrowserCache = true
 // single-thread no wasm: dispensa SharedArrayBuffer/COOP-COEP (mais compatível)
 try { if (env.backends?.onnx?.wasm) env.backends.onnx.wasm.numThreads = 1 } catch { /* ignora */ }
 
-// modelo por backend: no WebGPU dá pra usar o "classical" (melhor qualidade);
-// na CPU/wasm usamos o "lightweight" (~10x menos cálculo) p/ ser viável sem GPU.
-const MODELOS = {
-  webgpu: 'Xenova/swin2SR-classical-sr-x2-64',
-  wasm: 'Xenova/swin2SR-lightweight-x2-64',
-}
-const modeloDe = (device) => MODELOS[device] || MODELOS.wasm
+// Sempre o "lightweight": ~10x menos cálculo que o "classical". No WebGPU o modelo
+// classical sobrecarregava o driver até o device cair (DXGI_ERROR_DEVICE_HUNG /
+// "external Instance reference no longer exists"); o lightweight roda estável na GPU
+// e ainda é ótimo p/ recuperar foto de baixa qualidade. Na CPU usamos os pesos q8.
+const MODELO = 'Xenova/swin2SR-lightweight-x2-64'
 let upscaler = null
 let deviceAtual = null
 
@@ -42,7 +40,7 @@ async function carregar(device) {
   }
   if (device) opts.device = device
   if (device === 'wasm') opts.dtype = 'q8' // pesos quantizados (int8): bem mais rápidos na CPU
-  upscaler = await pipeline('image-to-image', modeloDe(device), opts)
+  upscaler = await pipeline('image-to-image', MODELO, opts)
   deviceAtual = device
 }
 

@@ -399,11 +399,11 @@ export default function MelhorarFotos() {
   // pré-carrega o chunk da ferramenta "Remover marca" pra ela abrir instantânea
   useEffect(() => { import('./RemoverMarca').catch(() => {}) }, [])
 
-  // se o WebGPU já falhou neste aparelho (ou nem existe), vai direto pro modo CPU
+  // GPU é o caminho padrão: só vai pra CPU quando o aparelho REALMENTE não tem WebGPU.
+  // (limpa o trava-CPU da versão antiga, pra quem ficou preso.)
   useEffect(() => {
-    let cpu = (typeof navigator !== 'undefined' && !navigator.gpu)
-    try { if (localStorage.getItem('estudio_ia_sem_webgpu') === '1') cpu = true } catch { /* ignora */ }
-    if (cpu) { forcarWasmRef.current = true; setModoCPU(true) }
+    try { localStorage.removeItem('estudio_ia_sem_webgpu') } catch { /* ignora */ }
+    if (typeof navigator !== 'undefined' && !navigator.gpu) { forcarWasmRef.current = true; setModoCPU(true) }
   }, [])
   // encerra o worker da IA ao sair da ferramenta (libera memória)
   useEffect(() => () => { try { iaWorkerRef.current?.terminate() } catch { /* ignora */ }; iaWorkerRef.current = null }, [])
@@ -492,8 +492,8 @@ export default function MelhorarFotos() {
     return novo
   }
   const dispositivoIA = () => (forcarWasmRef.current ? 'wasm' : (typeof navigator !== 'undefined' && navigator.gpu ? 'webgpu' : 'wasm'))
-  // troca permanente p/ CPU neste aparelho (o WebGPU é instável aqui)
-  const cairParaWasm = () => { matarWorker(); forcarWasmRef.current = true; setModoCPU(true); try { localStorage.setItem('estudio_ia_sem_webgpu', '1') } catch { /* ignora */ } }
+  // o WebGPU caiu nesta sessão: refaz na CPU (só nesta visita; recarregar tenta a GPU de novo)
+  const cairParaWasm = () => { matarWorker(); forcarWasmRef.current = true; setModoCPU(true) }
   // carrega o modelo (mostra o download na 1ª vez); cai p/ wasm se o WebGPU não montar
   const prepararIA = async () => {
     let device = dispositivoIA()
@@ -507,7 +507,7 @@ export default function MelhorarFotos() {
   // roda a IA numa imagem -> nova <img> maior e mais nítida. WebGPU falhou em runtime? troca p/ CPU e refaz.
   const rodarUpscale = async (img) => {
     const correr = async (dev) => {
-      const imageData = imgParaImageData(img, dev === 'wasm' ? 512 : 768) // CPU: entrada menor = mais rápido
+      const imageData = imgParaImageData(img, dev === 'wasm' ? 512 : 640) // entrada menor = menos memória de GPU (evita travar o driver) e mais rápido
       const r = await pedirWorker({ type: 'run', device: dev, width: imageData.width, height: imageData.height, data: imageData.data.buffer }, [imageData.data.buffer])
       return imageDataParaImg(new ImageData(new Uint8ClampedArray(r.data), r.width, r.height))
     }
@@ -849,7 +849,7 @@ export default function MelhorarFotos() {
                     <p className="mf-nota" style={{ marginTop: 0 }}>Pra fotos de baixa resolução/qualidade. Uma IA open-source recompõe o detalhe (não é só ampliar) e deixa a foto maior e mais nítida. Roda no seu navegador — a 1ª vez baixa o modelo (~alguns MB).</p>
                     {modoCPU && !iaRodando && (
                       <p className="mf-nota" style={{ background: 'rgba(235,1,40,0.06)', border: '1px solid rgba(235,1,40,0.25)', borderRadius: 8, padding: '8px 10px' }}>
-                        🐢 Sem aceleração por GPU neste aparelho — a IA roda em <b>modo CPU</b> (mais lento, ~30s–1min por foto). Dica: faça <b>poucas fotos por vez</b>, ou use a <b>Ampliação 2×</b> na aba Exportar (instantânea).
+                        🐢 Este navegador está sem aceleração por GPU (WebGPU) — a IA roda na <b>CPU</b> (mais lento, ~20–40s por foto). Use o Chrome/Edge atualizados pra ter GPU; ou use a <b>Ampliação 2×</b> na aba Exportar (instantânea). Recarregar a página tenta a GPU de novo.
                       </p>
                     )}
                     <div className="mf-botoes-col">
