@@ -8,10 +8,14 @@
  *     limpo, forçado em CPU/wasm — onde a inferência sempre conclui.
  *
  * Protocolo (mensagens com `id` para casar pedido/resposta):
- *   <- { type:'load', id, device }                 -> { type:'loaded', id } | { type:'error', id, message }
- *   <- { type:'run',  id, device, width, height, data:ArrayBuffer(RGBA) }
+ *   <- { type:'load', id, device, modelo, dtype }   -> { type:'loaded', id } | { type:'error', id, message }
+ *   <- { type:'run',  id, device, modelo, dtype, width, height, data:ArrayBuffer(RGBA) }
  *                                                   -> { type:'result', id, width, height, data:ArrayBuffer(RGBA) } | { type:'error', id, message }
  *   ->{ type:'progress', pct }   (download do modelo, sem id)
+ *
+ * O modelo é escolhido pela thread principal (hoje sempre o swin2SR "lightweight",
+ * leve e estável até no WebGPU). Na CPU ela manda dtype 'q8' (pesos quantizados,
+ * mais rápidos). Se a GPU cair, ela descarta este worker e cria um novo em CPU.
  */
 import { pipeline, env, RawImage } from '@huggingface/transformers'
 
@@ -21,16 +25,15 @@ env.useBrowserCache = true
 // single-thread no wasm: dispensa SharedArrayBuffer/COOP-COEP (mais compatível)
 try { if (env.backends?.onnx?.wasm) env.backends.onnx.wasm.numThreads = 1 } catch { /* ignora */ }
 
-// Sempre o "lightweight": ~10x menos cálculo que o "classical". No WebGPU o modelo
-// classical sobrecarregava o driver até o device cair (DXGI_ERROR_DEVICE_HUNG /
-// "external Instance reference no longer exists"); o lightweight roda estável na GPU
-// e ainda é ótimo p/ recuperar foto de baixa qualidade. Na CPU usamos os pesos q8.
-const MODELO = 'Xenova/swin2SR-lightweight-x2-64'
+const MODELO_PADRAO = 'Xenova/swin2SR-lightweight-x2-64'
 let upscaler = null
-let deviceAtual = null
+let chaveAtual = null
 
-async function carregar(device) {
-  if (upscaler && deviceAtual === device) return
+async function carregar(device, modelo, dtype) {
+  const m = modelo || MODELO_PADRAO
+  const chave = `${device || ''}|${m}|${dtype || ''}`
+  if (upscaler && chaveAtual === chave) return
+  upscaler = null // libera o anterior antes de montar outro
   const opts = {
     progress_callback: (p) => {
       if (p && p.status === 'progress' && p.total) {
@@ -39,21 +42,21 @@ async function carregar(device) {
     },
   }
   if (device) opts.device = device
-  if (device === 'wasm') opts.dtype = 'q8' // pesos quantizados (int8): bem mais rápidos na CPU
-  upscaler = await pipeline('image-to-image', MODELO, opts)
-  deviceAtual = device
+  if (dtype) opts.dtype = dtype
+  upscaler = await pipeline('image-to-image', m, opts)
+  chaveAtual = chave
 }
 
 self.onmessage = async (e) => {
   const msg = e.data || {}
   try {
     if (msg.type === 'load') {
-      await carregar(msg.device)
+      await carregar(msg.device, msg.modelo, msg.dtype)
       self.postMessage({ type: 'loaded', id: msg.id })
       return
     }
     if (msg.type === 'run') {
-      await carregar(msg.device)
+      await carregar(msg.device, msg.modelo, msg.dtype)
       // entrada: RGBA cru -> RawImage RGB (o modelo trabalha em RGB)
       const entrada = new RawImage(new Uint8ClampedArray(msg.data), msg.width, msg.height, 4).rgb()
       const saida = await upscaler(entrada)

@@ -287,6 +287,34 @@ const baseNome = (n) => n.replace(/\.[^.]+$/, '')
 const esperar = (ms) => new Promise((r) => setTimeout(r, ms))
 const msgVideo = (p) => p < 25 ? 'Preparando as cenas…' : p < 50 ? 'Aplicando transições suaves…' : p < 78 ? 'Caprichando no acabamento…' : 'Quase pronto, segura aí…'
 
+// Modos da IA. TODOS usam o mesmo modelo leve (lightweight x2) — rápido e estável
+// até no WebGPU. Os modelos x4 "pesados" (embed_dim 180) foram descartados: travavam
+// a GPU e levavam minutos. As variações abaixo são feitas em volta do modelo leve:
+//  - deblock: suaviza o "quadriculado" de JPEG ANTES da IA (foto de WhatsApp).
+//  - escalaExtra: amplia o resultado da IA de novo, no canvas (4× = IA 2× + 2× comum).
+const MODELO_IA = 'Xenova/swin2SR-lightweight-x2-64'
+const IA_MODOS = {
+  padrao:   { capGpu: 640, capCpu: 512, deblock: 0,   escalaExtra: 1, rotulo: 'Padrão',     sub: '2× · nítido',     desc: 'Recompõe nitidez e detalhe. Rápido e estável — bom pra quase tudo.' },
+  whatsapp: { capGpu: 640, capCpu: 512, deblock: 0.7, escalaExtra: 1, rotulo: 'WhatsApp',   sub: '2× · anti-ruído', desc: 'Suaviza o “quadriculado” de JPEG/compressão antes de recompor o detalhe. Pra foto ruim de Zap.' },
+  quatro:   { capGpu: 512, capCpu: 384, deblock: 0,   escalaExtra: 2, rotulo: 'Ampliar 4×', sub: '4× · foto pequena', desc: 'Recompõe com IA e ainda dobra o tamanho (4× no total). Pra foto muito pequena. Sai bem grande.' },
+}
+// mistura a saída da IA (canvas) com a foto original esticada (intensidade 0..1).
+// 1 = só IA; 0 = só ampliação comum. Serve pra suavizar quando a IA fica artificial.
+// Devolve uma <img> NOVA (blob NÃO revogado — vira ft.img; quem troca revoga o anterior).
+async function blendIA(iaCanvas, baseImg, forca) {
+  const f = Math.max(0, Math.min(1, forca))
+  const w = iaCanvas.width, h = iaCanvas.height
+  const c = document.createElement('canvas'); c.width = w; c.height = h
+  const ctx = c.getContext('2d'); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'
+  if (f < 0.999) { ctx.drawImage(baseImg, 0, 0, w, h); ctx.globalAlpha = f } // original por baixo + IA no alpha
+  ctx.drawImage(iaCanvas, 0, 0, w, h)
+  ctx.globalAlpha = 1
+  const blob = await canvasParaBlob(c, 'jpeg')
+  return carregarImagem(URL.createObjectURL(blob))
+}
+// revoga o blob de uma <img> antiga (data: URLs e canvas não têm o que revogar)
+function revogarImg(img) { try { const s = img?.src; if (s && s.startsWith('blob:')) URL.revokeObjectURL(s) } catch { /* ignora */ } }
+
 // fora do componente (não remontar a cada render — senão o arraste do slider trava)
 function Slider({ label, val, min, max, step, on, fmt }) {
   return (
@@ -316,6 +344,10 @@ export default function MelhorarFotos() {
   const [trilha, setTrilha] = useState(null)
   const [ia, setIa] = useState(null) // {fase, msg}
   const [modoCPU, setModoCPU] = useState(false) // sem aceleração GPU: IA roda na CPU (mais lento)
+  const [iaModo, setIaModo] = useState('padrao') // padrao | comprimida | realista
+  const [iaForca, setIaForca] = useState(1) // intensidade da IA (mistura com o original)
+  const [iaRealce, setIaRealce] = useState(false) // aplicar auto-realce (luz/cor/nitidez) após a IA
+  const reblendTimerRef = useRef(null)
   const [aba, setAba] = useState('ajustes')
   const previewRef = useRef(null)
   const wmLogoRef = useRef(null)
@@ -473,43 +505,55 @@ export default function MelhorarFotos() {
     iaPendentesRef.current.set(id, { resolve: (v) => { clearTimeout(to); resolve(v) }, reject: (e) => { clearTimeout(to); reject(e) } })
     w.postMessage({ ...msg, id }, transfer || [])
   })
-  // foto -> ImageData reduzida (o modelo é pesado; o x2 da IA recompõe o detalhe).
-  // maxLado menor na CPU = bem mais rápido.
-  const imgParaImageData = (img, maxLado = 768) => {
+  // foto -> ImageData reduzida (entrada do modelo). maxLado menor = mais rápido.
+  // deblock>0 borra de leve antes (tira o "quadriculado" de JPEG p/ a IA recompor melhor).
+  const imgParaImageData = (img, maxLado = 768, deblock = 0) => {
     const sc = Math.min(1, maxLado / Math.max(img.width, img.height))
     const w = Math.max(1, Math.round(img.width * sc)), h = Math.max(1, Math.round(img.height * sc))
     const c = document.createElement('canvas'); c.width = w; c.height = h
-    const ctx = c.getContext('2d'); ctx.imageSmoothingQuality = 'high'; ctx.drawImage(img, 0, 0, w, h)
+    const ctx = c.getContext('2d'); ctx.imageSmoothingQuality = 'high'
+    if (deblock > 0) ctx.filter = `blur(${deblock}px)`
+    ctx.drawImage(img, 0, 0, w, h)
+    ctx.filter = 'none'
     return ctx.getImageData(0, 0, w, h)
   }
-  const imageDataParaImg = async (imageData) => {
+  // amplia um canvas por um fator inteiro, em alta qualidade (pro modo 4×: IA 2× + 2× comum)
+  const ampliarCanvas = (src, fator) => {
+    if (fator <= 1) return src
+    const out = document.createElement('canvas'); out.width = src.width * fator; out.height = src.height * fator
+    const ctx = out.getContext('2d'); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'
+    ctx.drawImage(src, 0, 0, out.width, out.height)
+    return out
+  }
+  const imageDataParaCanvas = (imageData) => {
     const c = document.createElement('canvas'); c.width = imageData.width; c.height = imageData.height
     c.getContext('2d').putImageData(imageData, 0, 0)
-    const blob = await canvasParaBlob(c, 'jpeg')
-    const url = URL.createObjectURL(blob)
-    const novo = await carregarImagem(url)
-    setTimeout(() => URL.revokeObjectURL(url), 8000)
-    return novo
+    return c
   }
   const dispositivoIA = () => (forcarWasmRef.current ? 'wasm' : (typeof navigator !== 'undefined' && navigator.gpu ? 'webgpu' : 'wasm'))
   // o WebGPU caiu nesta sessão: refaz na CPU (só nesta visita; recarregar tenta a GPU de novo)
   const cairParaWasm = () => { matarWorker(); forcarWasmRef.current = true; setModoCPU(true) }
+  const cfgIA = () => IA_MODOS[iaModo] || IA_MODOS.padrao
+  const dtypeDe = (dev) => (dev === 'wasm' ? 'q8' : undefined) // CPU usa pesos q8 (rápidos); GPU usa fp32 padrão
   // carrega o modelo (mostra o download na 1ª vez); cai p/ wasm se o WebGPU não montar
   const prepararIA = async () => {
     let device = dispositivoIA()
     iaProgRef.current = (pct) => setIa((s) => (s && s.fase === 'carregando') ? { ...s, msg: `Baixando o modelo de IA… ${pct}%`, pct } : s)
+    const carregar = (dev) => pedirWorker({ type: 'load', device: dev, modelo: MODELO_IA, dtype: dtypeDe(dev) })
     try {
-      try { await pedirWorker({ type: 'load', device }) }
-      catch (e) { if (device === 'webgpu') { cairParaWasm(); device = 'wasm'; await pedirWorker({ type: 'load', device }) } else throw e }
+      try { await carregar(device) }
+      catch (e) { if (device === 'webgpu') { cairParaWasm(); device = 'wasm'; await carregar(device) } else throw e }
     } finally { iaProgRef.current = null }
     return device
   }
-  // roda a IA numa imagem -> nova <img> maior e mais nítida. WebGPU falhou em runtime? troca p/ CPU e refaz.
+  // roda a IA numa imagem -> canvas ampliado (entrada/deblock/escalaExtra do modo). WebGPU caiu? troca p/ CPU e refaz.
   const rodarUpscale = async (img) => {
+    const cfg = cfgIA()
     const correr = async (dev) => {
-      const imageData = imgParaImageData(img, dev === 'wasm' ? 512 : 640) // entrada menor = menos memória de GPU (evita travar o driver) e mais rápido
-      const r = await pedirWorker({ type: 'run', device: dev, width: imageData.width, height: imageData.height, data: imageData.data.buffer }, [imageData.data.buffer])
-      return imageDataParaImg(new ImageData(new Uint8ClampedArray(r.data), r.width, r.height))
+      const imageData = imgParaImageData(img, dev === 'wasm' ? cfg.capCpu : cfg.capGpu, cfg.deblock)
+      const r = await pedirWorker({ type: 'run', device: dev, modelo: MODELO_IA, dtype: dtypeDe(dev), width: imageData.width, height: imageData.height, data: imageData.data.buffer }, [imageData.data.buffer])
+      const ia = imageDataParaCanvas(new ImageData(new Uint8ClampedArray(r.data), r.width, r.height))
+      return ampliarCanvas(ia, cfg.escalaExtra || 1) // modo 4×: amplia 2× extra no canvas
     }
     const device = dispositivoIA()
     try {
@@ -519,16 +563,26 @@ export default function MelhorarFotos() {
       throw e
     }
   }
+  // grava o resultado da IA na foto: guarda iaCanvas/iaBase (p/ re-misturar ao vivo), aplica realce opcional.
+  // ft.img antigo é o original (data: URL) — vira iaBase; revogar só pega blob (re-IA sobre já-IA).
+  const aplicarResultadoIA = (ft, iaCanvas, base, blended) => {
+    if (ft.img !== base) revogarImg(ft.img)
+    const sBase = { ...ft.s, escala: 1 }
+    if (iaRealce) { const { angle, ...realce } = autoConfig(blended); return { ...ft, img: blended, iaCanvas, iaBase: base, s: { ...sBase, ...realce } } }
+    return { ...ft, img: blended, iaCanvas, iaBase: base, s: sBase }
+  }
   const msgErroIA = (e) => 'A IA não rodou neste navegador (' + (e?.message || e) + '). Tente de novo ou use a ampliação 2× normal — também melhora bastante.'
   const melhorarIA = async () => {
     if (!foto || iaRodando) return
-    setIa({ fase: 'carregando', msg: 'Preparando a IA… (a 1ª vez baixa o modelo, ~alguns MB)' })
+    setIa({ fase: 'carregando', msg: 'Preparando a IA… (a 1ª vez baixa o modelo)' })
     try {
       await prepararIA()
-      setIa({ fase: 'processando', msg: 'Recuperando a foto com IA… pode levar alguns segundos.' })
-      const novo = await rodarUpscale(foto.img)
-      setFotos((fs) => fs.map((ft, i) => i === atual ? { ...ft, img: novo, s: { ...ft.s, escala: 1 } } : ft))
-      setIa({ fase: 'pronto', msg: `✓ Foto recuperada com IA${forcarWasmRef.current ? ' (modo CPU)' : ''}! Agora está maior e mais nítida.` })
+      setIa({ fase: 'processando', msg: `Recuperando a foto com IA${forcarWasmRef.current ? ' (modo CPU)' : ''}… pode levar alguns segundos.` })
+      const base = foto.img
+      const iaCanvas = await rodarUpscale(base)
+      const blended = await blendIA(iaCanvas, base, iaForca)
+      setFotos((fs) => fs.map((ft, i) => i === atual ? aplicarResultadoIA(ft, iaCanvas, base, blended) : ft))
+      setIa({ fase: 'pronto', msg: `✓ Foto recuperada com IA${forcarWasmRef.current ? ' (modo CPU)' : ''}!` })
       setTimeout(() => setIa(null), 3000)
     } catch (e) {
       setIa({ fase: 'erro', msg: msgErroIA(e) })
@@ -537,22 +591,35 @@ export default function MelhorarFotos() {
   // melhora a qualidade de TODAS as fotos, uma a uma (mesmo worker/modelo reaproveitado)
   const melhorarIATodas = async () => {
     if (!fotos.length || iaRodando) return
-    const imgs = fotos.map((f) => f.img) // imagens originais no momento do clique
-    const total = imgs.length
+    const bases = fotos.map((f) => f.img) // imagens originais no momento do clique
+    const total = bases.length
     setIa({ fase: 'carregando', msg: `Preparando a IA… vou processar ${total} foto(s).`, pct: 0 })
     try {
       await prepararIA()
       for (let i = 0; i < total; i++) {
         setIa({ fase: 'processando', msg: `Recuperando a foto ${i + 1} de ${total} com IA…${forcarWasmRef.current ? ' (modo CPU)' : ''}`, pct: Math.round((i / total) * 100) })
-        const novo = await rodarUpscale(imgs[i])
-        setFotos((fs) => fs.map((ft, k) => k === i ? { ...ft, img: novo, s: { ...ft.s, escala: 1 } } : ft))
+        const base = bases[i]
+        const iaCanvas = await rodarUpscale(base)
+        const blended = await blendIA(iaCanvas, base, iaForca)
+        setFotos((fs) => fs.map((ft, k) => k === i ? aplicarResultadoIA(ft, iaCanvas, base, blended) : ft))
         await esperar(20) // deixa a interface respirar entre as fotos
       }
-      setIa({ fase: 'pronto', msg: `✓ ${total} foto(s) recuperada(s) com IA! Agora estão maiores e mais nítidas.`, pct: 100 })
+      setIa({ fase: 'pronto', msg: `✓ ${total} foto(s) recuperada(s) com IA!`, pct: 100 })
       setTimeout(() => setIa(null), 3500)
     } catch (e) {
       setIa({ fase: 'erro', msg: msgErroIA(e) })
     }
+  }
+  // intensidade ao vivo: re-mistura a foto ATUAL sem rodar o modelo de novo (debounce)
+  const ajustarForcaIA = (v) => {
+    setIaForca(v)
+    if (reblendTimerRef.current) clearTimeout(reblendTimerRef.current)
+    reblendTimerRef.current = setTimeout(async () => {
+      const ft = fotosRef.current[atual]
+      if (!ft?.iaCanvas || !ft?.iaBase) return
+      const blended = await blendIA(ft.iaCanvas, ft.iaBase, v)
+      setFotos((fs) => fs.map((f, i) => { if (i !== atual) return f; revogarImg(f.img); return { ...f, img: blended } }))
+    }, 130)
   }
 
   // gera um vídeo (slideshow) das fotos: transição suave + marca d'água Vinícius Graton
@@ -852,6 +919,18 @@ export default function MelhorarFotos() {
                         🐢 Este navegador está sem aceleração por GPU (WebGPU) — a IA roda na <b>CPU</b> (mais lento, ~20–40s por foto). Use o Chrome/Edge atualizados pra ter GPU; ou use a <b>Ampliação 2×</b> na aba Exportar (instantânea). Recarregar a página tenta a GPU de novo.
                       </p>
                     )}
+                    <div className="mf-campo" style={{ marginTop: 4 }}>
+                      <span>Modo da IA</span>
+                      <div className="mf-modo-sel mf-modo-sel--wrap">
+                        {Object.entries(IA_MODOS).map(([id, m]) => (
+                          <button key={id} type="button" className={`mf-modo-btn${iaModo === id ? ' on' : ''}`} disabled={iaRodando} onClick={() => setIaModo(id)} title={m.desc} style={{ lineHeight: 1.2 }}>
+                            {m.rotulo}<br /><small style={{ opacity: 0.65, fontSize: '0.68rem' }}>{m.sub}</small>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <p className="mf-nota" style={{ margin: '6px 0' }}>{cfgIA().desc}</p>
+                    <label className="mf-check" style={{ marginBottom: 8 }}><input type="checkbox" checked={iaRealce} disabled={iaRodando} onChange={(e) => setIaRealce(e.target.checked)} /> Aplicar realce (luz/cor/nitidez) depois da IA</label>
                     <div className="mf-botoes-col">
                       <button className="btn btn-gold" onClick={melhorarIA} disabled={iaRodando}>
                         {iaRodando ? (ia.fase === 'carregando' ? 'Carregando IA…' : 'Processando…') : ia?.fase === 'erro' ? '↻ Tentar de novo (esta foto)' : ia?.fase === 'pronto' ? '✓ Pronto!' : '✨ Melhorar esta foto'}
@@ -870,6 +949,12 @@ export default function MelhorarFotos() {
                       </div>
                     ) : (
                       ia?.msg && <p className={`mf-nota ${ia.fase === 'erro' ? 'mf-erro' : ''}`}>{ia.msg}</p>
+                    )}
+                    {foto.iaCanvas && !iaRodando && (
+                      <div style={{ marginTop: 10, borderTop: '1px solid var(--border)', paddingTop: 8 }}>
+                        <Slider label="Intensidade da IA" val={iaForca} min={0} max={1} step={0.05} on={ajustarForcaIA} fmt={(v) => v >= 0.999 ? '100% (só IA)' : v <= 0.001 ? '0% (sem IA)' : Math.round(v * 100) + '%'} />
+                        <p className="mf-nota" style={{ marginTop: 2 }}>Mistura o resultado da IA com a foto original — baixe se ficar “artificial” demais. Atualiza esta foto na hora.</p>
+                      </div>
                     )}
                   </div>
                 )}
