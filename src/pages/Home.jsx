@@ -5,6 +5,7 @@ import { CONFIG } from '../data'
 
 const Destaque = lazy(() => import('../components/Destaque'))
 const BlogHome = lazy(() => import('../components/BlogHome'))
+const QuickSimHome = lazy(() => import('../components/QuickSimHome'))
 
 export default function Home() {
   useSEO({
@@ -70,6 +71,7 @@ export default function Home() {
       <Hero />
       <Suspense fallback={null}>
         <Destaque limite={8} />
+        <QuickSimHome />
         <BlogHome />
       </Suspense>
     </main>

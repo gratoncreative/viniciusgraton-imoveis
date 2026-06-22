@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
 import CampoMoeda from '../components/CampoMoeda'
 import { IconWhats, IconArrow } from '../components/icons'
-import { BANCOS, PARAMS, simular } from '../financiamento'
+import { BANCOS, PARAMS, simular, prazoMaxPorIdade } from '../financiamento'
 
 const WA = '5534991570494'
 const brl = (n) => (isFinite(n) ? n : 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })
@@ -96,6 +96,9 @@ export default function SimuladorFinanciamento() {
   const [sistema, setSistema] = useState('SAC')
   const [idade, setIdade] = useState(35)
   const [renda, setRenda] = useState(10000)
+  const [modo, setModo] = useState('imovel')
+  const [entradaReais, setEntradaReais] = useState(100000)
+  const [financiarReais, setFinanciarReais] = useState(400000)
   // avançados
   const [itbiPct, setItbiPct] = useState('2')
   const [registroPct, setRegistroPct] = useState('1.1')
@@ -106,11 +109,17 @@ export default function SimuladorFinanciamento() {
 
   const banco = BANCOS.find((b) => b.id === bancoId) || BANCOS[0]
   const jurosAnual = (bancoId === 'custom' ? (parseFloat(String(taxaCustom).replace(',', '.')) || 0) : banco.taxa * 100) / 100
-  const prazoMeses = Math.min(PARAMS.prazoMaxMeses, Math.max(1, Math.round((Number(anos) || 0) * 12)))
-  const entradaValor = Math.round(valor * (entradaPct / 100))
+  // valor do imóvel e entrada conforme o modo escolhido (sei o valor do imóvel × tenho entrada + financiar)
+  const valorImovel = modo === 'entrada' ? (Number(entradaReais) || 0) + (Number(financiarReais) || 0) : valor
+  const entradaValor = modo === 'entrada' ? (Number(entradaReais) || 0) : Math.round(valor * (entradaPct / 100))
+  const entradaPctEff = valorImovel > 0 ? (entradaValor / valorImovel) * 100 : 0
+  // regra idade + prazo ≤ 80 anos e 6 meses limita o prazo máximo
+  const prazoMaxIdade = prazoMaxPorIdade(idade)
+  const prazoMeses = Math.min(PARAMS.prazoMaxMeses, prazoMaxIdade, Math.max(1, Math.round((Number(anos) || 0) * 12)))
+  const prazoLimitadoPorIdade = (Number(anos) || 0) * 12 > prazoMaxIdade
 
   const params = {
-    valorImovel: valor,
+    valorImovel,
     entradaValor,
     jurosAnual,
     trAnual: (parseFloat(String(trAa).replace(',', '.')) || 0) / 100,
@@ -133,10 +142,10 @@ export default function SimuladorFinanciamento() {
   const [verTabela, setVerTabela] = useState(false)
 
   const cotaMax = banco.cota * 100
-  const entradaAbaixoMin = entradaPct < (100 - cotaMax)
+  const entradaAbaixoMin = entradaPctEff < (100 - cotaMax)
 
   const waMsg = r
-    ? `Olá Vinícius, fiz uma simulação no site. Imóvel de ${brl(valor)}, entrada de ${brl(entradaValor)} e parcela aproximada de ${brl2(r.parcelaRef)} (${sistema}). Gostaria de ver imóveis nessa faixa.`
+    ? `Olá Vinícius, fiz uma simulação no site. Imóvel de ${brl(valorImovel)}, entrada de ${brl(entradaValor)} e parcela aproximada de ${brl2(r.parcelaRef)} (${sistema}). Gostaria de ver imóveis nessa faixa.`
     : 'Olá Vinícius, gostaria de simular um financiamento e ver imóveis.'
 
   return (
@@ -163,23 +172,40 @@ export default function SimuladorFinanciamento() {
         <div className="simf-grid">
           {/* ── COLUNA DE ENTRADAS ── */}
           <section className="simf-form" aria-label="Dados da simulação">
-            <CampoMoeda label="Valor do imóvel" valor={valor} onChange={setValor} />
-            <input type="range" min="100000" max={PARAMS.tetoSFH} step="10000" value={Math.min(valor, PARAMS.tetoSFH)} onChange={(e) => setValor(+e.target.value)} className="simf-range" aria-label="Valor do imóvel" />
-
-            <div className="simf-dupla">
-              <Campo label="Entrada" sufixo="%" valor={entradaPct} onChange={(v) => setEntradaPct(Math.min(90, Math.max(10, Number(v) || 0)))} step="1" min="10" max="90" />
-              <label className="calc-campo">
-                <span>Entrada em reais</span>
-                <div className="calc-input">
-                  <input type="text" inputMode="numeric" value={brl(entradaValor)} onChange={(e) => {
-                    const num = Number(String(e.target.value).replace(/\D/g, '')) || 0
-                    setEntradaPct(valor > 0 ? Math.min(90, Math.max(10, Math.round((num / valor) * 100))) : 20)
-                  }} />
-                </div>
-              </label>
+            <div className="simf-toggle simf-toggle--modo" role="tablist" aria-label="Como você quer simular">
+              {[['imovel', 'Sei o valor do imóvel'], ['entrada', 'Tenho entrada + quanto financiar']].map(([m, lab]) => (
+                <button key={m} role="tab" aria-selected={modo === m} className={`simf-toggle-btn${modo === m ? ' simf-toggle-btn--on' : ''}`} onClick={() => setModo(m)}>{lab}</button>
+              ))}
             </div>
-            <input type="range" min="10" max="90" step="1" value={entradaPct} onChange={(e) => setEntradaPct(+e.target.value)} className="simf-range" aria-label="Percentual de entrada" />
-            {entradaAbaixoMin && <p className="simf-aviso">Para o {banco.nome}, a entrada mínima costuma ser {Math.round(100 - cotaMax)}% (cota de até {Math.round(cotaMax)}%). 20% é o mínimo usual no SBPE.</p>}
+
+            {modo === 'imovel' ? (
+              <>
+                <CampoMoeda label="Valor do imóvel" valor={valor} onChange={setValor} />
+                <input type="range" min="100000" max={PARAMS.tetoSFH} step="10000" value={Math.min(valor, PARAMS.tetoSFH)} onChange={(e) => setValor(+e.target.value)} className="simf-range" aria-label="Valor do imóvel" />
+                <div className="simf-dupla">
+                  <Campo label="Entrada" sufixo="%" valor={entradaPct} onChange={(v) => setEntradaPct(Math.min(90, Math.max(10, Number(v) || 0)))} step="1" min="10" max="90" />
+                  <label className="calc-campo">
+                    <span>Entrada em reais</span>
+                    <div className="calc-input">
+                      <input type="text" inputMode="numeric" value={brl(entradaValor)} onChange={(e) => {
+                        const num = Number(String(e.target.value).replace(/\D/g, '')) || 0
+                        setEntradaPct(valor > 0 ? Math.min(90, Math.max(10, Math.round((num / valor) * 100))) : 20)
+                      }} />
+                    </div>
+                  </label>
+                </div>
+                <input type="range" min="10" max="90" step="1" value={entradaPct} onChange={(e) => setEntradaPct(+e.target.value)} className="simf-range" aria-label="Percentual de entrada" />
+              </>
+            ) : (
+              <>
+                <div className="simf-dupla">
+                  <CampoMoeda label="Entrada que você tem" valor={entradaReais} onChange={setEntradaReais} />
+                  <CampoMoeda label="Quanto quer financiar" valor={financiarReais} onChange={setFinanciarReais} />
+                </div>
+                <p className="calc-nota" style={{ margin: '2px 0 0' }}>Dá um imóvel de <b>{brl(valorImovel)}</b> — entrada de {pct(entradaPctEff, 0)} do valor.</p>
+              </>
+            )}
+            {entradaAbaixoMin && <p className="simf-aviso">Para o {banco.nome}, a entrada mínima costuma ser {Math.round(100 - cotaMax)}% do imóvel (cota de até {Math.round(cotaMax)}%). Considere aumentar a entrada.</p>}
 
             <label className="calc-campo">
               <span>Banco / linha de crédito</span>
@@ -201,6 +227,7 @@ export default function SimuladorFinanciamento() {
                 </div>
               </label>
             </div>
+            {prazoLimitadoPorIdade && <p className="simf-aviso">Pela regra idade + prazo (teto de 80 anos e 6 meses), com {idade} anos o prazo máximo fica em ~{Math.floor(prazoMaxIdade / 12)} anos ({prazoMaxIdade} meses) — já apliquei esse limite.</p>}
 
             <div className="simf-toggle" role="tablist" aria-label="Sistema de amortização">
               {['SAC', 'Price'].map((s) => (
@@ -242,6 +269,9 @@ export default function SimuladorFinanciamento() {
               <div><span>Valor financiado</span><b>{brl(r?.pv || 0)}</b></div>
               <div><span>Taxa mensal efetiva</span><b>{pct((r?.i || 0) * 100, 4)}</b></div>
             </div>
+            {r?.cetAnual != null && (
+              <p className="simf-renda-min simf-cet">CET — Custo Efetivo Total.. <b>{pct(r.cetAnual * 100)} a.a.</b> <span>(juros + seguros MIP/DFI + taxas — é o custo real do crédito, acima da taxa de juros)</span></p>
+            )}
 
             <MedidorRenda comprometimento={r?.comprometimento} />
             {r && (
@@ -251,8 +281,8 @@ export default function SimuladorFinanciamento() {
             <div className="simf-bloco">
               <h3 className="simf-bloco-tit">Resumo do financiamento</h3>
               <ul className="simf-lista">
-                <li><span>Valor do imóvel</span><b>{brl(valor)}</b></li>
-                <li><span>Entrada ({pct(entradaPct, 0)})</span><b>{brl(entradaValor)}</b></li>
+                <li><span>Valor do imóvel</span><b>{brl(valorImovel)}</b></li>
+                <li><span>Entrada ({pct(entradaPctEff, 0)})</span><b>{brl(entradaValor)}</b></li>
                 <li><span>Valor financiado</span><b>{brl(r?.pv || 0)}</b></li>
                 <li><span>Total de juros</span><b>{brl(r?.totJuros || 0)}</b></li>
                 <li><span>Seguros + taxas</span><b>{brl((r?.totSeguros || 0) + (r?.totAdm || 0))}</b></li>

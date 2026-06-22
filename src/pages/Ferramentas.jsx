@@ -90,7 +90,7 @@ const SECOES = [
 
 const TOOLS = [
   // comprador
-  { id: 'financiamento', nome: 'Simulador de financiamento', desc: 'Parcela, juros, renda e custos · SAC e Price.', icon: 'bank',    sec: 'comprador',     popular: true, to: '/simulador-financiamento' },
+  { id: 'financiamento', nome: 'Simulador de financiamento', desc: 'Parcela, juros, CET, renda e custos · SAC e Price.', icon: 'bank',    sec: 'comprador',     popular: true, nav: true, to: '/simulador-financiamento' },
   { id: 'capacidade',    nome: 'Quanto consigo financiar?',  desc: 'O imóvel que cabe na sua renda.',              icon: 'chart',   sec: 'comprador',     popular: true },
   { id: 'renda',         nome: 'Renda necessária',           desc: 'Qual renda o banco exige para esse imóvel.',   icon: 'wallet',  sec: 'comprador'  },
   { id: 'custos',        nome: 'ITBI e cartório',            desc: 'Quanto reservar além do preço em Uberlândia.', icon: 'receipt', sec: 'comprador'  },

@@ -8310,6 +8310,27 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .simf-renda-min { font-size: 0.82rem; color: rgba(241,237,228,0.6); margin: -4px 2px 0; }
 .simf-renda-min b { color: var(--gold-1); }
 .simf-renda-min span { font-size: 0.7rem; color: rgba(241,237,228,0.35); }
+/* página do simulador: toggle de modo + linha do CET */
+.simf-toggle--modo { margin-bottom: 10px; }
+.simf-toggle--modo .simf-toggle-btn { align-items: center; text-align: center; font-size: 0.82rem; }
+.simf-cet b { font-size: 1.02rem; }
+/* Simulador em destaque na home (quick-sim) */
+.quicksim-card { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(18px, 3vw, 40px); align-items: center; background: #fff; border: 1px solid var(--border); border-radius: 20px; padding: clamp(22px, 3vw, 38px); box-shadow: 0 26px 60px -38px rgba(28, 42, 68, 0.45); }
+.quicksim-campos { display: flex; flex-direction: column; gap: 22px; }
+.quicksim-campo > span { display: flex; justify-content: space-between; gap: 10px; font-size: 0.9rem; color: #5b626e; margin-bottom: 8px; }
+.quicksim-campo > span b { color: #1C2A44; font-weight: 700; }
+.quicksim-campo input[type="range"] { width: 100%; }
+.quicksim-result { background: #FBF7EF; border: 1px solid var(--border); border-radius: 16px; padding: clamp(20px, 2.5vw, 30px); text-align: center; }
+.quicksim-label { font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.04em; color: #8a909c; }
+.quicksim-parcela { display: block; font-family: var(--font-head); font-size: clamp(2rem, 4.5vw, 2.7rem); font-weight: 800; color: #1C2A44; margin: 6px 0 16px; }
+.quicksim-mini { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; border-top: 1px solid var(--border); padding-top: 16px; }
+.quicksim-mini span { display: block; font-size: 0.66rem; color: #8a909c; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 2px; }
+.quicksim-mini b { font-size: 0.95rem; color: #1C2A44; }
+.quicksim-ctas { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+.quicksim-wa { background: #EB0128; color: #fff; }
+.quicksim-wa:hover { filter: brightness(1.06); }
+.quicksim-nota { text-align: center; font-size: 0.78rem; color: #8a909c; margin: 16px auto 0; max-width: 640px; }
+@media (max-width: 760px) { .quicksim-card { grid-template-columns: 1fr; } }
 
 .simf-bloco { background: rgba(28,42,68,0.55); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 16px 18px; }
 .simf-bloco-tit { font-family: var(--font-head); font-size: 0.95rem; font-weight: 700; color: #e0e4ee; margin: 0 0 12px; }

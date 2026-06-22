@@ -53,7 +53,37 @@ export const PARAMS = {
   avaliacao: 1000,       // taxa de avaliação do banco
 }
 
-// Simulação completa. Retorna parcela (com seguros), totais, custos e renda.
+// Prazo máximo pela regra idade + prazo ≤ 80 anos e 6 meses (CNSP 447/2022, art. 13).
+export const prazoMaxPorIdade = (idade) =>
+  Math.max(12, Math.min(PARAMS.prazoMaxMeses, Math.round((80.5 - (Number(idade) || 35)) * 12)))
+
+// TIR (taxa interna de retorno) mensal de um fluxo de caixa — base do CET.
+// fluxos[0] = valor recebido hoje (+); fluxos[1..n] = parcelas pagas (−).
+// Newton-Raphson com fallback de bisseção. Retorna a taxa mensal (decimal).
+export function tir(fluxos, chute = 0.01) {
+  const vpl = (r) => fluxos.reduce((s, f, t) => s + f / Math.pow(1 + r, t), 0)
+  const dvpl = (r) => fluxos.reduce((s, f, t) => (t === 0 ? s : s - (t * f) / Math.pow(1 + r, t + 1)), 0)
+  let r = chute
+  for (let k = 0; k < 80; k++) {
+    const v = vpl(r), d = dvpl(r)
+    if (!isFinite(v) || !isFinite(d) || d === 0) break
+    const nr = r - v / d
+    if (!isFinite(nr) || nr <= -0.9999) break
+    if (Math.abs(nr - r) < 1e-10) return nr
+    r = nr
+  }
+  // bisseção entre ~0% e 100% a.m. (o VPL troca de sinal nesse intervalo num financiamento)
+  let lo = 1e-9, hi = 1, vlo = vpl(lo)
+  if (vlo * vpl(hi) > 0) return r
+  for (let k = 0; k < 200; k++) {
+    const mid = (lo + hi) / 2, vm = vpl(mid)
+    if (Math.abs(vm) < 1e-7) return mid
+    if (vlo * vm < 0) hi = mid; else { lo = mid; vlo = vm }
+  }
+  return (lo + hi) / 2
+}
+
+// Simulação completa. Retorna parcela (com seguros), totais, custos, CET e renda.
 export function simular({
   valorImovel,
   entradaValor,
@@ -70,26 +100,33 @@ export function simular({
   dfiMes = PARAMS.dfiMes,
 }) {
   const pv = Math.max(0, (valorImovel || 0) - (entradaValor || 0))
-  const i = taxaEfetivaMensal(jurosAnual, trAnual)
+  const i = taxaMensal(jurosAnual)                       // juros efetivos mensais (sem o indexador)
+  const trMes = trAnual > 0 ? taxaMensal(trAnual) : 0     // indexador corrige o SALDO, não a taxa
   const n = Math.round(prazoMeses)
   if (!(pv > 0) || !(n > 0) || !(i >= 0)) return null
 
   const dfi = valorImovel * dfiMes
-  const mip = mipTaxa(idade)
-  const amortSAC = pv / n
-  const pmt = sistema === 'Price' ? parcelaPrice(pv, n, i) : 0
+  const idadeBase = Number(idade) || 35
 
   const linhas = []
   let saldo = pv
-  let totJuros = 0
-  let totSeguros = 0
-  let totAdm = 0
+  let totJuros = 0, totSeguros = 0, totAdm = 0
+  let pmt = 0   // parcela base fixa (Price) — registrada na 1ª iteração
 
   for (let t = 1; t <= n; t++) {
+    if (trMes > 0) saldo *= (1 + trMes)                  // correção do saldo pelo indexador (TR/IPCA/poupança)
+    const restante = n - t + 1
     const juros = saldo * i
-    const amort = sistema === 'Price' ? pmt - juros : amortSAC
+    let amort
+    if (sistema === 'Price') {
+      const parcelaMes = parcelaPrice(saldo, restante, i) // re-amortiza sobre o saldo corrigido
+      if (t === 1) pmt = parcelaMes
+      amort = parcelaMes - juros
+    } else {
+      amort = saldo / restante                            // SAC: amortização = saldo ÷ parcelas restantes
+    }
     const parcelaBase = amort + juros
-    const mipT = saldo * mip
+    const mipT = saldo * mipTaxa(idadeBase + Math.floor((t - 1) / 12)) // MIP sobe conforme a idade avança
     const parcela = parcelaBase + mipT + dfi + taxaAdm
     const novoSaldo = Math.max(0, saldo - amort)
     linhas.push({ t, parcela, parcelaBase, juros, amort, mip: mipT, dfi, adm: taxaAdm, saldo: novoSaldo })
@@ -99,10 +136,16 @@ export function simular({
     saldo = novoSaldo
   }
 
-  // Parcela de referência = a MAIOR parcela do contrato (SAC.. primeira; Price.. também
-  // a primeira, pois o MIP cai com o saldo). É a que o banco usa para aprovar.
+  // Parcela de referência = a MAIOR parcela do contrato (a 1ª, no SAC e na Price com seguros).
+  // É a que o banco usa para aprovar o comprometimento de renda.
   const parcelaRef = linhas[0].parcela
   const parcelaBaseRef = sistema === 'Price' ? pmt : linhas[0].parcelaBase
+
+  // CET (Custo Efetivo Total): TIR do fluxo — recebe (financiado − avaliação) e paga as parcelas
+  // (juros + seguros + taxa de administração). Anualizado, sempre > taxa de juros nominal.
+  const liberado = Math.max(1, pv - (avaliacao || 0))
+  const cetMensal = tir([liberado, ...linhas.map((l) => -l.parcela)], i)
+  const cetAnual = isFinite(cetMensal) ? Math.pow(1 + cetMensal, 12) - 1 : null
 
   const itbi = valorImovel * itbiPct
   const registro = valorImovel * registroPct
@@ -112,12 +155,13 @@ export function simular({
   const comprometimento = renda > 0 ? parcelaRef / renda : null
 
   return {
-    pv, i, n, sistema, pmt,
+    pv, i, trMes, n, sistema, pmt,
     linhas,
     primeiraParcela: linhas[0].parcela,
     ultimaParcela: linhas[n - 1].parcela,
     parcelaRef, parcelaBaseRef,
     totJuros, totSeguros, totAdm,
+    cetMensal, cetAnual,
     itbi, registro, avaliacao,
     custosIniciais, custoTotal,
     rendaMinima, comprometimento,
