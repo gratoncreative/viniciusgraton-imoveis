@@ -320,6 +320,7 @@ export default function MelhorarFotos() {
   const wmLogoRef = useRef(null)
   const redesenharRef = useRef(null)
   const inputFotosRef = useRef(null)
+  const upscalerRef = useRef(null) // modelo de IA carregado uma vez (reaproveitado no lote)
   const [modoLimpar, setModoLimpar] = useState(false)
   const [arrastando, setArrastando] = useState(false)
   const fotosRef = useRef(fotos); fotosRef.current = fotos
@@ -420,33 +421,64 @@ export default function MelhorarFotos() {
   const autoMelhorarTodas = () => setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, ...autoConfig(ft.img) } })))
 
   // ——— Super-resolução com IA (open source, no navegador) ———
+  // carrega o modelo só uma vez e reaproveita (essencial pra processar em lote)
+  const carregarUpscaler = async () => {
+    if (upscalerRef.current) return upscalerRef.current
+    const tf = await import('@huggingface/transformers')
+    const { pipeline, env } = tf
+    env.allowLocalModels = false
+    env.allowRemoteModels = true
+    env.useBrowserCache = true
+    let up
+    try { up = await pipeline('image-to-image', 'Xenova/swin2SR-classical-sr-x2-64', { device: 'webgpu' }) }
+    catch { up = await pipeline('image-to-image', 'Xenova/swin2SR-classical-sr-x2-64') }
+    upscalerRef.current = up
+    return up
+  }
+  // roda a IA numa imagem e devolve uma nova <img> maior e mais nítida
+  const rodarUpscale = async (up, img) => {
+    // reduz a entrada (o modelo é pesado) — o x2 da IA recompõe o detalhe
+    const sc = Math.min(1, 768 / Math.max(img.width, img.height))
+    const pre = document.createElement('canvas')
+    pre.width = Math.round(img.width * sc); pre.height = Math.round(img.height * sc)
+    pre.getContext('2d').drawImage(img, 0, 0, pre.width, pre.height)
+    const blob = await canvasParaBlob(pre, 'png')
+    const url = URL.createObjectURL(blob)
+    const out = await up(url)
+    URL.revokeObjectURL(url)
+    const canvas = out.toCanvas ? out.toCanvas() : (() => { const cc = document.createElement('canvas'); cc.width = out.width; cc.height = out.height; cc.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(out.data.length === out.width * out.height * 4 ? out.data : out.rgba().data), out.width, out.height), 0, 0); return cc })()
+    return carregarImagem(canvas.toDataURL('image/jpeg', 0.95))
+  }
   const melhorarIA = async () => {
     if (!foto || ia) return
     setIa({ fase: 'carregando', msg: 'Carregando a IA… (a 1ª vez baixa o modelo, ~alguns MB)' })
     try {
-      const tf = await import('@huggingface/transformers')
-      const { pipeline, env } = tf
-      env.allowLocalModels = false
-      env.allowRemoteModels = true
-      env.useBrowserCache = true
-      let up
-      try { up = await pipeline('image-to-image', 'Xenova/swin2SR-classical-sr-x2-64', { device: 'webgpu' }) }
-      catch { up = await pipeline('image-to-image', 'Xenova/swin2SR-classical-sr-x2-64') }
+      const up = await carregarUpscaler()
       setIa({ fase: 'processando', msg: 'Recuperando a foto com IA… pode levar alguns segundos.' })
-      // reduz a entrada (o modelo é pesado) — o x2 da IA recompõe o detalhe
-      const sc = Math.min(1, 768 / Math.max(foto.img.width, foto.img.height))
-      const pre = document.createElement('canvas')
-      pre.width = Math.round(foto.img.width * sc); pre.height = Math.round(foto.img.height * sc)
-      pre.getContext('2d').drawImage(foto.img, 0, 0, pre.width, pre.height)
-      const blob = await canvasParaBlob(pre, 'png')
-      const url = URL.createObjectURL(blob)
-      const out = await up(url)
-      URL.revokeObjectURL(url)
-      const canvas = out.toCanvas ? out.toCanvas() : (() => { const cc = document.createElement('canvas'); cc.width = out.width; cc.height = out.height; cc.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(out.data.length === out.width * out.height * 4 ? out.data : out.rgba().data), out.width, out.height), 0, 0); return cc })()
-      const novo = await carregarImagem(canvas.toDataURL('image/jpeg', 0.95))
+      const novo = await rodarUpscale(up, foto.img)
       setFotos((fs) => fs.map((ft, i) => i === atual ? { ...ft, img: novo, s: { ...ft.s, escala: 1 } } : ft))
       setIa({ fase: 'pronto', msg: '✓ Foto recuperada com IA! Agora ela está maior e mais nítida.' })
       setTimeout(() => setIa(null), 3000)
+    } catch (e) {
+      setIa({ fase: 'erro', msg: 'A IA não rodou neste navegador (' + (e.message || e) + '). Use a ampliação 2× normal — também melhora bastante.' })
+    }
+  }
+  // melhora a qualidade de TODAS as fotos, uma a uma, reaproveitando o mesmo modelo
+  const melhorarIATodas = async () => {
+    if (!fotos.length || ia) return
+    const imgs = fotos.map((f) => f.img) // imagens originais no momento do clique
+    const total = imgs.length
+    setIa({ fase: 'carregando', msg: `Carregando a IA… vou processar ${total} foto(s).`, pct: 0 })
+    try {
+      const up = await carregarUpscaler()
+      for (let i = 0; i < total; i++) {
+        setIa({ fase: 'processando', msg: `Recuperando a foto ${i + 1} de ${total} com IA…`, pct: Math.round((i / total) * 100) })
+        const novo = await rodarUpscale(up, imgs[i])
+        setFotos((fs) => fs.map((ft, k) => k === i ? { ...ft, img: novo, s: { ...ft.s, escala: 1 } } : ft))
+        await esperar(30) // deixa a interface respirar entre as fotos
+      }
+      setIa({ fase: 'pronto', msg: `✓ ${total} foto(s) recuperada(s) com IA! Agora estão maiores e mais nítidas.`, pct: 100 })
+      setTimeout(() => setIa(null), 3500)
     } catch (e) {
       setIa({ fase: 'erro', msg: 'A IA não rodou neste navegador (' + (e.message || e) + '). Use a ampliação 2× normal — também melhora bastante.' })
     }
@@ -542,6 +574,12 @@ export default function MelhorarFotos() {
   const aplicarTodas = () => { if (foto) { const r = foto.s; setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, brilho: r.brilho, contraste: r.contraste, satur: r.satur, nitidez: r.nitidez, suave: r.suave, realces: r.realces, sombras: r.sombras, vibrar: r.vibrar, temp: r.temp, vinheta: r.vinheta, wb: r.wb, escala: r.escala, formato: { ...(r.formato || {}) } } }))) } }
   const aplicarFormatoTodas = () => { if (foto) { const f = foto.s.formato || { ratio: 'orig', fill: 'blur' }; setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, formato: { ...f } } }))) } }
   const remover = (i) => { setFotos((fs) => fs.filter((_, k) => k !== i)); setAtual((a) => (a >= fotos.length - 1 ? fotos.length - 2 : a)) }
+  // apaga TODAS as fotos carregadas e volta a bancada pro estado inicial
+  const limparTudo = () => {
+    if (!fotos.length || baixando) return
+    if (!window.confirm(`Apagar todas as ${fotos.length} foto(s) carregada(s)? Não dá pra desfazer.`)) return
+    setFotos([]); setAtual(-1); setVideo(null); setIa(null)
+  }
 
   const baixarCanvas = async (canvas, nome) => {
     if (wm.on) aplicarMarca(canvas, wm, wmLogoRef.current)
@@ -663,7 +701,10 @@ export default function MelhorarFotos() {
                     <div className="mf-grupo mf-grupo--ia">
                       <div className="mf-grupo-tit">🪄 Melhoria automática</div>
                       <p className="mf-nota" style={{ marginTop: 0 }}>Analiso a foto e aplico luz, contraste, cor, nitidez, suavização e endireitamento ideais pra ela.</p>
-                      <button className="btn btn-gold" onClick={autoMelhorarTodas}>🪄 Auto-melhorar tudo</button>
+                      <div className="mf-botoes-col">
+                        <button className="btn btn-gold" onClick={autoMelhorarTodas}>🪄 Auto-melhorar tudo</button>
+                        <button className="admin-btn admin-btn--mini" onClick={() => setAba('ia')} title="Recompõe o detalhe de fotos de baixa qualidade com IA">🤖 Foto de baixa qualidade? Melhorar com IA →</button>
+                      </div>
                     </div>
                     <div className="mf-grupo mf-grupo--destaque">
                       <div className="mf-grupo-tit">📐 Formato — vertical ⇄ horizontal</div>
@@ -733,12 +774,27 @@ export default function MelhorarFotos() {
 
                 {foto && aba === 'ia' && (
                   <div className="mf-grupo mf-grupo--ia">
-                    <div className="mf-grupo-tit">🤖 Super-resolução com IA <span className="mf-beta">Beta</span></div>
-                    <p className="mf-nota" style={{ marginTop: 0 }}>Pra fotos de baixa resolução. Uma IA open-source recompõe o detalhe (não é só ampliar). Roda no seu navegador — a 1ª vez baixa o modelo.</p>
-                    <button className="btn btn-gold" onClick={melhorarIA} disabled={!!ia}>
-                      {ia ? (ia.fase === 'carregando' ? 'Carregando IA…' : ia.fase === 'processando' ? 'Recuperando foto…' : ia.fase === 'pronto' ? '✓ Pronto!' : 'Tentar de novo') : '✨ Melhorar esta foto com IA'}
-                    </button>
-                    {ia?.msg && <p className={`mf-nota ${ia.fase === 'erro' ? 'mf-erro' : ''}`}>{ia.msg}</p>}
+                    <div className="mf-grupo-tit">🤖 Melhorar qualidade com IA <span className="mf-beta">Beta</span></div>
+                    <p className="mf-nota" style={{ marginTop: 0 }}>Pra fotos de baixa resolução/qualidade. Uma IA open-source recompõe o detalhe (não é só ampliar) e deixa a foto maior e mais nítida. Roda no seu navegador — a 1ª vez baixa o modelo (~alguns MB).</p>
+                    <div className="mf-botoes-col">
+                      <button className="btn btn-gold" onClick={melhorarIA} disabled={!!ia}>
+                        {ia ? (ia.fase === 'carregando' ? 'Carregando IA…' : ia.fase === 'processando' ? 'Processando…' : ia.fase === 'pronto' ? '✓ Pronto!' : 'Tentar de novo') : '✨ Melhorar esta foto'}
+                      </button>
+                      <button className="btn btn-gold" onClick={melhorarIATodas} disabled={!!ia}>
+                        {ia ? 'Aguarde…' : `🚀 Melhorar a qualidade de TODAS (${fotos.length})`}
+                      </button>
+                    </div>
+                    {ia && typeof ia.pct === 'number' && (ia.fase === 'carregando' || ia.fase === 'processando') ? (
+                      <div className="mf-prog-wrap">
+                        <div className="mf-prog-top"><span className="mf-prog-emoji">🤖</span> {ia.msg} <b>{ia.pct}%</b></div>
+                        <div className="mf-prog">
+                          <div className="mf-prog-bar" style={{ width: Math.max(4, ia.pct || 0) + '%' }} />
+                          <span className="mf-prog-rider" style={{ left: Math.max(4, ia.pct || 0) + '%' }}>🏠</span>
+                        </div>
+                      </div>
+                    ) : (
+                      ia?.msg && <p className={`mf-nota ${ia.fase === 'erro' ? 'mf-erro' : ''}`}>{ia.msg}</p>
+                    )}
                   </div>
                 )}
 
@@ -931,6 +987,7 @@ export default function MelhorarFotos() {
           {/* BARRA DE AÇÕES FIXA */}
           <div className="mf-acoes-bar">
             <span className="mf-acoes-info">{fotos.length} foto(s)</span>
+            <button className="mf-btn-limpar" onClick={limparTudo} disabled={baixando} title="Remove todas as fotos carregadas">🗑 Apagar todas</button>
             <input
               className="mf-nome-arq"
               type="text"
