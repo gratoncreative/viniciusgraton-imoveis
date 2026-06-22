@@ -315,12 +315,17 @@ export default function MelhorarFotos() {
   const [wm, setWm] = useState({ on: false, texto: 'Vinícius Graton', pos: 'inf-dir', tam: 4, opac: 0.85, modo: 'texto', logoUrl: '' })
   const [trilha, setTrilha] = useState(null)
   const [ia, setIa] = useState(null) // {fase, msg}
+  const [modoCPU, setModoCPU] = useState(false) // sem aceleração GPU: IA roda na CPU (mais lento)
   const [aba, setAba] = useState('ajustes')
   const previewRef = useRef(null)
   const wmLogoRef = useRef(null)
   const redesenharRef = useRef(null)
   const inputFotosRef = useRef(null)
-  const upscalerRef = useRef(null) // { up, device } — modelo de IA carregado uma vez (reaproveitado no lote)
+  // IA em Web Worker isolado (super-resolução)
+  const iaWorkerRef = useRef(null)
+  const iaPendentesRef = useRef(new Map()) // id -> { resolve, reject }
+  const iaMsgIdRef = useRef(0)
+  const iaProgRef = useRef(null) // callback de progresso de download do modelo
   const forcarWasmRef = useRef(false) // após uma falha do WebGPU, processa em CPU/wasm (mais lento, porém estável)
   const [modoLimpar, setModoLimpar] = useState(false)
   const [arrastando, setArrastando] = useState(false)
@@ -394,6 +399,15 @@ export default function MelhorarFotos() {
   // pré-carrega o chunk da ferramenta "Remover marca" pra ela abrir instantânea
   useEffect(() => { import('./RemoverMarca').catch(() => {}) }, [])
 
+  // se o WebGPU já falhou neste aparelho (ou nem existe), vai direto pro modo CPU
+  useEffect(() => {
+    let cpu = (typeof navigator !== 'undefined' && !navigator.gpu)
+    try { if (localStorage.getItem('estudio_ia_sem_webgpu') === '1') cpu = true } catch { /* ignora */ }
+    if (cpu) { forcarWasmRef.current = true; setModoCPU(true) }
+  }, [])
+  // encerra o worker da IA ao sair da ferramenta (libera memória)
+  useEffect(() => () => { try { iaWorkerRef.current?.terminate() } catch { /* ignora */ }; iaWorkerRef.current = null }, [])
+
   const buscarPorCodigo = async () => {
     const cod = codigoImovel.trim()
     if (!cod || buscandoCod) return
@@ -422,103 +436,117 @@ export default function MelhorarFotos() {
   const autoMelhorar = () => { if (foto) setS(autoConfig(foto.img)) }
   const autoMelhorarTodas = () => setFotos((fs) => fs.map((ft) => ({ ...ft, s: { ...ft.s, ...autoConfig(ft.img) } })))
 
-  // ——— Super-resolução com IA (open source, no navegador) ———
-  // monta o pipeline para um backend específico (webgpu = rápido; wasm = estável)
-  const construirUpscaler = async (device) => {
-    const tf = await import('@huggingface/transformers')
-    const { pipeline, env } = tf
-    env.allowLocalModels = false
-    env.allowRemoteModels = true
-    env.useBrowserCache = true
-    // single-thread no wasm: dispensa SharedArrayBuffer/COOP-COEP (mesma escolha do RemoverMarca)
-    try { if (env.backends?.onnx?.wasm) env.backends.onnx.wasm.numThreads = 1 } catch { /* ignora */ }
-    const up = await pipeline('image-to-image', 'Xenova/swin2SR-classical-sr-x2-64', device ? { device } : {})
-    return up
-  }
-  // carrega o modelo só uma vez e reaproveita. Tenta WebGPU; se já falhou antes (ou não monta), usa wasm.
-  const carregarUpscaler = async () => {
-    if (upscalerRef.current) return upscalerRef.current
-    let entry = null
-    if (!forcarWasmRef.current && typeof navigator !== 'undefined' && navigator.gpu) {
-      try { entry = { up: await construirUpscaler('webgpu'), device: 'webgpu' } } catch { entry = null }
+  // ——— Super-resolução com IA: roda num Web Worker isolado ———
+  // Por que worker: se o WebGPU quebrar em runtime ("A valid external Instance
+  // reference no longer exists"), ele corrompe o ONNX da página inteira e o
+  // fallback p/ CPU na mesma thread também falha. Com worker, basta descartá-lo
+  // e criar um novo, limpo, em CPU — onde sempre conclui. E não congela a UI.
+  const garantirWorker = () => {
+    if (iaWorkerRef.current) return iaWorkerRef.current
+    const w = new Worker(new URL('./iaUpscaleWorker.js', import.meta.url), { type: 'module' })
+    w.onmessage = (e) => {
+      const m = e.data || {}
+      if (m.type === 'progress') { iaProgRef.current?.(m.pct); return }
+      const p = iaPendentesRef.current.get(m.id)
+      if (!p) return
+      iaPendentesRef.current.delete(m.id)
+      if (m.type === 'error') p.reject(new Error(m.message || 'falha na IA')); else p.resolve(m)
     }
-    if (!entry) entry = { up: await construirUpscaler('wasm'), device: 'wasm' }
-    upscalerRef.current = entry
-    return entry
+    w.onerror = () => {
+      for (const [, p] of iaPendentesRef.current) p.reject(new Error('o worker de IA falhou'))
+      iaPendentesRef.current.clear()
+    }
+    iaWorkerRef.current = w
+    return w
   }
-  // prepara a imagem de entrada (reduz — o modelo é pesado; o x2 da IA recompõe o detalhe)
-  const blobEntrada = async (img) => {
-    const sc = Math.min(1, 768 / Math.max(img.width, img.height))
-    const pre = document.createElement('canvas')
-    pre.width = Math.round(img.width * sc); pre.height = Math.round(img.height * sc)
-    pre.getContext('2d').drawImage(img, 0, 0, pre.width, pre.height)
-    return canvasParaBlob(pre, 'png')
+  const matarWorker = () => {
+    try { iaWorkerRef.current?.terminate() } catch { /* ignora */ }
+    iaWorkerRef.current = null
+    for (const [, p] of iaPendentesRef.current) p.reject(new Error('worker encerrado'))
+    iaPendentesRef.current.clear()
   }
-  // converte a saída da IA (RawImage) numa <img>, SEMPRE via canvas real do DOM.
-  // (out.toCanvas() pode devolver um OffscreenCanvas — sem toDataURL — e quebrar.)
-  const saidaParaImg = async (out) => {
-    const img4 = out.channels === 4 ? out : (typeof out.rgba === 'function' ? out.rgba() : out)
-    const w = img4.width, h = img4.height
+  // pedido/resposta com o worker (casa por id), com timeout de segurança
+  const pedirWorker = (msg, transfer) => new Promise((resolve, reject) => {
+    const w = garantirWorker()
+    const id = ++iaMsgIdRef.current
+    const to = setTimeout(() => { if (iaPendentesRef.current.delete(id)) reject(new Error('tempo esgotado — a IA demorou demais neste aparelho.')) }, 240000)
+    iaPendentesRef.current.set(id, { resolve: (v) => { clearTimeout(to); resolve(v) }, reject: (e) => { clearTimeout(to); reject(e) } })
+    w.postMessage({ ...msg, id }, transfer || [])
+  })
+  // foto -> ImageData reduzida (o modelo é pesado; o x2 da IA recompõe o detalhe).
+  // maxLado menor na CPU = bem mais rápido.
+  const imgParaImageData = (img, maxLado = 768) => {
+    const sc = Math.min(1, maxLado / Math.max(img.width, img.height))
+    const w = Math.max(1, Math.round(img.width * sc)), h = Math.max(1, Math.round(img.height * sc))
     const c = document.createElement('canvas'); c.width = w; c.height = h
-    c.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(img4.data), w, h), 0, 0)
+    const ctx = c.getContext('2d'); ctx.imageSmoothingQuality = 'high'; ctx.drawImage(img, 0, 0, w, h)
+    return ctx.getImageData(0, 0, w, h)
+  }
+  const imageDataParaImg = async (imageData) => {
+    const c = document.createElement('canvas'); c.width = imageData.width; c.height = imageData.height
+    c.getContext('2d').putImageData(imageData, 0, 0)
     const blob = await canvasParaBlob(c, 'jpeg')
     const url = URL.createObjectURL(blob)
     const novo = await carregarImagem(url)
     setTimeout(() => URL.revokeObjectURL(url), 8000)
     return novo
   }
-  // roda a IA numa imagem e devolve uma nova <img> maior e mais nítida.
-  // Se o WebGPU quebrar em RUNTIME (instância perdida), descarta-o, força wasm e tenta 1x.
-  const rodarUpscale = async (img) => {
-    const blob = await blobEntrada(img)
-    const tentar = async () => {
-      const { up } = await carregarUpscaler()
-      const url = URL.createObjectURL(blob)
-      try { return await up(url) } finally { URL.revokeObjectURL(url) }
-    }
-    let out
+  const dispositivoIA = () => (forcarWasmRef.current ? 'wasm' : (typeof navigator !== 'undefined' && navigator.gpu ? 'webgpu' : 'wasm'))
+  // troca permanente p/ CPU neste aparelho (o WebGPU é instável aqui)
+  const cairParaWasm = () => { matarWorker(); forcarWasmRef.current = true; setModoCPU(true); try { localStorage.setItem('estudio_ia_sem_webgpu', '1') } catch { /* ignora */ } }
+  // carrega o modelo (mostra o download na 1ª vez); cai p/ wasm se o WebGPU não montar
+  const prepararIA = async () => {
+    let device = dispositivoIA()
+    iaProgRef.current = (pct) => setIa((s) => (s && s.fase === 'carregando') ? { ...s, msg: `Baixando o modelo de IA… ${pct}%`, pct } : s)
     try {
-      out = await tentar()
-    } catch (e) {
-      if (upscalerRef.current?.device === 'webgpu') {
-        try { upscalerRef.current.up?.dispose?.() } catch { /* ignora */ }
-        upscalerRef.current = null
-        forcarWasmRef.current = true // resto do lote já vai direto pro wasm
-        out = await tentar() // agora em CPU/wasm
-      } else {
-        throw e
-      }
+      try { await pedirWorker({ type: 'load', device }) }
+      catch (e) { if (device === 'webgpu') { cairParaWasm(); device = 'wasm'; await pedirWorker({ type: 'load', device }) } else throw e }
+    } finally { iaProgRef.current = null }
+    return device
+  }
+  // roda a IA numa imagem -> nova <img> maior e mais nítida. WebGPU falhou em runtime? troca p/ CPU e refaz.
+  const rodarUpscale = async (img) => {
+    const correr = async (dev) => {
+      const imageData = imgParaImageData(img, dev === 'wasm' ? 512 : 768) // CPU: entrada menor = mais rápido
+      const r = await pedirWorker({ type: 'run', device: dev, width: imageData.width, height: imageData.height, data: imageData.data.buffer }, [imageData.data.buffer])
+      return imageDataParaImg(new ImageData(new Uint8ClampedArray(r.data), r.width, r.height))
     }
-    return saidaParaImg(out)
+    const device = dispositivoIA()
+    try {
+      return await correr(device)
+    } catch (e) {
+      if (device === 'webgpu') { cairParaWasm(); return await correr('wasm') } // worker novo, limpo, em CPU
+      throw e
+    }
   }
   const msgErroIA = (e) => 'A IA não rodou neste navegador (' + (e?.message || e) + '). Tente de novo ou use a ampliação 2× normal — também melhora bastante.'
   const melhorarIA = async () => {
     if (!foto || iaRodando) return
-    setIa({ fase: 'carregando', msg: 'Carregando a IA… (a 1ª vez baixa o modelo, ~alguns MB)' })
+    setIa({ fase: 'carregando', msg: 'Preparando a IA… (a 1ª vez baixa o modelo, ~alguns MB)' })
     try {
-      await carregarUpscaler()
+      await prepararIA()
       setIa({ fase: 'processando', msg: 'Recuperando a foto com IA… pode levar alguns segundos.' })
       const novo = await rodarUpscale(foto.img)
       setFotos((fs) => fs.map((ft, i) => i === atual ? { ...ft, img: novo, s: { ...ft.s, escala: 1 } } : ft))
-      setIa({ fase: 'pronto', msg: '✓ Foto recuperada com IA! Agora ela está maior e mais nítida.' })
+      setIa({ fase: 'pronto', msg: `✓ Foto recuperada com IA${forcarWasmRef.current ? ' (modo CPU)' : ''}! Agora está maior e mais nítida.` })
       setTimeout(() => setIa(null), 3000)
     } catch (e) {
       setIa({ fase: 'erro', msg: msgErroIA(e) })
     }
   }
-  // melhora a qualidade de TODAS as fotos, uma a uma, reaproveitando o mesmo modelo
+  // melhora a qualidade de TODAS as fotos, uma a uma (mesmo worker/modelo reaproveitado)
   const melhorarIATodas = async () => {
     if (!fotos.length || iaRodando) return
     const imgs = fotos.map((f) => f.img) // imagens originais no momento do clique
     const total = imgs.length
-    setIa({ fase: 'carregando', msg: `Carregando a IA… vou processar ${total} foto(s).`, pct: 0 })
+    setIa({ fase: 'carregando', msg: `Preparando a IA… vou processar ${total} foto(s).`, pct: 0 })
     try {
-      await carregarUpscaler()
+      await prepararIA()
       for (let i = 0; i < total; i++) {
-        setIa({ fase: 'processando', msg: `Recuperando a foto ${i + 1} de ${total} com IA…`, pct: Math.round((i / total) * 100) })
+        setIa({ fase: 'processando', msg: `Recuperando a foto ${i + 1} de ${total} com IA…${forcarWasmRef.current ? ' (modo CPU)' : ''}`, pct: Math.round((i / total) * 100) })
         const novo = await rodarUpscale(imgs[i])
         setFotos((fs) => fs.map((ft, k) => k === i ? { ...ft, img: novo, s: { ...ft.s, escala: 1 } } : ft))
-        await esperar(30) // deixa a interface respirar entre as fotos
+        await esperar(20) // deixa a interface respirar entre as fotos
       }
       setIa({ fase: 'pronto', msg: `✓ ${total} foto(s) recuperada(s) com IA! Agora estão maiores e mais nítidas.`, pct: 100 })
       setTimeout(() => setIa(null), 3500)
@@ -819,6 +847,11 @@ export default function MelhorarFotos() {
                   <div className="mf-grupo mf-grupo--ia">
                     <div className="mf-grupo-tit">🤖 Melhorar qualidade com IA <span className="mf-beta">Beta</span></div>
                     <p className="mf-nota" style={{ marginTop: 0 }}>Pra fotos de baixa resolução/qualidade. Uma IA open-source recompõe o detalhe (não é só ampliar) e deixa a foto maior e mais nítida. Roda no seu navegador — a 1ª vez baixa o modelo (~alguns MB).</p>
+                    {modoCPU && !iaRodando && (
+                      <p className="mf-nota" style={{ background: 'rgba(235,1,40,0.06)', border: '1px solid rgba(235,1,40,0.25)', borderRadius: 8, padding: '8px 10px' }}>
+                        🐢 Sem aceleração por GPU neste aparelho — a IA roda em <b>modo CPU</b> (mais lento, ~30s–1min por foto). Dica: faça <b>poucas fotos por vez</b>, ou use a <b>Ampliação 2×</b> na aba Exportar (instantânea).
+                      </p>
+                    )}
                     <div className="mf-botoes-col">
                       <button className="btn btn-gold" onClick={melhorarIA} disabled={iaRodando}>
                         {iaRodando ? (ia.fase === 'carregando' ? 'Carregando IA…' : 'Processando…') : ia?.fase === 'erro' ? '↻ Tentar de novo (esta foto)' : ia?.fase === 'pronto' ? '✓ Pronto!' : '✨ Melhorar esta foto'}
