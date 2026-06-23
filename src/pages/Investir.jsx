@@ -109,7 +109,7 @@ export default function Investir() {
         {!d && !erro && <p className="section-sub">Carregando rentabilidade por bairro…</p>}
 
         {stats && (
-          <>
+          <div className="investir-wrap">
             <div className="investir-modo">
               <div className="investir-modo-tabs" role="tablist" aria-label="Tipo de rentabilidade">
                 {[['bruto', 'Yield bruto'], ['liquido', 'Yield líquido']].map(([k, lab]) => (
@@ -191,7 +191,7 @@ export default function Investir() {
               </a>
               <Link className="btn btn-ghost" to="/mercado">Preço do m² por bairro <IconArrow /></Link>
             </div>
-          </>
+          </div>
         )}
       </div>
     </main>
