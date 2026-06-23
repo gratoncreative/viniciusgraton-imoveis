@@ -42,7 +42,7 @@ export default function Home() {
       url: 'https://viniciusgraton.com.br',
       telephone: '+55-34-99157-0494',
       email: 'contato@viniciusgraton.com.br',
-      sameAs: ['https://www.instagram.com/viniciusgraton.imoveis/'],
+      sameAs: ['https://www.instagram.com/viniciusgraton.imoveis/', ...(CONFIG.googleBusinessUrl ? [CONFIG.googleBusinessUrl] : [])],
       address: { '@type': 'PostalAddress', addressLocality: 'Uberlândia', addressRegion: 'MG', addressCountry: 'BR' },
       areaServed: { '@type': 'City', name: 'Uberlândia', addressRegion: 'MG', addressCountry: 'BR' },
       hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Imóveis à venda em Uberlândia', url: 'https://viniciusgraton.com.br/imoveis' },
