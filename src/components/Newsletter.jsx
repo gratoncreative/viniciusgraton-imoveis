@@ -27,7 +27,7 @@ export default function Newsletter() {
       ) : (
         <form className="news-form" onSubmit={enviar}>
           <input type="text" name="site" value={site} onChange={(e) => setSite(e.target.value)} tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0 }} />
-          <input type="email" inputMode="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="seu@email.com" aria-label="Seu e-mail" />
+          <input type="email" inputMode="email" required autoComplete="email" maxLength={140} value={email} onChange={(e) => setEmail(e.target.value)} placeholder="seu@email.com" aria-label="Seu e-mail" />
           <button type="submit" className="btn btn-gold" disabled={estado === 'enviando'}>{estado === 'enviando' ? 'Enviando…' : 'Quero receber'}</button>
         </form>
       )}
