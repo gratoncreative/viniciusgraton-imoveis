@@ -209,6 +209,7 @@ const TIPOS_LT = [
   { slug: 'terrenos', re: /lote|terreno/i },
 ]
 const MIN_LT = 3
+const MIN_BAIRRO = 3 // bairro só entra no sitemap com estoque real (evita página fina de condomínio/loteamento)
 
 function urlTag({ loc, changefreq, priority, lastmod }) {
   // barra final = forma que o servidor entrega (evita o hop 308 /x -> /x/)
@@ -231,10 +232,7 @@ export async function onRequestGet({ request }) {
   // Páginas estáticas (resolve a sentinela @today pela data real)
   for (const p of STATIC) parts.push(urlTag(p.lastmod === TODAY ? { ...p, lastmod: today } : p))
 
-  // Bairros
-  for (const b of BAIRROS) {
-    parts.push(urlTag({ loc: `/imoveis/uberlandia/${b}`, changefreq: 'weekly', priority: '0.8', lastmod: today }))
-  }
+  // Bairros: emitidos a partir do feed (>= MIN_BAIRRO imóveis) + editoriais — no bloco do catálogo abaixo
 
   // Construtoras
   for (const c of CONSTRUTORAS) {
@@ -260,6 +258,7 @@ export async function onRequestGet({ request }) {
       const data = await res.json()
       const imoveis = Array.isArray(data?.imoveis) ? data.imoveis : []
       const contTipo = {}
+      const contBairro = {}
       for (const im of imoveis) {
         if (im.codigo) {
           parts.push(urlTag({
@@ -271,6 +270,7 @@ export async function onRequestGet({ request }) {
         }
         if (im.bairro) {
           const bs = slugifyBairro(im.bairro)
+          contBairro[bs] = (contBairro[bs] || 0) + 1
           for (const t of TIPOS_LT) {
             if (t.re.test(im.tipo || '')) {
               contTipo[bs] = contTipo[bs] || {}
@@ -279,6 +279,10 @@ export async function onRequestGet({ request }) {
           }
         }
       }
+      // Bairros: editoriais sempre + qualquer bairro do feed com estoque real (>= MIN_BAIRRO)
+      const bairroSet = new Set(BAIRROS)
+      for (const bs in contBairro) if (contBairro[bs] >= MIN_BAIRRO) bairroSet.add(bs)
+      for (const b of bairroSet) parts.push(urlTag({ loc: `/imoveis/uberlandia/${b}`, changefreq: 'weekly', priority: '0.8', lastmod: today }))
       // páginas long-tail bairro × tipo — só onde há estoque real (>= MIN_LT)
       for (const bs of Object.keys(contTipo)) {
         for (const ts of Object.keys(contTipo[bs])) {
@@ -287,9 +291,13 @@ export async function onRequestGet({ request }) {
           }
         }
       }
+    } else {
+      // catalogo não OK — fallback: só os bairros editoriais
+      for (const b of BAIRROS) parts.push(urlTag({ loc: `/imoveis/uberlandia/${b}`, changefreq: 'weekly', priority: '0.8', lastmod: today }))
     }
   } catch (_) {
-    // catalogo.json indisponível — sitemap sem imóveis individuais (não quebra)
+    // catalogo.json indisponível — fallback: bairros editoriais (não quebra)
+    for (const b of BAIRROS) parts.push(urlTag({ loc: `/imoveis/uberlandia/${b}`, changefreq: 'weekly', priority: '0.8', lastmod: today }))
   }
 
   const xml = [

@@ -224,9 +224,20 @@ console.log(`✓ prerender-og: ${n} curados + ${nf} espelho = ${n + nf} páginas
 
 // páginas de bairro (SEO) — meta/canonical/JSON-LD por bairro
 const editoriais = ['Jardim Karaíba', 'Morada da Colina', 'Cidade Jardim', 'Gávea', 'Granja Marileusa', 'Vigilato Pereira', 'Santa Maria', 'Jardim Sul', 'Jardim Finotti', 'Parque Una', 'Patrimônio', 'Lídice', 'Santa Mônica', 'Tabajaras', 'Nova Uberlândia', 'Tubalina']
+// contagem real por bairro (curados + feed) → portão de qualidade p/ SEO
+const _bairroCount = {}
+for (const im of [...imoveis, ...feed]) { if (im && im.bairro) { const s = slugify(im.bairro); _bairroCount[s] = (_bairroCount[s] || 0) + 1 } }
+const _editSlugs = new Set(editoriais.map((n) => slugify(n)))
+const MIN_BAIRRO = 3 // qualidade > quantidade: não gera página fina (ex.: nome de condomínio/loteamento com 1 imóvel)
+const _seenBairro = new Set()
 const bairrosSeo = [...new Set([...editoriais, ...imoveis.map((im) => im.bairro), ...feed.map((im) => im.bairro)])]
   .filter(Boolean)
   .map((nome) => ({ nome, slug: slugify(nome) }))
+  .filter((b) => {
+    if (!b.slug || _seenBairro.has(b.slug)) return false
+    _seenBairro.add(b.slug)
+    return _editSlugs.has(b.slug) || (_bairroCount[b.slug] || 0) >= MIN_BAIRRO
+  })
 
 const _fmtC = (v) => v >= 1e6 ? `R$ ${(v / 1e6).toFixed(v % 1e6 === 0 ? 0 : 1).replace('.', ',')} mi` : v > 0 ? `R$ ${Math.round(v / 1000)} mil` : ''
 const _fmtM2 = (v) => `R$ ${Math.round(v).toLocaleString('pt-BR')}/m²`
