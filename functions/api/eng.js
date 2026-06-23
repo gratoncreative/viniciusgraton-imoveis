@@ -72,6 +72,24 @@ export async function onRequestGet({ env, request }) {
       }
       return json({ views })
     }
+    // estatísticas de CONVERSÃO (cliques de contato: WhatsApp/telefone/e-mail) — agregadas por dia.
+    // Dados não-pessoais (só contagens por página). Lido pelo painel /admin.
+    if (url.searchParams.get('convstats')) {
+      if (!temKV(env)) return json({ totalGeral: 0, ev: {}, dias: [], topPaths: [] })
+      const lista = await env.ENGAGEMENT.list({ prefix: 'conv:' })
+      const dias = []; const paths = {}; const evTot = {}; let totalGeral = 0
+      for (const k of (lista?.keys || [])) {
+        const d = await env.ENGAGEMENT.get(k.name, 'json')
+        if (!d) continue
+        dias.push({ dia: d.dia, total: d.total || 0, ev: d.ev || {} })
+        totalGeral += d.total || 0
+        for (const p in (d.paths || {})) paths[p] = (paths[p] || 0) + d.paths[p]
+        for (const e in (d.ev || {})) evTot[e] = (evTot[e] || 0) + d.ev[e]
+      }
+      dias.sort((a, b) => (a.dia < b.dia ? 1 : -1))
+      const topPaths = Object.entries(paths).sort((a, b) => b[1] - a[1]).slice(0, 40).map(([path, n]) => ({ path, n }))
+      return json({ totalGeral, ev: evTot, dias: dias.slice(0, 90), topPaths })
+    }
     // crescimento diário DESATIVADO: os números agora ficam fixos na faixa 20-90
     // (ponderados por preço). Mantido só p/ não quebrar a rotina que chama a URL.
     if (url.searchParams.get('bumpall')) {
@@ -102,6 +120,23 @@ export async function onRequestPost({ env, request }) {
       const views = (parseInt(await env.ENGAGEMENT.get(key), 10) || 0) + 1
       await env.ENGAGEMENT.put(key, String(views))
       return json({ views })
+    }
+
+    // clique de CONVERSÃO (WhatsApp / telefone / e-mail) — agrega por dia, evento e página.
+    // Fire-and-forget do cliente (sendBeacon). Sem PII; só contagem por página → saber o que converte.
+    if (tipo === 'conv') {
+      if (!temKV(env)) return json({ ok: true, persistido: false })
+      const ev = /^(whatsapp|tel|email)$/.test(String(body.ev || '')) ? body.ev : 'whatsapp'
+      let path = String(body.path || '/').slice(0, 120)
+      if (!/^\/[\w\-/.%]*$/.test(path)) path = '/outros'
+      const key = 'conv:' + diaHoje()
+      const data = (await env.ENGAGEMENT.get(key, 'json')) || { dia: diaHoje(), total: 0, ev: {}, paths: {} }
+      data.total += 1
+      data.ev[ev] = (data.ev[ev] || 0) + 1
+      // teto de páginas distintas/dia p/ não inchar o objeto (chaves novas só até 300)
+      if (data.paths[path] != null || Object.keys(data.paths).length < 300) data.paths[path] = (data.paths[path] || 0) + 1
+      await env.ENGAGEMENT.put(key, JSON.stringify(data), { expirationTtl: 60 * 60 * 24 * 220 })
+      return json({ ok: true })
     }
 
     if (tipo === 'lead') {

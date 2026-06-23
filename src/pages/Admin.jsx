@@ -10,6 +10,7 @@ const RemoverMarca = lazy(() => import('../components/RemoverMarca'))
 const MelhorarFotos = lazy(() => import('../components/MelhorarFotos'))
 const PostGen = lazy(() => import('../components/PostGen'))
 const AtendimentosPanel = lazy(() => import('../components/AtendimentosPanel'))
+const ConversoesPanel = lazy(() => import('../components/ConversoesPanel'))
 
 const LSK = 'vg_admin_token'
 const waLink = (fone) => { const d = String(fone || '').replace(/\D/g, ''); const full = d.length <= 11 ? '55' + d : d; return `https://wa.me/${full}` }
@@ -575,6 +576,7 @@ export default function Admin() {
     ['atendimentos', '🔥 Atendimentos'],
     ['news', `Newsletter (${(dados?.news || []).length})`],
     ['acessos', 'Acessos'],
+    ['conversoes', '📊 Conversões'],
     ['post', '📣 Gerar post'],
     ['fotos', '✨ Melhorar fotos'],
     ['marca', "Remover marca d'água"],
@@ -747,6 +749,8 @@ export default function Admin() {
 
         {aba === 'crm' && <AdminCRM token={token} onSair={sair} cadastros={clientes} onExcluirCadastro={(c) => excluir(c._key, `o cadastro de ${c.nome || 'cliente'}`)} />}
         {aba === 'atendimentos' && <Suspense fallback={<p className="section-sub">Carregando…</p>}><AtendimentosPanel token={token} onSair={sair} /></Suspense>}
+
+        {aba === 'conversoes' && <Suspense fallback={<p className="section-sub">Carregando…</p>}><ConversoesPanel /></Suspense>}
 
         {aba === 'acessos' && (
           <section>

@@ -86,6 +86,8 @@ export default function App() {
       .then((r) => r.json())
       .then((d) => { if (!vivo) return; const ov = d && d.ov ? d.ov : d; aplicarOverridesImoveis(ov, d && d.ap); aplicarOvRender((n) => n + 1) })
       .catch(() => {})
+    // mede conversão: clique em WhatsApp/telefone/e-mail → beacon (saber o que converte)
+    import('./track').then((m) => m.initConvTracking()).catch(() => {})
     return () => { vivo = false }
   }, [])
 
