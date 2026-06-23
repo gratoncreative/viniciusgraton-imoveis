@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
-import { getConstrutora, CONSTRUTORAS, linkWhatsApp, waConstrutora } from '../data'
+import { linkWhatsApp } from '../data'
+import { getConstrutora, CONSTRUTORAS, waConstrutora } from '../empreendimentos'
 import { useSEO } from '../useSEO'
 import ComparadorEmpreendimentos from '../components/ComparadorEmpreendimentos'
 import { IconWhats, IconArrow, IconShield } from '../components/icons'

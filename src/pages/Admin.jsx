@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import { useSEO } from '../useSEO'
-import { CONFIG, IMOVEIS, IMOVEIS_PENDENTES, formatPreco, CONSTRUTORAS } from '../data'
+import { CONFIG, IMOVEIS, IMOVEIS_PENDENTES, formatPreco } from '../data'
+import { CONSTRUTORAS } from '../empreendimentos'
 import { IconShield, IconArrow, IconWhats } from '../components/icons'
 import AdminCRM from '../components/AdminCRM'
 import InputMoeda from '../components/InputMoeda'

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import Reveal from './Reveal'
-import { CONSTRUTORAS } from '../data'
+import { CONSTRUTORAS } from '../empreendimentos'
 
 // Parede de marcas das construtoras (cinza, mesmo tom, fundo claro).
 // Clicar abre a página da construtora (com os empreendimentos) em nova aba.

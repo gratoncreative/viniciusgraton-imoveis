@@ -50,6 +50,8 @@ export default defineConfig({
           react: ['react', 'react-dom'],
           router: ['react-router-dom'],
           lenis: ['lenis'],
+          motion: ['framer-motion'],
+          search: ['fuse.js'],
           pdf: ['jspdf'],
           zip: ['jszip'],
         },

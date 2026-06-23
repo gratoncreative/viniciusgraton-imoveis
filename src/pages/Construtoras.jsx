@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
-import { CONSTRUTORAS } from '../data'
+import { CONSTRUTORAS } from '../empreendimentos'
 
 const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
 import { useSEO } from '../useSEO'
