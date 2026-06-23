@@ -199,6 +199,15 @@ const CONDOMINIOS = [
   'villa-do-sol','terras-altas','praca-alto-umuarama',
 ]
 
+// Tipos long-tail (bairro × tipo) — regras em sincronia com src/tiposSeo.js e o prerender
+const slugifyBairro = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+const TIPOS_LT = [
+  { slug: 'apartamentos', re: /apart|kit|st[uú]dio|loft|flat|cobertura/i },
+  { slug: 'casas', re: /casa|sobrado/i },
+  { slug: 'terrenos', re: /lote|terreno/i },
+]
+const MIN_LT = 3
+
 function urlTag({ loc, changefreq, priority, lastmod }) {
   // barra final = forma que o servidor entrega (evita o hop 308 /x -> /x/)
   const path = loc === '/' ? '/' : loc.replace(/\/+$/, '') + '/'
@@ -248,6 +257,7 @@ export async function onRequestGet({ request }) {
     if (res.ok) {
       const data = await res.json()
       const imoveis = Array.isArray(data?.imoveis) ? data.imoveis : []
+      const contTipo = {}
       for (const im of imoveis) {
         if (im.codigo) {
           parts.push(urlTag({
@@ -256,6 +266,23 @@ export async function onRequestGet({ request }) {
             priority: '0.8',
             lastmod: today,
           }))
+        }
+        if (im.bairro) {
+          const bs = slugifyBairro(im.bairro)
+          for (const t of TIPOS_LT) {
+            if (t.re.test(im.tipo || '')) {
+              contTipo[bs] = contTipo[bs] || {}
+              contTipo[bs][t.slug] = (contTipo[bs][t.slug] || 0) + 1
+            }
+          }
+        }
+      }
+      // páginas long-tail bairro × tipo — só onde há estoque real (>= MIN_LT)
+      for (const bs of Object.keys(contTipo)) {
+        for (const ts of Object.keys(contTipo[bs])) {
+          if (contTipo[bs][ts] >= MIN_LT) {
+            parts.push(urlTag({ loc: `/imoveis/uberlandia/${bs}/${ts}`, changefreq: 'weekly', priority: '0.6', lastmod: today }))
+          }
         }
       }
     }

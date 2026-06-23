@@ -298,6 +298,74 @@ for (const b of bairrosSeo) {
 }
 console.log(`✓ prerender bairros: ${nb} páginas em dist/imoveis/uberlandia/{bairro}/`)
 
+// ── páginas long-tail: bairro × tipo (apartamentos / casas / terrenos) ──
+// Só gera onde há estoque real (>= MIN_LT) pra não criar página fininha. Regras em sincronia com src/tiposSeo.js.
+const TIPOS_LT = [
+  { slug: 'apartamentos', plural: 'Apartamentos', singular: 'apartamento', re: /apart|kit|st[uú]dio|loft|flat|cobertura/i },
+  { slug: 'casas', plural: 'Casas', singular: 'casa', re: /casa|sobrado/i },
+  { slug: 'terrenos', plural: 'Terrenos e lotes', singular: 'terreno', re: /lote|terreno/i },
+]
+const MIN_LT = 3
+const rotasTipo = []
+const _art = (t) => (t.singular === 'casa' ? 'uma casa' : `um ${t.singular}`)
+function statsTipo(b, t) {
+  const todos = [...imoveis, ...feed].filter((im) => im.bairro && slugify(im.bairro) === b.slug && t.re.test(im.tipo || ''))
+  const precos = todos.filter((im) => im.preco > 0 && im.preco < 5e7).map((im) => im.preco).sort((a, z) => a - z)
+  const m2 = todos.filter((im) => im.preco > 0 && im.area > 0).map((im) => im.preco / im.area).filter((v) => v >= 1000 && v <= 30000).sort((a, z) => a - z)
+  const pct = (a, p) => a.length ? a[Math.min(a.length - 1, Math.floor(a.length * p))] : 0
+  return { todos, n: todos.length, precosN: precos.length, precoLo: pct(precos, 0.1), precoHi: pct(precos, 0.9), m2n: m2.length, m2med: m2.length ? m2[Math.floor(m2.length / 2)] : 0, m2lo: pct(m2, 0.1), m2hi: pct(m2, 0.9) }
+}
+function renderBairroTipo(b, t, s) {
+  const titulo = `${t.plural} à venda em ${b.nome}, Uberlândia`
+  const desc = `${s.n} ${s.n === 1 ? t.singular : t.plural.toLowerCase()} à venda em ${b.nome}, Uberlândia${s.precosN ? ` de ${_fmtC(s.precoLo)} a ${_fmtC(s.precoHi)}` : ''}.${s.m2n >= 3 ? ` m² em torno de ${_fmtM2(s.m2med)}.` : ''} Curadoria de Vinícius Graton.`.slice(0, 158)
+  const url = slash(`${SITE}/imoveis/uberlandia/${b.slug}/${t.slug}`)
+  const bairroUrl = slash(`${SITE}/imoveis/uberlandia/${b.slug}`)
+  const faq = []
+  if (s.precosN) faq.push({ q: `Quanto custa ${_art(t)} no ${b.nome}, Uberlândia?`, a: `${t.plural} à venda no ${b.nome} vão de ${_fmtC(s.precoLo)} a ${_fmtC(s.precoHi)}, com ${s.n} ${s.n === 1 ? 'opção' : 'opções'} na curadoria agora.` })
+  if (s.m2n >= 3) faq.push({ q: `Quanto custa o metro quadrado de ${t.plural.toLowerCase()} no ${b.nome}?`, a: `O m² de ${t.plural.toLowerCase()} no ${b.nome} fica em torno de ${_fmtM2(s.m2med)} (a maioria entre ${_fmtM2(s.m2lo)} e ${_fmtM2(s.m2hi)}), a partir dos anúncios à venda hoje.` })
+  faq.push({ q: `Tem ${t.plural.toLowerCase()} à venda no ${b.nome}?`, a: `Sim — no momento há ${s.n} ${s.n === 1 ? t.singular : t.plural.toLowerCase()} à venda no ${b.nome}. Veja a lista ou fale com o Vinícius Graton.` })
+  const graph = [
+    { '@type': 'CollectionPage', name: titulo, description: desc, url, about: { '@type': 'Place', name: `${b.nome}, Uberlândia, MG` } },
+    { '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Início', item: `${SITE}/` },
+      { '@type': 'ListItem', position: 2, name: 'Imóveis', item: `${SITE}/imoveis` },
+      { '@type': 'ListItem', position: 3, name: b.nome, item: bairroUrl },
+      { '@type': 'ListItem', position: 4, name: t.plural, item: url },
+    ] },
+    { '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+  ]
+  const ld = { '@context': 'https://schema.org', '@graph': graph }
+  const body = `<main class="pre-seo"><h1>${esc(titulo)}</h1>` +
+    `<p>${esc(t.plural)} à venda em ${esc(b.nome)}, Uberlândia - MG, com o atendimento pessoal do Vinícius Graton, consultor da Rotina Imobiliária.</p>` +
+    `<ul>${s.todos.slice(0, 24).map((im) => `<li><a href="/imovel/${esc(im.codigo)}">${esc(im.tipo)} no ${esc(im.bairro)} · ${esc(formatPreco(im.preco))} (cód. ${esc(im.codigo)})</a></li>`).join('')}</ul>` +
+    `<section><h2>Perguntas sobre ${esc(t.plural.toLowerCase())} no ${esc(b.nome)}</h2>${faq.map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}</section>` +
+    `<p><a href="/imoveis/uberlandia/${b.slug}">Todos os imóveis no ${esc(b.nome)}</a> · <a href="/mercado">preço do m² por bairro</a> · <a href="/imoveis">imóveis em Uberlândia</a></p></main>`
+  return baseHtml
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)} — preços | Vinícius Graton</title>`)
+    .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
+    .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${esc(url)}$2`)
+    .replace(/(<meta name="twitter:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
+    .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
+    .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
+    .replace('<div id="root"></div>', `<div id="root">${body}</div>`)
+}
+let nbt = 0
+for (const b of bairrosSeo) {
+  for (const t of TIPOS_LT) {
+    const s = statsTipo(b, t)
+    if (s.n < MIN_LT) continue
+    const dir = resolve(DIST, 'imoveis', 'uberlandia', b.slug, t.slug)
+    mkdirSync(dir, { recursive: true })
+    writeFileSync(resolve(dir, 'index.html'), renderBairroTipo(b, t, s))
+    rotasTipo.push(`/imoveis/uberlandia/${b.slug}/${t.slug}`)
+    nbt++
+  }
+}
+console.log(`✓ prerender bairro×tipo: ${nbt} páginas long-tail em dist/imoveis/uberlandia/{bairro}/{tipo}/`)
+
 // páginas de empreendimento (construtora) — ficha completa, meta + JSON-LD
 function renderEmpre(c, p) {
   const titulo = `${p.nome} · ${c.nome}, ${p.bairro || 'Uberlândia'}`
@@ -648,6 +716,7 @@ const urls = [
   { loc: `${SITE}/lancamentos/louis-studios-umuarama`, freq: 'weekly', pri: '0.9', img: `${SITE}/lancamentos/louis/og.jpg`, imgTitle: 'Louis Living Experience — studios no Umuarama, Uberlândia' },
   { loc: `${SITE}/contato`, freq: 'monthly', pri: '0.5' },
   ...bairrosSeo.map((b) => ({ loc: `${SITE}/imoveis/uberlandia/${b.slug}`, freq: 'weekly', pri: '0.7' })),
+  ...rotasTipo.map((p) => ({ loc: `${SITE}${p}`, freq: 'weekly', pri: '0.6' })),
   { loc: `${SITE}/privacidade`, freq: 'yearly', pri: '0.2' },
 ]
 // imóveis num sitemap separado (é a maior lista e a que mais muda)

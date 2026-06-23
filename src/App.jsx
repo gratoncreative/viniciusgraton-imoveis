@@ -48,6 +48,7 @@ const CatalogoLancamentos = lazy(() => import('./pages/CatalogoLancamentos'))
 const LancamentoGuia = lazy(() => import('./pages/LancamentoGuia'))
 const LancamentoBairro = lazy(() => import('./pages/LancamentoBairro'))
 const Bairro = lazy(() => import('./pages/Bairro'))
+const BairroTipo = lazy(() => import('./pages/BairroTipo'))
 const Favoritos = lazy(() => import('./pages/Favoritos'))
 const Cliente = lazy(() => import('./pages/Cliente'))
 const EncontrarImovel = lazy(() => import('./pages/EncontrarImovel'))
@@ -154,6 +155,7 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/imoveis" element={<Catalogo />} />
               <Route path="/imoveis/uberlandia/:bairro" element={<Bairro />} />
+              <Route path="/imoveis/uberlandia/:bairro/:tipo" element={<BairroTipo />} />
               <Route path="/imovel/:codigo" element={<ImovelDetalhe />} />
               <Route path="/como-funciona" element={<ComoAjudo />} />
               <Route path="/sobre" element={<QuemSou />} />

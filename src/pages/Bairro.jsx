@@ -3,7 +3,8 @@ import { useParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import CardImovel from '../components/CardImovel'
 import AviseMe from '../components/AviseMe'
-import { getBairroSeo, imoveisDoBairro, BAIRROS_SEO, linkWhatsApp } from '../data'
+import { getBairroSeo, imoveisDoBairro, BAIRROS_SEO, linkWhatsApp, slugify } from '../data'
+import { useFeed } from '../useFeed'
 import { getBairroEditorial, getBairroFotoInfo } from '../bairros-editorial'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow, IconPin, IconShield } from '../components/icons'
@@ -14,7 +15,15 @@ export default function Bairro() {
   const ed = getBairroEditorial(slug)
 
   // ── Dados REAIS do bairro (catálogo) → meta única, FAQ e schema hiperlocais ──
-  const lista = b ? imoveisDoBairro(b.nome) : []
+  const { feed, carregando } = useFeed()
+  // catálogo completo do bairro (curados + feed da Rotina), igual ao prerender que o Google vê
+  const lista = (() => {
+    if (!b) return []
+    const map = new Map()
+    for (const im of imoveisDoBairro(b.nome)) if (im && im.codigo != null) map.set(String(im.codigo), im)
+    for (const im of feed) if (im && im.bairro && slugify(im.bairro) === b.slug && im.codigo != null && !map.has(String(im.codigo))) map.set(String(im.codigo), im)
+    return [...map.values()]
+  })()
   const fmtC = (v) => v >= 1e6 ? `R$ ${(v / 1e6).toFixed(v % 1e6 === 0 ? 0 : 1).replace('.', ',')} mi` : v > 0 ? `R$ ${Math.round(v / 1000)} mil` : ''
   const fmtM2 = (v) => `R$ ${Math.round(v).toLocaleString('pt-BR')}/m²`
   const precos = lista.filter((im) => im.preco > 0 && im.preco < 5e7).map((im) => im.preco).sort((a, z) => a - z)
@@ -159,6 +168,21 @@ export default function Bairro() {
 
       <section className="section--light" style={ed ? { paddingTop: 0 } : undefined}>
         <div className="container">
+          {(() => {
+            const tlinks = [
+              { slug: 'apartamentos', plural: 'Apartamentos', n: nApto },
+              { slug: 'casas', plural: 'Casas', n: nCasa },
+              { slug: 'terrenos', plural: 'Terrenos', n: nLote },
+            ].filter((x) => x.n > 0)
+            return tlinks.length ? (
+              <p className="bairro-faq-links" style={{ marginBottom: 18 }}>
+                Por tipo no {b.nome}:{' '}
+                {tlinks.map((x, i) => (
+                  <span key={x.slug}>{i > 0 ? ' · ' : ''}<Link to={`/imoveis/uberlandia/${b.slug}/${x.slug}`}>{x.plural} ({x.n})</Link></span>
+                ))}
+              </p>
+            ) : null
+          })()}
           {lista.length ? (
             <>
               <h2 className="det-rel-titulo">{lista.length} {lista.length === 1 ? 'imóvel' : 'imóveis'} em {b.nome}</h2>
@@ -168,6 +192,8 @@ export default function Bairro() {
                 ))}
               </div>
             </>
+          ) : carregando ? (
+            <p className="section-sub" style={{ textAlign: 'center', padding: '24px 0' }}>Carregando imóveis…</p>
           ) : (
             <div className="cat-vazio">
               <p>Ainda não tenho um imóvel publicado em {b.nome} — mas tenho acesso a muito mais opções na região. Me conta o que você procura.</p>
