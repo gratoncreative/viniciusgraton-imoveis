@@ -29,16 +29,33 @@ const ORIGENS = [
 const fmtKB = (b) => (b < 1024 ? b + ' B' : b < 1048576 ? (b / 1024).toFixed(0) + ' KB' : (b / 1048576).toFixed(2) + ' MB')
 const baseNome = (n) => n.replace(/\.[^.]+$/, '')
 
-async function decodificar(file) {
-  // tenta o decodificador nativo (rápido); cai pra <img> se precisar
-  try { return await createImageBitmap(file) } catch {}
-  return await new Promise((ok, falha) => {
-    const url = URL.createObjectURL(file)
+const ehHeic = (file) => /hei[cf]/.test((file.type || '').toLowerCase()) || /\.hei[cf]$/i.test(file.name || '')
+
+function imgDeBlob(blob) {
+  return new Promise((ok, falha) => {
+    const url = URL.createObjectURL(blob)
     const img = new Image()
     img.onload = () => { URL.revokeObjectURL(url); ok(img) }
     img.onerror = () => { URL.revokeObjectURL(url); falha(new Error('não foi possível ler')) }
     img.src = url
   })
+}
+
+async function decodificar(file) {
+  // HEIC/HEIF (iPhone): nenhum navegador além do Safari decodifica nativamente.
+  // Carrega o decodificador (libheif) SOB DEMANDA só quando aparece um HEIC.
+  if (ehHeic(file)) {
+    try {
+      const { default: heic2any } = await import('heic2any')
+      const out = await heic2any({ blob: file, toType: 'image/png' })
+      const blob = Array.isArray(out) ? out[0] : out
+      try { return await createImageBitmap(blob) } catch {}
+      return await imgDeBlob(blob)
+    } catch { /* se a lib falhar, tenta o caminho nativo (Safari já lê HEIC) */ }
+  }
+  // tenta o decodificador nativo (rápido); cai pra <img> se precisar
+  try { return await createImageBitmap(file) } catch {}
+  return await imgDeBlob(file)
 }
 
 export default function ConverterFotos() {
@@ -75,6 +92,7 @@ export default function ConverterFotos() {
     const novos = lista.map((f) => ({ id: ++contador.current, file: f, url: '', status: 'pronto', outBlob: null, outUrl: null, outSize: 0, erro: '' }))
     setItens((s) => [...s, ...novos])
     novos.forEach((item) => {
+      if (ehHeic(item.file)) return // HEIC não renderiza em <img>; a prévia aparece após converter
       const reader = new FileReader()
       reader.onload = (ev) => setItens((s) => s.map((it) => it.id === item.id ? { ...it, url: ev.target.result } : it))
       reader.readAsDataURL(item.file)
@@ -271,7 +289,11 @@ export default function ConverterFotos() {
             {itens.map((it) => (
               <div key={it.id} className={`conv-item conv-item--${it.status}`}>
                 <button className="conv-x" type="button" onClick={() => remover(it.id)} aria-label="Remover">×</button>
-                <div className="conv-thumb"><img src={it.outUrl || it.url} alt={it.file.name} /></div>
+                <div className="conv-thumb">
+                  {(it.outUrl || it.url)
+                    ? <img src={it.outUrl || it.url} alt={it.file.name} />
+                    : <span style={{ fontFamily: 'var(--font-head)', fontWeight: 700, color: '#8a909c', fontSize: '.82rem', letterSpacing: '.04em' }}>HEIC</span>}
+                </div>
                 <div className="conv-meta">
                   <b title={it.file.name}>{it.file.name}</b>
                   {it.status === 'ok' ? (
