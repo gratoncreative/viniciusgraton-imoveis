@@ -59,10 +59,13 @@ const LaudoPage = lazy(() => import('./pages/LaudoPage'))
 const EstudoM2Page = lazy(() => import('./pages/EstudoM2Page'))
 const EstudoAvulso = lazy(() => import('./pages/EstudoAvulso'))
 const Mercado = lazy(() => import('./pages/Mercado'))
+const AppCorretor = lazy(() => import('./pages/AppCorretor'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 export default function App() {
   const { pathname } = useLocation()
+  // Modo app: o cockpit do corretor (/app) é tela cheia — sem navbar/rodapé do site.
+  const modoApp = pathname === '/app' || pathname.startsWith('/app/')
   // Overrides dos imóveis: ao carregar, mutam IMOVEIS no lugar e disparam UM re-render.
   // NÃO usamos isso como `key` da árvore (remontar fechava modais/ferramentas no meio do uso).
   const [, aplicarOvRender] = useState(0)
@@ -111,6 +114,8 @@ export default function App() {
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduce) return
+    // No modo app (/app) não usamos scroll suave — é um cockpit, não uma landing.
+    if (modoApp) { lenisRef.current = null; return }
 
     const lenis = new Lenis({ duration: 1.1, smoothWheel: true })
     lenisRef.current = lenis
@@ -141,13 +146,13 @@ export default function App() {
       lenis.destroy()
       document.removeEventListener('click', onClick)
     }
-  }, [])
+  }, [modoApp])
 
   return (
     <>
       <a href="#conteudo" className="skip-link">Pular para o conteúdo</a>
-      <ScrollProgress />
-      <Navbar />
+      {!modoApp && <ScrollProgress />}
+      {!modoApp && <Navbar />}
       <div id="conteudo" tabIndex={-1}>
         <ErrorBoundary>
           <Suspense fallback={<div className="rota-load" aria-busy="true"><span className="rota-spinner" /></div>}>
@@ -201,20 +206,23 @@ export default function App() {
               <Route path="/estudo/:codigo" element={<EstudoM2Page />} />
               <Route path="/avaliar" element={<EstudoAvulso />} />
               <Route path="/mercado" element={<Mercado />} />
+              <Route path="/app" element={<AppCorretor />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </ErrorBoundary>
       </div>
-      <Footer />
+      {!modoApp && <Footer />}
 
-      <a className="wa-float" href={linkWhatsApp(WA.flutuante)} target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp">
-        <IconWhats />
-      </a>
+      {!modoApp && (
+        <a className="wa-float" href={linkWhatsApp(WA.flutuante)} target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp">
+          <IconWhats />
+        </a>
+      )}
 
-      <BackToTop />
-      <CadastroGate />
-      <LancGate />
+      {!modoApp && <BackToTop />}
+      {!modoApp && <CadastroGate />}
+      {!modoApp && <LancGate />}
     </>
   )
 }

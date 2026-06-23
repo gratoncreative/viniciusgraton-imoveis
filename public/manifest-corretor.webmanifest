@@ -1,0 +1,25 @@
+{
+  "id": "/app",
+  "name": "VG Corretor — Painel",
+  "short_name": "VG Corretor",
+  "description": "App de trabalho do corretor: leads, captação, WhatsApp e avaliação de imóveis em um só lugar.",
+  "start_url": "/app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFFFFF",
+  "theme_color": "#1C2A44",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "categories": ["business", "productivity"],
+  "icons": [
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ],
+  "shortcuts": [
+    { "name": "Leads", "short_name": "Leads", "url": "/admin", "description": "Ver leads e atendimentos" },
+    { "name": "Avaliar imóvel", "short_name": "Avaliar", "url": "/avaliar", "description": "Avaliação pela área (ACM) e parecer" },
+    { "name": "Captação", "short_name": "Captar", "url": "/corretor/rotina", "description": "Abordagem e captação de imóveis" }
+  ]
+}
