@@ -118,7 +118,7 @@ const TOOLS = [
   { id: 'marca-agua',    nome: "Marca d'água em fotos",     desc: 'Adicione seu logo ou texto em cada foto.',     icon: 'droplet',    sec: 'pro', needsSub: true },
   { id: 'endireitar',    nome: 'Endireitar foto',           desc: 'Corrija a inclinação e a rotação de fotos.',   icon: 'rotate',  sec: 'pro', needsSub: true },
   { id: 'redimensionar', nome: 'Redimensionar foto',        desc: 'Reduza o tamanho para WhatsApp ou portal.',    icon: 'resize',    sec: 'pro', needsSub: true },
-  { id: 'converter',     nome: 'Conversor de fotos',        desc: 'JPG · PNG · WebP · AVIF em lote.',             icon: 'fileimg',    sec: 'pro', needsSub: true, to: '/ferramentas/converter' },
+  { id: 'converter',     nome: 'Conversor de fotos',        desc: 'JPG · PNG · WebP · AVIF · HEIC em lote.',      icon: 'fileimg',    sec: 'pro', needsSub: true, nav: true, to: '/ferramentas/converter' },
   { id: 'pdf-jpg',      nome: 'PDF para JPG',              desc: 'Converta cada página do PDF em JPG de alta definição.', icon: 'pdf', sec: 'pro', needsSub: true, to: '/ferramentas/pdf-para-jpg' },
   { id: 'transcrever',  nome: 'Transcrever vídeo/áudio',   desc: 'Tour em vídeo ou áudio → texto, legenda e descrição. No navegador.', icon: 'mic', sec: 'pro', needsSub: true, to: '/ferramentas/transcrever' },
   // explorar o mercado

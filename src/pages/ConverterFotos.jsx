@@ -71,6 +71,7 @@ export default function ConverterFotos() {
   const [qualidade, setQualidade] = useState(0.9)
   const [larguraMax, setLarguraMax] = useState('')
   const [convertendo, setConvertendo] = useState(false)
+  const [prog, setProg] = useState(0)
   const [avifOk, setAvifOk] = useState(true)
   const [drag, setDrag] = useState(false)
   const inputRef = useRef(null)
@@ -92,11 +93,33 @@ export default function ConverterFotos() {
     const novos = lista.map((f) => ({ id: ++contador.current, file: f, url: '', status: 'pronto', outBlob: null, outUrl: null, outSize: 0, erro: '' }))
     setItens((s) => [...s, ...novos])
     novos.forEach((item) => {
-      if (ehHeic(item.file)) return // HEIC não renderiza em <img>; a prévia aparece após converter
+      if (ehHeic(item.file)) return // HEIC não renderiza em <img>; geramos a prévia decodificando (abaixo)
       const reader = new FileReader()
       reader.onload = (ev) => setItens((s) => s.map((it) => it.id === item.id ? { ...it, url: ev.target.result } : it))
       reader.readAsDataURL(item.file)
     })
+    // prévia REAL dos HEIC: decodifica em 2º plano (downscaled) e mostra a miniatura
+    ;(async () => {
+      for (const item of novos) {
+        if (!ehHeic(item.file)) continue
+        try {
+          const img = await decodificar(item.file) // heic2any decodifica UMA vez
+          // fonte da conversão: JPEG full-res já decodificado → a conversão NÃO redecodifica o HEIC
+          const full = document.createElement('canvas'); full.width = img.width || 1; full.height = img.height || 1
+          full.getContext('2d').drawImage(img, 0, 0)
+          const heicBlob = await new Promise((ok) => full.toBlob(ok, 'image/jpeg', 0.92))
+          // miniatura pequena pra exibir
+          const esc = Math.min(1, 400 / (img.width || 400))
+          const w = Math.max(1, Math.round((img.width || 400) * esc))
+          const h = Math.max(1, Math.round((img.height || 300) * esc))
+          const tcv = document.createElement('canvas'); tcv.width = w; tcv.height = h
+          tcv.getContext('2d').drawImage(img, 0, 0, w, h)
+          if (img.close) img.close()
+          const url = tcv.toDataURL('image/jpeg', 0.72)
+          setItens((s) => s.map((it) => (it.id === item.id ? { ...it, url, heicBlob } : it)))
+        } catch { /* mantém o selo HEIC */ }
+      }
+    })()
     // auto-detecta formato de origem: se todas as novas fotos têm o mesmo tipo, seleciona
     const tipos = lista.map((f) => (f.type + ' ' + f.name).toLowerCase())
     const detectado = ORIGENS.slice(1).find((o) => tipos.every((t) => o.match(t)))
@@ -115,7 +138,8 @@ export default function ConverterFotos() {
   }
 
   async function converterUm(it) {
-    const img = await decodificar(it.file)
+    // se a prévia já decodificou o HEIC (heicBlob), reusa — evita decodificar de novo
+    const img = await decodificar(it.heicBlob || it.file)
     let w = img.width, h = img.height
     const lm = parseInt(larguraMax, 10)
     if (lm && lm > 0 && w > lm) { h = Math.round((h * lm) / w); w = lm }
@@ -135,7 +159,8 @@ export default function ConverterFotos() {
   async function converterTudo() {
     const alvo = filtrados().filter((it) => it.status !== 'ok')
     if (!alvo.length) return
-    setConvertendo(true)
+    setConvertendo(true); setProg(0)
+    let feito = 0
     for (const it of alvo) {
       setItens((s) => s.map((x) => (x.id === it.id ? { ...x, status: 'processando', erro: '' } : x)))
       try {
@@ -143,8 +168,9 @@ export default function ConverterFotos() {
         const outUrl = URL.createObjectURL(blob)
         setItens((s) => s.map((x) => (x.id === it.id ? { ...x, status: 'ok', outBlob: blob, outUrl, outSize: blob.size } : x)))
       } catch (e) {
-        setItens((s) => s.map((x) => (x.id === it.id ? { ...x, status: 'erro', erro: 'Não foi possível converter (formato não suportado pelo navegador — ex.: HEIC fora do Safari).' } : x)))
+        setItens((s) => s.map((x) => (x.id === it.id ? { ...x, status: 'erro', erro: 'Não foi possível converter esta foto (arquivo corrompido ou formato não suportado).' } : x)))
       }
+      feito++; setProg(Math.round((feito / alvo.length) * 100))
       await new Promise((r) => setTimeout(r, 0)) // deixa a UI respirar
     }
     setConvertendo(false)
@@ -255,7 +281,7 @@ export default function ConverterFotos() {
           {/* ações */}
           <div className="conv-acoes">
             <button className="btn btn-gold" type="button" disabled={!vaConverter || convertendo} onClick={converterTudo}>
-              {convertendo ? 'Convertendo…' : `Converter ${vaConverter || ''} foto${vaConverter === 1 ? '' : 's'}`.trim()}
+              {convertendo ? `Convertendo… ${prog}%` : `Converter ${vaConverter || ''} foto${vaConverter === 1 ? '' : 's'}`.trim()}
             </button>
             {prontos.length > 1 && (
               <>
@@ -274,6 +300,15 @@ export default function ConverterFotos() {
             )}
             {itens.length > 0 && <button className="conv-limpar" type="button" onClick={limpar}>Limpar</button>}
           </div>
+
+          {convertendo && (
+            <div style={{ marginTop: 12 }} aria-label={`Convertendo ${prog}%`}>
+              <div style={{ height: 9, background: 'rgba(28,42,68,.1)', borderRadius: 6, overflow: 'hidden' }}>
+                <div style={{ height: '100%', width: `${prog}%`, background: '#C9A227', borderRadius: 6, transition: 'width .35s ease' }} />
+              </div>
+              <p className="painel-meta" style={{ marginTop: 6, textAlign: 'center' }}>Convertendo… {prog}%</p>
+            </div>
+          )}
 
           {prontos.length > 1 && (
             <p className="conv-resumo">
