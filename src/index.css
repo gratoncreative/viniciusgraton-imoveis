@@ -8359,6 +8359,25 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .investir-nota { font-size: .85rem; color: #5b626e; line-height: 1.6; max-width: 880px; margin: 24px auto 0; }
 .investir-ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 22px; }
 @media (max-width: 640px) { .investir-row { grid-template-columns: 24px minmax(0, 1fr) auto; } .investir-bwrap { display: none; } }
+.investir-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 26px 0 22px; }
+.investir-stat { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; box-shadow: 0 10px 26px -22px rgba(28, 42, 68, .4); }
+.investir-stat > span { display: block; font-size: .72rem; text-transform: uppercase; letter-spacing: .04em; color: #8a909c; }
+.investir-stat b { display: block; font-family: var(--font-head); font-size: 1.35rem; color: #1C2A44; margin: 4px 0 1px; }
+.investir-stat b small { font-size: .85rem; color: #8a909c; font-weight: 600; }
+.investir-stat i { font-style: normal; font-size: .78rem; color: #5b626e; }
+.investir-stat--hero { background: #FBF7EF; border-color: var(--gold-2); }
+.investir-stat--hero i { font-family: var(--font-head); font-weight: 800; font-size: 1rem; }
+.investir-controles { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.investir-ord { display: flex; gap: 6px; flex-wrap: wrap; }
+.investir-ord-btn { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border); background: #fff; color: #5b626e; font-size: .82rem; font-weight: 600; cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
+.investir-ord-btn.on { background: #1C2A44; color: #fff; border-color: #1C2A44; }
+.investir-busca { padding: 9px 14px; border-radius: 999px; border: 1px solid var(--border); background: #fff; font-size: .9rem; min-width: 180px; }
+.investir-legenda { display: flex; flex-wrap: wrap; gap: 16px; font-size: .76rem; color: #5b626e; margin-bottom: 10px; }
+.investir-legenda span { display: inline-flex; align-items: center; gap: 6px; }
+.investir-legenda i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.investir-tag { font-style: normal; display: inline-block; background: rgba(28, 42, 68, .07); color: #1C2A44; border-radius: 6px; padding: 1px 6px; font-size: .72rem; font-weight: 700; margin-left: 4px; }
+@media (max-width: 760px) { .investir-stats { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .investir-controles { flex-direction: column; align-items: stretch; } .investir-busca { width: 100%; } }
 
 .simf-bloco { background: rgba(28,42,68,0.55); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 16px 18px; }
 .simf-bloco-tit { font-family: var(--font-head); font-size: 0.95rem; font-weight: 700; color: #e0e4ee; margin: 0 0 12px; }
