@@ -8344,6 +8344,22 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .quicksim-nota { text-align: center; font-size: 0.78rem; color: #8a909c; margin: 16px auto 0; max-width: 640px; }
 @media (max-width: 760px) { .quicksim-card { grid-template-columns: 1fr; } }
 
+/* Onde investir — ranking de rentabilidade por bairro (/investir) */
+.investir-lista { display: flex; flex-direction: column; gap: 6px; margin: 28px auto 0; max-width: 880px; }
+.investir-row { display: grid; grid-template-columns: 30px minmax(0, 1fr) 130px auto; align-items: center; gap: 14px; padding: 11px 14px; border-radius: 12px; text-decoration: none; transition: background .15s, box-shadow .15s; }
+.investir-row:hover { background: #fff; box-shadow: 0 10px 26px -18px rgba(28, 42, 68, .4); }
+.investir-pos { font-family: var(--font-head); font-weight: 800; color: #b9bec8; text-align: center; }
+.investir-info { min-width: 0; }
+.investir-bairro { display: block; font-weight: 700; color: #1C2A44; }
+.investir-sub { display: block; font-size: .76rem; color: #8a909c; }
+.investir-bwrap { height: 8px; background: rgba(28, 42, 68, .08); border-radius: 5px; overflow: hidden; }
+.investir-bar { height: 100%; border-radius: 5px; }
+.investir-yield { font-family: var(--font-head); font-weight: 800; font-size: 1.15rem; white-space: nowrap; text-align: right; }
+.investir-yield i { font-style: normal; font-size: .58rem; font-weight: 600; margin-left: 3px; opacity: .7; }
+.investir-nota { font-size: .85rem; color: #5b626e; line-height: 1.6; max-width: 880px; margin: 24px auto 0; }
+.investir-ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 22px; }
+@media (max-width: 640px) { .investir-row { grid-template-columns: 24px minmax(0, 1fr) auto; } .investir-bwrap { display: none; } }
+
 .simf-bloco { background: rgba(28,42,68,0.55); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 16px 18px; }
 .simf-bloco-tit { font-family: var(--font-head); font-size: 0.95rem; font-weight: 700; color: #e0e4ee; margin: 0 0 12px; }
 .simf-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }

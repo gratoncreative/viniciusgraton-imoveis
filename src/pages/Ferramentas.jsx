@@ -100,6 +100,7 @@ const TOOLS = [
   // investidor
   { id: 'valorm2',       nome: 'Valor do m² por bairro',    desc: 'Preço médio de venda por bairro de Uberlândia.', icon: 'ruler',  sec: 'investidor' },
   { id: 'rentabilidade', nome: 'Rentabilidade do aluguel',  desc: 'Quanto um imóvel rende ao ano.',               icon: 'trend',   sec: 'investidor', popular: true },
+  { id: 'onde-investir',  nome: 'Onde investir (por bairro)', desc: 'Ranking de rentabilidade do aluguel por bairro de Uberlândia. Grátis.', icon: 'map', sec: 'investidor', popular: true, nav: true, to: '/investir' },
   { id: 'investir',      nome: 'Imóvel × CDI / Poupança',  desc: 'Vale comprar para alugar ou aplicar?',          icon: 'swap',   sec: 'investidor' },
   { id: 'aluguel',       nome: 'Alugar ou financiar?',      desc: 'Compare a parcela com o aluguel atual.',        icon: 'scale',   sec: 'investidor' },
   { id: 'ganho',         nome: 'IR na venda do imóvel',     desc: 'Ganho de capital e isenções em lei.',           icon: 'percent', sec: 'investidor' },

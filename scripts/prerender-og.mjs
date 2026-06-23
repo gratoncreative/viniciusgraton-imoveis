@@ -59,6 +59,8 @@ const abs = (u) => (u && u.startsWith('http') ? u : SITE + u)
 // inconsistente do feed) ou não existe, devolve null para cair no fallback.
 // barra final na URL canônica (forma que o servidor entrega — evita o hop 308 /x -> /x/)
 const slash = (u) => { const m = String(u).match(/^([^?#]*)([?#].*)?$/); return m[1].replace(/\/+$/, '') + '/' + (m[2] || '') }
+// barra final nos links internos de página dos corpos pre-seo (o crawler não bate em 308 ao segui-los)
+const slashHrefs = (s) => String(s).replace(/href="(\/[a-z][^"?#]*?)\/?"/g, (_, p) => `href="${p.replace(/\/+$/, '')}/"`)
 const FALLBACK_IMG = `${SITE}/casa-conceito.jpg`
 const imgDoImovel = (im) => {
   if (!im.img) return null
@@ -198,7 +200,7 @@ function render(im) {
     .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${esc(image)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
     .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
-    .replace('<div id="root"></div>', `<div id="root">${bodySeo(im, descUnica)}</div>`)
+    .replace('<div id="root"></div>', `<div id="root">${slashHrefs(bodySeo(im, descUnica))}</div>`)
 
   return html
 }
@@ -286,7 +288,7 @@ function renderBairro(b) {
     .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
     .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
-    .replace('<div id="root"></div>', `<div id="root">${bairroBody(b, stats)}</div>`)
+    .replace('<div id="root"></div>', `<div id="root">${slashHrefs(bairroBody(b, stats))}</div>`)
 }
 
 let nb = 0
@@ -350,7 +352,7 @@ function renderBairroTipo(b, t, s) {
     .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
     .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
-    .replace('<div id="root"></div>', `<div id="root">${body}</div>`)
+    .replace('<div id="root"></div>', `<div id="root">${slashHrefs(body)}</div>`)
 }
 let nbt = 0
 for (const b of bairrosSeo) {
@@ -394,7 +396,7 @@ function renderEmpre(c, p) {
     .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${esc(image)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
     .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
-    .replace('<div id="root"></div>', `<div id="root">${empreBodySeo(c, p)}</div>`)
+    .replace('<div id="root"></div>', `<div id="root">${slashHrefs(empreBodySeo(c, p))}</div>`)
 }
 
 function empreBodySeo(c, p) {
@@ -478,7 +480,7 @@ function renderLouis() {
     .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${esc(image)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
     .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
-    .replace('<div id="root"></div>', `<div id="root">${body}</div>`)
+    .replace('<div id="root"></div>', `<div id="root">${slashHrefs(body)}</div>`)
 }
 {
   const dir = resolve(DIST, 'lancamentos', 'louis-studios-umuarama')
@@ -559,7 +561,7 @@ function renderPost(post) {
     .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${esc(image)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
     .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
-    .replace('<div id="root"></div>', `<div id="root">${blogBodySeo(post)}</div>`)
+    .replace('<div id="root"></div>', `<div id="root">${slashHrefs(blogBodySeo(post))}</div>`)
 }
 let np2 = 0
 for (const post of blogTodos) {
@@ -676,7 +678,7 @@ function renderFixa(p) {
     .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${esc(p.image)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
   if (p.ld) html = html.replace('</head>', `<script type="application/ld+json">${JSON.stringify(p.ld)}</script>\n</head>`)
-  if (p.body) html = html.replace('<div id="root"></div>', `<div id="root">${p.body}</div>`)
+  if (p.body) html = html.replace('<div id="root"></div>', `<div id="root">${slashHrefs(p.body)}</div>`)
   return html
 }
 for (const p of PAGINAS_FIXAS) {
@@ -686,6 +688,45 @@ for (const p of PAGINAS_FIXAS) {
 }
 console.log(`✓ prerender páginas fixas: ${PAGINAS_FIXAS.length} (com capa própria)`)
 
+// página /investir — ranking de rentabilidade por bairro (lê public/rentabilidade-bairros.json)
+try {
+  const rent = JSON.parse(readFileSync(resolve(ROOT, 'public/rentabilidade-bairros.json'), 'utf8'))
+  const rows = rent.bairros || []
+  if (rows.length) {
+    const titulo = 'Onde investir em Uberlândia — rentabilidade do aluguel por bairro'
+    const desc = `Ranking de rentabilidade do aluguel por bairro de Uberlândia: ${rows.length} bairros com yield real. Topo: ${rows[0].bairro} ${rows[0].yieldAa}% a.a. Compare com o CDI (${rent.cdiAa}% a.a.).`.slice(0, 158)
+    const url = slash(`${SITE}/investir`)
+    const faq = [
+      { q: 'Qual bairro tem o aluguel mais rentável em Uberlândia?', a: `Hoje o melhor yield é ${rows[0].bairro} (${rows[0].yieldAa}% a.a.), seguido de ${(rows[1] || {}).bairro} (${(rows[1] || {}).yieldAa}% a.a.). É o aluguel anual dividido pelo preço de compra, com dado real residencial.` },
+      { q: 'Investir em imóvel para alugar rende mais que o CDI?', a: `Depende do bairro: o yield bruto vai de ${rows[rows.length - 1].yieldAa}% a ${rows[0].yieldAa}% a.a., enquanto o CDI está em ~${rent.cdiAa}% a.a. Bairros mais acessíveis tendem a render mais aluguel; bairros nobres rendem menos, mas valorizam mais.` },
+    ]
+    const body = `<main class="pre-seo"><h1>${esc(titulo)}</h1>` +
+      `<p>Rentabilidade (yield) do aluguel por bairro de Uberlândia, com dado real da carteira da Rotina Imobiliária — só residencial, saneado. Quanto maior, mais o aluguel rende sobre o preço do imóvel.</p>` +
+      `<ol>${rows.map((r) => `<li><a href="/imoveis/uberlandia/${esc(r.slug)}/">${esc(r.bairro)}</a> — ${r.yieldAa}% a.a. (aluguel R$ ${r.aluguelM2}/m² · venda R$ ${r.vendaM2}/m²)</li>`).join('')}</ol>` +
+      `<section><h2>Perguntas frequentes</h2>${faq.map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}</section>` +
+      `<p><a href="/mercado">preço do m² por bairro</a> · <a href="/ferramentas">calculadora de rentabilidade</a> · <a href="/imoveis">imóveis à venda em Uberlândia</a></p></main>`
+    const ld = { '@context': 'https://schema.org', '@graph': [
+      { '@type': 'ItemList', name: titulo, numberOfItems: rows.length, itemListOrder: 'https://schema.org/ItemListOrderDescending', itemListElement: rows.slice(0, 25).map((r, i) => ({ '@type': 'ListItem', position: i + 1, name: `${r.bairro}: ${r.yieldAa}% a.a.` })) },
+      { '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+      { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Início', item: `${SITE}/` }, { '@type': 'ListItem', position: 2, name: 'Onde investir', item: url }] },
+    ] }
+    const html = baseHtml
+      .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)} | Vinícius Graton</title>`)
+      .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+      .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
+      .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+      .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${esc(url)}$2`)
+      .replace(/(<meta name="twitter:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
+      .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+      .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
+      .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
+      .replace('<div id="root"></div>', `<div id="root">${slashHrefs(body)}</div>`)
+    const dir = resolve(DIST, 'investir'); mkdirSync(dir, { recursive: true })
+    writeFileSync(resolve(dir, 'index.html'), html)
+    console.log('✓ prerender /investir | rentabilidade de', rows.length, 'bairros')
+  }
+} catch (e) { console.warn('prerender /investir falhou (sem rentabilidade-bairros.json?):', e.message) }
+
 // sitemap.xml completo (home + catálogo + cada imóvel, com imagem p/ o Google Imagens)
 const urls = [
   { loc: `${SITE}/`, freq: 'weekly', pri: '1.0' },
@@ -693,6 +734,7 @@ const urls = [
   { loc: `${SITE}/encontrar-imovel`, freq: 'monthly', pri: '0.8' },
   { loc: `${SITE}/como-funciona`, freq: 'monthly', pri: '0.6' },
   { loc: `${SITE}/ferramentas`, freq: 'monthly', pri: '0.6' },
+  { loc: `${SITE}/investir`, freq: 'weekly', pri: '0.8' },
   { loc: `${SITE}/condominios`, freq: 'weekly', pri: '0.7' },
   { loc: `${SITE}/anunciar`, freq: 'monthly', pri: '0.7' },
   { loc: `${SITE}/avaliacao`, freq: 'monthly', pri: '0.7' },

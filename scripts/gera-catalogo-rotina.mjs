@@ -197,3 +197,6 @@ try {
 
 escreverStatus({ ok: true, total: recs.length, alugueis: totalAlug, novos: novos.length, baixaram: baixaram.length, geradoEm })
 console.log('OK -> public/catalogo.json |', recs.length, 'imóveis |', kb, 'KB | + catalogo-meta.json')
+
+// rentabilidade por bairro (residencial, saneado) — cruza os feeds de venda e aluguel recém-gerados
+try { await import('./gera-rentabilidade.mjs') } catch (e) { console.warn('rentabilidade falhou:', e.message) }

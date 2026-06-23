@@ -60,6 +60,7 @@ const LaudoPage = lazy(() => import('./pages/LaudoPage'))
 const EstudoM2Page = lazy(() => import('./pages/EstudoM2Page'))
 const EstudoAvulso = lazy(() => import('./pages/EstudoAvulso'))
 const Mercado = lazy(() => import('./pages/Mercado'))
+const Investir = lazy(() => import('./pages/Investir'))
 const AppCorretor = lazy(() => import('./pages/AppCorretor'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
@@ -212,6 +213,7 @@ export default function App() {
               <Route path="/estudo/:codigo" element={<EstudoM2Page />} />
               <Route path="/avaliar" element={<EstudoAvulso />} />
               <Route path="/mercado" element={<Mercado />} />
+              <Route path="/investir" element={<Investir />} />
               <Route path="/app" element={<AppCorretor />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
