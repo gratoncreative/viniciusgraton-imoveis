@@ -63,6 +63,34 @@ if (venda.length && alug.length) {
     })
   }
   rows.sort((a, z) => z.yieldAa - a.yieldAa)
+
+  // ── histórico de preços por bairro → valorização ao longo do tempo ──
+  // Grava 1 retrato por MÊS (public/historico-precos.json) e calcula a valorização do m²
+  // contra o retrato mais antigo com >= ~5 meses. Acumula em silêncio até ter base.
+  const hoje = new Date().toISOString().slice(0, 10)
+  const mes = hoje.slice(0, 7)
+  let hist = { snapshots: [] }
+  try { const h = JSON.parse(fs.readFileSync('public/historico-precos.json', 'utf8')); if (Array.isArray(h.snapshots)) hist = h } catch {}
+  if (!hist.snapshots.some((s) => String(s.data || '').slice(0, 7) === mes)) {
+    const snap = { data: hoje, bairros: {} }
+    for (const r of rows) snap.bairros[r.bairro] = { vM2: r.vendaM2, aM2: r.aluguelM2 }
+    hist.snapshots.push(snap)
+    hist.snapshots = hist.snapshots.slice(-48) // ~4 anos de histórico mensal
+    fs.writeFileSync('public/historico-precos.json', JSON.stringify(hist))
+    console.log('OK -> public/historico-precos.json |', hist.snapshots.length, 'retratos (mensal)')
+  }
+  const dias = (a, b) => Math.round((new Date(b) - new Date(a)) / 86400000)
+  const base = hist.snapshots.find((s) => dias(s.data, hoje) >= 150)
+  if (base) {
+    for (const r of rows) {
+      const antes = base.bairros[r.bairro]
+      if (antes && antes.vM2 > 0) {
+        r.valorizacaoM2 = Math.round(((r.vendaM2 / antes.vM2) - 1) * 1000) / 10
+        r.valorizacaoMeses = Math.max(1, Math.round(dias(base.data, hoje) / 30))
+      }
+    }
+  }
+
   const out = { geradoEm: new Date().toISOString(), cdiAa: CDI_AA, poupancaAa: POUP_AA, totalBairros: rows.length, bairros: rows }
   fs.writeFileSync('public/rentabilidade-bairros.json', JSON.stringify(out))
   console.log('OK -> public/rentabilidade-bairros.json |', rows.length, 'bairros' + (rows.length ? ` | top ${rows[0].bairro} ${rows[0].yieldAa}% · fundo ${rows[rows.length - 1].bairro} ${rows[rows.length - 1].yieldAa}%` : ''))
