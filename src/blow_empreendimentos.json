@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-06-21T10:06:13.557Z",
+  "geradoEm": "2026-06-23T10:02:49.654Z",
   "fonte": "blow",
   "empreendimentos": [
     {
@@ -22102,16 +22102,6 @@
       ],
       "unidadesDetalhes": [
         {
-          "ap": "204",
-          "tipologia": "Apto. Tipo",
-          "area": 35.92,
-          "quartos": 1,
-          "suites": 1,
-          "banheiros": 1,
-          "vagas": 1,
-          "valor": 318000
-        },
-        {
           "ap": "902",
           "tipologia": "Cobertura",
           "area": 116.44,
@@ -22125,11 +22115,11 @@
       "valorCondominio": null,
       "quantAndares": 9,
       "quantElevadores": 1,
-      "fracaoVendida": 0.93,
+      "fracaoVendida": 0.96,
       "dataEntrega": "2025-11-30T03:00:00Z",
       "aquecimento": "Elétrico",
       "arCondicionado": "Previsão de Ar Condicionado",
-      "unidadesDisponiveis": 2,
+      "unidadesDisponiveis": 1,
       "totalUnidades": 32,
       "lat": -18.9254777,
       "lng": -48.2585061,
