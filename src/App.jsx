@@ -6,6 +6,7 @@ import ErrorBoundary from './components/ErrorBoundary'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import BackToTop from './components/BackToTop'
+import AppTabBar from './components/AppTabBar'
 import CadastroGate from './components/CadastroGate'
 import LancGate from './components/LancGate'
 import Home from './pages/Home'
@@ -64,8 +65,13 @@ const NotFound = lazy(() => import('./pages/NotFound'))
 
 export default function App() {
   const { pathname } = useLocation()
-  // Modo app: o cockpit do corretor (/app) é tela cheia — sem navbar/rodapé do site.
-  const modoApp = pathname === '/app' || pathname.startsWith('/app/')
+  // Modo app: rodando como PWA instalado (standalone) OU tendo entrado pelo /app
+  // nesta sessão. Aí o site vira "app" — sem navbar/rodapé e com barra de abas.
+  // Não afeta quem abre /admin direto no navegador (desktop): sem flag, sem app.
+  const standalone = typeof window !== 'undefined' &&
+    (window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone)
+  const flagApp = typeof sessionStorage !== 'undefined' && sessionStorage.getItem('vg_appmode') === '1'
+  const modoApp = standalone || flagApp || pathname === '/app' || pathname.startsWith('/app/')
   // Overrides dos imóveis: ao carregar, mutam IMOVEIS no lugar e disparam UM re-render.
   // NÃO usamos isso como `key` da árvore (remontar fechava modais/ferramentas no meio do uso).
   const [, aplicarOvRender] = useState(0)
@@ -219,6 +225,8 @@ export default function App() {
           <IconWhats />
         </a>
       )}
+
+      {modoApp && <AppTabBar />}
 
       {!modoApp && <BackToTop />}
       {!modoApp && <CadastroGate />}

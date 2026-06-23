@@ -1,4 +1,6 @@
 // Gera public/catalogo.json — feed LEVE de todos os imóveis À VENDA da Rotina (Uberlândia).
+// Também gera public/alugueis.json + public/aluguel-stats.json (LOCAÇÃO, feed SEPARADO) — usados
+// pela rentabilidade por bairro; NÃO entram no catálogo "à venda".
 // O catálogo do site carrega esse feed em runtime (não vai no bundle). Detalhe busca via /api/rotina-imovel.
 import fs from 'node:fs'
 
@@ -17,11 +19,14 @@ async function getCodes() {
   const r = await fetch('https://www.rotina.com.br/sitemap.xml')
   const xml = await r.text()
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1])
-  const venda = locs.filter((u) => u.includes('/imovel/') && u.includes('uberlandia') && !/para-alugar|aluguel/.test(u))
-  return [...new Set(venda.map((u) => u.split('/').pop()))]
+  const udi = locs.filter((u) => u.includes('/imovel/') && u.includes('uberlandia'))
+  const cod = (u) => u.split('/').pop()
+  const venda = [...new Set(udi.filter((u) => !/para-alugar|aluguel/.test(u)).map(cod))]
+  const aluguel = [...new Set(udi.filter((u) => /para-alugar|aluguel/.test(u)).map(cod))]
+  return { venda, aluguel }
 }
 
-async function fetchImovel(cod) {
+async function fetchImovel(cod, finalidade = 'Venda') {
   try {
     const r = await fetch('https://www.rotina.com.br/retornar-imoveis-codigo', {
       method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded', 'user-agent': 'Mozilla/5.0' },
@@ -35,7 +40,7 @@ async function fetchImovel(cod) {
     const rec = {
       codigo: String(im.codigo),
       tipo: im.tipo || '',
-      finalidade: 'Venda',
+      finalidade,
       bairro: im.bairro || '',
       cidade: im.cidade || 'Uberlândia',
       uf: im.estado || 'MG',
@@ -69,8 +74,8 @@ async function poolMap(items, worker, concurrency = 12) {
   return out
 }
 
-const codes = await getCodes()
-console.log('Códigos de venda (UDI):', codes.length)
+const { venda: codes, aluguel: codesAlug } = await getCodes()
+console.log('Códigos de venda (UDI):', codes.length, '| aluguel:', codesAlug.length)
 let feitos = 0
 const recs = (await poolMap(codes, async (cod) => {
   const r = await fetchImovel(cod)
@@ -155,5 +160,40 @@ try {
   console.log('OK -> public/mercado-stats.json |', Object.keys(bairros).length, 'bairros')
 } catch (e) { console.warn('mercado-stats falhou:', e.message) }
 
-escreverStatus({ ok: true, total: recs.length, novos: novos.length, baixaram: baixaram.length, geradoEm })
+// ── ALUGUÉIS (locação) — feed SEPARADO + estatística de aluguel/m² por bairro.
+// NÃO entra no catalogo.json (o site é "à venda"); serve à rentabilidade por bairro. ──
+let totalAlug = 0
+try {
+  let feitosA = 0
+  const recsAlug = (await poolMap(codesAlug, async (cod) => {
+    const r = await fetchImovel(cod, 'Aluguel')
+    if (++feitosA % 200 === 0) console.log('aluguel ' + feitosA + '/' + codesAlug.length + '...')
+    return r
+  }, 12)).filter(Boolean)
+  totalAlug = recsAlug.length
+  if (recsAlug.length >= 100) {
+    fs.writeFileSync('public/alugueis.json', JSON.stringify({ geradoEm, fonte: 'Rotina Imobiliária', total: recsAlug.length, imoveis: recsAlug }))
+    // mediana de aluguel e de aluguel/m² por bairro → alimenta a rentabilidade por bairro
+    const med = (arr) => { if (!arr.length) return 0; const s = [...arr].sort((a, b) => a - b); const m = Math.floor(s.length / 2); return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2 }
+    const stA = {}
+    for (const im of recsAlug) {
+      const b = (im.bairro || '').trim(); const p = im.preco || 0
+      if (!b || p < 200 || p > 100000) continue
+      if (!stA[b]) stA[b] = { precos: [], m2s: [] }
+      stA[b].precos.push(p)
+      if (im.area > 0) stA[b].m2s.push(p / im.area)
+    }
+    const bairrosA = {}
+    for (const [b, v] of Object.entries(stA)) {
+      if (v.precos.length < 3) continue
+      bairrosA[b] = { count: v.precos.length, mediana_aluguel: Math.round(med(v.precos)), mediana_aluguel_m2: Math.round(med(v.m2s) * 100) / 100 }
+    }
+    fs.writeFileSync('public/aluguel-stats.json', JSON.stringify({ geradoEm, total: recsAlug.length, bairros: bairrosA }))
+    console.log('OK -> public/alugueis.json |', recsAlug.length, 'aluguéis | aluguel-stats:', Object.keys(bairrosA).length, 'bairros')
+  } else {
+    console.warn(`⚠ Só ${recsAlug.length} aluguéis (< 100) — mantendo o anterior, sem sobrescrever.`)
+  }
+} catch (e) { console.warn('aluguéis falhou:', e.message) }
+
+escreverStatus({ ok: true, total: recs.length, alugueis: totalAlug, novos: novos.length, baixaram: baixaram.length, geradoEm })
 console.log('OK -> public/catalogo.json |', recs.length, 'imóveis |', kb, 'KB | + catalogo-meta.json')

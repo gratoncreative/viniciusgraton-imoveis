@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { CONFIG, linkWhatsApp } from '../data'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -35,10 +35,13 @@ const hojeFmt = () => new Date().toLocaleDateString('pt-BR', { weekday: 'long', 
 const ehIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent || '')
 
 export default function AppCorretor() {
-  const { pathname } = useLocation()
   const [deferido, setDeferido] = useState(null)   // evento beforeinstallprompt
   const [instalado, setInstalado] = useState(false)
   const [dicaIOS, setDicaIOS] = useState(false)
+
+  // marca a sessão como "modo app" — assim as telas internas (/admin, /corretor,
+  // /avaliar) mantêm a barra de abas e escondem a navbar do site ao navegar a partir daqui.
+  useEffect(() => { try { sessionStorage.setItem('vg_appmode', '1') } catch {} }, [])
 
   // título + noindex (app privado, não deve aparecer na busca)
   useEffect(() => {
@@ -171,25 +174,8 @@ export default function AppCorretor() {
       </section>
 
       <div className="appc-rodape">Painel de trabalho — {CONFIG.marca}</div>
-
-      {/* BARRA DE ABAS */}
-      <nav className="appc-tabs" aria-label="Navegação do app">
-        <Tab to="/app" pathname={pathname} d={ICN.home} label="Início" exact />
-        <Tab to="/admin" pathname={pathname} d={ICN.leads} label="Leads" />
-        <Tab to="/corretor" pathname={pathname} d={ICN.tools} label="Ferramentas" />
-        <Tab to="/avaliar" pathname={pathname} d={ICN.chart} label="Avaliar" />
-      </nav>
+      {/* A barra de abas é global (AppTabBar), renderizada pelo App em modo app. */}
     </div>
-  )
-}
-
-function Tab({ to, pathname, d, label, exact }) {
-  const ativo = exact ? pathname === to : pathname.startsWith(to)
-  return (
-    <Link className={`appc-tab${ativo ? ' on' : ''}`} to={to}>
-      <Ico d={d} size={22} />
-      <span>{label}</span>
-    </Link>
   )
 }
 
@@ -200,7 +186,7 @@ function Estilos() {
     <style>{`
 .appc{--navy:#1C2A44;--escuro:#212b3d;--vermelho:#EB0128;--ouro:#B68A3E;--marfim:#FBFAF7;--linha:#ECE7DD;
   min-height:100vh;background:var(--marfim);color:var(--navy);
-  font-family:'Manrope',system-ui,sans-serif;padding:0 16px calc(86px + env(safe-area-inset-bottom));
+  font-family:'Manrope',system-ui,sans-serif;padding:0 16px 16px;
   max-width:560px;margin:0 auto;}
 .appc-top{display:flex;justify-content:space-between;align-items:flex-start;padding:24px 0 8px;}
 .appc-ola{margin:0;font-size:15px;color:#6b7280;}
@@ -231,12 +217,6 @@ function Estilos() {
 .appc-card svg{color:var(--ouro);} .appc-card strong{font-size:14px;} .appc-card small{font-size:11.5px;color:#6b7280;line-height:1.4;}
 .appc-vertudo{display:block;text-align:center;margin-top:12px;font-size:14px;font-weight:700;color:var(--navy);text-decoration:none;}
 .appc-rodape{text-align:center;font-size:11.5px;color:#aab0b6;margin:28px 0 8px;}
-.appc-tabs{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;background:#fff;
-  border-top:1px solid var(--linha);padding:8px 0 calc(8px + env(safe-area-inset-bottom));
-  max-width:560px;margin:0 auto;}
-.appc-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;
-  color:#9aa0a6;font-size:11px;font-weight:600;}
-.appc-tab.on{color:var(--navy);}
 @media (max-width:380px){.appc-grid{grid-template-columns:1fr;}}
     `}</style>
   )
