@@ -11,11 +11,14 @@ import { IconWhats, IconArrow, IconPin, IconShield } from '../components/icons'
 
 export default function Bairro() {
   const { bairro: slug } = useParams()
-  const b = getBairroSeo(slug)
-  const ed = getBairroEditorial(slug)
-
   // ── Dados REAIS do bairro (catálogo) → meta única, FAQ e schema hiperlocais ──
   const { feed, carregando } = useFeed()
+  const bSeo = getBairroSeo(slug)
+  // Nome real do bairro a partir do feed — faz a página funcionar para QUALQUER bairro
+  // com imóveis (ex.: os 38 do ranking /investir, fora da curadoria SEO).
+  const feedNome = bSeo ? null : (feed.find((im) => im && im.bairro && slugify(im.bairro) === slug)?.bairro || null)
+  const b = bSeo || (feedNome ? { nome: feedNome, slug, desc: `Imóveis à venda em ${feedNome}, Uberlândia. Veja as opções na carteira e fale comigo.` } : null)
+  const ed = getBairroEditorial(slug)
   // catálogo completo do bairro (curados + feed da Rotina), igual ao prerender que o Google vê
   const lista = (() => {
     if (!b) return []
@@ -87,6 +90,15 @@ export default function Bairro() {
   }, [b, slug, ed])
 
   if (!b) {
+    if (carregando) {
+      return (
+        <main className="pagina section--light det-vazio">
+          <div className="container" style={{ textAlign: 'center', padding: '60px 0' }}>
+            <p className="section-sub">Carregando imóveis…</p>
+          </div>
+        </main>
+      )
+    }
     return (
       <main className="pagina section--light det-vazio">
         <div className="container" style={{ textAlign: 'center' }}>
