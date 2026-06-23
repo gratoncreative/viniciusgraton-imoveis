@@ -116,7 +116,13 @@ export default function SimuladorFinanciamento() {
   // regra idade + prazo ≤ 80 anos e 6 meses limita o prazo máximo
   const prazoMaxIdade = prazoMaxPorIdade(idade)
   const prazoMeses = Math.min(PARAMS.prazoMaxMeses, prazoMaxIdade, Math.max(1, Math.round((Number(anos) || 0) * 12)))
-  const prazoLimitadoPorIdade = (Number(anos) || 0) * 12 > prazoMaxIdade
+  const prazoLimitadoPorIdade = prazoMaxIdade < PARAMS.prazoMaxMeses
+  // a idade limita o prazo (regra 80 anos e 6 meses): puxa o campo de anos pra baixo automaticamente,
+  // pra não ficar mostrando 35 anos enquanto o cálculo usa o teto menor.
+  useEffect(() => {
+    const maxAnos = Math.floor(prazoMaxIdade / 12)
+    setAnos((a) => (a > maxAnos ? maxAnos : a))
+  }, [prazoMaxIdade])
 
   const params = {
     valorImovel,
@@ -138,7 +144,9 @@ export default function SimuladorFinanciamento() {
   const rSac = useMemo(() => simular({ ...params, sistema: 'SAC' }), [JSON.stringify(params)])
   const rPrice = useMemo(() => simular({ ...params, sistema: 'Price' }), [JSON.stringify(params)])
 
-  const parcelaShow = useContagem(r?.parcelaRef || 0)
+  // sem contador animado no hero: a parcela mostra sempre o valor exato atual
+  // (evita o "flicker" de valores transitórios durante o recálculo).
+  const parcelaShow = r?.parcelaRef || 0
   const [verTabela, setVerTabela] = useState(false)
 
   const cotaMax = banco.cota * 100
@@ -227,7 +235,7 @@ export default function SimuladorFinanciamento() {
                 </div>
               </label>
             </div>
-            {prazoLimitadoPorIdade && <p className="simf-aviso">Pela regra idade + prazo (teto de 80 anos e 6 meses), com {idade} anos o prazo máximo fica em ~{Math.floor(prazoMaxIdade / 12)} anos ({prazoMaxIdade} meses) — já apliquei esse limite.</p>}
+            {prazoLimitadoPorIdade && <p className="simf-aviso">Pela regra idade + prazo (teto de 80 anos e 6 meses), com {idade} anos o prazo máximo cai para {Math.floor(prazoMaxIdade / 12)} anos — já apliquei esse limite.</p>}
 
             <div className="simf-toggle" role="tablist" aria-label="Sistema de amortização">
               {['SAC', 'Price'].map((s) => (
