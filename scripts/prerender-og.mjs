@@ -131,12 +131,26 @@ function bodySeo(im, descUnica) {
     im.condominio > 0 && `Condomínio: R$ ${Number(im.condominio).toLocaleString('pt-BR')}`,
   ].filter(Boolean)
   const faqs = faqImovel(im)
+  const slug = slugify(im.bairro)
+  const m2bairro = _bairroM2[slug]
+  const m2deste = (im.preco > 0 && im.area > 0) ? Math.round(im.preco / im.area) : 0
+  // bloco de MERCADO do bairro (conteúdo único e local — Google valoriza)
+  const mercado = m2bairro
+    ? `<p>No ${esc(im.bairro)}, o metro quadrado dos imóveis à venda gira em torno de <b>R$ ${m2bairro.toLocaleString('pt-BR')}/m²</b>${m2deste ? `. Este imóvel está a R$ ${m2deste.toLocaleString('pt-BR')}/m² — ${m2deste <= m2bairro ? 'na média ou abaixo' : 'acima'} da referência do bairro` : ''}. Veja o <a href="/mercado">preço do m² por bairro</a>, simule o <a href="/simulador-financiamento">financiamento</a> ou confira se <a href="/investir">vale como investimento</a>.</p>`
+    : ''
+  // IMÓVEIS PARECIDOS no mesmo bairro (links internos → navegação + SEO)
+  const pares = (_bairroLista[slug] || []).filter((x) => String(x.codigo) !== String(im.codigo)).slice(0, 6)
+  const paresHtml = pares.length
+    ? `<section><h2>Imóveis parecidos no ${esc(im.bairro)}</h2><ul>${pares.map((p) => `<li><a href="/imovel/${esc(p.codigo)}">${esc(p.tipo)} no ${esc(p.bairro)}${p.preco > 0 ? ` · ${esc(formatPreco(p.preco))}` : ''} (cód. ${esc(p.codigo)})</a></li>`).join('')}</ul></section>`
+    : ''
   return `<main class="pre-seo"><h1>${esc(im.tipo)} à venda no ${esc(im.bairro)}, Uberlândia · Cód. ${esc(im.codigo)}</h1>` +
     `<p>${esc(descUnica)}</p>` +
     `<ul>${specs.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>` +
+    mercado +
     `<p>Imóvel à venda em ${esc(im.bairro)}, ${esc(im.cidade || 'Uberlândia')} - MG, com Vinícius Graton, consultor credenciado da Rotina Imobiliária. Veja fotos, localização e fale comigo para agendar uma visita.</p>` +
     `<section><h2>Perguntas frequentes sobre este imóvel</h2>${faqs.map((qa) => `<h3>${esc(qa.q)}</h3><p>${esc(qa.a)}</p>`).join('')}</section>` +
-    `<p><a href="/imoveis/uberlandia/${esc(slugify(im.bairro))}">Ver outros imóveis em ${esc(im.bairro)}</a> · <a href="/imoveis">Ver todos os imóveis em Uberlândia</a></p></main>`
+    paresHtml +
+    `<p><a href="/imoveis/uberlandia/${esc(slug)}">Ver outros imóveis em ${esc(im.bairro)}</a> · <a href="/imoveis">Ver todos os imóveis em Uberlândia</a></p></main>`
 }
 
 function render(im) {
@@ -203,6 +217,21 @@ function render(im) {
     .replace('<div id="root"></div>', `<div id="root">${slashHrefs(bodySeo(im, descUnica))}</div>`)
 
   return html
+}
+
+// Dados de mercado por bairro — enriquecem CADA página de imóvel (conteúdo único + links internos)
+const _todosSeo = [...imoveis, ...feed]
+const _bairroM2 = {}   // slug -> mediana do m² (referência do bairro)
+const _bairroLista = {} // slug -> imóveis do bairro (p/ "parecidos")
+{
+  const tmp = {}
+  for (const im of _todosSeo) {
+    if (!im || !im.bairro) continue
+    const s = slugify(im.bairro)
+    ;(_bairroLista[s] = _bairroLista[s] || []).push(im)
+    if (im.preco > 0 && im.area > 0) { const m2 = im.preco / im.area; if (m2 >= 1000 && m2 <= 30000) (tmp[s] = tmp[s] || []).push(m2) }
+  }
+  for (const s in tmp) { const a = tmp[s].sort((x, y) => x - y); _bairroM2[s] = Math.round(a[Math.floor(a.length / 2)]) }
 }
 
 let n = 0
