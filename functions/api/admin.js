@@ -209,15 +209,17 @@ function extrairEnderecoCampos(html) {
     const nm = m[1].toLowerCase()
     if (sel && sel.trim() && !inputs[nm]) inputs[nm] = sel.trim()
   }
-  const pick = (re) => { for (const n in inputs) if (re.test(n)) return inputs[n]; return '' }
+  const pick = (inc, exc) => { for (const n in inputs) if (inc.test(n) && (!exc || !exc.test(n))) return inputs[n]; return '' }
+  // "numero" é traiçoeiro: o imóvel tem numeroquartos/vagas/andar/etc. — excluímos esses.
+  const NUM_EXC = /quartos|vagas|andar|banh|su[ií]te|elevador|deposit|garagem|pavimento|filho|pessoa|dormitor|telefone|celular|whats|fax|documento|matricula|inscricao|iptu|contrato|processo|registro|edificio|pavto/i
   const campos = [
-    ['CEP', pick(/(?:^|[^a-z])cep(?:$|[^a-z])|cepimovel|cependereco/)],
-    ['Endereço', pick(/logradouro|^endereco$|enderecologradouro|nomerua|^rua$/)],
-    ['Nº', pick(/^numero$|numeroendereco|endereconumero|^num$|numeroimovel/)],
-    ['Tipo complemento', pick(/tipocomplemento|complementotipo/)],
-    ['Complemento', pick(/^complemento$|enderecocomplemento|complementoendereco/)],
-    ['Torre/bloco', pick(/torrebloco|blocotorre|^torre$|^bloco$/)],
-    ['Bairro', pick(/^bairro$|enderecobairro|nomebairro|bairroimovel/)],
+    ['CEP', pick(/cep/i)],
+    ['Endereço', pick(/logradouro|^endereco$|enderecologradouro|nomerua|^rua$/i)],
+    ['Nº', pick(/numero|^nro$|^num$|^n[ºo°]$/i, NUM_EXC)],
+    ['Tipo complemento', pick(/tipocomplemento|complementotipo|tipo.?complemento/i)],
+    ['Complemento', pick(/complemento/i, /tipo/i)],
+    ['Torre/bloco', pick(/torre|bloco/i, /desbloq|bloquead|bloqueio/i)],
+    ['Bairro', pick(/bairro/i)],
   ]
   return campos.filter(([, v]) => v && v.length <= 120).map(([rotulo, valor]) => ({ rotulo, valor }))
 }
