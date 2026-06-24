@@ -8351,6 +8351,16 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .investir-row:hover { background: #fff; box-shadow: 0 10px 26px -18px rgba(28, 42, 68, .4); }
 .investir-lista .investir-row:first-child { background: #FBF7EF; }
 .investir-lista .investir-row:first-child .investir-pos { background: #C9A227; color: #fff; }
+
+/* Aluguel — toggle Comprar|Alugar + barra de filtros + sufixo "/mês" */
+.ca-toggle { display: inline-flex; gap: 4px; background: #f0eee9; border-radius: 999px; padding: 4px; margin: 12px 0 14px; }
+.ca-toggle-btn { padding: 7px 22px; border-radius: 999px; font-weight: 700; font-size: .92rem; color: #1C2A44; text-decoration: none; transition: background .15s, color .15s; }
+.ca-toggle-btn.on { background: #1C2A44; color: #fff; }
+.alg-filtros { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 0 0 14px; }
+.alg-filtros .cat-busca { flex: 1 1 240px; min-width: 200px; }
+.alg-preco { display: flex; align-items: center; gap: 6px; }
+.alg-preco .cat-preco-input { width: 118px; }
+.pg-sufixo { font-size: .62em; font-weight: 600; opacity: .7; margin-left: 1px; }
 .investir-pos { font-family: var(--font-head); font-weight: 800; color: #8a909c; font-size: .82rem; width: 26px; height: 26px; line-height: 26px; border-radius: 50%; background: rgba(28, 42, 68, .06); text-align: center; }
 .investir-info { min-width: 0; }
 .investir-bairro { display: block; font-weight: 700; color: #1C2A44; }

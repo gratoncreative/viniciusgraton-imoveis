@@ -22,6 +22,8 @@ const Regioes = lazy(() => import('./pages/Regioes'))
 const FaleComigo = lazy(() => import('./pages/FaleComigo'))
 const Ferramentas = lazy(() => import('./pages/Ferramentas'))
 const ConverterFotos = lazy(() => import('./pages/ConverterFotos'))
+const Alugar = lazy(() => import('./pages/Alugar'))
+const AlugarDetalhe = lazy(() => import('./pages/AlugarDetalhe'))
 const EstudioFotos = lazy(() => import('./pages/EstudioFotos'))
 const EditarFotoPage = lazy(() => import('./pages/EditarFotoPage'))
 const PdfParaJpg = lazy(() => import('./pages/PdfParaJpgPage'))
@@ -168,6 +170,9 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/imoveis" element={<Catalogo />} />
+              <Route path="/alugar" element={<Alugar />} />
+              <Route path="/alugar/imovel/:codigo" element={<AlugarDetalhe />} />
+              <Route path="/alugar/uberlandia/:bairro" element={<Alugar />} />
               <Route path="/imoveis/uberlandia/:bairro" element={<Bairro />} />
               <Route path="/imoveis/uberlandia/:bairro/:tipo" element={<BairroTipo />} />
               <Route path="/imovel/:codigo" element={<ImovelDetalhe />} />

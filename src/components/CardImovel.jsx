@@ -66,7 +66,11 @@ export default function CardImovel({ im, variante, overlayLabel }) {
 
   const op = oportunidade(im)
   const parc = parcelaEstimada(im.preco)
-  const irParaImovel = () => navigate(`/imovel/${im.codigo}`)
+  // aluguel tem rota própria (códigos de venda e aluguel podem coincidir) + preço "/mês"
+  const ehAluguel = im.finalidade === 'Aluguel' || im.finalidade === 'Locação'
+  const detalhe = ehAluguel ? `/alugar/imovel/${im.codigo}` : `/imovel/${im.codigo}`
+  const precoSufixo = ehAluguel ? '/mês' : ''
+  const irParaImovel = () => navigate(detalhe)
 
   // ——— variante horizontal (listagem estilo portal): foto à esquerda, infos à direita ———
   if (variante === 'linha') {
@@ -109,11 +113,11 @@ export default function CardImovel({ im, variante, overlayLabel }) {
           )}
           <div className="im-linha-rodape">
             <div className="im-linha-precobloco">
-              <PrecoGate valor={im.preco} anterior={im.precoAnterior} className="im-linha-preco" tipo="linha" />
+              <PrecoGate valor={im.preco} anterior={im.precoAnterior} className="im-linha-preco" tipo="linha" sufixo={precoSufixo} />
               {im.condominio > 0 && <span className="im-linha-cond">Condomínio R$ {Number(im.condominio).toLocaleString('pt-BR')}</span>}
             </div>
             <div className="im-actions">
-              <Link className="im-ver" to={`/imovel/${im.codigo}`} onClick={(e) => e.stopPropagation()}>Ver detalhes</Link>
+              <Link className="im-ver" to={detalhe} onClick={(e) => e.stopPropagation()}>Ver detalhes</Link>
               <a className="im-cta" href={linkWhatsApp(waImovel(im))} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
                 <IconWhats width={18} height={18} /> Contatar
               </a>
@@ -136,7 +140,7 @@ export default function CardImovel({ im, variante, overlayLabel }) {
         <SeloPublicidade im={im} />
         <SelosOportunidade op={op} />
         <Engajamento im={im} variante="card" />
-        <PrecoGate valor={im.preco} anterior={im.precoAnterior} className="im-preco" tipo="card" />
+        <PrecoGate valor={im.preco} anterior={im.precoAnterior} className="im-preco" tipo="card" sufixo={precoSufixo} />
       </div>
       <div className="card-body im-body">
         <h3 className="im-bairro">{im.bairro}</h3>
@@ -150,7 +154,7 @@ export default function CardImovel({ im, variante, overlayLabel }) {
         <div className="im-specs">
           {specs.map((s, i) => <Spec key={i} {...s} />)}
         </div>
-        {parc > 0 && (
+        {!ehAluguel && parc > 0 && (
           <p className="im-parcela" title="Estimativa: entrada de 20%, 420 meses, ~11,19% a.a. (tabela Price). Sujeito a análise de crédito.">
             ou financie a partir de <b>R$ {parc.toLocaleString('pt-BR')}</b>/mês <i>· estimativa</i>
           </p>
@@ -158,7 +162,7 @@ export default function CardImovel({ im, variante, overlayLabel }) {
         <div className="im-actions">
           <Link
             className="im-ver"
-            to={`/imovel/${im.codigo}`}
+            to={detalhe}
             onClick={(e) => e.stopPropagation()}
             aria-label={`Ver detalhes do ${im.tipo} no ${im.bairro}, ${im.cidade}`}
           >

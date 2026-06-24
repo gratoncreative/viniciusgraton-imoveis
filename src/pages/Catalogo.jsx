@@ -8,6 +8,7 @@ import FiltroSelect from '../components/FiltroSelect'
 import FiltroPills from '../components/FiltroPills'
 import InputMoeda from '../components/InputMoeda'
 import AdminImovelEditor from '../components/AdminImovelEditor'
+import ComprarAlugarToggle from '../components/ComprarAlugarToggle'
 import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, BAIRROS_SEO, linkWhatsApp, WA, aplicarOverrideEmUm } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconClose } from '../components/icons'
@@ -404,6 +405,7 @@ export default function Catalogo() {
               <span aria-hidden="true">›</span>
               <span>Imóveis à venda{f.bairros.length === 1 ? ` em ${f.bairros[0]}` : ' em Uberlândia'}</span>
             </nav>
+            <ComprarAlugarToggle />
             <h1 className="cat-h1">
               {carregandoFeed && !feed.length
                 ? <>Imóveis à venda em <em>Uberlândia</em></>

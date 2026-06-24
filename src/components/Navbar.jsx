@@ -14,7 +14,8 @@ const IconUser = (p) => (
 
 // Menu principal (desktop) — enxuto e com ícones, referência Chaves na Mão
 const LINKS = [
-  { to: '/imoveis', label: 'Imóveis', d: 'M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10' },
+  { to: '/imoveis', label: 'Comprar', d: 'M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10' },
+  { to: '/alugar', label: 'Alugar', d: 'M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3' },
   { to: '/lancamentos', label: 'Lançamentos', d: 'M4.5 21h6M7.5 21V5M5 5h14.5M8 5L19.5 9.5M16 5v5a1 1 0 0 1-2 0' },
   { to: '/condominios', label: 'Condomínios', d: 'M3 21h18M5 21V6h6v15M13 21V10h6v11M7 9h2M7 13h2M7 17h2M15 14h2M15 17h2' },
   { to: '/ferramentas', label: 'Ferramentas', d: 'M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.3 2.3-2-2 2.3-2.3z' },
@@ -36,12 +37,14 @@ const MM_ICN = {
   tools: 'M6 3h12a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM8 7h8M8 11h.01M12 11h.01M16 11h.01M8 15h8',
   doc: 'M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM14 3v5h5M9 13h6M9 17h4',
   pin: 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0zM12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
+  key: 'M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3',
 }
 const MMIcon = ({ name }) => (
   <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={MM_ICN[name]} /></svg>
 )
 const MENU_CARDS = [
-  { to: '/imoveis', label: 'Imóveis', sub: 'À venda em Uberlândia', icon: 'home' },
+  { to: '/imoveis', label: 'Comprar', sub: 'Imóveis à venda em Uberlândia', icon: 'home' },
+  { to: '/alugar', label: 'Alugar', sub: 'Imóveis para locação', icon: 'key' },
   { to: '/condominios', label: 'Condomínios', sub: 'Fechados e lançamentos', icon: 'building' },
   { to: '/lancamentos', label: 'Lançamentos', sub: 'Empreendimentos', icon: 'crane' },
   { to: '/ferramentas', label: 'Ferramentas', sub: 'Simuladores grátis', icon: 'tools' },
