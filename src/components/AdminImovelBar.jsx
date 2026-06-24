@@ -209,8 +209,8 @@ export default function AdminImovelBar({ im }) {
                 <button className="adm-btn" onClick={copiarRelatorio} title="Copiar o relatório completo do proprietário">
                   {copiado ? '✓ Copiado' : '⧉ Copiar relatório'}
                 </button>
-                {!owner?.enderecoImovel && (
-                  <button className="adm-btn" onClick={diagnostico} disabled={loading} title="Faltou o endereço? Mostra o que o Imoview retornou pra ajustar a captação">
+                {!(owner?.enderecoCampos || []).some((c) => c.rotulo === 'Nº') && (
+                  <button className="adm-btn" onClick={diagnostico} disabled={loading} title="Faltou o número? Mostra o que o Imoview retornou pra ajustar a captação">
                     🔧 Diagnóstico
                   </button>
                 )}
