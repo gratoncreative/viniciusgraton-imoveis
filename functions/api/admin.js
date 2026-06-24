@@ -840,9 +840,12 @@ export async function onRequestPost({ env, request }) {
                   const n = String(p.nome || p.Nome || p.nomeCompleto || p.NomeProprietario || p.nomeProprietario || '').trim()
                   const f = String(p.telefone || p.Telefone || p.celular || p.Celular || p.TelefoneResidencial || p.TelefoneCelular || '').trim()
                   const e = String(p.email || p.Email || '').trim()
-                  const dd = camposDeObjeto(p)
-                  if (isDebug) dbg.propJson = JSON.stringify(p).slice(0, 1500)
-                  if (n || f || dd.length) { owner = { nome: n.slice(0, 120), email: e.slice(0, 160), fone: f.slice(0, 40) }; if (dd.length) owner.dados = dd; break }
+                  if (n || f) {
+                    owner = { nome: n.slice(0, 120), email: e.slice(0, 160), fone: f.slice(0, 40) }
+                    try { const dd = camposDeObjeto(p); if (dd.length) owner.dados = dd } catch {}
+                    if (isDebug) dbg.propJson = JSON.stringify(p).slice(0, 1500)
+                    break
+                  }
                 }
               } catch {}
 
@@ -884,23 +887,28 @@ export async function onRequestPost({ env, request }) {
 
             if (pessoaCode) {
               for (const tipo of ['PessoaF', 'PessoaJ']) {
-                // a página de EDIÇÃO costuma trazer TODOS os campos preenchidos; tenta ela e Detalhes
-                let pessoaHtml = ''
-                let dados = []
-                for (const acao of ['Editar', 'Detalhes']) {
-                  const rr = await fetch(`${WEB}/${tipo}/${acao}/${pessoaCode}`, {
+                // /Detalhes é a fonte do NOME/TELEFONE (caminho comprovado). NUNCA deixar de usá-la.
+                const pessoaR = await fetch(`${WEB}/${tipo}/Detalhes/${pessoaCode}`, {
+                  headers: { cookie: cookies, 'user-agent': UA, accept: 'text/html' },
+                  redirect: 'follow', signal: AbortSignal.timeout(12000),
+                })
+                dbg[`${tipo}Status`] = pessoaR.status
+                const pessoaHtml = pessoaR.ok ? await pessoaR.text() : ''
+                let dados = extrairCampos(pessoaHtml)
+                // a página de EDIÇÃO costuma trazer endereço/CPF/etc. — usada SÓ para enriquecer 'dados'
+                try {
+                  const edR = await fetch(`${WEB}/${tipo}/Editar/${pessoaCode}`, {
                     headers: { cookie: cookies, 'user-agent': UA, accept: 'text/html' },
                     redirect: 'follow', signal: AbortSignal.timeout(12000),
                   })
-                  dbg[`${tipo}${acao}Status`] = rr.status
-                  if (!rr.ok) continue
-                  const h = await rr.text()
-                  const d = extrairCampos(h)
-                  if (d.length > dados.length || !pessoaHtml) { dados = d; pessoaHtml = h }
-                  if (isDebug && acao === 'Editar') dbg[`${tipo}Inputs`] = (h.match(/<input\b[^>]*>/gi) || []).slice(0, 25).map((t) => t.replace(/\s+/g, ' ').slice(0, 140)).join('\n')
-                  if (dados.length >= 4) break
-                }
-                if (!pessoaHtml) continue
+                  dbg[`${tipo}EditarStatus`] = edR.status
+                  if (edR.ok) {
+                    const eh = await edR.text()
+                    const ec = extrairCampos(eh)
+                    if (ec.length > dados.length) dados = ec
+                    if (isDebug) dbg[`${tipo}Inputs`] = (eh.match(/<input\b[^>]*>/gi) || []).slice(0, 25).map((t) => t.replace(/\s+/g, ' ').slice(0, 140)).join('\n')
+                  }
+                } catch {}
                 if (isDebug) { const _i = pessoaHtml.search(/endere|\bcep\b|cpf/i); dbg[`${tipo}Ctx`] = _i >= 0 ? pessoaHtml.slice(Math.max(0, _i - 220), _i + 420).replace(/\s+/g, ' ') : 'sem endereço/cpf no html' }
                 const nomeM = pessoaHtml.match(/<title>[^|<]+\|\s*([^<]+)<\/title>/)
                 const nome  = nomeM ? nomeM[1].trim() : ''
