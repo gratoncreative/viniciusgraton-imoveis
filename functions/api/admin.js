@@ -217,6 +217,13 @@ function extrairEnderecoTexto(html) {
   if (temNum) campos.push({ rotulo: 'Nº', valor: partes[1] })
   const compl = partes.slice(temNum ? 2 : 1).join(', ').trim()
   if (compl) campos.push({ rotulo: 'Complemento', valor: compl.slice(0, 120) })
+  // reforço: nome exato do campo no Imoview (MVC) — Imovel.NumeroEnderecoImovel — caso o nº não venha na vírgula
+  if (!campos.some((c) => c.rotulo === 'Nº')) {
+    const nd = (html.match(/(?:name|id)=["'][^"']*numero[^"']*endereco[^"']*imovel[^"']*["'][^>]*\bvalue=["']\s*(\d{1,6}[A-Za-z]?)\s*["']/i)
+      || html.match(/\bvalue=["']\s*(\d{1,6}[A-Za-z]?)\s*["'][^>]*(?:name|id)=["'][^"']*numero[^"']*endereco[^"']*imovel/i)
+      || html.match(/["']?numero(?:do)?endereco(?:do)?imovel["']?\s*:\s*["']?\s*(\d{1,6}[A-Za-z]?)/i) || [])[1]
+    if (nd) { const i = campos.findIndex((c) => c.rotulo === 'Endereço'); campos.splice(i >= 0 ? i + 1 : campos.length, 0, { rotulo: 'Nº', valor: nd }) }
+  }
   const reg = (t.match(/Bairro\s+([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ .'-]{1,30}?)\s+(?:CEP|Cidade|Regi[ãa]o|Refer|Caracter|Estado|$)/i) || t.match(/Regi[ãa]o\s+(Centro|Central|Sul|Norte|Leste|Oeste)\b/i) || [])[1]
   if (reg) campos.push({ rotulo: 'Bairro/Região', valor: reg.trim().slice(0, 60) })
   if (cep) campos.push({ rotulo: 'CEP', valor: cep })
