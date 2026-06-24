@@ -909,7 +909,14 @@ export async function onRequestPost({ env, request }) {
                     if (isDebug) dbg[`${tipo}Inputs`] = (eh.match(/<input\b[^>]*>/gi) || []).slice(0, 25).map((t) => t.replace(/\s+/g, ' ').slice(0, 140)).join('\n')
                   }
                 } catch {}
-                if (isDebug) { const _i = pessoaHtml.search(/endere|\bcep\b|cpf/i); dbg[`${tipo}Ctx`] = _i >= 0 ? pessoaHtml.slice(Math.max(0, _i - 220), _i + 420).replace(/\s+/g, ' ') : 'sem endereço/cpf no html' }
+                if (isDebug) {
+                  const _i = pessoaHtml.search(/endere|\bcep\b|cpf/i); dbg[`${tipo}Ctx`] = _i >= 0 ? pessoaHtml.slice(Math.max(0, _i - 220), _i + 420).replace(/\s+/g, ' ') : 'sem endereço/cpf no html'
+                  // os painéis (endereços/contatos) carregam por AJAX — capturar as URLs p/ buscá-las depois
+                  dbg[`${tipo}DataUrls`] = [...new Set([...pessoaHtml.matchAll(/data-url\s*=\s*["']([^"']+)["']/gi)].map((x) => x[1]))].slice(0, 25)
+                  dbg[`${tipo}Refs`] = [...new Set([...pessoaHtml.matchAll(/["'](\/[^"'\s<>]*(?:[Ee]ndereco|[Cc]ontato|[Tt]elefone|[Ll]istar|[Rr]etornar)[^"'\s<>]*)["']/g)].map((x) => x[1]))].slice(0, 40)
+                  const _j = pessoaHtml.search(/painelEnderecos|id=["'][^"']*[Ee]ndereco/)
+                  dbg[`${tipo}EndBloco`] = _j >= 0 ? pessoaHtml.slice(_j, _j + 800).replace(/\s+/g, ' ') : 'bloco de endereço não localizado'
+                }
                 const nomeM = pessoaHtml.match(/<title>[^|<]+\|\s*([^<]+)<\/title>/)
                 const nome  = nomeM ? nomeM[1].trim() : ''
                 const waM = pessoaHtml.match(/api\.whatsapp\.com\/send\?phone=55(\d{10,11})/)
