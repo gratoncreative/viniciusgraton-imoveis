@@ -113,6 +113,7 @@ export default function AdminImovelBar({ im }) {
       owner.nome && `Nome: ${owner.nome}`,
       owner.email && `E-mail: ${owner.email}`,
       owner.fone && `Telefone: ${owner.fone}`,
+      owner.enderecoImovel && `Endereço do imóvel: ${owner.enderecoImovel}`,
       ...((owner.dados || []).map((d) => `${d.rotulo}: ${d.valor}`)),
     ].filter(Boolean).join('\n')
     navigator.clipboard?.writeText(linhas).catch(() => {})
@@ -127,7 +128,7 @@ export default function AdminImovelBar({ im }) {
     setLoading(false); setMsg('')
   }
 
-  const temContato = !!(owner && (owner.nome || owner.fone || (owner.dados && owner.dados.length)))
+  const temContato = !!(owner && (owner.nome || owner.fone || (owner.dados && owner.dados.length) || owner.enderecoImovel))
 
   return (
     <div className="adm-bar" role="region" aria-label="Painel administrativo">
@@ -179,6 +180,9 @@ export default function AdminImovelBar({ im }) {
                   ? <a href={`tel:${owner.fone}`}>{owner.fone}</a>
                   : <span>—</span>}
               </div>
+              {owner.enderecoImovel && (
+                <div className="adm-field"><label>Endereço do imóvel</label><span>{owner.enderecoImovel}</span></div>
+              )}
               {Array.isArray(owner.dados) && owner.dados.length > 0 && (
                 <div className="adm-owner-dados" style={{ marginTop: 8, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
                   {owner.dados.map((d, i) => (
@@ -196,8 +200,8 @@ export default function AdminImovelBar({ im }) {
                 <button className="adm-btn" onClick={copiarRelatorio} title="Copiar o relatório completo do proprietário">
                   {copiado ? '✓ Copiado' : '⧉ Copiar relatório'}
                 </button>
-                {!owner?.dados?.length && (
-                  <button className="adm-btn" onClick={diagnostico} disabled={loading} title="Faltou algum campo? Mostra o que o Imoview retornou pra ajustar a captação">
+                {!owner?.enderecoImovel && (
+                  <button className="adm-btn" onClick={diagnostico} disabled={loading} title="Faltou o endereço? Mostra o que o Imoview retornou pra ajustar a captação">
                     🔧 Diagnóstico
                   </button>
                 )}

@@ -175,6 +175,24 @@ function camposDeObjeto(obj) {
   return out.slice(0, 40)
 }
 
+// Extrai o ENDEREÇO DO IMÓVEL da página /Imovel/Detalhes do Imoview (texto server-rendered).
+function extrairEnderecoImovel(html) {
+  const body = (html.split(/<\/head>/i)[1] || html).replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ')
+  const limpa = (s) => String(s || '').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&').replace(/&#?[a-z0-9]+;/gi, ' ').replace(/\s+/g, ' ').trim()
+  let end = ''
+  // 1) campo/rótulo "Endereço" seguido do valor
+  const m = body.match(/Endere[çc]o\s*<\/[^>]+>\s*<[^>]*>\s*([^<]{6,140})/i) || body.match(/Endere[çc]o[^<]{0,4}<\/[^>]+>([\s\S]{0,180}?)<\/(?:td|div|span|p|li|h\d)>/i)
+  if (m) end = limpa(m[1])
+  // 2) logradouro explícito no texto (fallback)
+  if (!end || end.length < 6 || /^endere/i.test(end)) {
+    const t = limpa(body)
+    const lg = t.match(/\b(?:Rua|R\.|Avenida|Av\.?|Travessa|Trav\.?|Pra[çc]a|Alameda|Al\.?|Rodovia|Estrada|Quadra)\s+[A-Za-zÀ-ÿ0-9 .'-]{3,60}(?:,?\s*n[ºo°.]?\s*\d{1,6}[A-Za-z]?)?/i)
+    if (lg) end = lg[0].trim()
+  }
+  const cep = (limpa(body).match(/\b\d{5}-?\d{3}\b/) || [])[0] || ''
+  return [end, cep && ('CEP ' + cep)].filter(Boolean).join(' · ').replace(/\s+/g, ' ').trim().slice(0, 200)
+}
+
 // Parser do HTML de /Atendimento/Pesquisar (lista renderizada). Resiliente, baseado nos
 // rótulos visíveis: "Atendimento N", nome, WhatsApp, e-mail, Situação, Fase, Mídia, Corretor.
 function parseAtendimentosHtml(html) {
@@ -799,6 +817,14 @@ export async function onRequestPost({ env, request }) {
           dbg.imovelStatus = imovelR.status
           const imovelHtml = await imovelR.text()
           if (isDebug) dbg.imovelSnippet = imovelHtml.slice(0, 2000)
+          // ENDEREÇO DO IMÓVEL — está nesta mesma página (server-rendered)
+          const enderecoImovel = extrairEnderecoImovel(imovelHtml)
+          if (isDebug) {
+            dbg.enderecoImovel = enderecoImovel
+            const _bd = imovelHtml.split(/<\/head>/i)[1] || ''
+            const _ie = _bd.search(/endere/i)
+            dbg.imovelEndCtx = _ie >= 0 ? _bd.slice(Math.max(0, _ie - 120), _ie + 520).replace(/\s+/g, ' ') : 'sem "endereço" no corpo'
+          }
 
           // === ESTRATÉGIA 1: Lista de Proprietários (endpoint AJAX dedicado) ===
           // Busca URL do endpoint diretamente no HTML (href, data-url, JS string)
@@ -949,7 +975,8 @@ export async function onRequestPost({ env, request }) {
             }
           }
 
-          if (owner.nome || owner.fone || (owner.dados && owner.dados.length)) {
+          if (enderecoImovel) owner.enderecoImovel = enderecoImovel
+          if (owner.nome || owner.fone || (owner.dados && owner.dados.length) || enderecoImovel) {
             await env.ENGAGEMENT.put('imovel:'+cod, JSON.stringify({...(saved||{}), owner, atualizadoEm:Date.now()}))
             await registrarProprietario(env, cod, owner) // auto-cadastra no sistema (Leads)
             return json({ ok:true, owner, source:'imoview-web', ...(isDebug?{dbg}:{}) })
@@ -1000,8 +1027,9 @@ export async function onRequestPost({ env, request }) {
       fone: String(o.fone || '').replace(/[^\d+\s().-]/g, '').slice(0, 40),
     }
     const existing = await env.ENGAGEMENT.get('imovel:' + cod, 'json') || {}
-    // preserva o relatório completo (dados) já captado do Imoview ao salvar edição manual
+    // preserva o relatório completo (dados) e o endereço do imóvel já captados ao salvar edição manual
     if (existing.owner && Array.isArray(existing.owner.dados)) owner.dados = existing.owner.dados
+    if (existing.owner && existing.owner.enderecoImovel) owner.enderecoImovel = existing.owner.enderecoImovel
     await env.ENGAGEMENT.put('imovel:' + cod, JSON.stringify({ ...existing, owner, atualizadoEm: Date.now() }))
     if (owner.nome || owner.fone) await registrarProprietario(env, cod, owner) // auto-cadastra no sistema
     return json({ ok: true, owner })
