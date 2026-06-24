@@ -193,6 +193,35 @@ function extrairEnderecoImovel(html) {
   return [end, cep && ('CEP ' + cep)].filter(Boolean).join(' · ').replace(/\s+/g, ' ').trim().slice(0, 200)
 }
 
+// Extrai os CAMPOS estruturados do endereço do imóvel (CEP, Endereço, Nº, Tipo complemento,
+// Complemento, Torre/bloco, Bairro) dos inputs/selects do formulário do imóvel no Imoview.
+function extrairEnderecoCampos(html) {
+  const inputs = {}
+  for (const m of html.matchAll(/<input\b[^>]*>/gi)) {
+    const tag = m[0]
+    if (/type=["'](?:submit|button|checkbox|radio|file)["']/i.test(tag)) continue
+    const name = (tag.match(/\b(?:name|id)=["']([^"']+)["']/i) || [])[1]; if (!name) continue
+    const val = (tag.match(/\bvalue=["']([^"']*)["']/i) || [])[1] || ''
+    if (val.trim() && !inputs[name.toLowerCase()]) inputs[name.toLowerCase()] = val.trim()
+  }
+  for (const m of html.matchAll(/<select\b[^>]*\b(?:name|id)=["']([^"']+)["'][^>]*>([\s\S]*?)<\/select>/gi)) {
+    const sel = (m[2].match(/<option[^>]*\bselected\b[^>]*>([^<]*)</i) || [])[1]
+    const nm = m[1].toLowerCase()
+    if (sel && sel.trim() && !inputs[nm]) inputs[nm] = sel.trim()
+  }
+  const pick = (re) => { for (const n in inputs) if (re.test(n)) return inputs[n]; return '' }
+  const campos = [
+    ['CEP', pick(/(?:^|[^a-z])cep(?:$|[^a-z])|cepimovel|cependereco/)],
+    ['Endereço', pick(/logradouro|^endereco$|enderecologradouro|nomerua|^rua$/)],
+    ['Nº', pick(/^numero$|numeroendereco|endereconumero|^num$|numeroimovel/)],
+    ['Tipo complemento', pick(/tipocomplemento|complementotipo/)],
+    ['Complemento', pick(/^complemento$|enderecocomplemento|complementoendereco/)],
+    ['Torre/bloco', pick(/torrebloco|blocotorre|^torre$|^bloco$/)],
+    ['Bairro', pick(/^bairro$|enderecobairro|nomebairro|bairroimovel/)],
+  ]
+  return campos.filter(([, v]) => v && v.length <= 120).map(([rotulo, valor]) => ({ rotulo, valor }))
+}
+
 // Parser do HTML de /Atendimento/Pesquisar (lista renderizada). Resiliente, baseado nos
 // rótulos visíveis: "Atendimento N", nome, WhatsApp, e-mail, Situação, Fase, Mídia, Corretor.
 function parseAtendimentosHtml(html) {
@@ -818,9 +847,24 @@ export async function onRequestPost({ env, request }) {
           const imovelHtml = await imovelR.text()
           if (isDebug) dbg.imovelSnippet = imovelHtml.slice(0, 2000)
           // ENDEREÇO DO IMÓVEL — está nesta mesma página (server-rendered)
-          const enderecoImovel = extrairEnderecoImovel(imovelHtml)
+          // ENDEREÇO DO IMÓVEL (campos estruturados). A página de EDIÇÃO traz os inputs preenchidos.
+          let enderecoCampos = extrairEnderecoCampos(imovelHtml)
+          try {
+            const edImR = await fetch(`${WEB}/Imovel/Editar/${cod}`, { headers: { cookie: cookies, 'user-agent': UA, accept: 'text/html' }, redirect: 'follow', signal: AbortSignal.timeout(12000) })
+            dbg.imovelEditarStatus = edImR.status
+            if (edImR.ok) {
+              const eh = await edImR.text()
+              const ec = extrairEnderecoCampos(eh)
+              if (ec.length > enderecoCampos.length) enderecoCampos = ec
+              if (isDebug) dbg.imovelInputs = (eh.match(/<input\b[^>]*>/gi) || []).filter((t) => /cep|endereco|logradouro|numero|complemento|bairro|torre|bloco|rua/i.test(t)).slice(0, 25).map((t) => t.replace(/\s+/g, ' ').slice(0, 150)).join('\n')
+            }
+          } catch {}
+          const _byRot = (r) => (enderecoCampos.find((c) => c.rotulo === r) || {}).valor || ''
+          const enderecoImovel = enderecoCampos.length
+            ? [[_byRot('Endereço'), _byRot('Nº')].filter(Boolean).join(', '), _byRot('Complemento'), _byRot('Torre/bloco'), _byRot('Bairro'), _byRot('CEP') && ('CEP ' + _byRot('CEP'))].filter(Boolean).join(' · ')
+            : extrairEnderecoImovel(imovelHtml)
           if (isDebug) {
-            dbg.enderecoImovel = enderecoImovel
+            dbg.enderecoImovel = enderecoImovel; dbg.enderecoCampos = enderecoCampos
             const _bd = imovelHtml.split(/<\/head>/i)[1] || ''
             const _ie = _bd.search(/endere/i)
             dbg.imovelEndCtx = _ie >= 0 ? _bd.slice(Math.max(0, _ie - 120), _ie + 520).replace(/\s+/g, ' ') : 'sem "endereço" no corpo'
@@ -976,6 +1020,7 @@ export async function onRequestPost({ env, request }) {
           }
 
           if (enderecoImovel) owner.enderecoImovel = enderecoImovel
+          if (enderecoCampos.length) owner.enderecoCampos = enderecoCampos
           if (owner.nome || owner.fone || (owner.dados && owner.dados.length) || enderecoImovel) {
             await env.ENGAGEMENT.put('imovel:'+cod, JSON.stringify({...(saved||{}), owner, atualizadoEm:Date.now()}))
             await registrarProprietario(env, cod, owner) // auto-cadastra no sistema (Leads)
@@ -1030,6 +1075,7 @@ export async function onRequestPost({ env, request }) {
     // preserva o relatório completo (dados) e o endereço do imóvel já captados ao salvar edição manual
     if (existing.owner && Array.isArray(existing.owner.dados)) owner.dados = existing.owner.dados
     if (existing.owner && existing.owner.enderecoImovel) owner.enderecoImovel = existing.owner.enderecoImovel
+    if (existing.owner && Array.isArray(existing.owner.enderecoCampos)) owner.enderecoCampos = existing.owner.enderecoCampos
     await env.ENGAGEMENT.put('imovel:' + cod, JSON.stringify({ ...existing, owner, atualizadoEm: Date.now() }))
     if (owner.nome || owner.fone) await registrarProprietario(env, cod, owner) // auto-cadastra no sistema
     return json({ ok: true, owner })

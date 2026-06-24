@@ -113,7 +113,9 @@ export default function AdminImovelBar({ im }) {
       owner.nome && `Nome: ${owner.nome}`,
       owner.email && `E-mail: ${owner.email}`,
       owner.fone && `Telefone: ${owner.fone}`,
-      owner.enderecoImovel && `Endereço do imóvel: ${owner.enderecoImovel}`,
+      ...(owner.enderecoCampos?.length
+        ? ['Endereço do imóvel:', ...owner.enderecoCampos.map((c) => `  ${c.rotulo}: ${c.valor}`)]
+        : (owner.enderecoImovel ? [`Endereço do imóvel: ${owner.enderecoImovel}`] : [])),
       ...((owner.dados || []).map((d) => `${d.rotulo}: ${d.valor}`)),
     ].filter(Boolean).join('\n')
     navigator.clipboard?.writeText(linhas).catch(() => {})
@@ -180,9 +182,16 @@ export default function AdminImovelBar({ im }) {
                   ? <a href={`tel:${owner.fone}`}>{owner.fone}</a>
                   : <span>—</span>}
               </div>
-              {owner.enderecoImovel && (
+              {Array.isArray(owner.enderecoCampos) && owner.enderecoCampos.length > 0 ? (
+                <div className="adm-owner-dados" style={{ marginTop: 8, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+                  <p className="adm-status" style={{ margin: '0 0 4px', fontWeight: 700 }}>Endereço do imóvel</p>
+                  {owner.enderecoCampos.map((c, i) => (
+                    <div className="adm-field" key={i}><label>{c.rotulo}</label><span>{c.valor}</span></div>
+                  ))}
+                </div>
+              ) : owner.enderecoImovel ? (
                 <div className="adm-field"><label>Endereço do imóvel</label><span>{owner.enderecoImovel}</span></div>
-              )}
+              ) : null}
               {Array.isArray(owner.dados) && owner.dados.length > 0 && (
                 <div className="adm-owner-dados" style={{ marginTop: 8, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
                   {owner.dados.map((d, i) => (
