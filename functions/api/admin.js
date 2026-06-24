@@ -885,8 +885,12 @@ export async function onRequestPost({ env, request }) {
           if (isDebug) {
             dbg.enderecoImovel = enderecoImovel; dbg.enderecoCampos = enderecoCampos
             const _bd = imovelHtml.split(/<\/head>/i)[1] || ''
-            const _ie = _bd.search(/endere/i)
-            dbg.imovelEndCtx = _ie >= 0 ? _bd.slice(Math.max(0, _ie - 120), _ie + 520).replace(/\s+/g, ' ') : 'sem "endereço" no corpo'
+            // captura a região onde o ENDEREÇO REAL é exibido (em volta do logradouro), não a caixa de busca
+            const _ie = _bd.search(/(?:Avenida|Av\.|Rua|R\.|Travessa|Pra[çc]a|Alameda|Rodovia|Estrada|Quadra)\s+[A-Za-zÀ-Ý]/)
+            dbg.imovelEndCtx = _ie >= 0 ? _bd.slice(Math.max(0, _ie - 200), _ie + 650).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ') : 'logradouro não localizado no corpo'
+            // ocorrências de "número"/"nº"+dígitos no corpo (pra achar onde o número mora)
+            const _txt = _bd.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/gi, ' ')
+            dbg.imovelNumeros = [...new Set([..._txt.matchAll(/(?:n[úu]mero|n[ºo°])\.?\s*:?\s*\d{1,6}/gi)].map((x) => x[0].replace(/\s+/g, ' ').trim()))].slice(0, 12)
           }
 
           // === ESTRATÉGIA 1: Lista de Proprietários (endpoint AJAX dedicado) ===
