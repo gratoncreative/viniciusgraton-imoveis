@@ -4,7 +4,6 @@ import Reveal from '../components/Reveal'
 import CardImovel from '../components/CardImovel'
 import AviseMe from '../components/AviseMe'
 import FiltroSelect from '../components/FiltroSelect'
-import FiltroPills from '../components/FiltroPills'
 import InputMoeda from '../components/InputMoeda'
 import { slugify, linkWhatsApp, WA } from '../data'
 import { useAlugueis } from '../useAlugueis'
@@ -151,12 +150,13 @@ export default function Alugar() {
             <FiltroSelect placeholder="Todos os bairros" multiple searchable multiNoun="bairros" value={f.bairros} onChange={setBairros}
               options={bairros.map((b) => ({ value: b, label: b }))} />
           )}
-          <div className="cat-preco alg-preco">
+          <div className="alg-preco">
             <InputMoeda className="cat-preco-input" placeholder="Aluguel mín." value={f.precoMin || ''} onChange={(v) => up('precoMin', v || 0)} />
             <span className="cat-preco-ate">até</span>
             <InputMoeda className="cat-preco-input" placeholder="Aluguel máx." value={f.precoMax || ''} onChange={(v) => up('precoMax', v || 0)} />
           </div>
-          <FiltroPills label="Quartos" value={f.quartos} onChange={(v) => up('quartos', v)} />
+          <FiltroSelect placeholder="Quartos" neutral={0} value={f.quartos} onChange={(v) => up('quartos', v)}
+            options={[{ value: 0, label: 'Quartos (qualquer)' }, { value: 1, label: '1+ quartos' }, { value: 2, label: '2+ quartos' }, { value: 3, label: '3+ quartos' }, { value: 4, label: '4+ quartos' }]} />
           <FiltroSelect placeholder="Menor aluguel" neutral="menor" value={f.ordem} onChange={(v) => up('ordem', v)} options={ORDENS} />
         </div>
 
