@@ -193,6 +193,36 @@ function extrairEnderecoImovel(html) {
   return [end, cep && ('CEP ' + cep)].filter(Boolean).join(' · ').replace(/\s+/g, ' ').trim().slice(0, 200)
 }
 
+// Lê o endereço do imóvel a partir do TEXTO da página de detalhes do Imoview, que vem no
+// formato: "Endereço <logradouro>, <número>, <complemento...>, CEP <cep> Cidade ... Região <X>".
+// Devolve o texto completo (com número) + os campos estruturados.
+function extrairEnderecoTexto(html) {
+  const body = (html.split(/<\/head>/i)[1] || html).replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ')
+  const t = body
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n))
+    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCharCode(parseInt(n, 16)))
+    .replace(/&[a-z]+;/gi, ' ').replace(/\s+/g, ' ').trim()
+  const m = t.match(/Endere[çc]o\s+(.{6,200}?)\s+(?:Cidade|Regi[ãa]o|Estado|Bairro|Refer[êe]ncia|Caracter[íi]sticas)\b/i)
+  const bloco = m ? m[1].trim().replace(/[,;\s]+$/, '') : ''
+  if (!bloco || !/[A-Za-zÀ-ÿ]/.test(bloco)) return { texto: '', campos: [] }
+  let cep = (bloco.match(/CEP\s*:?\s*(\d{5}-?\d{3})/i) || bloco.match(/\b(\d{5}-?\d{3})\b/) || [])[1] || ''
+  if (!cep) { const ie = t.search(/Endere[çc]o/i); const win = ie >= 0 ? t.slice(ie, ie + 260) : t; cep = (win.match(/CEP\s*:?\s*(\d{5}-?\d{3})/i) || win.match(/\b(\d{5}-?\d{3})\b/) || [])[1] || '' }
+  const semCep = bloco.replace(/,?\s*CEP\s*:?\s*\d{5}-?\d{3}/i, '').replace(/,?\s*\b\d{5}-?\d{3}\b/, '').trim().replace(/[,;\s]+$/, '')
+  const partes = semCep.split(',').map((s) => s.trim()).filter(Boolean)
+  const campos = []
+  if (partes[0]) campos.push({ rotulo: 'Endereço', valor: partes[0].slice(0, 120) })
+  const temNum = partes[1] && /^\d{1,6}[A-Za-z]?$/.test(partes[1])
+  if (temNum) campos.push({ rotulo: 'Nº', valor: partes[1] })
+  const compl = partes.slice(temNum ? 2 : 1).join(', ').trim()
+  if (compl) campos.push({ rotulo: 'Complemento', valor: compl.slice(0, 120) })
+  const reg = (t.match(/Bairro\s+([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ .'-]{1,30}?)\s+(?:CEP|Cidade|Regi[ãa]o|Refer|Caracter|Estado|$)/i) || t.match(/Regi[ãa]o\s+(Centro|Central|Sul|Norte|Leste|Oeste)\b/i) || [])[1]
+  if (reg) campos.push({ rotulo: 'Bairro/Região', valor: reg.trim().slice(0, 60) })
+  if (cep) campos.push({ rotulo: 'CEP', valor: cep })
+  return { texto: bloco.slice(0, 220), campos }
+}
+
 // Extrai os CAMPOS estruturados do endereço do imóvel (CEP, Endereço, Nº, Tipo complemento,
 // Complemento, Torre/bloco, Bairro) dos inputs/selects do formulário do imóvel no Imoview.
 function extrairEnderecoCampos(html) {
@@ -865,32 +895,17 @@ export async function onRequestPost({ env, request }) {
           dbg.imovelStatus = imovelR.status
           const imovelHtml = await imovelR.text()
           if (isDebug) dbg.imovelSnippet = imovelHtml.slice(0, 2000)
-          // ENDEREÇO DO IMÓVEL — está nesta mesma página (server-rendered)
-          // ENDEREÇO DO IMÓVEL (campos estruturados). A página de EDIÇÃO traz os inputs preenchidos.
-          let enderecoCampos = extrairEnderecoCampos(imovelHtml)
-          try {
-            const edImR = await fetch(`${WEB}/Imovel/Editar/${cod}`, { headers: { cookie: cookies, 'user-agent': UA, accept: 'text/html' }, redirect: 'follow', signal: AbortSignal.timeout(12000) })
-            dbg.imovelEditarStatus = edImR.status
-            if (edImR.ok) {
-              const eh = await edImR.text()
-              const ec = extrairEnderecoCampos(eh)
-              if (ec.length > enderecoCampos.length) enderecoCampos = ec
-              if (isDebug) dbg.imovelInputs = (eh.match(/<input\b[^>]*>/gi) || []).filter((t) => /cep|endereco|logradouro|numero|complemento|bairro|torre|bloco|rua/i.test(t)).slice(0, 25).map((t) => t.replace(/\s+/g, ' ').slice(0, 150)).join('\n')
-            }
-          } catch {}
-          const _byRot = (r) => (enderecoCampos.find((c) => c.rotulo === r) || {}).valor || ''
-          const enderecoImovel = enderecoCampos.length
-            ? [[_byRot('Endereço'), _byRot('Nº')].filter(Boolean).join(', '), _byRot('Complemento'), _byRot('Torre/bloco'), _byRot('Bairro'), _byRot('CEP') && ('CEP ' + _byRot('CEP'))].filter(Boolean).join(' · ')
-            : extrairEnderecoImovel(imovelHtml)
+          // ENDEREÇO DO IMÓVEL — renderizado como TEXTO na página de detalhes (os campos do
+          // formulário de edição carregam por AJAX, então não dá pra lê-los do HTML inicial).
+          // Formato: "Endereço <logradouro>, <nº>, <complemento>, CEP <cep> Cidade ... Região <X>".
+          const _end = extrairEnderecoTexto(imovelHtml)
+          let enderecoCampos = _end.campos
+          const enderecoImovel = _end.texto || extrairEnderecoImovel(imovelHtml)
           if (isDebug) {
             dbg.enderecoImovel = enderecoImovel; dbg.enderecoCampos = enderecoCampos
             const _bd = imovelHtml.split(/<\/head>/i)[1] || ''
-            // captura a região onde o ENDEREÇO REAL é exibido (em volta do logradouro), não a caixa de busca
             const _ie = _bd.search(/(?:Avenida|Av\.|Rua|R\.|Travessa|Pra[çc]a|Alameda|Rodovia|Estrada|Quadra)\s+[A-Za-zÀ-Ý]/)
-            dbg.imovelEndCtx = _ie >= 0 ? _bd.slice(Math.max(0, _ie - 200), _ie + 650).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ') : 'logradouro não localizado no corpo'
-            // ocorrências de "número"/"nº"+dígitos no corpo (pra achar onde o número mora)
-            const _txt = _bd.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/gi, ' ')
-            dbg.imovelNumeros = [...new Set([..._txt.matchAll(/(?:n[úu]mero|n[ºo°])\.?\s*:?\s*\d{1,6}/gi)].map((x) => x[0].replace(/\s+/g, ' ').trim()))].slice(0, 12)
+            dbg.imovelEndCtx = _ie >= 0 ? _bd.slice(Math.max(0, _ie - 80), _ie + 320).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ') : 'logradouro não localizado'
           }
 
           // === ESTRATÉGIA 1: Lista de Proprietários (endpoint AJAX dedicado) ===
