@@ -1407,25 +1407,14 @@ html[data-theme="claro"] .promo-imovel-media { background: linear-gradient(150de
 .cat-rail .cat-filtros { display: flex; flex-direction: column; gap: 9px; }
 .cat-rail .cat-busca { width: 100%; flex: 0 0 auto; min-width: 0; }
 
-/* ===== Desktop: filtro e listagem rolam INDEPENDENTES, sem barra visível (estilo Chaves na Mão) ===== */
+/* ===== Desktop: a PÁGINA rola normalmente (cabeçalho sai com a rolagem); só o filtro lateral fica fixo (sticky) ===== */
 @media (min-width: 881px) {
-  /* calc(100vh / 0.85): compensa html{zoom:0.85} para o catálogo preencher o viewport físico completo */
-  .catalogo { height: calc(100vh / 0.85); min-height: 0; padding: 108px 0 0; overflow: hidden; display: flex; flex-direction: column; }
-  .catalogo > .container { flex: 1; min-height: 0; display: flex; flex-direction: column; width: 100%; }
-  .cat-head { flex: none; margin-bottom: 24px; max-width: none; }
+  .cat-head { margin-bottom: 24px; max-width: none; }
   .cat-head .eyebrow { margin-bottom: 9px; }
   .cat-head .section-title { font-size: clamp(1.5rem, 2.4vw, 2.1rem); margin: 0; }
-  .cat-head .section-sub { display: none; }
-  .cat-layout { flex: 1; min-height: 0; align-items: stretch; }
-  .cat-rail { position: static; top: auto; height: 100%; overflow-y: auto; overflow-x: hidden; padding: 2px 10px 30px 2px; scrollbar-width: none; -ms-overflow-style: none; }
-  .cat-main { height: 100%; overflow-y: auto; overflow-x: hidden; padding: 2px 6px 48px 2px; scrollbar-width: none; -ms-overflow-style: none; }
-  .cat-rail::-webkit-scrollbar, .cat-main::-webkit-scrollbar { width: 0; height: 0; display: none; }
-  /* no catálogo, a página não rola e o rodapé não aparece — só as duas colunas rolam */
-  body.rota-catalogo { overflow: hidden; background: #FFFFFF; }
-  html[data-theme="dark"] body.rota-catalogo { background: #212b3d; }
-  body.rota-catalogo .footer { display: none; }
-  /* AviseMe fica no fim de cat-main; no desktop com lista curta aparece imediatamente como barra escura — ocultar */
-  .catalogo .aviseme { display: none; }
+  /* o filtro acompanha a rolagem; se for mais alto que a tela, rola por dentro (sem barra visível) */
+  .cat-rail { top: 100px; max-height: calc((100vh / 0.85) - 120px); overflow-y: auto; overflow-x: hidden; padding-right: 6px; scrollbar-width: none; -ms-overflow-style: none; }
+  .cat-rail::-webkit-scrollbar { width: 0; height: 0; display: none; }
 }
 
 /* ===== Filtro em pílulas (clica direto, sem menu) ===== */

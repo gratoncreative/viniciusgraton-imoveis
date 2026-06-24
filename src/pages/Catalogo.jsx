@@ -500,7 +500,7 @@ export default function Catalogo() {
         )}
         </aside>
 
-        <div className="cat-main" data-lenis-prevent ref={catMainRef}>
+        <div className="cat-main" ref={catMainRef}>
         {/* "Visto recentemente" NÃO aparece mais aqui — fica só na Minha área
             (/conta), exclusiva do cliente logado. */}
 
