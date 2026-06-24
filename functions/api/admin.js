@@ -117,6 +117,43 @@ async function registrarProprietario(env, cod, owner) {
   } catch {}
 }
 
+// Mapeia o nome técnico do campo do Imoview (PessoaF/PessoaJ) para um rótulo em PT.
+function rotuloCampo(name) {
+  const n = String(name || '').toLowerCase().replace(/[^a-z]/g, '')
+  const map = [['cnpj', 'CNPJ'], ['cpf', 'CPF'], ['orgaoemissor', 'Órgão emissor'], ['orgaoexpedidor', 'Órgão emissor'], ['rg', 'RG'], ['datanasc', 'Data de nascimento'], ['nascimento', 'Data de nascimento'], ['nomepai', 'Nome do pai'], ['nomemae', 'Nome da mãe'], ['conjuge', 'Cônjuge'], ['nomecompleto', 'Nome'], ['razaosocial', 'Razão social'], ['nomefantasia', 'Nome fantasia'], ['nome', 'Nome'], ['email', 'E-mail'], ['celular', 'Celular'], ['whatsapp', 'WhatsApp'], ['telefonecomercial', 'Telefone comercial'], ['telefoneresidencial', 'Telefone residencial'], ['telefone', 'Telefone'], ['logradouro', 'Endereço'], ['endereco', 'Endereço'], ['numero', 'Número'], ['complemento', 'Complemento'], ['bairro', 'Bairro'], ['cidade', 'Cidade'], ['estadocivil', 'Estado civil'], ['estado', 'Estado'], ['uf', 'UF'], ['cep', 'CEP'], ['profissao', 'Profissão'], ['nacionalidade', 'Nacionalidade'], ['naturalidade', 'Naturalidade'], ['inscricaoestadual', 'Inscrição estadual'], ['inscricao', 'Inscrição'], ['observa', 'Observações'], ['rendamensal', 'Renda mensal'], ['renda', 'Renda'], ['banco', 'Banco'], ['agencia', 'Agência'], ['conta', 'Conta']]
+  for (const [k, l] of map) if (n.includes(k)) return l
+  return ''
+}
+const _CAMPO_LIXO = /token|verifi|__|viewstate|\bhash\b|guid|senha|password|captcha|csrf|antiforgery|codigo|hidden/i
+// Extrai TODOS os campos do proprietário do HTML da página PessoaF/PessoaJ (inputs + selects + textarea).
+function extrairCampos(html) {
+  const out = []; const seen = new Set()
+  const add = (rot, val) => {
+    val = String(val || '').replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ').replace(/&#?[a-z0-9]+;/gi, ' ').replace(/\s+/g, ' ').trim()
+    if (!rot || !val || val.length < 2 || val.length > 200 || seen.has(rot)) return
+    if (/^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(val)) return // GUID
+    seen.add(rot); out.push({ rotulo: rot, valor: val })
+  }
+  for (const m of html.matchAll(/<input\b[^>]*>/gi)) {
+    const tag = m[0]
+    if (_CAMPO_LIXO.test(tag)) continue
+    if (/type=["'](?:hidden|submit|button|checkbox|radio|password|file)["']/i.test(tag)) continue
+    const val = (tag.match(/\bvalue=["']([^"']*)["']/i) || [])[1]
+    if (!val || !val.trim()) continue
+    const rot = rotuloCampo((tag.match(/\b(?:name|id)=["']([^"']+)["']/i) || [])[1] || '')
+    if (rot) add(rot, val)
+  }
+  for (const m of html.matchAll(/<select\b[^>]*\b(?:name|id)=["']([^"']+)["'][^>]*>([\s\S]*?)<\/select>/gi)) {
+    const rot = rotuloCampo(m[1]); if (!rot) continue
+    const sel = (m[2].match(/<option[^>]*\bselected\b[^>]*>([^<]*)</i) || [])[1]
+    if (sel) add(rot, sel)
+  }
+  for (const m of html.matchAll(/<textarea\b[^>]*\b(?:name|id)=["']([^"']+)["'][^>]*>([\s\S]*?)<\/textarea>/gi)) {
+    add(rotuloCampo(m[1]) || 'Observações', m[2].replace(/<[^>]+>/g, ''))
+  }
+  return out.slice(0, 40)
+}
+
 // Parser do HTML de /Atendimento/Pesquisar (lista renderizada). Resiliente, baseado nos
 // rótulos visíveis: "Atendimento N", nome, WhatsApp, e-mail, Situação, Fase, Mídia, Corretor.
 function parseAtendimentosHtml(html) {
@@ -809,8 +846,10 @@ export async function onRequestPost({ env, request }) {
             }
           }
 
-          // === ESTRATÉGIA 2: PessoaF/PessoaJ via loadPessoas (fallback) ===
-          if (!owner.nome && !owner.fone) {
+          // === ESTRATÉGIA 2: PessoaF/PessoaJ — RELATÓRIO COMPLETO do proprietário ===
+          // Roda SEMPRE que existir o código da pessoa (mesmo se a estratégia 1 já achou nome/fone),
+          // para trazer todos os campos (CPF, RG, endereço, nascimento, profissão, estado civil...).
+          {
             let pessoaCode = ''
             const lpEl = imovelHtml.match(/<[^>]*loadPessoas[^>]*>/i)
             if (lpEl) { const dc = lpEl[0].match(/data-codigos=["']?(\d+)["']?/); if (dc) pessoaCode = dc[1] }
@@ -829,35 +868,40 @@ export async function onRequestPost({ env, request }) {
                 dbg[`${tipo}Status`] = pessoaR.status
                 const pessoaHtml = await pessoaR.text()
 
+                const dados = extrairCampos(pessoaHtml)
                 const nomeM = pessoaHtml.match(/<title>[^|<]+\|\s*([^<]+)<\/title>/)
                 const nome  = nomeM ? nomeM[1].trim() : ''
-
                 const waM = pessoaHtml.match(/api\.whatsapp\.com\/send\?phone=55(\d{10,11})/)
                 let fone = ''
                 if (waM) {
                   const d = waM[1]
-                  fone = d.length === 11
-                    ? `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`
-                    : `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`
+                  fone = d.length === 11 ? `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}` : `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`
                 } else {
                   const foneM = pessoaHtml.match(/\((\d{2})\)\s*(\d{4,5}[-.\s]?\d{4})/)
                   if (foneM) fone = `(${foneM[1]}) ${foneM[2].replace(/[-.\s]/g,'').replace(/(\d{4,5})(\d{4})$/,'$1-$2')}`
                 }
-
                 const emailM = pessoaHtml.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,6}/)
                 const email  = emailM ? emailM[0] : ''
 
-                if (nome || fone) {
-                  owner = { nome:nome.slice(0,120), email:email.slice(0,160), fone:fone.slice(0,40) }
-                  if (isDebug) { dbg.tipoUsado = tipo; dbg.ownerStrategy = `pessoa-${tipo}` }
+                if (nome || fone || dados.length) {
+                  owner.nome = owner.nome || nome.slice(0, 120)
+                  owner.email = owner.email || email.slice(0, 160)
+                  owner.fone = owner.fone || fone.slice(0, 40)
+                  if (dados.length) owner.dados = dados
+                  // completa lacunas (nome/email/fone) a partir do relatório, se ainda faltar
+                  const acha = (re) => (dados.find((x) => re.test(x.rotulo)) || {}).valor || ''
+                  if (!owner.nome) owner.nome = (acha(/^Nome$/) || acha(/Razão social/)).slice(0, 120)
+                  if (!owner.email) owner.email = acha(/E-mail/).slice(0, 160)
+                  if (!owner.fone) owner.fone = (acha(/Celular/) || acha(/WhatsApp/) || acha(/Telefone/)).slice(0, 40)
+                  if (isDebug) { dbg.tipoUsado = tipo; dbg.ownerStrategy = (dbg.ownerStrategy ? dbg.ownerStrategy + '+' : '') + `pessoa-${tipo}`; dbg.nCampos = dados.length }
                   break
                 }
-                if (isDebug) dbg[`${tipo}Snippet`] = pessoaHtml.slice(0,400)
+                if (isDebug) dbg[`${tipo}Snippet`] = pessoaHtml.slice(0, 400)
               }
             }
           }
 
-          if (owner.nome || owner.fone) {
+          if (owner.nome || owner.fone || (owner.dados && owner.dados.length)) {
             await env.ENGAGEMENT.put('imovel:'+cod, JSON.stringify({...(saved||{}), owner, atualizadoEm:Date.now()}))
             await registrarProprietario(env, cod, owner) // auto-cadastra no sistema (Leads)
             return json({ ok:true, owner, source:'imoview-web', ...(isDebug?{dbg}:{}) })
@@ -908,6 +952,8 @@ export async function onRequestPost({ env, request }) {
       fone: String(o.fone || '').replace(/[^\d+\s().-]/g, '').slice(0, 40),
     }
     const existing = await env.ENGAGEMENT.get('imovel:' + cod, 'json') || {}
+    // preserva o relatório completo (dados) já captado do Imoview ao salvar edição manual
+    if (existing.owner && Array.isArray(existing.owner.dados)) owner.dados = existing.owner.dados
     await env.ENGAGEMENT.put('imovel:' + cod, JSON.stringify({ ...existing, owner, atualizadoEm: Date.now() }))
     if (owner.nome || owner.fone) await registrarProprietario(env, cod, owner) // auto-cadastra no sistema
     return json({ ok: true, owner })

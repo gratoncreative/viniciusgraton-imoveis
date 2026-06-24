@@ -11,6 +11,7 @@ export default function AdminImovelBar({ im }) {
   const [editing, setEditing] = useState(false)
   const [loading, setLoading] = useState(false)
   const [msg, setMsg] = useState('')
+  const [copiado, setCopiado] = useState(false)
 
   useEffect(() => {
     const check = () => setIsAdmin(!!localStorage.getItem(LSK))
@@ -49,7 +50,7 @@ export default function AdminImovelBar({ im }) {
       const j = await post('owner-fetch', force ? { force: true } : {})
       if (j.ok) {
         const o = j.owner || { nome: '', email: '', fone: '' }
-        const temDados = !!(o.nome || o.fone)
+        const temDados = !!(o.nome || o.fone || (o.dados && o.dados.length))
         setOwner(temDados ? o : null)
         setForm(o)
         if (j.source && j.source.startsWith('imoview')) setMsg('✓ Captado do Imoview e salvo automaticamente')
@@ -104,7 +105,20 @@ export default function AdminImovelBar({ im }) {
     return `https://wa.me/${num}?text=${encodeURIComponent(texto)}`
   }
 
-  const temContato = !!(owner && (owner.nome || owner.fone))
+  const copiarRelatorio = () => {
+    if (!owner) return
+    const linhas = [
+      `Proprietário — imóvel cód. ${codigo}`,
+      owner.nome && `Nome: ${owner.nome}`,
+      owner.email && `E-mail: ${owner.email}`,
+      owner.fone && `Telefone: ${owner.fone}`,
+      ...((owner.dados || []).map((d) => `${d.rotulo}: ${d.valor}`)),
+    ].filter(Boolean).join('\n')
+    navigator.clipboard?.writeText(linhas).catch(() => {})
+    setCopiado(true); setTimeout(() => setCopiado(false), 2000)
+  }
+
+  const temContato = !!(owner && (owner.nome || owner.fone || (owner.dados && owner.dados.length)))
 
   return (
     <div className="adm-bar" role="region" aria-label="Painel administrativo">
@@ -156,12 +170,22 @@ export default function AdminImovelBar({ im }) {
                   ? <a href={`tel:${owner.fone}`}>{owner.fone}</a>
                   : <span>—</span>}
               </div>
+              {Array.isArray(owner.dados) && owner.dados.length > 0 && (
+                <div className="adm-owner-dados" style={{ marginTop: 8, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+                  {owner.dados.map((d, i) => (
+                    <div className="adm-field" key={i}><label>{d.rotulo}</label><span>{d.valor}</span></div>
+                  ))}
+                </div>
+              )}
               <div className="adm-acoes">
                 <button className="adm-btn" onClick={() => { setEditing(true); setForm(owner) }}>
                   Editar
                 </button>
                 <button className="adm-btn" onClick={() => buscar(true)} disabled={loading} title="Rebuscar dados diretamente no Imoview, ignorando cache">
                   ↺ Atualizar do Imoview
+                </button>
+                <button className="adm-btn" onClick={copiarRelatorio} title="Copiar o relatório completo do proprietário">
+                  {copiado ? '✓ Copiado' : '⧉ Copiar relatório'}
                 </button>
                 {owner?.fone && (
                   <a className="adm-btn adm-btn--wa" href={waLink()} target="_blank" rel="noopener noreferrer">
