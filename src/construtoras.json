@@ -618,7 +618,7 @@
      "status": "Em obras",
      "entrega": "set/2026",
      "endereco": "R. João Velasco de Andrade, 455 — Santa Mônica, Uberlândia",
-     "preco": "A partir de R$ 453.900",
+     "preco": "A partir de R$ 463.900",
      "descricao": "Edifício residencial de 11 andares e 40 unidades no Santa Mônica, com distribuição interna bem planejada e acabamentos de qualidade.",
      "tipologias": [
       "2 quartos (1 suíte) · 61,20 m² · 2 vagas",
@@ -640,6 +640,7 @@
      "video": "",
      "capa": "/img/emp/atp__supreme-tower.jpg",
      "galeria": [
+      "https://atpempreendimentos.com.br/wp-content/uploads/2024/05/fachada-supreme-tower.jpg",
       "https://atpempreendimentos.com.br/wp-content/uploads/2024/05/planta-3-supreme.jpg",
       "https://atpempreendimentos.com.br/wp-content/uploads/2024/05/planta-2-4-supreme.jpg",
       "https://atpempreendimentos.com.br/wp-content/uploads/2024/05/planta-1-5-supreme.jpg"
@@ -652,7 +653,7 @@
      "status": "Pronto",
      "entrega": "",
      "endereco": "R. José Miguel Saramago, 896 — Santa Mônica, Uberlândia",
-     "preco": "A partir de R$ 603.900",
+     "preco": "A partir de R$ 646.900",
      "descricao": "Residencial pronto para morar no Santa Mônica, 11 andares e 27 apartamentos (3 por andar), com distribuição interna otimizada e varanda gourmet com churrasqueira a carvão.",
      "tipologias": [
       "3 quartos (1 a 2 suítes) · 86,49 m² · 2 vagas",
@@ -666,6 +667,7 @@
      "video": "",
      "capa": "/img/emp/atp__saramago-residence.jpg",
      "galeria": [
+      "https://atpempreendimentos.com.br/wp-content/uploads/2023/03/Fachada-Saramago-Residence-1024x1024.jpg",
       "https://atpempreendimentos.com.br/wp-content/uploads/2023/03/planta-01-Saramago.jpg",
       "https://atpempreendimentos.com.br/wp-content/uploads/2023/03/planta-02-Saramago.jpg"
      ]
@@ -690,6 +692,7 @@
      "video": "",
      "capa": "/img/emp/atp__egeo-residence.jpg",
      "galeria": [
+      "https://atpempreendimentos.com.br/wp-content/uploads/2025/07/fachada-Egeo-Residence.png",
       "https://atpempreendimentos.com.br/wp-content/uploads/2025/07/PLT05-APTO-3Q-EGEO-scaled.png"
      ]
     }
