@@ -12,6 +12,7 @@ export default function AdminImovelBar({ im }) {
   const [loading, setLoading] = useState(false)
   const [msg, setMsg] = useState('')
   const [copiado, setCopiado] = useState(false)
+  const [diag, setDiag] = useState('')
 
   useEffect(() => {
     const check = () => setIsAdmin(!!localStorage.getItem(LSK))
@@ -118,6 +119,14 @@ export default function AdminImovelBar({ im }) {
     setCopiado(true); setTimeout(() => setCopiado(false), 2000)
   }
 
+  // Diagnóstico: mostra o que o Imoview devolveu (pra ajustar a captação dos campos)
+  const diagnostico = async () => {
+    setLoading(true); setDiag(''); setMsg('Rodando diagnóstico…')
+    try { const j = await post('owner-fetch', { debug: true, force: true }); setDiag(JSON.stringify(j.dbg || j, null, 2)) }
+    catch { setDiag('Falha no diagnóstico.') }
+    setLoading(false); setMsg('')
+  }
+
   const temContato = !!(owner && (owner.nome || owner.fone || (owner.dados && owner.dados.length)))
 
   return (
@@ -187,12 +196,23 @@ export default function AdminImovelBar({ im }) {
                 <button className="adm-btn" onClick={copiarRelatorio} title="Copiar o relatório completo do proprietário">
                   {copiado ? '✓ Copiado' : '⧉ Copiar relatório'}
                 </button>
+                {!owner?.dados?.length && (
+                  <button className="adm-btn" onClick={diagnostico} disabled={loading} title="Faltou algum campo? Mostra o que o Imoview retornou pra ajustar a captação">
+                    🔧 Diagnóstico
+                  </button>
+                )}
                 {owner?.fone && (
                   <a className="adm-btn adm-btn--wa" href={waLink()} target="_blank" rel="noopener noreferrer">
                     Enviar WhatsApp ao proprietário
                   </a>
                 )}
               </div>
+              {diag && (
+                <div style={{ marginTop: 12 }}>
+                  <p className="adm-status" style={{ margin: '0 0 6px' }}>Diagnóstico (mande este texto pro Vinícius ajustar a captação):</p>
+                  <pre style={{ maxHeight: 280, overflow: 'auto', background: '#f6f4ef', border: '1px solid var(--border)', borderRadius: 10, padding: 12, fontSize: '.72rem', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{diag}</pre>
+                </div>
+              )}
             </div>
           ) : (
             !loading && (

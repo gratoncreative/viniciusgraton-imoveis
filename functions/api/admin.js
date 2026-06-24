@@ -154,6 +154,27 @@ function extrairCampos(html) {
   return out.slice(0, 40)
 }
 
+// Extrai todos os campos de um OBJETO JSON de pessoa (proprietário) do Imoview.
+function camposDeObjeto(obj) {
+  const out = []; const seen = new Set()
+  const add = (rot, val) => {
+    val = String(val == null ? '' : (Array.isArray(val) ? val.join(', ') : val)).trim()
+    if (!rot || !val || val.length > 200 || seen.has(rot)) return
+    if (/^(?:0|false|null|undefined|n[ãa]o informad[oa])$/i.test(val)) return
+    seen.add(rot); out.push({ rotulo: rot, valor: val })
+  }
+  const walk = (o, depth) => {
+    if (!o || typeof o !== 'object' || depth > 2) return
+    for (const k in o) {
+      const v = o[k]
+      if (v && typeof v === 'object' && !Array.isArray(v)) walk(v, depth + 1)
+      else { const rot = rotuloCampo(k); if (rot) add(rot, v) }
+    }
+  }
+  walk(obj, 0)
+  return out.slice(0, 40)
+}
+
 // Parser do HTML de /Atendimento/Pesquisar (lista renderizada). Resiliente, baseado nos
 // rótulos visíveis: "Atendimento N", nome, WhatsApp, e-mail, Situação, Fase, Mídia, Corretor.
 function parseAtendimentosHtml(html) {
@@ -819,7 +840,9 @@ export async function onRequestPost({ env, request }) {
                   const n = String(p.nome || p.Nome || p.nomeCompleto || p.NomeProprietario || p.nomeProprietario || '').trim()
                   const f = String(p.telefone || p.Telefone || p.celular || p.Celular || p.TelefoneResidencial || p.TelefoneCelular || '').trim()
                   const e = String(p.email || p.Email || '').trim()
-                  if (n || f) { owner = { nome:n.slice(0,120), email:e.slice(0,160), fone:f.slice(0,40) }; break }
+                  const dd = camposDeObjeto(p)
+                  if (isDebug) dbg.propJson = JSON.stringify(p).slice(0, 1500)
+                  if (n || f || dd.length) { owner = { nome: n.slice(0, 120), email: e.slice(0, 160), fone: f.slice(0, 40) }; if (dd.length) owner.dados = dd; break }
                 }
               } catch {}
 
@@ -861,14 +884,24 @@ export async function onRequestPost({ env, request }) {
 
             if (pessoaCode) {
               for (const tipo of ['PessoaF', 'PessoaJ']) {
-                const pessoaR = await fetch(`${WEB}/${tipo}/Detalhes/${pessoaCode}`, {
-                  headers:{ cookie:cookies, 'user-agent':UA, accept:'text/html' },
-                  redirect:'follow', signal:AbortSignal.timeout(12000),
-                })
-                dbg[`${tipo}Status`] = pessoaR.status
-                const pessoaHtml = await pessoaR.text()
-
-                const dados = extrairCampos(pessoaHtml)
+                // a página de EDIÇÃO costuma trazer TODOS os campos preenchidos; tenta ela e Detalhes
+                let pessoaHtml = ''
+                let dados = []
+                for (const acao of ['Editar', 'Detalhes']) {
+                  const rr = await fetch(`${WEB}/${tipo}/${acao}/${pessoaCode}`, {
+                    headers: { cookie: cookies, 'user-agent': UA, accept: 'text/html' },
+                    redirect: 'follow', signal: AbortSignal.timeout(12000),
+                  })
+                  dbg[`${tipo}${acao}Status`] = rr.status
+                  if (!rr.ok) continue
+                  const h = await rr.text()
+                  const d = extrairCampos(h)
+                  if (d.length > dados.length || !pessoaHtml) { dados = d; pessoaHtml = h }
+                  if (isDebug && acao === 'Editar') dbg[`${tipo}Inputs`] = (h.match(/<input\b[^>]*>/gi) || []).slice(0, 25).map((t) => t.replace(/\s+/g, ' ').slice(0, 140)).join('\n')
+                  if (dados.length >= 4) break
+                }
+                if (!pessoaHtml) continue
+                if (isDebug) { const _i = pessoaHtml.search(/endere|\bcep\b|cpf/i); dbg[`${tipo}Ctx`] = _i >= 0 ? pessoaHtml.slice(Math.max(0, _i - 220), _i + 420).replace(/\s+/g, ' ') : 'sem endereço/cpf no html' }
                 const nomeM = pessoaHtml.match(/<title>[^|<]+\|\s*([^<]+)<\/title>/)
                 const nome  = nomeM ? nomeM[1].trim() : ''
                 const waM = pessoaHtml.match(/api\.whatsapp\.com\/send\?phone=55(\d{10,11})/)
