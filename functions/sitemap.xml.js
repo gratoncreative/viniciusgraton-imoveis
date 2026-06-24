@@ -12,6 +12,7 @@ const TODAY = '@today'
 const STATIC = [
   { loc: '/', changefreq: 'weekly', priority: '1.0', lastmod: TODAY },
   { loc: '/imoveis', changefreq: 'daily', priority: '0.9', lastmod: TODAY },
+  { loc: '/alugar', changefreq: 'daily', priority: '0.8', lastmod: TODAY },
   { loc: '/blog', changefreq: 'weekly', priority: '0.8', lastmod: TODAY },
   { loc: '/sobre', changefreq: 'monthly', priority: '0.7' },
   { loc: '/como-funciona', changefreq: 'monthly', priority: '0.7' },
@@ -299,6 +300,23 @@ export async function onRequestGet({ request }) {
     // catalogo.json indisponível — fallback: bairros editoriais (não quebra)
     for (const b of BAIRROS) parts.push(urlTag({ loc: `/imoveis/uberlandia/${b}`, changefreq: 'weekly', priority: '0.8', lastmod: today }))
   }
+
+  // Aluguel: páginas por bairro com estoque real (>= MIN_BAIRRO) a partir de /alugueis.json
+  try {
+    const res = await fetch(`${origin}/alugueis.json`, { cf: { cacheTtl: 3600, cacheEverything: true } })
+    if (res.ok) {
+      const data = await res.json()
+      const imoveis = Array.isArray(data?.imoveis) ? data.imoveis : []
+      const contB = {}
+      for (const im of imoveis) {
+        if (im.bairro && im.preco >= 200 && im.preco <= 200000) {
+          const bs = slugifyBairro(im.bairro)
+          contB[bs] = (contB[bs] || 0) + 1
+        }
+      }
+      for (const bs in contB) if (contB[bs] >= MIN_BAIRRO) parts.push(urlTag({ loc: `/alugar/uberlandia/${bs}`, changefreq: 'weekly', priority: '0.6', lastmod: today }))
+    }
+  } catch (_) { /* alugueis indisponível — sitemap segue sem páginas de aluguel por bairro */ }
 
   const xml = [
     '<?xml version="1.0" encoding="UTF-8"?>',

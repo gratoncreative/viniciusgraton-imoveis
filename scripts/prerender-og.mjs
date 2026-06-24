@@ -738,10 +738,70 @@ try {
   }
 } catch (e) { console.warn('prerender /investir falhou (sem rentabilidade-bairros.json?):', e.message) }
 
+// páginas de ALUGUEL — /alugar (landing) + /alugar/uberlandia/:bairro (lê public/alugueis.json)
+const rotasAlugar = []
+try {
+  const alug = (() => { try { return JSON.parse(readFileSync(resolve(ROOT, 'public/alugueis.json'), 'utf8')).imoveis || [] } catch { return [] } })()
+    .filter((im) => im && im.bairro && im.preco >= 200 && im.preco <= 200000)
+  if (alug.length) {
+    const fmtAlug = (v) => `R$ ${Math.round(v).toLocaleString('pt-BR')}`
+    const porBairro = {}
+    for (const im of alug) { const s = slugify(im.bairro); (porBairro[s] = porBairro[s] || { nome: im.bairro.trim(), slug: s, precos: [] }).precos.push(im.preco) }
+    const bairrosAlug = Object.values(porBairro)
+      .map((b) => ({ ...b, n: b.precos.length, med: [...b.precos].sort((x, y) => x - y)[Math.floor(b.precos.length / 2)] }))
+      .filter((b) => b.n >= 8).sort((a, z) => z.n - a.n)
+    const headAlug = (titulo, desc, url, ld, body) => baseHtml
+      .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)} | Vinícius Graton</title>`)
+      .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+      .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
+      .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+      .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${esc(url)}$2`)
+      .replace(/(<meta name="twitter:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
+      .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+      .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
+      .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
+      .replace('<div id="root"></div>', `<div id="root">${slashHrefs(body)}</div>`)
+    // landing /alugar
+    {
+      const titulo = 'Imóveis para alugar em Uberlândia — casas, apartamentos e kitnets'
+      const desc = `${alug.length} imóveis para alugar em Uberlândia: casas, apartamentos, kitnets e salas. Filtre por bairro e preço e fale com o Vinícius Graton.`.slice(0, 158)
+      const url = slash(`${SITE}/alugar`)
+      const body = `<main class="pre-seo"><h1>Imóveis para alugar em Uberlândia</h1>` +
+        `<p>${alug.length} imóveis de locação na carteira da Rotina Imobiliária, com o atendimento do Vinícius Graton — análise de garantia (fiador, seguro-fiança ou caução) e agendamento de visita.</p>` +
+        `<nav><h2>Alugar por bairro em Uberlândia</h2>${bairrosAlug.map((b) => `<a href="/alugar/uberlandia/${b.slug}/">${esc(b.nome)} (${b.n})</a>`).join(' · ')}</nav>` +
+        `<p><a href="/imoveis">Comprar imóvel em Uberlândia</a> · <a href="/investir">onde investir</a></p></main>`
+      const ld = { '@context': 'https://schema.org', '@graph': [
+        { '@type': 'CollectionPage', url, name: titulo, description: desc, publisher: { '@type': 'RealEstateAgent', name: 'Vinícius Graton Imóveis', url: SITE } },
+        { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Início', item: `${SITE}/` }, { '@type': 'ListItem', position: 2, name: 'Alugar', item: url }] },
+      ] }
+      const dir = resolve(DIST, 'alugar'); mkdirSync(dir, { recursive: true })
+      writeFileSync(resolve(dir, 'index.html'), headAlug(titulo, desc, url, ld, body))
+    }
+    // /alugar/uberlandia/:bairro
+    for (const b of bairrosAlug) {
+      const titulo = `Imóveis para alugar em ${b.nome}, Uberlândia`
+      const desc = `${b.n} imóveis para alugar em ${b.nome}, Uberlândia. Aluguel típico em torno de ${fmtAlug(b.med)}/mês. Fale com o Vinícius Graton.`.slice(0, 158)
+      const url = slash(`${SITE}/alugar/uberlandia/${b.slug}`)
+      const body = `<main class="pre-seo"><h1>Imóveis para alugar em ${esc(b.nome)}, Uberlândia</h1>` +
+        `<p>${b.n} ${b.n === 1 ? 'imóvel' : 'imóveis'} para alugar em ${esc(b.nome)} — aluguel típico em torno de ${esc(fmtAlug(b.med))}/mês. Atendimento do Vinícius Graton, da Rotina Imobiliária.</p>` +
+        `<p><a href="/alugar">todos os imóveis para alugar em Uberlândia</a> · <a href="/imoveis/uberlandia/${b.slug}">comprar no ${esc(b.nome)}</a></p></main>`
+      const ld = { '@context': 'https://schema.org', '@graph': [
+        { '@type': 'CollectionPage', url, name: titulo, description: desc, about: { '@type': 'Place', name: `${b.nome}, Uberlândia, MG` } },
+        { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Início', item: `${SITE}/` }, { '@type': 'ListItem', position: 2, name: 'Alugar', item: `${SITE}/alugar` }, { '@type': 'ListItem', position: 3, name: b.nome, item: url }] },
+      ] }
+      const dir = resolve(DIST, 'alugar', 'uberlandia', b.slug); mkdirSync(dir, { recursive: true })
+      writeFileSync(resolve(dir, 'index.html'), headAlug(titulo, desc, url, ld, body))
+      rotasAlugar.push(`/alugar/uberlandia/${b.slug}`)
+    }
+    console.log('✓ prerender /alugar | landing +', bairrosAlug.length, 'bairros de aluguel')
+  }
+} catch (e) { console.warn('prerender /alugar falhou:', e.message) }
+
 // sitemap.xml completo (home + catálogo + cada imóvel, com imagem p/ o Google Imagens)
 const urls = [
   { loc: `${SITE}/`, freq: 'weekly', pri: '1.0' },
   { loc: `${SITE}/imoveis`, freq: 'daily', pri: '0.9' },
+  { loc: `${SITE}/alugar`, freq: 'daily', pri: '0.8' },
   { loc: `${SITE}/encontrar-imovel`, freq: 'monthly', pri: '0.8' },
   { loc: `${SITE}/como-funciona`, freq: 'monthly', pri: '0.6' },
   { loc: `${SITE}/ferramentas`, freq: 'monthly', pri: '0.6' },
@@ -769,6 +829,7 @@ const urls = [
   { loc: `${SITE}/lancamentos/louis-studios-umuarama`, freq: 'weekly', pri: '0.9', img: `${SITE}/lancamentos/louis/og.jpg`, imgTitle: 'Louis Living Experience — studios no Umuarama, Uberlândia' },
   { loc: `${SITE}/contato`, freq: 'monthly', pri: '0.5' },
   ...bairrosSeo.map((b) => ({ loc: `${SITE}/imoveis/uberlandia/${b.slug}`, freq: 'weekly', pri: '0.7' })),
+  ...rotasAlugar.map((p) => ({ loc: `${SITE}${p}`, freq: 'weekly', pri: '0.6' })),
   ...rotasTipo.map((p) => ({ loc: `${SITE}${p}`, freq: 'weekly', pri: '0.6' })),
   { loc: `${SITE}/privacidade`, freq: 'yearly', pri: '0.2' },
 ]
