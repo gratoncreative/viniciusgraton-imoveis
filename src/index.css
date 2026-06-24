@@ -8341,10 +8341,7 @@ html[data-theme="dark"] .det-info--claro .det-preco .pg-de { color: #9a8e78; -we
 .investir-lista .investir-row:first-child { background: #FBF7EF; }
 .investir-lista .investir-row:first-child .investir-pos { background: #C9A227; color: #fff; }
 
-/* Aluguel — toggle Comprar|Alugar + barra de filtros + sufixo "/mês" */
-.ca-toggle { display: inline-flex; gap: 4px; background: #f0eee9; border-radius: 999px; padding: 4px; margin: 12px 0 14px; }
-.ca-toggle-btn { padding: 7px 22px; border-radius: 999px; font-weight: 700; font-size: .92rem; color: #1C2A44; text-decoration: none; transition: background .15s, color .15s; }
-.ca-toggle-btn.on { background: #1C2A44; color: #fff; }
+/* Aluguel — barra de filtros + sufixo "/mês" */
 .alg-filtros { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 0 0 14px; }
 .alg-filtros .cat-busca { flex: 1 1 240px; min-width: 200px; }
 .alg-preco { display: flex; align-items: center; gap: 6px; }

@@ -6,7 +6,6 @@ import AviseMe from '../components/AviseMe'
 import FiltroSelect from '../components/FiltroSelect'
 import FiltroPills from '../components/FiltroPills'
 import InputMoeda from '../components/InputMoeda'
-import ComprarAlugarToggle from '../components/ComprarAlugarToggle'
 import { slugify, linkWhatsApp, WA } from '../data'
 import { useAlugueis } from '../useAlugueis'
 import { useSEO } from '../useSEO'
@@ -132,7 +131,6 @@ export default function Alugar() {
               <Link to="/alugar">Alugar</Link>
               {bairroNome && <><span aria-hidden="true">›</span><span>{bairroNome}</span></>}
             </nav>
-            <ComprarAlugarToggle />
             <h1 className="cat-h1">
               {carregando && !alugueis.length
                 ? <>Imóveis para <em>alugar</em> em Uberlândia</>
