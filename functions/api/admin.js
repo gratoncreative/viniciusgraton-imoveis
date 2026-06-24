@@ -196,30 +196,47 @@ function extrairEnderecoImovel(html) {
 // Extrai os CAMPOS estruturados do endereço do imóvel (CEP, Endereço, Nº, Tipo complemento,
 // Complemento, Torre/bloco, Bairro) dos inputs/selects do formulário do imóvel no Imoview.
 function extrairEnderecoCampos(html) {
-  const inputs = {}
+  const norm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+  // valor de cada campo indexado por id E por name (pega o 1º não-vazio)
+  const valById = {}, valByName = {}
+  const guardar = (tag, v) => {
+    if (!v || !v.trim()) return
+    const id = (tag.match(/\bid=["']([^"']+)["']/i) || [])[1]
+    const name = (tag.match(/\bname=["']([^"']+)["']/i) || [])[1]
+    if (id && !valById[id]) valById[id] = v.trim()
+    if (name && !valByName[name.toLowerCase()]) valByName[name.toLowerCase()] = v.trim()
+  }
   for (const m of html.matchAll(/<input\b[^>]*>/gi)) {
     const tag = m[0]
-    if (/type=["'](?:submit|button|checkbox|radio|file)["']/i.test(tag)) continue
-    const name = (tag.match(/\b(?:name|id)=["']([^"']+)["']/i) || [])[1]; if (!name) continue
-    const val = (tag.match(/\bvalue=["']([^"']*)["']/i) || [])[1] || ''
-    if (val.trim() && !inputs[name.toLowerCase()]) inputs[name.toLowerCase()] = val.trim()
+    if (/type=["'](?:submit|button|checkbox|radio|file|password)["']/i.test(tag)) continue
+    guardar(tag, (tag.match(/\bvalue=["']([^"']*)["']/i) || [])[1] || '')
   }
-  for (const m of html.matchAll(/<select\b[^>]*\b(?:name|id)=["']([^"']+)["'][^>]*>([\s\S]*?)<\/select>/gi)) {
-    const sel = (m[2].match(/<option[^>]*\bselected\b[^>]*>([^<]*)</i) || [])[1]
-    const nm = m[1].toLowerCase()
-    if (sel && sel.trim() && !inputs[nm]) inputs[nm] = sel.trim()
+  for (const m of html.matchAll(/<select\b[^>]*>[\s\S]*?<\/select>/gi)) {
+    guardar((m[0].match(/<select\b[^>]*>/i) || [''])[0], (m[0].match(/<option[^>]*\bselected\b[^>]*>([^<]*)</i) || [])[1] || '')
   }
-  const pick = (inc, exc) => { for (const n in inputs) if (inc.test(n) && (!exc || !exc.test(n))) return inputs[n]; return '' }
-  // "numero" é traiçoeiro: o imóvel tem numeroquartos/vagas/andar/etc. — excluímos esses.
-  const NUM_EXC = /quartos|vagas|andar|banh|su[ií]te|elevador|deposit|garagem|pavimento|filho|pessoa|dormitor|telefone|celular|whats|fax|documento|matricula|inscricao|iptu|contrato|processo|registro|edificio|pavto/i
+  for (const m of html.matchAll(/<textarea\b[^>]*>([\s\S]*?)<\/textarea>/gi)) {
+    guardar((m[0].match(/<textarea\b[^>]*>/i) || [''])[0], (m[1] || '').replace(/<[^>]+>/g, ''))
+  }
+  // ETIQUETA visível -> id do campo (<label for="id">Número</label>): lê pelo que o Vinícius vê na tela
+  const labelFor = {}
+  for (const m of html.matchAll(/<label\b([^>]*)>([\s\S]*?)<\/label>/gi)) {
+    const forId = (m[1].match(/\bfor=["']([^"']+)["']/i) || [])[1]
+    const txt = norm(m[2].replace(/<[^>]+>/g, '').replace(/&nbsp;/gi, ' ').replace(/[*:]/g, '')).trim()
+    if (forId && txt && !labelFor[txt]) labelFor[txt] = forId
+  }
+  const porLabel = (re) => { for (const txt in labelFor) if (re.test(txt)) { const v = valById[labelFor[txt]]; if (v) return v } return '' }
+  const porName = (inc, exc) => { for (const n in valByName) if (inc.test(n) && (!exc || !exc.test(n))) return valByName[n]; return '' }
+  const get = (labelRe, nameInc, nameExc) => porLabel(labelRe) || porName(nameInc, nameExc)
+  // "numero" é traiçoeiro: o imóvel tem numeroquartos/vagas/andar/etc. — excluímos esses no fallback por name.
+  const NUM_EXC = /quartos|vagas|andar|banh|suite|elevador|deposit|garagem|pavimento|filho|pessoa|dormitor|telefone|celular|whats|fax|documento|matricula|inscricao|iptu|contrato|processo|registro|edificio|pavto/i
   const campos = [
-    ['CEP', pick(/cep/i)],
-    ['Endereço', pick(/logradouro|^endereco$|enderecologradouro|nomerua|^rua$/i)],
-    ['Nº', pick(/numero|^nro$|^num$|^n[ºo°]$/i, NUM_EXC)],
-    ['Tipo complemento', pick(/tipocomplemento|complementotipo|tipo.?complemento/i)],
-    ['Complemento', pick(/complemento/i, /tipo/i)],
-    ['Torre/bloco', pick(/torre|bloco/i, /desbloq|bloquead|bloqueio/i)],
-    ['Bairro', pick(/bairro/i)],
+    ['CEP', get(/^cep$/, /cep/i)],
+    ['Endereço', get(/^endereco$|^logradouro$|^rua$/, /logradouro|^endereco$|enderecologradouro|nomerua|^rua$/i)],
+    ['Nº', get(/^n$|^no$|^n[ºo°]$|^numero$|^num$/, /numero|^nro$|^num$|^n[ºo°]$/i, NUM_EXC)],
+    ['Tipo complemento', get(/tipo.*complemento|complemento.*tipo/, /tipocomplemento|complementotipo/i)],
+    ['Complemento', get(/^complemento$/, /complemento/i, /tipo/i)],
+    ['Torre/bloco', get(/torre|bloco/, /torre|bloco/i, /desbloq|bloquead|bloqueio/i)],
+    ['Bairro', get(/^bairro$/, /bairro/i)],
   ]
   return campos.filter(([, v]) => v && v.length <= 120).map(([rotulo, valor]) => ({ rotulo, valor }))
 }
