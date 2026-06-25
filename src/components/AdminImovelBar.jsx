@@ -13,6 +13,8 @@ export default function AdminImovelBar({ im }) {
   const [msg, setMsg] = useState('')
   const [copiado, setCopiado] = useState(false)
   const [diag, setDiag] = useState('')
+  const [baixando, setBaixando] = useState(false)
+  const [prog, setProg] = useState('')
 
   useEffect(() => {
     const check = () => setIsAdmin(!!localStorage.getItem(LSK))
@@ -122,6 +124,101 @@ export default function AdminImovelBar({ im }) {
     setCopiado(true); setTimeout(() => setCopiado(false), 2000)
   }
 
+  // Monta o "bloco de notas" do dossiê: dados do proprietário + descrição completa do imóvel.
+  // Usa \r\n para abrir certinho no Bloco de Notas do Windows.
+  const montarTxt = () => {
+    const L = []
+    const add = (s = '') => L.push(s)
+    const real = (v) => (v ? formatPreco(v) : '—')
+    const sep = '═'.repeat(46)
+    add(`DOSSIÊ DO IMÓVEL — CÓD. ${codigo}`)
+    add(`Anúncio: https://viniciusgraton.com.br/imovel/${codigo}`)
+    add('')
+    add(sep); add('PROPRIETÁRIO'); add(sep)
+    add(`Nome: ${owner?.nome || '—'}`)
+    add(`Telefone: ${owner?.fone || '—'}`)
+    add(`E-mail: ${owner?.email || '—'}`)
+    if (owner?.enderecoCampos?.length) {
+      add(''); add('Endereço do imóvel:')
+      owner.enderecoCampos.forEach((c) => add(`  ${c.rotulo}: ${c.valor}`))
+    } else if (owner?.enderecoImovel) { add(''); add(`Endereço do imóvel: ${owner.enderecoImovel}`) }
+    if (owner?.dados?.length) { add(''); add('Outros dados do cadastro:'); owner.dados.forEach((d) => add(`  ${d.rotulo}: ${d.valor}`)) }
+    add('')
+    add(sep); add('IMÓVEL'); add(sep)
+    if (im.titulo) add(`Título: ${im.titulo}`)
+    add(`Tipo: ${im.tipo || '—'}`)
+    if (im.finalidade) add(`Finalidade: ${im.finalidade}`)
+    add(`Bairro: ${im.bairro || '—'}`)
+    add(`Cidade: ${im.cidade || 'Uberlândia'}`)
+    add(`Preço: ${real(im.preco)}`)
+    if (im.condominio) add(`Condomínio: ${real(im.condominio)}`)
+    if (im.iptu) add(`IPTU: ${real(im.iptu)}`)
+    if (im.area) add(`Área: ${im.area} m²`)
+    if (im.areaLote) add(`Área do lote: ${im.areaLote} m²`)
+    if (im.quartos != null && im.quartos !== '') add(`Quartos: ${im.quartos}`)
+    if (im.suites) add(`Suítes: ${im.suites}`)
+    if (im.banheiros) add(`Banheiros: ${im.banheiros}`)
+    if (im.vagas != null && im.vagas !== '') add(`Vagas: ${im.vagas}`)
+    if (im.andar) add(`Andar: ${im.andar}`)
+    if (im.endereco) add(`Endereço (anúncio): ${im.endereco}`)
+    if (im.pontoReferencia) add(`Ponto de referência: ${im.pontoReferencia}`)
+    if (Array.isArray(im.caracteristicas) && im.caracteristicas.length) {
+      add(''); add('Características:'); im.caracteristicas.forEach((c) => add(`  - ${typeof c === 'string' ? c : (c?.nome || c?.titulo || '')}`))
+    }
+    if (im.descricao) { add(''); add('Descrição:'); add(String(im.descricao).replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').replace(/\n{3,}/g, '\n\n').trim()) }
+    const fotos = listaFotos()
+    add(''); add(sep); add('FOTOS'); add(sep)
+    add(`${fotos.length} foto(s) na pasta "fotos" deste arquivo.`)
+    add('')
+    add('Gerado pelo site de Vinícius Graton — uso interno.')
+    return L.join('\r\n')
+  }
+
+  const listaFotos = () => (Array.isArray(im.fotos) && im.fotos.length ? im.fotos : (im.img ? [im.img] : []))
+
+  // Baixa TUDO num .zip: /fotos (via proxy same-origin) + dados.txt (proprietário + descrição).
+  const baixarDossie = async () => {
+    if (baixando) return
+    setBaixando(true); setProg('Preparando…')
+    try {
+      const { default: JSZip } = await import('jszip')
+      const zip = new JSZip()
+      zip.file('dados.txt', montarTxt())
+      const fotos = listaFotos()
+      const pasta = zip.folder('fotos')
+      let done = 0, ok = 0
+      const baixarUma = async (urlFoto, idx) => {
+        try {
+          const r = await fetch('/api/img-proxy?u=' + encodeURIComponent(urlFoto))
+          if (r.ok) {
+            const blob = await r.blob()
+            const ext = ((urlFoto.match(/\.(jpe?g|png|webp)(?=$|\?)/i) || [])[1] || 'jpg').toLowerCase()
+            pasta.file(String(idx + 1).padStart(2, '0') + '.' + ext, blob)
+            ok++
+          }
+        } catch {}
+        done++; setProg(`Baixando fotos… ${done}/${fotos.length}`)
+      }
+      const fila = fotos.map((u, i) => () => baixarUma(u, i))
+      await Promise.all(Array.from({ length: Math.min(6, fila.length || 1) }, async () => {
+        while (fila.length) { const job = fila.shift(); if (job) await job() }
+      }))
+      setProg('Compactando…')
+      const out = await zip.generateAsync({ type: 'blob' })
+      const url = URL.createObjectURL(out)
+      const a = document.createElement('a')
+      a.href = url; a.download = `imovel-${codigo}.zip`
+      document.body.appendChild(a); a.click(); a.remove()
+      setTimeout(() => URL.revokeObjectURL(url), 5000)
+      setProg(`✓ Baixado · ${ok}/${fotos.length} fotos`)
+      setTimeout(() => setProg(''), 5000)
+    } catch (e) {
+      setProg('Falha ao gerar o arquivo. Tente de novo.')
+      setTimeout(() => setProg(''), 5000)
+    }
+    setBaixando(false)
+  }
+
   // Diagnóstico: mostra o que o Imoview devolveu (pra ajustar a captação dos campos)
   const diagnostico = async () => {
     setLoading(true); setDiag(''); setMsg('Rodando diagnóstico…')
@@ -209,6 +306,9 @@ export default function AdminImovelBar({ im }) {
                 <button className="adm-btn" onClick={copiarRelatorio} title="Copiar o relatório completo do proprietário">
                   {copiado ? '✓ Copiado' : '⧉ Copiar relatório'}
                 </button>
+                <button className="adm-btn adm-btn--gold" onClick={baixarDossie} disabled={baixando} title="Baixar um .zip com todas as fotos + um bloco de notas com os dados do proprietário e a descrição completa">
+                  {baixando ? '⏳ Baixando…' : '⬇ Baixar dossiê (fotos + dados)'}
+                </button>
                 {!(owner?.enderecoCampos || []).some((c) => c.rotulo === 'Nº') && (
                   <button className="adm-btn" onClick={diagnostico} disabled={loading} title="Faltou o número? Mostra o que o Imoview retornou pra ajustar a captação">
                     🔧 Diagnóstico
@@ -220,6 +320,7 @@ export default function AdminImovelBar({ im }) {
                   </a>
                 )}
               </div>
+              {prog && <p className="adm-status" style={{ marginTop: 8 }}>{prog}</p>}
             </div>
           ) : (
             !loading && (
