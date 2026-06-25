@@ -212,10 +212,13 @@ function extrairEnderecoTexto(html) {
   const semCep = bloco.replace(/,?\s*CEP\s*:?\s*\d{5}-?\d{3}/i, '').replace(/,?\s*\b\d{5}-?\d{3}\b/, '').trim().replace(/[,;\s]+$/, '')
   const partes = semCep.split(',').map((s) => s.trim()).filter(Boolean)
   const campos = []
+  // a etiqueta "Endereço" às vezes gruda no logradouro ("Endereço Alameda...") — remove
+  if (partes[0]) partes[0] = partes[0].replace(/^endere[çc]o\s+/i, '').trim()
   if (partes[0]) campos.push({ rotulo: 'Endereço', valor: partes[0].slice(0, 120) })
   const temNum = partes[1] && /^\d{1,6}[A-Za-z]?$/.test(partes[1])
   if (temNum) campos.push({ rotulo: 'Nº', valor: partes[1] })
-  const compl = partes.slice(temNum ? 2 : 1).join(', ').trim()
+  // remove "CEP" solto que sobra no fim do complemento (o número do CEP já saiu p/ campo próprio)
+  const compl = partes.slice(temNum ? 2 : 1).join(', ').replace(/[,;]?\s*cep\s*:?\s*$/i, '').trim()
   if (compl) campos.push({ rotulo: 'Complemento', valor: compl.slice(0, 120) })
   // reforço: nome exato do campo no Imoview (MVC) — Imovel.NumeroEnderecoImovel — caso o nº não venha na vírgula
   if (!campos.some((c) => c.rotulo === 'Nº')) {

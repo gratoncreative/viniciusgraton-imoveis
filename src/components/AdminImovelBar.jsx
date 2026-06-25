@@ -108,6 +108,50 @@ export default function AdminImovelBar({ im }) {
     return `https://wa.me/${num}?text=${encodeURIComponent(texto)}`
   }
 
+  // Endereço completo limpo (a partir dos campos captados), p/ a mensagem e o nome do arquivo
+  const enderecoPartes = () => {
+    const ec = owner?.enderecoCampos || []
+    const g = (r) => (ec.find((c) => c.rotulo === r) || {}).valor || ''
+    return {
+      rua: g('Endereço').replace(/^endere[çc]o\s+/i, '').trim(),
+      num: g('Nº'),
+      compl: g('Complemento').replace(/[,;]?\s*cep\s*:?\s*$/i, '').trim(),
+      bairro: g('Bairro/Região'),
+      cep: g('CEP'),
+    }
+  }
+  const enderecoCompletoStr = () => {
+    const p = enderecoPartes()
+    if (p.rua || p.num) {
+      return [[p.rua, p.num].filter(Boolean).join(', '), p.compl, p.bairro, p.cep && ('CEP ' + p.cep)].filter(Boolean).join(', ')
+    }
+    return owner?.enderecoImovel || im.endereco || im.bairro || ''
+  }
+
+  // Mensagem de CAPTAÇÃO ao proprietário: me apresento, confirmo disponibilidade (endereço
+  // completo, código e valor), mando o link do anúncio p/ ele conferir as fotos e — foco
+  // principal — pergunto se ele tem OUTRO imóvel pra cadastrar comigo.
+  const waLinkCaptacao = () => {
+    const nome = (owner?.nome || '').split(' ')[0]
+    const tipo = (im.tipo || 'imóvel').toLowerCase()
+    const bairro = im.bairro || ''
+    const valor = im.preco ? formatPreco(im.preco) : 'a combinar'
+    const endereco = enderecoCompletoStr()
+    const link = `https://viniciusgraton.com.br/imovel/${codigo}`
+    const texto = [
+      `Olá${nome ? ', ' + nome : ''}! Tudo bem?`,
+      `Aqui é o Vinícius Graton, consultor da Rotina Imobiliária.`,
+      `Estou com o seu ${tipo} no ${bairro} aqui comigo e queria confirmar se ele ainda está disponível..`,
+      `.. Endereço.. ${endereco}\n.. Valor.. ${valor}\n.. Código.. ${codigo}`,
+      `Pra eu divulgar do jeito certo, dá uma olhada nas fotos do anúncio aqui.. ${link}\nMe confirma se elas estão atualizadas, ou se você tem fotos mais novas pra me mandar.`,
+      `E o mais importante.. você tem algum outro imóvel que gostaria de cadastrar comigo? Cuido de venda e locação em toda Uberlândia e seria um prazer trabalhar com ele também.`,
+      `Fico no aguardo, obrigado!`,
+    ].join('\n\n')
+    const fone = (owner?.fone || '').replace(/\D/g, '')
+    const num = fone ? (fone.startsWith('55') ? fone : '55' + fone) : ''
+    return `https://wa.me/${num}?text=${encodeURIComponent(texto)}`
+  }
+
   const copiarRelatorio = () => {
     if (!owner) return
     const linhas = [
@@ -178,9 +222,8 @@ export default function AdminImovelBar({ im }) {
 
   // Nome do arquivo/pasta: "<Bairro> - <Endereço, Nº>" (sanitizado p/ Windows).
   const nomeBase = () => {
-    const ec = owner?.enderecoCampos || []
-    const g = (r) => (ec.find((c) => c.rotulo === r) || {}).valor || ''
-    let endereco = ec.length ? [g('Endereço'), g('Nº')].filter(Boolean).join(', ') : ''
+    const p = enderecoPartes()
+    let endereco = [p.rua, p.num].filter(Boolean).join(', ')
     if (!endereco) endereco = owner?.enderecoImovel || im.endereco || ''
     const bruto = [im.bairro || '', endereco].filter(Boolean).join(' - ')
     const limpo = bruto.replace(/[\\/:*?"<>|\r\n]+/g, ' ').replace(/\s{2,}/g, ' ').trim().slice(0, 110)
@@ -363,7 +406,13 @@ export default function AdminImovelBar({ im }) {
                 )}
                 {owner?.fone && (
                   <a className="adm-btn adm-btn--wa" href={waLink()} target="_blank" rel="noopener noreferrer">
-                    Enviar WhatsApp ao proprietário
+                    Tenho cliente interessado
+                  </a>
+                )}
+                {owner?.fone && (
+                  <a className="adm-btn adm-btn--wa" href={waLinkCaptacao()} target="_blank" rel="noopener noreferrer"
+                    title="Apresentação + confirmar disponibilidade (endereço, código e valor) + link das fotos + pedir outro imóvel pra cadastrar">
+                    Confirmar &amp; captar (WhatsApp)
                   </a>
                 )}
               </div>
