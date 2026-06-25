@@ -905,9 +905,15 @@ export async function onRequestPost({ env, request }) {
           // ENDEREÇO DO IMÓVEL — renderizado como TEXTO na página de detalhes (os campos do
           // formulário de edição carregam por AJAX, então não dá pra lê-los do HTML inicial).
           // Formato: "Endereço <logradouro>, <nº>, <complemento>, CEP <cep> Cidade ... Região <X>".
-          const _end = extrairEnderecoTexto(imovelHtml)
-          let enderecoCampos = _end.campos
-          const enderecoImovel = _end.texto || extrairEnderecoImovel(imovelHtml)
+          // A extração de endereço NUNCA pode derrubar a captação de nome/telefone:
+          // se qualquer regex falhar, seguimos sem endereço (não é o dado crítico).
+          let enderecoCampos = []
+          let enderecoImovel = ''
+          try {
+            const _end = extrairEnderecoTexto(imovelHtml)
+            enderecoCampos = _end.campos || []
+            enderecoImovel = _end.texto || extrairEnderecoImovel(imovelHtml)
+          } catch (eAddr) { if (isDebug) dbg.enderecoErro = String(eAddr).slice(0, 160) }
           if (isDebug) {
             dbg.enderecoImovel = enderecoImovel; dbg.enderecoCampos = enderecoCampos
             const _bd = imovelHtml.split(/<\/head>/i)[1] || ''
@@ -1080,9 +1086,10 @@ export async function onRequestPost({ env, request }) {
       }
     }
 
-    // Se force=true e scraping não encontrou nada, limpa o owner desatualizado do KV
-    if (force && saved && saved.owner) {
-      await env.ENGAGEMENT.put('imovel:'+cod, JSON.stringify({...(saved||{}), owner:null, atualizadoEm:Date.now()}))
+    // O scraping não encontrou nada agora. NÃO apagamos o que já estava salvo —
+    // é melhor manter o último proprietário bom captado do que zerar o painel.
+    if (saved && saved.owner && (saved.owner.nome || saved.owner.fone || (Array.isArray(saved.owner.dados) && saved.owner.dados.length) || saved.owner.enderecoImovel)) {
+      return json({ ok: true, owner: saved.owner, source: 'saved' })
     }
 
     // Alerta por email quando todas as estratégias de busca falham

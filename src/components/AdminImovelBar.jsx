@@ -51,7 +51,7 @@ export default function AdminImovelBar({ im }) {
       const j = await post('owner-fetch', force ? { force: true } : {})
       if (j.ok) {
         const o = j.owner || { nome: '', email: '', fone: '' }
-        const temDados = !!(o.nome || o.fone || (o.dados && o.dados.length))
+        const temDados = !!(o.nome || o.fone || (o.dados && o.dados.length) || o.enderecoImovel || (o.enderecoCampos && o.enderecoCampos.length))
         setOwner(temDados ? o : null)
         setForm(o)
         if (j.source && j.source.startsWith('imoview')) setMsg('✓ Captado do Imoview e salvo automaticamente')
@@ -220,12 +220,6 @@ export default function AdminImovelBar({ im }) {
                   </a>
                 )}
               </div>
-              {diag && (
-                <div style={{ marginTop: 12 }}>
-                  <p className="adm-status" style={{ margin: '0 0 6px' }}>Diagnóstico (mande este texto pro Vinícius ajustar a captação):</p>
-                  <pre style={{ maxHeight: 280, overflow: 'auto', background: '#f6f4ef', border: '1px solid var(--border)', borderRadius: 10, padding: 12, fontSize: '.72rem', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{diag}</pre>
-                </div>
-              )}
             </div>
           ) : (
             !loading && (
@@ -263,9 +257,18 @@ export default function AdminImovelBar({ im }) {
                   <button className="adm-btn" onClick={() => buscar(temContato)} disabled={loading}>
                     ↺ Buscar no Imoview
                   </button>
+                  <button className="adm-btn" onClick={diagnostico} disabled={loading} title="Não veio nada? Mostra o que o Imoview retornou pra eu ajustar a captação">
+                    🔧 Diagnóstico
+                  </button>
                 </div>
               </div>
             )
+          )}
+          {diag && (
+            <div style={{ marginTop: 12 }}>
+              <p className="adm-status" style={{ margin: '0 0 6px' }}>Diagnóstico (mande este texto pro Vinícius ajustar a captação):</p>
+              <pre style={{ maxHeight: 280, overflow: 'auto', background: '#f6f4ef', border: '1px solid var(--border)', borderRadius: 10, padding: 12, fontSize: '.72rem', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{diag}</pre>
+            </div>
           )}
         </div>
       )}
