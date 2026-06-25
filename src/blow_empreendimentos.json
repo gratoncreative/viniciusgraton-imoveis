@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-06-24T09:49:32.003Z",
+  "geradoEm": "2026-06-25T09:41:47.930Z",
   "fonte": "blow",
   "empreendimentos": [
     {
@@ -355,18 +355,18 @@
         }
       ],
       "pdfApresentacao": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/e903c0e6-9cfd-4577-ac15-5fc8a737d177/d0f1629a-e3f1-4fa4-9525-e3156bf34c05",
-      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/e903c0e6-9cfd-4577-ac15-5fc8a737d177/3ed27a64-ba19-4960-af4c-e8a0db2a6d45",
+      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/e903c0e6-9cfd-4577-ac15-5fc8a737d177/d5a67057-b7fa-41ac-bdf6-4d4c0be437a4",
       "tipologias": [
         "3 a 4 quartos"
       ],
       "areaMin": 82.43,
-      "areaMax": 183.4,
+      "areaMax": 216.23,
       "quartosMin": 3,
       "quartosMax": 4,
       "suitesMin": 1,
       "suitesMax": 4,
       "banheirosMin": 2,
-      "banheirosMax": 4,
+      "banheirosMax": 5,
       "vagasMin": 2,
       "vagasMax": 4,
       "descricao": "Chegou a hora de viver o melhor da sua vida! Não precisa mais esperar. Chegou a hora de morar com qualidade de vida, em um apartamento com 3 quartos e varanda gourmet, lazer completo, excelente padrão de acabamento e localização privilegiada do Finotti",
@@ -437,7 +437,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 2,
-          "valor": 663000
+          "valor": 669000
         },
         {
           "ap": "303",
@@ -447,7 +447,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 2,
-          "valor": 668000
+          "valor": 674000
         },
         {
           "ap": "403",
@@ -457,7 +457,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 2,
-          "valor": 673000
+          "valor": 679000
         },
         {
           "ap": "202",
@@ -467,7 +467,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 2,
-          "valor": 678000
+          "valor": 684000
         },
         {
           "ap": "201",
@@ -477,7 +477,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 2,
-          "valor": 708000
+          "valor": 714000
         },
         {
           "ap": "602",
@@ -487,7 +487,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 2,
-          "valor": 708000
+          "valor": 714000
         },
         {
           "ap": "401",
@@ -497,7 +497,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 2,
-          "valor": 718000
+          "valor": 724000
         },
         {
           "ap": "501",
@@ -507,7 +507,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 2,
-          "valor": 728000
+          "valor": 734000
         },
         {
           "ap": "803",
@@ -517,7 +517,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 2,
-          "valor": 733000
+          "valor": 739000
         },
         {
           "ap": "903",
@@ -527,7 +527,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 2,
-          "valor": 743000
+          "valor": 749000
         },
         {
           "ap": "701",
@@ -537,7 +537,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 2,
-          "valor": 748000
+          "valor": 754000
         },
         {
           "ap": "802",
@@ -547,18 +547,18 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 2,
-          "valor": 748000
+          "valor": 754000
         }
       ],
       "valorCondominio": 600,
       "quantAndares": 10,
       "quantElevadores": 2,
-      "fracaoVendida": 0.51,
+      "fracaoVendida": 0.48,
       "dataEntrega": "2026-03-27T03:00:00Z",
       "aquecimento": "Elétrico",
       "arCondicionado": "Previsão de Ar Condicionado",
       "unidadesDisponiveis": 13,
-      "totalUnidades": 27,
+      "totalUnidades": 25,
       "lat": -18.9226705,
       "lng": -48.2556586,
       "videos": [],
@@ -21455,7 +21455,7 @@
         }
       ],
       "pdfApresentacao": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/b4de6f6b-d30b-43e2-a974-2a30a77b6193/6d1ca2d5-d8b4-41d4-b542-d3a904cbd67c",
-      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/b4de6f6b-d30b-43e2-a974-2a30a77b6193/7748bec4-3da1-4d8d-bbbc-ce7e4ab40771",
+      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/b4de6f6b-d30b-43e2-a974-2a30a77b6193/42d7c31a-8407-46fc-89a4-227717da95c9",
       "tipologias": [
         "1 a 2 quartos"
       ],
@@ -28037,6 +28037,16 @@
           "valor": 517895.71
         },
         {
+          "ap": "201",
+          "tipologia": "Apto. Tipo",
+          "area": 69.68,
+          "quartos": 2,
+          "suites": 1,
+          "banheiros": 2,
+          "vagas": 1,
+          "valor": 517895.71
+        },
+        {
           "ap": "301",
           "tipologia": "Apto. Tipo",
           "area": 69.68,
@@ -28085,16 +28095,6 @@
           "banheiros": 2,
           "vagas": 2,
           "valor": 538766.9
-        },
-        {
-          "ap": "501",
-          "tipologia": "Apto. Tipo",
-          "area": 69.68,
-          "quartos": 2,
-          "suites": 1,
-          "banheiros": 2,
-          "vagas": 2,
-          "valor": 544154.11
         }
       ],
       "valorCondominio": null,
