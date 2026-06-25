@@ -138,15 +138,13 @@ export default function AdminImovelBar({ im }) {
     const valor = im.preco ? formatPreco(im.preco) : 'a combinar'
     const endereco = enderecoCompletoStr()
     const link = `https://viniciusgraton.com.br/imovel/${codigo}`
-    const texto = [
-      `Olá${nome ? ', ' + nome : ''}! Tudo bem?`,
-      `Aqui é o Vinícius Graton, consultor da Rotina Imobiliária.`,
-      `Estou com o seu ${tipo} no ${bairro} aqui comigo e queria confirmar se ele ainda está disponível..`,
-      `.. Endereço.. ${endereco}\n.. Valor.. ${valor}\n.. Código.. ${codigo}`,
-      `Pra eu divulgar do jeito certo, dá uma olhada nas fotos do anúncio aqui.. ${link}\nMe confirma se elas estão atualizadas, ou se você tem fotos mais novas pra me mandar.`,
-      `E o mais importante.. você tem algum outro imóvel que gostaria de cadastrar comigo? Cuido de venda e locação em toda Uberlândia e seria um prazer trabalhar com ele também.`,
-      `Fico no aguardo, obrigado!`,
-    ].join('\n\n')
+    // saudação conforme o horário ATUAL (recalculada toda vez que o painel renderiza)
+    const h = new Date().getHours()
+    const saud = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite'
+    const loc = [endereco && `fica na ${endereco}`, `código ${codigo}`, `no valor de ${valor}`].filter(Boolean).join(', ')
+    const p1 = `${saud}! Aqui é o Vinícius, consultor da Rotina Imobiliária, tudo bem${nome ? ', ' + nome : ''}? Estou com o seu ${tipo}${bairro ? ' no ' + bairro : ''} e gostaria de confirmar se ele ainda está disponível.. ${loc}.`
+    const p2 = `Verifica também as fotografias, se estão atualizadas.. são essas mesmas ou gostaria de atualizar com novas imagens? Basta me enviar, ou posso ir até o imóvel também.. ${link}. ${nome ? nome + ', aproveito' : 'Aproveito'} pra te perguntar se você tem mais algum imóvel que gostaria de cadastrar conosco.. me coloco à inteira disposição pra te dar suporte total${nome ? ', ' + nome : ''}!`
+    const texto = `${p1}\n\n${p2}`
     const fone = (owner?.fone || '').replace(/\D/g, '')
     const num = fone ? (fone.startsWith('55') ? fone : '55' + fone) : ''
     return `https://wa.me/${num}?text=${encodeURIComponent(texto)}`
