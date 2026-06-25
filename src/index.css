@@ -9512,24 +9512,3 @@ html[data-theme="claro"] textarea,
 }
 html[data-theme="claro"] input::placeholder,
 html[data-theme="claro"] textarea::placeholder { color: var(--text-mute); }
-
-/* ===== Carrossel full-width no topo do detalhe do imóvel (estilo portal) ===== */
-.det-hero-fotos { position: relative; width: 100vw; max-width: 100vw; margin-left: 0; margin-bottom: clamp(16px, 3vw, 30px); background: #11151c; }
-.det-hero-fotos .det-tag { position: absolute; top: 16px; left: 16px; z-index: 5; }
-.det-hero-fotos .det-fav { position: absolute; top: 16px; right: 16px; z-index: 5; }
-.gal-hero { width: 100%; }
-.gal-hero-stage { position: relative; height: clamp(300px, 56vh, 600px); overflow: hidden; background: #11151c; }
-.gal-hero-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; }
-.gal-hero-nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.42); color: #fff; cursor: pointer; backdrop-filter: blur(4px); transition: background .2s ease; }
-.gal-hero-nav:hover { background: rgba(255,255,255,0.34); }
-.gal-hero-nav svg { width: 22px; height: 22px; }
-.gal-hero-prev { left: clamp(10px, 2vw, 26px); }
-.gal-hero-next { right: clamp(10px, 2vw, 26px); }
-.gal-hero-expand { position: absolute; left: 18px; bottom: 16px; z-index: 3; width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: rgba(17,21,28,0.55); border: 1px solid rgba(255,255,255,0.28); color: #fff; cursor: pointer; backdrop-filter: blur(4px); }
-.gal-hero-expand:hover { background: rgba(17,21,28,0.8); }
-.gal-hero-count { position: absolute; right: 18px; bottom: 16px; z-index: 3; background: rgba(17,21,28,0.6); color: #fff; font-size: .82rem; font-weight: 600; padding: 7px 13px; border-radius: 100px; backdrop-filter: blur(4px); }
-@media (max-width: 640px) {
-  .gal-hero-stage { height: 44vh; min-height: 250px; }
-  .gal-hero-nav { width: 42px; height: 42px; }
-  .gal-hero-nav svg { width: 18px; height: 18px; }
-}

@@ -655,31 +655,26 @@ export default function ImovelDetalhe() {
     <AdminImovelBar im={im} />
     <AdminImovelEditor im={im} onSaved={(campos) => setOvImovel(campos)} />
     <main className="section--light det imovel-pg">
-      {/* Carrossel full-width no topo (estilo portal): foto grande de ponta a ponta + setas laterais */}
-      {fotos.length > 0 && (
-        <div className="det-hero-fotos">
-          <span className="det-tag">{im.tipo}</span>
-          <button
-            type="button"
-            className={`det-fav${fav ? ' is-on' : ''}`}
-            onClick={toggleFav}
-            aria-pressed={fav}
-            aria-label={fav ? 'Remover dos favoritos' : 'Salvar nos favoritos'}
-            title={fav ? 'Salvo nos favoritos' : 'Salvar nos favoritos'}
-          >
-            <IconHeart filled={fav} width={20} height={20} />
-          </button>
-          <Galeria fotos={fotos} variante="hero" alt={`${im.tipo} à venda no ${im.bairro}, Uberlândia · Cód. ${im.codigo}`} />
-        </div>
-      )}
       <div className="container">
         <nav className="det-bread">
           <Link to="/">Início</Link> <span>/</span> <Link to="/imoveis">Imóveis</Link> <span>/</span> <b>{im.bairro}</b>
         </nav>
 
         <div className="det-grid">
-          {/* coluna esquerda: análise do consultor + descrição */}
+          {/* Galeria */}
           <div className="det-galeria">
+            <span className="det-tag">{im.tipo}</span>
+            <button
+              type="button"
+              className={`det-fav${fav ? ' is-on' : ''}`}
+              onClick={toggleFav}
+              aria-pressed={fav}
+              aria-label={fav ? 'Remover dos favoritos' : 'Salvar nos favoritos'}
+              title={fav ? 'Salvo nos favoritos' : 'Salvar nos favoritos'}
+            >
+              <IconHeart filled={fav} width={20} height={20} />
+            </button>
+            <Galeria fotos={fotos} alt={`${im.tipo} à venda no ${im.bairro}, Uberlândia · Cód. ${im.codigo}`} />
             {fotos.length > 0 && <BaixarFotosImovel im={im} fotos={fotos} galeria />}
             {(() => { const ap = apresentacao(im); return (
               <div className="det-apresenta">
