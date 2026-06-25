@@ -9452,3 +9452,48 @@ html[data-theme="claro"] .lou-pg .lou-form-btn svg { color: #FFFFFF !important; 
 .bairro-faq-a { color: #5b606a; font-size: 0.95rem; line-height: 1.6; margin: 0; }
 .bairro-faq-links { font-size: 0.9rem; color: #6a7280; margin: 4px 0 0; }
 .bairro-faq-links a { color: #C20020; font-weight: 600; }
+
+/* ===== ETIQUETAS DOS CARDS — alinhamento ===== */
+/* Regra: toda etiqueta sobreposta à foto fica na ESQUERDA-SUPERIOR (CASA/APTO, NOVO, selos
+   de oportunidade), EMPILHADA. As etiquetas de exclusividade (Publicidade/Patrocinado e
+   Lançamento) ficam na DIREITA-SUPERIOR. */
+
+/* --- Grade (card vertical) --- */
+/* esquerda-topo, empilhado: tipo (im-tag, 14px) → NOVO → selos de oportunidade */
+.im-media .im-novo { top: 52px; bottom: auto; left: 14px; right: auto; }
+.im-media .im-selos { top: 52px; left: 14px; right: auto; transform: translateZ(48px); }
+.im-media .im-novo ~ .im-selos { top: 90px; }            /* havendo NOVO, os selos descem */
+.im-pub-on .im-media .im-tag { top: 14px; }              /* publicidade saiu da esquerda: CASA volta ao topo */
+.im-pub-on .im-media .im-selos { top: 52px; }            /* anula o deslocamento antigo da publicidade */
+.im-pub-on .im-media .im-novo ~ .im-selos { top: 90px; }
+/* direita-topo: etiqueta de exclusividade (Publicidade / Patrocinado) */
+.im-media .im-pub { top: 12px; right: 12px; left: auto; bottom: auto; }
+.im-media .im-pub ~ .engaj--card { top: 56px; }          /* corações descem p/ não cobrir a etiqueta */
+
+/* --- Card de publicidade/lançamento (ex.: Louis): Publicidade junto do selo Lançamento, à direita --- */
+.promo-imovel--card .im-tag { top: 14px; right: 14px; left: auto; bottom: auto; }
+.promo-imovel--card .im-pub { top: 48px; right: 14px; left: auto; bottom: auto; transform: none; }
+
+/* --- Catálogo (variante linha): NOVO à esquerda, Publicidade à direita --- */
+.im-linha-media .im-novo { top: auto; bottom: 12px; left: 12px; right: auto; }
+.im-linha-media .im-pub { top: 12px; right: 12px; left: auto; }
+.im-pub-on .im-linha-media .im-tag { top: 12px; }
+
+/* ===== Atalho discreto do simulador na home (no lugar do widget interativo) ===== */
+.quicksim-atalho { padding: clamp(26px, 4vw, 46px) 0; }
+.qsa-card { display: flex; align-items: center; justify-content: space-between; gap: 22px; flex-wrap: wrap;
+  background: #FBF7EF; border: 1px solid #ECE3CF; border-radius: 18px;
+  padding: clamp(18px,2.4vw,26px) clamp(20px,3vw,32px);
+  text-decoration: none; color: inherit;
+  box-shadow: 0 14px 34px -26px rgba(33,43,61,0.4);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.qsa-card:hover { transform: translateY(-2px); border-color: var(--gold-2, #C6A15B); box-shadow: 0 20px 44px -24px rgba(33,43,61,0.5); }
+.qsa-txt { min-width: 0; }
+.qsa-tit { font-family: var(--font-head); font-weight: 800; font-size: clamp(1.35rem, 2.6vw, 1.85rem); color: #1C2A44; margin: 6px 0 6px; line-height: 1.12; }
+.qsa-tit em { font-style: italic; color: #C6A15B; }
+.qsa-sub { color: #5b606a; font-size: 0.97rem; line-height: 1.5; margin: 0; max-width: 560px; }
+.qsa-cta { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; flex-shrink: 0;
+  background: #1C2A44; color: #fff; font-family: var(--font-head); font-weight: 700; font-size: 0.95rem;
+  padding: 12px 22px; border-radius: 100px; transition: background .2s ease; }
+.qsa-card:hover .qsa-cta { background: #212b3d; }
+@media (max-width: 560px) { .qsa-cta { width: 100%; justify-content: center; } }
