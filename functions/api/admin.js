@@ -838,8 +838,8 @@ export async function onRequestPost({ env, request }) {
       return ''
     }
 
+    let dbg = {}
     if (imoviewEmail && imoviewSenha) {
-      let dbg = {}
       try {
         // Passo 0: GET /Login/RetornarConvenios → codigoConvenio e rota da Rotina
         const convR = await fetch(`${WEB}/Login/RetornarConvenios?email=${encodeURIComponent(imoviewEmail)}`, {
@@ -1113,7 +1113,15 @@ export async function onRequestPost({ env, request }) {
       } catch {}
     }
 
-    return json({ ok: true, owner: { nome: '', email: '', fone: '' }, source: 'none' })
+    // Diz exatamente POR QUE não veio nada (pra resolver na hora, sem adivinhar)
+    const motivo = (!imoviewEmail || !imoviewSenha)
+      ? 'As credenciais do Imoview não estão configuradas (secrets IMOVIEW_LOGIN / IMOVIEW_SENHA).'
+      : dbg.loginOk === false
+        ? 'Não consegui entrar no Imoview — a sessão expirou ou a senha mudou. Confira o login do Imoview e tente de novo.'
+        : !dbg.pessoaCode
+          ? 'Entrei no Imoview, mas este imóvel não trouxe o código do proprietário (cadastro sem dono vinculado?). Use o Diagnóstico.'
+          : 'Entrei e localizei o proprietário, mas não consegui ler nome/telefone — o layout do Imoview pode ter mudado. Use o Diagnóstico.'
+    return json({ ok: true, owner: { nome: '', email: '', fone: '' }, source: 'none', motivo })
   }
 
   // Salva apenas o proprietário preservando campos existentes do imóvel

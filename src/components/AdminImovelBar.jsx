@@ -58,7 +58,7 @@ export default function AdminImovelBar({ im }) {
         setForm(o)
         if (j.source && j.source.startsWith('imoview')) setMsg('✓ Captado do Imoview e salvo automaticamente')
         else if (j.source === 'saved') setMsg('✓ Dados já cadastrados neste imóvel')
-        else { setMsg('Nenhum dado encontrado. Preencha os campos abaixo.'); setEditing(true) }
+        else { setMsg(j.motivo || 'Nenhum dado encontrado. Preencha os campos abaixo.'); setEditing(true) }
       } else {
         setMsg(j.msg || 'Erro ao buscar dados')
         setEditing(true)
