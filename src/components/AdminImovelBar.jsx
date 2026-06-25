@@ -278,29 +278,36 @@ export default function AdminImovelBar({ im }) {
     setBaixando(false); setTimeout(() => setProg(''), 5000)
   }
 
-  // Opção 2 — pasta SEM compactar (escolhe onde salvar; grava bloco de notas + fotos soltas).
-  // Usa File System Access API (Chromium: Chrome/Edge/Comet). Fora desses, orienta usar o .zip.
+  // Opção 2 — pasta SEM compactar, DIRETO na pasta Downloads (sem janela de seleção).
+  // Dispara o download de cada arquivo com caminho relativo "<imóvel>/<imóvel> - NN.jpg";
+  // navegadores Chromium (Chrome/Edge/Comet) criam a subpasta dentro de Downloads sozinhos.
+  // O nome do imóvel vai na pasta E em cada foto/arquivo (sobrevive mesmo se o navegador
+  // não criar a subpasta — aí ficam soltos, porém já identificados).
   const salvarEmPasta = async () => {
     if (baixando) return
-    if (!window.showDirectoryPicker) { setProg('Seu navegador não permite salvar em pasta — use o .zip.'); setTimeout(() => setProg(''), 6000); return }
-    let raiz
-    try { raiz = await window.showDirectoryPicker({ mode: 'readwrite' }) } catch { return } // cancelou
     setBaixando(true); setProg('Preparando…')
+    const base = nomeBase()
+    const baixarArquivo = (caminho, blob) => new Promise((res) => {
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url; a.download = caminho; a.rel = 'noopener'
+      document.body.appendChild(a); a.click(); a.remove()
+      setTimeout(() => { URL.revokeObjectURL(url); res() }, 280)
+    })
     try {
-      const dir = await raiz.getDirectoryHandle(nomeBase(), { create: true })
-      const ft = await dir.getFileHandle('dados.txt', { create: true })
-      const wt = await ft.createWritable(); await wt.write(montarTxt()); await wt.close()
-      const fotosDir = await dir.getDirectoryHandle('fotos', { create: true })
+      await baixarArquivo(`${base}/${base} - dados.txt`, new Blob([montarTxt()], { type: 'text/plain;charset=utf-8' }))
       const fotos = await coletarFotos()
-      for (const f of fotos) {
-        const fh = await fotosDir.getFileHandle(f.nome, { create: true })
-        const w = await fh.createWritable(); await w.write(f.blob); await w.close()
+      for (let k = 0; k < fotos.length; k++) {
+        const ext = (fotos[k].nome.split('.').pop() || 'jpg')
+        const num = String(k + 1).padStart(2, '0')
+        setProg(`Salvando… ${k + 1}/${fotos.length}`)
+        await baixarArquivo(`${base}/${base} - ${num}.${ext}`, fotos[k].blob)
       }
-      setProg(`✓ Salvo na pasta "${nomeBase()}" · ${fotos.length} fotos`)
+      setProg(`✓ ${fotos.length} fotos + dados na sua pasta Downloads`)
     } catch (e) {
-      setProg('Falha ao salvar na pasta. Tente o .zip.')
+      setProg('Falha ao baixar. Tente o .zip.')
     }
-    setBaixando(false); setTimeout(() => setProg(''), 6000)
+    setBaixando(false); setTimeout(() => setProg(''), 7000)
   }
 
   // Diagnóstico: mostra o que o Imoview devolveu (pra ajustar a captação dos campos)
@@ -312,7 +319,6 @@ export default function AdminImovelBar({ im }) {
   }
 
   const temContato = !!(owner && (owner.nome || owner.fone || (owner.dados && owner.dados.length) || owner.enderecoImovel))
-  const podePasta = typeof window !== 'undefined' && !!window.showDirectoryPicker
 
   return (
     <div className="adm-bar" role="region" aria-label="Painel administrativo">
@@ -394,11 +400,9 @@ export default function AdminImovelBar({ im }) {
                 <button className="adm-btn adm-btn--gold" onClick={baixarZip} disabled={baixando} title="Baixar um .zip com todas as fotos + um bloco de notas (proprietário + descrição completa)">
                   {baixando ? '⏳ Gerando…' : '⬇ Baixar .zip (fotos + dados)'}
                 </button>
-                {podePasta && (
-                  <button className="adm-btn" onClick={salvarEmPasta} disabled={baixando} title="Salvar numa pasta SEM compactar: você escolhe o local e eu gravo o bloco de notas + as fotos soltas">
-                    📁 Salvar em pasta (sem zipar)
-                  </button>
-                )}
+                <button className="adm-btn" onClick={salvarEmPasta} disabled={baixando} title="Baixa direto na pasta Downloads (sem compactar e sem janela de seleção): cria uma pasta com o nome do imóvel + as fotos">
+                  📁 Baixar na pasta Downloads (sem zipar)
+                </button>
                 {!(owner?.enderecoCampos || []).some((c) => c.rotulo === 'Nº') && (
                   <button className="adm-btn" onClick={diagnostico} disabled={loading} title="Faltou o número? Mostra o que o Imoview retornou pra ajustar a captação">
                     🔧 Diagnóstico
