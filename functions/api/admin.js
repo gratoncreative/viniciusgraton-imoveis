@@ -1008,6 +1008,11 @@ export async function onRequestPost({ env, request }) {
               if (dcM) pessoaCode = dcM[1]
             }
             dbg.pessoaCode = pessoaCode
+            if (isDebug) {
+              const _lp = imovelHtml.search(/loadPessoas/i)
+              dbg.loadPessoasCtx = _lp >= 0 ? imovelHtml.slice(Math.max(0, _lp - 140), _lp + 420).replace(/\s+/g, ' ') : 'loadPessoas não encontrado'
+              dbg.imovelPessoaUrls = [...new Set([...imovelHtml.matchAll(/["'](\/[A-Za-z][\w]+\/[A-Za-z][\w]+[^"'\s<>]*)["']/g)].map((x) => x[1]).filter((u) => /pessoa|proprietar|retornar|contato|telefone/i.test(u)))].slice(0, 30)
+            }
 
             if (pessoaCode) {
               for (const tipo of ['PessoaF', 'PessoaJ']) {
@@ -1054,6 +1059,16 @@ export async function onRequestPost({ env, request }) {
                 }
                 const emailM = pessoaHtml.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,6}/)
                 const email  = emailM ? emailM[0] : ''
+
+                if (isDebug) {
+                  dbg[`${tipo}Title`] = (pessoaHtml.match(/<title>([^<]*)<\/title>/) || [])[1] || ''
+                  dbg[`${tipo}NomeEx`] = nome; dbg[`${tipo}FoneEx`] = fone; dbg[`${tipo}EmailEx`] = email
+                  // endpoints AJAX candidatos p/ contatos/telefones/endereço da pessoa
+                  dbg[`${tipo}Endpoints`] = [...new Set([...pessoaHtml.matchAll(/["'](\/[A-Za-z][\w]+\/[A-Za-z][\w]+[^"'\s<>]*)["']/g)].map((x) => x[1]).filter((u) => /pessoa|contato|telefone|celular|endereco|retornar|listar|grid|dados/i.test(u)))].slice(0, 40)
+                  dbg[`${tipo}AjaxUrls`] = [...new Set([...pessoaHtml.matchAll(/url\s*:\s*["']([^"']+)["']/gi)].map((x) => x[1]))].slice(0, 30)
+                  const _w = pessoaHtml.search(/whatsapp|telefone|celular|\(\d{2}\)/i)
+                  dbg[`${tipo}FoneCtx`] = _w >= 0 ? pessoaHtml.slice(Math.max(0, _w - 120), _w + 220).replace(/\s+/g, ' ') : 'sem telefone no html estático'
+                }
 
                 if (nome || fone || dados.length) {
                   owner.nome = owner.nome || nome.slice(0, 120)
