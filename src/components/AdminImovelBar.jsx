@@ -176,47 +176,88 @@ export default function AdminImovelBar({ im }) {
 
   const listaFotos = () => (Array.isArray(im.fotos) && im.fotos.length ? im.fotos : (im.img ? [im.img] : []))
 
-  // Baixa TUDO num .zip: /fotos (via proxy same-origin) + dados.txt (proprietário + descrição).
-  const baixarDossie = async () => {
+  // Nome do arquivo/pasta: "<Bairro> - <Endereço, Nº>" (sanitizado p/ Windows).
+  const nomeBase = () => {
+    const ec = owner?.enderecoCampos || []
+    const g = (r) => (ec.find((c) => c.rotulo === r) || {}).valor || ''
+    let endereco = ec.length ? [g('Endereço'), g('Nº')].filter(Boolean).join(', ') : ''
+    if (!endereco) endereco = owner?.enderecoImovel || im.endereco || ''
+    const bruto = [im.bairro || '', endereco].filter(Boolean).join(' - ')
+    const limpo = bruto.replace(/[\\/:*?"<>|\r\n]+/g, ' ').replace(/\s{2,}/g, ' ').trim().slice(0, 110)
+    return limpo || `imovel-${codigo}`
+  }
+
+  // Baixa as fotos via proxy same-origin (6 em paralelo). Devolve [{nome, blob}].
+  const coletarFotos = async () => {
+    const fotos = listaFotos()
+    const itens = new Array(fotos.length)
+    let done = 0
+    const baixarUma = async (urlFoto, idx) => {
+      try {
+        const r = await fetch('/api/img-proxy?u=' + encodeURIComponent(urlFoto))
+        if (r.ok) {
+          const blob = await r.blob()
+          const ext = ((urlFoto.match(/\.(jpe?g|png|webp)(?=$|\?)/i) || [])[1] || 'jpg').toLowerCase()
+          itens[idx] = { nome: String(idx + 1).padStart(2, '0') + '.' + ext, blob }
+        }
+      } catch {}
+      done++; setProg(`Baixando fotos… ${done}/${fotos.length}`)
+    }
+    const fila = fotos.map((u, i) => () => baixarUma(u, i))
+    await Promise.all(Array.from({ length: Math.min(6, fila.length || 1) }, async () => {
+      while (fila.length) { const job = fila.shift(); if (job) await job() }
+    }))
+    return itens.filter(Boolean)
+  }
+
+  // Opção 1 — .zip único (funciona em qualquer navegador).
+  const baixarZip = async () => {
     if (baixando) return
     setBaixando(true); setProg('Preparando…')
     try {
       const { default: JSZip } = await import('jszip')
       const zip = new JSZip()
       zip.file('dados.txt', montarTxt())
-      const fotos = listaFotos()
       const pasta = zip.folder('fotos')
-      let done = 0, ok = 0
-      const baixarUma = async (urlFoto, idx) => {
-        try {
-          const r = await fetch('/api/img-proxy?u=' + encodeURIComponent(urlFoto))
-          if (r.ok) {
-            const blob = await r.blob()
-            const ext = ((urlFoto.match(/\.(jpe?g|png|webp)(?=$|\?)/i) || [])[1] || 'jpg').toLowerCase()
-            pasta.file(String(idx + 1).padStart(2, '0') + '.' + ext, blob)
-            ok++
-          }
-        } catch {}
-        done++; setProg(`Baixando fotos… ${done}/${fotos.length}`)
-      }
-      const fila = fotos.map((u, i) => () => baixarUma(u, i))
-      await Promise.all(Array.from({ length: Math.min(6, fila.length || 1) }, async () => {
-        while (fila.length) { const job = fila.shift(); if (job) await job() }
-      }))
+      const fotos = await coletarFotos()
+      fotos.forEach((f) => pasta.file(f.nome, f.blob))
       setProg('Compactando…')
       const out = await zip.generateAsync({ type: 'blob' })
       const url = URL.createObjectURL(out)
       const a = document.createElement('a')
-      a.href = url; a.download = `imovel-${codigo}.zip`
+      a.href = url; a.download = `${nomeBase()}.zip`
       document.body.appendChild(a); a.click(); a.remove()
       setTimeout(() => URL.revokeObjectURL(url), 5000)
-      setProg(`✓ Baixado · ${ok}/${fotos.length} fotos`)
-      setTimeout(() => setProg(''), 5000)
+      setProg(`✓ Baixado · ${fotos.length} fotos`)
     } catch (e) {
-      setProg('Falha ao gerar o arquivo. Tente de novo.')
-      setTimeout(() => setProg(''), 5000)
+      setProg('Falha ao gerar o .zip. Tente de novo.')
     }
-    setBaixando(false)
+    setBaixando(false); setTimeout(() => setProg(''), 5000)
+  }
+
+  // Opção 2 — pasta SEM compactar (escolhe onde salvar; grava bloco de notas + fotos soltas).
+  // Usa File System Access API (Chromium: Chrome/Edge/Comet). Fora desses, orienta usar o .zip.
+  const salvarEmPasta = async () => {
+    if (baixando) return
+    if (!window.showDirectoryPicker) { setProg('Seu navegador não permite salvar em pasta — use o .zip.'); setTimeout(() => setProg(''), 6000); return }
+    let raiz
+    try { raiz = await window.showDirectoryPicker({ mode: 'readwrite' }) } catch { return } // cancelou
+    setBaixando(true); setProg('Preparando…')
+    try {
+      const dir = await raiz.getDirectoryHandle(nomeBase(), { create: true })
+      const ft = await dir.getFileHandle('dados.txt', { create: true })
+      const wt = await ft.createWritable(); await wt.write(montarTxt()); await wt.close()
+      const fotosDir = await dir.getDirectoryHandle('fotos', { create: true })
+      const fotos = await coletarFotos()
+      for (const f of fotos) {
+        const fh = await fotosDir.getFileHandle(f.nome, { create: true })
+        const w = await fh.createWritable(); await w.write(f.blob); await w.close()
+      }
+      setProg(`✓ Salvo na pasta "${nomeBase()}" · ${fotos.length} fotos`)
+    } catch (e) {
+      setProg('Falha ao salvar na pasta. Tente o .zip.')
+    }
+    setBaixando(false); setTimeout(() => setProg(''), 6000)
   }
 
   // Diagnóstico: mostra o que o Imoview devolveu (pra ajustar a captação dos campos)
@@ -228,6 +269,7 @@ export default function AdminImovelBar({ im }) {
   }
 
   const temContato = !!(owner && (owner.nome || owner.fone || (owner.dados && owner.dados.length) || owner.enderecoImovel))
+  const podePasta = typeof window !== 'undefined' && !!window.showDirectoryPicker
 
   return (
     <div className="adm-bar" role="region" aria-label="Painel administrativo">
@@ -306,9 +348,14 @@ export default function AdminImovelBar({ im }) {
                 <button className="adm-btn" onClick={copiarRelatorio} title="Copiar o relatório completo do proprietário">
                   {copiado ? '✓ Copiado' : '⧉ Copiar relatório'}
                 </button>
-                <button className="adm-btn adm-btn--gold" onClick={baixarDossie} disabled={baixando} title="Baixar um .zip com todas as fotos + um bloco de notas com os dados do proprietário e a descrição completa">
-                  {baixando ? '⏳ Baixando…' : '⬇ Baixar dossiê (fotos + dados)'}
+                <button className="adm-btn adm-btn--gold" onClick={baixarZip} disabled={baixando} title="Baixar um .zip com todas as fotos + um bloco de notas (proprietário + descrição completa)">
+                  {baixando ? '⏳ Gerando…' : '⬇ Baixar .zip (fotos + dados)'}
                 </button>
+                {podePasta && (
+                  <button className="adm-btn" onClick={salvarEmPasta} disabled={baixando} title="Salvar numa pasta SEM compactar: você escolhe o local e eu gravo o bloco de notas + as fotos soltas">
+                    📁 Salvar em pasta (sem zipar)
+                  </button>
+                )}
                 {!(owner?.enderecoCampos || []).some((c) => c.rotulo === 'Nº') && (
                   <button className="adm-btn" onClick={diagnostico} disabled={loading} title="Faltou o número? Mostra o que o Imoview retornou pra ajustar a captação">
                     🔧 Diagnóstico
