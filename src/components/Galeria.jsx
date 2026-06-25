@@ -11,6 +11,7 @@ export default function Galeria({ fotos = [], alt = '' }) {
   const [i, setI] = useState(0)
   const [aberto, setAberto] = useState(false)
   const [tour, setTour] = useState(false)
+  const [lbLoad, setLbLoad] = useState(true)
   const touchX = useRef(null)
 
   const total = fotos.length
@@ -40,6 +41,9 @@ export default function Galeria({ fotos = [], alt = '' }) {
     document.body.style.overflow = 'hidden'
     return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = '' }
   }, [aberto, prox, ant])
+
+  // ao abrir/trocar de foto no lightbox, mostra o spinner até a imagem carregar
+  useEffect(() => { if (aberto) setLbLoad(true) }, [i, aberto])
 
   if (!total) return null
 
@@ -101,12 +105,14 @@ export default function Galeria({ fotos = [], alt = '' }) {
                 <IconArrow style={{ transform: 'rotate(180deg)' }} />
               </button>
             )}
+            {lbLoad && <span className="lb-spinner" role="status" aria-label="Carregando foto" />}
             <AnimatePresence initial={false} mode="popLayout">
               <motion.img
                 key={i}
                 src={fotos[i]}
                 alt={alt}
-                onError={onImgError}
+                onLoad={() => setLbLoad(false)}
+                onError={(e) => { setLbLoad(false); onImgError(e) }}
                 referrerPolicy="no-referrer"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
