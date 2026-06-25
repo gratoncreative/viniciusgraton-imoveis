@@ -193,17 +193,31 @@ function extrairEnderecoImovel(html) {
   return [end, cep && ('CEP ' + cep)].filter(Boolean).join(' · ').replace(/\s+/g, ' ').trim().slice(0, 200)
 }
 
+// Decodifica entidades HTML (numéricas e nomeadas) — o Imoview manda nomes/textos como
+// "F&#225;bio", "Concei&ccedil;&atilde;o" etc. Sem isso o nome do proprietário sai quebrado.
+const _ENT = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ',
+  aacute: 'á', eacute: 'é', iacute: 'í', oacute: 'ó', uacute: 'ú',
+  Aacute: 'Á', Eacute: 'É', Iacute: 'Í', Oacute: 'Ó', Uacute: 'Ú',
+  acirc: 'â', ecirc: 'ê', ocirc: 'ô', Acirc: 'Â', Ecirc: 'Ê', Ocirc: 'Ô',
+  atilde: 'ã', otilde: 'õ', Atilde: 'Ã', Otilde: 'Õ',
+  agrave: 'à', Agrave: 'À', ccedil: 'ç', Ccedil: 'Ç',
+  uuml: 'ü', Uuml: 'Ü', ntilde: 'ñ', Ntilde: 'Ñ', ordf: 'ª', ordm: 'º', deg: '°' }
+function decodeHtml(s) {
+  if (s == null) return ''
+  return String(s)
+    .replace(/&#(\d+);/g, (_, n) => { try { return String.fromCodePoint(+n) } catch { return _ } })
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, n) => { try { return String.fromCodePoint(parseInt(n, 16)) } catch { return _ } })
+    .replace(/&([a-zA-Z]+);/g, (m, e) => (e in _ENT ? _ENT[e] : m))
+    .replace(/\s{2,}/g, ' ')
+    .trim()
+}
+
 // Lê o endereço do imóvel a partir do TEXTO da página de detalhes do Imoview, que vem no
 // formato: "Endereço <logradouro>, <número>, <complemento...>, CEP <cep> Cidade ... Região <X>".
 // Devolve o texto completo (com número) + os campos estruturados.
 function extrairEnderecoTexto(html) {
   const body = (html.split(/<\/head>/i)[1] || html).replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ')
-  const t = body
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&')
-    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n))
-    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCharCode(parseInt(n, 16)))
-    .replace(/&[a-z]+;/gi, ' ').replace(/\s+/g, ' ').trim()
+  const t = decodeHtml(body.replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim()
   const m = t.match(/Endere[çc]o\s+(.{6,200}?)\s+(?:Cidade|Regi[ãa]o|Estado|Bairro|Refer[êe]ncia|Caracter[íi]sticas)\b/i)
   const bloco = m ? m[1].trim().replace(/[,;\s]+$/, '') : ''
   if (!bloco || !/[A-Za-zÀ-ÿ]/.test(bloco)) return { texto: '', campos: [] }
@@ -1047,7 +1061,7 @@ export async function onRequestPost({ env, request }) {
                   dbg[`${tipo}EndBloco`] = _j >= 0 ? pessoaHtml.slice(_j, _j + 800).replace(/\s+/g, ' ') : 'bloco de endereço não localizado'
                 }
                 const nomeM = pessoaHtml.match(/<title>[^|<]+\|\s*([^<]+)<\/title>/)
-                const nome  = nomeM ? nomeM[1].trim() : ''
+                const nome  = nomeM ? decodeHtml(nomeM[1].trim()) : ''
                 const waM = pessoaHtml.match(/api\.whatsapp\.com\/send\?phone=55(\d{10,11})/)
                 let fone = ''
                 if (waM) {
@@ -1090,6 +1104,10 @@ export async function onRequestPost({ env, request }) {
 
           if (enderecoImovel) owner.enderecoImovel = enderecoImovel
           if (enderecoCampos.length) owner.enderecoCampos = enderecoCampos
+          // rede de segurança: decodifica entidades HTML em TODOS os campos antes de salvar
+          owner.nome = decodeHtml(owner.nome); owner.email = decodeHtml(owner.email)
+          if (Array.isArray(owner.dados)) owner.dados = owner.dados.map((d) => ({ rotulo: decodeHtml(d.rotulo), valor: decodeHtml(d.valor) }))
+          if (Array.isArray(owner.enderecoCampos)) owner.enderecoCampos = owner.enderecoCampos.map((c) => ({ rotulo: c.rotulo, valor: decodeHtml(c.valor) }))
           if (owner.nome || owner.fone || (owner.dados && owner.dados.length) || enderecoImovel) {
             await env.ENGAGEMENT.put('imovel:'+cod, JSON.stringify({...(saved||{}), owner, atualizadoEm:Date.now()}))
             await registrarProprietario(env, cod, owner) // auto-cadastra no sistema (Leads)

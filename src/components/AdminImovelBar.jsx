@@ -3,6 +3,21 @@ import { formatPreco } from '../data'
 
 const LSK = 'vg_admin_token'
 
+// Decodifica entidades HTML (ex.: "F&#225;bio" -> "Fábio") usando o próprio navegador.
+// Rede de segurança no cliente: conserta até dados que já foram salvos quebrados no cache.
+const decodeEnt = (s) => {
+  if (!s) return s
+  const t = document.createElement('textarea'); t.innerHTML = String(s); return t.value
+}
+const limparOwner = (o) => {
+  if (!o || typeof o !== 'object') return o
+  const out = { ...o, nome: decodeEnt(o.nome), email: decodeEnt(o.email) }
+  if (Array.isArray(o.dados)) out.dados = o.dados.map((d) => ({ rotulo: decodeEnt(d.rotulo), valor: decodeEnt(d.valor) }))
+  if (Array.isArray(o.enderecoCampos)) out.enderecoCampos = o.enderecoCampos.map((c) => ({ ...c, valor: decodeEnt(c.valor) }))
+  if (o.enderecoImovel) out.enderecoImovel = decodeEnt(o.enderecoImovel)
+  return out
+}
+
 export default function AdminImovelBar({ im }) {
   const [isAdmin, setIsAdmin] = useState(false)
   const [open, setOpen] = useState(false)
@@ -52,7 +67,7 @@ export default function AdminImovelBar({ im }) {
     try {
       const j = await post('owner-fetch', force ? { force: true } : {})
       if (j.ok) {
-        const o = j.owner || { nome: '', email: '', fone: '' }
+        const o = limparOwner(j.owner || { nome: '', email: '', fone: '' })
         const temDados = !!(o.nome || o.fone || (o.dados && o.dados.length) || o.enderecoImovel || (o.enderecoCampos && o.enderecoCampos.length))
         setOwner(temDados ? o : null)
         setForm(o)
@@ -142,7 +157,11 @@ export default function AdminImovelBar({ im }) {
     const h = new Date().getHours()
     const saud = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite'
     const loc = [endereco && `fica na ${endereco}`, `código ${codigo}`, `no valor de ${valor}`].filter(Boolean).join(', ')
-    const p1 = `${saud}! Aqui é o Vinícius, consultor da Rotina Imobiliária, tudo bem${nome ? ', ' + nome : ''}? Estou com o seu ${tipo}${bairro ? ' no ' + bairro : ''} e gostaria de confirmar se ele ainda está disponível.. ${loc}.`
+    // concordância de gênero conforme o tipo do imóvel: "a sua casa" / "o seu apartamento", "ela" / "ele"
+    const fem = /^(casa|cobertura|loja|sala|kitn|kitin|ch[áa]cara|fazenda|[áa]rea|ed[íi]cula|sobreloja|gleba)/i.test(tipo)
+    const artigo = fem ? 'a sua' : 'o seu'
+    const pron = fem ? 'ela' : 'ele'
+    const p1 = `${saud}! Aqui é o Vinícius, consultor da Rotina Imobiliária, tudo bem${nome ? ', ' + nome : ''}? Estou com ${artigo} ${tipo}${bairro ? ' no ' + bairro : ''} e gostaria de confirmar se ${pron} ainda está disponível.. ${loc}.`
     const p2 = `Verifica também as fotografias, se estão atualizadas.. são essas mesmas ou gostaria de atualizar com novas imagens? Basta me enviar, ou posso ir até o imóvel também.. ${link}. ${nome ? nome + ', aproveito' : 'Aproveito'} pra te perguntar se você tem mais algum imóvel que gostaria de cadastrar conosco.. me coloco à inteira disposição pra te dar suporte total${nome ? ', ' + nome : ''}!`
     const texto = `${p1}\n\n${p2}`
     const fone = (owner?.fone || '').replace(/\D/g, '')
