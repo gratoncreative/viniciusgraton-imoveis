@@ -9515,3 +9515,23 @@ html[data-theme="claro"] textarea,
 }
 html[data-theme="claro"] input::placeholder,
 html[data-theme="claro"] textarea::placeholder { color: var(--text-mute); }
+
+/* ===== Levantamento técnico de fotos (IA) — grade de fotos com descrição no rodapé ===== */
+.lev-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 18px; }
+.lev-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 10px 26px -22px rgba(33,43,61,0.4); }
+.lev-card-img { position: relative; aspect-ratio: 4 / 3; background: #ece7dd; overflow: hidden; }
+.lev-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lev-spin { position: absolute; top: 50%; left: 50%; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.55); border-top-color: #EB0128; animation: lbSpin .8s linear infinite; }
+.lev-baixar1, .lev-rem { position: absolute; top: 8px; width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: rgba(17,21,28,0.6); color: #fff; border: none; cursor: pointer; text-decoration: none; font-size: 15px; backdrop-filter: blur(4px); z-index: 2; }
+.lev-baixar1 { right: 44px; }
+.lev-rem { right: 8px; font-size: 20px; line-height: 1; }
+.lev-baixar1:hover, .lev-rem:hover { background: rgba(17,21,28,0.85); }
+.lev-card-body { padding: 12px 14px 14px; flex: 1 1 auto; }
+.lev-amb { font-family: var(--font-head); font-weight: 800; color: #42261c; font-size: 1.02rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.lev-estado { font-family: var(--font-body); font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: #fff; background: #1C2A44; padding: 3px 9px; border-radius: 100px; }
+.lev-resumo { color: var(--text-soft); font-size: .92rem; line-height: 1.5; margin: 8px 0 0; }
+.lev-itens { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 4px; }
+.lev-itens li { font-size: .85rem; color: var(--text); line-height: 1.4; }
+.lev-itens li b { color: #42261c; font-weight: 700; }
+.lev-status { color: var(--text-mute); font-size: .9rem; margin: 4px 0 0; font-style: italic; }
+.lev-erro { color: #b3261e; font-size: .9rem; margin: 4px 0 0; }

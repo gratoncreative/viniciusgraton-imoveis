@@ -25,6 +25,7 @@ const ConverterFotos = lazy(() => import('./pages/ConverterFotos'))
 const Alugar = lazy(() => import('./pages/Alugar'))
 const AlugarDetalhe = lazy(() => import('./pages/AlugarDetalhe'))
 const LeitorArea = lazy(() => import('./pages/LeitorArea'))
+const LevantamentoFotos = lazy(() => import('./pages/LevantamentoFotos'))
 const EstudioFotos = lazy(() => import('./pages/EstudioFotos'))
 const EditarFotoPage = lazy(() => import('./pages/EditarFotoPage'))
 const PdfParaJpg = lazy(() => import('./pages/PdfParaJpgPage'))
@@ -193,6 +194,7 @@ export default function App() {
               <Route path="/ferramentas" element={<Ferramentas />} />
               <Route path="/ferramentas/converter" element={<ConverterFotos />} />
               <Route path="/ferramentas/leitor-area" element={<LeitorArea />} />
+              <Route path="/ferramentas/levantamento-fotos" element={<LevantamentoFotos />} />
               <Route path="/ferramentas/estudio-de-fotos" element={<EstudioFotos />} />
               <Route path="/ferramentas/editar-foto" element={<EditarFotoPage />} />
               <Route path="/ferramentas/pdf-para-jpg" element={<PdfParaJpg />} />
