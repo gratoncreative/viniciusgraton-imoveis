@@ -44,6 +44,13 @@ function md5hex(s) {
 }
 
 const ADMIN_EMAIL_DEFAULT = 'contato@viniciusgraton.com.br'
+// E-mails liberados como ADMIN (todos entram com a MESMA senha do admin). Inclui o principal
+// (env.ADMIN_EMAIL, que pode ser lista separada por vírgula) + estes co-admins fixos.
+const ADMIN_EMAILS_EXTRA = ['viniciusgraton1985@gmail.com', 'joaocleberdesouza@gmail.com']
+const emailsAdmin = (env) => new Set(
+  [String(env.ADMIN_EMAIL || ADMIN_EMAIL_DEFAULT), ...ADMIN_EMAILS_EXTRA]
+    .join(',').split(/[,;\s]+/).map((e) => e.trim().toLowerCase()).filter(Boolean)
+)
 const TTL_MS = 30 * 24 * 60 * 60 * 1000 // sessão admin de 30 dias (era 12h — causava "sessão expirada" no uso entre dias)
 const ORIGIN = 'https://viniciusgraton.com.br'
 const originOk = (req) => { const o = req.headers.get('origin'); return !o || o === ORIGIN }
@@ -365,7 +372,7 @@ export async function onRequestPost({ env, request }) {
       const tentativas = parseInt(await kv.get(rlKey), 10) || 0
       if (tentativas >= 5) return json({ error: 'limite', msg: 'Muitas tentativas. Aguarde alguns minutos e tente de novo.' }, 429)
     }
-    const okEmail = String(b.email || '').trim().toLowerCase() === email
+    const okEmail = emailsAdmin(env).has(String(b.email || '').trim().toLowerCase())
     let okPass = false
     if (auth) okPass = eqStr(await pbkdf2(String(b.senha || ''), auth.salt, auth.iter), auth.hash)
     else okPass = eqStr(String(b.senha || ''), String(env.ADMIN_PASS))
