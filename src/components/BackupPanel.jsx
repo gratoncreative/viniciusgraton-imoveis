@@ -26,6 +26,7 @@ export default function BackupPanel({ token }) {
   const [drivePct, setDrivePct] = useState(null)
   const [driveResumo, setDriveResumo] = useState('')
   const [driveLink, setDriveLink] = useState('')
+  const [captar, setCaptar] = useState(null) // status da captação automática de proprietários
   const driveStopRef = useRef(false)
 
   const post = useCallback((action, extra = {}) =>
@@ -41,6 +42,15 @@ export default function BackupPanel({ token }) {
   }, [post])
 
   useEffect(() => { carregarStatus() }, [carregarStatus])
+
+  // status da captação automática de proprietários (3ª etapa / cron) — atualiza sozinho
+  useEffect(() => {
+    const buscar = () => fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'captar-status', token }) })
+      .then((r) => r.json()).then((j) => setCaptar(j && j.status ? j.status : null)).catch(() => {})
+    buscar()
+    const id = setInterval(buscar, 60000) // o cron roda por dias; reflete o progresso sem reabrir a aba
+    return () => clearInterval(id)
+  }, [token])
 
   // loop de lotes com 3 trabalhadores; cursor compartilhado (incremento síncrono = sem colisão)
   const rodar = async (inicio, totalInicial) => {
@@ -200,6 +210,11 @@ export default function BackupPanel({ token }) {
       <p className="section-sub" style={{ margin: '0 0 12px', fontSize: '.84rem' }}>
         Cópia no seu Drive, pasta <b>"Rotina Imóveis — Backups"</b>. O <b>site inteiro</b> (fotos) é pesado e <b>resumível</b> (pausa e continua). Proprietário entra do cache — sem estressar o Imoview.
       </p>
+      {captar && (
+        <p className="section-sub" style={{ margin: '0 0 12px', fontSize: '.8rem', background: '#f6f4ef', borderRadius: 8, padding: '8px 10px' }}>
+          🔄 <b>Captação automática de proprietários</b> (em segundo plano): {(captar.cursor || 0).toLocaleString('pt-BR')}/{(captar.total || 0).toLocaleString('pt-BR')} imóveis varridos · {(captar.totalCaptados || 0).toLocaleString('pt-BR')} donos captados{captar.erro === 'imoview-login' ? ' · ⚠ Imoview recusou no último ciclo (tenta de novo depois)' : ''}. Enche o cache aos poucos — os próximos backups ficam mais completos.
+        </p>
+      )}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
         <button className="admin-btn admin-btn--gold" onClick={subirSiteDrive} disabled={driveRun}>☁ Subir SITE INTEIRO → Drive (por bairro)</button>
         <button className="admin-btn" onClick={dadosParaDrive} disabled={driveRun} title="Espelha o backup de dados (precisa do R2 ligado)">⬆ Backup de dados → Drive</button>

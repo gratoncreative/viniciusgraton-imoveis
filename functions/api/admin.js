@@ -106,7 +106,7 @@ async function bulkEntries(store, prefix) {
 
 // Auto-cadastra o PROPRIETÁRIO captado como contato no sistema (aparece no /admin → Leads).
 // Chave determinística por imóvel (lead:prop-<cod>) → atualiza sem duplicar.
-async function registrarProprietario(env, cod, owner) {
+export async function registrarProprietario(env, cod, owner) {
   try {
     const key = 'lead:prop-' + cod
     const prev = await env.ENGAGEMENT.get(key, 'json').catch(() => null)
@@ -356,7 +356,7 @@ function parseAtendimentosHtml(html) {
 // Espelha as 2 estratégias do owner-fetch, porém SEM logar de novo — é o que permite
 // captar um bairro inteiro com 1 login só (em vez de 1 login por imóvel). Não mexe no
 // owner-fetch original. Devolve { nome, email, fone, dados?, enderecoImovel?, enderecoCampos? }.
-async function scrapeOwnerCod(cookies, cod, deadline = Date.now() + 22000) {
+export async function scrapeOwnerCod(cookies, cod, deadline = Date.now() + 22000) {
   let owner = { nome: '', email: '', fone: '' }
   const imovelR = await fetch(`${WEB_IMV}/Imovel/Detalhes/${cod}`, { headers: { cookie: cookies, 'user-agent': UA_IMV, accept: 'text/html', 'x-requested-with': 'XMLHttpRequest' }, redirect: 'follow', signal: AbortSignal.timeout(8000) })
   if (!imovelR.ok) return owner
@@ -1298,6 +1298,12 @@ export async function onRequestPost({ env, request }) {
       }
     }
     return json({ ok: true, owners })
+  }
+
+  // Status da captação automática de proprietários (3ª etapa / cron) — só leitura.
+  if (action === 'captar-status') {
+    const status = await env.ENGAGEMENT.get('captar:status', 'json').catch(() => null)
+    return json({ ok: true, status: status || null })
   }
 
   // Salva apenas o proprietário preservando campos existentes do imóvel

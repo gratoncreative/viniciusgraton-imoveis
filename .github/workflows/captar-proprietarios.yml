@@ -1,0 +1,33 @@
+name: Captar proprietários (gradual)
+
+# Enche o cache de proprietários aos poucos (3ª etapa do backup). Chama /api/captar-cron
+# em loop gentil — ~4 imóveis por chamada, pausa entre elas — algumas vezes por dia.
+# PARA na hora se o Imoview recusar o login (protege a conta). Resumível (cursor no servidor).
+# Pré-requisito: secret BACKUP_CRON_KEY no GitHub (mesmo valor do Cloudflare) — ver docs.
+
+on:
+  schedule:
+    - cron: '15 */4 * * *'   # a cada 4 horas
+  workflow_dispatch: {}        # botão "Run workflow" pra rodar na hora
+
+# evita duas execuções ao mesmo tempo (uma de cada vez = mais seguro pro Imoview)
+concurrency:
+  group: captar-proprietarios
+  cancel-in-progress: false
+
+jobs:
+  captar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Captar em lotes pequenos (gentil com o Imoview)
+        run: |
+          for i in $(seq 1 12); do
+            resp=$(curl -fsS --max-time 70 -X POST "https://viniciusgraton.com.br/api/captar-cron" \
+              -H "x-backup-key: ${{ secrets.BACKUP_CRON_KEY }}" || echo '{"erro":"http"}')
+            echo "lote $i: $resp"
+            case "$resp" in
+              *'"motivo":"imoview-login"'*) echo "Imoview recusou o login — parando por agora (protege a conta)."; break ;;
+              *'"restantes":0'*) echo "Varredura completa neste ciclo."; break ;;
+            esac
+            sleep 25
+          done
