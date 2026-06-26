@@ -9577,10 +9577,29 @@ html[data-theme="claro"] textarea::placeholder { color: var(--text-mute); }
 .estudio-app-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; }
 .estudio-app-load { padding: 48px 20px; text-align: center; color: #5b626e; }
 .estudio-app .mf-intro { display: none; }
-.estudio-app .mf { background: transparent; border: none; border-radius: 0; padding: clamp(12px, 2vw, 22px); box-shadow: none; }
-/* no app, o painel de controles é mais largo (cabe mais informação na mesma tela) */
-.estudio-app .mf-edit { grid-template-columns: 90px minmax(0, 1fr) minmax(360px, 600px); gap: 16px; }
-.estudio-app .mf-edit--vazio { grid-template-columns: minmax(0, 1fr) minmax(340px, 540px); }
-@media (max-width: 1024px) { .estudio-app .mf-edit { grid-template-columns: 84px minmax(0, 1fr); } .estudio-app .mf-edit--vazio { grid-template-columns: minmax(0, 1fr); } .estudio-app .mf-painel { grid-column: 1 / -1; } }
-@media (max-width: 640px) { .estudio-app .mf-edit { grid-template-columns: 1fr; } }
+.estudio-app .mf { background: transparent; border: none; border-radius: 0; padding: 10px clamp(12px, 2vw, 20px) 8px; box-shadow: none; }
+.estudio-app .mf-upload { margin-bottom: 8px; }
+/* layout do app: foto grande, TIRA DE MINIATURAS embaixo (pequena), painel de controles à direita */
+.estudio-app .mf-edit, .estudio-app .mf-edit--vazio {
+  grid-template-columns: minmax(0, 1fr) clamp(420px, 40vw, 640px);
+  grid-template-areas: "canvas painel" "tiras painel";
+  gap: 10px 16px; align-items: start;
+}
+.estudio-app .mf-preview { grid-area: canvas; position: static; }
+.estudio-app .mf-painel { grid-area: painel; max-height: calc(100dvh - 150px); overflow-y: auto; }
+.estudio-app .mf-tiras { grid-area: tiras; flex-direction: row; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; max-height: none; position: static; top: auto; gap: 6px; padding: 2px 0; }
+.estudio-app .mf-tira { width: 58px; flex: 0 0 auto; aspect-ratio: 4 / 3; }
+.estudio-app .mf-canvas { max-height: 50vh; }
+/* painel compacto: mais colunas + controles menores → todas as ferramentas cabem no notebook */
+.estudio-app .mf-aba-conteudo { columns: 172px auto; column-gap: 10px; padding: 10px; }
+.estudio-app .mf-aba-conteudo > .mf-grupo { margin: 0 0 8px; }
+.estudio-app .mf-grupo { padding: 8px 9px; gap: 4px; border-radius: 10px; }
+.estudio-app .mf-grupo-tit { font-size: 0.7rem; padding-bottom: 5px; margin-bottom: 0; }
+.estudio-app .mf-slider { gap: 0; font-size: 0.73rem; line-height: 1.2; }
+.estudio-app .mf-slider input[type=range] { height: 13px; margin: 1px 0 0; }
+.estudio-app .mf-modo-btn { padding: 4px 5px; font-size: 0.7rem; }
+.estudio-app .mf-botoes-col { gap: 5px; }
+.estudio-app .mf-botoes-col .btn, .estudio-app .mf-botoes-col .admin-btn { padding: 7px 10px; font-size: 0.8rem; }
+.estudio-app .mf-nota { font-size: 0.72rem; line-height: 1.35; }
+@media (max-width: 1024px) { .estudio-app .mf-edit, .estudio-app .mf-edit--vazio { grid-template-columns: 1fr; grid-template-areas: "canvas" "tiras" "painel"; } }
 @media (max-width: 600px) { .estudio-app-tit { display: none; } }
