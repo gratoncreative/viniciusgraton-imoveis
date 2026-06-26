@@ -1,0 +1,13 @@
+<svg viewBox="0 0 520 132" width="520" height="132" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vinícius Graton Imóveis — versão branca (reverso)">
+  <rect width="520" height="132" fill="#212b3d"/>
+  <defs><clipPath id="b-tile"><rect width="48" height="48" rx="13"/></clipPath></defs>
+  <g transform="translate(20 30) scale(1.5)">
+    <g clip-path="url(#b-tile)">
+      <rect width="48" height="48" fill="#F4F2EE"/>
+      <path fill="#212b3d" fill-rule="evenodd" d="M24 8.5 L41.5 23 L35.5 23 L35.5 38.5 L12.5 38.5 L12.5 23 L6.5 23 Z M19.7 38.5 L19.7 27.8 L24 31.2 L28.3 27.8 L28.3 38.5 Z"/>
+      <path fill="#EB0128" d="M24 17.6 L27.2 20.8 L24 24 L20.8 20.8 Z"/>
+    </g>
+  </g>
+  <text x="116" y="62" font-family="Fraunces, 'Playfair Display', Georgia, serif" font-size="38" font-weight="600" fill="#F4F2EE">Vinícius <tspan fill="#FF4D67" font-style="italic">Graton</tspan></text>
+  <text x="118" y="92" font-family="Manrope, system-ui, sans-serif" font-size="15" font-weight="600" fill="#C9CEDA" letter-spacing="3.4">IMÓVEIS · UBERLÂNDIA</text>
+</svg>

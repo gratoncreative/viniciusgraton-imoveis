@@ -1,0 +1,58 @@
+<svg viewBox="0 0 960 560" width="960" height="560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cartão de visita — verso">
+  <!-- Formato 90x50mm + 3mm sangria · 10px = 1mm · corte em 30,30 → 930,530 -->
+  <defs>
+    <linearGradient id="cv-red" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FF4D67"/><stop offset="0.5" stop-color="#EB0128"/><stop offset="1" stop-color="#C20020"/>
+    </linearGradient>
+    <clipPath id="cv-tile"><rect width="48" height="48" rx="13"/></clipPath>
+  </defs>
+  <rect width="960" height="560" fill="#F4F2EE"/>
+  <!-- faixa marinho lateral -->
+  <rect width="14" height="560" x="0" fill="#212b3d"/>
+
+  <!-- topo: nome + papel -->
+  <text x="80" y="135" font-family="Fraunces, 'Playfair Display', Georgia, serif" font-size="42" font-weight="600" fill="#212b3d">Vinícius <tspan fill="#EB0128" font-style="italic">Graton</tspan></text>
+  <text x="82" y="168" font-family="Manrope, system-ui, sans-serif" font-size="17" font-weight="600" fill="#8A8F99" letter-spacing="1.5">Consultor de Imóveis · CRECI-MG</text>
+  <line x1="82" y1="200" x2="880" y2="200" stroke="#E6E4DF" stroke-width="2"/>
+
+  <!-- contatos -->
+  <g font-family="Manrope, system-ui, sans-serif" font-size="23" fill="#42261c" font-weight="500">
+    <!-- WhatsApp -->
+    <circle cx="100" cy="262" r="20" fill="#EB0128"/>
+    <path transform="translate(88 250)" fill="#fff" d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.2 14.8l-.4-.2-2.6.7.7-2.5-.3-.4A8 8 0 0 1 12 4zm-3 4.2c-.2 0-.5.1-.7.4-.3.3-.9.9-.9 2.2s.9 2.5 1 2.7c.2.2 1.8 2.9 4.5 3.9 2.2.8 2.7.7 3.2.6.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2l-.5-.3s-1.4-.7-1.6-.8c-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.3.1-.5l.4-.4.2-.4v-.4l-.7-1.7c-.2-.4-.3-.4-.5-.4z"/>
+    <text x="135" y="270">(34) 99157-0494</text>
+
+    <!-- E-mail -->
+    <circle cx="100" cy="322" r="20" fill="#212b3d"/>
+    <g transform="translate(88 310)" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/>
+    </g>
+    <text x="135" y="330">contato@viniciusgraton.com.br</text>
+
+    <!-- Site -->
+    <circle cx="100" cy="382" r="20" fill="#212b3d"/>
+    <g transform="translate(88 370)" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"/>
+    </g>
+    <text x="135" y="390">viniciusgraton.com.br</text>
+
+    <!-- Instagram -->
+    <circle cx="100" cy="442" r="20" fill="#212b3d"/>
+    <g transform="translate(88 430)" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.6"/><circle cx="17" cy="7" r="1" fill="#fff" stroke="none"/>
+    </g>
+    <text x="135" y="450">@viniciusgraton.imoveis</text>
+  </g>
+
+  <!-- endereço -->
+  <text x="82" y="508" font-family="Manrope, system-ui, sans-serif" font-size="18" fill="#8A8F99">Av. Afonso Pena, 1535 · Aparecida · Uberlândia / MG</text>
+
+  <!-- símbolo no canto -->
+  <g transform="translate(792 372) scale(2.5)">
+    <g clip-path="url(#cv-tile)">
+      <rect width="48" height="48" fill="#212b3d"/>
+      <path fill="#F4F2EE" fill-rule="evenodd" d="M24 8.5 L41.5 23 L35.5 23 L35.5 38.5 L12.5 38.5 L12.5 23 L6.5 23 Z M19.7 38.5 L19.7 27.8 L24 31.2 L28.3 27.8 L28.3 38.5 Z"/>
+      <path fill="url(#cv-red)" d="M24 17.6 L27.2 20.8 L24 24 L20.8 20.8 Z"/>
+    </g>
+  </g>
+</svg>

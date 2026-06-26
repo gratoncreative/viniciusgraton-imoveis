@@ -1,0 +1,41 @@
+<svg viewBox="0 0 1080 1920" width="1080" height="1920" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Story Instagram — Vinícius Graton Imóveis">
+  <defs>
+    <linearGradient id="is-ink" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#26365A"/><stop offset="0.55" stop-color="#212b3d"/><stop offset="1" stop-color="#1C2A44"/>
+    </linearGradient>
+    <linearGradient id="is-red" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FF4D67"/><stop offset="0.5" stop-color="#EB0128"/><stop offset="1" stop-color="#C20020"/>
+    </linearGradient>
+    <clipPath id="is-tile"><rect width="48" height="48" rx="13"/></clipPath>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#is-ink)"/>
+  <path d="M0 1920 L320 1600 L320 1920 Z" fill="#FFFFFF" opacity="0.03"/>
+  <path d="M1080 0 L760 320 L1080 320 Z" fill="#FFFFFF" opacity="0.03"/>
+
+  <!-- símbolo -->
+  <g transform="translate(468 360) scale(3)">
+    <g clip-path="url(#is-tile)">
+      <rect width="48" height="48" fill="#212b3d"/>
+      <path fill="#F4F2EE" fill-rule="evenodd" d="M24 8.5 L41.5 23 L35.5 23 L35.5 38.5 L12.5 38.5 L12.5 23 L6.5 23 Z M19.7 38.5 L19.7 27.8 L24 31.2 L28.3 27.8 L28.3 38.5 Z"/>
+      <path fill="url(#is-red)" d="M24 17.6 L27.2 20.8 L24 24 L20.8 20.8 Z"/>
+    </g>
+    <rect x="0.6" y="0.6" width="46.8" height="46.8" rx="12.4" fill="none" stroke="#F4F2EE" stroke-opacity="0.12"/>
+  </g>
+
+  <text x="540" y="700" text-anchor="middle" font-family="Manrope, system-ui, sans-serif" font-size="28" font-weight="700" fill="#FF4D67" letter-spacing="7">CONSULTORIA IMOBILIÁRIA</text>
+
+  <text x="540" y="860" text-anchor="middle" font-family="Fraunces, 'Playfair Display', Georgia, serif" font-size="104" font-weight="600" fill="#F4F2EE">Compre seu</text>
+  <text x="540" y="980" text-anchor="middle" font-family="Fraunces, 'Playfair Display', Georgia, serif" font-size="104" font-weight="600" fill="#F4F2EE">imóvel <tspan fill="#FF4D67" font-style="italic">sem</tspan></text>
+  <text x="540" y="1100" text-anchor="middle" font-family="Fraunces, 'Playfair Display', Georgia, serif" font-size="104" font-weight="600" font-style="italic" fill="#FF4D67">medo de errar.</text>
+
+  <text x="540" y="1210" text-anchor="middle" font-family="Manrope, system-ui, sans-serif" font-size="34" fill="#C9CEDA">Atendimento personalizado em Uberlândia.</text>
+
+  <!-- CTA -->
+  <rect x="320" y="1320" width="440" height="92" rx="46" fill="url(#is-red)"/>
+  <text x="540" y="1378" text-anchor="middle" font-family="Manrope, system-ui, sans-serif" font-size="32" font-weight="700" fill="#FFFFFF">Falar no WhatsApp</text>
+
+  <!-- assinatura -->
+  <text x="540" y="1700" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="40" font-weight="600" fill="#F4F2EE">Vinícius <tspan fill="#FF4D67" font-style="italic">Graton</tspan></text>
+  <text x="540" y="1742" text-anchor="middle" font-family="Manrope, system-ui, sans-serif" font-size="22" fill="#8FA0C0" letter-spacing="3">IMÓVEIS · UBERLÂNDIA</text>
+  <text x="540" y="1790" text-anchor="middle" font-family="Manrope, system-ui, sans-serif" font-size="22" fill="#8FA0C0">viniciusgraton.com.br</text>
+</svg>

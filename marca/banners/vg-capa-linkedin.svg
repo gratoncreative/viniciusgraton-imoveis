@@ -1,0 +1,29 @@
+<svg viewBox="0 0 1584 396" width="1584" height="396" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Capa LinkedIn / Facebook — Vinícius Graton Imóveis">
+  <defs>
+    <linearGradient id="ln-ink" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#26365A"/><stop offset="0.6" stop-color="#212b3d"/><stop offset="1" stop-color="#1C2A44"/>
+    </linearGradient>
+    <linearGradient id="ln-red" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FF4D67"/><stop offset="0.5" stop-color="#EB0128"/><stop offset="1" stop-color="#C20020"/>
+    </linearGradient>
+    <clipPath id="ln-tile"><rect width="48" height="48" rx="13"/></clipPath>
+  </defs>
+  <rect width="1584" height="396" fill="url(#ln-ink)"/>
+  <path d="M1584 396 L1360 172 L1584 172 Z" fill="#FFFFFF" opacity="0.04"/>
+  <path d="M0 0 L160 0 L0 160 Z" fill="#FFFFFF" opacity="0.03"/>
+
+  <!-- símbolo -->
+  <g transform="translate(150 138) scale(2.5)">
+    <g clip-path="url(#ln-tile)">
+      <rect width="48" height="48" fill="#212b3d"/>
+      <path fill="#F4F2EE" fill-rule="evenodd" d="M24 8.5 L41.5 23 L35.5 23 L35.5 38.5 L12.5 38.5 L12.5 23 L6.5 23 Z M19.7 38.5 L19.7 27.8 L24 31.2 L28.3 27.8 L28.3 38.5 Z"/>
+      <path fill="url(#ln-red)" d="M24 17.6 L27.2 20.8 L24 24 L20.8 20.8 Z"/>
+    </g>
+    <rect x="0.6" y="0.6" width="46.8" height="46.8" rx="12.4" fill="none" stroke="#F4F2EE" stroke-opacity="0.12"/>
+  </g>
+
+  <text x="330" y="170" font-family="Fraunces, 'Playfair Display', Georgia, serif" font-size="58" font-weight="600" fill="#F4F2EE">Vinícius <tspan fill="#FF4D67" font-style="italic">Graton</tspan></text>
+  <text x="332" y="212" font-family="Manrope, system-ui, sans-serif" font-size="22" font-weight="600" fill="#C9CEDA" letter-spacing="3">Consultor de Imóveis · Uberlândia / MG</text>
+  <line x1="332" y1="246" x2="332" y2="246"/>
+  <text x="330" y="288" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="26" fill="#8FA0C0">“Compre seu imóvel sem medo de errar.”</text>
+</svg>

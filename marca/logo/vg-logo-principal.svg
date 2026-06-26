@@ -1,0 +1,24 @@
+<svg viewBox="0 0 380 320" width="380" height="320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vinícius Graton Imóveis · Uberlândia">
+  <defs>
+    <clipPath id="p-tile"><rect width="48" height="48" rx="13"/></clipPath>
+    <linearGradient id="p-ink" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#26365A"/><stop offset="1" stop-color="#212b3d"/>
+    </linearGradient>
+    <linearGradient id="p-red" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FF4D67"/><stop offset="0.5" stop-color="#EB0128"/><stop offset="1" stop-color="#C20020"/>
+    </linearGradient>
+  </defs>
+  <!-- símbolo centralizado -->
+  <g transform="translate(124 28) scale(2.75)">
+    <g clip-path="url(#p-tile)">
+      <rect width="48" height="48" fill="url(#p-ink)"/>
+      <path fill="#F4F2EE" fill-rule="evenodd" d="M24 8.5 L41.5 23 L35.5 23 L35.5 38.5 L12.5 38.5 L12.5 23 L6.5 23 Z M19.7 38.5 L19.7 27.8 L24 31.2 L28.3 27.8 L28.3 38.5 Z"/>
+      <path fill="url(#p-red)" d="M24 17.6 L27.2 20.8 L24 24 L20.8 20.8 Z"/>
+    </g>
+    <rect x="0.6" y="0.6" width="46.8" height="46.8" rx="12.4" fill="none" stroke="#F4F2EE" stroke-opacity="0.10"/>
+  </g>
+  <!-- assinatura -->
+  <text x="190" y="222" text-anchor="middle" font-family="Fraunces, 'Playfair Display', Georgia, serif" font-size="44" font-weight="600" fill="#212b3d">Vinícius <tspan fill="#EB0128" font-style="italic">Graton</tspan></text>
+  <line x1="120" y1="248" x2="260" y2="248" stroke="#E6E4DF" stroke-width="1.5"/>
+  <text x="190" y="280" text-anchor="middle" font-family="Manrope, system-ui, sans-serif" font-size="15" font-weight="600" fill="#8A8F99" letter-spacing="4.2">IMÓVEIS · UBERLÂNDIA</text>
+</svg>

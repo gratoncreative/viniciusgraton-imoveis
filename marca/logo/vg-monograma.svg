@@ -1,0 +1,16 @@
+<svg viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Monograma VG — Vinícius Graton">
+  <defs>
+    <clipPath id="mg-tile"><rect width="200" height="200" rx="48"/></clipPath>
+    <linearGradient id="mg-ink" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#26365A"/><stop offset="1" stop-color="#212b3d"/>
+    </linearGradient>
+    <linearGradient id="mg-red" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FF4D67"/><stop offset="0.5" stop-color="#EB0128"/><stop offset="1" stop-color="#C20020"/>
+    </linearGradient>
+  </defs>
+  <g clip-path="url(#mg-tile)">
+    <rect width="200" height="200" fill="url(#mg-ink)"/>
+    <text x="100" y="140" text-anchor="middle" font-family="Fraunces, 'Playfair Display', Georgia, serif" font-size="118" font-weight="600" fill="#F4F2EE" letter-spacing="-4">V<tspan fill="url(#mg-red)" font-style="italic">G</tspan></text>
+  </g>
+  <rect x="2.5" y="2.5" width="195" height="195" rx="45.5" fill="none" stroke="#F4F2EE" stroke-opacity="0.10" stroke-width="2"/>
+</svg>

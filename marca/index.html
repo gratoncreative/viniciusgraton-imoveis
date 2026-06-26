@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manual de Marca · Vinícius Graton Imóveis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --navy:#212b3d; --petrol:#1C2A44; --steel:#44608C;
+    --red:#EB0128; --red-pale:#FF4D67; --red-dark:#C20020;
+    --ivory:#F4F2EE; --pearl:#E6E4DF; --graphite:#2A2F38; --stone:#8A8F99;
+    --serif:'Fraunces',Georgia,serif; --sans:'Manrope',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--sans);color:var(--graphite);background:#f6f3f3;line-height:1.6}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+  /* hero */
+  header.cover{background:linear-gradient(135deg,#26365A,#212b3d 60%,#1C2A44);color:var(--ivory);padding:96px 0 88px;position:relative;overflow:hidden}
+  header.cover .deco{position:absolute;inset:0;opacity:.05}
+  header.cover .deco:before{content:"";position:absolute;right:-80px;top:-80px;width:360px;height:360px;background:#fff;transform:rotate(45deg)}
+  header.cover .wrap{position:relative}
+  .kicker{font-weight:700;letter-spacing:6px;font-size:13px;color:var(--red-pale);text-transform:uppercase}
+  header.cover h1{font-family:var(--serif);font-weight:600;font-size:64px;line-height:1.05;margin:14px 0 8px}
+  header.cover h1 em{color:var(--red-pale)}
+  header.cover p{color:#C9CEDA;font-size:20px;max-width:620px}
+  .badge{display:inline-block;margin-top:24px;font-size:13px;color:#8FA0C0;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:6px 16px}
+  /* sections */
+  section{padding:72px 0;border-bottom:1px solid var(--pearl)}
+  .eye{font-family:var(--sans);font-weight:700;letter-spacing:4px;font-size:12px;text-transform:uppercase;color:var(--red);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .eye:before{content:"";width:26px;height:2px;background:var(--red)}
+  h2{font-family:var(--serif);font-weight:600;font-size:38px;color:var(--navy);margin-bottom:8px}
+  h2 em{color:var(--red);font-style:italic}
+  .lead{color:#6e5346;font-size:18px;max-width:680px;margin-bottom:36px}
+  /* cards grid */
+  .grid{display:grid;gap:24px}
+  .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:820px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--pearl);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:14px}
+  .card img{width:100%;height:auto;border-radius:10px}
+  .card .cap{font-size:13px;color:var(--stone)}
+  .card.dark{background:var(--navy)}
+  /* palette */
+  .sw{border-radius:16px;overflow:hidden;border:1px solid var(--pearl)}
+  .sw .chip{height:120px} .sw .meta{padding:14px 16px;background:#fff}
+  .sw .name{font-weight:700;color:var(--navy);font-size:15px}
+  .sw .hex{font-size:13px;color:var(--stone);letter-spacing:.5px;text-transform:uppercase}
+  .sw .role{font-size:12px;color:var(--stone);margin-top:4px}
+  /* type */
+  .type-row{background:#fff;border:1px solid var(--pearl);border-radius:16px;padding:28px 30px;margin-bottom:18px}
+  .type-row .lbl{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:10px}
+  .display{font-family:var(--serif);font-weight:600;font-size:52px;color:var(--navy);line-height:1.05}
+  .display em{font-style:italic;color:var(--red)}
+  .alpha{font-family:var(--sans);font-size:22px;color:var(--graphite);letter-spacing:1px}
+  /* rules */
+  .rules{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  @media(max-width:820px){.rules{grid-template-columns:1fr}}
+  .do,.dont{background:#fff;border:1px solid var(--pearl);border-radius:16px;padding:24px 26px}
+  .do h4,.dont h4{font-family:var(--sans);font-size:15px;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .do h4{color:#3F7A5E} .dont h4{color:var(--red-dark)}
+  .do li,.dont li{list-style:none;padding:6px 0 6px 26px;position:relative;color:#42261c;font-size:15px}
+  .do li:before{content:"✓";position:absolute;left:0;color:#3F7A5E;font-weight:800}
+  .dont li:before{content:"✕";position:absolute;left:0;color:var(--red-dark);font-weight:800}
+  /* voice */
+  .voice{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:820px){.voice{grid-template-columns:1fr}}
+  .voice .v{background:var(--navy);color:var(--ivory);border-radius:16px;padding:26px}
+  .voice .v b{color:var(--red-pale);font-family:var(--serif);font-style:italic;font-size:22px;display:block;margin-bottom:8px}
+  .voice .v span{color:#C9CEDA;font-size:15px}
+  footer{background:var(--navy);color:#8FA0C0;text-align:center;padding:48px 24px;font-size:14px}
+  footer em{color:var(--red-pale);font-style:italic}
+  .files{font-family:ui-monospace,monospace;font-size:13px;color:#6e5346;background:#fff;border:1px solid var(--pearl);border-radius:14px;padding:20px 24px;white-space:pre;overflow:auto}
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="deco"></div>
+  <div class="wrap">
+    <div class="kicker">Manual de Identidade Visual</div>
+    <h1>Vinícius <em>Graton</em></h1>
+    <p>Imóveis · Uberlândia. A marca do consultor que faz você comprar seu imóvel <em>sem medo de errar.</em></p>
+    <div class="badge">Versão 2.0 · Marinho · Vermelho · Marfim</div>
+  </div>
+</header>
+
+<!-- IDEIA -->
+<section><div class="wrap">
+  <div class="eye">Conceito</div>
+  <h2>A casa, a seta e o <em>ponto certo</em></h2>
+  <p class="lead">O símbolo une três ideias num só traço: a <b>casa</b> (lar e patrimônio), a <b>seta para cima</b> formada pelo telhado (valorização e segurança ao subir de etapa) e o <b>losango vermelho</b> no centro — o ativo certo, o ponto exato da decisão. Tudo em <b>marinho meia-noite</b>: solidez, confiança e sobriedade premium.</p>
+  <div class="grid g3">
+    <div class="card"><img src="logo/vg-simbolo.svg" alt="Símbolo"><div class="cap">Símbolo principal — losango em vermelho-champanhe sobre marinho.</div></div>
+    <div class="card"><img src="logo/vg-monograma.svg" alt="Monograma VG"><div class="cap">Monograma VG — para avatar, selo e usos compactos.</div></div>
+    <div class="card" style="align-items:center;justify-content:center"><img src="logo/vg-favicon.svg" alt="Favicon" style="width:96px"><div class="cap">Favicon / app icon — legível a partir de 16px.</div></div>
+  </div>
+</div></section>
+
+<!-- LOGO -->
+<section><div class="wrap">
+  <div class="eye">Logotipo</div>
+  <h2>Assinaturas oficiais</h2>
+  <p class="lead">A versão principal é a vertical. Use a horizontal em cabeçalhos e rodapés. Mantenha sempre uma área de respiro mínima equivalente à altura do símbolo ao redor da marca.</p>
+  <div class="grid g2">
+    <div class="card" style="align-items:center;justify-content:center"><img src="logo/vg-logo-principal.svg" alt="Logo principal" style="max-width:300px"><div class="cap">Principal (vertical)</div></div>
+    <div class="card" style="align-items:center;justify-content:center"><img src="logo/vg-logo-horizontal.svg" alt="Logo horizontal"><div class="cap">Horizontal (lockup)</div></div>
+    <div class="card" style="align-items:center;justify-content:center"><img src="logo/vg-logo-mono-marinho.svg" alt="Mono marinho"><div class="cap">Monocromática marinho — fundos claros</div></div>
+    <div class="card dark" style="align-items:center;justify-content:center"><img src="logo/vg-logo-mono-branco.svg" alt="Mono branco" style="border-radius:10px"><div class="cap" style="color:#8FA0C0">Reverso — fundos escuros e fotos</div></div>
+  </div>
+</div></section>
+
+<!-- PALETA -->
+<section><div class="wrap">
+  <div class="eye">Cores</div>
+  <h2>Paleta oficial · <em>regra 70 / 20 / 10</em></h2>
+  <p class="lead">70% base clara (marfim/branco), 20% estrutura (marinho), 10% destaque (vermelho-champanhe). O vermelho nunca é texto sobre fundo claro — vira marinho. Contraste sempre acessível (AA).</p>
+  <div class="grid g4">
+    <div class="sw"><div class="chip" style="background:#212b3d"></div><div class="meta"><div class="name">Marinho Meia-Noite</div><div class="hex">#212B3D</div><div class="role">Âncora · estrutura · texto</div></div></div>
+    <div class="sw"><div class="chip" style="background:#1C2A44"></div><div class="meta"><div class="name">Azul Petróleo</div><div class="hex">#1C2A44</div><div class="role">Blocos · cards · botão primário</div></div></div>
+    <div class="sw"><div class="chip" style="background:#EB0128"></div><div class="meta"><div class="name">Vermelho Champanhe</div><div class="hex">#EB0128</div><div class="role">Destaque (máx. 10%)</div></div></div>
+    <div class="sw"><div class="chip" style="background:#FF4D67"></div><div class="meta"><div class="name">Champanhe Pálido</div><div class="hex">#FF4D67</div><div class="role">Tint claro · reverso</div></div></div>
+    <div class="sw"><div class="chip" style="background:#C20020"></div><div class="meta"><div class="name">Champanhe Escuro</div><div class="hex">#C20020</div><div class="role">Ícone/detalhe no claro</div></div></div>
+    <div class="sw"><div class="chip" style="background:#44608C"></div><div class="meta"><div class="name">Azul Aço</div><div class="hex">#44608C</div><div class="role">Links · interação</div></div></div>
+    <div class="sw"><div class="chip" style="background:#F4F2EE;border-bottom:1px solid #E6E4DF"></div><div class="meta"><div class="name">Marfim</div><div class="hex">#F4F2EE</div><div class="role">Base clara · texto no escuro</div></div></div>
+    <div class="sw"><div class="chip" style="background:#E6E4DF"></div><div class="meta"><div class="name">Cinza Pérola</div><div class="hex">#E6E4DF</div><div class="role">Bordas · divisões</div></div></div>
+  </div>
+</div></section>
+
+<!-- TIPOGRAFIA -->
+<section><div class="wrap">
+  <div class="eye">Tipografia</div>
+  <h2>Fraunces + <em>Manrope</em></h2>
+  <p class="lead">Fraunces (serifada moderna) dá nobreza aos títulos e ao nome. Manrope (sans geométrica) cobre interface, rótulos e corpo de texto. Itálico da Fraunces é reservado ao sobrenome e a frases de marca.</p>
+  <div class="type-row">
+    <div class="lbl">Display · Fraunces 600</div>
+    <div class="display">Compre seu imóvel <em>sem medo de errar.</em></div>
+  </div>
+  <div class="type-row">
+    <div class="lbl">Interface / Corpo · Manrope</div>
+    <div class="alpha">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789</div>
+    <div class="alpha" style="font-weight:700;margin-top:8px">Atendimento personalizado · do primeiro contato à entrega das chaves.</div>
+  </div>
+</div></section>
+
+<!-- CARTÃO -->
+<section><div class="wrap">
+  <div class="eye">Papelaria</div>
+  <h2>Cartão de visita</h2>
+  <p class="lead">90 × 50 mm com 3 mm de sangria. Frente marinho com a marca e a frase; verso marfim com os contatos. Exporte em PDF/CMYK e converta os textos em curvas antes de enviar à gráfica.</p>
+  <div class="grid g2">
+    <div class="card"><img src="cartao/vg-cartao-frente.svg" alt="Cartão frente"><div class="cap">Frente</div></div>
+    <div class="card"><img src="cartao/vg-cartao-verso.svg" alt="Cartão verso"><div class="cap">Verso</div></div>
+  </div>
+</div></section>
+
+<!-- BANNERS -->
+<section><div class="wrap">
+  <div class="eye">Social & Web</div>
+  <h2>Banners e <em>templates</em></h2>
+  <p class="lead">Modelos prontos para redes e compartilhamento. Mantêm o mesmo eyebrow, o título serifado e o CTA vermelho em todas as peças.</p>
+  <div class="grid g2">
+    <div class="card"><img src="banners/vg-instagram-post.svg" alt="Post Instagram"><div class="cap">Instagram · post 1080×1080</div></div>
+    <div class="card"><img src="banners/vg-instagram-story.svg" alt="Story Instagram" style="max-height:520px;width:auto;margin:0 auto"><div class="cap">Instagram · story 1080×1920</div></div>
+    <div class="card"><img src="banners/vg-og-banner.svg" alt="OG banner"><div class="cap">Open Graph / compartilhamento 1200×630</div></div>
+    <div class="card"><img src="banners/vg-capa-linkedin.svg" alt="Capa LinkedIn"><div class="cap">Capa LinkedIn / Facebook 1584×396</div></div>
+  </div>
+</div></section>
+
+<!-- REGRAS -->
+<section><div class="wrap">
+  <div class="eye">Uso correto</div>
+  <h2>Pode e <em>não pode</em></h2>
+  <div class="rules" style="margin-top:20px">
+    <div class="do"><h4>Faça</h4><ul>
+      <li>Use marinho como base sóbria e o vermelho só como acento.</li>
+      <li>Garanta área de respiro ao redor do logo.</li>
+      <li>No claro, o nome e títulos de destaque ficam em marinho ou vermelho-escuro.</li>
+      <li>Prefira fotos reais de imóveis com luz natural.</li>
+    </ul></div>
+    <div class="dont"><h4>Evite</h4><ul>
+      <li>Texto vermelho sobre fundo claro em corpo de leitura.</li>
+      <li>Distorcer, girar ou recolorir o símbolo.</li>
+      <li>Gradientes amarelo-dourados — a marca é vermelho-champanhe.</li>
+      <li>Misturar outras fontes além de Fraunces e Manrope.</li>
+    </ul></div>
+  </div>
+</div></section>
+
+<!-- VOZ -->
+<section><div class="wrap">
+  <div class="eye">Tom de voz</div>
+  <h2>Como a marca <em>fala</em></h2>
+  <div class="voice" style="margin-top:20px">
+    <div class="v"><b>Segura</b><span>Fala com quem entende o mercado local. Sem promessas vazias, com dados e clareza.</span></div>
+    <div class="v"><b>Próxima</b><span>Trata por “você”, explica cada etapa, tira o medo de uma decisão grande.</span></div>
+    <div class="v"><b>Sóbria</b><span>Elegante sem ser fria. Premium sem ostentação. Honesta sempre.</span></div>
+  </div>
+</div></section>
+
+<!-- ARQUIVOS -->
+<section><div class="wrap">
+  <div class="eye">Entrega</div>
+  <h2>Arquivos do kit</h2>
+  <p class="lead">Todos vetoriais (SVG), escaláveis sem perda. Para impressão, exporte em PDF/CMYK com textos em curvas; para web, use SVG ou PNG.</p>
+  <div class="files">marca/
+├─ index.html                  · este manual
+├─ README.md                   · guia rápido em texto
+├─ logo/
+│  ├─ vg-logo-principal.svg    · vertical (uso principal)
+│  ├─ vg-logo-horizontal.svg   · lockup horizontal
+│  ├─ vg-logo-mono-marinho.svg · monocromática
+│  ├─ vg-logo-mono-branco.svg  · reverso
+│  ├─ vg-monograma.svg         · monograma VG
+│  ├─ vg-simbolo.svg           · só o símbolo
+│  └─ vg-favicon.svg           · favicon / app icon
+├─ cartao/
+│  ├─ vg-cartao-frente.svg
+│  └─ vg-cartao-verso.svg
+└─ banners/
+   ├─ vg-instagram-post.svg    · 1080×1080
+   ├─ vg-instagram-story.svg   · 1080×1920
+   ├─ vg-og-banner.svg         · 1200×630
+   └─ vg-capa-linkedin.svg     · 1584×396</div>
+</div></section>
+
+<footer>
+  <strong style="font-family:var(--serif);color:#F4F2EE;font-size:18px">Vinícius <em>Graton</em> Imóveis</strong><br>
+  Uberlândia / MG · viniciusgraton.com.br · @viniciusgraton.imoveis<br>
+  <span style="opacity:.6">Manual de Identidade Visual v2.0</span>
+</footer>
+
+</body>
+</html>
