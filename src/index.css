@@ -9582,27 +9582,37 @@ html[data-theme="claro"] textarea::placeholder { color: var(--text-mute); }
 .estudio-app .mf-intro { display: none; }
 .estudio-app .mf { background: transparent; border: none; border-radius: 0; padding: 10px clamp(12px, 2vw, 20px) 8px; box-shadow: none; }
 .estudio-app .mf-upload { margin-bottom: 8px; }
-/* layout do app: foto grande, TIRA DE MINIATURAS embaixo (pequena), painel de controles à direita */
+/* ===== LAYOUT ESTILO CANVA: trilho de ícones à esquerda + flyout de controles + tela grande à direita ===== */
 .estudio-app .mf-edit, .estudio-app .mf-edit--vazio {
-  grid-template-columns: minmax(0, 1fr) clamp(420px, 40vw, 640px);
-  grid-template-areas: "canvas painel" "tiras painel";
-  gap: 10px 16px; align-items: start;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: "painel canvas" "painel tiras";
+  gap: 10px 14px; align-items: stretch;
 }
 .estudio-app .mf-preview { grid-area: canvas; position: static; }
-.estudio-app .mf-painel { grid-area: painel; max-height: calc(100dvh - 150px); overflow-y: auto; }
+.estudio-app .mf-canvas { max-height: 58vh; }
 .estudio-app .mf-tiras { grid-area: tiras; flex-direction: row; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; max-height: none; position: static; top: auto; gap: 6px; padding: 2px 0; }
 .estudio-app .mf-tira { width: 58px; flex: 0 0 auto; aspect-ratio: 4 / 3; }
-.estudio-app .mf-canvas { max-height: 50vh; }
-/* painel compacto: mais colunas + controles menores → todas as ferramentas cabem no notebook */
-.estudio-app .mf-aba-conteudo { columns: 172px auto; column-gap: 10px; padding: 10px; }
-.estudio-app .mf-aba-conteudo > .mf-grupo { margin: 0 0 8px; }
-.estudio-app .mf-grupo { padding: 8px 9px; gap: 4px; border-radius: 10px; }
-.estudio-app .mf-grupo-tit { font-size: 0.7rem; padding-bottom: 5px; margin-bottom: 0; }
-.estudio-app .mf-slider { gap: 0; font-size: 0.73rem; line-height: 1.2; }
-.estudio-app .mf-slider input[type=range] { height: 13px; margin: 1px 0 0; }
-.estudio-app .mf-modo-btn { padding: 4px 5px; font-size: 0.7rem; }
-.estudio-app .mf-botoes-col { gap: 5px; }
-.estudio-app .mf-botoes-col .btn, .estudio-app .mf-botoes-col .admin-btn { padding: 7px 10px; font-size: 0.8rem; }
-.estudio-app .mf-nota { font-size: 0.72rem; line-height: 1.35; }
-@media (max-width: 1024px) { .estudio-app .mf-edit, .estudio-app .mf-edit--vazio { grid-template-columns: 1fr; grid-template-areas: "canvas" "tiras" "painel"; } }
+
+/* painel = trilho de ícones (esquerda) + flyout (controles) lado a lado */
+.estudio-app .mf-painel { grid-area: painel; display: flex; flex-direction: row; align-items: stretch; border: none; background: transparent; overflow: visible; max-height: none; border-radius: 0; }
+.estudio-app .mf-abas { flex-direction: column; flex-wrap: nowrap; width: 78px; flex: 0 0 78px; gap: 2px; padding: 8px 6px; background: #fff; border: 1px solid var(--border); border-right: none; border-radius: 14px 0 0 14px; align-self: stretch; }
+.estudio-app .mf-aba { flex: 0 0 auto; flex-direction: column; gap: 3px; padding: 9px 4px; border-radius: 10px; font-size: 0.64rem; line-height: 1.05; text-align: center; white-space: normal; }
+.estudio-app .mf-aba-ico { font-size: 1.2rem; line-height: 1; }
+.estudio-app .mf-abas-div { width: auto; height: 1px; align-self: stretch; margin: 5px 6px; }
+.estudio-app .mf-aba-conteudo { width: clamp(280px, 25vw, 360px); columns: auto; column-gap: 0; padding: 14px; background: #fff; border: 1px solid var(--border); border-radius: 0 14px 14px 0; max-height: calc(100dvh - 150px); overflow-y: auto; }
+.estudio-app .mf-aba-conteudo > .mf-grupo { margin: 0 0 12px; }
+.estudio-app .mf-grupo { padding: 10px 11px; gap: 6px; border-radius: 10px; }
+.estudio-app .mf-grupo-tit { font-size: 0.72rem; padding-bottom: 6px; margin-bottom: 0; }
+.estudio-app .mf-slider { gap: 1px; font-size: 0.8rem; }
+.estudio-app .mf-modo-btn { padding: 6px 6px; font-size: 0.76rem; }
+.estudio-app .mf-botoes-col { gap: 6px; }
+.estudio-app .mf-painel-vazio { padding: 22px 14px; }
+
+@media (max-width: 920px) {
+  .estudio-app .mf-edit, .estudio-app .mf-edit--vazio { grid-template-columns: 1fr; grid-template-areas: "painel" "canvas" "tiras"; }
+  .estudio-app .mf-painel { flex-direction: column; }
+  .estudio-app .mf-abas { flex-direction: row; flex-wrap: wrap; width: auto; flex: none; border: 1px solid var(--border); border-radius: 14px 14px 0 0; border-bottom: none; }
+  .estudio-app .mf-abas .mf-aba { flex: 1 1 auto; }
+  .estudio-app .mf-aba-conteudo { width: auto; border-radius: 0 0 14px 14px; max-height: none; }
+}
 @media (max-width: 600px) { .estudio-app-tit { display: none; } }
