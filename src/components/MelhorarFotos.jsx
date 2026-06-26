@@ -822,8 +822,9 @@ export default function MelhorarFotos() {
                 {[['ajustes', '🪄 Ajustes'], ['ia', '🤖 IA'], ['marca', "💧 Marca"], ['export', '📤 Exportar'], ['video', '🎬 Vídeo']].map(([id, nome]) => (
                   <button key={id} className={`mf-aba ${aba === id ? 'on' : ''}`} onClick={() => setAba(id)}>{nome}</button>
                 ))}
-                <button className="mf-aba" onClick={() => setModoLimpar(true)}>🧽 Remover marca</button>
-                <button className="mf-aba" onClick={() => navigate('/ferramentas/editar-foto')}>🛋️ Remover objeto</button>
+                <span className="mf-abas-div" aria-hidden="true" />
+                <button className="mf-aba mf-aba--rem" onClick={() => setModoLimpar(true)}>🧽 Remover marca</button>
+                <button className="mf-aba mf-aba--rem" onClick={() => navigate('/ferramentas/editar-foto')}>🛋️ Remover objeto</button>
               </div>
 
               <div className="mf-aba-conteudo">
