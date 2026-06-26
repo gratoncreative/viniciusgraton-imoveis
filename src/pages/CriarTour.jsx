@@ -1,25 +1,28 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
-import { getCorretor } from '../corretor'
+import { getCorretorOuAdmin } from '../corretor'
 
 // Ferramenta self-service: o corretor cadastrado sobe a cena 3D (capturada no
 // celular) e recebe um link compartilhável hospedado no domínio do Vinícius.
 // Plano grátis: 1 tour ativo, com marca d'água, expira em 30 dias.
+// ADMIN (Vinícius) tem acesso liberado sempre: ilimitado, sem marca, sem expirar.
 
 const diasRestantes = (exp) => Math.max(0, Math.ceil((exp - Date.now()) / 86400000))
+const tokenAdmin = () => { try { return localStorage.getItem('vg_admin_token') || '' } catch { return '' } }
 
 export default function CriarTour() {
-  const [corr, setCorr] = useState(() => getCorretor())
+  const [corr, setCorr] = useState(() => getCorretorOuAdmin())
   useSEO({ title: 'Crie seu Tour 3D', description: 'Hospede o tour 3D do seu imóvel e compartilhe um link na sua marca.', path: '/ferramentas/criar-tour' })
   useEffect(() => {
-    const h = () => setCorr(getCorretor())
+    const h = () => setCorr(getCorretorOuAdmin())
     window.addEventListener('vg-corretor', h)
     return () => window.removeEventListener('vg-corretor', h)
   }, [])
 
-  if (!corr || !corr.fone) return <Gate />
-  return <Criador corr={corr} />
+  const ehAdmin = corr?.tipo === 'admin'
+  if (!corr || (!ehAdmin && !corr.fone)) return <Gate />
+  return <Criador corr={corr} ehAdmin={ehAdmin} />
 }
 
 function Gate() {
@@ -36,7 +39,7 @@ function Gate() {
   )
 }
 
-function Criador({ corr }) {
+function Criador({ corr, ehAdmin }) {
   const [titulo, setTitulo] = useState('')
   const [file, setFile] = useState(null)
   const [prog, setProg] = useState(null) // null | 0..100
@@ -47,7 +50,7 @@ function Criador({ corr }) {
   const [copiado, setCopiado] = useState('')
 
   const carregarTours = () => {
-    fetch('/api/tour3d-list', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ fone: corr.fone }) })
+    fetch('/api/tour3d-list', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ fone: corr.fone || '', adminToken: ehAdmin ? tokenAdmin() : '' }) })
       .then((r) => r.json())
       .then((j) => { setTours(j.ok ? (j.tours || []) : []); setCarregando(false) })
       .catch(() => setCarregando(false))
@@ -62,8 +65,9 @@ function Criador({ corr }) {
     const fd = new FormData()
     fd.append('arquivo', file)
     fd.append('titulo', titulo)
-    fd.append('fone', corr.fone)
+    fd.append('fone', corr.fone || '')
     fd.append('nome', corr.nome || '')
+    if (ehAdmin) fd.append('adminToken', tokenAdmin())
     const xhr = new XMLHttpRequest()
     xhr.open('POST', '/api/tour3d-upload')
     xhr.upload.onprogress = (e) => { if (e.lengthComputable) setProg(Math.round((e.loaded / e.total) * 100)) }
@@ -85,7 +89,7 @@ function Criador({ corr }) {
 
   const excluir = (id) => {
     if (!window.confirm('Excluir este tour 3D? O link deixará de funcionar.')) return
-    fetch('/api/tour3d-delete', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ fone: corr.fone, id }) })
+    fetch('/api/tour3d-delete', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ fone: corr.fone || '', id, adminToken: ehAdmin ? tokenAdmin() : '' }) })
       .then((r) => r.json())
       .then(() => { if (resultado && resultado.id === id) setResultado(null); carregarTours() })
   }
@@ -155,7 +159,7 @@ function Criador({ corr }) {
               <li key={t.id} style={itemTour}>
                 <div style={{ minWidth: 0 }}>
                   <b style={{ color: '#1C2A44', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.titulo}</b>
-                  <span style={{ fontSize: 12.5, color: '#5a6275' }}>Expira em {diasRestantes(t.expiresAt)} dias · plano grátis</span>
+                  <span style={{ fontSize: 12.5, color: '#5a6275' }}>{t.expiresAt ? `Expira em ${diasRestantes(t.expiresAt)} dias · plano grátis` : 'Sem expiração · admin'}</span>
                 </div>
                 <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
                   <button onClick={() => copiar(t.url, t.id)} className="btn btn-navy" style={btnMini}>{copiado === t.id ? 'Copiado!' : 'Copiar link'}</button>
@@ -167,9 +171,13 @@ function Criador({ corr }) {
           </ul>
         )}
 
-        <p style={upgrade}>
-          No plano grátis você mantém <b>1 tour ativo</b> (com marca d'água, expira em 30 dias). Em breve: plano com tours ilimitados, sem marca e sem expirar.
-        </p>
+        {ehAdmin ? (
+          <p style={upgrade}>Você é <b>admin</b>: tours ilimitados, sem marca d'água e sem expiração.</p>
+        ) : (
+          <p style={upgrade}>
+            No plano grátis você mantém <b>1 tour ativo</b> (com marca d'água, expira em 30 dias). Em breve: plano com tours ilimitados, sem marca e sem expirar.
+          </p>
+        )}
       </div>
     </main>
   )

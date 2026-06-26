@@ -1,4 +1,5 @@
 import { kvStore } from '../_lib/store.js'
+import { isAdmin } from '../_lib/admin-auth.js'
 /**
  * Upload de um Tour 3D (Gaussian Splatting) por um CORRETOR cadastrado.
  * Recebe multipart/form-data { arquivo(.ply|.sog), titulo, fone, nome }.
@@ -31,15 +32,23 @@ export async function onRequestPost({ env, request }) {
 
     const form = await request.formData().catch(() => null)
     if (!form) return json({ ok: false, erro: 'Envio inválido.' }, 400)
-    const fone = String(form.get('fone') || '').replace(/\D/g, '').slice(0, 15)
     const nome = String(form.get('nome') || '').trim().slice(0, 80)
     const titulo = String(form.get('titulo') || '').trim().slice(0, 100) || 'Tour 3D'
     const file = form.get('arquivo')
 
-    // gate: corretor cadastrado
-    if (fone.length < 10) return json({ ok: false, erro: 'Cadastro não identificado.' }, 401)
-    const reg = await env.ENGAGEMENT.get('corretor:fone:' + fone, 'json').catch(() => null)
-    if (!reg || !reg.codigo) return json({ ok: false, erro: 'Faça o cadastro grátis de corretor para criar tours.' }, 401)
+    // identidade: ADMIN (acesso liberado sempre) ou corretor cadastrado
+    const ehAdmin = await isAdmin(env, String(form.get('adminToken') || ''))
+    let fone, nomeDono
+    if (ehAdmin) {
+      fone = 'admin'
+      nomeDono = nome || 'Vinícius Graton'
+    } else {
+      fone = String(form.get('fone') || '').replace(/\D/g, '').slice(0, 15)
+      if (fone.length < 10) return json({ ok: false, erro: 'Cadastro não identificado.' }, 401)
+      const reg = await env.ENGAGEMENT.get('corretor:fone:' + fone, 'json').catch(() => null)
+      if (!reg || !reg.codigo) return json({ ok: false, erro: 'Faça o cadastro grátis de corretor para criar tours.' }, 401)
+      nomeDono = nome || reg.nome || ''
+    }
 
     // valida o arquivo
     if (!file || typeof file === 'string' || !file.name) return json({ ok: false, erro: 'Selecione o arquivo do tour.' }, 400)
@@ -48,7 +57,7 @@ export async function onRequestPost({ env, request }) {
     const ext = m[1]
     if (file.size > MAX) return json({ ok: false, erro: 'Arquivo muito grande (máx. 60 MB). Reduza/otimize no SuperSplat.' }, 400)
 
-    // quota do plano grátis: 1 tour ativo. De quebra, limpa os expirados.
+    // quota do plano grátis: 1 tour ativo (admin é ilimitado). De quebra, limpa expirados.
     const ownerKey = 'tour:owner:' + fone
     let ids = await env.ENGAGEMENT.get(ownerKey, 'json').catch(() => null)
     if (!Array.isArray(ids)) ids = []
@@ -65,7 +74,7 @@ export async function onRequestPost({ env, request }) {
       }
       mantidos.push(tid); ativos++
     }
-    if (ativos >= QUOTA_GRATIS) {
+    if (!ehAdmin && ativos >= QUOTA_GRATIS) {
       await env.ENGAGEMENT.put(ownerKey, JSON.stringify(mantidos)).catch(() => {})
       return json({ ok: false, limite: true, erro: 'No plano grátis você mantém 1 tour ativo. Exclua o atual para criar outro (ou faça upgrade em breve).' }, 403)
     }
@@ -76,7 +85,8 @@ export async function onRequestPost({ env, request }) {
     const buf = await file.arrayBuffer()
     await env.TOURS.put(r2key, buf, { httpMetadata: { contentType: 'application/octet-stream' } })
 
-    const meta = { id, ownerFone: fone, ownerNome: nome || reg.nome || '', titulo, r2key, ext, size: file.size, plano: 'gratis', createdAt: agora, expiresAt: agora + TTL_DIAS * 86400000, views: 0 }
+    // admin: plano 'pro' (sem marca d'água) e sem expirar
+    const meta = { id, ownerFone: fone, ownerNome: nomeDono, titulo, r2key, ext, size: file.size, plano: ehAdmin ? 'pro' : 'gratis', createdAt: agora, expiresAt: ehAdmin ? null : agora + TTL_DIAS * 86400000, views: 0 }
     await env.ENGAGEMENT.put('tour:meta:' + id, JSON.stringify(meta))
     mantidos.push(id)
     await env.ENGAGEMENT.put(ownerKey, JSON.stringify(mantidos)).catch(() => {})

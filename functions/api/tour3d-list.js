@@ -1,4 +1,5 @@
 import { kvStore } from '../_lib/store.js'
+import { isAdmin } from '../_lib/admin-auth.js'
 /**
  * Lista os tours 3D ativos do corretor (painel do criador).
  *   POST /api/tour3d-list { fone } -> { ok:true, tours:[{id,titulo,url,createdAt,expiresAt}] }
@@ -11,10 +12,16 @@ export async function onRequestPost({ env, request }) {
   try {
     let b = {}
     try { b = await request.json() } catch {}
-    const fone = String(b.fone || '').replace(/\D/g, '').slice(0, 15)
-    if (fone.length < 10) return json({ ok: false, tours: [] }, 400)
-    const reg = await env.ENGAGEMENT.get('corretor:fone:' + fone, 'json').catch(() => null)
-    if (!reg) return json({ ok: false, tours: [] }, 401)
+    const ehAdmin = await isAdmin(env, String(b.adminToken || ''))
+    let fone
+    if (ehAdmin) {
+      fone = 'admin'
+    } else {
+      fone = String(b.fone || '').replace(/\D/g, '').slice(0, 15)
+      if (fone.length < 10) return json({ ok: false, tours: [] }, 400)
+      const reg = await env.ENGAGEMENT.get('corretor:fone:' + fone, 'json').catch(() => null)
+      if (!reg) return json({ ok: false, tours: [] }, 401)
+    }
 
     let ids = await env.ENGAGEMENT.get('tour:owner:' + fone, 'json').catch(() => null)
     if (!Array.isArray(ids)) ids = []
