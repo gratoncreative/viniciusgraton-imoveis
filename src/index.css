@@ -9600,13 +9600,17 @@ html[data-theme="claro"] textarea::placeholder { color: var(--text-mute); }
 
 /* painel = trilho de ícones (esquerda) + flyout (controles) lado a lado */
 .estudio-app .mf-painel { grid-area: painel; display: flex; flex-direction: row; align-items: stretch; border: none; background: transparent; overflow: visible; max-height: none; border-radius: 0; }
-.estudio-app .mf-abas { flex-direction: column; flex-wrap: nowrap; width: 78px; flex: 0 0 78px; gap: 2px; padding: 8px 6px; background: #fff; border: 1px solid var(--border); border-right: none; border-radius: 14px 0 0 14px; align-self: stretch; }
-.estudio-app .mf-aba { flex: 0 0 auto; flex-direction: column; gap: 6px; padding: 8px 3px; border-radius: 12px; font-size: 0.64rem; font-weight: 600; line-height: 1.1; text-align: center; white-space: normal; color: #6a6f79; background: transparent; }
-.estudio-app .mf-aba .mf-aba-ico { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: #F1EEE8; color: #1C2A44; font-size: 0; transition: background .16s ease, color .16s ease, transform .12s ease; }
+.estudio-app .mf-abas { flex-direction: column; flex-wrap: nowrap; width: 82px; flex: 0 0 82px; gap: 4px; padding: 10px 7px; background: #fff; border: 1px solid var(--border); border-right: none; border-radius: 14px 0 0 14px; align-self: stretch; }
+/* TODOS os botões idênticos: chip do ícone + rótulo embaixo, centralizados. O ativo muda só o chip
+   (nunca o botão inteiro) — !important mata a regra antiga de "aba ativa = fundo navy". */
+.estudio-app .mf-aba { width: 100%; flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 6px 2px; border: none !important; border-radius: 12px; font-family: var(--font-body); font-size: 0.63rem; font-weight: 600; line-height: 1.15; text-align: center; white-space: normal; color: #6a6f79; background: transparent !important; box-shadow: none !important; cursor: pointer; }
+.estudio-app .mf-aba .mf-aba-ico { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; background: #F1EEE8; color: #1C2A44; font-size: 0; transition: background .16s ease, color .16s ease, transform .12s ease; }
 .estudio-app .mf-aba:hover:not(.on) { color: #1C2A44; }
 .estudio-app .mf-aba:hover:not(.on) .mf-aba-ico { background: #E7E2D8; }
-.estudio-app .mf-aba:active .mf-aba-ico { transform: scale(0.94); }
-html[data-theme="claro"] .estudio-app .mf-aba.on { background: transparent; color: #1C2A44; font-weight: 700; }
+.estudio-app .mf-aba:active .mf-aba-ico { transform: scale(0.93); }
+/* vence a regra global "aba ativa = fundo #212b3d !important" (linha ~9071): no app o botão
+   ativo NÃO é bloco — só o chip do ícone fica navy, igual aos demais. */
+html[data-theme="claro"] .estudio-app .mf-aba.on { background: transparent !important; border-color: transparent !important; color: #1C2A44; font-weight: 700; }
 .estudio-app .mf-aba.on .mf-aba-ico { background: #1C2A44; color: #fff; box-shadow: 0 6px 16px -8px rgba(28,42,68,0.6); }
 .estudio-app .mf-aba--rem .mf-aba-ico { background: #FBEAEA; color: #C20020; }
 .estudio-app .mf-aba--rem:hover .mf-aba-ico { background: #F7D9D9; }
