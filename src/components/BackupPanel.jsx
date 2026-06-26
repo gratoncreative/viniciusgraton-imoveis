@@ -185,9 +185,19 @@ export default function BackupPanel({ token }) {
 
       {msg && <p className="section-sub" style={{ marginTop: 12, fontWeight: 600 }}>{msg}</p>}
 
-      {/* downloads */}
+      {/* backup automático diário (dados insubstituíveis) */}
       <div style={{ marginTop: 20, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
-        <p style={{ fontWeight: 700, margin: '0 0 10px' }}>Baixar do backup</p>
+        <p style={{ fontWeight: 700, margin: '0 0 4px' }}>🔒 Backup automático dos dados (diário)</p>
+        <p className="section-sub" style={{ margin: '0 0 10px', fontSize: '.82rem' }}>
+          CRM, leads, clientes, <b>proprietários captados</b> e conversões — o que só existe no site —
+          são salvos sozinhos todo dia no R2. <a href="https://github.com/gratoncreative/viniciusgraton-imoveis/actions" target="_blank" rel="noopener noreferrer">Ver execuções (GitHub Actions)</a>. Setup: <code>docs/backup-automatico-setup.md</code>.
+        </p>
+        <button className="admin-btn admin-btn--gold" onClick={() => baixarChave('backup/dados/atual.json', 'backup-dados-site.json')}>⬇ Baixar último backup de dados</button>
+      </div>
+
+      {/* downloads do catálogo/imóveis */}
+      <div style={{ marginTop: 20, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
+        <p style={{ fontWeight: 700, margin: '0 0 10px' }}>Baixar do backup (catálogo / imóveis)</p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
           <button className="admin-btn" onClick={() => baixarChave('backup/atual/catalogo.json', 'catalogo.json')}>⬇ Catálogo (JSON)</button>
           <button className="admin-btn" onClick={() => baixarChave('backup/atual/imoveis.csv', 'imoveis.csv')}>⬇ Planilha (CSV)</button>

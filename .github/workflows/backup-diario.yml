@@ -1,0 +1,24 @@
+name: Backup diário do site
+
+# Dispara o backup automático dos dados insubstituíveis do site (CRM, leads, clientes,
+# proprietários captados, conversões) -> Cloudflare R2. Roda sozinho todo dia de madrugada.
+# Pré-requisitos (uma vez): ver docs/backup-automatico-setup.md
+#   1) Cloudflare Pages: variável BACKUP_CRON_KEY (um segredo) + binding R2 BACKUPS (vg-backups)
+#   2) GitHub: secret BACKUP_CRON_KEY com o MESMO valor
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # 06:00 UTC = 03:00 de Brasília (horário de baixo tráfego)
+  workflow_dispatch: {}    # permite rodar manualmente pelo botão "Run workflow" no GitHub
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Disparar backup no site
+        run: |
+          echo "Disparando backup..."
+          curl -fsS --max-time 180 -X POST "https://viniciusgraton.com.br/api/backup-cron" \
+            -H "x-backup-key: ${{ secrets.BACKUP_CRON_KEY }}" \
+            -o resposta.json -w "HTTP %{http_code}\n"
+          echo "Resposta:"; cat resposta.json; echo ""
