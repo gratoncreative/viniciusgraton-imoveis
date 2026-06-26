@@ -1146,7 +1146,7 @@ export default function MelhorarFotos() {
             </button>
           </div>
 
-          {/* BARRA DE AÇÕES FIXA */}
+          {/* BARRA DE AÇÕES — no fim da ferramenta (não fixa) */}
           <div className="mf-acoes-bar">
             <span className="mf-acoes-info">{fotos.length} foto(s)</span>
             <button className="mf-btn-limpar" onClick={limparTudo} disabled={baixando} title="Remove todas as fotos carregadas">🗑 Apagar todas</button>
