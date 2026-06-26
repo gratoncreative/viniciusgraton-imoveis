@@ -9570,6 +9570,7 @@ html[data-theme="claro"] textarea::placeholder { color: var(--text-mute); }
 .estudio-app .mf { background: transparent; border: none; border-radius: 0; padding: clamp(12px, 2vw, 22px); box-shadow: none; }
 /* no app, o painel de controles é mais largo (cabe mais informação na mesma tela) */
 .estudio-app .mf-edit { grid-template-columns: 90px minmax(0, 1fr) minmax(360px, 600px); gap: 16px; }
-@media (max-width: 1024px) { .estudio-app .mf-edit { grid-template-columns: 84px minmax(0, 1fr); } .estudio-app .mf-painel { grid-column: 1 / -1; } }
+.estudio-app .mf-edit--vazio { grid-template-columns: minmax(0, 1fr) minmax(340px, 540px); }
+@media (max-width: 1024px) { .estudio-app .mf-edit { grid-template-columns: 84px minmax(0, 1fr); } .estudio-app .mf-edit--vazio { grid-template-columns: minmax(0, 1fr); } .estudio-app .mf-painel { grid-column: 1 / -1; } }
 @media (max-width: 640px) { .estudio-app .mf-edit { grid-template-columns: 1fr; } }
 @media (max-width: 600px) { .estudio-app-tit { display: none; } }
