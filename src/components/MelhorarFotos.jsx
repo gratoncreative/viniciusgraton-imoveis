@@ -805,7 +805,10 @@ export default function MelhorarFotos() {
 
       <label className="mf-upload">
         <input ref={inputFotosRef} type="file" accept="image/*" multiple onChange={subir} hidden />
-        <span>📤 Selecionar fotos</span>
+        <span>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" /></svg>
+          Selecionar fotos
+        </span>
       </label>
 
       {/* vitrine removida — a página abre direto na bancada (editor pronto) */}

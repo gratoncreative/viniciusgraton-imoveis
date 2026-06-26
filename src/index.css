@@ -3527,7 +3527,10 @@ html[data-theme="dark"] .nav:not(.scrolled) .nav-links a.nav-destaque { color: #
 /* Melhorar fotos (painel) */
 .mf-intro h3 { font-family: var(--font-head); font-weight: 700; font-size: 1.3rem; }
 .mf-upload { display: inline-flex; margin: 16px 0 6px; cursor: pointer; }
-.mf-upload span { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 11px; background: var(--gold-grad); color: #1b1206; font-family: var(--font-head); font-weight: 700; }
+.mf-upload span { display: inline-flex; align-items: center; gap: 9px; padding: 12px 22px; border-radius: 12px; background: #EB0128; color: #FFFFFF; font-family: var(--font-head); font-weight: 700; font-size: 0.98rem; box-shadow: 0 10px 24px -10px rgba(235,1,40,0.5); transition: background .18s ease, transform .12s ease, box-shadow .18s ease; }
+.mf-upload span svg { color: #FFFFFF; }
+.mf-upload:hover span { background: #C20020; box-shadow: 0 13px 30px -10px rgba(235,1,40,0.62); }
+.mf-upload:active span { transform: translateY(1px); box-shadow: 0 6px 16px -10px rgba(235,1,40,0.55); }
 /* Vitrine de ferramentas (exibida antes do upload) */
 .mf-vitrine { margin: 18px 0 4px; }
 .mf-vitrine-tit { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--graphite); margin: 0 0 14px; }
