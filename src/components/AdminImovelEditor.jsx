@@ -31,7 +31,7 @@ const baseDe = (im) => ({
   endereco: im.endereco || '', pontoReferencia: im.pontoReferencia || '', descricao: im.descricao || '',
   preco: im.preco || 0, precoAnterior: im.precoAnterior || 0, quartos: im.quartos || 0, suites: im.suites || 0,
   banheiros: im.banheiros || 0, vagas: im.vagas || 0, area: im.area || 0, areaLote: im.areaLote || 0, condominio: im.condominio || 0,
-  andar: (im.andar ?? '') === '' ? '' : im.andar, elevador: !!im.elevador, video: im.video || '', tour360: im.tour360 || '',
+  andar: (im.andar ?? '') === '' ? '' : im.andar, elevador: !!im.elevador, video: im.video || '', tour360: im.tour360 || '', tour3d: im.tour3d || '',
   destaque: !!im.destaque, oculto: false, fotos: fotosDe(im),
 })
 
@@ -207,6 +207,7 @@ export default function AdminImovelEditor({ im, onSaved, controlled = false, ope
                 <label className="aie-campo"><span>Ponto de referência</span><input value={form.pontoReferencia} onChange={(e) => set('pontoReferencia', e.target.value)} /></label>
                 <label className="aie-campo"><span>Vídeo (YouTube)</span><input value={form.video} onChange={(e) => set('video', e.target.value)} placeholder="https://youtu.be/…" /></label>
                 <label className="aie-campo"><span>Tour 360°</span><input value={form.tour360} onChange={(e) => set('tour360', e.target.value)} placeholder="https://…" /></label>
+                <label className="aie-campo"><span>Tour 3D (arquivo/link)</span><input value={form.tour3d} onChange={(e) => set('tour3d', e.target.value)} placeholder="/splats/COD/scene.compressed.ply" /></label>
               </div>
 
               <div className="aie-toggles">

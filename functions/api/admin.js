@@ -530,7 +530,7 @@ export async function onRequestPost({ env, request }) {
     if ('titulo' in c) campos.titulo = String(c.titulo || '').slice(0, 140)
     if ('descricao' in c) campos.descricao = String(c.descricao || '').slice(0, 3000)
     for (const k of ['endereco', 'pontoReferencia']) if (k in c) campos[k] = String(c[k] || '').slice(0, 200)
-    for (const k of ['video', 'tour360']) if (k in c) campos[k] = String(c[k] || '').slice(0, 400)
+    for (const k of ['video', 'tour360', 'tour3d']) if (k in c) campos[k] = String(c[k] || '').slice(0, 400)
     for (const k of ['destaque', 'oculto']) if (k in c) campos[k] = !!c[k]
     // apartamento: andar (0 = térreo) e elevador (true/false). Só grava se informado.
     if (c.andar !== '' && c.andar !== null && c.andar !== undefined) campos.andar = Number(c.andar) || 0

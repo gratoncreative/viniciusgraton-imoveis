@@ -20,6 +20,8 @@ import { jaCurtiu, alternarCurtida } from '../engajamento'
 import { registrarVisto } from '../vistos'
 // Lazy.. o estudo do m² (componente pesado + fontes premium) só carrega ao abrir
 const EstudoModal = lazy(() => import('../components/EstudoModal'))
+// Lazy.. o visualizador 3D (engine PlayCanvas, pesada) só carrega ao clicar em "Tour 3D"
+const Tour3D = lazy(() => import('../components/Tour3D'))
 
 const plural = (n, s, p) => (n > 1 ? p : s)
 
@@ -294,6 +296,7 @@ export default function ImovelDetalhe() {
   const { codigo } = useParams()
   const local = getImovel(codigo)
   const [showEstudo, setShowEstudo] = useState(false)
+  const [show3D, setShow3D] = useState(false)
   const [imApi, setImApi] = useState(null)
   const [feed, setFeed] = useState([])
   const [feedColeta, setFeedColeta] = useState(null)
@@ -802,6 +805,12 @@ export default function ImovelDetalhe() {
                     Tour 360°
                   </a>
                 )}
+                {im.tour3d && (
+                  <button className="det-btn-acao det-btn-acao--wide" onClick={() => setShow3D(true)}>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96 12 12.01l8.73-5.05M12 22.08V12"/></svg>
+                    Tour 3D
+                  </button>
+                )}
                 {im.video && !/NnAmly9Gb9s/.test(im.video) && (
                   <a href={ytWatch(im.video)} className="det-btn-acao det-btn-acao--wide" target="_blank" rel="noopener noreferrer">
                     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
@@ -823,6 +832,11 @@ export default function ImovelDetalhe() {
                 {showEstudo && (
                   <Suspense fallback={null}>
                     <EstudoModal im={im} est={est} open={showEstudo} onClose={() => setShowEstudo(false)} />
+                  </Suspense>
+                )}
+                {show3D && (
+                  <Suspense fallback={null}>
+                    <Tour3D url={im.tour3d} titulo={im.titulo || `${im.tipo} no ${im.bairro}`} onClose={() => setShow3D(false)} />
                   </Suspense>
                 )}
               </div>

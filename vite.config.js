@@ -54,6 +54,7 @@ export default defineConfig({
           search: ['fuse.js'],
           pdf: ['jspdf'],
           zip: ['jszip'],
+          playcanvas: ['playcanvas'],
         },
       },
     },

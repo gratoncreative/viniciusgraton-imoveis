@@ -57,6 +57,11 @@
   Cache-Control: public, max-age=1800, stale-while-revalidate=3600
   X-Robots-Tag: noindex
 
+# Cenas 3D dos imóveis (Gaussian Splatting): arquivos grandes e estáveis → cache longo.
+# Nome do arquivo muda quando a cena é re-exportada, então 7 dias é seguro.
+/splats/*
+  Cache-Control: public, max-age=604800
+
 # Imagens e ícones estáticos na raiz
 /*.svg
   Cache-Control: public, max-age=31536000, immutable

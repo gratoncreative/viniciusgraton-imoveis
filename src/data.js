@@ -109,7 +109,7 @@ export const IMOVEIS_INFO = { geradoEm: destaqueData.geradoEm, fonte: destaqueDa
 
 // Aplica os overrides do painel (campos editados / ocultar) vindos de /api/imoveis-pub.
 // Só campos PÚBLICOS do anúncio — dados do proprietário NUNCA chegam aqui.
-const CAMPOS_OVERRIDE = ['preco', 'precoAnterior', 'tipo', 'bairro', 'finalidade', 'cidade', 'quartos', 'suites', 'banheiros', 'vagas', 'area', 'areaLote', 'condominio', 'andar', 'elevador', 'titulo', 'descricao', 'endereco', 'pontoReferencia', 'video', 'tour360', 'destaque']
+const CAMPOS_OVERRIDE = ['preco', 'precoAnterior', 'tipo', 'bairro', 'finalidade', 'cidade', 'quartos', 'suites', 'banheiros', 'vagas', 'area', 'areaLote', 'condominio', 'andar', 'elevador', 'titulo', 'descricao', 'endereco', 'pontoReferencia', 'video', 'tour360', 'tour3d', 'destaque']
 export function aplicarOverridesImoveis(mapa, aprovados) {
   // Reinsere no site os imóveis pendentes que o Vinícius já aprovou (lista vinda do KV).
   const apSet = new Set((aprovados || []).map(String))
