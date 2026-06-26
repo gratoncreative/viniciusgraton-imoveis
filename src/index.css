@@ -2844,6 +2844,9 @@ html[data-theme="claro"] .mm-btn:not(.mm-btn--ouro):active { border-color: var(-
 .admin-card-acoes { display: flex; gap: 8px; flex-wrap: wrap; }
 .admin-btn { font-family: var(--font-head); font-size: 0.82rem; font-weight: 600; padding: 8px 14px; border-radius: 9px; border: 1px solid rgba(22,26,34,0.16); background: #fff; color: #2a3038; cursor: pointer; transition: all 0.18s var(--ease); }
 .admin-btn--mini { padding: 5px 11px; font-size: 0.76rem; align-self: flex-start; margin-top: 6px; }
+/* CTA primário do painel admin: navy cheio + branco (dá destaque, on-brand, sem preto) */
+.admin-btn--gold { background: #212b3d; color: #fff; border-color: #212b3d; font-weight: 700; }
+.admin-btn--gold:hover { background: #2c3a52; border-color: #2c3a52; color: #fff; }
 .admin-btn--ok:hover { border-color: #2e8c57; color: #1d6b41; background: rgba(46,140,87,0.08); }
 .admin-btn--del:hover { border-color: #c0392b; color: #c0392b; background: rgba(192,57,43,0.07); }
 .admin-card-specs { margin: 12px 0 4px; font-size: 0.95rem; color: #2a3038; }

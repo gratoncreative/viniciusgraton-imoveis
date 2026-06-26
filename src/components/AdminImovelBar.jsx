@@ -30,6 +30,8 @@ export default function AdminImovelBar({ im }) {
   const [diag, setDiag] = useState('')
   const [baixando, setBaixando] = useState(false)
   const [prog, setProg] = useState('')
+  const [baixandoBairro, setBaixandoBairro] = useState(false)
+  const [bairroProg, setBairroProg] = useState('')
 
   useEffect(() => {
     const check = () => setIsAdmin(!!localStorage.getItem(LSK))
@@ -327,6 +329,103 @@ export default function AdminImovelBar({ im }) {
     setBaixando(false); setTimeout(() => setProg(''), 7000)
   }
 
+  // ——— Download "bairro inteiro" ———————————————————————————————————————————
+  // Sanitiza nome de pasta/arquivo p/ Windows.
+  const _sanit = (s) => String(s || '').replace(/[\\/:*?"<>|\r\n]+/g, ' ').replace(/\s{2,}/g, ' ').trim()
+
+  // Dossiê .txt de QUALQUER imóvel do catálogo (não só o atual). Usa o proprietário
+  // do cache quando existe; senão deixa explícito que ainda não foi captado.
+  const txtDe = (imv, own) => {
+    const L = []; const add = (s = '') => L.push(s)
+    const real = (v) => (v ? formatPreco(v) : '—')
+    const sep = '═'.repeat(46)
+    add(`DOSSIÊ DO IMÓVEL — CÓD. ${imv.codigo}`)
+    add(`Anúncio: https://viniciusgraton.com.br/imovel/${imv.codigo}`); add('')
+    add(sep); add('PROPRIETÁRIO'); add(sep)
+    if (own && (own.nome || own.fone || (own.dados && own.dados.length) || own.enderecoImovel)) {
+      add(`Nome: ${own.nome || '—'}`); add(`Telefone: ${own.fone || '—'}`); add(`E-mail: ${own.email || '—'}`)
+      if (own.enderecoCampos?.length) { add(''); add('Endereço do imóvel:'); own.enderecoCampos.forEach((c) => add(`  ${c.rotulo}: ${c.valor}`)) }
+      else if (own.enderecoImovel) { add(''); add(`Endereço do imóvel: ${own.enderecoImovel}`) }
+      if (own.dados?.length) { add(''); add('Outros dados do cadastro:'); own.dados.forEach((d) => add(`  ${d.rotulo}: ${d.valor}`)) }
+    } else {
+      add('(Proprietário ainda não captado — abra este imóvel no painel e clique em "Proprietário" para captar do Imoview.)')
+    }
+    add(''); add(sep); add('IMÓVEL'); add(sep)
+    if (imv.titulo) add(`Título: ${imv.titulo}`)
+    add(`Tipo: ${imv.tipo || '—'}`); if (imv.finalidade) add(`Finalidade: ${imv.finalidade}`)
+    add(`Bairro: ${imv.bairro || '—'}`); add(`Cidade: ${imv.cidade || 'Uberlândia'}`)
+    add(`Preço: ${real(imv.preco)}`)
+    if (imv.condominio) add(`Condomínio: ${real(imv.condominio)}`)
+    if (imv.area) add(`Área: ${imv.area} m²`)
+    if (imv.quartos != null && imv.quartos !== '') add(`Quartos: ${imv.quartos}`)
+    if (imv.suites) add(`Suítes: ${imv.suites}`)
+    if (imv.banheiros) add(`Banheiros: ${imv.banheiros}`)
+    if (imv.vagas != null && imv.vagas !== '') add(`Vagas: ${imv.vagas}`)
+    if (imv.rua) add(`Endereço (anúncio): ${imv.rua}`)
+    if (imv.descricao) { add(''); add('Descrição:'); add(String(imv.descricao).replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').replace(/\n{3,}/g, '\n\n').trim()) }
+    add(''); add('Gerado pelo site de Vinícius Graton — uso interno.')
+    return L.join('\r\n')
+  }
+
+  // Nome da subpasta do imóvel dentro do zip do bairro: "<cód> - <rua>".
+  const pastaDe = (imv, own) => {
+    const rua = (Array.isArray(own?.enderecoCampos) && (own.enderecoCampos.find((c) => c.rotulo === 'Endereço') || {}).valor) || imv.rua || ''
+    return (_sanit(`${imv.codigo} - ${rua}`).slice(0, 80)) || String(imv.codigo)
+  }
+
+  // Baixa um .zip com TODOS os imóveis do bairro do imóvel atual: dados + proprietário
+  // (do cache, sem novo scraping) + fotos completas. Roda 100% no navegador.
+  const baixarBairro = async () => {
+    if (baixandoBairro) return
+    const bairro = im.bairro
+    if (!bairro) { setBairroProg('Este imóvel está sem bairro definido.'); setTimeout(() => setBairroProg(''), 5000); return }
+    setBaixandoBairro(true); setBairroProg('Carregando catálogo…')
+    try {
+      const norm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim()
+      const cat = await fetch('/catalogo.json').then((r) => r.json()).catch(() => null)
+      const lista = (((cat && cat.imoveis) || []).filter((x) => norm(x.bairro) === norm(bairro)))
+      if (!lista.length) { setBairroProg('Nenhum imóvel desse bairro no catálogo.'); setBaixandoBairro(false); setTimeout(() => setBairroProg(''), 6000); return }
+      if (lista.length > 120 && !window.confirm(`O bairro "${bairro}" tem ${lista.length} imóveis — pode demorar e baixar MUITAS fotos. Continuar?`)) { setBaixandoBairro(false); setBairroProg(''); return }
+      setBairroProg(`Buscando proprietários já captados… (${lista.length} imóveis)`)
+      const owners = await post('owner-cache-lote', { codigos: lista.map((x) => x.codigo) }).then((j) => j.owners || {}).catch(() => ({}))
+      const { default: JSZip } = await import('jszip')
+      const zip = new JSZip()
+      const raiz = zip.folder(_sanit(bairro) || 'bairro')
+      let feitos = 0, comDono = 0, totFotos = 0
+      const proc = async (imv) => {
+        try {
+          const det = await fetch(`/api/rotina-imovel?codigo=${imv.codigo}&soFotos=1`).then((r) => r.json()).catch(() => null)
+          const fotos = (det && det.imovel && Array.isArray(det.imovel.fotos) && det.imovel.fotos.length) ? det.imovel.fotos : (imv.img ? [imv.img] : [])
+          const own = owners[imv.codigo] || null
+          if (own) comDono++
+          const pasta = raiz.folder(pastaDe(imv, own))
+          pasta.file('dados.txt', txtDe(imv, own))
+          const fdir = pasta.folder('fotos')
+          const lim = fotos.slice(0, 60)
+          for (let i = 0; i < lim.length; i++) {
+            try {
+              const r = await fetch('/api/img-proxy?u=' + encodeURIComponent(lim[i]))
+              if (r.ok) { const blob = await r.blob(); const ext = ((lim[i].match(/\.(jpe?g|png|webp)(?=$|\?)/i) || [])[1] || 'jpg').toLowerCase(); fdir.file(String(i + 1).padStart(2, '0') + '.' + ext, blob); totFotos++ }
+            } catch {}
+          }
+        } catch {}
+        feitos++; setBairroProg(`Montando "${bairro}"… ${feitos}/${lista.length} imóveis · ${totFotos} fotos`)
+      }
+      const fila = lista.map((imv) => () => proc(imv))
+      await Promise.all(Array.from({ length: Math.min(3, fila.length) }, async () => { while (fila.length) { const job = fila.shift(); if (job) await job() } }))
+      setBairroProg('Compactando…')
+      raiz.file('_RESUMO.txt', `Bairro: ${bairro}\r\nImóveis: ${lista.length}\r\nCom proprietário já captado: ${comDono}\r\nFotos baixadas: ${totFotos}\r\nGerado em ${new Date().toLocaleString('pt-BR')}\r\nUso interno — Vinícius Graton.\r\n`)
+      const out = await zip.generateAsync({ type: 'blob' })
+      const url = URL.createObjectURL(out)
+      const a = document.createElement('a'); a.href = url; a.download = `${_sanit(bairro)} - ${lista.length} imoveis.zip`
+      document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 6000)
+      setBairroProg(`✓ ${lista.length} imóveis · ${comDono} com proprietário · ${totFotos} fotos`)
+    } catch (e) {
+      setBairroProg('Falha ao gerar o pacote do bairro. Tente de novo.')
+    }
+    setBaixandoBairro(false); setTimeout(() => setBairroProg(''), 9000)
+  }
+
   // Diagnóstico: mostra o que o Imoview devolveu (pra ajustar a captação dos campos)
   const diagnostico = async () => {
     setLoading(true); setDiag(''); setMsg('Rodando diagnóstico…')
@@ -482,6 +581,13 @@ export default function AdminImovelBar({ im }) {
               </div>
             )
           )}
+          <div className="adm-acoes" style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
+            <button className="adm-btn" onClick={baixarBairro} disabled={baixandoBairro}
+              title={`Baixa um .zip com TODOS os imóveis do bairro ${im.bairro || ''} — dados + proprietário já captado (do cache) + fotos`}>
+              {baixandoBairro ? '⏳ Montando o bairro…' : `📦 Baixar bairro inteiro${im.bairro ? ' (' + im.bairro + ')' : ''}`}
+            </button>
+          </div>
+          {bairroProg && <p className="adm-status" style={{ marginTop: 8 }}>{bairroProg}</p>}
           {diag && (
             <div style={{ marginTop: 12 }}>
               <p className="adm-status" style={{ margin: '0 0 6px' }}>Diagnóstico (mande este texto pro Vinícius ajustar a captação):</p>

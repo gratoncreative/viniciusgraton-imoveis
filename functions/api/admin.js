@@ -1164,6 +1164,23 @@ export async function onRequestPost({ env, request }) {
     return json({ ok: true, owner: { nome: '', email: '', fone: '' }, source: 'none', motivo })
   }
 
+  // Lê em LOTE o proprietário JÁ CACHEADO de vários imóveis (kvStore), SEM tocar no Imoview.
+  // Base do download "bairro inteiro" e do backup geral — seguro: não faz login/scraping,
+  // então nunca estressa nem bloqueia a conta. Imóveis ainda não captados voltam sem dono.
+  if (action === 'owner-cache-lote') {
+    const cods = Array.isArray(b.codigos)
+      ? [...new Set(b.codigos.map((c) => String(c).replace(/[^\w]/g, '').slice(0, 12)).filter(Boolean))].slice(0, 300)
+      : []
+    const owners = {}
+    await Promise.all(cods.map(async (cod) => {
+      try {
+        const s = await env.ENGAGEMENT.get('imovel:' + cod, 'json')
+        if (s && s.owner && (s.owner.nome || s.owner.fone || (Array.isArray(s.owner.dados) && s.owner.dados.length) || s.owner.enderecoImovel)) owners[cod] = s.owner
+      } catch {}
+    }))
+    return json({ ok: true, owners })
+  }
+
   // Salva apenas o proprietário preservando campos existentes do imóvel
   if (action === 'owner-save') {
     const cod = String(b.codigo || '').replace(/[^\w]/g, '').slice(0, 12)

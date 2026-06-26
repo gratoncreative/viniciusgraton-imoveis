@@ -11,6 +11,7 @@ const MelhorarFotos = lazy(() => import('../components/MelhorarFotos'))
 const PostGen = lazy(() => import('../components/PostGen'))
 const AtendimentosPanel = lazy(() => import('../components/AtendimentosPanel'))
 const ConversoesPanel = lazy(() => import('../components/ConversoesPanel'))
+const BackupPanel = lazy(() => import('../components/BackupPanel'))
 
 const LSK = 'vg_admin_token'
 const waLink = (fone) => { const d = String(fone || '').replace(/\D/g, ''); const full = d.length <= 11 ? '55' + d : d; return `https://wa.me/${full}` }
@@ -580,6 +581,7 @@ export default function Admin() {
     ['post', '📣 Gerar post'],
     ['fotos', '✨ Melhorar fotos'],
     ['marca', "Remover marca d'água"],
+    ['backup', '💾 Backup geral'],
   ]
 
   return (
@@ -751,6 +753,7 @@ export default function Admin() {
         {aba === 'atendimentos' && <Suspense fallback={<p className="section-sub">Carregando…</p>}><AtendimentosPanel token={token} onSair={sair} /></Suspense>}
 
         {aba === 'conversoes' && <Suspense fallback={<p className="section-sub">Carregando…</p>}><ConversoesPanel /></Suspense>}
+        {aba === 'backup' && <Suspense fallback={<p className="section-sub">Carregando…</p>}><BackupPanel token={token} /></Suspense>}
 
         {aba === 'acessos' && (
           <section>

@@ -165,6 +165,7 @@ export async function onRequestGet({ request, env }) {
   env = { ...env, ENGAGEMENT: kvStore(env) }
   const url = new URL(request.url)
   const codigo = (url.searchParams.get('codigo') || '').replace(/\D/g, '')
+  const soFotos = url.searchParams.get('soFotos') === '1' // modo leve: só fotos+dados, sem Overpass
   if (!codigo) return json({ erro: 'Informe o código do imóvel.' }, 400)
 
   const cacheKey = 'rotina:v3:' + codigo
@@ -189,6 +190,9 @@ export async function onRequestGet({ request, env }) {
   }
 
   const imovel = montarImovel(raw.lista[0])
+  // modo leve (download em lote / backup): devolve só fotos+dados, pula o Overpass e NÃO grava
+  // no cache compartilhado (pra não suprimir os benefícios da galeria normal).
+  if (soFotos) return json({ imovel, beneficios: [] })
   // Os benefícios (Overpass/OSM) são a parte lenta. Eles NÃO podem segurar a resposta:
   // a galeria de fotos já está pronta no `imovel`. Damos um teto de 5,5s — se estourar,
   // entra o fallback. Assim a função sempre responde abaixo do timeout do cliente (9s).
