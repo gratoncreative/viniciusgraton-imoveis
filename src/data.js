@@ -15,6 +15,11 @@ export const CONFIG = {
   // Login com Google (gratuito). Client ID OAuth (público — pode ficar no código).
   // Criado no Google Cloud (projeto gen-lang-client). Enquanto vazio, o botão fica oculto.
   googleClientId: '522410029650-rrsga1dakfh4j3b5bqqepp1ha0bnfc5d.apps.googleusercontent.com',
+  // Backup do bairro no Google Drive (admin). Usa o MESMO Client ID acima + escopo
+  // mínimo drive.file. O upload vai pra uma pasta que o app cria com este nome no seu
+  // Drive (arraste pra ROTINA > ROTINA IMOVEIS se quiser — o app continua acessando).
+  // Pré-requisito: ativar a "Google Drive API" no mesmo projeto do Google Cloud.
+  googleDriveFolderName: 'Rotina Imóveis — Backups',
   // Imagem realista da capa — imóvel elegante com verde (troque por uma foto sua quando quiser)
   heroImg: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=1920&auto=format&fit=crop',
   // Link de pagamento (R$ 4,90) p/ baixar o estudo do m². Cole aqui um link do

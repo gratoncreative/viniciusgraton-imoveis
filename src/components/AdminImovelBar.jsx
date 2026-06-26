@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { formatPreco } from '../data'
+import { subirParaDrive, driveConfigurado } from '../gdrive'
 
 const LSK = 'vg_admin_token'
 
@@ -33,6 +34,7 @@ export default function AdminImovelBar({ im }) {
   const [baixandoBairro, setBaixandoBairro] = useState(false)
   const [bairroProg, setBairroProg] = useState('')
   const [bairroPct, setBairroPct] = useState(null) // 0–100 (null = sem barra)
+  const [driveLink, setDriveLink] = useState('')
 
   useEffect(() => {
     const check = () => setIsAdmin(!!localStorage.getItem(LSK))
@@ -376,55 +378,86 @@ export default function AdminImovelBar({ im }) {
 
   // Baixa um .zip com TODOS os imóveis do bairro do imóvel atual: dados + proprietário
   // (do cache, sem novo scraping) + fotos completas. Roda 100% no navegador.
+  // Núcleo: monta o .zip do bairro inteiro (dados + proprietário do cache + fotos) e devolve
+  // { blob, nome, lista, comDono, totFotos }. A barra de % vai de 0 até `topo` (deixa folga
+  // pro que vem depois: download = 100, upload pro Drive = 60→100). Devolve null se cancelar.
+  const montarZipBairro = async (topo) => {
+    const bairro = im.bairro
+    if (!bairro) { setBairroProg('Este imóvel está sem bairro definido.'); setTimeout(() => setBairroProg(''), 5000); return null }
+    setBairroProg('Carregando catálogo…'); setBairroPct(0)
+    const norm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim()
+    const cat = await fetch('/catalogo.json').then((r) => r.json()).catch(() => null)
+    const lista = (((cat && cat.imoveis) || []).filter((x) => norm(x.bairro) === norm(bairro)))
+    if (!lista.length) { setBairroProg('Nenhum imóvel desse bairro no catálogo.'); setBairroPct(null); setTimeout(() => setBairroProg(''), 6000); return null }
+    if (lista.length > 120 && !window.confirm(`O bairro "${bairro}" tem ${lista.length} imóveis — pode demorar e processar MUITAS fotos. Continuar?`)) { setBairroProg(''); setBairroPct(null); return null }
+    setBairroProg(`Buscando proprietários já captados… (${lista.length} imóveis)`); setBairroPct(3)
+    const owners = await post('owner-cache-lote', { codigos: lista.map((x) => x.codigo) }).then((j) => j.owners || {}).catch(() => ({}))
+    const { default: JSZip } = await import('jszip')
+    const zip = new JSZip()
+    const raiz = zip.folder(_sanit(bairro) || 'bairro')
+    let feitos = 0, comDono = 0, totFotos = 0
+    const proc = async (imv) => {
+      try {
+        const det = await fetch(`/api/rotina-imovel?codigo=${imv.codigo}&soFotos=1`).then((r) => r.json()).catch(() => null)
+        const fotos = (det && det.imovel && Array.isArray(det.imovel.fotos) && det.imovel.fotos.length) ? det.imovel.fotos : (imv.img ? [imv.img] : [])
+        const own = owners[imv.codigo] || null
+        if (own) comDono++
+        const pasta = raiz.folder(pastaDe(imv, own))
+        pasta.file('dados.txt', txtDe(imv, own))
+        const fdir = pasta.folder('fotos')
+        const lim = fotos.slice(0, 60)
+        for (let i = 0; i < lim.length; i++) {
+          try {
+            const r = await fetch('/api/img-proxy?u=' + encodeURIComponent(lim[i]))
+            if (r.ok) { const blob = await r.blob(); const ext = ((lim[i].match(/\.(jpe?g|png|webp)(?=$|\?)/i) || [])[1] || 'jpg').toLowerCase(); fdir.file(String(i + 1).padStart(2, '0') + '.' + ext, blob); totFotos++ }
+          } catch {}
+        }
+      } catch {}
+      feitos++; setBairroProg(`Montando "${bairro}"… ${feitos}/${lista.length} imóveis · ${totFotos} fotos`); setBairroPct(Math.round((feitos / lista.length) * (topo - 5)))
+    }
+    const fila = lista.map((imv) => () => proc(imv))
+    await Promise.all(Array.from({ length: Math.min(3, fila.length) }, async () => { while (fila.length) { const job = fila.shift(); if (job) await job() } }))
+    setBairroProg('Compactando…'); setBairroPct(topo)
+    raiz.file('_RESUMO.txt', `Bairro: ${bairro}\r\nImóveis: ${lista.length}\r\nCom proprietário já captado: ${comDono}\r\nFotos: ${totFotos}\r\nGerado em ${new Date().toLocaleString('pt-BR')}\r\nUso interno — Vinícius Graton.\r\n`)
+    const blob = await zip.generateAsync({ type: 'blob' })
+    return { blob, nome: `${_sanit(bairro)} - ${lista.length} imoveis.zip`, lista, comDono, totFotos }
+  }
+
+  // Baixa o .zip do bairro no computador.
   const baixarBairro = async () => {
     if (baixandoBairro) return
-    const bairro = im.bairro
-    if (!bairro) { setBairroProg('Este imóvel está sem bairro definido.'); setTimeout(() => setBairroProg(''), 5000); return }
-    setBaixandoBairro(true); setBairroProg('Carregando catálogo…'); setBairroPct(0)
+    setBaixandoBairro(true); setDriveLink('')
     try {
-      const norm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim()
-      const cat = await fetch('/catalogo.json').then((r) => r.json()).catch(() => null)
-      const lista = (((cat && cat.imoveis) || []).filter((x) => norm(x.bairro) === norm(bairro)))
-      if (!lista.length) { setBairroProg('Nenhum imóvel desse bairro no catálogo.'); setBairroPct(null); setBaixandoBairro(false); setTimeout(() => setBairroProg(''), 6000); return }
-      if (lista.length > 120 && !window.confirm(`O bairro "${bairro}" tem ${lista.length} imóveis — pode demorar e baixar MUITAS fotos. Continuar?`)) { setBaixandoBairro(false); setBairroProg(''); setBairroPct(null); return }
-      setBairroProg(`Buscando proprietários já captados… (${lista.length} imóveis)`); setBairroPct(3)
-      const owners = await post('owner-cache-lote', { codigos: lista.map((x) => x.codigo) }).then((j) => j.owners || {}).catch(() => ({}))
-      const { default: JSZip } = await import('jszip')
-      const zip = new JSZip()
-      const raiz = zip.folder(_sanit(bairro) || 'bairro')
-      let feitos = 0, comDono = 0, totFotos = 0
-      const proc = async (imv) => {
-        try {
-          const det = await fetch(`/api/rotina-imovel?codigo=${imv.codigo}&soFotos=1`).then((r) => r.json()).catch(() => null)
-          const fotos = (det && det.imovel && Array.isArray(det.imovel.fotos) && det.imovel.fotos.length) ? det.imovel.fotos : (imv.img ? [imv.img] : [])
-          const own = owners[imv.codigo] || null
-          if (own) comDono++
-          const pasta = raiz.folder(pastaDe(imv, own))
-          pasta.file('dados.txt', txtDe(imv, own))
-          const fdir = pasta.folder('fotos')
-          const lim = fotos.slice(0, 60)
-          for (let i = 0; i < lim.length; i++) {
-            try {
-              const r = await fetch('/api/img-proxy?u=' + encodeURIComponent(lim[i]))
-              if (r.ok) { const blob = await r.blob(); const ext = ((lim[i].match(/\.(jpe?g|png|webp)(?=$|\?)/i) || [])[1] || 'jpg').toLowerCase(); fdir.file(String(i + 1).padStart(2, '0') + '.' + ext, blob); totFotos++ }
-            } catch {}
-          }
-        } catch {}
-        feitos++; setBairroProg(`Montando "${bairro}"… ${feitos}/${lista.length} imóveis · ${totFotos} fotos`); setBairroPct(Math.round((feitos / lista.length) * 95))
-      }
-      const fila = lista.map((imv) => () => proc(imv))
-      await Promise.all(Array.from({ length: Math.min(3, fila.length) }, async () => { while (fila.length) { const job = fila.shift(); if (job) await job() } }))
-      setBairroProg('Compactando…'); setBairroPct(98)
-      raiz.file('_RESUMO.txt', `Bairro: ${bairro}\r\nImóveis: ${lista.length}\r\nCom proprietário já captado: ${comDono}\r\nFotos baixadas: ${totFotos}\r\nGerado em ${new Date().toLocaleString('pt-BR')}\r\nUso interno — Vinícius Graton.\r\n`)
-      const out = await zip.generateAsync({ type: 'blob' })
-      const url = URL.createObjectURL(out)
-      const a = document.createElement('a'); a.href = url; a.download = `${_sanit(bairro)} - ${lista.length} imoveis.zip`
+      const z = await montarZipBairro(95)
+      if (!z) { setBaixandoBairro(false); return }
+      const url = URL.createObjectURL(z.blob)
+      const a = document.createElement('a'); a.href = url; a.download = z.nome
       document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 6000)
-      setBairroProg(`✓ ${lista.length} imóveis · ${comDono} com proprietário · ${totFotos} fotos`); setBairroPct(100)
+      setBairroProg(`✓ ${z.lista.length} imóveis · ${z.comDono} com proprietário · ${z.totFotos} fotos`); setBairroPct(100)
     } catch (e) {
       setBairroProg('Falha ao gerar o pacote do bairro. Tente de novo.'); setBairroPct(null)
     }
     setBaixandoBairro(false); setTimeout(() => { setBairroProg(''); setBairroPct(null) }, 9000)
+  }
+
+  // Sobe o MESMO .zip direto pro Google Drive do Vinícius (pasta do app), sem baixar no PC.
+  const subirBairroDrive = async () => {
+    if (baixandoBairro) return
+    if (!driveConfigurado()) { setBairroProg('Google Drive não configurado (falta o Client ID no CONFIG).'); setTimeout(() => setBairroProg(''), 6000); return }
+    setBaixandoBairro(true); setDriveLink('')
+    try {
+      const z = await montarZipBairro(60)
+      if (!z) { setBaixandoBairro(false); return }
+      setBairroProg('Conectando ao Google Drive… (autorize na janela do Google)')
+      const res = await subirParaDrive(z.nome, z.blob, (frac) => {
+        setBairroProg(`Enviando pro Drive… ${z.nome}`); setBairroPct(60 + Math.round(frac * 40))
+      })
+      setBairroPct(100); setBairroProg(`✓ No seu Google Drive · ${z.lista.length} imóveis · ${z.totFotos} fotos`)
+      if (res && res.folderLink) setDriveLink(res.folderLink)
+    } catch (e) {
+      setBairroProg('Google Drive: ' + ((e && e.message) || 'falha no envio') + '.'); setBairroPct(null)
+    }
+    setBaixandoBairro(false); setTimeout(() => { setBairroProg(''); setBairroPct(null) }, 14000)
   }
 
   // Diagnóstico: mostra o que o Imoview devolveu (pra ajustar a captação dos campos)
@@ -584,9 +617,15 @@ export default function AdminImovelBar({ im }) {
           )}
           <div className="adm-acoes" style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
             <button className="adm-btn" onClick={baixarBairro} disabled={baixandoBairro}
-              title={`Baixa um .zip com TODOS os imóveis do bairro ${im.bairro || ''} — dados + proprietário já captado (do cache) + fotos`}>
-              {baixandoBairro ? '⏳ Montando o bairro…' : `📦 Baixar bairro inteiro${im.bairro ? ' (' + im.bairro + ')' : ''}`}
+              title={`Baixa no computador um .zip com TODOS os imóveis do bairro ${im.bairro || ''} — dados + proprietário já captado (do cache) + fotos`}>
+              {baixandoBairro ? '⏳ Processando…' : `📦 Baixar bairro inteiro${im.bairro ? ' (' + im.bairro + ')' : ''}`}
             </button>
+            {driveConfigurado() && (
+              <button className="adm-btn adm-btn--gold" onClick={subirBairroDrive} disabled={baixandoBairro}
+                title={`Sobe o MESMO pacote do bairro direto pro seu Google Drive (pasta "${`Rotina Imóveis — Backups`}"), sem baixar no PC`}>
+                ☁ Subir bairro pro Google Drive
+              </button>
+            )}
           </div>
           {(bairroPct != null || bairroProg) && (
             <div style={{ marginTop: 10 }}>
@@ -596,6 +635,7 @@ export default function AdminImovelBar({ im }) {
                 </div>
               )}
               {bairroProg && <p className="adm-status" style={{ marginTop: 6 }}>{bairroProg}{bairroPct != null ? ` · ${bairroPct}%` : ''}</p>}
+              {driveLink && <p className="adm-status" style={{ marginTop: 4 }}><a href={driveLink} target="_blank" rel="noopener noreferrer">Abrir a pasta no Google Drive →</a></p>}
             </div>
           )}
           {diag && (
