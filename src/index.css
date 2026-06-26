@@ -9589,12 +9589,12 @@ html[data-theme="claro"] textarea::placeholder { color: var(--text-mute); }
 .estudio-app .mf-upload { margin-bottom: 8px; }
 /* ===== LAYOUT ESTILO CANVA: trilho de ícones à esquerda + flyout de controles + tela grande à direita ===== */
 .estudio-app .mf-edit, .estudio-app .mf-edit--vazio {
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: clamp(420px, 40vw, 600px) minmax(0, 1fr);
   grid-template-areas: "painel canvas" "painel tiras";
   gap: 10px 14px; align-items: stretch;
 }
 .estudio-app .mf-preview { grid-area: canvas; position: static; }
-.estudio-app .mf-canvas { max-height: 58vh; }
+.estudio-app .mf-canvas { max-height: 66vh; }
 .estudio-app .mf-tiras { grid-area: tiras; flex-direction: row; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; max-height: none; position: static; top: auto; gap: 6px; padding: 2px 0; }
 .estudio-app .mf-tira { width: 58px; flex: 0 0 auto; aspect-ratio: 4 / 3; }
 
@@ -9615,7 +9615,7 @@ html[data-theme="claro"] .estudio-app .mf-aba.on { background: transparent !impo
 .estudio-app .mf-aba--rem .mf-aba-ico { background: #FBEAEA; color: #C20020; }
 .estudio-app .mf-aba--rem:hover .mf-aba-ico { background: #F7D9D9; }
 .estudio-app .mf-abas-div { width: auto; height: 1px; align-self: stretch; margin: 5px 6px; }
-.estudio-app .mf-aba-conteudo { width: clamp(280px, 25vw, 360px); columns: auto; column-gap: 0; padding: 14px; background: #fff; border: 1px solid var(--border); border-radius: 0 14px 14px 0; max-height: calc(100dvh - 150px); overflow-y: auto; }
+.estudio-app .mf-aba-conteudo { flex: 1 1 auto; min-width: 0; columns: auto; column-gap: 0; padding: 16px; background: #fff; border: 1px solid var(--border); border-radius: 0 14px 14px 0; max-height: calc(100dvh - 150px); overflow-y: auto; }
 .estudio-app .mf-aba-conteudo > .mf-grupo { margin: 0 0 12px; }
 .estudio-app .mf-grupo { padding: 10px 11px; gap: 6px; border-radius: 10px; }
 .estudio-app .mf-grupo-tit { font-size: 0.72rem; padding-bottom: 6px; margin-bottom: 0; }
