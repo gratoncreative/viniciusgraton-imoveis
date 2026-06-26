@@ -226,7 +226,18 @@ function coverDraw(ctx, img, x, y, w, h) {
 const RATIOS = { orig: 0, '16:9': 16 / 9, '4:3': 4 / 3, '3:2': 3 / 2, '1:1': 1, '9:16': 9 / 16 }
 function enquadrar(src, fmt) {
   const ar = RATIOS[(fmt && fmt.ratio) || 'orig']
-  if (!ar) return src // 'orig' → não mexe na proporção
+  if (!ar) {
+    // 'orig' — mantém a proporção, mas permite ZOOM + reposicionar (recorte dentro da própria forma)
+    const zoom = Math.max(1, (fmt && fmt.zoom) || 1)
+    const px = fmt && fmt.px != null ? fmt.px : 0.5, py = fmt && fmt.py != null ? fmt.py : 0.5
+    if (zoom <= 1.001 && px === 0.5 && py === 0.5) return src
+    const W = src.width, H = src.height
+    const out = document.createElement('canvas'); out.width = W; out.height = H
+    const ctx = out.getContext('2d'); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'
+    const dw = W * zoom, dh = H * zoom
+    ctx.drawImage(src, Math.round(-(dw - W) * px), Math.round(-(dh - H) * py), Math.round(dw), Math.round(dh))
+    return out
+  }
   const sw = src.width, sh = src.height
   let W, H
   if (ar >= 1) { H = Math.max(sh, Math.round(sw / ar)); W = Math.round(H * ar) }
@@ -403,6 +414,26 @@ export default function MelhorarFotos() {
   const foto = atual >= 0 ? fotos[atual] : null
   const iaRodando = !!ia && (ia.fase === 'carregando' || ia.fase === 'processando') // bloqueia só enquanto processa; no erro destrava p/ "Tentar de novo"
   const setS = (patch) => setFotos((fs) => fs.map((ft, i) => i === atual ? { ...ft, s: { ...ft.s, ...patch } } : ft))
+  // atualiza só o enquadramento (zoom/px/py), lendo o valor anterior (seguro p/ arrastar/zoom)
+  const setEnquadro = (fn) => setFotos((fs) => fs.map((ft, i) => i === atual ? { ...ft, s: { ...ft.s, formato: { ...ft.s.formato, ...fn(ft.s.formato || {}) } } } : ft))
+
+  // ——— Enquadrar direto na imagem: arrastar (reposiciona) + roda do mouse (zoom) ———
+  const dragRef = useRef(null)
+  const onCvDown = (e) => {
+    if (verOriginal || !foto) return
+    const cv = previewRef.current; if (!cv) return
+    try { cv.setPointerCapture(e.pointerId) } catch {}
+    const f = foto.s.formato || {}
+    dragRef.current = { x: e.clientX, y: e.clientY, px: f.px == null ? 0.5 : f.px, py: f.py == null ? 0.5 : f.py, w: cv.clientWidth || 1, h: cv.clientHeight || 1 }
+  }
+  const onCvMove = (e) => {
+    const d = dragRef.current; if (!d) return
+    const px = Math.min(1, Math.max(0, d.px - (e.clientX - d.x) / d.w))
+    const py = Math.min(1, Math.max(0, d.py - (e.clientY - d.y) / d.h))
+    setEnquadro(() => ({ px, py }))
+  }
+  const onCvUp = (e) => { dragRef.current = null; try { previewRef.current?.releasePointerCapture(e.pointerId) } catch {} }
+  const resetEnquadro = () => setEnquadro(() => ({ zoom: 1, px: 0.5, py: 0.5 }))
 
   // redesenha o preview quando muda a foto/ajustes
   const redesenhar = useCallback(() => {
@@ -427,6 +458,20 @@ export default function MelhorarFotos() {
     const t = setTimeout(redesenhar, 60)
     return () => clearTimeout(t)
   }, [redesenhar, foto?.s, atual])
+
+  // roda do mouse no canvas = zoom (passivo:false p/ poder travar o scroll da página)
+  useEffect(() => {
+    const cv = previewRef.current
+    if (!cv || !foto) return
+    const onWheel = (e) => {
+      if (verOriginal) return
+      e.preventDefault()
+      const fator = e.deltaY < 0 ? 1.1 : 0.9
+      setEnquadro((f) => ({ zoom: Math.min(4, Math.max(1, Math.round((f.zoom || 1) * fator * 100) / 100)) }))
+    }
+    cv.addEventListener('wheel', onWheel, { passive: false })
+    return () => cv.removeEventListener('wheel', onWheel)
+  }, [foto, atual, verOriginal])
 
   // pré-carrega o chunk da ferramenta "Remover marca" pra ela abrir instantânea
   useEffect(() => { import('./RemoverMarca').catch(() => {}) }, [])
@@ -794,16 +839,25 @@ export default function MelhorarFotos() {
               {foto ? (
                 <>
                   <div className="mf-canvas-wrap">
-                    <canvas ref={previewRef} className="mf-canvas" />
+                    <canvas ref={previewRef} className="mf-canvas"
+                      onPointerDown={onCvDown} onPointerMove={onCvMove} onPointerUp={onCvUp} onPointerLeave={onCvUp}
+                      style={{ cursor: 'grab', touchAction: 'none' }} />
                     {grade && !verOriginal && (
                       <div className="mf-grade" aria-hidden="true"><span /><span /><span /><span /></div>
                     )}
+                  </div>
+                  <div className="mf-zoom">
+                    <button type="button" className="mf-zoom-btn" onClick={() => setEnquadro((f) => ({ zoom: Math.max(1, Math.round(((f.zoom || 1) - 0.2) * 100) / 100) }))} aria-label="Menos zoom">−</button>
+                    <input type="range" min="1" max="4" step="0.05" value={foto.s.formato?.zoom || 1} onChange={(e) => setEnquadro(() => ({ zoom: +e.target.value }))} aria-label="Zoom da imagem" />
+                    <button type="button" className="mf-zoom-btn" onClick={() => setEnquadro((f) => ({ zoom: Math.min(4, Math.round(((f.zoom || 1) + 0.2) * 100) / 100) }))} aria-label="Mais zoom">+</button>
+                    <button type="button" className="mf-zoom-reset" onClick={resetEnquadro} title="Voltar ao enquadramento original">⟲ Centralizar</button>
                   </div>
                   <div className="mf-preview-acoes">
                     <button className="admin-btn" onMouseDown={() => setVerOriginal(true)} onMouseUp={() => setVerOriginal(false)} onMouseLeave={() => setVerOriginal(false)} onTouchStart={() => setVerOriginal(true)} onTouchEnd={() => setVerOriginal(false)}>
                       👁 Segurar p/ ver original
                     </button>
                     <label className="mf-check"><input type="checkbox" checked={grade} onChange={(e) => setGrade(e.target.checked)} /> Grade de nível</label>
+                    <span className="mf-dica-arraste" aria-hidden="true">✥ Arraste a foto pra reposicionar · role o mouse pra dar zoom</span>
                   </div>
                 </>
               ) : (
