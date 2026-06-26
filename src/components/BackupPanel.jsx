@@ -192,20 +192,47 @@ export default function BackupPanel({ token }) {
     await baixarChave(`backup/imoveis/${slug(it.bairro)}/${c}.zip`, `imovel-${c}.zip`)
   }
 
+  // Seção do Google Drive — NÃO depende do R2 (sobe direto do navegador pro seu Drive),
+  // então aparece mesmo quando o R2 ainda não está configurado.
+  const secaoDrive = driveConfigurado() ? (
+    <div style={{ marginTop: 16, padding: 16, background: '#fff', border: '1px solid var(--border)', borderRadius: 12 }}>
+      <p style={{ fontWeight: 800, margin: '0 0 4px' }}>☁ Enviar pro seu Google Drive <span style={{ fontSize: '.8rem', fontWeight: 500, color: 'var(--muted)' }}>· 2 TB · não precisa de R2</span></p>
+      <p className="section-sub" style={{ margin: '0 0 12px', fontSize: '.84rem' }}>
+        Cópia no seu Drive, pasta <b>"Rotina Imóveis — Backups"</b>. O <b>site inteiro</b> (fotos) é pesado e <b>resumível</b> (pausa e continua). Proprietário entra do cache — sem estressar o Imoview.
+      </p>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
+        <button className="admin-btn admin-btn--gold" onClick={subirSiteDrive} disabled={driveRun}>☁ Subir SITE INTEIRO → Drive (por bairro)</button>
+        <button className="admin-btn" onClick={dadosParaDrive} disabled={driveRun} title="Espelha o backup de dados (precisa do R2 ligado)">⬆ Backup de dados → Drive</button>
+        {driveRun && <button className="admin-btn" onClick={pausarDrive}>⏸ Pausar</button>}
+        {!driveRun && <button className="admin-btn" onClick={reiniciarDrive} title="Esquece os bairros já enviados e recomeça do zero no próximo envio">↺ Zerar progresso</button>}
+      </div>
+      {drivePct != null && (
+        <div style={{ height: 10, background: '#ece7df', borderRadius: 6, overflow: 'hidden', marginTop: 12 }} role="progressbar" aria-valuenow={drivePct} aria-valuemin={0} aria-valuemax={100}>
+          <div style={{ width: drivePct + '%', height: '100%', background: '#212b3d', transition: 'width .3s' }} />
+        </div>
+      )}
+      {driveTxt && <p className="section-sub" style={{ marginTop: 6 }}>{driveTxt}{drivePct != null ? ` · ${drivePct}%` : ''}</p>}
+      {driveResumo && <p className="section-sub" style={{ marginTop: 6, fontWeight: 600 }}>{driveResumo} {driveLink && <a href={driveLink} target="_blank" rel="noopener noreferrer">Abrir pasta no Drive →</a>}</p>}
+    </div>
+  ) : null
+
   // ——— R2 ainda não configurado ———
   if (r2ok === false) {
     return (
-      <div className="section--light" style={{ maxWidth: 760 }}>
-        <h2 className="section-title" style={{ fontSize: '1.4rem' }}>💾 Backup geral do cadastro</h2>
-        <p className="section-sub">{motivoMsg || 'O armazenamento do backup ainda não está ligado.'}</p>
-        <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, padding: 16, marginTop: 12 }}>
-          <p style={{ margin: '0 0 8px', fontWeight: 700 }}>Como ligar (uma vez só, no painel da Cloudflare):</p>
+      <div className="section--light" style={{ maxWidth: 820 }}>
+        <h2 className="section-title" style={{ fontSize: '1.4rem' }}>💾 Backup</h2>
+        <p className="section-sub" style={{ marginTop: 4 }}>
+          O backup pro seu <b>Google Drive funciona já</b> — é só clicar abaixo. (O backup no Cloudflare R2 é um <b>extra opcional</b>, ainda não ligado.)
+        </p>
+        {secaoDrive}
+        <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, padding: 16, marginTop: 18, opacity: 0.92 }}>
+          <p style={{ margin: '0 0 8px', fontWeight: 700 }}>Backup automático no Cloudflare R2 <span style={{ fontWeight: 500, color: 'var(--muted)' }}>(opcional) — ainda não ligado</span></p>
           <ol style={{ margin: 0, paddingLeft: 20, lineHeight: 1.7 }}>
             <li>Cloudflare → <b>R2</b> → <b>Create bucket</b> → nome <code>vg-backups</code>.</li>
             <li>Pages → projeto do site → <b>Settings → Functions → R2 bucket bindings</b> → Add: variável <code>BACKUPS</code> = bucket <code>vg-backups</code>.</li>
-            <li>Salvar e fazer um novo deploy (ou aguardar o próximo push). Recarregue esta aba.</li>
+            <li>Salvar e fazer um novo deploy. Recarregue esta aba.</li>
           </ol>
-          <p className="section-sub" style={{ marginTop: 10 }}>Guia completo: <code>docs/backup-r2-setup.md</code> no projeto.</p>
+          <p className="section-sub" style={{ marginTop: 10 }}>Guia: <code>docs/backup-r2-setup.md</code>.</p>
         </div>
         <button className="admin-btn" style={{ marginTop: 12 }} onClick={carregarStatus}>↺ Verificar de novo</button>
       </div>
@@ -224,28 +251,7 @@ export default function BackupPanel({ token }) {
         As fotos vêm do CDN público; o proprietário só do que já está no cache (não faz login em massa no Imoview).
       </p>
 
-      {/* ☁ Google Drive (2 TB) */}
-      {driveConfigurado() && (
-        <div style={{ marginTop: 16, padding: 16, background: '#fff', border: '1px solid var(--border)', borderRadius: 12 }}>
-          <p style={{ fontWeight: 800, margin: '0 0 4px' }}>☁ Enviar pro seu Google Drive <span style={{ fontSize: '.8rem', fontWeight: 500, color: 'var(--muted)' }}>· 2 TB</span></p>
-          <p className="section-sub" style={{ margin: '0 0 12px', fontSize: '.84rem' }}>
-            Cópia no seu Drive, pasta <b>"Rotina Imóveis — Backups"</b>. Os <b>dados</b> são pequenos (rápido); o <b>site inteiro</b> (fotos) é pesado e <b>resumível</b> (pausa e continua). Proprietário entra do cache — sem estressar o Imoview.
-          </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
-            <button className="admin-btn admin-btn--gold" onClick={dadosParaDrive} disabled={driveRun}>⬆ Backup de dados → Drive</button>
-            <button className="admin-btn" onClick={subirSiteDrive} disabled={driveRun}>☁ Subir SITE INTEIRO → Drive (por bairro)</button>
-            {driveRun && <button className="admin-btn" onClick={pausarDrive}>⏸ Pausar</button>}
-            {!driveRun && <button className="admin-btn" onClick={reiniciarDrive} title="Esquece os bairros já enviados e recomeça do zero no próximo envio">↺ Zerar progresso</button>}
-          </div>
-          {drivePct != null && (
-            <div style={{ height: 10, background: '#ece7df', borderRadius: 6, overflow: 'hidden', marginTop: 12 }} role="progressbar" aria-valuenow={drivePct} aria-valuemin={0} aria-valuemax={100}>
-              <div style={{ width: drivePct + '%', height: '100%', background: '#212b3d', transition: 'width .3s' }} />
-            </div>
-          )}
-          {driveTxt && <p className="section-sub" style={{ marginTop: 6 }}>{driveTxt}{drivePct != null ? ` · ${drivePct}%` : ''}</p>}
-          {driveResumo && <p className="section-sub" style={{ marginTop: 6, fontWeight: 600 }}>{driveResumo} {driveLink && <a href={driveLink} target="_blank" rel="noopener noreferrer">Abrir pasta no Drive →</a>}</p>}
-        </div>
-      )}
+      {secaoDrive}
 
       {/* estado atual */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 14 }}>
