@@ -9537,3 +9537,19 @@ html[data-theme="claro"] textarea::placeholder { color: var(--text-mute); }
 .lev-itens li b { color: #42261c; font-weight: 700; }
 .lev-status { color: var(--text-mute); font-size: .9rem; margin: 4px 0 0; font-style: italic; }
 .lev-erro { color: #b3261e; font-size: .9rem; margin: 4px 0 0; }
+
+/* ===== Estúdio como APP — palco escuro atrás da foto (estilo Lightroom) ===== */
+.mf-edit:not(.mf-edit--vazio) .mf-preview {
+  background: #212b3d;
+  border: 1px solid #1b2433;
+  border-radius: 16px;
+  padding: clamp(16px, 2.2vw, 30px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 380px;
+}
+.mf-edit:not(.mf-edit--vazio) .mf-preview .mf-canvas { box-shadow: 0 20px 50px -24px rgba(0,0,0,0.55); }
+.mf-edit:not(.mf-edit--vazio) .mf-preview-acoes { justify-content: center; margin-top: 14px; }
+.mf-edit:not(.mf-edit--vazio) .mf-preview-acoes .admin-btn { background: rgba(255,255,255,0.10); color: #fff; border: 1px solid rgba(255,255,255,0.22); }
+.mf-edit:not(.mf-edit--vazio) .mf-preview-acoes .admin-btn:hover { background: rgba(255,255,255,0.18); }
+.mf-edit:not(.mf-edit--vazio) .mf-preview .mf-check { color: #d6dae2; }
+.mf-edit:not(.mf-edit--vazio) .mf-grade span { border-color: rgba(255,255,255,0.25) !important; }
