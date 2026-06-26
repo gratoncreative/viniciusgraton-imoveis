@@ -11,6 +11,20 @@ const RemoverMarca = lazy(() => import('./RemoverMarca'))
 const PREVIEW_MAX = 900   // resolução do preview (rápido)
 const EXPORT_MAX = 2560   // teto da resolução base na exportação
 
+// Ícones de linha (monocromáticos) das abas do trilho — visual profissional no lugar dos emojis.
+const ICO_ABA = {
+  ajustes: <><line x1="4" y1="8" x2="20" y2="8" /><circle cx="9" cy="8" r="2.3" /><line x1="4" y1="16" x2="20" y2="16" /><circle cx="15" cy="16" r="2.3" /></>,
+  ia: <><path d="M12 3.4l1.5 4.3 4.3 1.5-4.3 1.5L12 15l-1.5-4.3L6.2 9.2l4.3-1.5z" /><path d="M18 14.2l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z" /></>,
+  marca: <path d="M12 3.2c2.9 3.8 5.8 6.9 5.8 10.3a5.8 5.8 0 1 1-11.6 0C6.2 10.1 9.1 7 12 3.2z" />,
+  export: <><path d="M12 3.6v9.4M8.4 9l3.6 3.6L15.6 9" /><path d="M5 16.4v2.2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2.2" /></>,
+  video: <><rect x="3" y="6" width="12.5" height="12" rx="2.3" /><path d="M15.5 10l5-2.6v9.2l-5-2.6z" /></>,
+  remMarca: <><path d="M8.6 18.4 5 14.8a2 2 0 0 1 0-2.8l7-7a2 2 0 0 1 2.8 0l3.6 3.6a2 2 0 0 1 0 2.8l-6.4 6.4z" /><line x1="4" y1="21" x2="20" y2="21" /><line x1="9" y1="9.4" x2="14.6" y2="15" /></>,
+  remObjeto: <><path d="M4.5 19.5 13 11" /><path d="M15 4.3l1.1 3 3 1.1-3 1.1L15 12.5l-1.1-3-3-1.1 3-1.1z" /></>,
+}
+const IcoAba = ({ id }) => (
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{ICO_ABA[id]}</svg>
+)
+
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
 const PADRAO = { angle: 0, brilho: 1.05, contraste: 1.09, satur: 1.12, nitidez: 0.6, suave: 0, realces: 0, sombras: 0, vibrar: 0, wb: true, temp: 0, vinheta: 0, escala: 1, formato: { ratio: 'orig', fill: 'blur', zoom: 1, px: 0.5, py: 0.5 } }
 
@@ -876,14 +890,14 @@ export default function MelhorarFotos() {
             {/* COLUNA DIREITA: painel em abas */}
             <div className="mf-painel">
               <div className="mf-abas">
-                {[['ajustes', '🪄', 'Ajustes'], ['ia', '🤖', 'IA'], ['marca', '💧', 'Marca'], ['export', '📤', 'Exportar'], ['video', '🎬', 'Vídeo']].map(([id, ico, nome]) => (
+                {[['ajustes', 'Ajustes'], ['ia', 'IA'], ['marca', 'Marca'], ['export', 'Exportar'], ['video', 'Vídeo']].map(([id, nome]) => (
                   <button key={id} className={`mf-aba ${aba === id ? 'on' : ''}`} onClick={() => setAba(id)}>
-                    <span className="mf-aba-ico" aria-hidden="true">{ico}</span>{nome}
+                    <span className="mf-aba-ico"><IcoAba id={id} /></span>{nome}
                   </button>
                 ))}
                 <span className="mf-abas-div" aria-hidden="true" />
-                <button className="mf-aba mf-aba--rem" onClick={() => setModoLimpar(true)}><span className="mf-aba-ico" aria-hidden="true">🧽</span>Remover marca</button>
-                <button className="mf-aba mf-aba--rem" onClick={() => navigate('/ferramentas/editar-foto')}><span className="mf-aba-ico" aria-hidden="true">🛋️</span>Remover objeto</button>
+                <button className="mf-aba mf-aba--rem" onClick={() => setModoLimpar(true)}><span className="mf-aba-ico"><IcoAba id="remMarca" /></span>Remover marca</button>
+                <button className="mf-aba mf-aba--rem" onClick={() => navigate('/ferramentas/editar-foto')}><span className="mf-aba-ico"><IcoAba id="remObjeto" /></span>Remover objeto</button>
               </div>
 
               <div className="mf-aba-conteudo">

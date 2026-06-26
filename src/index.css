@@ -9601,8 +9601,15 @@ html[data-theme="claro"] textarea::placeholder { color: var(--text-mute); }
 /* painel = trilho de ícones (esquerda) + flyout (controles) lado a lado */
 .estudio-app .mf-painel { grid-area: painel; display: flex; flex-direction: row; align-items: stretch; border: none; background: transparent; overflow: visible; max-height: none; border-radius: 0; }
 .estudio-app .mf-abas { flex-direction: column; flex-wrap: nowrap; width: 78px; flex: 0 0 78px; gap: 2px; padding: 8px 6px; background: #fff; border: 1px solid var(--border); border-right: none; border-radius: 14px 0 0 14px; align-self: stretch; }
-.estudio-app .mf-aba { flex: 0 0 auto; flex-direction: column; gap: 3px; padding: 9px 4px; border-radius: 10px; font-size: 0.64rem; line-height: 1.05; text-align: center; white-space: normal; }
-.estudio-app .mf-aba-ico { font-size: 1.2rem; line-height: 1; }
+.estudio-app .mf-aba { flex: 0 0 auto; flex-direction: column; gap: 6px; padding: 8px 3px; border-radius: 12px; font-size: 0.64rem; font-weight: 600; line-height: 1.1; text-align: center; white-space: normal; color: #6a6f79; background: transparent; }
+.estudio-app .mf-aba .mf-aba-ico { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: #F1EEE8; color: #1C2A44; font-size: 0; transition: background .16s ease, color .16s ease, transform .12s ease; }
+.estudio-app .mf-aba:hover:not(.on) { color: #1C2A44; }
+.estudio-app .mf-aba:hover:not(.on) .mf-aba-ico { background: #E7E2D8; }
+.estudio-app .mf-aba:active .mf-aba-ico { transform: scale(0.94); }
+html[data-theme="claro"] .estudio-app .mf-aba.on { background: transparent; color: #1C2A44; font-weight: 700; }
+.estudio-app .mf-aba.on .mf-aba-ico { background: #1C2A44; color: #fff; box-shadow: 0 6px 16px -8px rgba(28,42,68,0.6); }
+.estudio-app .mf-aba--rem .mf-aba-ico { background: #FBEAEA; color: #C20020; }
+.estudio-app .mf-aba--rem:hover .mf-aba-ico { background: #F7D9D9; }
 .estudio-app .mf-abas-div { width: auto; height: 1px; align-self: stretch; margin: 5px 6px; }
 .estudio-app .mf-aba-conteudo { width: clamp(280px, 25vw, 360px); columns: auto; column-gap: 0; padding: 14px; background: #fff; border: 1px solid var(--border); border-radius: 0 14px 14px 0; max-height: calc(100dvh - 150px); overflow-y: auto; }
 .estudio-app .mf-aba-conteudo > .mf-grupo { margin: 0 0 12px; }
