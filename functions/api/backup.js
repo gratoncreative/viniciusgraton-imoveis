@@ -63,8 +63,18 @@ function txtDe(imv, own) {
   if (imv.suites) add(`Suítes: ${imv.suites}`)
   if (imv.banheiros) add(`Banheiros: ${imv.banheiros}`)
   if (imv.vagas != null && imv.vagas !== '') add(`Vagas: ${imv.vagas}`)
+  if (imv.areaLote) add(`Área do lote: ${imv.areaLote} m²`)
+  if (imv.iptu) add(`IPTU: ${real(imv.iptu)}`)
+  if (imv.andar) add(`Andar: ${imv.andar}`)
+  if (imv.elevador) add('Elevador: sim')
+  if (imv.situacao) add(`Situação: ${imv.situacao}`)
+  if (imv.aceitaFinanciamento) add('Aceita financiamento: sim')
+  if (imv.aceitaPermuta) add('Aceita permuta: sim')
+  if (imv.pontoReferencia) add(`Ponto de referência: ${imv.pontoReferencia}`)
   if (imv.rua) add(`Endereço (anúncio): ${imv.rua}`)
+  if (Array.isArray(imv.amenidades) && imv.amenidades.length) { add(''); add('Características / amenidades:'); imv.amenidades.forEach((a) => add(`  - ${a}`)) }
   if (imv.descricao) { add(''); add('Descrição:'); add(String(imv.descricao).replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').replace(/\n{3,}/g, '\n\n').trim()) }
+  if (imv.link) { add(''); add(`Anúncio Rotina: ${imv.link}`) }
   add(''); add('Gerado pelo backup do site de Vinícius Graton — uso interno.')
   return L.join('\r\n')
 }
@@ -116,15 +126,18 @@ export async function onRequestPost({ request, env }) {
     if (!lista.length) return json({ ok: false, msg: 'Rode "iniciar" antes de processar os lotes.' })
 
     const slice = lista.slice(from, from + count)
-    let copiadas = 0, comDono = 0
+    let copiadas = 0, comDono = 0, tentadas = 0, previstas = 0
+    const falhou = [] // imóveis cujo .zip NÃO foi gravado (não marcamos concluído por cima de buraco)
     const { default: JSZip } = await import('jszip')
 
     for (const it of slice) {
       const cod = String(it.c), bairro = it.b || ''
+      let gravou = false
       try {
         const det = await fetch(new URL(`/api/rotina-imovel?codigo=${encodeURIComponent(cod)}&soFotos=1`, request.url)).then((r) => r.json()).catch(() => null)
         const imv = (det && det.imovel) ? { ...det.imovel, codigo: cod, bairro: det.imovel.bairro || bairro } : { codigo: cod, bairro }
         const fotos = (det && det.imovel && Array.isArray(det.imovel.fotos) && det.imovel.fotos.length) ? det.imovel.fotos : (it.img ? [it.img] : [])
+        previstas += fotos.length
 
         const saved = await env.ENGAGEMENT.get('imovel:' + cod, 'json').catch(() => null)
         const own = (saved && saved.owner && (saved.owner.nome || saved.owner.fone || saved.owner.enderecoImovel || (Array.isArray(saved.owner.dados) && saved.owner.dados.length))) ? saved.owner : null
@@ -133,34 +146,37 @@ export async function onRequestPost({ request, env }) {
         const zip = new JSZip()
         zip.file('dados.txt', txtDe(imv, own))
         const fdir = zip.folder('fotos')
-        const lim = fotos.slice(0, 45) // teto p/ não estourar subrequests da Function
+        const lim = fotos.slice(0, 38) // teto p/ caber nos ~50 subrequests da Function (com folga)
+        let acc = 0 // orçamento de memória do Worker (~128MB)
         for (let i = 0; i < lim.length; i++) {
+          tentadas++
           try {
             const r = await fetch(lim[i], { headers: { 'user-agent': 'ViniciusGratonBackup/1.0' }, signal: AbortSignal.timeout(12000) })
             if (r.ok) {
+              const cl = +(r.headers.get('content-length') || 0)
+              if (cl && cl > 8 * 1024 * 1024) continue // pula imagem gigante sem materializar
               const buf = await r.arrayBuffer()
+              acc += buf.byteLength
+              if (acc > 90 * 1024 * 1024) break // não chega perto dos 128MB do Worker
               const ext = ((String(lim[i]).match(/\.(jpe?g|png|webp)(?=$|\?)/i) || [])[1] || 'jpg').toLowerCase()
               fdir.file(String(i + 1).padStart(2, '0') + '.' + ext, buf)
               copiadas++
             }
           } catch {}
         }
+        if (fotos.length > lim.length) zip.file('_FOTOS-CORTADAS.txt', `Este imóvel tem ${fotos.length} fotos; o backup guardou as primeiras ${lim.length} (limite por lote).\r\nTodas seguem no anúncio: ${imv.link || ('https://viniciusgraton.com.br/imovel/' + cod)}\r\n`)
         const out = await zip.generateAsync({ type: 'arraybuffer' })
         await R2.put(`backup/imoveis/${slug(bairro)}/${cod}.zip`, out, { httpMetadata: { contentType: 'application/zip' } })
-      } catch {}
+        gravou = true
+      } catch (e) { try { console.error('backup lote', cod, String((e && e.message) || e).slice(0, 140)) } catch {} }
+      if (!gravou) falhou.push(cod)
     }
 
     const next = from + slice.length
-    // só o cursor é atualizado aqui (monotônico, à prova da concorrência dos 3 workers).
-    // Os contadores fotos/comDono são autoritativos no CLIENTE e persistidos via action 'progresso'
-    // (evita a corrida read-modify-write entre invocações paralelas).
-    const manifest = (await env.ENGAGEMENT.get('backup:manifest', 'json')) || { total: lista.length, cursor: 0, fotos: 0, comDono: 0 }
-    manifest.total = lista.length
-    manifest.cursor = Math.max(manifest.cursor || 0, next)
-    manifest.concluido = manifest.cursor >= lista.length
-    manifest.atualizadoEm = Date.now()
-    await env.ENGAGEMENT.put('backup:manifest', JSON.stringify(manifest))
-    return json({ ok: true, from, next, total: lista.length, copiadas, comDono, concluido: next >= lista.length })
+    // O cursor é avançado pelo CLIENTE via action 'progresso' (Math.max) — aqui NÃO tocamos o
+    // manifesto, pra economizar subrequests no caminho quente e não competir com os 3 workers.
+    // 'falhou' volta pro cliente decidir reprocessar; 'concluido' nunca é true com imóvel pendente.
+    return json({ ok: true, from, next, total: lista.length, copiadas, tentadas, previstas, comDono, falhou, gravou: !falhou.length, concluido: next >= lista.length && !falhou.length })
   }
 
   if (action === 'status') {
@@ -172,10 +188,10 @@ export async function onRequestPost({ request, env }) {
   if (action === 'progresso') {
     const m = (await env.ENGAGEMENT.get('backup:manifest', 'json')) || {}
     if (Number.isFinite(b.cursor)) m.cursor = Math.max(m.cursor || 0, b.cursor)
-    if (Number.isFinite(b.fotos)) m.fotos = b.fotos
-    if (Number.isFinite(b.comDono)) m.comDono = b.comDono
+    if (Number.isFinite(b.fotos)) m.fotos = Math.max(m.fotos || 0, b.fotos)       // monotônico: escrita atrasada não regride o contador
+    if (Number.isFinite(b.comDono)) m.comDono = Math.max(m.comDono || 0, b.comDono)
     if (Number.isFinite(b.total)) m.total = b.total
-    if (b.concluido) m.concluido = true
+    if (b.concluido && (m.cursor || 0) >= (m.total || 0)) m.concluido = true       // nunca "concluído" com cursor atrás
     m.atualizadoEm = Date.now()
     await env.ENGAGEMENT.put('backup:manifest', JSON.stringify(m))
     return json({ ok: true })

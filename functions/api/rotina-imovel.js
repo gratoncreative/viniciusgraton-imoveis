@@ -180,6 +180,7 @@ export async function onRequestGet({ request, env }) {
       method: 'POST',
       headers: { 'content-type': 'application/x-www-form-urlencoded', 'user-agent': 'Mozilla/5.0 (compatible; ViniciusGratonImoveis/1.0)' },
       body: 'codigo=' + encodeURIComponent(codigo) + '&pagina=1',
+      signal: AbortSignal.timeout(7000), // único fetch externo do subsistema sem teto; evita pendurar o Worker no backup/bairro
     })
     raw = await r.json()
   } catch {

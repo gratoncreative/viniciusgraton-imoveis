@@ -42,6 +42,7 @@ export default function BackupPanel({ token }) {
     let fotos = (manRef.current?.fotos) || 0
     let comDono = (manRef.current?.comDono) || 0
     let done = inicio
+    let falhas = 0, incompletos = 0
     setProg({ done, total, fotos, comDono })
     const worker = async () => {
       while (!pausaRef.current) {
@@ -49,19 +50,29 @@ export default function BackupPanel({ token }) {
         if (total && meu >= total) break
         cursor += 1
         const j = await post('lote', { from: meu, count: 1 }).catch(() => null)
-        if (j && j.ok) { fotos += j.copiadas || 0; comDono += j.comDono || 0; if (j.total) total = j.total }
+        if (j && j.ok) {
+          fotos += j.copiadas || 0; comDono += j.comDono || 0; if (j.total) total = j.total
+          if (j.falhou && j.falhou.length) falhas += j.falhou.length
+          else if (j.previstas && (j.copiadas || 0) < j.previstas) incompletos += 1
+        } else { falhas += 1 } // lote sem resposta/erro (rede, sessão, Worker) — NÃO é sucesso
         done += 1
         setProg({ done: Math.min(done, total || done), total, fotos, comDono })
-        // persiste os contadores autoritativos de tempos em tempos (sem corrida: só este cliente grava)
-        if (done % 8 === 0) post('progresso', { fotos, comDono, total }).catch(() => {})
+        // persiste cursor + contadores autoritativos de tempos em tempos (só este cliente grava)
+        if (done % 8 === 0) post('progresso', { cursor: done, fotos, comDono, total }).catch(() => {})
       }
     }
     await Promise.all([worker(), worker(), worker()])
-    // grava o número final correto no manifesto
-    await post('progresso', { fotos, comDono, total, concluido: !pausaRef.current && !!total && done >= total }).catch(() => {})
+    const okFinal = !pausaRef.current && !!total && done >= total && falhas === 0
+    await post('progresso', { cursor: done, fotos, comDono, total, concluido: okFinal }).catch(() => {})
     setRunning(false)
     await carregarStatus()
-    setMsg(pausaRef.current ? '⏸ Backup pausado — dá pra continuar quando quiser.' : '✓ Backup concluído e guardado no R2.')
+    setProg(null) // tira a barra otimista; o painel passa a refletir o manifesto autoritativo
+    setMsg(
+      pausaRef.current ? '⏸ Backup pausado — dá pra continuar quando quiser.'
+        : falhas ? `⚠ Backup terminou com ${falhas} imóvel(is) com erro — clique em "Refazer backup completo" para fechar os buracos.`
+          : incompletos ? `✓ Backup no R2 · ${incompletos} imóvel(is) tinham muitas fotos e a galeria foi cortada (veja _FOTOS-CORTADAS.txt dentro deles).`
+            : '✓ Backup concluído e guardado no R2.'
+    )
   }
 
   const iniciar = async () => {

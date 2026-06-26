@@ -356,9 +356,9 @@ function parseAtendimentosHtml(html) {
 // Espelha as 2 estratégias do owner-fetch, porém SEM logar de novo — é o que permite
 // captar um bairro inteiro com 1 login só (em vez de 1 login por imóvel). Não mexe no
 // owner-fetch original. Devolve { nome, email, fone, dados?, enderecoImovel?, enderecoCampos? }.
-async function scrapeOwnerCod(cookies, cod) {
+async function scrapeOwnerCod(cookies, cod, deadline = Date.now() + 22000) {
   let owner = { nome: '', email: '', fone: '' }
-  const imovelR = await fetch(`${WEB_IMV}/Imovel/Detalhes/${cod}`, { headers: { cookie: cookies, 'user-agent': UA_IMV, accept: 'text/html', 'x-requested-with': 'XMLHttpRequest' }, redirect: 'follow', signal: AbortSignal.timeout(12000) })
+  const imovelR = await fetch(`${WEB_IMV}/Imovel/Detalhes/${cod}`, { headers: { cookie: cookies, 'user-agent': UA_IMV, accept: 'text/html', 'x-requested-with': 'XMLHttpRequest' }, redirect: 'follow', signal: AbortSignal.timeout(8000) })
   if (!imovelR.ok) return owner
   const imovelHtml = await imovelR.text()
   let enderecoCampos = [], enderecoImovel = ''
@@ -373,6 +373,7 @@ async function scrapeOwnerCod(cookies, cod) {
     `${WEB_IMV}/Imovel/RetornarProprietarios?imovelCodigo=${cod}`,
   ]
   for (const endpt of propCandidates) {
+    if (Date.now() > deadline) break // não estoura o tempo do Worker no lote
     try {
       const propR = await fetch(endpt, { headers: { cookie: cookies, 'user-agent': UA_IMV, accept: 'application/json,text/html,*/*', 'x-requested-with': 'XMLHttpRequest' }, redirect: 'follow', signal: AbortSignal.timeout(7000) })
       if (!propR.ok) continue
@@ -410,12 +411,14 @@ async function scrapeOwnerCod(cookies, cod) {
   let pessoaCode = ''
   const lpEl = imovelHtml.match(/<[^>]*loadPessoas[^>]*>/i); if (lpEl) { const dc = lpEl[0].match(/data-codigos=["']?(\d+)["']?/); if (dc) pessoaCode = dc[1] }
   if (!pessoaCode) { const dcM = imovelHtml.match(/data-codigos=["'](\d+)["']/); if (dcM) pessoaCode = dcM[1] }
-  if (pessoaCode) {
+  if (pessoaCode && Date.now() < deadline) {
     for (const tipo of ['PessoaF', 'PessoaJ']) {
-      const pessoaR = await fetch(`${WEB_IMV}/${tipo}/Detalhes/${pessoaCode}`, { headers: { cookie: cookies, 'user-agent': UA_IMV, accept: 'text/html' }, redirect: 'follow', signal: AbortSignal.timeout(12000) })
+      if (Date.now() > deadline) break
+      const pessoaR = await fetch(`${WEB_IMV}/${tipo}/Detalhes/${pessoaCode}`, { headers: { cookie: cookies, 'user-agent': UA_IMV, accept: 'text/html' }, redirect: 'follow', signal: AbortSignal.timeout(8000) })
       const pessoaHtml = pessoaR.ok ? await pessoaR.text() : ''
       let dados = extrairCampos(pessoaHtml)
-      try { const edR = await fetch(`${WEB_IMV}/${tipo}/Editar/${pessoaCode}`, { headers: { cookie: cookies, 'user-agent': UA_IMV, accept: 'text/html' }, redirect: 'follow', signal: AbortSignal.timeout(12000) }); if (edR.ok) { const ec = extrairCampos(await edR.text()); if (ec.length > dados.length) dados = ec } } catch {}
+      // só busca a página de Edição se o relatório veio pobre (economiza 1 fetch quando já está completo)
+      if (dados.length < 6 && Date.now() < deadline) { try { const edR = await fetch(`${WEB_IMV}/${tipo}/Editar/${pessoaCode}`, { headers: { cookie: cookies, 'user-agent': UA_IMV, accept: 'text/html' }, redirect: 'follow', signal: AbortSignal.timeout(8000) }); if (edR.ok) { const ec = extrairCampos(await edR.text()); if (ec.length > dados.length) dados = ec } } catch {} }
       const nomeM = pessoaHtml.match(/<title>[^|<]+\|\s*([^<]+)<\/title>/); const nome = nomeM ? decodeHtml(nomeM[1].trim()) : ''
       const waM = pessoaHtml.match(/api\.whatsapp\.com\/send\?phone=55(\d{10,11})/); let fone = ''
       if (waM) { const d = waM[1]; fone = d.length === 11 ? `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}` : `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}` }
@@ -1256,7 +1259,8 @@ export async function onRequestPost({ env, request }) {
   // Captação em LOTE do proprietário AO VIVO no Imoview, com 1 login só pro lote inteiro.
   // Cache-first: quem já tem proprietário salvo NÃO é raspado de novo; os que faltam são
   // raspados reusando a mesma sessão (rápido e bem menos agressivo que 1 login por imóvel).
-  // O cliente manda em blocos pequenos (~6 códigos) pra caber no teto de subrequests.
+  // O cliente manda em blocos de 4 códigos (CH=4) — cada um gasta ~8 subrequests + ~4 do
+  // login; 4 é o teto seguro pros ~50/invocação do plano free. NÃO subir sem rever isso.
   if (action === 'owner-lote') {
     const cods = Array.isArray(b.codigos)
       ? [...new Set(b.codigos.map((c) => String(c).replace(/[^\w]/g, '').slice(0, 12)).filter(Boolean))].slice(0, 4)
@@ -1264,27 +1268,30 @@ export async function onRequestPost({ env, request }) {
     const force = b.force === true
     const owners = {}
     const faltam = []
+    const savedMap = new Map() // reusa o que já foi lido (C3) — 1 get a menos por código que falta
     for (const cod of cods) {
       try {
         const s = await env.ENGAGEMENT.get('imovel:' + cod, 'json')
+        savedMap.set(cod, s || null)
         if (!force && s && s.owner && (s.owner.nome || s.owner.fone || (Array.isArray(s.owner.dados) && s.owner.dados.length) || s.owner.enderecoImovel)) owners[cod] = s.owner
         else faltam.push(cod)
       } catch { faltam.push(cod) }
     }
     if (faltam.length) {
       const log = await imoviewLogin(env).catch(() => null)
-      if (log && log.ok && log.cookies) {
-        for (const cod of faltam) {
-          try {
-            const owner = await scrapeOwnerCod(log.cookies, cod)
-            if (owner && (owner.nome || owner.fone || (owner.dados && owner.dados.length) || owner.enderecoImovel)) {
-              owners[cod] = owner
-              const prev = await env.ENGAGEMENT.get('imovel:' + cod, 'json').catch(() => null)
-              await env.ENGAGEMENT.put('imovel:' + cod, JSON.stringify({ ...(prev || {}), owner, atualizadoEm: Date.now() }))
-              try { await registrarProprietario(env, cod, owner) } catch {}
-            }
-          } catch {}
-        }
+      // login falhou (sem credencial, conta bloqueada/throttled, ou exceção): NÃO é "sem dono".
+      // Avisa o cliente pra não gerar um pacote "tudo não captado" e reexecutar agravando o bloqueio.
+      if (!(log && log.ok && log.cookies)) return json({ ok: true, owners, motivo: 'imoview-login' })
+      for (const cod of faltam) {
+        try {
+          const owner = await scrapeOwnerCod(log.cookies, cod, Date.now() + 22000)
+          if (owner && (owner.nome || owner.fone || (owner.dados && owner.dados.length) || owner.enderecoImovel)) {
+            owners[cod] = owner
+            const prev = savedMap.get(cod) || null
+            await env.ENGAGEMENT.put('imovel:' + cod, JSON.stringify({ ...(prev || {}), owner, atualizadoEm: Date.now() }))
+            try { await registrarProprietario(env, cod, owner) } catch {}
+          }
+        } catch {}
       }
     }
     return json({ ok: true, owners })

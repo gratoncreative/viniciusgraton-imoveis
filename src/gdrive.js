@@ -75,6 +75,31 @@ async function garantirPasta(token, nome) {
   return cj.id
 }
 
+// Fallback MULTIPART (uma requisição só) — usado quando o navegador bloqueia a leitura
+// do header Location da sessão resumável (CORS não expõe Location cross-origin). A resposta
+// vem no CORPO em JSON (não depende de header), e xhr.upload mantém a barra de progresso.
+function uploadMultipart(token, folderId, nome, blob, onProgress) {
+  const boundary = 'vgbk' + Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2)
+  const meta = JSON.stringify({ name: nome, parents: [folderId], mimeType: 'application/zip' })
+  const pre = `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${meta}\r\n--${boundary}\r\nContent-Type: application/zip\r\n\r\n`
+  const post = `\r\n--${boundary}--`
+  const body = new Blob([pre, blob, post], { type: 'multipart/related; boundary=' + boundary })
+  return new Promise((res, rej) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open('POST', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,webViewLink', true)
+    xhr.setRequestHeader('Authorization', 'Bearer ' + token)
+    xhr.setRequestHeader('Content-Type', 'multipart/related; boundary=' + boundary)
+    xhr.upload.onprogress = (e) => { if (e.lengthComputable && onProgress) onProgress(e.loaded / e.total) }
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) { try { res(JSON.parse(xhr.responseText)) } catch { res({}) } }
+      else if (xhr.status === 413) rej(new Error('Arquivo grande demais para o envio direto. Use "Baixar bairro" e suba manualmente no Drive.'))
+      else rej(new Error('Envio falhou (' + xhr.status + ').'))
+    }
+    xhr.onerror = () => rej(new Error('Erro de rede durante o envio.'))
+    xhr.send(body)
+  })
+}
+
 // Upload RESUMÍVEL (suporta arquivos grandes) com progresso real via XHR.
 function uploadResumavel(token, folderId, nome, blob, onProgress) {
   return fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&fields=id,name,webViewLink', {
@@ -84,7 +109,9 @@ function uploadResumavel(token, folderId, nome, blob, onProgress) {
   }).then((init) => {
     if (!init.ok) throw new Error('Falha ao iniciar o envio (' + init.status + ').')
     const sessionUri = init.headers.get('location') || init.headers.get('Location')
-    if (!sessionUri) throw new Error('O Google não devolveu a sessão de envio.')
+    // O navegador costuma NÃO expor o header Location (CORS) — nesse caso cai no multipart,
+    // que devolve o resultado no corpo (sem depender de header) e mantém a barra de progresso.
+    if (!sessionUri) return uploadMultipart(token, folderId, nome, blob, onProgress)
     return new Promise((res, rej) => {
       const xhr = new XMLHttpRequest()
       xhr.open('PUT', sessionUri, true)

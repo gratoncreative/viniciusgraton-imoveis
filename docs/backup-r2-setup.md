@@ -47,6 +47,8 @@ próprio R2** (não é serviço de terceiros) e **não** é exposto publicamente
 
 ## Espaço (10 GB grátis)
 
-O backup grava as fotos em caminho **fixo** (`backup/imoveis/<bairro>/<cod>.zip`), então
-rodar de novo **sobrescreve** em vez de duplicar — o tamanho fica estável (~5–7 GB para o
-catálogo todo). Se um dia passar de 10 GB, o R2 cobra centavos por GB extra.
+O backup grava cada imóvel em `backup/imoveis/<bairro>/<cod>.zip`, então rodar de novo
+**sobrescreve** o zip de cada imóvel cujo bairro não mudou (~5–7 GB para o catálogo todo).
+Ressalva: se um imóvel for **reclassificado de bairro** ou **sair do catálogo**, o zip antigo
+fica órfão no R2 (duplicata inofensiva). Faça uma limpeza manual ocasional pela Cloudflare →
+R2 → `vg-backups` se quiser. Se um dia passar de 10 GB, o R2 cobra centavos por GB extra.

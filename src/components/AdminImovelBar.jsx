@@ -393,7 +393,7 @@ export default function AdminImovelBar({ im }) {
   // Núcleo: monta o .zip do bairro inteiro (dados + proprietário do cache + fotos) e devolve
   // { blob, nome, lista, comDono, totFotos }. A barra de % vai de 0 até `topo` (deixa folga
   // pro que vem depois: download = 100, upload pro Drive = 60→100). Devolve null se cancelar.
-  const montarZipBairro = async (topo) => {
+  const montarZipBairro = async (onParte, uploadShare = 0) => {
     const bairro = im.bairro
     if (!bairro) { setBairroProg('Este imóvel está sem bairro definido.'); setTimeout(() => setBairroProg(''), 5000); return null }
     setBairroProg('Carregando catálogo…'); setBairroPct(0)
@@ -407,17 +407,31 @@ export default function AdminImovelBar({ im }) {
     setBairroProg(`Buscando proprietários no Imoview… (${lista.length} imóveis)`); setBairroPct(2)
     const owners = {}
     const CH = 4
+    let blocosFalhos = 0
     for (let i = 0; i < lista.length; i += CH) {
       const part = lista.slice(i, i + CH).map((x) => x.codigo)
-      try { const j = await post('owner-lote', { codigos: part }); Object.assign(owners, j.owners || {}) } catch {}
+      let j = null
+      try { j = await post('owner-lote', { codigos: part }) } catch {}
+      // sessão do admin caiu OU o Imoview recusou login → aborta com aviso (não gera pacote enganoso)
+      if (j && j.error) { setBairroProg(j.error === 'sessao' ? 'Sessão do admin expirou — faça login de novo e tente.' : 'Erro do servidor ao buscar proprietários.'); setBairroPct(null); return null }
+      if (j && j.motivo === 'imoview-login') { setBairroProg('Imoview indisponível ou recusou o login — proprietários não vieram. Tente mais tarde (pra não agravar bloqueio).'); setBairroPct(null); return null }
+      if (j && j.owners) Object.assign(owners, j.owners); else blocosFalhos++
       const ate = Math.min(i + CH, lista.length)
       setBairroProg(`Proprietários… ${ate}/${lista.length}`); setBairroPct(2 + Math.round((ate / lista.length) * 33))
     }
     const { default: JSZip } = await import('jszip')
-    const zip = new JSZip()
-    const raiz = zip.folder(_sanit(bairro) || 'bairro')
-    let feitos = 0, comDono = 0, totFotos = 0
-    const proc = async (imv) => {
+    // Particiona em partes de ~80 imóveis: cada parte vira um .zip próprio, ENTREGUE (baixado/
+    // enviado) e liberado da memória antes da próxima — evita estourar a aba em bairros gigantes
+    // (ex.: Santa Mônica, 400+ imóveis). Bairro pequeno = 1 parte só.
+    // Barra monotônica: a região 35→100 é dividida em np faixas; dentro de cada faixa a montagem
+    // ocupa `buildShare` e o "pós" (upload no Drive; instantâneo no download) ocupa o resto.
+    const PART = 80
+    const np = Math.ceil(lista.length / PART)
+    const parteSpan = 65 / np
+    const buildShare = 1 - (uploadShare || 0)
+    let feitos = 0, comDono = 0, totFotos = 0, fotosCortadas = 0
+    let parteBase = 35, feitosNaParte = 0, parteLen = 1
+    const procImovel = async (raiz, imv) => {
       try {
         const det = await fetch(`/api/rotina-imovel?codigo=${imv.codigo}&soFotos=1`).then((r) => r.json()).catch(() => null)
         const fotos = (det && det.imovel && Array.isArray(det.imovel.fotos) && det.imovel.fotos.length) ? det.imovel.fotos : (imv.img ? [imv.img] : [])
@@ -429,6 +443,7 @@ export default function AdminImovelBar({ im }) {
         pasta.file('dados.txt', txtDe(imvFull, own))
         const fdir = pasta.folder('fotos')
         const lim = fotos.slice(0, 60)
+        if (fotos.length > lim.length) fotosCortadas++
         for (let i = 0; i < lim.length; i++) {
           try {
             const r = await fetch('/api/img-proxy?u=' + encodeURIComponent(lim[i]))
@@ -436,47 +451,64 @@ export default function AdminImovelBar({ im }) {
           } catch {}
         }
       } catch {}
-      feitos++; setBairroProg(`Montando "${bairro}"… ${feitos}/${lista.length} imóveis · ${totFotos} fotos`); setBairroPct(35 + Math.round((feitos / lista.length) * (topo - 40)))
+      feitos++; feitosNaParte++
+      setBairroProg(`Montando "${bairro}"… ${feitos}/${lista.length} imóveis · ${totFotos} fotos`)
+      setBairroPct(Math.round(parteBase + (feitosNaParte / parteLen) * parteSpan * buildShare))
     }
-    const fila = lista.map((imv) => () => proc(imv))
-    await Promise.all(Array.from({ length: Math.min(3, fila.length) }, async () => { while (fila.length) { const job = fila.shift(); if (job) await job() } }))
-    setBairroProg('Compactando…'); setBairroPct(topo)
-    raiz.file('_RESUMO.txt', `Bairro: ${bairro}\r\nImóveis: ${lista.length}\r\nCom proprietário já captado: ${comDono}\r\nFotos: ${totFotos}\r\nGerado em ${new Date().toLocaleString('pt-BR')}\r\nUso interno — Vinícius Graton.\r\n`)
-    const blob = await zip.generateAsync({ type: 'blob' })
-    return { blob, nome: `${_sanit(bairro)} - ${lista.length} imoveis.zip`, lista, comDono, totFotos }
+    for (let p = 0; p < np; p++) {
+      parteBase = 35 + p * parteSpan
+      feitosNaParte = 0
+      const parteImoveis = lista.slice(p * PART, (p + 1) * PART)
+      parteLen = parteImoveis.length || 1
+      const zip = new JSZip()
+      const raiz = zip.folder(_sanit(bairro) || 'bairro')
+      const fila = parteImoveis.map((imv) => () => procImovel(raiz, imv))
+      await Promise.all(Array.from({ length: Math.min(3, fila.length) }, async () => { while (fila.length) { const job = fila.shift(); if (job) await job() } }))
+      raiz.file('_RESUMO.txt', `Bairro: ${bairro}${np > 1 ? ` (parte ${p + 1} de ${np})` : ''}\r\nImóveis nesta parte: ${parteImoveis.length}${np > 1 ? ` (de ${lista.length} no bairro)` : ''}\r\nCom proprietário captado (acumulado): ${comDono}\r\nFotos (acumulado): ${totFotos}\r\n${blocosFalhos ? `Blocos sem resposta do servidor (proprietário pode faltar): ${blocosFalhos}\r\n` : ''}${fotosCortadas ? `Imóveis com galeria cortada em 60 fotos: ${fotosCortadas}\r\n` : ''}Gerado em ${new Date().toLocaleString('pt-BR')}\r\nUso interno — Vinícius Graton.\r\n`)
+      const nome = np > 1 ? `${_sanit(bairro)} - parte ${p + 1} de ${np}.zip` : `${_sanit(bairro)} - ${lista.length} imoveis.zip`
+      const blob = await zip.generateAsync({ type: 'blob' })
+      // faixa do "pós" desta parte: começa onde a montagem terminou e tem largura parteSpan*uploadShare
+      await onParte(blob, nome, p, np, parteBase + parteSpan * buildShare, parteSpan * (uploadShare || 0))
+      // blob/zip saem de escopo aqui → a aba libera a memória antes de montar a próxima parte
+    }
+    return { lista, comDono, totFotos, np }
   }
 
-  // Baixa o .zip do bairro no computador.
+  // Baixa o(s) .zip(s) do bairro no computador (uma parte de cada vez).
   const baixarBairro = async () => {
     if (baixandoBairro) return
     setBaixandoBairro(true); setDriveLink('')
     try {
-      const z = await montarZipBairro(95)
+      const z = await montarZipBairro(async (blob, nome) => {
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a'); a.href = url; a.download = nome
+        document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 6000)
+      }, 0)
       if (!z) { setBaixandoBairro(false); return }
-      const url = URL.createObjectURL(z.blob)
-      const a = document.createElement('a'); a.href = url; a.download = z.nome
-      document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 6000)
-      setBairroProg(`✓ ${z.lista.length} imóveis · ${z.comDono} com proprietário · ${z.totFotos} fotos`); setBairroPct(100)
+      setBairroPct(100); setBairroProg(`✓ ${z.lista.length} imóveis · ${z.comDono} com proprietário · ${z.totFotos} fotos${z.np > 1 ? ` · ${z.np} arquivos` : ''}`)
     } catch (e) {
       setBairroProg('Falha ao gerar o pacote do bairro. Tente de novo.'); setBairroPct(null)
     }
     setBaixandoBairro(false); setTimeout(() => { setBairroProg(''); setBairroPct(null) }, 9000)
   }
 
-  // Sobe o MESMO .zip direto pro Google Drive do Vinícius (pasta do app), sem baixar no PC.
+  // Sobe o(s) .zip(s) do bairro direto pro Google Drive do Vinícius (sem baixar no PC).
   const subirBairroDrive = async () => {
     if (baixandoBairro) return
     if (!driveConfigurado()) { setBairroProg('Google Drive não configurado (falta o Client ID no CONFIG).'); setTimeout(() => setBairroProg(''), 6000); return }
     setBaixandoBairro(true); setDriveLink('')
     try {
-      const z = await montarZipBairro(60)
+      let link = ''
+      const z = await montarZipBairro(async (blob, nome, pi, tot, base, span) => {
+        setBairroProg('Conectando ao Google Drive… (autorize na janela do Google)')
+        const res = await subirParaDrive(nome, blob, (frac) => {
+          setBairroProg(`Enviando pro Drive…${tot > 1 ? ` parte ${pi + 1}/${tot} ·` : ''} ${nome}`); setBairroPct(Math.round(base + frac * span))
+        })
+        if (res && res.folderLink) link = res.folderLink
+      }, 0.4)
       if (!z) { setBaixandoBairro(false); return }
-      setBairroProg('Conectando ao Google Drive… (autorize na janela do Google)')
-      const res = await subirParaDrive(z.nome, z.blob, (frac) => {
-        setBairroProg(`Enviando pro Drive… ${z.nome}`); setBairroPct(60 + Math.round(frac * 40))
-      })
-      setBairroPct(100); setBairroProg(`✓ No seu Google Drive · ${z.lista.length} imóveis · ${z.totFotos} fotos`)
-      if (res && res.folderLink) setDriveLink(res.folderLink)
+      setBairroPct(100); setBairroProg(`✓ No seu Google Drive · ${z.lista.length} imóveis · ${z.totFotos} fotos${z.np > 1 ? ` · ${z.np} arquivos` : ''}`)
+      if (link) setDriveLink(link)
     } catch (e) {
       setBairroProg('Google Drive: ' + ((e && e.message) || 'falha no envio') + '.'); setBairroPct(null)
     }
