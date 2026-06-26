@@ -1,0 +1,94 @@
+<!-- @dsCard group="Captação" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIcapitei — Captação de Leads</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--grad:linear-gradient(135deg,#7C3AED,#D946EF);--v700:#6D28D9}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Inter",sans-serif;color:#120B23;background:#FAFAFB;padding:48px;line-height:1.55}
+  .wrap{max-width:980px;margin:0 auto}
+  h1{font-family:"Space Grotesk",sans-serif;font-size:32px;letter-spacing:-.5px;margin-bottom:6px}
+  .sub{color:#807D94;margin-bottom:36px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .card{border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:16px;position:relative;overflow:hidden}
+  .sell{background:linear-gradient(160deg,#1B1233,#120B23);color:#fff}
+  .buy{background:#fff;border:1px solid #E7E6EE}
+  .glow{position:absolute;inset:0;background:radial-gradient(60% 50% at 80% 0%,rgba(217,70,239,.35),transparent 70%);pointer-events:none}
+  .ic{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center}
+  .sell .ic{background:var(--grad)}
+  .buy .ic{background:#F5F3FF}
+  .ic svg{width:26px;height:26px}
+  .tag{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+  .sell .tag{color:#C4B5FD} .buy .tag{color:#7C3AED}
+  h2{font-family:"Space Grotesk",sans-serif;font-size:24px;line-height:1.2}
+  .desc{font-size:15px}
+  .sell .desc{color:#C9C3DA} .buy .desc{color:#5C5870}
+  ul{list-style:none;display:grid;gap:10px;font-size:14px}
+  li{display:flex;gap:10px;align-items:center}
+  .dot{width:18px;height:18px;border-radius:50%;background:var(--grad);flex:none;display:flex;align-items:center;justify-content:center}
+  .dot svg{width:11px;height:11px}
+  .buy li{color:#423F55}
+  input{width:100%;font-family:inherit;font-size:15px;padding:13px 14px;border-radius:12px;border:1.5px solid #E7E6EE}
+  .sell input{background:rgba(255,255,255,.08);border-color:rgba(196,181,253,.25);color:#fff}
+  .sell input::placeholder{color:#9d97b3}
+  .btn{font-family:inherit;font-weight:600;font-size:15px;border:none;border-radius:12px;padding:14px;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
+  .btn-grad{background:var(--grad);color:#fff;box-shadow:0 8px 24px rgba(124,58,237,.35)}
+  .btn-out{background:#fff;color:#6D28D9;border:1.5px solid #DDD6FE}
+  .mini{font-size:12px;opacity:.7;text-align:center}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;background:rgba(255,255,255,.12);color:#E9D5FF;padding:5px 12px;border-radius:999px;width:fit-content}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Captação de Leads</h1>
+  <p class="sub">Dois caminhos, uma plataforma. A IA qualifica e conecta automaticamente.</p>
+
+  <div class="grid">
+    <!-- FLUXO 1: ANUNCIAR / VENDER -->
+    <div class="card sell">
+      <div class="glow"></div>
+      <div class="ic">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+      </div>
+      <span class="tag">Tenho um imóvel</span>
+      <h2>Anuncie e venda mais rápido</h2>
+      <p class="desc">Cadastre seu imóvel e a IA encontra compradores qualificados pra você.</p>
+      <ul>
+        <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>Avaliação inteligente de preço</li>
+        <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>Anúncio distribuído nos portais</li>
+        <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>Leads filtrados no WhatsApp</li>
+      </ul>
+      <input type="tel" placeholder="Seu WhatsApp">
+      <button class="btn btn-grad">Quero anunciar
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" style="width:18px;height:18px"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+      <span class="mini">Sem custo para cadastrar · resposta em minutos</span>
+    </div>
+
+    <!-- FLUXO 2: COMPRAR / PROCURAR -->
+    <div class="card buy">
+      <div class="ic">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      </div>
+      <span class="tag">Quero comprar</span>
+      <h2>Encontre o imóvel certo</h2>
+      <p class="desc">Diga o que procura e receba opções selecionadas pela inteligência artificial.</p>
+      <ul>
+        <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>Busca por perfil e orçamento</li>
+        <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>Recomendações personalizadas</li>
+        <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span>Visitas agendadas pela plataforma</li>
+      </ul>
+      <input type="tel" placeholder="Seu WhatsApp">
+      <button class="btn btn-out">Buscar imóveis</button>
+      <span class="mini" style="color:#807D94">Atendimento com IA 24h</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!-- @dsCard group="Componentes" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIcapitei — Botões</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--grad:linear-gradient(135deg,#7C3AED,#D946EF);--v600:#7C3AED;--v700:#6D28D9}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Inter",sans-serif;color:#120B23;background:#FAFAFB;padding:48px;line-height:1.5}
+  .wrap{max-width:880px;margin:0 auto}
+  h1{font-family:"Space Grotesk",sans-serif;font-size:32px;letter-spacing:-.5px;margin-bottom:6px}
+  .sub{color:#807D94;margin-bottom:36px}
+  h2{font-family:"Space Grotesk",sans-serif;font-size:16px;margin:28px 0 14px}
+  .rowb{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .btn{font-family:"Inter",sans-serif;font-weight:600;font-size:15px;border:none;border-radius:12px;padding:13px 22px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:.2s}
+  .btn-primary{background:var(--grad);color:#fff;box-shadow:0 8px 24px rgba(124,58,237,.32)}
+  .btn-primary:hover{filter:brightness(1.05)}
+  .btn-secondary{background:#fff;color:var(--v700);border:1.5px solid #DDD6FE}
+  .btn-ghost{background:transparent;color:var(--v700)}
+  .btn-dark{background:#120B23;color:#fff}
+  .btn-sm{padding:9px 16px;font-size:14px;border-radius:10px}
+  .btn-lg{padding:16px 28px;font-size:17px;border-radius:14px}
+  .btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+  .panel{background:#fff;border:1px solid #E7E6EE;border-radius:16px;padding:28px}
+  .dark{background:linear-gradient(160deg,#1B1233,#120B23)}
+  svg{width:18px;height:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Botões</h1>
+  <p class="sub">Ação primária sempre em gradiente. CTAs claros para “anunciar” e “quero comprar”.</p>
+
+  <div class="panel">
+    <h2 style="margin-top:0">Variantes</h2>
+    <div class="rowb">
+      <button class="btn btn-primary">Anunciar meu imóvel
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+      <button class="btn btn-secondary">Quero comprar</button>
+      <button class="btn btn-ghost">Saiba mais</button>
+      <button class="btn btn-dark">Falar com a IA</button>
+      <button class="btn btn-primary" disabled>Enviando…</button>
+    </div>
+
+    <h2>Tamanhos</h2>
+    <div class="rowb">
+      <button class="btn btn-primary btn-sm">Pequeno</button>
+      <button class="btn btn-primary">Padrão</button>
+      <button class="btn btn-primary btn-lg">Grande (Hero)</button>
+    </div>
+  </div>
+
+  <div class="panel dark" style="margin-top:24px">
+    <h2 style="margin-top:0;color:#fff">Sobre fundo escuro</h2>
+    <div class="rowb">
+      <button class="btn btn-primary">Começar agora</button>
+      <button class="btn" style="background:#fff;color:#6D28D9">Ver imóveis</button>
+      <button class="btn btn-ghost" style="color:#C4B5FD;border:1.5px solid rgba(196,181,253,.4)">Como funciona</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

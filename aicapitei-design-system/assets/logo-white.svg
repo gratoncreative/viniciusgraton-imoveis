@@ -1,0 +1,8 @@
+<svg width="320" height="72" viewBox="0 0 320 72" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AIcapitei">
+  <!-- Versão monocromática branca — para fundos escuros/violeta -->
+  <g transform="translate(4,4)">
+    <path d="M30 1C19.51 1 11 9.51 11 20c0 13.3 16.1 27.7 17.82 29.2a1.8 1.8 0 0 0 2.36 0C32.9 47.7 49 33.3 49 20 49 9.51 40.49 1 30 1Z" fill="#FFFFFF"/>
+    <path d="M30 9.5c.78 5.9 1.9 7 7.8 7.8-5.9.78-7 1.9-7.8 7.8-.78-5.9-1.9-7-7.8-7.8 5.9-.78 7-1.9 7.8-7.8Z" fill="#7C3AED"/>
+  </g>
+  <text x="70" y="47" font-family="Space Grotesk, Inter, sans-serif" font-size="34" font-weight="700" letter-spacing="-0.5" fill="#FFFFFF">AIcapitei</text>
+</svg>

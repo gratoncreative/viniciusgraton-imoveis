@@ -1,0 +1,15 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AIcapitei">
+  <defs>
+    <linearGradient id="aicGrad" x1="14" y1="4" x2="52" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6D28D9"/>
+      <stop offset="0.55" stop-color="#A855F7"/>
+      <stop offset="1" stop-color="#D946EF"/>
+    </linearGradient>
+  </defs>
+  <!-- Pin / marcador de imóvel -->
+  <path d="M32 3C19.85 3 10 12.85 10 25c0 15.4 18.7 32.1 20.65 33.8a2 2 0 0 0 2.7 0C35.3 57.1 54 40.4 54 25 54 12.85 44.15 3 32 3Z" fill="url(#aicGrad)"/>
+  <!-- Sparkle de IA (captação inteligente) -->
+  <path d="M32 13c.9 6.8 2.2 8.1 9 9-6.8.9-8.1 2.2-9 9-.9-6.8-2.2-8.1-9-9 6.8-.9 8.1-2.2 9-9Z" fill="#FFFFFF"/>
+  <!-- Faísca secundária -->
+  <circle cx="42.5" cy="15.5" r="2.2" fill="#FFFFFF" opacity="0.9"/>
+</svg>

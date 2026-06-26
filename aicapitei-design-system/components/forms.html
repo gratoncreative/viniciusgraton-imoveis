@@ -1,0 +1,86 @@
+<!-- @dsCard group="Componentes" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIcapitei — Formulários</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--v600:#7C3AED;--v700:#6D28D9;--grad:linear-gradient(135deg,#7C3AED,#D946EF)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Inter",sans-serif;color:#120B23;background:#FAFAFB;padding:48px;line-height:1.5}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-family:"Space Grotesk",sans-serif;font-size:32px;letter-spacing:-.5px;margin-bottom:6px}
+  .sub{color:#807D94;margin-bottom:36px}
+  .panel{background:#fff;border:1px solid #E7E6EE;border-radius:16px;padding:28px;display:grid;gap:18px}
+  label{font-size:13px;font-weight:600;display:block;margin-bottom:6px}
+  .field input,.field select,.field textarea{width:100%;font-family:inherit;font-size:15px;padding:12px 14px;border:1.5px solid #E7E6EE;border-radius:12px;background:#fff;color:#120B23;transition:.15s}
+  .field input::placeholder{color:#A9A6BA}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--v600);box-shadow:0 0 0 4px rgba(124,58,237,.12)}
+  .field.error input{border-color:#EF4444;box-shadow:0 0 0 4px rgba(239,68,68,.1)}
+  .err{color:#EF4444;font-size:12px;margin-top:6px}
+  .ok{color:#10B981;font-size:12px;margin-top:6px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .chips{display:flex;gap:10px;flex-wrap:wrap}
+  .chip{font-size:14px;font-weight:500;padding:9px 16px;border-radius:999px;border:1.5px solid #DDD6FE;color:#6D28D9;background:#fff;cursor:pointer}
+  .chip.on{background:var(--grad);color:#fff;border-color:transparent}
+  .check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#423F55}
+  .check input{margin-top:3px;accent-color:#7C3AED;width:16px;height:16px}
+  .hint{font-size:12px;color:#807D94;margin-top:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Formulários</h1>
+  <p class="sub">Inputs, seleção e validação — a base da captação de leads.</p>
+
+  <div class="panel">
+    <div class="field">
+      <label>Nome completo</label>
+      <input type="text" placeholder="Como podemos te chamar?">
+    </div>
+
+    <div class="two">
+      <div class="field">
+        <label>WhatsApp</label>
+        <input type="tel" placeholder="(00) 00000-0000" value="(11) 98888-1234">
+        <div class="ok">✓ Número válido</div>
+      </div>
+      <div class="field error">
+        <label>E-mail</label>
+        <input type="email" placeholder="voce@email.com" value="email-invalido">
+        <div class="err">Informe um e-mail válido</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Tipo de imóvel</label>
+      <div class="chips">
+        <span class="chip on">Apartamento</span>
+        <span class="chip">Casa</span>
+        <span class="chip">Terreno</span>
+        <span class="chip">Comercial</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Cidade / Bairro</label>
+      <select><option>Selecione a região</option><option>Centro</option><option>Zona Sul</option></select>
+    </div>
+
+    <div class="field">
+      <label>Mensagem (opcional)</label>
+      <textarea rows="3" placeholder="Conte um pouco sobre o que você procura…"></textarea>
+    </div>
+
+    <div class="check">
+      <input type="checkbox" checked>
+      <span>Autorizo o contato da AIcapitei por WhatsApp e e-mail conforme a <b style="color:#6D28D9">Política de Privacidade</b>.</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

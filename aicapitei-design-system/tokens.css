@@ -1,0 +1,107 @@
+/* ============================================================
+   AIcapitei — Design Tokens
+   Identidade: Tech moderno & inovador · Roxo/violeta + IA
+   Portal de captação de leads imobiliários
+   ============================================================ */
+
+:root {
+  /* ---------- CORES DE MARCA — Violeta (primária) ---------- */
+  --aic-violet-50:  #F5F3FF;
+  --aic-violet-100: #EDE9FE;
+  --aic-violet-200: #DDD6FE;
+  --aic-violet-300: #C4B5FD;
+  --aic-violet-400: #A78BFA;
+  --aic-violet-500: #8B5CF6;
+  --aic-violet-600: #7C3AED; /* COR PRINCIPAL */
+  --aic-violet-700: #6D28D9;
+  --aic-violet-800: #5B21B6;
+  --aic-violet-900: #4C1D95;
+
+  /* ---------- ACENTO — Fúcsia/Magenta (pop de IA) ---------- */
+  --aic-fuchsia-300: #F0ABFC;
+  --aic-fuchsia-400: #E879F9;
+  --aic-fuchsia-500: #D946EF;
+  --aic-fuchsia-600: #C026D3;
+
+  /* ---------- SECUNDÁRIA — Índigo (suporte) ---------- */
+  --aic-indigo-400: #818CF8;
+  --aic-indigo-500: #6366F1;
+  --aic-indigo-600: #4F46E5;
+
+  /* ---------- INK — Roxo-escuro (fundos dark) ---------- */
+  --aic-ink-900: #120B23;
+  --aic-ink-800: #1B1233;
+  --aic-ink-700: #281C47;
+  --aic-ink-600: #392A60;
+
+  /* ---------- NEUTROS ---------- */
+  --aic-white:    #FFFFFF;
+  --aic-gray-50:  #FAFAFB;
+  --aic-gray-100: #F4F4F7;
+  --aic-gray-200: #E7E6EE;
+  --aic-gray-300: #CFCDDB;
+  --aic-gray-400: #A9A6BA;
+  --aic-gray-500: #807D94;
+  --aic-gray-600: #5C5870;
+  --aic-gray-700: #423F55;
+  --aic-gray-800: #2A2740;
+
+  /* ---------- SEMÂNTICAS ---------- */
+  --aic-success: #10B981;
+  --aic-warning: #F59E0B;
+  --aic-danger:  #EF4444;
+  --aic-info:    #6366F1;
+
+  /* ---------- GRADIENTES (assinatura IA) ---------- */
+  --aic-gradient-brand: linear-gradient(135deg, #6D28D9 0%, #A855F7 50%, #D946EF 100%);
+  --aic-gradient-soft:  linear-gradient(135deg, #7C3AED 0%, #6366F1 100%);
+  --aic-gradient-glow:  radial-gradient(60% 60% at 50% 0%, rgba(168,85,247,.45) 0%, rgba(18,11,35,0) 70%);
+  --aic-gradient-dark:  linear-gradient(160deg, #1B1233 0%, #120B23 100%);
+
+  /* ---------- TIPOGRAFIA ---------- */
+  --aic-font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --aic-font-body:    "Inter", system-ui, -apple-system, sans-serif;
+
+  --aic-text-display: 3.5rem;   /* 56px */
+  --aic-text-h1:      2.5rem;   /* 40px */
+  --aic-text-h2:      2rem;     /* 32px */
+  --aic-text-h3:      1.5rem;   /* 24px */
+  --aic-text-h4:      1.25rem;  /* 20px */
+  --aic-text-lg:      1.125rem; /* 18px */
+  --aic-text-base:    1rem;     /* 16px */
+  --aic-text-sm:      0.875rem; /* 14px */
+  --aic-text-xs:      0.75rem;  /* 12px */
+
+  --aic-weight-regular:  400;
+  --aic-weight-medium:   500;
+  --aic-weight-semibold: 600;
+  --aic-weight-bold:     700;
+
+  --aic-leading-tight: 1.1;
+  --aic-leading-snug:  1.3;
+  --aic-leading-normal:1.6;
+
+  /* ---------- ESPAÇAMENTO (escala 4px) ---------- */
+  --aic-space-1: 0.25rem;  /* 4 */
+  --aic-space-2: 0.5rem;   /* 8 */
+  --aic-space-3: 0.75rem;  /* 12 */
+  --aic-space-4: 1rem;     /* 16 */
+  --aic-space-5: 1.5rem;   /* 24 */
+  --aic-space-6: 2rem;     /* 32 */
+  --aic-space-7: 3rem;     /* 48 */
+  --aic-space-8: 4rem;     /* 64 */
+  --aic-space-9: 6rem;     /* 96 */
+
+  /* ---------- RAIOS ---------- */
+  --aic-radius-sm:   8px;
+  --aic-radius-md:   12px;
+  --aic-radius-lg:   16px;
+  --aic-radius-xl:   24px;
+  --aic-radius-full: 999px;
+
+  /* ---------- SOMBRAS ---------- */
+  --aic-shadow-sm:   0 1px 2px rgba(18,11,35,.08);
+  --aic-shadow-md:   0 6px 16px rgba(18,11,35,.10);
+  --aic-shadow-lg:   0 16px 40px rgba(18,11,35,.14);
+  --aic-shadow-glow: 0 8px 30px rgba(124,58,237,.35);
+}

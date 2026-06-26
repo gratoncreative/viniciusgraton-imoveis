@@ -1,0 +1,112 @@
+<!-- @dsCard group="Marca" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIcapitei — Marca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --v600:#7C3AED; --v700:#6D28D9; --fuchsia:#D946EF; --indigo:#6366F1;
+    --ink:#120B23; --ink800:#1B1233; --gray100:#F4F4F7; --gray500:#807D94; --gray200:#E7E6EE;
+    --grad:linear-gradient(135deg,#6D28D9 0%,#A855F7 50%,#D946EF 100%);
+    --display:"Space Grotesk",sans-serif; --body:"Inter",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--body);color:var(--ink);background:var(--gray100);padding:48px;line-height:1.6}
+  .wrap{max-width:980px;margin:0 auto}
+  h1{font-family:var(--display);font-size:32px;letter-spacing:-.5px;margin-bottom:6px}
+  .sub{color:var(--gray500);margin-bottom:40px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .card{background:#fff;border:1px solid var(--gray200);border-radius:16px;padding:32px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px;gap:14px}
+  .card.dark{background:linear-gradient(160deg,#1B1233,#120B23);border:none}
+  .card .label{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--gray500)}
+  .card.dark .label{color:#A78BFA}
+  /* Logo via CSS para preview fiel */
+  .lockup{display:flex;align-items:center;gap:12px}
+  .icon{width:48px;height:48px;flex:none}
+  .word{font-family:var(--display);font-weight:700;font-size:34px;letter-spacing:-.5px}
+  .word .ai{background:linear-gradient(135deg,#7C3AED,#D946EF);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .word.light{color:#fff}
+  h2{font-family:var(--display);font-size:18px;margin:40px 0 16px}
+  .rules{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .rule{background:#fff;border:1px solid var(--gray200);border-radius:12px;padding:18px;font-size:14px}
+  .rule b{display:block;margin-bottom:4px}
+  .ok{color:#10B981} .no{color:#EF4444}
+  .tag{display:inline-block;background:#F5F3FF;color:var(--v700);font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>AIcapitei — Marca</h1>
+  <p class="sub">Captação inteligente de imóveis · IA + “capitei”</p>
+
+  <div class="grid">
+    <!-- Logo principal -->
+    <div class="card">
+      <div class="lockup">
+        <svg class="icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="g1" x1="14" y1="4" x2="52" y2="60" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#6D28D9"/><stop offset=".55" stop-color="#A855F7"/><stop offset="1" stop-color="#D946EF"/>
+          </linearGradient></defs>
+          <path d="M32 3C19.85 3 10 12.85 10 25c0 15.4 18.7 32.1 20.65 33.8a2 2 0 0 0 2.7 0C35.3 57.1 54 40.4 54 25 54 12.85 44.15 3 32 3Z" fill="url(#g1)"/>
+          <path d="M32 13c.9 6.8 2.2 8.1 9 9-6.8.9-8.1 2.2-9 9-.9-6.8-2.2-8.1-9-9 6.8-.9 8.1-2.2 9-9Z" fill="#fff"/>
+        </svg>
+        <span class="word"><span class="ai">AI</span>capitei</span>
+      </div>
+      <span class="label">Logo principal</span>
+    </div>
+
+    <!-- Logo em fundo escuro -->
+    <div class="card dark">
+      <div class="lockup">
+        <svg class="icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M32 3C19.85 3 10 12.85 10 25c0 15.4 18.7 32.1 20.65 33.8a2 2 0 0 0 2.7 0C35.3 57.1 54 40.4 54 25 54 12.85 44.15 3 32 3Z" fill="#fff"/>
+          <path d="M32 13c.9 6.8 2.2 8.1 9 9-6.8.9-8.1 2.2-9 9-.9-6.8-2.2-8.1-9-9 6.8-.9 8.1-2.2 9-9Z" fill="#7C3AED"/>
+        </svg>
+        <span class="word light">AIcapitei</span>
+      </div>
+      <span class="label">Fundo escuro / violeta</span>
+    </div>
+
+    <!-- Ícone isolado -->
+    <div class="card">
+      <svg class="icon" style="width:64px;height:64px" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="g2" x1="14" y1="4" x2="52" y2="60" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#6D28D9"/><stop offset=".55" stop-color="#A855F7"/><stop offset="1" stop-color="#D946EF"/>
+        </linearGradient></defs>
+        <path d="M32 3C19.85 3 10 12.85 10 25c0 15.4 18.7 32.1 20.65 33.8a2 2 0 0 0 2.7 0C35.3 57.1 54 40.4 54 25 54 12.85 44.15 3 32 3Z" fill="url(#g2)"/>
+        <path d="M32 13c.9 6.8 2.2 8.1 9 9-6.8.9-8.1 2.2-9 9-.9-6.8-2.2-8.1-9-9 6.8-.9 8.1-2.2 9-9Z" fill="#fff"/>
+      </svg>
+      <span class="label">Ícone / favicon / app</span>
+    </div>
+
+    <!-- Monograma -->
+    <div class="card">
+      <div style="width:64px;height:64px;border-radius:16px;background:var(--grad);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 30px rgba(124,58,237,.35)">
+        <svg width="36" height="36" viewBox="0 0 64 64" fill="none"><path d="M32 13c.9 6.8 2.2 8.1 9 9-6.8.9-8.1 2.2-9 9-.9-6.8-2.2-8.1-9-9 6.8-.9 8.1-2.2 9-9Z" fill="#fff"/></svg>
+      </div>
+      <span class="label">App icon (tile)</span>
+    </div>
+  </div>
+
+  <h2>Conceito</h2>
+  <p style="font-size:15px;color:#423F55;max-width:760px">
+    O símbolo une o <b>pin de localização</b> (o imóvel) com um <b>sparkle de IA</b> (a captação inteligente do lead).
+    O nome destaca o <span class="tag">AI</span> em gradiente para reforçar a inteligência artificial, enquanto
+    “capitei” comunica resultado: o lead já foi capturado.
+  </p>
+
+  <h2>Boas práticas</h2>
+  <div class="rules">
+    <div class="rule"><b class="ok">✓ Faça</b>Mantenha a área de respiro mínima igual à altura do ícone ao redor do logo.</div>
+    <div class="rule"><b class="ok">✓ Faça</b>Use a versão branca sobre violeta/escuro e a colorida sobre fundos claros.</div>
+    <div class="rule"><b class="no">✕ Evite</b>Distorcer, rotacionar ou aplicar sombras pesadas no logo.</div>
+    <div class="rule"><b class="no">✕ Evite</b>Trocar as cores do gradiente ou usar o logo sobre fundos de baixo contraste.</div>
+  </div>
+</div>
+</body>
+</html>
