@@ -8,7 +8,7 @@ import * as pc from 'playcanvas'
 //
 // Regra de marca: o fundo mais escuro permitido é #212b3d (nunca preto).
 
-export default function Tour3D({ url, titulo, onClose }) {
+export default function Tour3D({ url, titulo, onClose, marca }) {
   const canvasRef = useRef(null)
   const appRef = useRef(null)
   const [estado, setEstado] = useState('carregando') // 'carregando' | 'ok' | 'erro'
@@ -174,9 +174,11 @@ export default function Tour3D({ url, titulo, onClose }) {
           <button onClick={tela} style={S.iconBtn} aria-label="Tela cheia" title="Tela cheia">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
           </button>
-          <button onClick={onClose} style={S.iconBtn} aria-label="Fechar" title="Fechar">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-          </button>
+          {onClose && (
+            <button onClick={onClose} style={S.iconBtn} aria-label="Fechar" title="Fechar">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          )}
         </div>
       </div>
 
@@ -197,6 +199,13 @@ export default function Tour3D({ url, titulo, onClose }) {
       {estado === 'ok' && (
         <div style={S.dica}>Arraste para girar · role/pinça para dar zoom</div>
       )}
+
+      {marca && (
+        <a href="/ferramentas/criar-tour" style={S.marca} title="Crie o seu Tour 3D">
+          <span style={S.marcaTop}>Tour 3D</span>
+          <span style={S.marcaSub}>criado em viniciusgraton.com.br</span>
+        </a>
+      )}
     </div>
   )
 }
@@ -214,4 +223,7 @@ const S = {
   msg: { color: '#fff', fontSize: 15 },
   btnFechar: { pointerEvents: 'auto', background: '#EB0128', color: '#fff', border: 'none', borderRadius: 10, padding: '11px 18px', fontSize: 14, cursor: 'pointer' },
   dica: { position: 'absolute', bottom: 16, left: '50%', transform: 'translateX(-50%)', background: 'rgba(255,255,255,.14)', color: '#fff', fontSize: 12.5, padding: '7px 14px', borderRadius: 20, zIndex: 2 },
+  marca: { position: 'absolute', bottom: 14, right: 14, zIndex: 3, display: 'flex', flexDirection: 'column', lineHeight: 1.15, textDecoration: 'none', background: 'rgba(33,43,61,.55)', backdropFilter: 'blur(4px)', padding: '8px 12px', borderRadius: 10, border: '1px solid rgba(255,255,255,.18)' },
+  marcaTop: { color: '#fff', fontSize: 13, fontWeight: 700, letterSpacing: '.02em' },
+  marcaSub: { color: '#C9A24B', fontSize: 10.5, fontWeight: 600 },
 }

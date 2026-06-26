@@ -113,6 +113,7 @@ const TOOLS = [
   { id: 'comissao',      nome: 'Calculadora de comissão',   desc: 'Comissão (5%) e divisão corretor / imobiliária. Grátis.',   icon: 'coins',   sec: 'investidor' },
   // fotos e imagens
   { id: 'estudio',       nome: 'Estúdio de fotos · painel completo', desc: "Tudo num painel só: endireitar, luz e cor, deixar na horizontal, marca d'água (põe e tira com IA), melhorar com IA, redimensionar e converter (JPG/PNG/WebP) — em lote, no navegador.", icon: 'fileimg', sec: 'pro', popular: true, nav: true, to: '/ferramentas/estudio-de-fotos' },
+  { id: 'tour3d',        nome: 'Crie seu Tour 3D',          desc: 'Suba a cena 3D do imóvel (capturada no celular) e ganhe um link para compartilhar. Grátis.', icon: 'fileimg', sec: 'pro', popular: true, nav: true, to: '/ferramentas/criar-tour' },
   { id: 'leitor-area',   nome: 'Leitor de área (IA)',       desc: 'Foto de planta ou anúncio → a IA lê e calcula a área.', icon: 'fileimg', sec: 'pro', popular: true, nav: true, to: '/ferramentas/leitor-area' },
   { id: 'levantamento',  nome: 'Levantamento de fotos (IA)', desc: 'Envie as fotos → a IA descreve os acabamentos (piso, pedra, revestimento) de cada uma.', icon: 'fileimg', sec: 'pro', popular: true, nav: true, to: '/ferramentas/levantamento-fotos' },
   { id: 'pdf-jpg',      nome: 'PDF para JPG',              desc: 'Converta cada página do PDF em JPG de alta definição.', icon: 'pdf', sec: 'pro', needsSub: true, to: '/ferramentas/pdf-para-jpg' },

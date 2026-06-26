@@ -66,6 +66,8 @@ const EstudoAvulso = lazy(() => import('./pages/EstudoAvulso'))
 const Mercado = lazy(() => import('./pages/Mercado'))
 const Investir = lazy(() => import('./pages/Investir'))
 const AppCorretor = lazy(() => import('./pages/AppCorretor'))
+const CriarTour = lazy(() => import('./pages/CriarTour'))
+const TourPage = lazy(() => import('./pages/TourPage'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 export default function App() {
@@ -202,6 +204,8 @@ export default function App() {
               <Route path="/ferramentas/estudio-de-fotos" element={<EstudioFotos />} />
               <Route path="/ferramentas/editar-foto" element={<EditarFotoPage />} />
               <Route path="/ferramentas/pdf-para-jpg" element={<PdfParaJpg />} />
+              <Route path="/ferramentas/criar-tour" element={<CriarTour />} />
+              <Route path="/tour/:id" element={<TourPage />} />
               <Route path="/simulador-financiamento" element={<SimuladorFinanciamento />} />
               <Route path="/ferramentas/transcrever" element={<TranscreverPage />} />
               <Route path="/corretor" element={<Corretor />} />
