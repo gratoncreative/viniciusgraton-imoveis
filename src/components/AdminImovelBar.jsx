@@ -31,6 +31,7 @@ export default function AdminImovelBar({ im }) {
   const [diag, setDiag] = useState('')
   const [baixando, setBaixando] = useState(false)
   const [prog, setProg] = useState('')
+  const [progPct, setProgPct] = useState(null) // 0–100 do download de 1 imóvel (null = sem barra)
   const [baixandoBairro, setBaixandoBairro] = useState(false)
   const [bairroProg, setBairroProg] = useState('')
   const [bairroPct, setBairroPct] = useState(null) // 0–100 (null = sem barra)
@@ -266,7 +267,7 @@ export default function AdminImovelBar({ im }) {
           itens[idx] = { nome: String(idx + 1).padStart(2, '0') + '.' + ext, blob }
         }
       } catch {}
-      done++; setProg(`Baixando fotos… ${done}/${fotos.length}`)
+      done++; setProg(`Baixando fotos… ${done}/${fotos.length}`); setProgPct(Math.round((done / (fotos.length || 1)) * 90))
     }
     const fila = fotos.map((u, i) => () => baixarUma(u, i))
     await Promise.all(Array.from({ length: Math.min(6, fila.length || 1) }, async () => {
@@ -278,7 +279,7 @@ export default function AdminImovelBar({ im }) {
   // Opção 1 — .zip único (funciona em qualquer navegador).
   const baixarZip = async () => {
     if (baixando) return
-    setBaixando(true); setProg('Preparando…')
+    setBaixando(true); setProg('Preparando…'); setProgPct(0)
     try {
       const { default: JSZip } = await import('jszip')
       const zip = new JSZip()
@@ -286,18 +287,18 @@ export default function AdminImovelBar({ im }) {
       const pasta = zip.folder('fotos')
       const fotos = await coletarFotos()
       fotos.forEach((f) => pasta.file(f.nome, f.blob))
-      setProg('Compactando…')
+      setProg('Compactando…'); setProgPct(95)
       const out = await zip.generateAsync({ type: 'blob' })
       const url = URL.createObjectURL(out)
       const a = document.createElement('a')
       a.href = url; a.download = `${nomeBase()}.zip`
       document.body.appendChild(a); a.click(); a.remove()
       setTimeout(() => URL.revokeObjectURL(url), 5000)
-      setProg(`✓ Baixado · ${fotos.length} fotos`)
+      setProg(`✓ Baixado · ${fotos.length} fotos`); setProgPct(100)
     } catch (e) {
-      setProg('Falha ao gerar o .zip. Tente de novo.')
+      setProg('Falha ao gerar o .zip. Tente de novo.'); setProgPct(null)
     }
-    setBaixando(false); setTimeout(() => setProg(''), 5000)
+    setBaixando(false); setTimeout(() => { setProg(''); setProgPct(null) }, 5000)
   }
 
   // Opção 2 — pasta SEM compactar, DIRETO na pasta Downloads (sem janela de seleção).
@@ -307,7 +308,7 @@ export default function AdminImovelBar({ im }) {
   // não criar a subpasta — aí ficam soltos, porém já identificados).
   const salvarEmPasta = async () => {
     if (baixando) return
-    setBaixando(true); setProg('Preparando…')
+    setBaixando(true); setProg('Preparando…'); setProgPct(0)
     const base = nomeBase()
     const baixarArquivo = (caminho, blob) => new Promise((res) => {
       const url = URL.createObjectURL(blob)
@@ -322,14 +323,14 @@ export default function AdminImovelBar({ im }) {
       for (let k = 0; k < fotos.length; k++) {
         const ext = (fotos[k].nome.split('.').pop() || 'jpg')
         const num = String(k + 1).padStart(2, '0')
-        setProg(`Salvando… ${k + 1}/${fotos.length}`)
+        setProg(`Salvando… ${k + 1}/${fotos.length}`); setProgPct(90 + Math.round(((k + 1) / (fotos.length || 1)) * 10))
         await baixarArquivo(`${base}/${base} - ${num}.${ext}`, fotos[k].blob)
       }
-      setProg(`✓ ${fotos.length} fotos + dados na sua pasta Downloads`)
+      setProg(`✓ ${fotos.length} fotos + dados na sua pasta Downloads`); setProgPct(100)
     } catch (e) {
-      setProg('Falha ao baixar. Tente o .zip.')
+      setProg('Falha ao baixar. Tente o .zip.'); setProgPct(null)
     }
-    setBaixando(false); setTimeout(() => setProg(''), 7000)
+    setBaixando(false); setTimeout(() => { setProg(''); setProgPct(null) }, 7000)
   }
 
   // ——— Download "bairro inteiro" ———————————————————————————————————————————
@@ -355,17 +356,28 @@ export default function AdminImovelBar({ im }) {
     }
     add(''); add(sep); add('IMÓVEL'); add(sep)
     if (imv.titulo) add(`Título: ${imv.titulo}`)
-    add(`Tipo: ${imv.tipo || '—'}`); if (imv.finalidade) add(`Finalidade: ${imv.finalidade}`)
+    add(`Tipo: ${imv.tipo || '—'}`); if (imv.finalidade || imv.operacao) add(`Finalidade: ${imv.finalidade || imv.operacao}`)
     add(`Bairro: ${imv.bairro || '—'}`); add(`Cidade: ${imv.cidade || 'Uberlândia'}`)
-    add(`Preço: ${real(imv.preco)}`)
+    if (imv.rua) add(`Endereço (anúncio): ${imv.rua}`)
+    add(`Preço: ${real(imv.preco || imv.valorNum)}`)
     if (imv.condominio) add(`Condomínio: ${real(imv.condominio)}`)
+    if (imv.iptu) add(`IPTU: ${real(imv.iptu)}`)
     if (imv.area) add(`Área: ${imv.area} m²`)
+    if (imv.areaLote) add(`Área do lote: ${imv.areaLote} m²`)
     if (imv.quartos != null && imv.quartos !== '') add(`Quartos: ${imv.quartos}`)
     if (imv.suites) add(`Suítes: ${imv.suites}`)
     if (imv.banheiros) add(`Banheiros: ${imv.banheiros}`)
     if (imv.vagas != null && imv.vagas !== '') add(`Vagas: ${imv.vagas}`)
-    if (imv.rua) add(`Endereço (anúncio): ${imv.rua}`)
+    if (imv.andar) add(`Andar: ${imv.andar}`)
+    if (imv.elevador) add('Elevador: sim')
+    if (imv.situacao) add(`Situação: ${imv.situacao}`)
+    if (imv.aceitaFinanciamento) add('Aceita financiamento: sim')
+    if (imv.aceitaPermuta) add('Aceita permuta: sim')
+    if (imv.pontoReferencia) add(`Ponto de referência: ${imv.pontoReferencia}`)
+    if (Array.isArray(imv.amenidades) && imv.amenidades.length) { add(''); add('Características / amenidades:'); imv.amenidades.forEach((a) => add(`  - ${a}`)) }
+    else if (Array.isArray(imv.caracteristicas) && imv.caracteristicas.length) { add(''); add('Características:'); imv.caracteristicas.forEach((c) => add(`  - ${typeof c === 'string' ? c : (c?.nome || c?.titulo || '')}`)) }
     if (imv.descricao) { add(''); add('Descrição:'); add(String(imv.descricao).replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').replace(/\n{3,}/g, '\n\n').trim()) }
+    if (imv.link) { add(''); add(`Anúncio Rotina: ${imv.link}`) }
     add(''); add('Gerado pelo site de Vinícius Graton — uso interno.')
     return L.join('\r\n')
   }
@@ -390,8 +402,17 @@ export default function AdminImovelBar({ im }) {
     const lista = (((cat && cat.imoveis) || []).filter((x) => norm(x.bairro) === norm(bairro)))
     if (!lista.length) { setBairroProg('Nenhum imóvel desse bairro no catálogo.'); setBairroPct(null); setTimeout(() => setBairroProg(''), 6000); return null }
     if (lista.length > 120 && !window.confirm(`O bairro "${bairro}" tem ${lista.length} imóveis — pode demorar e processar MUITAS fotos. Continuar?`)) { setBairroProg(''); setBairroPct(null); return null }
-    setBairroProg(`Buscando proprietários já captados… (${lista.length} imóveis)`); setBairroPct(3)
-    const owners = await post('owner-cache-lote', { codigos: lista.map((x) => x.codigo) }).then((j) => j.owners || {}).catch(() => ({}))
+    // Proprietário AO VIVO no Imoview, em blocos pequenos (login único por bloco no servidor).
+    // Cache-first: bairro já baixado antes volta instantâneo. Fase ocupa 2%→35% da barra.
+    setBairroProg(`Buscando proprietários no Imoview… (${lista.length} imóveis)`); setBairroPct(2)
+    const owners = {}
+    const CH = 4
+    for (let i = 0; i < lista.length; i += CH) {
+      const part = lista.slice(i, i + CH).map((x) => x.codigo)
+      try { const j = await post('owner-lote', { codigos: part }); Object.assign(owners, j.owners || {}) } catch {}
+      const ate = Math.min(i + CH, lista.length)
+      setBairroProg(`Proprietários… ${ate}/${lista.length}`); setBairroPct(2 + Math.round((ate / lista.length) * 33))
+    }
     const { default: JSZip } = await import('jszip')
     const zip = new JSZip()
     const raiz = zip.folder(_sanit(bairro) || 'bairro')
@@ -400,10 +421,12 @@ export default function AdminImovelBar({ im }) {
       try {
         const det = await fetch(`/api/rotina-imovel?codigo=${imv.codigo}&soFotos=1`).then((r) => r.json()).catch(() => null)
         const fotos = (det && det.imovel && Array.isArray(det.imovel.fotos) && det.imovel.fotos.length) ? det.imovel.fotos : (imv.img ? [imv.img] : [])
+        // mescla os dados COMPLETOS do imóvel (descrição inteira, endereço, amenidades…) sobre o resumo do catálogo
+        const imvFull = (det && det.imovel) ? { ...imv, ...det.imovel, descricao: det.imovel.descricao || imv.descricao } : imv
         const own = owners[imv.codigo] || null
         if (own) comDono++
-        const pasta = raiz.folder(pastaDe(imv, own))
-        pasta.file('dados.txt', txtDe(imv, own))
+        const pasta = raiz.folder(pastaDe(imvFull, own))
+        pasta.file('dados.txt', txtDe(imvFull, own))
         const fdir = pasta.folder('fotos')
         const lim = fotos.slice(0, 60)
         for (let i = 0; i < lim.length; i++) {
@@ -413,7 +436,7 @@ export default function AdminImovelBar({ im }) {
           } catch {}
         }
       } catch {}
-      feitos++; setBairroProg(`Montando "${bairro}"… ${feitos}/${lista.length} imóveis · ${totFotos} fotos`); setBairroPct(Math.round((feitos / lista.length) * (topo - 5)))
+      feitos++; setBairroProg(`Montando "${bairro}"… ${feitos}/${lista.length} imóveis · ${totFotos} fotos`); setBairroPct(35 + Math.round((feitos / lista.length) * (topo - 40)))
     }
     const fila = lista.map((imv) => () => proc(imv))
     await Promise.all(Array.from({ length: Math.min(3, fila.length) }, async () => { while (fila.length) { const job = fila.shift(); if (job) await job() } }))
@@ -570,7 +593,16 @@ export default function AdminImovelBar({ im }) {
                   </a>
                 )}
               </div>
-              {prog && <p className="adm-status" style={{ marginTop: 8 }}>{prog}</p>}
+              {(progPct != null || prog) && (
+                <div style={{ marginTop: 8 }}>
+                  {progPct != null && (
+                    <div style={{ height: 10, background: '#ece7df', borderRadius: 6, overflow: 'hidden' }} role="progressbar" aria-valuenow={progPct} aria-valuemin={0} aria-valuemax={100}>
+                      <div style={{ width: progPct + '%', height: '100%', background: '#212b3d', transition: 'width .3s' }} />
+                    </div>
+                  )}
+                  {prog && <p className="adm-status" style={{ marginTop: 6 }}>{prog}{progPct != null ? ` · ${progPct}%` : ''}</p>}
+                </div>
+              )}
             </div>
           ) : (
             !loading && (

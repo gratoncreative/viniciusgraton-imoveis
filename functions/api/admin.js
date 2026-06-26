@@ -1,5 +1,5 @@
 import { kvStore } from '../_lib/store.js'
-import { imoviewLogin } from '../_lib/imoview.js'
+import { imoviewLogin, IMOVIEW_WEB as WEB_IMV, IMOVIEW_UA as UA_IMV } from '../_lib/imoview.js'
 /**
  * Cloudflare Pages Function — Painel ADMIN do Vinícius (seguro).
  *
@@ -350,6 +350,95 @@ function parseAtendimentosHtml(html) {
     })
   }
   return leads
+}
+
+// Raspa o proprietário de UM imóvel reusando uma sessão JÁ logada (cookies).
+// Espelha as 2 estratégias do owner-fetch, porém SEM logar de novo — é o que permite
+// captar um bairro inteiro com 1 login só (em vez de 1 login por imóvel). Não mexe no
+// owner-fetch original. Devolve { nome, email, fone, dados?, enderecoImovel?, enderecoCampos? }.
+async function scrapeOwnerCod(cookies, cod) {
+  let owner = { nome: '', email: '', fone: '' }
+  const imovelR = await fetch(`${WEB_IMV}/Imovel/Detalhes/${cod}`, { headers: { cookie: cookies, 'user-agent': UA_IMV, accept: 'text/html', 'x-requested-with': 'XMLHttpRequest' }, redirect: 'follow', signal: AbortSignal.timeout(12000) })
+  if (!imovelR.ok) return owner
+  const imovelHtml = await imovelR.text()
+  let enderecoCampos = [], enderecoImovel = ''
+  try { const _e = extrairEnderecoTexto(imovelHtml); enderecoCampos = _e.campos || []; enderecoImovel = _e.texto || extrairEnderecoImovel(imovelHtml) } catch {}
+
+  // Estratégia 1 — lista de proprietários (endpoint AJAX)
+  const propHrefM = imovelHtml.match(/(?:href|data-url|data-href|data-action|data-load)\s*=\s*["']([^"']*[Pp]roprietar[^"']*)["']/i) || imovelHtml.match(/['"]([^'"]*\/[Pp]roprietar[^'"]*\?[^'"]{3,100})['"]/i)
+  const propHref = propHrefM ? propHrefM[1] : null
+  const propCandidates = [
+    ...(propHref ? [propHref.startsWith('http') ? propHref : `${WEB_IMV}${propHref}`] : []),
+    `${WEB_IMV}/Proprietario/ListarProprietariosPorImovel?imovelCodigo=${cod}`,
+    `${WEB_IMV}/Imovel/RetornarProprietarios?imovelCodigo=${cod}`,
+  ]
+  for (const endpt of propCandidates) {
+    try {
+      const propR = await fetch(endpt, { headers: { cookie: cookies, 'user-agent': UA_IMV, accept: 'application/json,text/html,*/*', 'x-requested-with': 'XMLHttpRequest' }, redirect: 'follow', signal: AbortSignal.timeout(7000) })
+      if (!propR.ok) continue
+      const propBody = await propR.text()
+      try {
+        const j = JSON.parse(propBody)
+        const lista = Array.isArray(j) ? j : (j.lista || j.dados || j.proprietarios || j.Proprietarios || j.Data || j.data || [])
+        if (Array.isArray(lista) && lista.length) {
+          const p = lista.find((x) => /J/i.test(x.tipo || x.Tipo || x.TipoProprietario || '')) || lista[0]
+          const n = String(p.nome || p.Nome || p.nomeCompleto || p.NomeProprietario || p.nomeProprietario || '').trim()
+          const f = String(p.telefone || p.Telefone || p.celular || p.Celular || p.TelefoneResidencial || p.TelefoneCelular || '').trim()
+          const e = String(p.email || p.Email || '').trim()
+          if (n || f) { owner = { nome: n.slice(0, 120), email: e.slice(0, 160), fone: f.slice(0, 40) }; try { const dd = camposDeObjeto(p); if (dd.length) owner.dados = dd } catch {}; break }
+        }
+      } catch {}
+      if (!owner.nome && !owner.fone) {
+        const rows = [...propBody.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/gi)]
+        for (const rm of rows) {
+          const cells = [...rm[1].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/gi)].map((m) => m[1].replace(/<[^>]+>/g, '').trim())
+          if (cells.length >= 2) {
+            const nome = (cells[1] || cells[0]).trim()
+            if (nome && nome.length > 2 && !/^(?:nome|cód|código|tipo|email|telefone|percentual|ações)$/i.test(nome)) {
+              const foneCell = cells.find((c) => /\(\d{2}\)/.test(c) || /\d{4,5}-\d{4}/.test(c)) || ''
+              const emailCell = cells.find((c) => c.includes('@')) || ''
+              owner = { nome: nome.slice(0, 120), email: emailCell.slice(0, 160), fone: foneCell.slice(0, 40) }; break
+            }
+          }
+        }
+      }
+      if (owner.nome || owner.fone) break
+    } catch {}
+  }
+
+  // Estratégia 2 — PessoaF/PessoaJ (relatório completo: CPF, endereço, etc.)
+  let pessoaCode = ''
+  const lpEl = imovelHtml.match(/<[^>]*loadPessoas[^>]*>/i); if (lpEl) { const dc = lpEl[0].match(/data-codigos=["']?(\d+)["']?/); if (dc) pessoaCode = dc[1] }
+  if (!pessoaCode) { const dcM = imovelHtml.match(/data-codigos=["'](\d+)["']/); if (dcM) pessoaCode = dcM[1] }
+  if (pessoaCode) {
+    for (const tipo of ['PessoaF', 'PessoaJ']) {
+      const pessoaR = await fetch(`${WEB_IMV}/${tipo}/Detalhes/${pessoaCode}`, { headers: { cookie: cookies, 'user-agent': UA_IMV, accept: 'text/html' }, redirect: 'follow', signal: AbortSignal.timeout(12000) })
+      const pessoaHtml = pessoaR.ok ? await pessoaR.text() : ''
+      let dados = extrairCampos(pessoaHtml)
+      try { const edR = await fetch(`${WEB_IMV}/${tipo}/Editar/${pessoaCode}`, { headers: { cookie: cookies, 'user-agent': UA_IMV, accept: 'text/html' }, redirect: 'follow', signal: AbortSignal.timeout(12000) }); if (edR.ok) { const ec = extrairCampos(await edR.text()); if (ec.length > dados.length) dados = ec } } catch {}
+      const nomeM = pessoaHtml.match(/<title>[^|<]+\|\s*([^<]+)<\/title>/); const nome = nomeM ? decodeHtml(nomeM[1].trim()) : ''
+      const waM = pessoaHtml.match(/api\.whatsapp\.com\/send\?phone=55(\d{10,11})/); let fone = ''
+      if (waM) { const d = waM[1]; fone = d.length === 11 ? `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}` : `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}` }
+      else { const foneM = pessoaHtml.match(/\((\d{2})\)\s*(\d{4,5}[-.\s]?\d{4})/); if (foneM) fone = `(${foneM[1]}) ${foneM[2].replace(/[-.\s]/g, '').replace(/(\d{4,5})(\d{4})$/, '$1-$2')}` }
+      const emailM = pessoaHtml.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,6}/); const email = emailM ? emailM[0] : ''
+      if (nome || fone || dados.length) {
+        owner.nome = owner.nome || nome.slice(0, 120); owner.email = owner.email || email.slice(0, 160); owner.fone = owner.fone || fone.slice(0, 40)
+        if (dados.length) owner.dados = dados
+        const acha = (re) => (dados.find((x) => re.test(x.rotulo)) || {}).valor || ''
+        if (!owner.nome) owner.nome = (acha(/^Nome$/) || acha(/Razão social/)).slice(0, 120)
+        if (!owner.email) owner.email = acha(/E-mail/).slice(0, 160)
+        if (!owner.fone) owner.fone = (acha(/Celular/) || acha(/WhatsApp/) || acha(/Telefone/)).slice(0, 40)
+        break
+      }
+    }
+  }
+
+  if (enderecoImovel) owner.enderecoImovel = enderecoImovel
+  if (enderecoCampos.length) owner.enderecoCampos = enderecoCampos
+  owner.nome = decodeHtml(owner.nome); owner.email = decodeHtml(owner.email)
+  if (Array.isArray(owner.dados)) owner.dados = owner.dados.map((d) => ({ rotulo: decodeHtml(d.rotulo), valor: decodeHtml(d.valor) }))
+  if (Array.isArray(owner.enderecoCampos)) owner.enderecoCampos = owner.enderecoCampos.map((c) => ({ rotulo: c.rotulo, valor: decodeHtml(c.valor) }))
+  return owner
 }
 
 export async function onRequestPost({ env, request }) {
@@ -1164,20 +1253,40 @@ export async function onRequestPost({ env, request }) {
     return json({ ok: true, owner: { nome: '', email: '', fone: '' }, source: 'none', motivo })
   }
 
-  // Lê em LOTE o proprietário JÁ CACHEADO de vários imóveis (kvStore), SEM tocar no Imoview.
-  // Base do download "bairro inteiro" e do backup geral — seguro: não faz login/scraping,
-  // então nunca estressa nem bloqueia a conta. Imóveis ainda não captados voltam sem dono.
-  if (action === 'owner-cache-lote') {
+  // Captação em LOTE do proprietário AO VIVO no Imoview, com 1 login só pro lote inteiro.
+  // Cache-first: quem já tem proprietário salvo NÃO é raspado de novo; os que faltam são
+  // raspados reusando a mesma sessão (rápido e bem menos agressivo que 1 login por imóvel).
+  // O cliente manda em blocos pequenos (~6 códigos) pra caber no teto de subrequests.
+  if (action === 'owner-lote') {
     const cods = Array.isArray(b.codigos)
-      ? [...new Set(b.codigos.map((c) => String(c).replace(/[^\w]/g, '').slice(0, 12)).filter(Boolean))].slice(0, 300)
+      ? [...new Set(b.codigos.map((c) => String(c).replace(/[^\w]/g, '').slice(0, 12)).filter(Boolean))].slice(0, 4)
       : []
+    const force = b.force === true
     const owners = {}
-    await Promise.all(cods.map(async (cod) => {
+    const faltam = []
+    for (const cod of cods) {
       try {
         const s = await env.ENGAGEMENT.get('imovel:' + cod, 'json')
-        if (s && s.owner && (s.owner.nome || s.owner.fone || (Array.isArray(s.owner.dados) && s.owner.dados.length) || s.owner.enderecoImovel)) owners[cod] = s.owner
-      } catch {}
-    }))
+        if (!force && s && s.owner && (s.owner.nome || s.owner.fone || (Array.isArray(s.owner.dados) && s.owner.dados.length) || s.owner.enderecoImovel)) owners[cod] = s.owner
+        else faltam.push(cod)
+      } catch { faltam.push(cod) }
+    }
+    if (faltam.length) {
+      const log = await imoviewLogin(env).catch(() => null)
+      if (log && log.ok && log.cookies) {
+        for (const cod of faltam) {
+          try {
+            const owner = await scrapeOwnerCod(log.cookies, cod)
+            if (owner && (owner.nome || owner.fone || (owner.dados && owner.dados.length) || owner.enderecoImovel)) {
+              owners[cod] = owner
+              const prev = await env.ENGAGEMENT.get('imovel:' + cod, 'json').catch(() => null)
+              await env.ENGAGEMENT.put('imovel:' + cod, JSON.stringify({ ...(prev || {}), owner, atualizadoEm: Date.now() }))
+              try { await registrarProprietario(env, cod, owner) } catch {}
+            }
+          } catch {}
+        }
+      }
+    }
     return json({ ok: true, owners })
   }
 
