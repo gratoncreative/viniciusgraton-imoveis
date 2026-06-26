@@ -32,6 +32,7 @@ export default function AdminImovelBar({ im }) {
   const [prog, setProg] = useState('')
   const [baixandoBairro, setBaixandoBairro] = useState(false)
   const [bairroProg, setBairroProg] = useState('')
+  const [bairroPct, setBairroPct] = useState(null) // 0–100 (null = sem barra)
 
   useEffect(() => {
     const check = () => setIsAdmin(!!localStorage.getItem(LSK))
@@ -379,14 +380,14 @@ export default function AdminImovelBar({ im }) {
     if (baixandoBairro) return
     const bairro = im.bairro
     if (!bairro) { setBairroProg('Este imóvel está sem bairro definido.'); setTimeout(() => setBairroProg(''), 5000); return }
-    setBaixandoBairro(true); setBairroProg('Carregando catálogo…')
+    setBaixandoBairro(true); setBairroProg('Carregando catálogo…'); setBairroPct(0)
     try {
       const norm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim()
       const cat = await fetch('/catalogo.json').then((r) => r.json()).catch(() => null)
       const lista = (((cat && cat.imoveis) || []).filter((x) => norm(x.bairro) === norm(bairro)))
-      if (!lista.length) { setBairroProg('Nenhum imóvel desse bairro no catálogo.'); setBaixandoBairro(false); setTimeout(() => setBairroProg(''), 6000); return }
-      if (lista.length > 120 && !window.confirm(`O bairro "${bairro}" tem ${lista.length} imóveis — pode demorar e baixar MUITAS fotos. Continuar?`)) { setBaixandoBairro(false); setBairroProg(''); return }
-      setBairroProg(`Buscando proprietários já captados… (${lista.length} imóveis)`)
+      if (!lista.length) { setBairroProg('Nenhum imóvel desse bairro no catálogo.'); setBairroPct(null); setBaixandoBairro(false); setTimeout(() => setBairroProg(''), 6000); return }
+      if (lista.length > 120 && !window.confirm(`O bairro "${bairro}" tem ${lista.length} imóveis — pode demorar e baixar MUITAS fotos. Continuar?`)) { setBaixandoBairro(false); setBairroProg(''); setBairroPct(null); return }
+      setBairroProg(`Buscando proprietários já captados… (${lista.length} imóveis)`); setBairroPct(3)
       const owners = await post('owner-cache-lote', { codigos: lista.map((x) => x.codigo) }).then((j) => j.owners || {}).catch(() => ({}))
       const { default: JSZip } = await import('jszip')
       const zip = new JSZip()
@@ -409,21 +410,21 @@ export default function AdminImovelBar({ im }) {
             } catch {}
           }
         } catch {}
-        feitos++; setBairroProg(`Montando "${bairro}"… ${feitos}/${lista.length} imóveis · ${totFotos} fotos`)
+        feitos++; setBairroProg(`Montando "${bairro}"… ${feitos}/${lista.length} imóveis · ${totFotos} fotos`); setBairroPct(Math.round((feitos / lista.length) * 95))
       }
       const fila = lista.map((imv) => () => proc(imv))
       await Promise.all(Array.from({ length: Math.min(3, fila.length) }, async () => { while (fila.length) { const job = fila.shift(); if (job) await job() } }))
-      setBairroProg('Compactando…')
+      setBairroProg('Compactando…'); setBairroPct(98)
       raiz.file('_RESUMO.txt', `Bairro: ${bairro}\r\nImóveis: ${lista.length}\r\nCom proprietário já captado: ${comDono}\r\nFotos baixadas: ${totFotos}\r\nGerado em ${new Date().toLocaleString('pt-BR')}\r\nUso interno — Vinícius Graton.\r\n`)
       const out = await zip.generateAsync({ type: 'blob' })
       const url = URL.createObjectURL(out)
       const a = document.createElement('a'); a.href = url; a.download = `${_sanit(bairro)} - ${lista.length} imoveis.zip`
       document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 6000)
-      setBairroProg(`✓ ${lista.length} imóveis · ${comDono} com proprietário · ${totFotos} fotos`)
+      setBairroProg(`✓ ${lista.length} imóveis · ${comDono} com proprietário · ${totFotos} fotos`); setBairroPct(100)
     } catch (e) {
-      setBairroProg('Falha ao gerar o pacote do bairro. Tente de novo.')
+      setBairroProg('Falha ao gerar o pacote do bairro. Tente de novo.'); setBairroPct(null)
     }
-    setBaixandoBairro(false); setTimeout(() => setBairroProg(''), 9000)
+    setBaixandoBairro(false); setTimeout(() => { setBairroProg(''); setBairroPct(null) }, 9000)
   }
 
   // Diagnóstico: mostra o que o Imoview devolveu (pra ajustar a captação dos campos)
@@ -587,7 +588,16 @@ export default function AdminImovelBar({ im }) {
               {baixandoBairro ? '⏳ Montando o bairro…' : `📦 Baixar bairro inteiro${im.bairro ? ' (' + im.bairro + ')' : ''}`}
             </button>
           </div>
-          {bairroProg && <p className="adm-status" style={{ marginTop: 8 }}>{bairroProg}</p>}
+          {(bairroPct != null || bairroProg) && (
+            <div style={{ marginTop: 10 }}>
+              {bairroPct != null && (
+                <div style={{ height: 10, background: '#ece7df', borderRadius: 6, overflow: 'hidden' }} role="progressbar" aria-valuenow={bairroPct} aria-valuemin={0} aria-valuemax={100}>
+                  <div style={{ width: bairroPct + '%', height: '100%', background: '#212b3d', transition: 'width .3s' }} />
+                </div>
+              )}
+              {bairroProg && <p className="adm-status" style={{ marginTop: 6 }}>{bairroProg}{bairroPct != null ? ` · ${bairroPct}%` : ''}</p>}
+            </div>
+          )}
           {diag && (
             <div style={{ marginTop: 12 }}>
               <p className="adm-status" style={{ margin: '0 0 6px' }}>Diagnóstico (mande este texto pro Vinícius ajustar a captação):</p>
