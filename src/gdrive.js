@@ -33,6 +33,7 @@ async function initClient() {
   tokenClient = window.google.accounts.oauth2.initTokenClient({
     client_id: CONFIG.googleClientId,
     scope: SCOPE,
+    hint: CONFIG.googleDriveConta || undefined, // pré-seleciona a conta fixa do backup (não fica perguntando)
     callback: (resp) => {
       if (resp && resp.access_token) {
         cachedToken = resp.access_token

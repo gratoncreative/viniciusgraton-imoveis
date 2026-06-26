@@ -20,6 +20,9 @@ export const CONFIG = {
   // Drive (arraste pra ROTINA > ROTINA IMOVEIS se quiser — o app continua acessando).
   // Pré-requisito: ativar a "Google Drive API" no mesmo projeto do Google Cloud.
   googleDriveFolderName: 'Rotina Imóveis — Backups',
+  // Conta fixa do backup: o app já pré-seleciona este e-mail na janela do Google
+  // (evita ficar escolhendo conta). Conta de 2 TB do Vinícius. Vazio = deixa escolher.
+  googleDriveConta: 'viniciusgraton1985@gmail.com',
   // Imagem realista da capa — imóvel elegante com verde (troque por uma foto sua quando quiser)
   heroImg: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=1920&auto=format&fit=crop',
   // Link de pagamento (R$ 4,90) p/ baixar o estudo do m². Cole aqui um link do
