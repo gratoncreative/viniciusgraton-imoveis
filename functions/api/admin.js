@@ -1277,6 +1277,9 @@ export async function onRequestPost({ env, request }) {
         else faltam.push(cod)
       } catch { faltam.push(cod) }
     }
+    // modo "só cache" (backup do site inteiro): devolve só o que já está salvo, SEM tocar no
+    // Imoview — evita estouro/bloqueio quando processa milhares de imóveis.
+    if (b.soCache) return json({ ok: true, owners })
     if (faltam.length) {
       const log = await imoviewLogin(env).catch(() => null)
       // login falhou (sem credencial, conta bloqueada/throttled, ou exceção): NÃO é "sem dono".

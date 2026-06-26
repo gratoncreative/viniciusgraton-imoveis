@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { montarZipsBairro } from '../bairroZip'
+import { subirParaDrive, driveConfigurado } from '../gdrive'
 
 // Backup geral do cadastro -> Cloudflare R2 (bucket próprio).
 // Catálogo inteiro organizado por bairro, 1 .zip por imóvel (dados + proprietário do
@@ -18,6 +20,13 @@ export default function BackupPanel({ token }) {
   const [cod, setCod] = useState('')
   const pausaRef = useRef(false)
   const manRef = useRef(null)
+  // ☁ Google Drive (2 TB)
+  const [driveRun, setDriveRun] = useState(false)
+  const [driveTxt, setDriveTxt] = useState('')
+  const [drivePct, setDrivePct] = useState(null)
+  const [driveResumo, setDriveResumo] = useState('')
+  const [driveLink, setDriveLink] = useState('')
+  const driveStopRef = useRef(false)
 
   const post = useCallback((action, extra = {}) =>
     fetch('/api/backup', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action, token, ...extra }) })
@@ -94,6 +103,71 @@ export default function BackupPanel({ token }) {
 
   const pausar = () => { pausaRef.current = true; setMsg('Parando após os lotes em andamento…') }
 
+  // ——— Google Drive (2 TB) ———
+  const postAdmin = (action, extra = {}) =>
+    fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action, token, ...extra }) }).then((r) => r.json())
+
+  // Camada 1 → Drive: espelha o backup de DADOS (pequeno) no seu Drive, 1 clique.
+  const dadosParaDrive = async () => {
+    if (driveRun) return
+    if (!driveConfigurado()) { setDriveResumo('Google Drive não configurado (falta o Client ID).'); return }
+    setDriveRun(true); setDriveLink(''); setDrivePct(null); setDriveTxt(''); setDriveResumo('Buscando o último backup de dados…')
+    try {
+      const r = await fetch('/api/backup', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'baixar', token, key: 'backup/dados/atual.json' }) })
+      if (!r.ok) { setDriveResumo('Ainda não há backup de dados no R2 — rode o backup automático (GitHub → Actions → Run workflow) primeiro.'); setDriveRun(false); return }
+      const blob = await r.blob()
+      setDriveTxt('Enviando pro Drive…'); setDrivePct(0)
+      const res = await subirParaDrive('backup-dados-site.json', blob, (f) => setDrivePct(Math.round(f * 100)))
+      setDrivePct(100); setDriveResumo('✓ Backup de dados no seu Google Drive.')
+      if (res?.folderLink) setDriveLink(res.folderLink)
+    } catch (e) { setDriveResumo('Falha: ' + ((e && e.message) || 'erro') + '.'); setDrivePct(null) }
+    setDriveRun(false)
+  }
+
+  // Camada 2 → Drive: SITE INTEIRO (todas as fotos) por bairro, resumível. Proprietário do cache.
+  const LSK_DRIVE = 'vg_backup_drive_bairros'
+  const subirSiteDrive = async () => {
+    if (driveRun) return
+    if (!driveConfigurado()) { setDriveResumo('Google Drive não configurado (falta o Client ID).'); return }
+    if (!window.confirm('Subir o SITE INTEIRO pro seu Google Drive (todas as fotos, por bairro)? É demorado (vários GB), mas é resumível — pode pausar e continuar depois. Os proprietários entram do cache (não estressa o Imoview).')) return
+    setDriveRun(true); driveStopRef.current = false; setDriveLink(''); setDriveResumo(''); setDriveTxt('Carregando catálogo…'); setDrivePct(0)
+    try {
+      const cat = await fetch('/catalogo.json').then((r) => r.json()).catch(() => null)
+      const grupos = {}
+      for (const imovel of (cat?.imoveis || [])) { const b = (imovel.bairro || '').trim() || 'Sem bairro'; (grupos[b] ??= []).push(imovel) }
+      const bairros = Object.keys(grupos).sort()
+      const total = bairros.length
+      if (!total) { setDriveResumo('Catálogo vazio.'); setDriveRun(false); return }
+      let done = {}; try { done = JSON.parse(localStorage.getItem(LSK_DRIVE) || '{}') } catch {}
+      let feitosBairros = bairros.filter((b) => done[b]).length
+      for (const bairro of bairros) {
+        if (driveStopRef.current) break
+        if (done[bairro]) continue
+        const lista = grupos[bairro]
+        const overall = (w) => Math.round(((feitosBairros + (w / 100)) / total) * 100)
+        const res = await montarZipsBairro({
+          bairro, lista, postAdmin, ownerMode: 'cache', uploadShare: 0.4,
+          onProg: (pct, txt) => { setDriveTxt(`Bairro ${feitosBairros + 1}/${total} — ${txt}`); setDrivePct(overall(pct)) },
+          onParte: async (blob, nome, pi, np, base, span) => { const r2 = await subirParaDrive(nome, blob, (f) => setDrivePct(overall(base + f * span))); if (r2?.folderLink) setDriveLink(r2.folderLink) },
+        })
+        if (res && res.abort) { setDriveResumo('Interrompido (' + res.abort + '). Tente continuar mais tarde.'); break }
+        done[bairro] = true; feitosBairros++
+        try { localStorage.setItem(LSK_DRIVE, JSON.stringify(done)) } catch {}
+        setDrivePct(overall(0))
+      }
+      const restantes = bairros.filter((b) => !done[b]).length
+      setDrivePct(restantes ? null : 100)
+      setDriveResumo(
+        driveStopRef.current ? `⏸ Pausado — ${feitosBairros}/${total} bairros no Drive. Clique de novo pra continuar de onde parou.`
+          : restantes ? `Parou com ${restantes} bairro(s) faltando — clique de novo pra continuar.`
+            : `✓ Site inteiro no seu Google Drive · ${total} bairros.`
+      )
+    } catch (e) { setDriveResumo('Falha: ' + ((e && e.message) || 'erro') + '.'); setDrivePct(null) }
+    setDriveRun(false)
+  }
+  const pausarDrive = () => { driveStopRef.current = true; setDriveTxt('Parando após o bairro atual…') }
+  const reiniciarDrive = () => { try { localStorage.removeItem(LSK_DRIVE) } catch {}; setDriveResumo('Progresso zerado — o próximo "Subir site inteiro" recomeça do zero.') }
+
   const baixarChave = async (key, nome) => {
     setMsg('Baixando ' + nome + '…')
     try {
@@ -149,6 +223,29 @@ export default function BackupPanel({ token }) {
         (dados + descrição + <b>proprietário já captado</b> + fotos), mais <code>catalogo.json</code> e <code>imoveis.csv</code> na raiz.
         As fotos vêm do CDN público; o proprietário só do que já está no cache (não faz login em massa no Imoview).
       </p>
+
+      {/* ☁ Google Drive (2 TB) */}
+      {driveConfigurado() && (
+        <div style={{ marginTop: 16, padding: 16, background: '#fff', border: '1px solid var(--border)', borderRadius: 12 }}>
+          <p style={{ fontWeight: 800, margin: '0 0 4px' }}>☁ Enviar pro seu Google Drive <span style={{ fontSize: '.8rem', fontWeight: 500, color: 'var(--muted)' }}>· 2 TB</span></p>
+          <p className="section-sub" style={{ margin: '0 0 12px', fontSize: '.84rem' }}>
+            Cópia no seu Drive, pasta <b>"Rotina Imóveis — Backups"</b>. Os <b>dados</b> são pequenos (rápido); o <b>site inteiro</b> (fotos) é pesado e <b>resumível</b> (pausa e continua). Proprietário entra do cache — sem estressar o Imoview.
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
+            <button className="admin-btn admin-btn--gold" onClick={dadosParaDrive} disabled={driveRun}>⬆ Backup de dados → Drive</button>
+            <button className="admin-btn" onClick={subirSiteDrive} disabled={driveRun}>☁ Subir SITE INTEIRO → Drive (por bairro)</button>
+            {driveRun && <button className="admin-btn" onClick={pausarDrive}>⏸ Pausar</button>}
+            {!driveRun && <button className="admin-btn" onClick={reiniciarDrive} title="Esquece os bairros já enviados e recomeça do zero no próximo envio">↺ Zerar progresso</button>}
+          </div>
+          {drivePct != null && (
+            <div style={{ height: 10, background: '#ece7df', borderRadius: 6, overflow: 'hidden', marginTop: 12 }} role="progressbar" aria-valuenow={drivePct} aria-valuemin={0} aria-valuemax={100}>
+              <div style={{ width: drivePct + '%', height: '100%', background: '#212b3d', transition: 'width .3s' }} />
+            </div>
+          )}
+          {driveTxt && <p className="section-sub" style={{ marginTop: 6 }}>{driveTxt}{drivePct != null ? ` · ${drivePct}%` : ''}</p>}
+          {driveResumo && <p className="section-sub" style={{ marginTop: 6, fontWeight: 600 }}>{driveResumo} {driveLink && <a href={driveLink} target="_blank" rel="noopener noreferrer">Abrir pasta no Drive →</a>}</p>}
+        </div>
+      )}
 
       {/* estado atual */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 14 }}>
