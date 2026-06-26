@@ -112,11 +112,7 @@ const TOOLS = [
   { id: 'acm',           nome: 'Referência de valor pela área', desc: 'Faixa de mercado pelo m² do bairro (não avalia a edificação). Grátis.',            icon: 'appraise',    sec: 'investidor' },
   { id: 'comissao',      nome: 'Calculadora de comissão',   desc: 'Comissão (5%) e divisão corretor / imobiliária. Grátis.',   icon: 'coins',   sec: 'investidor' },
   // fotos e imagens
-  { id: 'estudio',       nome: 'Estúdio de fotos de imóvel', desc: 'Endireita, clareia, deixa na horizontal e marca em lote. Grátis, no navegador.', icon: 'fileimg',    sec: 'pro', popular: true, nav: true, to: '/ferramentas/estudio-de-fotos' },
-  { id: 'remover',       nome: 'Remover marca d\'água com IA', desc: 'Remove logos e marcas de fotos em lote.',   icon: 'eraser',    sec: 'pro', pro: true, toPro: true },
-  { id: 'marca-agua',    nome: "Marca d'água em fotos",     desc: 'Adicione seu logo ou texto em cada foto.',     icon: 'droplet',    sec: 'pro', needsSub: true },
-  { id: 'endireitar',    nome: 'Endireitar foto',           desc: 'Corrija a inclinação e a rotação de fotos.',   icon: 'rotate',  sec: 'pro', needsSub: true },
-  { id: 'converter',     nome: 'Conversor de fotos',        desc: 'JPG · PNG · WebP · AVIF · HEIC em lote.',      icon: 'fileimg',    sec: 'pro', needsSub: true, nav: true, to: '/ferramentas/converter' },
+  { id: 'estudio',       nome: 'Estúdio de fotos · painel completo', desc: "Tudo num painel só: endireitar, luz e cor, deixar na horizontal, marca d'água (põe e tira com IA), melhorar com IA, redimensionar e converter (JPG/PNG/WebP) — em lote, no navegador.", icon: 'fileimg', sec: 'pro', popular: true, nav: true, to: '/ferramentas/estudio-de-fotos' },
   { id: 'leitor-area',   nome: 'Leitor de área (IA)',       desc: 'Foto de planta ou anúncio → a IA lê e calcula a área.', icon: 'fileimg', sec: 'pro', popular: true, nav: true, to: '/ferramentas/leitor-area' },
   { id: 'levantamento',  nome: 'Levantamento de fotos (IA)', desc: 'Envie as fotos → a IA descreve os acabamentos (piso, pedra, revestimento) de cada uma.', icon: 'fileimg', sec: 'pro', popular: true, nav: true, to: '/ferramentas/levantamento-fotos' },
   { id: 'pdf-jpg',      nome: 'PDF para JPG',              desc: 'Converta cada página do PDF em JPG de alta definição.', icon: 'pdf', sec: 'pro', needsSub: true, to: '/ferramentas/pdf-para-jpg' },

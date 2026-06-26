@@ -103,8 +103,8 @@ export default function EstudioFotos() {
           <span className="eyebrow" style={{ justifyContent: 'center' }}>Ferramenta gratuita</span>
           <h1 className="section-title">Estúdio de <em>fotos de imóvel</em></h1>
           <p className="section-sub" style={{ marginTop: 12 }}>
-            Melhore, endireite e padronize as fotos do seu imóvel direto no navegador — de graça.
-            Deixe fotos verticais na horizontal, ajuste luz e cor, aplique sua marca d'água e exporte tudo em lote.
+            O painel completo das suas fotos, num lugar só e de graça: endireitar, ajustar luz e cor, deixar na horizontal,
+            <b> pôr e remover marca d'água (com IA)</b>, melhorar fotos ruins com IA, redimensionar e converter (JPG, PNG, WebP) — tudo em lote.
             As imagens <b>não saem do seu aparelho</b>.
           </p>
         </div>
