@@ -77,6 +77,10 @@ export default function App() {
     (window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone)
   const flagApp = typeof sessionStorage !== 'undefined' && sessionStorage.getItem('vg_appmode') === '1'
   const modoApp = standalone || flagApp || pathname === '/app' || pathname.startsWith('/app/')
+  // Modo Estúdio: a ferramenta de fotos abre como APP de tela cheia — sem navbar, rodapé,
+  // barra de abas ou qualquer chrome do site. Só o editor, ocupando a tela toda.
+  const modoEstudio = pathname === '/ferramentas/estudio-de-fotos'
+  const semChrome = modoApp || modoEstudio
   // Overrides dos imóveis: ao carregar, mutam IMOVEIS no lugar e disparam UM re-render.
   // NÃO usamos isso como `key` da árvore (remontar fechava modais/ferramentas no meio do uso).
   const [, aplicarOvRender] = useState(0)
@@ -128,7 +132,7 @@ export default function App() {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduce) return
     // No modo app (/app) não usamos scroll suave — é um cockpit, não uma landing.
-    if (modoApp) { lenisRef.current = null; return }
+    if (semChrome) { lenisRef.current = null; return }
 
     const lenis = new Lenis({ duration: 1.1, smoothWheel: true })
     lenisRef.current = lenis
@@ -159,13 +163,13 @@ export default function App() {
       lenis.destroy()
       document.removeEventListener('click', onClick)
     }
-  }, [modoApp])
+  }, [semChrome])
 
   return (
     <>
       <a href="#conteudo" className="skip-link">Pular para o conteúdo</a>
-      {!modoApp && <ScrollProgress />}
-      {!modoApp && <Navbar />}
+      {!semChrome && <ScrollProgress />}
+      {!semChrome && <Navbar />}
       <div id="conteudo" tabIndex={-1}>
         <ErrorBoundary>
           <Suspense fallback={<div className="rota-load" aria-busy="true"><span className="rota-spinner" /></div>}>
@@ -231,9 +235,9 @@ export default function App() {
           </Suspense>
         </ErrorBoundary>
       </div>
-      {!modoApp && <Footer />}
+      {!semChrome && <Footer />}
 
-      {!modoApp && (
+      {!semChrome && (
         <a className="wa-float" href={linkWhatsApp(WA.flutuante)} target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp">
           <IconWhats />
         </a>
@@ -241,9 +245,9 @@ export default function App() {
 
       {modoApp && <AppTabBar />}
 
-      {!modoApp && <BackToTop />}
-      {!modoApp && <CadastroGate />}
-      {!modoApp && <LancGate />}
+      {!semChrome && <BackToTop />}
+      {!semChrome && <CadastroGate />}
+      {!semChrome && <LancGate />}
     </>
   )
 }

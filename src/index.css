@@ -9553,3 +9553,19 @@ html[data-theme="claro"] textarea::placeholder { color: var(--text-mute); }
 .mf-edit:not(.mf-edit--vazio) .mf-preview-acoes .admin-btn:hover { background: rgba(255,255,255,0.18); }
 .mf-edit:not(.mf-edit--vazio) .mf-preview .mf-check { color: #d6dae2; }
 .mf-edit:not(.mf-edit--vazio) .mf-grade span { border-color: rgba(255,255,255,0.25) !important; }
+
+/* ===== Estúdio em TELA CHEIA — app puro, sem chrome do site ===== */
+.estudio-app { position: fixed; inset: 0; display: flex; flex-direction: column; background: #f6f3f3; overflow: hidden; z-index: 50; }
+.estudio-app-bar { flex-shrink: 0; height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 clamp(12px, 2vw, 22px); background: #fff; border-bottom: 1px solid #E6DED7; }
+.estudio-app-tit { font-family: var(--font-head); font-weight: 700; font-size: 1.08rem; color: #42261c; }
+.estudio-app-tit em { font-style: italic; color: #C6A15B; }
+.estudio-app-back, .estudio-app-wa { display: inline-flex; align-items: center; gap: 7px; font-size: 0.9rem; font-weight: 700; padding: 8px 15px; border-radius: 100px; text-decoration: none; cursor: pointer; font-family: var(--font-head); }
+.estudio-app-back { color: #1C2A44; border: 1px solid #E6DED7; background: #fff; }
+.estudio-app-back:hover { border-color: #1C2A44; }
+.estudio-app-wa { background: #EB0128; color: #fff; }
+.estudio-app-wa:hover { background: #C20020; }
+.estudio-app-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; }
+.estudio-app-load { padding: 48px 20px; text-align: center; color: #5b626e; }
+.estudio-app .mf-intro { display: none; }
+.estudio-app .mf { background: transparent; border: none; border-radius: 0; padding: clamp(12px, 2vw, 22px); box-shadow: none; }
+@media (max-width: 600px) { .estudio-app-tit { display: none; } }

@@ -46,6 +46,15 @@ export default function EstudioFotos() {
     image: '/vinicius-graton.jpg',
   })
 
+  // trava o scroll da página enquanto o app de tela cheia está aberto
+  useEffect(() => {
+    const htmlOv = document.documentElement.style.overflow
+    const bodyOv = document.body.style.overflow
+    document.documentElement.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden'
+    return () => { document.documentElement.style.overflow = htmlOv; document.body.style.overflow = bodyOv }
+  }, [])
+
   useEffect(() => {
     const el = document.createElement('script')
     el.type = 'application/ld+json'
@@ -96,44 +105,23 @@ export default function EstudioFotos() {
     return () => { document.getElementById('estudio-schema')?.remove() }
   }, [])
 
+  // App de TELA CHEIA — só o editor, ocupando a tela toda (sem chrome do site).
   return (
-    <main className="pagina section--light estudio-pg">
-      <div className="container">
-        <div className="cat-head" style={{ textAlign: 'center', maxWidth: 760, margin: '0 auto 8px' }}>
-          <span className="eyebrow" style={{ justifyContent: 'center' }}>Ferramenta gratuita</span>
-          <h1 className="section-title">Estúdio de <em>fotos de imóvel</em></h1>
-          <p className="section-sub" style={{ marginTop: 12 }}>
-            O painel completo das suas fotos, num lugar só e de graça: endireitar, ajustar luz e cor, deixar na horizontal,
-            <b> pôr e remover marca d'água (com IA)</b>, melhorar fotos ruins com IA, redimensionar e converter (JPG, PNG, WebP) — tudo em lote.
-            As imagens <b>não saem do seu aparelho</b>.
-          </p>
-        </div>
-      </div>
-
-      <div className="estudio-editor-wrap">
-        <Suspense fallback={<p className="section-sub" style={{ textAlign: 'center' }}>Carregando o estúdio…</p>}>
+    <div className="estudio-app">
+      <header className="estudio-app-bar">
+        <Link className="estudio-app-back" to="/ferramentas" aria-label="Voltar às ferramentas">
+          <IconArrow style={{ transform: 'rotate(180deg)' }} width={15} height={15} /> Ferramentas
+        </Link>
+        <span className="estudio-app-tit"><em>Estúdio</em> de fotos</span>
+        <a className="estudio-app-wa" href={linkWhatsApp('Olá! Usei o estúdio de fotos no site e tenho uma dúvida.')} target="_blank" rel="noopener noreferrer">
+          <IconWhats width={15} height={15} /> Ajuda
+        </a>
+      </header>
+      <div className="estudio-app-body" data-lenis-prevent>
+        <Suspense fallback={<div className="estudio-app-load">Carregando o estúdio…</div>}>
           <MelhorarFotos />
         </Suspense>
       </div>
-
-      <div className="container">
-        <section className="estudio-faq">
-          <h2 className="section-title" style={{ fontSize: '1.5rem' }}>Perguntas frequentes</h2>
-          <div className="estudio-faq-lista">
-            {FAQ.map((f) => (
-              <div className="estudio-faq-item" key={f.q}>
-                <h3>{f.q}</h3>
-                <p>{f.a}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <div style={{ marginTop: 28, textAlign: 'center', display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Link className="btn btn-ghost" to="/ferramentas">Outras ferramentas <IconArrow /></Link>
-          <a className="btn btn-gold" href={linkWhatsApp('Olá! Usei o estúdio de fotos no site e tenho uma dúvida.')} target="_blank" rel="noopener noreferrer"><IconWhats /> Falar pelo WhatsApp</a>
-        </div>
-      </div>
-    </main>
+    </div>
   )
 }
