@@ -4,14 +4,20 @@ import { IconInsta, IconWhats } from './icons'
 import Newsletter from './Newsletter'
 import Tour360Pitch from './Tour360Pitch'
 
-const LINKS = [
-  { to: '/imoveis', label: 'Imóveis' },
+const NAVEGACAO = [
+  { to: '/imoveis', label: 'Comprar imóvel' },
+  { to: '/alugar', label: 'Alugar' },
   { to: '/lancamentos', label: 'Lançamentos' },
   { to: '/condominios', label: 'Condomínios' },
-  { to: '/ferramentas', label: 'Ferramentas' },
-  { to: '/tour-360', label: 'Tour 360°' },
   { to: '/blog', label: 'Blog' },
   { to: '/sobre', label: 'Sobre mim' },
+]
+const SERVICOS = [
+  { to: '/avaliacao', label: 'Avaliação grátis' },
+  { to: '/tour-360', label: 'Tour Virtual 360°' },
+  { to: '/anunciar', label: 'Anunciar meu imóvel' },
+  { to: '/simulador-financiamento', label: 'Simulador de financiamento' },
+  { to: '/ferramentas', label: 'Ferramentas' },
 ]
 
 export default function Footer() {
@@ -22,6 +28,7 @@ export default function Footer() {
       <div className="container">
         <Newsletter />
         <Tour360Pitch variante="faixa" />
+
         <div className="footer-top">
           <div className="footer-brand">
             <Link to="/" className="brand">
@@ -47,41 +54,39 @@ export default function Footer() {
                 <span className="brand-sub">Imóveis · Uberlândia</span>
               </span>
             </Link>
-            <p>
-              Consultoria imobiliária em {CONFIG.cidade}. Ajudo você a comprar casa, apartamento ou
-              investir com clareza e segurança em cada etapa.
-            </p>
+            <p>Consultoria imobiliária em {CONFIG.cidade}. Ajudo você a comprar, vender ou investir com clareza e segurança em cada etapa.</p>
+            <div className="footer-social">
+              <a href={CONFIG.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><IconInsta width={18} height={18} /></a>
+              <a href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><IconWhats width={18} height={18} /></a>
+            </div>
           </div>
 
-          <div className="footer-cols">
-            <div className="footer-col">
-              <h5>Navegação</h5>
-              {LINKS.map((s) => (
-                <Link key={s.to} to={s.to}>{s.label}</Link>
-              ))}
-            </div>
-            <div className="footer-col">
-              <h5>Contato</h5>
-              <a href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener noreferrer">WhatsApp</a>
-              <a href="tel:+5534991570494">(34) 99157-0494</a>
-              <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
-              <a href={CONFIG.instagram} target="_blank" rel="noopener noreferrer">@viniciusgraton.imoveis</a>
-              <span className="footer-end">Av. Afonso Pena, 1535 — Aparecida<br />Uberlândia/MG · Rotina Imobiliária</span>
-            </div>
-            <div className="footer-col">
-              <h5>Institucional</h5>
-              <Link to="/privacidade">Política de privacidade</Link>
-              <Link to="/corretor">Sou corretor — área Rotina</Link>
-            </div>
+          <nav className="footer-col" aria-label="Navegação">
+            <h5>Navegação</h5>
+            {NAVEGACAO.map((s) => <Link key={s.to} to={s.to}>{s.label}</Link>)}
+          </nav>
+
+          <nav className="footer-col" aria-label="Serviços">
+            <h5>Serviços</h5>
+            {SERVICOS.map((s) => <Link key={s.to} to={s.to}>{s.label}</Link>)}
+          </nav>
+
+          <div className="footer-col footer-col--contato">
+            <h5>Contato</h5>
+            <a href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener noreferrer"><IconWhats width={15} height={15} /> WhatsApp</a>
+            <a href="tel:+5534991570494">(34) 99157-0494</a>
+            <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
+            <a href={CONFIG.instagram} target="_blank" rel="noopener noreferrer">@viniciusgraton.imoveis</a>
+            <span className="footer-end">Av. Afonso Pena, 1535 — Aparecida<br />Uberlândia/MG · Rotina Imobiliária</span>
           </div>
         </div>
 
         <div className="footer-bottom">
           <span>© {year} {CONFIG.marca}. Todos os direitos reservados.</span>
-          <span style={{ display: 'flex', gap: 16 }}>
-            <a href={CONFIG.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><IconInsta width={20} height={20} /></a>
-            <a href={linkWhatsApp(WA.contato)} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><IconWhats width={20} height={20} /></a>
-          </span>
+          <nav className="footer-bottom-links" aria-label="Institucional">
+            <Link to="/privacidade">Política de privacidade</Link>
+            <Link to="/corretor">Sou corretor — área Rotina</Link>
+          </nav>
         </div>
       </div>
     </footer>
