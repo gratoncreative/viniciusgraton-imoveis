@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: Captar em lotes pequenos (gentil com o Imoview)
         run: |
-          for i in $(seq 1 12); do
+          for i in $(seq 1 20); do
             resp=$(curl -fsS --max-time 70 -X POST "https://viniciusgraton.com.br/api/captar-cron" \
               -H "x-backup-key: ${{ secrets.BACKUP_CRON_KEY }}" || echo '{"erro":"http"}')
             echo "lote $i: $resp"
