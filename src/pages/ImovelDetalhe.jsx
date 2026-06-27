@@ -22,6 +22,8 @@ import { registrarVisto } from '../vistos'
 const EstudoModal = lazy(() => import('../components/EstudoModal'))
 // Lazy.. o visualizador 3D (engine PlayCanvas, pesada) só carrega ao clicar em "Tour 3D"
 const Tour3D = lazy(() => import('../components/Tour3D'))
+// Lazy.. o Tour 360° (iframe do Teleport/Kuula/CloudPano) só carrega ao abrir
+const Tour360 = lazy(() => import('../components/Tour360'))
 
 const plural = (n, s, p) => (n > 1 ? p : s)
 
@@ -297,6 +299,7 @@ export default function ImovelDetalhe() {
   const local = getImovel(codigo)
   const [showEstudo, setShowEstudo] = useState(false)
   const [show3D, setShow3D] = useState(false)
+  const [show360, setShow360] = useState(false)
   const [imApi, setImApi] = useState(null)
   const [feed, setFeed] = useState([])
   const [feedColeta, setFeedColeta] = useState(null)
@@ -800,10 +803,16 @@ export default function ImovelDetalhe() {
                   Agendar visita
                 </a>
                 {im.tour360 && (
-                  <a href={im.tour360} className="det-btn-acao det-btn-acao--wide" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
-                    Tour 360°
-                  </a>
+                  <button type="button" className="det-tour360-cta" onClick={() => setShow360(true)}>
+                    <span className="det-tour360-ico" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 3a14 14 0 0 1 4 9 14 14 0 0 1-4 9 14 14 0 0 1-4-9 14 14 0 0 1 4-9z" /><path d="M3 12h18" /></svg>
+                    </span>
+                    <span className="det-tour360-txt">
+                      <strong>Tour Virtual 360°</strong>
+                      <span>Explore cada cômodo como se estivesse lá dentro</span>
+                    </span>
+                    <span className="det-tour360-badge">Exclusivo</span>
+                  </button>
                 )}
                 {im.tour3d && (
                   <button className="det-btn-acao det-btn-acao--wide" onClick={() => setShow3D(true)}>
@@ -837,6 +846,11 @@ export default function ImovelDetalhe() {
                 {show3D && (
                   <Suspense fallback={null}>
                     <Tour3D url={im.tour3d} titulo={im.titulo || `${im.tipo} no ${im.bairro}`} onClose={() => setShow3D(false)} />
+                  </Suspense>
+                )}
+                {show360 && (
+                  <Suspense fallback={null}>
+                    <Tour360 url={im.tour360} titulo={im.titulo || `${im.tipo} no ${im.bairro}`} onClose={() => setShow360(false)} />
                   </Suspense>
                 )}
               </div>

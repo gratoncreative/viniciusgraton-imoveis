@@ -21,6 +21,17 @@ function SelosOportunidade({ op }) {
   )
 }
 
+// Selo de TOUR 360° — recurso premium que poucos imóveis têm. Destaque dourado na foto.
+function Selo360({ im }) {
+  if (!im.tour360 && !im.tour3d) return null
+  return (
+    <span className="im-360" title="Este imóvel tem Tour Virtual 360°">
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 3a14 14 0 0 1 4 9 14 14 0 0 1-4 9 14 14 0 0 1-4-9 14 14 0 0 1 4-9z" /><path d="M3 12h18" /></svg>
+      360°
+    </span>
+  )
+}
+
 // Selo de transparência para anúncio impulsionado (publicidade). Clicável: leva o
 // visitante a impulsionar o próprio anúncio. Atende à sinalização exigida (CDC/CONAR).
 function SeloPublicidade({ im }) {
@@ -75,7 +86,7 @@ export default function CardImovel({ im, variante, overlayLabel }) {
   // ——— variante horizontal (listagem estilo portal): foto à esquerda, infos à direita ———
   if (variante === 'linha') {
     return (
-      <article className={`im-linha card-clickable ${im.impulsionado ? 'im-pub-on' : ''}`} onClick={irParaImovel}>
+      <article className={`im-linha card-clickable ${im.impulsionado ? 'im-pub-on' : ''} ${(im.tour360 || im.tour3d) ? 'im-has360' : ''}`} onClick={irParaImovel}>
         <div className="im-linha-media">
           <img src={im.img} alt={`${im.tipo} no ${im.bairro}, Uberlândia`} loading="lazy" decoding="async" onError={onImgError} />
           {overlayLabel && (
@@ -88,6 +99,7 @@ export default function CardImovel({ im, variante, overlayLabel }) {
           {im.novo && <span className="im-novo">Novo</span>}
           <SeloPublicidade im={im} />
           <SelosOportunidade op={op} />
+          <Selo360 im={im} />
         </div>
         <div className="im-linha-body">
           <div className="im-linha-top">
@@ -130,7 +142,7 @@ export default function CardImovel({ im, variante, overlayLabel }) {
 
   return (
     <article
-      className={`card-imovel im-card card-clickable ${im.impulsionado ? 'im-pub-on' : ''}`}
+      className={`card-imovel im-card card-clickable ${im.impulsionado ? 'im-pub-on' : ''} ${(im.tour360 || im.tour3d) ? 'im-has360' : ''}`}
       onClick={irParaImovel}
     >
       <div className="card-media im-media">
@@ -139,6 +151,7 @@ export default function CardImovel({ im, variante, overlayLabel }) {
         {im.novo && <span className="im-novo">Novo</span>}
         <SeloPublicidade im={im} />
         <SelosOportunidade op={op} />
+        <Selo360 im={im} />
         <Engajamento im={im} variante="card" />
         <PrecoGate valor={im.preco} anterior={im.precoAnterior} className="im-preco" tipo="card" sufixo={precoSufixo} />
       </div>
