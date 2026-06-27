@@ -7,6 +7,7 @@ import { formatBRL } from '../extenso'
 import { registrarLead } from '../engajamento'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow, IconShield } from '../components/icons'
+import Tour360Pitch from '../components/Tour360Pitch'
 
 const TIPOS = ['Casa', 'Apartamento', 'Casa em condomínio', 'Terreno / lote', 'Comercial', 'Rural / chácara']
 const ESTADOS = ['Novo / nunca usado', 'Seminovo / bem conservado', 'Usado / precisa de reforma']
@@ -87,6 +88,8 @@ export default function Avaliacao() {
 
           <button type="submit" className="btn btn-gold lead-submit"><IconWhats /> Quero minha avaliação grátis <IconArrow /></button>
         </form>
+
+        <Tour360Pitch variante="bloco" />
       </div>
     </main>
   )

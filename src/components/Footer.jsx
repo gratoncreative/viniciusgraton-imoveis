@@ -2,12 +2,14 @@ import { Link } from 'react-router-dom'
 import { CONFIG, linkWhatsApp, WA } from '../data'
 import { IconInsta, IconWhats } from './icons'
 import Newsletter from './Newsletter'
+import Tour360Pitch from './Tour360Pitch'
 
 const LINKS = [
   { to: '/imoveis', label: 'Imóveis' },
   { to: '/lancamentos', label: 'Lançamentos' },
   { to: '/condominios', label: 'Condomínios' },
   { to: '/ferramentas', label: 'Ferramentas' },
+  { to: '/tour-360', label: 'Tour 360°' },
   { to: '/blog', label: 'Blog' },
   { to: '/sobre', label: 'Sobre mim' },
 ]
@@ -19,6 +21,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="container">
         <Newsletter />
+        <Tour360Pitch variante="faixa" />
         <div className="footer-top">
           <div className="footer-brand">
             <Link to="/" className="brand">

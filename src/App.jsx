@@ -68,6 +68,7 @@ const Investir = lazy(() => import('./pages/Investir'))
 const AppCorretor = lazy(() => import('./pages/AppCorretor'))
 const CriarTour = lazy(() => import('./pages/CriarTour'))
 const TourPage = lazy(() => import('./pages/TourPage'))
+const Tour360Page = lazy(() => import('./pages/Tour360Page'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 export default function App() {
@@ -213,6 +214,7 @@ export default function App() {
               <Route path="/condominios" element={<Condominios />} />
               <Route path="/condominios/:slug" element={<CondominioDetalhe />} />
               <Route path="/anunciar" element={<Anunciar />} />
+              <Route path="/tour-360" element={<Tour360Page />} />
               <Route path="/avaliacao" element={<Avaliacao />} />
               <Route path="/comparar" element={<Comparar />} />
               <Route path="/mapa" element={<Mapa />} />

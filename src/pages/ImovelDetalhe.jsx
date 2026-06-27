@@ -22,7 +22,7 @@ import { registrarVisto } from '../vistos'
 const EstudoModal = lazy(() => import('../components/EstudoModal'))
 // Lazy.. o visualizador 3D (engine PlayCanvas, pesada) só carrega ao clicar em "Tour 3D"
 const Tour3D = lazy(() => import('../components/Tour3D'))
-// Lazy.. o Tour 360° (iframe do Teleport/Kuula/CloudPano) só carrega ao abrir
+// Lazy.. o Tour 360° (iframe do tour hospedado) só carrega ao abrir
 const Tour360 = lazy(() => import('../components/Tour360'))
 
 const plural = (n, s, p) => (n > 1 ? p : s)
@@ -803,6 +803,7 @@ export default function ImovelDetalhe() {
                   Agendar visita
                 </a>
                 {im.tour360 && (
+                  <>
                   <button type="button" className="det-tour360-cta" onClick={() => setShow360(true)}>
                     <span className="det-tour360-ico" aria-hidden="true">
                       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 3a14 14 0 0 1 4 9 14 14 0 0 1-4 9 14 14 0 0 1-4-9 14 14 0 0 1 4-9z" /><path d="M3 12h18" /></svg>
@@ -813,6 +814,8 @@ export default function ImovelDetalhe() {
                     </span>
                     <span className="det-tour360-badge">Exclusivo</span>
                   </button>
+                  <p className="det-tour360-nota">Tour 360° é um diferencial exclusivo que ofereço — pouquíssimos imóveis têm.</p>
+                  </>
                 )}
                 {im.tour3d && (
                   <button className="det-btn-acao det-btn-acao--wide" onClick={() => setShow3D(true)}>

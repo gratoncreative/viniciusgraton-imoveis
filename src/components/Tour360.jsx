@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-// Visor de Tour 360° — abre o tour (link/embed do Teleport, Kuula, CloudPano, etc.)
+// Visor de Tour 360° — abre o tour hospedado (link/embed colado no campo tour360)
 // num overlay imersivo em tela cheia, dentro de um iframe. Aceita tanto a URL direta
 // quanto o código <iframe ...> colado no campo (extrai o src).
 // Regra de marca: o fundo mais escuro permitido é #212b3d (nunca preto).
