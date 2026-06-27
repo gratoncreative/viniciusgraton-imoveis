@@ -1,0 +1,28 @@
+name: Briefing matinal (WhatsApp)
+
+# Todo dia de manhã, manda no WhatsApp do Vinícius um resumo: leads novos da noite,
+# donos captados, conversões de ontem e leads frios pra reativar. Roda na nuvem (sem PC).
+# Pré-requisitos (já existem): secrets BACKUP_CRON_KEY + CALLMEBOT_KEY no GitHub.
+
+on:
+  schedule:
+    - cron: '0 10 * * *'   # 10:00 UTC = 07:00 Brasília
+  workflow_dispatch: {}     # botão "Run workflow" p/ testar na hora
+
+concurrency:
+  group: ops-brief
+  cancel-in-progress: false
+
+jobs:
+  brief:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Enviar briefing matinal
+        env:
+          BACKUP_CRON_KEY: ${{ secrets.BACKUP_CRON_KEY }}
+          CALLMEBOT_KEY: ${{ secrets.CALLMEBOT_KEY }}
+        run: node scripts/ops-brief.mjs

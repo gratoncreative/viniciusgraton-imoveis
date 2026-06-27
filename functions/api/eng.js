@@ -1,4 +1,5 @@
 import { kvStore } from '../_lib/store.js'
+import { avisaWhats } from '../_lib/whatsapp.js'
 /**
  * Cloudflare Pages Function — engajamento por imóvel (curtidas / compartilhamentos / leads).
  * Persistente e compartilhado entre todos os visitantes via Workers KV (binding ENGAGEMENT).
@@ -104,8 +105,9 @@ export async function onRequestGet({ env, request }) {
   }
 }
 
-export async function onRequestPost({ env, request }) {
-  env = { ...env, ENGAGEMENT: kvStore(env) }
+export async function onRequestPost(context) {
+  const { request } = context
+  let env = { ...context.env, ENGAGEMENT: kvStore(context.env) }
   try {
     const body = await request.json().catch(() => ({}))
     const { cod, tipo } = body
@@ -165,6 +167,20 @@ export async function onRequestPost({ env, request }) {
         data: new Date(ts).toISOString(),
       }
       await env.ENGAGEMENT.put('lead:' + ts + '-' + Math.random().toString(36).slice(2, 8), JSON.stringify(lead))
+      // 🔥 Alerta de LEAD QUENTE em tempo real no WhatsApp do Vinícius (não bloqueia a resposta).
+      // Cap diário p/ proteger o WhatsApp de flood; no-op se CALLMEBOT_KEY não estiver no Cloudflare.
+      try {
+        if (env.CALLMEBOT_KEY) {
+          const capKey = 'hotlead:cnt:' + diaHoje()
+          const usados = parseInt(await env.ENGAGEMENT.get(capKey), 10) || 0
+          if (usados < 40) {
+            await env.ENGAGEMENT.put(capKey, String(usados + 1), { expirationTtl: 86400 })
+            const tag = [lead.objetivo, lead.bairro && ('bairro ' + lead.bairro), lead.cod && ('imóvel ' + lead.cod)].filter(Boolean).join(' · ')
+            const aviso = `🔥 LEAD AGORA no site!\n${lead.nome}${lead.fone ? ' · ' + lead.fone : ''}${tag ? '\n' + tag : ''}${lead.origem ? '\norigem: ' + lead.origem : ''}\n👉 responde rápido`
+            context.waitUntil(avisaWhats(env, aviso))
+          }
+        }
+      } catch {}
       return json({ ok: true, persistido: true })
     }
 

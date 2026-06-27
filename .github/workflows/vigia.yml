@@ -1,0 +1,27 @@
+name: Vigia do site + sync
+
+# A cada 3h, checa se o site está no ar e se o catálogo da Rotina sincronizou.
+# Avisa no WhatsApp do Vinícius SÓ quando algo quebra (silencioso quando está tudo ok).
+# Roda na nuvem (sem PC). Pré-requisito: secret CALLMEBOT_KEY no GitHub (já existe).
+
+on:
+  schedule:
+    - cron: '17 */3 * * *'   # a cada 3 horas (minuto 17 p/ não bater com outros crons)
+  workflow_dispatch: {}
+
+concurrency:
+  group: vigia
+  cancel-in-progress: false
+
+jobs:
+  vigia:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Checar site + sincronização
+        env:
+          CALLMEBOT_KEY: ${{ secrets.CALLMEBOT_KEY }}
+        run: node scripts/vigia.mjs
