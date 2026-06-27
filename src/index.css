@@ -1582,6 +1582,39 @@ html[data-theme="claro"] .promo-imovel-media { background: linear-gradient(150de
 .t360pitch-faixa-txt b { color: #e6cb84; }
 @media (max-width: 680px) { .t360pitch-passos { grid-template-columns: 1fr; } .t360pitch-faixa { flex-direction: column; text-align: center; } }
 
+/* ═══ Página /tour-360 — landing premium do diferencial (herói navy + seções) ═══ */
+.t360hero { position: relative; overflow: hidden; text-align: center;
+  padding: clamp(118px, 16vh, 178px) 0 clamp(46px, 7vh, 78px);
+  background: radial-gradient(820px 480px at 82% -10%, rgba(201,162,75,0.12), transparent 60%), linear-gradient(180deg, #FBF8F2 0%, #F4EFE6 100%); }
+.t360hero .container { max-width: 860px; }
+.t360hero-eye { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-head); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #9a7b2e; padding: 7px 16px; border: 1px solid rgba(201,162,75,0.45); border-radius: 100px; background: rgba(201,162,75,0.08); }
+.t360hero-tit { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.1rem, 5vw, 3.4rem); line-height: 1.08; margin: 20px 0 0; color: #212b3d; }
+.t360hero-tit em { font-style: italic; color: #b3863a; }
+.t360hero-sub { max-width: 660px; margin: 18px auto 0; font-size: clamp(1rem, 1.4vw, 1.12rem); line-height: 1.6; color: var(--text-soft); }
+.t360hero-oferta { display: inline-flex; align-items: center; gap: 20px; flex-wrap: wrap; justify-content: center; margin: 30px auto 0; padding: 16px 28px; border-radius: 18px; background: #fff; border: 1.5px solid #C9A24B; box-shadow: 0 18px 44px -32px rgba(33,43,61,0.5); }
+.t360hero-of-bloco { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.t360hero-of-val { font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; color: #212b3d; line-height: 1; }
+.t360hero-of-tag { font-family: var(--font-head); font-weight: 800; letter-spacing: 0.05em; font-size: 1.2rem; background: linear-gradient(135deg,#C9A24B,#e6cb84); color: #212b3d; padding: 5px 18px; border-radius: 100px; }
+.t360hero-of-lbl { font-size: 0.82rem; color: var(--text-soft); max-width: 175px; }
+.t360hero-of-lbl b { color: #212b3d; }
+.t360hero-of-ou { font-family: var(--font-head); text-transform: uppercase; font-size: 0.78rem; letter-spacing: 0.1em; color: #8a8170; }
+.t360hero-cta { margin: 26px auto 0; }
+.t360hero-fine { margin: 16px auto 0; font-size: 0.82rem; color: var(--text-mute); }
+.t360sec { padding: clamp(48px, 7vh, 80px) 0; }
+.t360sec--alt { background: #f7f4ee; }
+.t360sec-head { text-align: center; max-width: 640px; margin: 0 auto 30px; }
+.t360sec-head .section-title { margin-top: 8px; }
+.t360benef { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 820px; margin: 0 auto; }
+.t360benef-item { display: flex; gap: 13px; align-items: flex-start; background: #fff; border: 1px solid rgba(22,26,34,0.09); border-radius: 14px; padding: 18px 20px; box-shadow: 0 14px 36px -30px rgba(22,26,34,0.5); }
+.t360benef-ck { flex: none; width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(135deg,#C9A24B,#e6cb84); color: #212b3d; display: grid; place-items: center; }
+.t360benef-item strong { display: block; font-family: var(--font-head); color: #212b3d; margin-bottom: 2px; }
+.t360benef-item span { font-size: 0.9rem; color: var(--text-soft); line-height: 1.4; }
+.t360cta-final { text-align: center; margin: 42px auto 0; max-width: 640px; }
+.t360cta-final h3 { font-family: var(--font-display); font-size: clamp(1.3rem, 2.4vw, 1.8rem); color: #212b3d; margin-bottom: 18px; }
+.t360cta-final-of { display: block; margin-top: 14px; font-size: 0.84rem; color: var(--text-mute); }
+.t360cta-final-of b { color: #212b3d; }
+@media (max-width: 680px) { .t360benef { grid-template-columns: 1fr; } .t360hero-oferta { gap: 14px; padding: 14px 18px; } }
+
 /* Data de redução de preço — aparece no card linha e no card normal */
 .im-baixou-em { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 600; color: #1f8a4c; letter-spacing: 0.01em; }
 .im-baixou-em::before { content: '↓'; font-size: 0.9em; }
