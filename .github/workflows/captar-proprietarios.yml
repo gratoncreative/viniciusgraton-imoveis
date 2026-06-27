@@ -7,8 +7,11 @@ name: Captar proprietários (gradual)
 
 on:
   schedule:
-    - cron: '15 */4 * * *'   # a cada 4 horas
-  workflow_dispatch: {}        # botão "Run workflow" pra rodar na hora
+    # SÓ de madrugada (Brasília ~0h-5h = 3h-8h UTC): de dia o Imoview fica degradado/lento
+    # (sob carga das imobiliárias) e a raspagem volta vazia — comprovado em jun/2026. À noite
+    # funciona liso. Rodar de dia só desperdiça e atrapalha.
+    - cron: '20 3-8 * * *'   # de hora em hora, 0h-5h de Brasília
+  workflow_dispatch: {}        # botão "Run workflow" pra rodar na hora (testes)
 
 # evita duas execuções ao mesmo tempo (uma de cada vez = mais seguro pro Imoview)
 concurrency:
