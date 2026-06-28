@@ -43,6 +43,8 @@ export async function onRequest({ request, env }) {
 
   const agora = Date.now()
   const store = env.ENGAGEMENT
+  // não listar o PRÓPRIO Vinícius como lead (entradas de teste com o nº dele) — compara os últimos 8 dígitos
+  const meuFim = String(env.WHATS_DESTINO || '553491570494').replace(/\D/g, '').slice(-8)
 
   // 1) Leads novos nas últimas ~24h (janela 26h p/ pegar a virada do dia sem buraco).
   // SÓ leads de VISITANTE: exclui os proprietários captados pelo cron de madrugada
@@ -52,6 +54,7 @@ export async function onRequest({ request, env }) {
     .filter((e) => e.value && !/^lead:prop-/i.test(e.name || '') && e.value.papel !== 'proprietario')
     .map((e) => e.value)
     .filter((v) => (Number(v.ts) || Date.parse(v.data) || 0) > agora - 26 * 3600 * 1000)
+    .filter((v) => fone(v.fone).slice(-8) !== meuFim)
     .sort((a, b) => (Number(b.ts) || 0) - (Number(a.ts) || 0))
 
   // 2) Leads frios do CRM: parados +5 dias e status NÃO-fechado (caça-lead frio)
@@ -61,6 +64,7 @@ export async function onRequest({ request, env }) {
   const frios = crm
     .filter((c) => {
       if (fechado(c.status)) return false
+      if (fone(c.whatsapp).slice(-8) === meuFim) return false
       const ult = Number(c.ultimaAcaoEm) || Number(c.atualizadoEm) || Number(c.criadoEm) || 0
       return ult && (agora - ult) > FRIO_D * DIA
     })
