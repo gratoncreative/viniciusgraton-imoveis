@@ -17,8 +17,25 @@ try {
 } catch (e) { console.warn('Falha ao buscar o briefing:', e.message); process.exit(0) }
 
 if (!CB) { console.log('CALLMEBOT_KEY ausente — não enviei. A mensagem seria:\n' + msg); process.exit(0) }
-try {
-  const url = `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(FONE)}&text=${encodeURIComponent(msg)}&apikey=${encodeURIComponent(CB)}`
-  const r = await fetch(url, { signal: AbortSignal.timeout(20000) })
-  console.log('CallMeBot:', r.status, (await r.text()).slice(0, 160))
-} catch (e) { console.warn('Falha ao enviar no WhatsApp:', e.message) }
+
+// CallMeBot/WhatsApp corta mensagem longa (limite da URL GET, pior com emoji/acento).
+// Quebra em pedaços por linha (~500 chars) e envia em sequência — chega COMPLETO e em ordem.
+function pedacos(texto, max = 500) {
+  const out = []
+  let buf = ''
+  for (const ln of texto.split('\n')) {
+    if (buf && (buf + '\n' + ln).length > max) { out.push(buf); buf = ln } else buf = buf ? buf + '\n' + ln : ln
+  }
+  if (buf) out.push(buf)
+  return out
+}
+const partes = pedacos(msg)
+for (let i = 0; i < partes.length; i++) {
+  const txt = partes.length > 1 && i < partes.length - 1 ? partes[i] + '\n…' : partes[i]
+  try {
+    const url = `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(FONE)}&text=${encodeURIComponent(txt)}&apikey=${encodeURIComponent(CB)}`
+    const r = await fetch(url, { signal: AbortSignal.timeout(20000) })
+    console.log(`CallMeBot parte ${i + 1}/${partes.length}:`, r.status, (await r.text()).slice(0, 100))
+  } catch (e) { console.warn('Falha na parte', i + 1, e.message) }
+  if (i < partes.length - 1) await new Promise((r) => setTimeout(r, 4000))
+}
