@@ -10,8 +10,12 @@ export default function Destaque({ limite = 6 }) {
   if (!IMOVEIS.length) return null
   // a publicidade entra MISTURADA na grade (regra: anúncio no formato de card da
   // página). Abrimos 1 vaga p/ ela e mantemos o total preenchendo as linhas.
-  // mais NOVOS primeiro (imóveis recém-chegados, flag `novo`); mantém a ordem nos demais
-  const lista = [...IMOVEIS].sort((a, b) => (b.novo ? 1 : 0) - (a.novo ? 1 : 0)).slice(0, Math.max(0, limite - 1))
+  // SEMPRE os mais recentes primeiro: ordena pela data de chegada (`visto`) — os imóveis
+  // que acabaram de entrar na carteira ficam no topo; `novo` desempata. Fresquinhos primeiro.
+  const tsVisto = (im) => Date.parse(im.visto || '') || 0
+  const lista = [...IMOVEIS]
+    .sort((a, b) => tsVisto(b) - tsVisto(a) || (b.novo ? 1 : 0) - (a.novo ? 1 : 0))
+    .slice(0, Math.max(0, limite - 1))
   const PROMO_POS = Math.min(2, lista.length)
 
   return (
@@ -21,10 +25,10 @@ export default function Destaque({ limite = 6 }) {
           <Reveal>
             <div>
               <span className="eyebrow">Atualizado diariamente</span>
-              <h2 className="section-title">Imóveis em <em>destaque</em></h2>
+              <h2 className="section-title">Imóveis <em>mais recentes</em></h2>
               <p className="section-sub" style={{ marginTop: 14, maxWidth: 560 }}>
-                Uma seleção dos imóveis mais recentes da carteira da Rotina Imobiliária em Uberlândia,
-                com o meu atendimento pessoal. Novas oportunidades entram aqui todos os dias.
+                Os imóveis que acabaram de chegar na carteira da Rotina em Uberlândia — os mais
+                fresquinhos no topo, com o meu atendimento pessoal. Entram novos aqui todos os dias.
               </p>
             </div>
           </Reveal>
