@@ -20,7 +20,7 @@ if (!CB) { console.log('CALLMEBOT_KEY ausente — não enviei. A mensagem seria:
 
 // CallMeBot/WhatsApp corta mensagem longa (limite da URL GET, pior com emoji/acento).
 // Quebra em pedaços por linha (~500 chars) e envia em sequência — chega COMPLETO e em ordem.
-function pedacos(texto, max = 500) {
+function pedacos(texto, max = 850) {
   const out = []
   let buf = ''
   for (const ln of texto.split('\n')) {
@@ -31,7 +31,7 @@ function pedacos(texto, max = 500) {
 }
 const partes = pedacos(msg)
 for (let i = 0; i < partes.length; i++) {
-  const txt = partes.length > 1 && i < partes.length - 1 ? partes[i] + '\n…' : partes[i]
+  const txt = partes[i]
   try {
     const url = `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(FONE)}&text=${encodeURIComponent(txt)}&apikey=${encodeURIComponent(CB)}`
     const r = await fetch(url, { signal: AbortSignal.timeout(20000) })

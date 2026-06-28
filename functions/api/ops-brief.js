@@ -88,36 +88,42 @@ export async function onRequest({ request, env }) {
   let totalImoveis = 0
   try { const m = await fetch(new URL('/catalogo-meta.json', request.url), { signal: AbortSignal.timeout(6000) }).then((r) => r.json()); totalImoveis = (m && m.total) || 0 } catch {}
 
-  // ——— Mensagem COMPACTA (cabe no WhatsApp sem cortar) mas com a ORIGEM em cada título + os telefones ———
-  const hojeBR = diaISO(0).split('-').reverse().join('/')
+  // ——— Mensagem "resumo + completo": resumo punchy + prioridades + lista completa com LINK clicável ———
+  const DIAS_SEM = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']
+  const dBR = new Date(agora - 3 * 3600 * 1000) // ~Brasília p/ o dia da semana e a data
+  const dataBR = `${DIAS_SEM[dBR.getUTCDay()]} ${String(dBR.getUTCDate()).padStart(2, '0')}/${String(dBR.getUTCMonth() + 1).padStart(2, '0')}`
+  // link clicável de WhatsApp: normaliza pra 55+DDD+numero (quando falta o 55, prefixa)
+  const waLink = (f) => { let d = String(f || '').replace(/\D/g, ''); if (!d) return ''; if (!d.startsWith('55') && d.length >= 10 && d.length <= 11) d = '55' + d; return 'wa.me/' + d }
+
   const L = []
-  L.push(`☀️ Bom dia, Vinícius! Resumo VG · ${hojeBR}`)
+  L.push(`☀️ *Bom dia, Vinícius!* · ${dataBR}`)
+  L.push(`📊 ${novos.length} leads novos · ${(conv && conv.total) || 0} contatos no site · ${frios.length} pra reativar`)
+  L.push(`🌙 ${(cap && cap.totalCaptados) || 0} donos no Imoview · 🏠 ${totalImoveis || 0} imóveis no ar`)
 
-  // 🆕 Leads do SEU site (formulários públicos do viniciusgraton.com.br)
-  L.push('', `🆕 LEADS DO SEU SITE (viniciusgraton.com.br) · 24h: ${novos.length}`)
-  if (!novos.length) L.push('· nenhum nas últimas 24h')
-  novos.slice(0, 10).forEach((v) => {
-    const partes = [v.objetivo, v.bairro, v.origem && ('via ' + v.origem), v.fone].filter(Boolean)
-    L.push(`• ${v.nome}${partes.length ? ' · ' + partes.join(' · ') : ''}`)
+  if (frios.length) {
+    const top = frios.slice(0, 2).map((c) => `${c.nome.split(' ')[0]} (${c.dias}d)`).join(' e ')
+    L.push('', `🔥 *Prioridade hoje:* ${top} — os que estão parados há mais tempo.`)
+  }
+
+  // 🆕 Leads novos do SEU site (só quando houver) — com link clicável
+  if (novos.length) {
+    L.push('', `🆕 *Leads novos do seu site* (viniciusgraton.com.br):`)
+    novos.slice(0, 10).forEach((v) => {
+      const tag = [v.objetivo, v.bairro, v.origem && ('via ' + v.origem)].filter(Boolean).join(' · ')
+      const link = waLink(v.fone)
+      L.push(`• ${v.nome}${tag ? ' · ' + tag : ''}${link ? ' · ' + link : ''}`)
+    })
+  }
+
+  // 🧊 Reativar — TODOS, com link clicável (CRM do próprio site /admin)
+  L.push('', `🧊 *Reativar — ${frios.length} clientes parados +${FRIO_D}d* (CRM do seu site /admin · toque pra abrir):`)
+  frios.slice(0, 12).forEach((c) => {
+    const tag = [c.quer, c.origem && ('via ' + c.origem), c.status].filter(Boolean).join(' · ')
+    const link = waLink(c.whatsapp)
+    L.push(`• ${c.nome} (${c.dias}d)${tag ? ' · ' + tag : ''}${link ? ' · ' + link : ''}`)
   })
 
-  // 🌙 Donos puxados do Imoview (robô de madrugada)
-  if (cap && cap.totalCaptados != null) L.push('', `🌙 DONOS captados no IMOVIEW (robô): ${cap.totalCaptados} · varrido ${cap.cursor || 0}/${cap.total || 0}`)
-
-  // 📞 Cliques de contato medidos no próprio site
-  if (conv && conv.total) { const ev = conv.ev || {}; L.push('', `📞 CONTATOS pelo seu SITE ontem: ${conv.total} (zap ${ev.whatsapp || 0} · tel ${ev.tel || 0} · email ${ev.email || 0})`) }
-
-  // 🧊 Reativar — CRM do próprio site (/admin → Leads), com nome+telefone
-  L.push('', `🧊 REATIVAR — CRM do seu site /admin · parados +${FRIO_D}d: ${frios.length}`)
-  frios.slice(0, 10).forEach((c) => {
-    const partes = [c.quer, c.origem && ('via ' + c.origem), c.status, `${c.dias}d`, c.whatsapp].filter(Boolean)
-    L.push(`• ${c.nome} · ${partes.join(' · ')}`)
-  })
-
-  // 🏠 Catálogo da Rotina
-  if (totalImoveis) L.push('', `🏠 ${totalImoveis} imóveis no ar (Rotina, sync diário)`)
-
-  L.push('', '💪 Bora pro dia!')
+  L.push('', `💪 Bora! Comece pelo ${frios[0] ? frios[0].nome.split(' ')[0] : 'mais antigo'} — é o mais parado.`)
 
   const msg = L.join('\n')
   return json({ ok: true, msg, resumo: { novos: novos.length, frios: frios.length, conv: (conv && conv.total) || 0, captados: (cap && cap.totalCaptados) || 0 } })
