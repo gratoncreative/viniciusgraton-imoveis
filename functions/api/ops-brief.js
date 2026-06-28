@@ -94,8 +94,8 @@ export async function onRequest({ request, env }) {
   L.push(`☀️ Bom dia, Vinícius! Resumo VG · ${hojeBR}`)
 
   // 🆕 Leads do SITE (formulários públicos)
-  L.push('', `🆕 LEADS NOVOS DO SITE (24h): ${novos.length}`)
-  L.push('— quem deixou contato nos formulários do seu site/anúncios online.')
+  L.push('', `🆕 LEADS NOVOS DO SEU SITE — viniciusgraton.com.br (24h): ${novos.length}`)
+  L.push('— quem preencheu um formulário no SEU site e deixou contato. (não é OLX, Zap nem Imoview)')
   if (!novos.length) L.push('· Ninguém novo nas últimas 24h.')
   novos.slice(0, 6).forEach((v) => {
     const partes = [v.objetivo, v.bairro, v.origem && ('origem: ' + v.origem), v.fone].filter(Boolean)
@@ -111,13 +111,13 @@ export async function onRequest({ request, env }) {
   // 📊 Conversões medidas no próprio SITE
   if (conv && conv.total) {
     const ev = conv.ev || {}
-    L.push('', `📊 CONVERSÕES DE ONTEM (no site): ${conv.total}`)
-    L.push(`— gente que clicou pra te chamar: ${ev.whatsapp || 0} no WhatsApp · ${ev.tel || 0} telefone · ${ev.email || 0} e-mail.`)
+    L.push('', `📞 CONTATOS INICIADOS PELO SEU SITE ONTEM: ${conv.total}`)
+    L.push(`— visitantes do seu site que CLICARAM pra te chamar (de anônimo → te procurou): ${ev.whatsapp || 0} no WhatsApp · ${ev.tel || 0} telefone · ${ev.email || 0} e-mail. Não é venda fechada.`)
   }
 
   // 🧊 Reativar — clientes do seu CRM (/admin → Leads)
-  L.push('', `🧊 REATIVAR — clientes parados no seu CRM (+${FRIO_D}d): ${frios.length}`)
-  L.push('— gente que você atendeu e não falou mais. Do mais esquecido pro menos:')
+  L.push('', `🧊 REATIVAR — clientes do CRM do SEU SITE (/admin → Leads), parados +${FRIO_D}d: ${frios.length}`)
+  L.push('— quem VOCÊ cadastrou/atendeu no painel do site. NÃO é o Imoview, OLX nem Zap. A origem de cada um (de onde veio) vai do lado:')
   frios.slice(0, 6).forEach((c) => {
     const partes = [c.quer, c.origem && ('origem: ' + c.origem), c.status && ('etapa: ' + c.status), `parado ${c.dias}d`, c.whatsapp].filter(Boolean)
     L.push(`• ${c.nome} — ${partes.join(' · ')}`)
