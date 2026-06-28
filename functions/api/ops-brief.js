@@ -66,7 +66,17 @@ export async function onRequest({ request, env }) {
     })
     .map((c) => {
       const ult = Number(c.ultimaAcaoEm) || Number(c.atualizadoEm) || Number(c.criadoEm) || agora
-      return { nome: c.nome || '(sem nome)', whatsapp: fone(c.whatsapp), dias: Math.floor((agora - ult) / DIA) }
+      const bairro = (Array.isArray(c.bairros) && c.bairros[0]) || ''
+      const tipo = (Array.isArray(c.tipos) && c.tipos[0]) || ''
+      const tagSrc = (Array.isArray(c.tags) && c.tags[0]) || ''
+      return {
+        nome: c.nome || '(sem nome)',
+        whatsapp: fone(c.whatsapp),
+        dias: Math.floor((agora - ult) / DIA),
+        quer: [c.finalidade, tipo, bairro && ('no ' + bairro)].filter(Boolean).join(' '),
+        origem: String(c.origem || tagSrc || '').slice(0, 24),
+        status: String(c.status || '').slice(0, 24),
+      }
     })
     .sort((a, b) => b.dias - a.dias)
 
@@ -78,21 +88,44 @@ export async function onRequest({ request, env }) {
   let totalImoveis = 0
   try { const m = await fetch(new URL('/catalogo-meta.json', request.url), { signal: AbortSignal.timeout(6000) }).then((r) => r.json()); totalImoveis = (m && m.total) || 0 } catch {}
 
-  // ——— Monta a mensagem (curta e escaneável) ———
+  // ——— Monta a mensagem: explica O QUE é e DE ONDE vem cada número ———
   const hojeBR = diaISO(0).split('-').reverse().join('/')
   const L = []
   L.push(`☀️ Bom dia, Vinícius! Resumo VG · ${hojeBR}`)
-  L.push('')
-  L.push(`🆕 Leads novos (24h): ${novos.length}`)
+
+  // 🆕 Leads do SITE (formulários públicos)
+  L.push('', `🆕 LEADS NOVOS DO SITE (24h): ${novos.length}`)
+  L.push('— quem deixou contato nos formulários do seu site/anúncios online.')
+  if (!novos.length) L.push('· Ninguém novo nas últimas 24h.')
   novos.slice(0, 6).forEach((v) => {
-    const tag = [v.objetivo, v.bairro].filter(Boolean).join(' · ')
-    L.push(`• ${v.nome}${v.fone ? ' · ' + v.fone : ''}${tag ? ' · ' + tag : ''}`)
+    const partes = [v.objetivo, v.bairro, v.origem && ('origem: ' + v.origem), v.fone].filter(Boolean)
+    L.push(`• ${v.nome}${partes.length ? ' — ' + partes.join(' · ') : ''}`)
   })
-  if (cap && cap.totalCaptados != null) L.push('', `🌙 Donos captados: ${cap.totalCaptados} (varrido ${cap.cursor || 0}/${cap.total || 0})`)
-  if (conv && conv.total) { const ev = conv.ev || {}; L.push('', `📊 Conversões ontem: ${conv.total} (zap ${ev.whatsapp || 0} · tel ${ev.tel || 0} · email ${ev.email || 0})`) }
-  L.push('', `🧊 Reativar (parados +${FRIO_D}d): ${frios.length}`)
-  frios.slice(0, 6).forEach((c) => L.push(`• ${c.nome} · ${c.dias}d${c.whatsapp ? ' · ' + c.whatsapp : ''}`))
-  if (totalImoveis) L.push('', `🏠 ${totalImoveis} imóveis no ar`)
+
+  // 🌙 Captação no IMOVIEW (cron de madrugada)
+  if (cap && cap.totalCaptados != null) {
+    L.push('', `🌙 CAPTAÇÃO NO IMOVIEW: ${cap.totalCaptados} donos no cache`)
+    L.push(`— o robô já varreu ${cap.cursor || 0} de ${cap.total || 0} imóveis e puxou nome, telefone e e-mail dos proprietários direto do Imoview, de madrugada, sozinho.`)
+  }
+
+  // 📊 Conversões medidas no próprio SITE
+  if (conv && conv.total) {
+    const ev = conv.ev || {}
+    L.push('', `📊 CONVERSÕES DE ONTEM (no site): ${conv.total}`)
+    L.push(`— gente que clicou pra te chamar: ${ev.whatsapp || 0} no WhatsApp · ${ev.tel || 0} telefone · ${ev.email || 0} e-mail.`)
+  }
+
+  // 🧊 Reativar — clientes do seu CRM (/admin → Leads)
+  L.push('', `🧊 REATIVAR — clientes parados no seu CRM (+${FRIO_D}d): ${frios.length}`)
+  L.push('— gente que você atendeu e não falou mais. Do mais esquecido pro menos:')
+  frios.slice(0, 6).forEach((c) => {
+    const partes = [c.quer, c.origem && ('origem: ' + c.origem), c.status && ('etapa: ' + c.status), `parado ${c.dias}d`, c.whatsapp].filter(Boolean)
+    L.push(`• ${c.nome} — ${partes.join(' · ')}`)
+  })
+
+  // 🏠 Imóveis no ar (catálogo da Rotina)
+  if (totalImoveis) L.push('', `🏠 ${totalImoveis} IMÓVEIS NO AR — catálogo da Rotina, sincronizado automático todo dia.`)
+
   L.push('', '💪 Bora pro dia!')
 
   const msg = L.join('\n')
