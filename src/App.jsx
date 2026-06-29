@@ -29,6 +29,10 @@ const LevantamentoFotos = lazy(() => import('./pages/LevantamentoFotos'))
 const EstudioFotos = lazy(() => import('./pages/EstudioFotos'))
 const EditarFotoPage = lazy(() => import('./pages/EditarFotoPage'))
 const PdfParaJpg = lazy(() => import('./pages/PdfParaJpgPage'))
+const ImagemParaPdf = lazy(() => import('./pages/ImagemParaPdfPage'))
+const JuntarPdf = lazy(() => import('./pages/JuntarPdfPage'))
+const DividirPdf = lazy(() => import('./pages/DividirPdfPage'))
+const ComprimirPdf = lazy(() => import('./pages/ComprimirPdfPage'))
 const SimuladorFinanciamento = lazy(() => import('./pages/SimuladorFinanciamento'))
 const TranscreverPage = lazy(() => import('./pages/TranscreverPage'))
 const Corretor = lazy(() => import('./pages/Corretor'))
@@ -205,6 +209,10 @@ export default function App() {
               <Route path="/ferramentas/estudio-de-fotos" element={<EstudioFotos />} />
               <Route path="/ferramentas/editar-foto" element={<EditarFotoPage />} />
               <Route path="/ferramentas/pdf-para-jpg" element={<PdfParaJpg />} />
+              <Route path="/ferramentas/imagem-para-pdf" element={<ImagemParaPdf />} />
+              <Route path="/ferramentas/juntar-pdf" element={<JuntarPdf />} />
+              <Route path="/ferramentas/dividir-pdf" element={<DividirPdf />} />
+              <Route path="/ferramentas/comprimir-pdf" element={<ComprimirPdf />} />
               <Route path="/ferramentas/criar-tour" element={<CriarTour />} />
               <Route path="/tour/:id" element={<TourPage />} />
               <Route path="/simulador-financiamento" element={<SimuladorFinanciamento />} />

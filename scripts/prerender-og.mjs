@@ -728,6 +728,106 @@ for (const p of PAGINAS_FIXAS) {
 }
 console.log(`✓ prerender páginas fixas: ${PAGINAS_FIXAS.length} (com capa própria)`)
 
+// ===== Ferramentas de PDF (públicas, client-side) — landings com SEO + JSON-LD =====
+const PDF_FERRAMENTAS = [
+  {
+    slug: 'pdf-para-jpg', nome: 'Conversor PDF para JPG',
+    titulo: 'Converter PDF para JPG Grátis Online: Sem Upload, Alta Resolução',
+    desc: "Converta PDF para JPG, PNG ou WebP de graça e sem cadastro. Escolha as páginas, até 600 DPI, sem marca d'água. Processamento 100% no navegador, seu arquivo não sai do dispositivo.",
+    h1: 'Converter PDF para JPG grátis',
+    intro: 'Transforme cada página de um PDF em imagem JPG, PNG ou WebP de alta definição, direto no navegador. Sem upload, sem cadastro, sem marca d\'água e sem limite de páginas.',
+    features: ['100% gratuito, sem cadastro', 'Processamento local, sem upload', 'Pré-visualização e seleção de páginas', 'Resolução até 600 DPI', 'JPG, PNG e WebP', 'Download em ZIP'],
+    faq: [
+      { q: 'É gratuito converter PDF para JPG?', a: 'Sim, 100% gratuito e sem limite de uso, sem marca d\'água nas imagens.' },
+      { q: 'Meus arquivos são enviados para algum servidor?', a: 'Não. Tudo é processado no seu navegador, o arquivo não sai do seu dispositivo.' },
+      { q: 'Posso converter só algumas páginas?', a: 'Sim. Você vê a prévia de todas as páginas e marca exatamente quais quer exportar.' },
+    ],
+  },
+  {
+    slug: 'imagem-para-pdf', nome: 'Conversor de Imagem para PDF',
+    titulo: 'Imagem para PDF Grátis: JPG, PNG e foto do celular em PDF',
+    desc: 'Junte várias imagens (JPG, PNG, WebP e HEIC do iPhone) em um único PDF, grátis e sem cadastro. Reordene as páginas, escolha A4 ou tamanho da foto. 100% no navegador, sem upload.',
+    h1: 'Converter imagem para PDF grátis',
+    intro: 'Junte fotos e imagens (JPG, PNG, WebP e HEIC do iPhone) em um único PDF, na ordem que quiser, com página A4 ou do tamanho da imagem. Sem upload e sem marca d\'água.',
+    features: ['100% gratuito, sem cadastro', 'Processamento local, sem upload', 'Aceita JPG, PNG, WebP e HEIC', 'Reordenação de páginas', 'A4 ou tamanho da imagem'],
+    faq: [
+      { q: 'É gratuito juntar imagens em PDF?', a: 'Sim, 100% gratuito e ilimitado, sem marca d\'água.' },
+      { q: 'Funciona com foto de iPhone (HEIC)?', a: 'Sim. A conversão do HEIC é feita no seu próprio navegador antes de entrar no PDF.' },
+      { q: 'As fotos vão para algum servidor?', a: 'Não. Tudo acontece no seu dispositivo.' },
+    ],
+  },
+  {
+    slug: 'juntar-pdf', nome: 'Juntar PDF (unir PDFs)',
+    titulo: 'Juntar PDF Grátis: Unir Vários PDFs em Um Só, Sem Upload',
+    desc: 'Junte e una vários arquivos PDF em um único documento, grátis e sem cadastro. Reordene os arquivos, mantenha a qualidade original. 100% no navegador, sem upload.',
+    h1: 'Juntar PDF grátis',
+    intro: 'Una quantos arquivos PDF quiser em um único documento, na ordem que precisar, sem perder qualidade. Sem upload, sem cadastro e sem marca d\'água.',
+    features: ['100% gratuito, sem cadastro', 'Processamento local, sem upload', 'Mantém texto e qualidade originais', 'Reordenação dos arquivos', 'Sem limite de arquivos'],
+    faq: [
+      { q: 'É gratuito juntar PDFs?', a: 'Sim, 100% gratuito e sem limite, sem marca d\'água.' },
+      { q: 'Os PDFs vão para algum servidor?', a: 'Não. A junção acontece no seu navegador, os arquivos não saem do dispositivo.' },
+      { q: 'A qualidade é mantida?', a: 'Sim. As páginas são copiadas como estão, com texto selecionável e resolução original.' },
+    ],
+  },
+  {
+    slug: 'dividir-pdf', nome: 'Dividir PDF (separar e extrair páginas)',
+    titulo: 'Dividir PDF Grátis: Separar e Extrair Páginas, Sem Upload',
+    desc: 'Divida um PDF: extraia páginas específicas em um novo arquivo ou separe cada página em PDFs individuais. Grátis, sem cadastro e sem marca d\'água. 100% no navegador.',
+    h1: 'Dividir PDF grátis',
+    intro: 'Escolha as páginas e gere um novo PDF só com elas, ou separe cada página em arquivos individuais. Tudo no navegador, sem perder qualidade.',
+    features: ['100% gratuito, sem cadastro', 'Processamento local, sem upload', 'Prévia visual das páginas', 'Extrair em um PDF ou separar em vários', 'Mantém a qualidade original'],
+    faq: [
+      { q: 'É gratuito dividir um PDF?', a: 'Sim, 100% gratuito e ilimitado, sem marca d\'água.' },
+      { q: 'Qual a diferença entre extrair e separar?', a: 'Extrair gera um único PDF com as páginas escolhidas; separar gera um PDF por página, em um ZIP.' },
+      { q: 'O arquivo vai para algum servidor?', a: 'Não. Tudo é feito no seu navegador.' },
+    ],
+  },
+  {
+    slug: 'comprimir-pdf', nome: 'Comprimir PDF (reduzir tamanho)',
+    titulo: 'Comprimir PDF Grátis: Reduzir Tamanho do PDF, Sem Upload',
+    desc: 'Reduza o tamanho de um PDF pesado para enviar por e-mail, WhatsApp ou portal. Grátis, sem cadastro e sem marca d\'água. 100% no navegador, seu arquivo não sai do dispositivo.',
+    h1: 'Comprimir PDF grátis',
+    intro: 'Reduza o tamanho de PDFs pesados para caber no e-mail, WhatsApp ou portal, escolhendo o nível de compressão. Tudo no navegador, sem marca d\'água.',
+    features: ['100% gratuito, sem cadastro', 'Processamento local, sem upload', '3 níveis de compressão', 'Comparativo de tamanho antes e depois'],
+    faq: [
+      { q: 'É gratuito comprimir PDF?', a: 'Sim, 100% gratuito e ilimitado, sem marca d\'água.' },
+      { q: 'O texto continua selecionável depois?', a: 'Não. A compressão transforma as páginas em imagem; ideal para documentos digitalizados e anúncios.' },
+      { q: 'O PDF vai para algum servidor?', a: 'Não. A compressão acontece no seu navegador.' },
+    ],
+  },
+]
+const rotasPdf = []
+for (const t of PDF_FERRAMENTAS) {
+  const url = slash(`${SITE}/ferramentas/${t.slug}`)
+  const outras = PDF_FERRAMENTAS.filter((x) => x.slug !== t.slug)
+  const body = `<main class="pre-seo"><h1>${esc(t.h1)}</h1>` +
+    `<p>${esc(t.intro)}</p>` +
+    `<ul>${t.features.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>` +
+    `<section><h2>Perguntas frequentes</h2>${t.faq.map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}</section>` +
+    `<nav><h2>Outras ferramentas de PDF, grátis</h2>${outras.map((x) => `<a href="/ferramentas/${x.slug}">${esc(x.nome)}</a>`).join(' · ')} · <a href="/ferramentas">todas as ferramentas</a></nav></main>`
+  const ld = { '@context': 'https://schema.org', '@graph': [
+    { '@type': 'WebApplication', '@id': `${url}#app`, name: t.nome, url, applicationCategory: 'UtilitiesApplication', operatingSystem: 'Web', inLanguage: 'pt-BR', browserRequirements: 'Requires JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'BRL' }, featureList: t.features, provider: { '@type': 'Person', name: 'Vinícius Graton', url: SITE } },
+    { '@type': 'BreadcrumbList', itemListElement: [ { '@type': 'ListItem', position: 1, name: 'Início', item: `${SITE}/` }, { '@type': 'ListItem', position: 2, name: 'Ferramentas', item: `${SITE}/ferramentas` }, { '@type': 'ListItem', position: 3, name: t.nome, item: url } ] },
+    { '@type': 'FAQPage', mainEntity: t.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+  ] }
+  const html = baseHtml
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(t.titulo)} | Vinícius Graton</title>`)
+    .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(t.desc)}$2`)
+    .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(t.titulo)}$2`)
+    .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(t.desc)}$2`)
+    .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${esc(url)}$2`)
+    .replace(/(<meta name="twitter:title" content=")[^"]*(")/, `$1${esc(t.titulo)}$2`)
+    .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${esc(t.desc)}$2`)
+    .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
+    .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
+    .replace('<div id="root"></div>', `<div id="root">${slashHrefs(body)}</div>`)
+  const dir = resolve(DIST, 'ferramentas', t.slug)
+  mkdirSync(dir, { recursive: true })
+  writeFileSync(resolve(dir, 'index.html'), html)
+  rotasPdf.push(`/ferramentas/${t.slug}`)
+}
+console.log(`✓ prerender ferramentas PDF: ${rotasPdf.length} landings em dist/ferramentas/{slug}/`)
+
 // página /investir — ranking de rentabilidade por bairro (lê public/rentabilidade-bairros.json)
 try {
   const rent = JSON.parse(readFileSync(resolve(ROOT, 'public/rentabilidade-bairros.json'), 'utf8'))
@@ -838,6 +938,7 @@ const urls = [
   { loc: `${SITE}/encontrar-imovel`, freq: 'monthly', pri: '0.8' },
   { loc: `${SITE}/como-funciona`, freq: 'monthly', pri: '0.6' },
   { loc: `${SITE}/ferramentas`, freq: 'monthly', pri: '0.6' },
+  ...rotasPdf.map((p) => ({ loc: `${SITE}${p}`, freq: 'monthly', pri: '0.7' })),
   { loc: `${SITE}/investir`, freq: 'weekly', pri: '0.8' },
   { loc: `${SITE}/condominios`, freq: 'weekly', pri: '0.7' },
   { loc: `${SITE}/anunciar`, freq: 'monthly', pri: '0.7' },

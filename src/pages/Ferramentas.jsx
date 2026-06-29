@@ -83,6 +83,7 @@ const FI = ({ name, size = 22 }) => (
 const ASSINATURA_ATIVA = false
 
 const SECOES = [
+  { id: 'pdf',           titulo: 'Ferramentas de PDF',      sub: 'Converter, juntar, dividir e comprimir PDF, grátis e sem enviar arquivos', icon: 'pdf' },
   { id: 'pro',           titulo: 'Área do Corretor',        sub: 'Ferramentas exclusivas para profissionais do mercado imobiliário', icon: 'star', pro: true },
   { id: 'comprador',     titulo: 'Para compradores',       sub: 'Simule, planeje e calcule antes de fechar',         icon: 'home'   },
   { id: 'investidor',    titulo: 'Para investidores',       sub: 'Analise rentabilidade, retorno e ganho de capital', icon: 'trend'  },
@@ -117,11 +118,17 @@ const TOOLS = [
   { id: 'tour3d',        nome: 'Crie seu Tour 3D',          desc: 'Suba a cena 3D do imóvel (capturada no celular) e ganhe um link para compartilhar. Grátis.', icon: 'fileimg', sec: 'pro', popular: true, nav: true, to: '/ferramentas/criar-tour' },
   { id: 'leitor-area',   nome: 'Leitor de área (IA)',       desc: 'Foto de planta ou anúncio → a IA lê e calcula a área.', icon: 'fileimg', sec: 'pro', popular: true, nav: true, to: '/ferramentas/leitor-area' },
   { id: 'levantamento',  nome: 'Levantamento de fotos (IA)', desc: 'Envie as fotos → a IA descreve os acabamentos (piso, pedra, revestimento) de cada uma.', icon: 'fileimg', sec: 'pro', popular: true, nav: true, to: '/ferramentas/levantamento-fotos' },
-  { id: 'pdf-jpg',      nome: 'PDF para JPG',              desc: 'Converta cada página do PDF em JPG de alta definição.', icon: 'pdf', sec: 'pro', needsSub: true, to: '/ferramentas/pdf-para-jpg' },
+  // ── Ferramentas de PDF (públicas, grátis, sem login — client-side, sem upload) ──
+  { id: 'pdf-jpg',       nome: 'PDF para JPG',              desc: 'Converta cada página do PDF em JPG, PNG ou WebP de alta definição.', icon: 'pdf', sec: 'pdf', publico: true, nav: true, to: '/ferramentas/pdf-para-jpg' },
+  { id: 'imagem-pdf',    nome: 'Imagem para PDF',           desc: 'Junte JPG, PNG e fotos do iPhone (HEIC) num único PDF.', icon: 'pdf', sec: 'pdf', publico: true, nav: true, to: '/ferramentas/imagem-para-pdf' },
+  { id: 'juntar-pdf',    nome: 'Juntar PDF',                desc: 'Una vários PDFs em um só, sem perder qualidade.', icon: 'pdf', sec: 'pdf', publico: true, nav: true, to: '/ferramentas/juntar-pdf' },
+  { id: 'dividir-pdf',   nome: 'Dividir PDF',               desc: 'Extraia páginas ou separe um PDF em vários arquivos.', icon: 'pdf', sec: 'pdf', publico: true, nav: true, to: '/ferramentas/dividir-pdf' },
+  { id: 'comprimir-pdf', nome: 'Comprimir PDF',             desc: 'Reduza o tamanho de um PDF pesado para enviar.', icon: 'pdf', sec: 'pdf', publico: true, nav: true, to: '/ferramentas/comprimir-pdf' },
 ]
 
 const PILLS = [
   { id: 'todos',         label: 'Todas'          },
+  { id: 'pdf',           label: 'PDF'             },
   { id: 'comprador',     label: 'Comprador'       },
   { id: 'investidor',    label: 'Investidor'      },
   { id: 'financiamento', label: 'Financiamento'   },
@@ -793,6 +800,8 @@ export default function Ferramentas() {
   const ModalAtiva = modalAtiva ? RENDER[modalAtiva] : null
 
   const escolher = (tool) => {
+    // Ferramentas públicas (PDF): abrem direto, sem login. São o motor de SEO/tráfego.
+    if (tool.publico && tool.to) { setLockMsg(null); navigate(tool.to); return }
     // Área do Corretor (PRO) ainda NÃO liberada ao público — só o admin acessa.
     if ((tool.sec === 'pro' || tool.pro || tool.needsSub || tool.toPro) && !isAdmin) {
       setLockMsg(tool.id)
@@ -828,7 +837,7 @@ export default function Ferramentas() {
               Portal de ferramentas
             </span>
             <h1 className="ferr-hero-titulo">Calcule, compare e <em>decida com segurança</em></h1>
-            <p className="ferr-hero-sub">{TOOLS.filter(t => !t.pro && !t.needsSub).length} ferramentas gratuitas · {TOOLS.filter(t => t.pro || t.needsSub).length} exclusivas para corretores</p>
+            <p className="ferr-hero-sub">{TOOLS.filter(t => t.sec !== 'pro' && !t.needsSub).length} ferramentas gratuitas · {TOOLS.filter(t => t.sec === 'pro' || t.needsSub).length} exclusivas para corretores</p>
           </div>
           <nav className="ferr-pills" aria-label="Filtrar ferramentas por categoria">
             {PILLS.map((p) => (

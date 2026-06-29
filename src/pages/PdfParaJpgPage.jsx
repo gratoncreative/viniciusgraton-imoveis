@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import * as pdfjs from 'pdfjs-dist'
 import JSZip from 'jszip'
 import { useSEO } from '../useSEO'
+import { PDF_TOOLS } from '../components/PdfToolShell'
 
 pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs'
 
@@ -125,8 +126,8 @@ function compactRange(set, total) {
 
 export default function PdfParaJpgPage() {
   useSEO({
-    title: 'Converter PDF para JPG Grátis Online — Sem Upload, Alta Resolução',
-    description: 'Converta PDF para JPG, PNG ou WebP de graça e sem cadastro. Escolha quais páginas exportar com pré-visualização. Processamento 100% no navegador — seu arquivo nunca sai do dispositivo. Até 600 DPI, sem marca d\'água.',
+    title: 'Converter PDF para JPG Grátis Online: Sem Upload, Alta Resolução',
+    description: 'Converta PDF para JPG, PNG ou WebP de graça e sem cadastro. Escolha quais páginas exportar com pré-visualização. Processamento 100% no navegador, seu arquivo nunca sai do dispositivo. Até 600 DPI, sem marca d\'água.',
     path: '/ferramentas/pdf-para-jpg',
   })
 
@@ -701,6 +702,19 @@ export default function PdfParaJpgPage() {
               <h3>Qualquer dispositivo</h3>
               <p>Funciona no PC, Mac, celular e tablet com qualquer navegador moderno.</p>
             </div>
+          </div>
+        </section>
+
+        {/* ── outras ferramentas de PDF (cross-link · SEO) ── */}
+        <section className="pdftools-related">
+          <h2 className="pdfjpg-section-title">Todas as ferramentas de PDF, grátis</h2>
+          <div className="pdftools-related-grid">
+            {PDF_TOOLS.filter((t) => t.slug !== 'pdf-para-jpg').map((t) => (
+              <Link key={t.slug} to={`/ferramentas/${t.slug}`} className="pdftools-related-card">
+                <strong>{t.label}</strong>
+                <span>{t.desc}</span>
+              </Link>
+            ))}
           </div>
         </section>
 
