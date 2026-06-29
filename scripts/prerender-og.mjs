@@ -767,12 +767,16 @@ try {
   }
 } catch (e) { console.warn('prerender /investir falhou (sem rentabilidade-bairros.json?):', e.message) }
 
+// Respeita o flag CONFIG.alugarAtivo (src/data.js): se a seção de aluguel estiver DESLIGADA,
+// não gera HTML estático de /alugar nem entra no sitemap (alinhado com o redirect do front).
+const ALUGAR_ATIVO = (() => { try { const m = readFileSync(resolve(ROOT, 'src/data.js'), 'utf8').match(/alugarAtivo:\s*(true|false)/); return m ? m[1] === 'true' : true } catch { return true } })()
+
 // páginas de ALUGUEL — /alugar (landing) + /alugar/uberlandia/:bairro (lê public/alugueis.json)
 const rotasAlugar = []
 try {
   const alug = (() => { try { return JSON.parse(readFileSync(resolve(ROOT, 'public/alugueis.json'), 'utf8')).imoveis || [] } catch { return [] } })()
     .filter((im) => im && im.bairro && im.preco >= 200 && im.preco <= 200000)
-  if (alug.length) {
+  if (ALUGAR_ATIVO && alug.length) {
     const fmtAlug = (v) => `R$ ${Math.round(v).toLocaleString('pt-BR')}`
     const porBairro = {}
     for (const im of alug) { const s = slugify(im.bairro); (porBairro[s] = porBairro[s] || { nome: im.bairro.trim(), slug: s, precos: [] }).precos.push(im.preco) }
@@ -830,7 +834,7 @@ try {
 const urls = [
   { loc: `${SITE}/`, freq: 'weekly', pri: '1.0' },
   { loc: `${SITE}/imoveis`, freq: 'daily', pri: '0.9' },
-  { loc: `${SITE}/alugar`, freq: 'daily', pri: '0.8' },
+  ...(ALUGAR_ATIVO ? [{ loc: `${SITE}/alugar`, freq: 'daily', pri: '0.8' }] : []),
   { loc: `${SITE}/encontrar-imovel`, freq: 'monthly', pri: '0.8' },
   { loc: `${SITE}/como-funciona`, freq: 'monthly', pri: '0.6' },
   { loc: `${SITE}/ferramentas`, freq: 'monthly', pri: '0.6' },

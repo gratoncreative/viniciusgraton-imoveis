@@ -133,7 +133,7 @@ export default function Navbar() {
         <div className="container nav-inner">
           <Brand />
           <div className="nav-links">
-            {LINKS.map((l) => (
+            {LINKS.filter((l) => CONFIG.alugarAtivo || l.to !== '/alugar').map((l) => (
               <NavLink key={l.to} to={l.to} className={({ isActive }) => isActive ? 'is-active' : undefined}>
                 <svg className="nav-ico" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={l.d} /></svg>
                 <span>{l.label}</span>
@@ -174,7 +174,7 @@ export default function Navbar() {
             </div>
           </div>
           <div className="mm-grid">
-            {MENU_CARDS.map((l) => (
+            {MENU_CARDS.filter((l) => CONFIG.alugarAtivo || l.to !== '/alugar').map((l) => (
               <Link key={l.to} className="mm-card" to={l.to} onClick={() => setOpen(false)}>
                 <span className="mm-ico"><MMIcon name={l.icon} /></span>
                 <b>{l.label}</b><i>{l.sub}</i>

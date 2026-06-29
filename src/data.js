@@ -6,6 +6,9 @@ export const CONFIG = {
   nome: 'Vinícius Graton',
   marca: 'Vinícius Graton Imóveis',
   papel: 'Consultor de Imóveis em Uberlândia',
+  // Seção de ALUGUÉIS (/alugar): liga/desliga a área pública de locação (menu, rodapé e
+  // rotas /alugar*). DESLIGADA temporariamente a pedido do Vinícius (28/06). Religar = true.
+  alugarAtivo: false,
   whatsapp: '5534991570494', // (34) 99157-0494
   whatsappMsg: 'Olá Vinícius! Vi seu site e quero ajuda para encontrar o imóvel certo.',
   instagram: 'https://www.instagram.com/viniciusgraton.imoveis/',

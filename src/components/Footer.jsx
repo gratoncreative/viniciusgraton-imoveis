@@ -63,7 +63,7 @@ export default function Footer() {
 
           <nav className="footer-col" aria-label="Navegação">
             <h5>Navegação</h5>
-            {NAVEGACAO.map((s) => <Link key={s.to} to={s.to}>{s.label}</Link>)}
+            {NAVEGACAO.filter((s) => CONFIG.alugarAtivo || s.to !== '/alugar').map((s) => <Link key={s.to} to={s.to}>{s.label}</Link>)}
           </nav>
 
           <nav className="footer-col" aria-label="Serviços">
