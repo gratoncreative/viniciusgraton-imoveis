@@ -4,6 +4,7 @@ import CampoMoeda from '../components/CampoMoeda'
 import { BAIRROS_IMOVEL, linkWhatsApp, estudoM2ACM } from '../data'
 import { registrarLead } from '../engajamento'
 import { getCorretorOuAdmin } from '../corretor'
+import { getConta } from '../conta'
 import BAIRROS_M2 from '../bairros-m2.json'
 import ACM_INDEX from '../acm-m2.json'
 import { formatBRL } from '../extenso'
@@ -745,6 +746,8 @@ export default function Ferramentas() {
   const [filtro, setFiltro]   = useState('todos')
   const [ativa, setAtiva]     = useState(null)
   const [isCorretor, setIsCorretor] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [logado, setLogado] = useState(false)
   const [lockMsg, setLockMsg] = useState(null)
   const [modalAtiva, setModalAtiva] = useState(null)
   const painelRef = useRef(null)
@@ -752,13 +755,22 @@ export default function Ferramentas() {
 
   useSEO({
     title: 'Ferramentas e calculadoras de imóveis — Uberlândia',
-    description: 'Portal completo: simulador de financiamento, FGTS, rentabilidade, ITBI, comparador de imóveis e ferramentas exclusivas para corretores. Grátis, sem cadastro.',
+    description: 'Portal completo: simulador de financiamento, FGTS, rentabilidade, ITBI, comparador de imóveis e ferramentas exclusivas para corretores. Grátis, com cadastro rápido no site.',
     path: '/ferramentas',
   })
 
   useEffect(() => {
-    // admin (vg_admin_token) tem acesso total — destrava todas as ferramentas
-    try { setIsCorretor(!!localStorage.getItem('vg_corretor') || !!localStorage.getItem('vg_admin_token')) } catch {}
+    // admin (vg_admin_token) tem acesso total. "logado" = conta do site OU corretor/admin.
+    const ler = () => { try {
+      const adm = !!localStorage.getItem('vg_admin_token')
+      const corr = !!localStorage.getItem('vg_corretor')
+      setIsAdmin(adm); setIsCorretor(corr || adm)
+      setLogado(!!getConta() || corr || adm)
+    } catch {} }
+    ler()
+    window.addEventListener('vg-conta', ler)
+    window.addEventListener('storage', ler)
+    return () => { window.removeEventListener('vg-conta', ler); window.removeEventListener('storage', ler) }
   }, [])
 
   // Sistema CLARO (igual ao resto do site) — garante a página branca, estilo Chaves
@@ -781,12 +793,18 @@ export default function Ferramentas() {
   const ModalAtiva = modalAtiva ? RENDER[modalAtiva] : null
 
   const escolher = (tool) => {
-    // não-logado em ferramenta PRO/assinatura: leva pro bloco de acesso (sem abrir)
-    if ((tool.pro || tool.needsSub || tool.toPro) && !isCorretor) {
+    // Área do Corretor (PRO) ainda NÃO liberada ao público — só o admin acessa.
+    if ((tool.sec === 'pro' || tool.pro || tool.needsSub || tool.toPro) && !isAdmin) {
       setLockMsg(tool.id)
       setTimeout(() => {
         document.getElementById('ferr-pro-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }, 60)
+      return
+    }
+    // Toda ferramenta exige conta do site (cadastro grátis) — sem conta, abre o cadastro.
+    if (!logado) {
+      setLockMsg(null)
+      try { window.dispatchEvent(new Event('vg-abrir-cadastro')) } catch {}
       return
     }
     // páginas próprias (ex.: Estúdio de fotos) navegam pra sua URL; o resto abre inline no modal
@@ -832,8 +850,8 @@ export default function Ferramentas() {
         {secoesFiltradas.map((sec) => {
           const tools = TOOLS.filter((t) => t.sec === sec.id)
           const grade = tools.map((tool) => {
-            const locked     = tool.pro && !isCorretor
-            const subLocked  = tool.needsSub && !isCorretor
+            const locked     = tool.pro && !isAdmin
+            const subLocked  = tool.needsSub && !isAdmin
             const isOn       = ativa === tool.id
             const isLockMsgOn = lockMsg === tool.id
 
@@ -852,7 +870,7 @@ export default function Ferramentas() {
                   <span className="ferr-card3-tit">
                     <b>{tool.nome}</b>
                     {tool.popular && <span className="ferr-badge-popular">Popular</span>}
-                    {(tool.pro || (tool.needsSub && !isCorretor)) && <span className="ferr-badge-pro-sm">PRO</span>}
+                    {(tool.sec === 'pro' || tool.pro || (tool.needsSub && !isAdmin)) && <span className="ferr-badge-pro-sm">PRO</span>}
                   </span>
                   <i>{tool.desc}</i>
                   {isLockMsgOn && (
@@ -880,7 +898,7 @@ export default function Ferramentas() {
 
               {/* PRO não assinante: caixa única — pitch + planos + CTA no topo e
                   TODAS as ferramentas PRO dentro da própria caixa de assinatura. */}
-              {sec.pro && !isCorretor ? (
+              {sec.pro && !isAdmin ? (
                 <div className="ferr-pro-box">
                   {ASSINATURA_ATIVA ? (
                     <div className="ferr-pro-box-head">
@@ -916,10 +934,10 @@ export default function Ferramentas() {
                 </div>
               ) : (
                 <>
-                  {sec.pro && isCorretor && (
+                  {sec.pro && isAdmin && (
                     <div className="ferr-pro-ativo">
                       <FI name="star" size={16} />
-                      <span>Você tem acesso à Área do Corretor.</span>
+                      <span>Acesso de administrador. A Área do Corretor ainda não está liberada ao público.</span>
                       <Link to="/corretor" className="ferr-pro-ativo-link">Ir para o painel completo →</Link>
                     </div>
                   )}
