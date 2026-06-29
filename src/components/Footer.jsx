@@ -85,7 +85,7 @@ export default function Footer() {
           <span>© {year} {CONFIG.marca}. Todos os direitos reservados.</span>
           <nav className="footer-bottom-links" aria-label="Institucional">
             <Link to="/privacidade">Política de privacidade</Link>
-            <Link to="/corretor">Sou corretor — área Rotina</Link>
+            <Link to="/corretor">Sou corretor · área Rotina</Link>
           </nav>
         </div>
       </div>

@@ -20,7 +20,7 @@ export default function Newsletter() {
     <div className="news-band">
       <div className="news-txt">
         <b>Receba as melhores oportunidades antes de todo mundo</b>
-        <span>Imóvel bom voa. Deixe seu e-mail e eu te aviso dos lançamentos e dicas — sem spam.</span>
+        <span>Imóvel bom voa. Deixe seu e-mail e eu te aviso dos lançamentos e dicas, sem spam.</span>
       </div>
       {estado === 'ok' ? (
         <p className="news-ok">✓ Prontinho! Você está na lista.</p>
