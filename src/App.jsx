@@ -10,7 +10,6 @@ import AppTabBar from './components/AppTabBar'
 import CadastroGate from './components/CadastroGate'
 import LancGate from './components/LancGate'
 import Home from './pages/Home'
-import HomeRebrand from './pages/HomeRebrand'
 import { CONFIG, linkWhatsApp, WA, aplicarOverridesImoveis } from './data'
 import { IconWhats } from './components/icons'
 
@@ -93,8 +92,6 @@ export default function App() {
   // barra de abas ou qualquer chrome do site. Só o editor, ocupando a tela toda.
   const modoEstudio = pathname.replace(/\/+$/, '') === '/ferramentas/estudio-de-fotos'
   const semChrome = modoApp || modoEstudio
-  // Home REBRAND: a home nova traz o próprio cabeçalho/rodapé, então escondemos o chrome global só na "/".
-  const homeNova = pathname === '/' || pathname === ''
   // Overrides dos imóveis: ao carregar, mutam IMOVEIS no lugar e disparam UM re-render.
   // NÃO usamos isso como `key` da árvore (remontar fechava modais/ferramentas no meio do uso).
   const [, aplicarOvRender] = useState(0)
@@ -183,12 +180,12 @@ export default function App() {
     <>
       <a href="#conteudo" className="skip-link">Pular para o conteúdo</a>
       {!semChrome && <ScrollProgress />}
-      {!semChrome && !homeNova && <Navbar />}
+      {!semChrome && <Navbar />}
       <div id="conteudo" tabIndex={-1}>
         <ErrorBoundary>
           <Suspense fallback={<div className="rota-load" aria-busy="true"><span className="rota-spinner" /></div>}>
             <Routes>
-              <Route path="/" element={<HomeRebrand />} />
+              <Route path="/" element={<Home />} />
               <Route path="/imoveis" element={<Catalogo />} />
               <Route path="/alugar" element={CONFIG.alugarAtivo ? <Alugar /> : <Navigate to="/imoveis" replace />} />
               <Route path="/alugar/imovel/:codigo" element={CONFIG.alugarAtivo ? <AlugarDetalhe /> : <Navigate to="/imoveis" replace />} />
@@ -260,7 +257,7 @@ export default function App() {
           </Suspense>
         </ErrorBoundary>
       </div>
-      {!semChrome && !homeNova && <Footer />}
+      {!semChrome && <Footer />}
 
       {!semChrome && (
         <a className="wa-float" href={linkWhatsApp(WA.flutuante)} target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp">
