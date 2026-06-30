@@ -808,6 +808,32 @@ const PDF_FERRAMENTAS = [
       { q: 'A rotação fica salva no arquivo?', a: 'Sim, o PDF baixado já vem girado e abre certo em qualquer leitor.' },
     ],
   },
+  {
+    slug: 'marca-dagua', nome: 'Marca d\'água em PDF',
+    titulo: 'Marca d\'água em PDF Grátis: Texto por Cima do PDF, Sem Upload',
+    desc: 'Coloque marca d\'água de texto em todas as páginas de um PDF, de graça e sem cadastro. Cor, tamanho e opacidade ajustáveis. Processamento 100% no navegador, sem upload.',
+    h1: 'Marca d\'água em PDF grátis',
+    intro: 'Carimbe um texto em todas as páginas do PDF, com a cor e a transparência que quiser, direto no navegador. Sem upload e sem cobrança.',
+    features: ['100% gratuito, sem cadastro', 'Processamento local, sem upload', 'Cor, tamanho e opacidade ajustáveis', 'Estilo diagonal ou repetido', 'Em todas as páginas'],
+    faq: [
+      { q: 'É gratuito?', a: 'Sim, 100% gratuito e ilimitado, sem cadastro.' },
+      { q: 'O arquivo vai para algum servidor?', a: 'Não. A marca é aplicada no seu navegador.' },
+      { q: 'Aparece em todas as páginas?', a: 'Sim, o texto é aplicado em todo o documento.' },
+    ],
+  },
+  {
+    slug: 'numeros-pagina', nome: 'Números de página no PDF',
+    titulo: 'Números de Página no PDF Grátis: Numerar Páginas, Sem Upload',
+    desc: 'Adicione números de página a um PDF de graça e sem cadastro. Escolha a posição e o formato. Processamento 100% no navegador, seu arquivo não sai do dispositivo.',
+    h1: 'Números de página no PDF grátis',
+    intro: 'Adicione a numeração no canto que preferir e no formato que precisar, direto no navegador. Sem upload e sem marca d\'água.',
+    features: ['100% gratuito, sem cadastro', 'Processamento local, sem upload', 'Posição configurável', 'Formatos 1, 1 de N e Página 1', 'Sem marca d\'água'],
+    faq: [
+      { q: 'É gratuito numerar as páginas?', a: 'Sim, 100% gratuito e ilimitado.' },
+      { q: 'O arquivo vai para algum servidor?', a: 'Não. A numeração é feita no seu navegador.' },
+      { q: 'Posso escolher a posição?', a: 'Sim, rodapé ou topo, centro, direita ou esquerda.' },
+    ],
+  },
 ]
 const rotasPdf = []
 for (const t of PDF_FERRAMENTAS) {

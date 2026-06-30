@@ -28,8 +28,8 @@ export const PDF_CATALOGO = [
   { slug: 'pdf-para-jpg', nome: 'PDF para JPG', desc: 'Cada página vira imagem.', cat: 'converter', cor: DOURADO, status: 'live' },
   { slug: 'imagem-para-pdf', nome: 'Imagem para PDF', desc: 'JPG, PNG e HEIC num PDF.', cat: 'converter', cor: DOURADO, status: 'live' },
   // Editar
-  { slug: 'numeros-pagina', nome: 'Números de página', desc: 'Numere as páginas do PDF.', cat: 'editar', cor: NAVY, status: 'breve' },
-  { slug: 'marca-dagua', nome: "Marca d'água", desc: 'Texto ou imagem por cima do PDF.', cat: 'editar', cor: NAVY, status: 'breve' },
+  { slug: 'numeros-pagina', nome: 'Números de página', desc: 'Numere as páginas do PDF.', cat: 'editar', cor: NAVY, status: 'live' },
+  { slug: 'marca-dagua', nome: "Marca d'água", desc: 'Texto por cima de todas as páginas.', cat: 'editar', cor: NAVY, status: 'live' },
   { slug: 'recortar-pdf', nome: 'Recortar PDF', desc: 'Corte as margens das páginas.', cat: 'editar', cor: NAVY, status: 'breve' },
   { slug: 'assinar-pdf', nome: 'Assinar PDF', desc: 'Assine e carimbe no documento.', cat: 'editar', cor: NAVY, status: 'breve' },
   // Segurança

@@ -35,6 +35,8 @@ const DividirPdf = lazy(() => import('./pages/DividirPdfPage'))
 const ComprimirPdf = lazy(() => import('./pages/ComprimirPdfPage'))
 const PdfHub = lazy(() => import('./pages/PdfHub'))
 const RodarPdf = lazy(() => import('./pages/RodarPdfPage'))
+const MarcaDagua = lazy(() => import('./pages/MarcaDaguaPage'))
+const NumerosPagina = lazy(() => import('./pages/NumerosPaginaPage'))
 const SimuladorFinanciamento = lazy(() => import('./pages/SimuladorFinanciamento'))
 const TranscreverPage = lazy(() => import('./pages/TranscreverPage'))
 const Corretor = lazy(() => import('./pages/Corretor'))
@@ -217,6 +219,8 @@ export default function App() {
               <Route path="/ferramentas/comprimir-pdf" element={<ComprimirPdf />} />
               <Route path="/ferramentas/pdf" element={<PdfHub />} />
               <Route path="/ferramentas/rodar-pdf" element={<RodarPdf />} />
+              <Route path="/ferramentas/marca-dagua" element={<MarcaDagua />} />
+              <Route path="/ferramentas/numeros-pagina" element={<NumerosPagina />} />
               <Route path="/ferramentas/criar-tour" element={<CriarTour />} />
               <Route path="/tour/:id" element={<TourPage />} />
               <Route path="/simulador-financiamento" element={<SimuladorFinanciamento />} />
