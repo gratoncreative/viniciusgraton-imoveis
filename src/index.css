@@ -9328,6 +9328,41 @@ html[data-theme="claro"] .det-whats svg { color: #FFFFFF; }
 }
 @media (max-width: 560px) { .hr-grid, .hr-feats { grid-template-columns: 1fr; } }
 
+/* ── Home REBRAND v2 — hero fotográfico imersivo + "quem te atende" + cards com preço sobre a foto ── */
+.hr-top { position: relative; background: #212b3d center/cover no-repeat; color: #fff; }
+.hr-top-ov { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(33,43,61,.5) 0%, rgba(33,43,61,.4) 38%, rgba(33,43,61,.84) 100%); }
+.hr-nav2 { position: relative; z-index: 2; max-width: 1120px; margin: 0 auto; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; }
+.hr-logo2 { color: #fff; font-weight: 800; font-size: 19px; letter-spacing: -.01em; }
+.hr-links2 { display: flex; align-items: center; gap: 22px; }
+.hr-links2 a:not(.hr-btn) { color: rgba(255,255,255,.92); font-size: 14px; font-weight: 500; transition: color .15s; }
+.hr-links2 a:not(.hr-btn):hover { color: #fff; }
+.hr-hero2 { position: relative; z-index: 2; max-width: 820px; margin: 0 auto; padding: 64px 24px 84px; text-align: center; }
+.hr-eyebrow2 { font-size: 12.5px; letter-spacing: .15em; text-transform: uppercase; color: #C7C4F5; font-weight: 600; }
+.hr-h1b { font-size: clamp(32px, 5.2vw, 52px); font-weight: 800; line-height: 1.06; color: #fff; margin: 16px 0; letter-spacing: -.02em; }
+.hr-sub2 { font-size: 17px; line-height: 1.6; color: rgba(255,255,255,.88); margin: 0 auto 26px; max-width: 560px; }
+.hr-search2 { background: #fff; border-radius: 16px; padding: 8px 8px 8px 16px; display: flex; align-items: center; gap: 10px; max-width: 580px; margin: 0 auto; box-shadow: 0 30px 60px -28px rgba(33,43,61,.7); }
+.hr-search2 svg { flex: none; }
+.hr-search2 input { flex: 1; border: none; outline: none; background: none; font: inherit; font-size: 15px; color: #212b3d; padding: 12px 0; }
+.hr-search2 input::placeholder { color: #9aa1b2; }
+.hr-hero-trust { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px 18px; margin-top: 26px; color: rgba(255,255,255,.9); font-size: 14px; }
+.hr-hero-trust b { color: #fff; font-weight: 800; }
+.hr-hero-trust i { width: 1px; height: 16px; background: rgba(255,255,255,.3); }
+.hr-card-img { height: 200px; }
+.hr-card-grad { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(33,43,61,.8) 100%); }
+.hr-card-preco-ov { position: absolute; left: 14px; bottom: 12px; z-index: 1; color: #fff; font-weight: 800; font-size: 20px; text-shadow: 0 1px 8px rgba(33,43,61,.55); }
+.hr-card-body { padding: 13px 15px 16px; }
+.hr-card-loc { font-size: 14px; color: #212b3d; font-weight: 600; margin: 0 0 7px; }
+.hr-grid-cta { text-align: center; margin-top: 30px; }
+.hr-sobre { max-width: 1120px; margin: 18px auto 0; padding: 24px; display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 34px; align-items: center; }
+.hr-sobre-foto { border-radius: 18px; min-height: 320px; background: #2C3A52 center/cover no-repeat; box-shadow: 0 26px 56px -30px rgba(33,43,61,.5); }
+.hr-sobre-txt h2 { font-size: clamp(22px, 3vw, 30px); font-weight: 800; color: #212b3d; margin: 12px 0 14px; line-height: 1.12; letter-spacing: -.01em; }
+.hr-sobre-txt p { font-size: 15.5px; line-height: 1.65; color: #5B6478; margin: 0 0 20px; max-width: 500px; }
+@media (max-width: 860px) {
+  .hr-links2 a:not(.hr-btn) { display: none; }
+  .hr-sobre { grid-template-columns: 1fr; }
+  .hr-sobre-foto { min-height: 240px; }
+}
+
 /* ============================================================
    🔒 REGRA DE OURO DOS BOTÕES (trancada por senha na memória).
    TODO botão é uma de 3 opções:
