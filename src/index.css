@@ -35,10 +35,10 @@
   --text-soft: #C9CEDA;
   --text-mute: #8A8F99;     /* Cinza Pedra */
 
-  --font-display: 'Fraunces', 'Playfair Display', Georgia, serif; /* TÍTULOS nobres (serifada moderna) */
-  --font-head: 'Manrope', system-ui, sans-serif;      /* rótulos, botões, nav, selos */
-  --font-body: 'Manrope', system-ui, sans-serif;      /* texto/interface */
-  --font-serif: 'Fraunces', 'Playfair Display', Georgia, serif;   /* acentos em itálico */
+  --font-display: 'Space Grotesk', system-ui, sans-serif; /* TÍTULOS (grotesca moderna) */
+  --font-head: 'Inter', system-ui, sans-serif;      /* rótulos, botões, nav, selos */
+  --font-body: 'Inter', system-ui, sans-serif;      /* texto/interface */
+  --font-serif: 'Space Grotesk', system-ui, sans-serif;   /* acentos */
 
   --maxw: 1860px;
   --radius: 20px;
