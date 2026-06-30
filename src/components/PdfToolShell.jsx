@@ -1,18 +1,13 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
+import { pdfLive } from '../pdfTools'
 
 const SITE = 'https://viniciusgraton.com.br'
 
-// Todas as ferramentas de arquivo da suíte — usado pro cross-link entre elas
-// (navegação + SEO de interligação). Mantém a ordem do "fluxo natural".
-export const PDF_TOOLS = [
-  { slug: 'pdf-para-jpg', label: 'PDF para JPG', desc: 'Cada página vira imagem' },
-  { slug: 'imagem-para-pdf', label: 'Imagem para PDF', desc: 'Junte fotos num PDF' },
-  { slug: 'juntar-pdf', label: 'Juntar PDF', desc: 'Combine vários num só' },
-  { slug: 'dividir-pdf', label: 'Dividir PDF', desc: 'Separe ou extraia páginas' },
-  { slug: 'comprimir-pdf', label: 'Comprimir PDF', desc: 'Reduza o tamanho do arquivo' },
-]
+// Cross-link entre as ferramentas (navegação + SEO de interligação) — derivado do
+// catálogo único (pdfTools.js), então inclui automaticamente toda ferramenta "live".
+export const PDF_TOOLS = pdfLive().map((t) => ({ slug: t.slug, label: t.nome, desc: t.desc }))
 
 // helper de ícone (path único)
 function ico(d, size = 14, sw = 2) {

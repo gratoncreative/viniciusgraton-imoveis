@@ -795,6 +795,19 @@ const PDF_FERRAMENTAS = [
       { q: 'O PDF vai para algum servidor?', a: 'Não. A compressão acontece no seu navegador.' },
     ],
   },
+  {
+    slug: 'rodar-pdf', nome: 'Rodar PDF (girar páginas)',
+    titulo: 'Rodar PDF Grátis: Girar Páginas do PDF, Sem Upload',
+    desc: 'Gire as páginas de um PDF (90, 180 ou 270 graus) de graça e sem cadastro. A rotação fica salva no arquivo. Processamento 100% no navegador, seu arquivo não sai do dispositivo.',
+    h1: 'Rodar PDF grátis',
+    intro: 'Gire o PDF inteiro em segundos e salve na orientação certa, direto no navegador. Sem upload e sem marca d\'água.',
+    features: ['100% gratuito, sem cadastro', 'Processamento local, sem upload', 'Giro de 90, 180 ou 270 graus', 'Rotação salva no arquivo', 'Sem marca d\'água'],
+    faq: [
+      { q: 'É gratuito rodar um PDF?', a: 'Sim, 100% gratuito e ilimitado, sem marca d\'água.' },
+      { q: 'O arquivo vai para algum servidor?', a: 'Não. A rotação é feita no seu navegador.' },
+      { q: 'A rotação fica salva no arquivo?', a: 'Sim, o PDF baixado já vem girado e abre certo em qualquer leitor.' },
+    ],
+  },
 ]
 const rotasPdf = []
 for (const t of PDF_FERRAMENTAS) {
@@ -827,6 +840,35 @@ for (const t of PDF_FERRAMENTAS) {
   rotasPdf.push(`/ferramentas/${t.slug}`)
 }
 console.log(`✓ prerender ferramentas PDF: ${rotasPdf.length} landings em dist/ferramentas/{slug}/`)
+
+// Hub /ferramentas/pdf (estilo iLovePDF) — página estática com a lista das ferramentas
+{
+  const url = slash(`${SITE}/ferramentas/pdf`)
+  const titulo = 'Ferramentas de PDF Grátis Online: Juntar, Dividir, Comprimir, Converter'
+  const desc = 'Todas as ferramentas de PDF que você precisa, grátis e sem enviar seus arquivos: juntar, dividir, comprimir, PDF para JPG, imagem para PDF, rodar e mais. 100% no navegador, sem cadastro.'
+  const links = PDF_FERRAMENTAS.map((t) => `<a href="/ferramentas/${t.slug}">${esc(t.nome)}</a>`).join(' · ')
+  const body = `<main class="pre-seo"><h1>Ferramentas de PDF grátis, sem enviar seus arquivos</h1>` +
+    `<p>Junte, divida, comprima e converta PDF de graça, direto no navegador, sem upload e sem marca d'água. Veja todas as ferramentas:</p>` +
+    `<nav>${links}</nav>` +
+    `<p>Diferente de outros sites, seus arquivos não são enviados a nenhum servidor: tudo acontece no seu próprio aparelho.</p></main>`
+  const ld = { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Ferramentas de PDF grátis', itemListElement: PDF_FERRAMENTAS.map((t, i) => ({ '@type': 'ListItem', position: i + 1, name: t.nome, url: `${SITE}/ferramentas/${t.slug}` })) }
+  const html = baseHtml
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)} | Vinícius Graton</title>`)
+    .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
+    .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${esc(url)}$2`)
+    .replace(/(<meta name="twitter:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
+    .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
+    .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(url)}$2`)
+    .replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`)
+    .replace('<div id="root"></div>', `<div id="root">${slashHrefs(body)}</div>`)
+  const dir = resolve(DIST, 'ferramentas', 'pdf')
+  mkdirSync(dir, { recursive: true })
+  writeFileSync(resolve(dir, 'index.html'), html)
+  rotasPdf.push('/ferramentas/pdf')
+  console.log('✓ prerender hub /ferramentas/pdf')
+}
 
 // página /investir — ranking de rentabilidade por bairro (lê public/rentabilidade-bairros.json)
 try {

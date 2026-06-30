@@ -9215,6 +9215,33 @@ html[data-theme="claro"] .det-whats svg { color: #FFFFFF; }
   .pdftools-bar-acts .btn { flex: 1; }
 }
 
+/* ════════════════ Hub de ferramentas de PDF (pdfhub-*) — estilo iLovePDF na marca VG ════════════════ */
+.pdfhub-pg { background: #faf8f3; min-height: 100vh; }
+.pdfhub-hero { background: linear-gradient(180deg, #fff, #faf8f3); border-bottom: 1px solid var(--border, #e7e3d8); padding: 48px 0 36px; text-align: center; }
+.pdfhub-eyebrow { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--gold-2, #C9A24B); margin-bottom: 10px; }
+.pdfhub-h1 { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(28px, 5vw, 46px); color: #1C2A44; margin: 0 0 12px; line-height: 1.12; }
+.pdfhub-h1 span { color: #EB0128; }
+.pdfhub-sub { max-width: 620px; margin: 0 auto 18px; color: #4a5163; font-size: 16px; line-height: 1.5; }
+.pdfhub-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.pdfhub-chips span { font-size: 12.5px; font-weight: 600; color: #1C2A44; background: #fff; border: 1px solid var(--border, #e7e3d8); border-radius: 999px; padding: 5px 12px; }
+.pdfhub-body { padding: 34px 0 56px; }
+.pdfhub-cat { margin-bottom: 34px; }
+.pdfhub-cat-hd { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border, #e7e3d8); }
+.pdfhub-cat-hd h2 { font-size: 18px; color: #1C2A44; margin: 0; font-weight: 700; }
+.pdfhub-cat-hd span { font-size: 13px; color: var(--muted, #8a8f98); }
+.pdfhub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
+.pdfhub-card { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 18px; background: #fff; border: 1px solid var(--border, #e7e3d8); border-radius: 14px; text-decoration: none; transition: border-color .15s, box-shadow .15s, transform .15s; }
+.pdfhub-card:hover { border-color: var(--gold-2, #C9A24B); box-shadow: 0 8px 24px rgba(33,43,61,.09); transform: translateY(-3px); }
+.pdfhub-card-ico { width: 46px; height: 46px; display: grid; place-items: center; border: 1px solid; border-radius: 11px; margin-bottom: 4px; }
+.pdfhub-card-nome { color: #1C2A44; font-size: 15.5px; }
+.pdfhub-card-desc { color: var(--muted, #8a8f98); font-size: 13px; line-height: 1.35; }
+.pdfhub-card--breve { opacity: .6; cursor: default; }
+.pdfhub-card--breve:hover { border-color: var(--border, #e7e3d8); box-shadow: none; transform: none; }
+.pdfhub-breve { position: absolute; top: 12px; right: 12px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: #8a6d1f; background: #f6edcf; border-radius: 6px; padding: 2px 7px; }
+.pdfhub-priv { display: flex; align-items: center; gap: 8px; justify-content: center; color: var(--muted, #6b7280); font-size: 13.5px; margin-top: 8px; text-align: center; }
+.pdfhub-priv svg { color: var(--gold-2, #C9A24B); flex: none; }
+@media (max-width: 600px) { .pdfhub-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); } }
+
 /* ============================================================
    🔒 REGRA DE OURO DOS BOTÕES (trancada por senha na memória).
    TODO botão é uma de 3 opções:
