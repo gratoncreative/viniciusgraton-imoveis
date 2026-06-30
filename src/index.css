@@ -9242,6 +9242,19 @@ html[data-theme="claro"] .det-whats svg { color: #FFFFFF; }
 .pdfhub-priv svg { color: var(--gold-2, #C9A24B); flex: none; }
 @media (max-width: 600px) { .pdfhub-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); } }
 
+/* ════════ /ferramentas: cards em proporção 1:1 (quadrados) ════════
+   Só LAYOUT (forma) — as cores (ícone vermelho + branco) seguem pelo bloco
+   travado por senha logo abaixo, que vence a cascata. */
+.ferramentas-pg .ferr-grid-3 { grid-template-columns: repeat(auto-fill, minmax(172px, 1fr)); }
+.ferramentas-pg .ferr-card3 { flex-direction: column; align-items: center; justify-content: center; text-align: center; aspect-ratio: 1 / 1; gap: 9px; padding: 16px 14px; }
+.ferramentas-pg .ferr-card3-ico { width: 48px; height: 48px; margin-bottom: 2px; }
+.ferramentas-pg .ferr-card3-body { flex: none; align-items: center; text-align: center; gap: 5px; }
+.ferramentas-pg .ferr-card3-tit { justify-content: center; }
+.ferramentas-pg .ferr-card3-body i { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.ferramentas-pg .ferr-card3-arrow { display: none; }
+.ferramentas-pg .ferr-lock-msg { -webkit-line-clamp: 2; line-clamp: 2; }
+@media (max-width: 480px) { .ferramentas-pg .ferr-grid-3 { grid-template-columns: 1fr 1fr; } }
+
 /* ============================================================
    🔒 REGRA DE OURO DOS BOTÕES (trancada por senha na memória).
    TODO botão é uma de 3 opções:
