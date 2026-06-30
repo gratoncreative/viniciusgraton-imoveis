@@ -145,14 +145,13 @@ export default function Navbar() {
               <IconHeart filled={favs > 0} width={20} height={20} />
               {favs > 0 && <span className="nav-fav-badge">{favs}</span>}
             </Link>
-            <Link to="/conta" className="nav-conta" aria-label={conta ? 'Minha área' : 'Entrar'}>
+            <Link to="/conta" className={`nav-conta${conta ? ' nav-conta--ico' : ''}`} aria-label={conta ? 'Minha área' : 'Entrar'} title={conta ? 'Minha área' : 'Entrar'}>
               <IconUser width={19} height={19} />
-              <span>{conta ? (conta.nome || '').trim().split(' ')[0] || 'Minha área' : 'Entrar'}</span>
+              {!conta && <span>Entrar</span>}
             </Link>
             {ehAdmin && (
-              <Link to="/admin" className="nav-conta nav-admin" aria-label="Painel Admin">
+              <Link to="/admin" className="nav-conta nav-admin nav-conta--ico" aria-label="Painel Admin" title="Painel Admin">
                 <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <span>Admin</span>
               </Link>
             )}
             <a className="btn btn-gold" href={linkWhatsApp(WA.navbar)} target="_blank" rel="noopener noreferrer">
