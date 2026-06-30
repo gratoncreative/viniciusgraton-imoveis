@@ -3,13 +3,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useSEO } from '../useSEO'
 import { CONFIG, IMOVEIS, linkWhatsApp } from '../data'
 
-// Home REBRAND v2 — fotográfica e rica (referência: loft / quintoandar), na direção
-// "Clean & tech" (índigo + Inter). Autocontida: traz o próprio chrome (o App esconde o
-// chrome global na "/"). Escopo CSS isolado .hr-*.
+// Home REBRAND (direção 1 "Clean & tech": ice + tinta + índigo, Inter).
+// Autocontida: traz o próprio cabeçalho e rodapé (o App esconde o chrome global na "/").
+// As outras páginas seguem intactas até as próximas ondas do rebrand.
 
 const BlogHome = lazy(() => import('../components/BlogHome'))
-
-const HERO_IMG = 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1920&auto=format&fit=crop'
 
 const fmtPreco = (v) =>
   v >= 1e6 ? `R$ ${(v / 1e6).toFixed(v % 1e6 === 0 ? 0 : 1).replace('.', ',')} mi`
@@ -25,15 +23,15 @@ const FEATS = [
   { d: 'M14.7 6.3a4 4 0 0 0-5.4 5.4l-6 6V20h2.3l6-6a4 4 0 0 0 5.4-5.4l-2.3 2.3-1.4-.6-.6-1.4 2-2z', t: 'Ferramentas grátis', s: 'Simuladores, estudo do m² e suíte de PDF, sem pagar nada.' },
 ]
 
-function CardImovelNovo({ im }) {
+function CardImovelNovo({ im, hero }) {
   return (
-    <Link to={`/imovel/${im.codigo}`} className="hr-card">
+    <Link to={`/imovel/${im.codigo}`} className={hero ? 'hr-hero-card' : 'hr-card'}>
       <div className="hr-card-img" style={im.img ? { backgroundImage: `url(${im.img})` } : undefined}>
         {(im.tour360 || im.tour3d) && <span className="hr-card-360">360°</span>}
-        <span className="hr-card-grad" aria-hidden="true" />
-        <span className="hr-card-preco-ov">{fmtPreco(im.preco)}</span>
+        {hero && <span className="hr-card-badge">Destaque</span>}
       </div>
       <div className="hr-card-body">
+        <div className="hr-card-preco">{fmtPreco(im.preco)}</div>
         <div className="hr-card-loc">{im.tipo}{im.bairro ? ` · ${im.bairro}` : ''}</div>
         <div className="hr-card-specs">
           {im.quartos > 0 && <span>{im.quartos} quartos</span>}
@@ -54,6 +52,7 @@ export default function HomeRebrand() {
   const navigate = useNavigate()
   const [q, setQ] = useState('')
 
+  // tema claro nesta página
   useEffect(() => {
     const html = document.documentElement
     const anterior = html.getAttribute('data-theme')
@@ -61,6 +60,7 @@ export default function HomeRebrand() {
     return () => { html.setAttribute('data-theme', anterior || 'claro') }
   }, [])
 
+  // schema RealEstateAgent (igual ao da home antiga)
   useEffect(() => {
     const el = document.createElement('script')
     el.type = 'application/ld+json'; el.id = 'home-schema'
@@ -80,7 +80,9 @@ export default function HomeRebrand() {
 
   const destaques = [...IMOVEIS]
     .sort((a, b) => (Date.parse(b.visto || '') || 0) - (Date.parse(a.visto || '') || 0))
-    .slice(0, 6)
+    .slice(0, 7)
+  const heroIm = destaques[0]
+  const grid = destaques.slice(1, 7)
 
   const buscar = (e) => {
     e.preventDefault()
@@ -89,63 +91,52 @@ export default function HomeRebrand() {
 
   return (
     <div className="hr">
-      {/* ── Topo: hero fotográfico imersivo ── */}
-      <header className="hr-top" style={{ backgroundImage: `url(${HERO_IMG})` }}>
-        <span className="hr-top-ov" aria-hidden="true" />
-        <nav className="hr-nav2" aria-label="Principal">
-          <Link to="/" className="hr-logo2">Vinícius Graton</Link>
-          <div className="hr-links2">
+      {/* ── Cabeçalho ── */}
+      <header className="hr-nav">
+        <div className="hr-nav-in">
+          <Link to="/" className="hr-logo">Vinícius Graton</Link>
+          <nav className="hr-links" aria-label="Principal">
             <Link to="/imoveis">Comprar</Link>
             <Link to="/lancamentos">Lançamentos</Link>
             <Link to="/ferramentas">Ferramentas</Link>
             <Link to="/blog">Blog</Link>
-            <a className="hr-btn hr-btn-light" href={linkWhatsApp(WA_FALAR)} target="_blank" rel="noopener noreferrer">Falar comigo</a>
-          </div>
-        </nav>
-        <div className="hr-hero2">
-          <span className="hr-eyebrow2">Imóveis em Uberlândia</span>
-          <h1 className="hr-h1b">Encontre o endereço da<br />próxima fase da sua vida</h1>
-          <p className="hr-sub2">Curadoria pessoal de casas, apartamentos e terrenos, do primeiro café à entrega das chaves.</p>
-          <form className="hr-search2" onSubmit={buscar} role="search">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#9aa1b2" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4-4" /></svg>
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Bairro, tipo ou código…" aria-label="Buscar imóvel" />
-            <button type="submit" className="hr-btn hr-btn-primary">Buscar</button>
-          </form>
-          <div className="hr-hero-trust">
-            <span><b>{IMOVEIS.length.toLocaleString('pt-BR')}+</b> imóveis</span>
-            <i aria-hidden="true" />
-            <span><b>71</b> bairros</span>
-            <i aria-hidden="true" />
-            <span>Atendimento <b>pessoal</b></span>
-          </div>
+            <a className="hr-btn hr-btn-primary" href={linkWhatsApp(WA_FALAR)} target="_blank" rel="noopener noreferrer">Falar comigo</a>
+          </nav>
         </div>
       </header>
+
+      {/* ── Hero ── */}
+      <section className="hr-hero">
+        <div className="hr-hero-in">
+          <div className="hr-hero-txt">
+            <span className="hr-eyebrow">Imóveis em Uberlândia</span>
+            <h1 className="hr-h1">Encontre o endereço da próxima fase da sua vida</h1>
+            <p className="hr-sub">Curadoria pessoal de casas, apartamentos e terrenos, do primeiro café à entrega das chaves.</p>
+            <form className="hr-search" onSubmit={buscar} role="search">
+              <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Bairro, tipo ou código…" aria-label="Buscar imóvel" />
+              <button type="submit" className="hr-btn hr-btn-primary">Buscar</button>
+            </form>
+          </div>
+          {heroIm && <CardImovelNovo im={heroIm} hero />}
+        </div>
+      </section>
+
+      {/* ── Números ── */}
+      <section className="hr-stats" aria-label="Resumo">
+        <div className="hr-stat"><b>{IMOVEIS.length.toLocaleString('pt-BR')}+</b><span>imóveis no ar</span></div>
+        <div className="hr-stat"><b>71</b><span>bairros de Uberlândia</span></div>
+        <div className="hr-stat"><b className="hr-ink">Pessoal</b><span>atendimento direto</span></div>
+        <div className="hr-stat"><b className="hr-ink">Grátis</b><span>pra anunciar</span></div>
+      </section>
 
       {/* ── Imóveis em destaque ── */}
       <section className="hr-sec">
         <div className="hr-sec-head">
-          <div>
-            <span className="hr-eyebrow">Atualizado todo dia</span>
-            <h2>Imóveis em destaque</h2>
-          </div>
+          <h2>Imóveis em destaque</h2>
           <Link to="/imoveis" className="hr-link">Ver todos →</Link>
         </div>
         <div className="hr-grid">
-          {destaques.map((im) => <CardImovelNovo key={im.codigo} im={im} />)}
-        </div>
-        <div className="hr-grid-cta">
-          <Link to="/imoveis" className="hr-btn hr-btn-primary">Ver catálogo completo</Link>
-        </div>
-      </section>
-
-      {/* ── Quem te atende (humaniza) ── */}
-      <section className="hr-sobre">
-        <div className="hr-sobre-foto" style={{ backgroundImage: 'url(/vinicius-graton.jpg)' }} aria-hidden="true" />
-        <div className="hr-sobre-txt">
-          <span className="hr-eyebrow">Quem te atende</span>
-          <h2>Atendimento de verdade, do começo ao fim</h2>
-          <p>Sou o Vinícius. Não te jogo numa lista infinita de imóveis: eu entendo o seu momento, seleciono o que faz sentido e acompanho cada etapa, da visita ao financiamento e à entrega da chave.</p>
-          <a className="hr-btn hr-btn-primary" href={linkWhatsApp(WA_FALAR)} target="_blank" rel="noopener noreferrer">Falar comigo agora</a>
+          {grid.map((im) => <CardImovelNovo key={im.codigo} im={im} />)}
         </div>
       </section>
 
@@ -174,7 +165,7 @@ export default function HomeRebrand() {
         </div>
       </section>
 
-      {/* ── Blog ── */}
+      {/* ── Blog (reaproveitado) ── */}
       <div className="hr-blog">
         <Suspense fallback={null}><BlogHome /></Suspense>
       </div>
