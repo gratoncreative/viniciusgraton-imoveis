@@ -79,7 +79,7 @@ function StatCard({ rotulo, valor, sub, onClick }) {
   )
 }
 
-function LeadCard({ lead, token, onSair, onMudou }) {
+function LeadCard({ lead, token, onSair, onMudou, onVerImovel }) {
   const [status, setStatus] = useState(lead.status || 'Novo')
   const [nota, setNota] = useState(lead.nota || '')
   const [salvo, setSalvo] = useState(false)
@@ -107,6 +107,9 @@ function LeadCard({ lead, token, onSair, onMudou }) {
       <span>{lead.fone ? <a href={waLink(lead.fone)} target="_blank" rel="noopener noreferrer">{lead.fone}</a> : <i style={{ color: 'var(--text-mute)' }}>sem telefone</i>}</span>
       <span className="painel-meta">{[lead.objetivo, lead.bairro || lead.cod, lead.origem, lead.data ? new Date(lead.data).toLocaleDateString('pt-BR') : ''].filter(Boolean).join(' · ')}</span>
       {lead.detalhes && <p className="painel-meta" style={{ marginTop: 4 }}>💬 {lead.detalhes}</p>}
+      {lead.cod && onVerImovel && (
+        <button type="button" className="admin-btn admin-btn--mini" style={{ marginTop: 6, alignSelf: 'flex-start' }} onClick={() => onVerImovel(lead.cod)}>🏠 Ver dados completos do imóvel {lead.cod}</button>
+      )}
       <div className="lead-status">
         {STATUS_LEAD.map((s) => (
           <button key={s} className={`lead-status-b ${status === s ? 'on' : ''}`} onClick={() => mudarStatus(s)}>{s}</button>
@@ -125,6 +128,44 @@ function LeadCard({ lead, token, onSair, onMudou }) {
         <button className="admin-btn admin-btn--del admin-btn--mini" onClick={excluir}>Excluir</button>
       </div>
     </div>
+  )
+}
+
+// Aba de Leads: NÃO renderiza todos de uma vez (eram 1500+ cards = trava o site).
+// Mostra os mais recentes em blocos de 24, com busca e "carregar mais".
+function LeadsTab({ leads, leadsNovos, token, onSair, onMudou, exportarCSV, onVerImovel }) {
+  const [busca, setBusca] = useState('')
+  const [limite, setLimite] = useState(24)
+  const q = busca.trim().toLowerCase()
+  const filtrados = (q
+    ? leads.filter((l) => [l.nome, l.fone, l.cod, l.bairro, l.detalhes, l.objetivo, l.origem].some((c) => String(c || '').toLowerCase().includes(q)))
+    : leads
+  ).slice().sort((a, b) => (b.ts || 0) - (a.ts || 0))
+  const visiveis = filtrados.slice(0, limite)
+  return (
+    <section>
+      <div className="admin-barra">
+        <span className="painel-meta">{leads.length} lead(s) · {leadsNovos} nos últimos 7 dias</span>
+        {leads.length > 0 && <button className="admin-btn" onClick={exportarCSV}>⬇ Exportar CSV</button>}
+      </div>
+      {leads.length > 0 && (
+        <input value={busca} onChange={(e) => { setBusca(e.target.value); setLimite(24) }}
+          placeholder="🔎 Buscar lead por nome, telefone, imóvel, bairro…"
+          style={{ width: '100%', maxWidth: 460, margin: '4px 0 12px', padding: '10px 14px', borderRadius: 10, border: '1px solid var(--border)', font: 'inherit' }} />
+      )}
+      {leads.length === 0 && <p className="section-sub">Nenhum lead ainda. Pedidos de “avise-me”, condomínios e avaliação aparecem aqui.</p>}
+      {leads.length > 0 && (
+        <p className="painel-meta" style={{ marginBottom: 10 }}>Mostrando {visiveis.length} de {filtrados.length}{q ? ` (filtro “${busca}”)` : ''} · mais recentes primeiro.</p>
+      )}
+      <div className="painel-lista">
+        {visiveis.map((l) => <LeadCard key={l._key || l.ts} lead={l} token={token} onSair={onSair} onMudou={onMudou} onVerImovel={onVerImovel} />)}
+      </div>
+      {visiveis.length < filtrados.length && (
+        <div style={{ textAlign: 'center', marginTop: 18 }}>
+          <button className="admin-btn" onClick={() => setLimite((n) => n + 24)}>Carregar mais ({filtrados.length - visiveis.length} restantes)</button>
+        </div>
+      )}
+    </section>
   )
 }
 
@@ -735,16 +776,8 @@ export default function Admin() {
         )}
 
         {aba === 'leads' && (
-          <section>
-            <div className="admin-barra">
-              <span className="painel-meta">{leads.length} lead(s) · {leadsNovos} nos últimos 7 dias</span>
-              {leads.length > 0 && <button className="admin-btn" onClick={exportarCSV}>⬇ Exportar CSV</button>}
-            </div>
-            {leads.length === 0 && <p className="section-sub">Nenhum lead ainda. Pedidos de “avise-me”, condomínios e avaliação aparecem aqui.</p>}
-            <div className="painel-lista">
-              {leads.map((l) => <LeadCard key={l._key || l.ts} lead={l} token={token} onSair={sair} onMudou={carregar} />)}
-            </div>
-          </section>
+          <LeadsTab leads={leads} leadsNovos={leadsNovos} token={token} onSair={sair} onMudou={carregar} exportarCSV={exportarCSV}
+            onVerImovel={(cod) => { setImovelAlvo(cod); setAba('imoveis'); setSubImovel('publicados') }} />
         )}
 
         {aba === 'imoveis' && subImovel === 'publicados' && <ImoveisPub token={token} onSair={sair} alvo={imovelAlvo} onAbriu={() => setImovelAlvo(null)} />}
