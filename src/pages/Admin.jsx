@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import { useSEO } from '../useSEO'
-import { CONFIG, IMOVEIS, IMOVEIS_PENDENTES, formatPreco } from '../data'
+import { CONFIG, IMOVEIS, IMOVEIS_PENDENTES, formatPreco, getImovel, fotosDe } from '../data'
 import { CONSTRUTORAS } from '../empreendimentos'
 import { IconShield, IconArrow, IconWhats } from '../components/icons'
 import AdminCRM from '../components/AdminCRM'
@@ -108,7 +108,7 @@ function LeadCard({ lead, token, onSair, onMudou, onVerImovel }) {
       <span className="painel-meta">{[lead.objetivo, lead.bairro || lead.cod, lead.origem, lead.data ? new Date(lead.data).toLocaleDateString('pt-BR') : ''].filter(Boolean).join(' · ')}</span>
       {lead.detalhes && <p className="painel-meta" style={{ marginTop: 4 }}>💬 {lead.detalhes}</p>}
       {lead.cod && onVerImovel && (
-        <button type="button" className="admin-btn admin-btn--mini" style={{ marginTop: 6, alignSelf: 'flex-start' }} onClick={() => onVerImovel(lead.cod)}>🏠 Ver dados completos do imóvel {lead.cod}</button>
+        <button type="button" className="admin-btn admin-btn--mini" style={{ marginTop: 6, alignSelf: 'flex-start' }} onClick={() => onVerImovel(lead.cod)}>👤 Ficha completa do cliente (todos os imóveis, fotos e endereços)</button>
       )}
       <div className="lead-status">
         {STATUS_LEAD.map((s) => (
@@ -166,6 +166,163 @@ function LeadsTab({ leads, leadsNovos, token, onSair, onMudou, exportarCSV, onVe
         </div>
       )}
     </section>
+  )
+}
+
+// Endereço legível a partir do que o Imoview devolveu (campos rotulados > texto solto).
+function enderecoTexto(im) {
+  if (im && Array.isArray(im.enderecoCampos) && im.enderecoCampos.length) {
+    return im.enderecoCampos.map((c) => c.valor).filter(Boolean).join(', ')
+  }
+  return (im && im.enderecoImovel) || ''
+}
+
+// Card de UM imóvel dentro da ficha do cliente: dados públicos (cruzados com IMOVEIS) +
+// endereço captado + TODAS as fotos. `eager` limita a rajada: só os primeiros cards buscam a
+// galeria completa sozinhos; nos demais um clique carrega (cliente com muitos imóveis).
+function FichaImovel({ im, eager, onEditarImovel }) {
+  const pub = getImovel(im.cod) || {}
+  const [fotos, setFotos] = useState(fotosDe(pub))
+  const [buscar, setBuscar] = useState(!!eager)
+  useEffect(() => {
+    if (!buscar || fotos.length > 1) return // já temos a galeria (ou ainda não pediram)
+    let vivo = true
+    fetch('/api/rotina-imovel?codigo=' + encodeURIComponent(im.cod) + '&soFotos=1')
+      .then((r) => r.json())
+      .then((j) => { if (vivo && j && j.imovel && Array.isArray(j.imovel.fotos) && j.imovel.fotos.length) setFotos(j.imovel.fotos) })
+      .catch(() => {})
+    return () => { vivo = false }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [im.cod, buscar])
+
+  const preco = (im.campos && im.campos.preco) || pub.preco
+  const tipo = pub.tipo || (im.campos && im.campos.tipo) || 'Imóvel'
+  const bairro = pub.bairro || (im.campos && im.campos.bairro) || ''
+  const end = enderecoTexto(im) || pub.endereco || ''
+  const meta = [bairro, pub.quartos ? pub.quartos + ' qto' : '', pub.suites ? pub.suites + ' suíte' : '', pub.vagas ? pub.vagas + ' vaga' : '', pub.area ? pub.area + ' m²' : ''].filter(Boolean).join(' · ')
+
+  return (
+    <div className="painel-card ficha-imovel">
+      <div className="ficha-im-head">
+        <b>{tipo} · cód. {im.cod}</b>
+        {preco ? <span className="ficha-im-preco">{formatPreco(preco)}</span> : null}
+      </div>
+      {meta && <span className="painel-meta">{meta}</span>}
+      {end && <p className="painel-meta" style={{ marginTop: 3 }}>📍 {end}</p>}
+      {fotos.length > 0 && (
+        <div className="ficha-galeria">
+          {fotos.slice(0, 30).map((f, i) => (
+            <a key={i} href={f} target="_blank" rel="noopener noreferrer" className="ficha-foto" title={'Foto ' + (i + 1)}>
+              <img src={f} alt={'Foto ' + (i + 1)} loading="lazy" />
+            </a>
+          ))}
+        </div>
+      )}
+      {!buscar && fotos.length <= 1 && (
+        <button className="admin-btn admin-btn--mini" style={{ alignSelf: 'flex-start' }} onClick={() => setBuscar(true)}>📷 Carregar todas as fotos</button>
+      )}
+      <div className="ficha-im-acoes">
+        <a className="admin-btn admin-btn--mini" href={'/imovel/' + im.cod} target="_blank" rel="noopener noreferrer">Ver anúncio</a>
+        <button className="admin-btn admin-btn--mini" onClick={() => onEditarImovel(im.cod)}>🔒 Editar / proprietário</button>
+      </div>
+    </div>
+  )
+}
+
+// FICHA COMPLETA DO CLIENTE — overlay por cima do painel. Agrupa por telefone TODOS os
+// imóveis do mesmo dono (backend action 'dossie-cliente'), com endereço, fotos e dados.
+function FichaCliente({ cod, token, onFechar, onEditarImovel }) {
+  const [d, setD] = useState(null)
+  const [erro, setErro] = useState('')
+  const [carregando, setCarregando] = useState(true)
+
+  useEffect(() => {
+    let vivo = true
+    setCarregando(true); setErro('')
+    api({ action: 'dossie-cliente', token, cod }).then(({ status, j }) => {
+      if (!vivo) return
+      if (status === 401) return onFechar()
+      if (!j || !j.ok) { setErro((j && j.msg) || 'Não consegui carregar a ficha do cliente.'); setCarregando(false); return }
+      setD(j); setCarregando(false)
+    }).catch(() => { if (vivo) { setErro('Falha de conexão.'); setCarregando(false) } })
+    return () => { vivo = false }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cod, token])
+
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onFechar() }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [onFechar])
+
+  const cli = d && d.cliente
+  const imoveis = (d && d.imoveis) || []
+
+  const baixar = () => {
+    const L = []; const add = (s = '') => L.push(s)
+    add('FICHA COMPLETA DO CLIENTE'); add('Gerado em ' + new Date().toLocaleString('pt-BR')); add('')
+    if (cli) {
+      add('PROPRIETÁRIO'); add('  Nome: ' + (cli.nome || '-')); add('  Telefone: ' + (cli.fone || '-')); add('  E-mail: ' + (cli.email || '-'))
+      ;(cli.dados || []).forEach((x) => add('  ' + x.rotulo + ': ' + x.valor)); add('')
+    }
+    add('IMÓVEIS (' + imoveis.length + ')')
+    imoveis.forEach((im) => {
+      const pub = getImovel(im.cod) || {}
+      add(''); add('• Código ' + im.cod + '  ' + (pub.tipo || (im.campos && im.campos.tipo) || ''))
+      const end = enderecoTexto(im) || pub.endereco || ''
+      if (end) add('  Endereço: ' + end)
+      const bairro = pub.bairro || (im.campos && im.campos.bairro) || ''
+      if (bairro) add('  Bairro: ' + bairro)
+      const preco = (im.campos && im.campos.preco) || pub.preco
+      if (preco) add('  Preço: ' + formatPreco(preco))
+      add('  Anúncio: https://viniciusgraton.com.br/imovel/' + im.cod)
+    })
+    const blob = new Blob([L.join('\r\n')], { type: 'text/plain;charset=utf-8' })
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob)
+    a.download = 'ficha-cliente-' + (cli && cli.nome ? cli.nome.replace(/[^\w]+/g, '-').toLowerCase().slice(0, 40) : cod) + '.txt'
+    a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000)
+  }
+
+  return (
+    <div className="ficha-overlay" onClick={onFechar}>
+      <div className="ficha-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true">
+        <div className="ficha-topo">
+          <b>Ficha completa do cliente</b>
+          <button className="admin-btn admin-btn--mini" onClick={onFechar}>✕ Fechar</button>
+        </div>
+        {carregando && <p className="section-sub">Carregando ficha…</p>}
+        {erro && <p className="section-sub" style={{ color: '#EB0128' }}>{erro}</p>}
+        {!carregando && !erro && (
+          <>
+            {cli ? (
+              <div className="ficha-dono">
+                <h3 style={{ margin: '0 0 4px' }}>{cli.nome || 'Proprietário'}</h3>
+                <p className="painel-meta">
+                  {cli.fone ? <a href={waLink(cli.fone)} target="_blank" rel="noopener noreferrer">{cli.fone}</a> : 'sem telefone'}
+                  {cli.email ? ' · ' + cli.email : ''}
+                </p>
+                {Array.isArray(cli.dados) && cli.dados.length > 0 && (
+                  <ul className="ficha-dados">
+                    {cli.dados.map((x, i) => <li key={i}><span>{x.rotulo}:</span> {x.valor}</li>)}
+                  </ul>
+                )}
+              </div>
+            ) : (
+              <p className="section-sub">Proprietário ainda não captado do Imoview. Abra o imóvel abaixo e clique em “Proprietário” para captar os dados. O backup noturno passa a incluí-lo assim que captado.</p>
+            )}
+            <p className="painel-meta" style={{ margin: '14px 0 6px', fontWeight: 600 }}>
+              {imoveis.length} imóvel(is) deste cliente{d.agrupadoPor === 'telefone' ? ' · agrupados pelo telefone' : d.agrupadoPor === 'nome' ? ' · agrupados pelo nome' : ''}
+            </p>
+            <div className="ficha-imoveis">
+              {imoveis.map((im, i) => <FichaImovel key={im.cod} im={im} eager={i < 8} onEditarImovel={onEditarImovel} />)}
+            </div>
+            <div style={{ textAlign: 'center', marginTop: 16 }}>
+              <button className="admin-btn" onClick={baixar}>⬇ Baixar dossiê (.txt)</button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
   )
 }
 
@@ -500,6 +657,7 @@ export default function Admin() {
   const [aba, setAba] = useState('geral')
   const [subImovel, setSubImovel] = useState('avaliar') // sub-aba do hub de Imóveis
   const [imovelAlvo, setImovelAlvo] = useState(null) // abre direto o editor/proprietário deste código
+  const [fichaCod, setFichaCod] = useState(null) // abre a FICHA COMPLETA do cliente (todos os imóveis do dono)
   const [erro, setErro] = useState('')
   const [aprovadosLocais, setAprovadosLocais] = useState([]) // esconde na hora (KV tem atraso de leitura)
   const [carregando, setCarregando] = useState(false)
@@ -777,10 +935,12 @@ export default function Admin() {
 
         {aba === 'leads' && (
           <LeadsTab leads={leads} leadsNovos={leadsNovos} token={token} onSair={sair} onMudou={carregar} exportarCSV={exportarCSV}
-            onVerImovel={(cod) => { setImovelAlvo(cod); setAba('imoveis'); setSubImovel('publicados') }} />
+            onVerImovel={(cod) => setFichaCod(cod)} />
         )}
 
         {aba === 'imoveis' && subImovel === 'publicados' && <ImoveisPub token={token} onSair={sair} alvo={imovelAlvo} onAbriu={() => setImovelAlvo(null)} />}
+        {fichaCod && <FichaCliente cod={fichaCod} token={token} onFechar={() => setFichaCod(null)}
+          onEditarImovel={(c) => { setFichaCod(null); setImovelAlvo(c); setAba('imoveis'); setSubImovel('publicados') }} />}
 
         {aba === 'crm' && <AdminCRM token={token} onSair={sair} cadastros={clientes} onExcluirCadastro={(c) => excluir(c._key, `o cadastro de ${c.nome || 'cliente'}`)} />}
         {aba === 'atendimentos' && <Suspense fallback={<p className="section-sub">Carregando…</p>}><AtendimentosPanel token={token} onSair={sair} /></Suspense>}

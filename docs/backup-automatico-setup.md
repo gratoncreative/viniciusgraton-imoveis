@@ -37,8 +37,13 @@ e um snapshot do catálogo. Vai pro **Cloudflare R2** (bucket `vg-backups`), ver
 
 - **Diário (este):** dados insubstituíveis + snapshot do catálogo. Leve, automático. ← o seguro.
 - **Sob demanda (já existe):** "Subir bairro pro Google Drive" / "Backup geral" no /admin.
-- **Fotos (pesado, opcional):** as imagens já estão na Rotina/CDN; um arquivo completo das
-  fotos pode ser feito à parte (server-side em lote), mas não é o crítico.
+- **Fotos (automático, gradual):** o GitHub Actions "Backup de fotos" (`backup-fotos.yml`)
+  chama `/api/backup-fotos-cron` algumas vezes ao dia e espelha as fotos de cada imóvel pro
+  R2 (`backup/fotos/<cod>/NN.jpg` + `_index.json`), aos poucos, restart-safe. Em ~1-2 semanas
+  fica completo e depois só refaz o que estiver velho (> 21 dias). Usa a MESMA `BACKUP_CRON_KEY`.
+  As fotos vêm do CDN público (não loga no Imoview). O default é 10 fotos por imóvel
+  (~3.400 imóveis ≈ 7-10 GB), pensado para caber nos 10 GB grátis do R2; dá para subir o
+  `maxFotos` no workflow, mas aí pode passar do free tier (centavos/mês).
 
 ## Captação automática de proprietários (3ª etapa)
 

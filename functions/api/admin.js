@@ -606,6 +606,67 @@ export async function onRequestPost({ env, request }) {
     const v = await env.ENGAGEMENT.get('imovel:' + codigo, 'json')
     return json({ ok: true, registro: v || null })
   }
+
+  // ——— FICHA COMPLETA DO CLIENTE ———
+  // Recebe { cod } (código do imóvel do lead) e devolve o PROPRIETÁRIO + TODOS os imóveis
+  // dele. A chave que liga vários imóveis ao mesmo dono é o TELEFONE (assinatura = 9 últimos
+  // dígitos, tolera DDI/formatação); sem telefone, cai pro NOME. Endereço é por-imóvel.
+  // 1 leitura em lote de imovel: (igual ao backup/‘data’) — não estoura subrequests.
+  if (action === 'dossie-cliente') {
+    const cod = String(b.cod || b.codigo || '').slice(0, 12)
+    const soNum = (s) => String(s || '').replace(/\D/g, '')
+    // Assinatura do telefone = DDD + número (11 díg.), tirando o DDI. MANTÉM o DDD de
+    // propósito: usar só o número (9 díg.) juntaria clientes de DDDs diferentes com o mesmo
+    // número — vazamento entre clientes. Exige >= 10 díg. (fixo) pra valer como chave.
+    const assinatura = (s) => {
+      let d = soNum(s)
+      if (d.length > 11 && d.startsWith('55')) d = d.slice(2)
+      return d.length >= 10 ? d.slice(-11) : ''
+    }
+    const pontos = (o) => (o ? ((o.nome ? 2 : 0) + (o.fone ? 2 : 0) + (o.email ? 1 : 0) + (Array.isArray(o.dados) ? o.dados.length : 0) + (Array.isArray(o.enderecoCampos) ? o.enderecoCampos.length : 0)) : 0)
+    const publico = (c) => {
+      if (!c || typeof c !== 'object') return null
+      const out = {}
+      for (const k of ['preco', 'precoAnterior', 'tipo', 'finalidade', 'bairro', 'cidade', 'quartos', 'suites', 'banheiros', 'vagas', 'area', 'areaLote', 'condominio', 'iptu', 'titulo', 'endereco', 'oculto', 'destaque']) {
+        if (c[k] != null && c[k] !== '') out[k] = c[k]
+      }
+      return out
+    }
+
+    let foneAlvo = String(b.fone || '')
+    let nomeAlvo = ''
+    const principal = cod ? await env.ENGAGEMENT.get('imovel:' + cod, 'json').catch(() => null) : null
+    if (principal && principal.owner) {
+      if (!foneAlvo) foneAlvo = principal.owner.fone || ''
+      nomeAlvo = String(principal.owner.nome || '').trim().toLowerCase()
+    }
+    const sigAlvo = assinatura(foneAlvo)
+
+    const ents = await bulkEntries(env.ENGAGEMENT, 'imovel:')
+    const imoveis = []
+    let cliente = principal && principal.owner && (principal.owner.nome || principal.owner.fone) ? { ...principal.owner } : null
+    for (const e of (ents || [])) {
+      const reg = e.value; if (!reg || typeof reg !== 'object') continue
+      const own = reg.owner || {}
+      const c = e.name.slice('imovel:'.length)
+      const sig = assinatura(own.fone)
+      // fallback por NOME é heurístico: só roda quando o dono não tem telefone, e nome comum
+      // pode juntar homônimos — por isso telefone tem prioridade absoluta como chave.
+      const bate = (sigAlvo && sig && sig === sigAlvo) || (!sigAlvo && nomeAlvo && String(own.nome || '').trim().toLowerCase() === nomeAlvo) || (cod && c === cod)
+      if (!bate) continue
+      imoveis.push({
+        cod: c,
+        enderecoImovel: own.enderecoImovel || '',
+        enderecoCampos: Array.isArray(own.enderecoCampos) ? own.enderecoCampos : [],
+        campos: publico(reg.campos),
+        atualizadoEm: reg.atualizadoEm || 0,
+      })
+      if ((own.nome || own.fone) && pontos(own) > pontos(cliente)) cliente = { ...own }
+    }
+    imoveis.sort((a, z) => (a.cod === cod ? -1 : z.cod === cod ? 1 : (z.atualizadoEm || 0) - (a.atualizadoEm || 0)))
+    return json({ ok: true, cliente: cliente || null, imoveis, total: imoveis.length, agrupadoPor: sigAlvo ? 'telefone' : (nomeAlvo ? 'nome' : 'codigo') })
+  }
+
   if (action === 'imovel-save') {
     const codigo = String(b.codigo || '').slice(0, 12)
     if (!codigo) return json({ error: 'codigo' }, 400)

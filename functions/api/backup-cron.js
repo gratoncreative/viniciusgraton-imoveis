@@ -82,6 +82,8 @@ export async function onRequest({ request, env }) {
     // versionado por dia + cópia "atual" (sobrescreve)
     await R2.put(`backup/dados/${dia}.json`, corpo, { httpMetadata: { contentType: 'application/json; charset=utf-8' } })
     await R2.put('backup/dados/atual.json', corpo, { httpMetadata: { contentType: 'application/json; charset=utf-8' } })
+    // meta LEVE (só data + contagem) — o painel lê isto pro "selo de saúde" sem baixar o JSON inteiro
+    await R2.put('backup/dados/_meta.json', JSON.stringify({ geradoEm, dia, contagem, bytes: corpo.length }), { httpMetadata: { contentType: 'application/json; charset=utf-8' } })
 
     // snapshot leve do catálogo (dados públicos dos imóveis) — útil ter junto
     try {

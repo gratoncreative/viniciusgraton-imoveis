@@ -197,6 +197,21 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: true })
   }
 
+  // ——— saúde do backup: última cópia diária (meta leve) + progresso do espelho de fotos ———
+  if (action === 'saude') {
+    let dados = null
+    try {
+      const obj = await R2.get('backup/dados/_meta.json')
+      if (obj) dados = await obj.json().catch(() => null)
+      if (!dados) { // fallback: projetos antigos sem _meta ainda têm o atual.json
+        const at = await R2.get('backup/dados/atual.json')
+        if (at) { const j = await at.json().catch(() => null); if (j) dados = { geradoEm: j.geradoEm, contagem: j.contagem || {} } }
+      }
+    } catch {}
+    const fotos = await env.ENGAGEMENT.get('backup:fotos', 'json').catch(() => null)
+    return json({ ok: true, dados, fotos })
+  }
+
   // ——— baixar um arquivo do backup (stream como attachment) ———
   if (action === 'baixar') {
     const key = String(b.key || '').replace(/^\/+/, '')

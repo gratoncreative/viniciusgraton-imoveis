@@ -9257,6 +9257,26 @@ html[data-theme="claro"] .det-whats svg { color: #FFFFFF; }
 .ferramentas-pg .ferr-lock-msg { -webkit-line-clamp: 2; line-clamp: 2; }
 @media (max-width: 480px) { .ferramentas-pg .ferr-grid-3 { grid-template-columns: 1fr 1fr; } }
 
+/* Ficha completa do cliente (admin) — overlay + dossiê */
+.ficha-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(33,43,61,0.55); backdrop-filter: blur(2px); display: flex; align-items: flex-start; justify-content: center; padding: 24px 14px; overflow-y: auto; }
+.ficha-modal { width: 100%; max-width: 860px; background: #fff; border-radius: 16px; padding: 20px 22px 26px; box-shadow: 0 30px 70px -30px rgba(33,43,61,0.7); }
+.ficha-topo { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(22,26,34,0.1); }
+.ficha-topo b { font-family: var(--font-head); font-size: 1.1rem; color: #212b3d; }
+.ficha-dono { background: #f7f8fa; border: 1px solid rgba(22,26,34,0.08); border-radius: 12px; padding: 14px 16px; }
+.ficha-dono h3 { font-family: var(--font-head); color: #212b3d; }
+.ficha-dados { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 3px 18px; font-size: 0.86rem; color: #3a4152; }
+.ficha-dados li span { color: var(--text-mute, #6b7280); }
+.ficha-imoveis { display: flex; flex-direction: column; gap: 12px; }
+.ficha-imovel { gap: 6px; }
+.ficha-im-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.ficha-im-preco { font-family: var(--font-head); font-weight: 700; color: #212b3d; white-space: nowrap; }
+.ficha-galeria { display: flex; gap: 6px; overflow-x: auto; padding: 6px 0 2px; scrollbar-width: thin; }
+.ficha-foto { flex: 0 0 auto; }
+.ficha-foto img { height: 82px; width: 110px; object-fit: cover; border-radius: 8px; display: block; }
+.ficha-im-acoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.ficha-im-acoes .admin-btn--mini { margin-top: 0; }
+@media (max-width: 560px) { .ficha-dados { grid-template-columns: 1fr; } .ficha-modal { padding: 16px 14px 22px; } }
+
 /* ============================================================
    🔒 REGRA DE OURO DOS BOTÕES (trancada por senha na memória).
    TODO botão é uma de 3 opções:

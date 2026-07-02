@@ -1,0 +1,37 @@
+name: Backup de fotos (gradual)
+
+# Completa o seguro: espelha as FOTOS dos imóveis pro Cloudflare R2, aos poucos.
+# Chama /api/backup-fotos-cron em loop gentil (2 imóveis por chamada, pausa entre elas),
+# 4x ao dia. É restart-safe e circular (cursor no servidor) — em ~1-2 semanas o espelho
+# fica completo e depois só refaz o que estiver velho (> 21 dias).
+# Pré-requisito (já compartilhado com o backup diário): secret BACKUP_CRON_KEY no GitHub
+# (mesmo valor do Cloudflare) + binding R2 BACKUPS (bucket vg-backups).
+
+on:
+  schedule:
+    - cron: '40 1,7,13,19 * * *'   # 4x ao dia (espalhado), gentil com o CDN
+  workflow_dispatch: {}             # botão "Run workflow" pra rodar na hora
+
+# uma execução por vez
+concurrency:
+  group: backup-fotos
+  cancel-in-progress: false
+
+jobs:
+  fotos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Espelhar fotos em lotes pequenos
+        run: |
+          for i in $(seq 1 40); do
+            resp=$(curl -fsS --max-time 120 -X POST "https://viniciusgraton.com.br/api/backup-fotos-cron?lote=2&maxFotos=10" \
+              -H "x-backup-key: ${{ secrets.BACKUP_CRON_KEY }}" || echo '{"erro":"http"}')
+            echo "lote $i: $resp"
+            case "$resp" in
+              *'"error":"nao-autorizado"'*) echo "Chave errada — verifique BACKUP_CRON_KEY."; break ;;
+              *'"motivo":"r2"'*) echo "R2 não configurado (bucket vg-backups + binding BACKUPS)."; break ;;
+              *'"motivo":"sem-chave"'*) echo "BACKUP_CRON_KEY não definido no Cloudflare."; break ;;
+              *'"voltaCompleta":true'*) echo "Passou por todo o catálogo neste ciclo."; break ;;
+            esac
+            sleep 8
+          done

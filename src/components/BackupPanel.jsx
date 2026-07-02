@@ -27,6 +27,7 @@ export default function BackupPanel({ token }) {
   const [driveResumo, setDriveResumo] = useState('')
   const [driveLink, setDriveLink] = useState('')
   const [captar, setCaptar] = useState(null) // status da captação automática de proprietários
+  const [saude, setSaude] = useState(null) // selo: última cópia diária (dados) + espelho de fotos
   const driveStopRef = useRef(false)
 
   const post = useCallback((action, extra = {}) =>
@@ -39,6 +40,7 @@ export default function BackupPanel({ token }) {
       if (j && j.motivo === 'r2') { setR2ok(false); setMotivoMsg(j.msg || ''); return }
       setR2ok(true); setManifest(j.manifest || null); manRef.current = j.manifest || null
     } catch { setMsg('Falha ao consultar o status do backup.') }
+    try { const s = await post('saude'); if (s && s.ok) setSaude(s) } catch {}
   }, [post])
 
   useEffect(() => { carregarStatus() }, [carregarStatus])
@@ -266,6 +268,8 @@ export default function BackupPanel({ token }) {
         As fotos vêm do CDN público; o proprietário só do que já está no cache (não faz login em massa no Imoview).
       </p>
 
+      <SeloSaude saude={saude} />
+
       {secaoDrive}
 
       {/* estado atual */}
@@ -328,6 +332,40 @@ export default function BackupPanel({ token }) {
           Tudo também fica navegável no painel da Cloudflare → R2 → <code>vg-backups</code> → <code>backup/imoveis/&lt;bairro&gt;/</code>.
         </p>
       </div>
+    </div>
+  )
+}
+
+// Selo de saúde: prova visível de que o seguro está funcionando (última cópia + fotos).
+function SeloSaude({ saude }) {
+  const dados = saude && saude.dados
+  const fotos = saude && saude.fotos
+  const c = (dados && dados.contagem) || {}
+  const quando = dados && dados.geradoEm ? fmtData(dados.geradoEm) : null
+  return (
+    <div style={{ marginTop: 14, padding: '14px 16px', background: quando ? '#f1f6f2' : '#fbf3f3', border: '1px solid ' + (quando ? 'rgba(31,122,61,.28)' : 'rgba(235,1,40,.28)'), borderRadius: 12 }}>
+      <p style={{ fontWeight: 800, margin: '0 0 2px' }}>
+        🔒 Última cópia de segurança automática {quando ? <span style={{ color: '#1f7a3d' }}>· {quando}</span> : <span style={{ color: '#EB0128' }}>· ainda não rodou</span>}
+      </p>
+      {quando ? (
+        <>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 8 }}>
+            <Bloco rotulo="Leads" valor={(c.leads || 0).toLocaleString('pt-BR')} />
+            <Bloco rotulo="Clientes/contas" valor={(c.clientes || 0).toLocaleString('pt-BR')} />
+            <Bloco rotulo="Proprietários captados" valor={(c.imoveisComProprietario || 0).toLocaleString('pt-BR')} />
+            <Bloco rotulo="Imóveis" valor={(c.imoveis || 0).toLocaleString('pt-BR')} />
+          </div>
+          <p className="section-sub" style={{ marginTop: 8, fontSize: '.8rem' }}>
+            {fotos && fotos.total
+              ? <>📷 Espelho de fotos: <b>{(fotos.imoveisFeitos || 0).toLocaleString('pt-BR')}</b> imóveis já copiados · {(fotos.fotos || 0).toLocaleString('pt-BR')} fotos no R2{fotos.voltas ? ` · ${fotos.voltas}ª volta (mantendo fresco)` : ''}.</>
+              : '📷 Espelho de fotos ainda não começou. Liga com o workflow “Backup de fotos” (GitHub Actions).'}
+          </p>
+        </>
+      ) : (
+        <p className="section-sub" style={{ margin: 0, fontSize: '.82rem' }}>
+          O backup diário roda 03:00 (Brasília). Se ainda não apareceu, confira o segredo <code>BACKUP_CRON_KEY</code> (Cloudflare + GitHub) e rode uma vez em GitHub → Actions → “Backup diário do site” → Run workflow.
+        </p>
+      )}
     </div>
   )
 }
