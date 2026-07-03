@@ -104,6 +104,12 @@ export async function onRequest({ request, env }) {
   L.push(`📊 ${novos.length} leads novos · ${(conv && conv.total) || 0} contatos no site · ${frios.length} pra reativar`)
   L.push(`🌙 ${(cap && cap.totalCaptados) || 0} donos no Imoview · 🏠 ${totalImoveis || 0} imóveis no ar`)
 
+  // ⚠️ Captação de proprietários parada por login recusado (senha trocada / 2FA / bloqueio).
+  // Sem isto, a captação pode ficar dias travada e o número acima nem se mexe, sem ninguém saber.
+  if (cap && cap.erro === 'imoview-login' && cap.ts && (agora - cap.ts) < 30 * 3600 * 1000) {
+    L.push('', '⚠️ *Captação de donos parada:* o Imoview recusou o login. Conferir senha/2FA da conta.')
+  }
+
   if (frios.length) {
     const top = frios.slice(0, 2).map((c) => `${c.nome.split(' ')[0]} (${c.dias}d)`).join(' e ')
     L.push('', `🔥 *Prioridade hoje:* ${top} — os que estão parados há mais tempo.`)

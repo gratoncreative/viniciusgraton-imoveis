@@ -25,11 +25,12 @@ jobs:
       - name: Captar em lotes pequenos (gentil com o Imoview)
         run: |
           for i in $(seq 1 20); do
-            resp=$(curl -fsS --max-time 70 -X POST "https://viniciusgraton.com.br/api/captar-cron" \
+            resp=$(curl -fsS --max-time 70 --retry 2 --retry-delay 5 -X POST "https://viniciusgraton.com.br/api/captar-cron" \
               -H "x-backup-key: ${{ secrets.BACKUP_CRON_KEY }}" || echo '{"erro":"http"}')
             echo "lote $i: $resp"
             case "$resp" in
               *'"motivo":"imoview-login"'*) echo "Imoview recusou o login — parando por agora (protege a conta)."; break ;;
+              *'"motivo":"cooldown"'*) echo "Em cooldown após falha recente — parando por agora."; break ;;
               *'"restantes":0'*) echo "Varredura completa neste ciclo."; break ;;
             esac
             sleep 25

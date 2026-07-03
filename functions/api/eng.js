@@ -171,10 +171,17 @@ export async function onRequestPost(context) {
       // Cap diário p/ proteger o WhatsApp de flood; no-op se CALLMEBOT_KEY não estiver no Cloudflare.
       try {
         if (env.CALLMEBOT_KEY) {
+          // dedupe: o MESMO lead reenviando o formulário não deve gerar vários alertas.
+          // chave curta por telefone (ou nome, se sem fone); TTL 6h. Não bloqueia o cap diário.
+          // nome é garantido (guard acima); fone quando houver dá dedupe mais preciso
+          const dedupeAlvo = (lead.fone && lead.fone.replace(/\D/g, '').slice(-8)) || lead.nome.toLowerCase().replace(/\s+/g, '').slice(0, 20)
+          const seenKey = 'hotlead:seen:' + dedupeAlvo
+          const jaAvisou = await env.ENGAGEMENT.get(seenKey)
           const capKey = 'hotlead:cnt:' + diaHoje()
           const usados = parseInt(await env.ENGAGEMENT.get(capKey), 10) || 0
-          if (usados < 40) {
+          if (!jaAvisou && usados < 40) {
             await env.ENGAGEMENT.put(capKey, String(usados + 1), { expirationTtl: 86400 })
+            await env.ENGAGEMENT.put(seenKey, '1', { expirationTtl: 6 * 3600 })
             const tag = [lead.objetivo, lead.bairro && ('bairro ' + lead.bairro), lead.cod && ('imóvel ' + lead.cod)].filter(Boolean).join(' · ')
             const aviso = `🔥 LEAD AGORA no site!\n${lead.nome}${lead.fone ? ' · ' + lead.fone : ''}${tag ? '\n' + tag : ''}${lead.origem ? '\norigem: ' + lead.origem : ''}\n👉 responde rápido`
             context.waitUntil(avisaWhats(env, aviso))

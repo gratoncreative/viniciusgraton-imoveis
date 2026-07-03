@@ -59,5 +59,49 @@ export async function imoviewLogin(env, { debug = false } = {}) {
   }
 }
 
+// ————————————————————————————————————————————————————————————————
+// Sessão REAPROVEITÁVEL + cooldown — reduz drasticamente o nº de logins.
+// Toda ação (owner-fetch/lote, atendimentos, cron) fazia login do zero (4 fetches);
+// num backup de bairro isso vira dezenas de logins seguidos do mesmo IP, que é o padrão
+// que dispara bloqueio da conta. Aqui o cookie é cacheado no KV por uma janela curta e
+// só re-loga se a sessão sumir/expirar. Sem KV (env sem ENGAGEMENT) cai no login normal.
+// ————————————————————————————————————————————————————————————————
+const SESS_KEY = 'imoview:sess'
+const SESS_TTL_S = 15 * 60          // reusa a sessão por até 15 min
+const COOLDOWN_KEY = 'imoview:cooldown'
+
+// A resposta veio a ser a PÁGINA DE LOGIN? (sessão expirou no meio da janela cacheada)
+export function ehPaginaLogin(html) {
+  const s = String(html || '')
+  if (!s) return false
+  const temLogin = /Login\/LogOn|RetornarConvenios|name="__RequestVerificationToken"|urlReturn/i.test(s)
+  const temConteudo = /Detalhes|Proprietar|Atendimento|PessoaF|PessoaJ|data-codigos/i.test(s)
+  return temLogin && !temConteudo
+}
+
+// Cooldown: após uma falha de login, não fica martelando o Imoview por alguns minutos.
+export async function imoviewEmCooldown(env) {
+  try { const t = parseInt(await env.ENGAGEMENT.get(COOLDOWN_KEY), 10) || 0; return Date.now() < t } catch { return false }
+}
+export async function marcarImoviewCooldown(env, ms = 20 * 60 * 1000) {
+  try { await env.ENGAGEMENT.put(COOLDOWN_KEY, String(Date.now() + ms), { expirationTtl: Math.ceil(ms / 1000) + 60 }) } catch {}
+}
+
+// Devolve { ok, cookies, baseUrl, cached }. Usa o cookie cacheado quando possível.
+// force=true ignora o cache (usar quando a sessão cacheada se mostrou expirada).
+export async function imoviewSession(env, { force = false } = {}) {
+  const kv = env && env.ENGAGEMENT
+  if (!force && kv && typeof kv.get === 'function') {
+    try {
+      const s = await kv.get(SESS_KEY, 'json')
+      if (s && s.cookies && s.exp && Date.now() < s.exp) return { ok: true, cookies: s.cookies, baseUrl: WEB, cached: true }
+    } catch {}
+  }
+  const res = await imoviewLogin(env, {})
+  if (res && res.ok && res.cookies && kv && typeof kv.put === 'function') {
+    try { await kv.put(SESS_KEY, JSON.stringify({ cookies: res.cookies, exp: Date.now() + SESS_TTL_S * 1000 }), { expirationTtl: SESS_TTL_S + 60 }) } catch {}
+  }
+  return { ok: !!(res && res.ok), cookies: (res && res.cookies) || '', baseUrl: WEB, cached: false, dbg: res && res.dbg }
+}
 export const IMOVIEW_WEB = WEB
 export const IMOVIEW_UA = UA

@@ -1,5 +1,5 @@
 import { kvStore } from '../_lib/store.js'
-import { imoviewLogin, IMOVIEW_WEB as WEB_IMV, IMOVIEW_UA as UA_IMV } from '../_lib/imoview.js'
+import { imoviewSession, ehPaginaLogin, imoviewEmCooldown, marcarImoviewCooldown, IMOVIEW_WEB as WEB_IMV, IMOVIEW_UA as UA_IMV } from '../_lib/imoview.js'
 /**
  * Cloudflare Pages Function — Painel ADMIN do Vinícius (seguro).
  *
@@ -361,6 +361,10 @@ export async function scrapeOwnerCod(cookies, cod, deadline = Date.now() + 22000
   const imovelR = await fetch(`${WEB_IMV}/Imovel/Detalhes/${cod}`, { headers: { cookie: cookies, 'user-agent': UA_IMV, accept: 'text/html', 'x-requested-with': 'XMLHttpRequest' }, redirect: 'follow', signal: AbortSignal.timeout(8000) })
   if (!imovelR.ok) return owner
   const imovelHtml = await imovelR.text()
+  // sessão cacheada pode ter expirado no meio da janela: se o Imoview devolveu a página de
+  // login, sinaliza pro chamador re-logar (o campo __loginExpired nunca é persistido, pois o
+  // owner sem nome/fone não é gravado no cache).
+  if (ehPaginaLogin(imovelHtml)) { owner.__loginExpired = true; return owner }
   let enderecoCampos = [], enderecoImovel = ''
   try { const _e = extrairEnderecoTexto(imovelHtml); enderecoCampos = _e.campos || []; enderecoImovel = _e.texto || extrairEnderecoImovel(imovelHtml) } catch {}
 
@@ -941,17 +945,26 @@ export async function onRequestPost({ env, request, waitUntil }) {
         // Sem chave da API → sessão web. Endpoint real (descoberto inspecionando o "PESQUISAR"
         // em app.imoview.com.br/Atendimento): GET /Atendimento/Pesquisar devolve o HTML da lista
         // renderizada (Finalidade=2 Venda, Situacao=1 Em atendimento). Paginamos e parseamos.
-        const ses = await imoviewLogin(env, { debug: b.debug === true })
+        // sessão reaproveitável (cookie cacheado) em vez de login do zero toda vez
+        let ses = await imoviewSession(env)
         Object.assign(dbg, ses.dbg || {})
         if (ses.ok) {
           const qs = (pag) => `Finalidade=2&Situacao=1&Termometro=-1&CodigoUnidade=0&CodigoMotivoDescarte=Todos&Pagina=${pag}&Ordenacao=0&Funil=0`
-          const headers = { cookie: ses.cookies, 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', 'x-requested-with': 'XMLHttpRequest', accept: 'text/html, */*; q=0.01', referer: `${ses.baseUrl}/Atendimento` }
+          const headOf = (s) => ({ cookie: s.cookies, 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', 'x-requested-with': 'XMLHttpRequest', accept: 'text/html, */*; q=0.01', referer: `${s.baseUrl}/Atendimento` })
           leadsHtml = []
           const vistos = new Set()
           for (let pag = 1; pag <= 12; pag++) {
-            const r = await fetch(`${ses.baseUrl}/Atendimento/Pesquisar?${qs(pag)}`, { headers, signal: AbortSignal.timeout(12000) }).catch(() => null)
+            let r = await fetch(`${ses.baseUrl}/Atendimento/Pesquisar?${qs(pag)}`, { headers: headOf(ses), signal: AbortSignal.timeout(12000) }).catch(() => null)
             if (!r || !r.ok) { if (b.debug) dbg['pag' + pag] = r ? r.status : 'erro'; break }
-            const html = await r.text()
+            let html = await r.text()
+            // sessão cacheada expirou (em qualquer página)? re-loga UMA vez e refaz esta página
+            if (ses.cached && ehPaginaLogin(html)) {
+              ses = await imoviewSession(env, { force: true })
+              if (!ses.ok) break
+              r = await fetch(`${ses.baseUrl}/Atendimento/Pesquisar?${qs(pag)}`, { headers: headOf(ses), signal: AbortSignal.timeout(12000) }).catch(() => null)
+              if (!r || !r.ok) break
+              html = await r.text()
+            }
             if (pag === 1 && b.debug) { dbg.status = r.status; dbg.htmlLen = html.length; dbg.snippet = html.slice(0, 3000) }
             const ls = parseAtendimentosHtml(html)
             let novos = 0
@@ -1396,13 +1409,21 @@ export async function onRequestPost({ env, request, waitUntil }) {
     // Imoview — evita estouro/bloqueio quando processa milhares de imóveis.
     if (b.soCache) return json({ ok: true, owners })
     if (faltam.length) {
-      const log = await imoviewLogin(env).catch(() => null)
+      // cooldown ativo: uma falha recente de login mandou não martelar o Imoview por uns minutos
+      if (await imoviewEmCooldown(env)) return json({ ok: true, owners, motivo: 'cooldown' })
+      let ses = await imoviewSession(env).catch(() => null)
       // login falhou (sem credencial, conta bloqueada/throttled, ou exceção): NÃO é "sem dono".
       // Avisa o cliente pra não gerar um pacote "tudo não captado" e reexecutar agravando o bloqueio.
-      if (!(log && log.ok && log.cookies)) return json({ ok: true, owners, motivo: 'imoview-login' })
+      if (!(ses && ses.ok && ses.cookies)) { await marcarImoviewCooldown(env); return json({ ok: true, owners, motivo: 'imoview-login' }) }
       for (const cod of faltam) {
         try {
-          const owner = await scrapeOwnerCod(log.cookies, cod, Date.now() + 22000)
+          let owner = await scrapeOwnerCod(ses.cookies, cod, Date.now() + 22000)
+          // sessão cacheada morreu no meio: re-loga UMA vez e refaz este código
+          if (owner && owner.__loginExpired && ses.cached) {
+            ses = await imoviewSession(env, { force: true }).catch(() => null)
+            if (!(ses && ses.ok && ses.cookies)) { await marcarImoviewCooldown(env); break }
+            owner = await scrapeOwnerCod(ses.cookies, cod, Date.now() + 22000)
+          }
           if (owner && (owner.nome || owner.fone || (owner.dados && owner.dados.length) || owner.enderecoImovel)) {
             owners[cod] = owner
             const prev = savedMap.get(cod) || null

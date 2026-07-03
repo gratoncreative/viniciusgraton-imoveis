@@ -1,5 +1,5 @@
 import { kvStore } from '../_lib/store.js'
-import { imoviewLogin } from '../_lib/imoview.js'
+import { imoviewSession, imoviewEmCooldown, marcarImoviewCooldown } from '../_lib/imoview.js'
 import { scrapeOwnerCod, registrarProprietario } from './admin.js'
 
 /**
@@ -48,8 +48,14 @@ export async function onRequest({ request, env }) {
   if (!total) return json({ ok: false, msg: 'Catálogo vazio.' })
 
   // cursor circular: ao terminar uma varredura, recomeça (mantém o cache fresco)
-  let cursor = parseInt((await env.ENGAGEMENT.get('captar:cursor')) || '0', 10) || 0
-  if (cursor >= total) cursor = 0
+  const cursorAntigo = parseInt((await env.ENGAGEMENT.get('captar:cursor')) || '0', 10) || 0
+  let cursor = cursorAntigo >= total ? 0 : cursorAntigo
+
+  // cooldown ativo (falha de login recente): nem tenta logar, e NÃO mexe no cursor — assim os
+  // mesmos alvos são retentados quando a conta voltar, em vez de pulados em silêncio.
+  if (await imoviewEmCooldown(env)) {
+    return json({ ok: false, motivo: 'cooldown', cursor: cursorAntigo, total })
+  }
 
   // junta os próximos LOTE códigos que ainda NÃO têm proprietário cacheado
   const alvos = []
@@ -61,20 +67,29 @@ export async function onRequest({ request, env }) {
     if (jaTem) { pulados++; continue }
     alvos.push(cod)
   }
-  cursor = i
-  await env.ENGAGEMENT.put('captar:cursor', String(cursor))
+  const proximoCursor = i // só será gravado se o lote for de fato processado
 
   let capturados = 0
   if (alvos.length) {
-    const log = await imoviewLogin(env).catch(() => null)
-    if (!(log && log.ok && log.cookies)) {
-      const st = { ts: Date.now(), cursor, total, restantes: total - cursor, erro: 'imoview-login' }
+    let ses = await imoviewSession(env).catch(() => null)
+    if (!(ses && ses.ok && ses.cookies)) {
+      // login recusado (senha/2FA/bloqueio) OU transitório: marca cooldown, NÃO avança o cursor,
+      // e registra o erro (o briefing das 7h avisa o Vinícius). O cron para ao ver 'imoview-login'.
+      await marcarImoviewCooldown(env)
+      const st = { ts: Date.now(), cursor: cursorAntigo, total, restantes: total - cursorAntigo, erro: 'imoview-login' }
       await env.ENGAGEMENT.put('captar:status', JSON.stringify(st)).catch(() => {})
-      return json({ ok: false, motivo: 'imoview-login', ...st }) // o cron PARA ao ver isso
+      await env.ENGAGEMENT.put('captar:cursor', String(cursorAntigo)).catch(() => {}) // mantém a posição
+      return json({ ok: false, motivo: 'imoview-login', ...st })
     }
     for (const cod of alvos) {
       try {
-        const owner = await scrapeOwnerCod(log.cookies, cod, Date.now() + 18000)
+        let owner = await scrapeOwnerCod(ses.cookies, cod, Date.now() + 18000)
+        // sessão cacheada morreu no meio: re-loga UMA vez e refaz este código
+        if (owner && owner.__loginExpired && ses.cached) {
+          ses = await imoviewSession(env, { force: true }).catch(() => null)
+          if (!(ses && ses.ok && ses.cookies)) { await marcarImoviewCooldown(env); break }
+          owner = await scrapeOwnerCod(ses.cookies, cod, Date.now() + 18000)
+        }
         if (owner && (owner.nome || owner.fone || (owner.dados && owner.dados.length) || owner.enderecoImovel)) {
           const prev = await env.ENGAGEMENT.get('imovel:' + cod, 'json').catch(() => null)
           await env.ENGAGEMENT.put('imovel:' + cod, JSON.stringify({ ...(prev || {}), owner, atualizadoEm: Date.now() }))
@@ -86,8 +101,13 @@ export async function onRequest({ request, env }) {
     }
   }
 
-  const acumulado = ((await env.ENGAGEMENT.get('captar:status', 'json').catch(() => null)) || {}).totalCaptados || 0
-  const status = { ts: Date.now(), cursor, total, restantes: total - cursor, totalCaptados: acumulado + capturados, ultimoLote: { alvos: alvos.length, capturados, pulados } }
+  // só agora avança o cursor (lote processado). Ao fechar uma volta completa, zera o acumulado
+  // pra o contador do briefing refletir "donos únicos nesta passada", não somar voltas.
+  cursor = proximoCursor
+  await env.ENGAGEMENT.put('captar:cursor', String(cursor)).catch(() => {})
+  const fechouVolta = proximoCursor >= total
+  const acumulado = fechouVolta ? 0 : (((await env.ENGAGEMENT.get('captar:status', 'json').catch(() => null)) || {}).totalCaptados || 0)
+  const status = { ts: Date.now(), cursor, total, restantes: Math.max(0, total - cursor), totalCaptados: acumulado + capturados, ultimoLote: { alvos: alvos.length, capturados, pulados } }
   await env.ENGAGEMENT.put('captar:status', JSON.stringify(status)).catch(() => {})
   return json({ ok: true, ...status })
 }

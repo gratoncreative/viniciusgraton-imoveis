@@ -11,6 +11,11 @@ on:
     - cron: '0 6 * * *'   # 06:00 UTC = 03:00 de Brasília (horário de baixo tráfego)
   workflow_dispatch: {}    # permite rodar manualmente pelo botão "Run workflow" no GitHub
 
+# evita que um cron atrasado + disparo manual rodem juntos (dupla leitura de todo o KV à toa)
+concurrency:
+  group: backup-diario
+  cancel-in-progress: false
+
 jobs:
   backup:
     runs-on: ubuntu-latest
