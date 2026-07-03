@@ -12,7 +12,7 @@ const temKV = (env) => env && env.ENGAGEMENT && typeof env.ENGAGEMENT.get === 'f
 const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } })
 const str = (v, n) => String(v || '').slice(0, n)
 
-export async function onRequestPost({ env, request }) {
+export async function onRequestPost({ env, request, waitUntil }) {
   env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
     const body = await request.json().catch(() => ({}))
@@ -45,6 +45,22 @@ export async function onRequestPost({ env, request }) {
     }
     const id = ts + '-' + Math.random().toString(36).slice(2, 8)
     if (temKV(env)) await env.ENGAGEMENT.put('anuncio:' + id, JSON.stringify(sub))
+    // ——— ACERVO DE ORIGINAIS (R2): estas fotos chegam do proprietário SEM marca d'água ———
+    // Espelha cada uma pro bucket permanente em segundo plano — a resposta não espera e
+    // qualquer falha aqui não afeta o cadastro (o KV continua sendo a fonte da moderação).
+    const R2 = env.BACKUPS
+    if (R2 && fotos.length && typeof waitUntil === 'function') {
+      waitUntil((async () => {
+        for (let i = 0; i < fotos.length; i++) {
+          try {
+            const ct = (fotos[i].match(/^data:(image\/\w+);/i) || [])[1] || 'image/jpeg'
+            const bin = await fetch(fotos[i]).then((r) => r.arrayBuffer())
+            const ext = ct.split('/')[1].toLowerCase().replace('jpeg', 'jpg')
+            await R2.put(`acervo/anunciar/${id}/${String(i + 1).padStart(2, '0')}.${ext}`, bin, { httpMetadata: { contentType: ct } })
+          } catch {}
+        }
+      })())
+    }
     return json({ ok: true, id, persistido: temKV(env), fotos: fotos.length })
   } catch (e) {
     console.error('anuncio:', e)

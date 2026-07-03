@@ -444,7 +444,7 @@ export async function scrapeOwnerCod(cookies, cod, deadline = Date.now() + 22000
   return owner
 }
 
-export async function onRequestPost({ env, request }) {
+export async function onRequestPost({ env, request, waitUntil }) {
   env = { ...env, ENGAGEMENT: kvStore(env) }
   try {
   if (!originOk(request)) return json({ error: 'origem' }, 403)
@@ -737,6 +737,18 @@ export async function onRequestPost({ env, request }) {
     if (b64.length > 2200000) return json({ error: 'grande', msg: 'Imagem muito grande. Tente uma com menos resolução.' }, 413)
     const id = `imgupload:${codigo}:${crypto.randomUUID()}`
     await env.ENGAGEMENT.put(id, JSON.stringify({ ct, b64, codigo, ts: Date.now() }))
+    // ——— ACERVO DE ORIGINAIS (R2): upload do admin é material nosso, sem marca d'água ———
+    // Cópia permanente em segundo plano (a resposta não espera; falha aqui não afeta o upload).
+    const R2 = env.BACKUPS
+    if (R2 && typeof waitUntil === 'function') {
+      waitUntil((async () => {
+        try {
+          const bin = await fetch(dataUrl).then((r) => r.arrayBuffer())
+          const ext = ct.split('/')[1].toLowerCase().replace('jpeg', 'jpg')
+          await R2.put(`acervo/admin/${codigo}/${Date.now()}.${ext}`, bin, { httpMetadata: { contentType: ct } })
+        } catch {}
+      })())
+    }
     return json({ ok: true, url: `/api/img?id=${id}` })
   }
 
@@ -867,6 +879,48 @@ export async function onRequestPost({ env, request }) {
 
   // ── ATENDIMENTOS EM ABERTO (Imoview) → conversão ──────────────────────────
   // Lista os atendimentos: API oficial (env.IMOVIEW_CHAVE) ou sessão web (fallback).
+  // ——— DEBUG (admin): a API OFICIAL do Imoview serve foto SEM a marca d'água? ———
+  // Investigação "materiais originais": o CDN/S3 públicos têm a marca da Rotina queimada.
+  // Aqui testamos os endpoints de imóvel da API oficial (header `chave`) e devolvemos APENAS
+  // os campos de foto (host+path, sem tokens), pra confirmar se existe fonte limpa.
+  if (action === 'imoview-fotos-debug') {
+    const chave = (env.IMOVIEW_CHAVE || '').trim()
+    if (!chave) return json({ ok: false, motivo: 'sem-chave', msg: 'IMOVIEW_CHAVE não configurada na Cloudflare.' })
+    const cod = String(b.codigo || '25071').replace(/\D/g, '')
+    const tent = [
+      `https://api.imoview.com.br/Imovel/RetornarImovelDisponivel?codigoImovel=${cod}`,
+      `https://api.imoview.com.br/Imovel/RetornarDetalhesImovel?codigoImovel=${cod}`,
+      `https://api.imoview.com.br/Imovel/RetornarImoveisDisponiveis?numeroPagina=1&numeroRegistros=1&codigoImovel=${cod}`,
+      `https://api.imoview.com.br/Imovel/RetornarImoveis?numeroPagina=1&numeroRegistros=1&codigo=${cod}`,
+    ]
+    const semQuery = (u) => { try { const x = new URL(u); return x.hostname + x.pathname } catch { return String(u).slice(0, 120) } }
+    const achados = []
+    for (const url of tent) {
+      try {
+        const r = await fetch(url, { headers: { chave, accept: 'application/json' }, signal: AbortSignal.timeout(9000) })
+        const txt = await r.text()
+        const item = { endpoint: url.split('?')[0].split('/').slice(-1)[0], status: r.status }
+        try {
+          const j = JSON.parse(txt)
+          // varre o JSON inteiro atrás de qualquer campo com cara de URL de imagem
+          const urls = new Set()
+          const anda = (o) => {
+            if (!o || urls.size >= 12) return
+            if (typeof o === 'string') { if (/^https?:\/\/[^"']+\.(jpe?g|png|webp)/i.test(o)) urls.add(semQuery(o)); return }
+            if (Array.isArray(o)) { o.forEach(anda); return }
+            if (typeof o === 'object') for (const k in o) anda(o[k])
+          }
+          anda(j)
+          item.fotoUrls = [...urls]
+          item.chaves = typeof j === 'object' && j ? Object.keys(j).slice(0, 12) : []
+        } catch { item.corpo = txt.slice(0, 220) }
+        achados.push(item)
+        if (item.fotoUrls && item.fotoUrls.length) break // achou fotos — não precisa dos outros
+      } catch (e) { achados.push({ endpoint: semQuery(url), erro: String((e && e.message) || e).slice(0, 80) }) }
+    }
+    return json({ ok: true, codigo: cod, achados })
+  }
+
   // Inputs do cliente: só force/debug — nenhum texto livre vai pro Imoview. Cache 10min.
   if (action === 'atendimentos-list') {
     try {
