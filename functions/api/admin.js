@@ -743,9 +743,9 @@ export async function onRequestPost({ env, request, waitUntil }) {
     if (R2 && typeof waitUntil === 'function') {
       waitUntil((async () => {
         try {
-          const bin = await fetch(dataUrl).then((r) => r.arrayBuffer())
+          const bin = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0)) // padrão da casa (img.js)
           const ext = ct.split('/')[1].toLowerCase().replace('jpeg', 'jpg')
-          await R2.put(`acervo/admin/${codigo}/${Date.now()}.${ext}`, bin, { httpMetadata: { contentType: ct } })
+          await R2.put(`acervo/admin/${codigo}/${crypto.randomUUID()}.${ext}`, bin, { httpMetadata: { contentType: ct } })
         } catch {}
       })())
     }

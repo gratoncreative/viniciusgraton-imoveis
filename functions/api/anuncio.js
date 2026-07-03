@@ -54,7 +54,8 @@ export async function onRequestPost({ env, request, waitUntil }) {
         for (let i = 0; i < fotos.length; i++) {
           try {
             const ct = (fotos[i].match(/^data:(image\/\w+);/i) || [])[1] || 'image/jpeg'
-            const bin = await fetch(fotos[i]).then((r) => r.arrayBuffer())
+            const b64 = fotos[i].split(',')[1] || ''
+            const bin = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0)) // padrão da casa (img.js)
             const ext = ct.split('/')[1].toLowerCase().replace('jpeg', 'jpg')
             await R2.put(`acervo/anunciar/${id}/${String(i + 1).padStart(2, '0')}.${ext}`, bin, { httpMetadata: { contentType: ct } })
           } catch {}

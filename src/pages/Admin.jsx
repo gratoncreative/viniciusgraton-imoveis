@@ -1079,7 +1079,7 @@ export default function Admin() {
           </Suspense>
         )}
 
-        {aba === 'marca' && <Suspense fallback={<p className="section-sub">Carregando…</p>}><RemoverMarca /></Suspense>}
+        {aba === 'marca' && <Suspense fallback={<p className="section-sub">Carregando…</p>}><RemoverMarca lote /></Suspense>}
 
         <p className="calc-nota rel-noprint" style={{ marginTop: 22 }}>Painel seguro · sessão de 12h · WhatsApp do site: {CONFIG.telefone || ''}.</p>
       </div>

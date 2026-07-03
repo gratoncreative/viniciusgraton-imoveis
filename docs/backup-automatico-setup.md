@@ -44,6 +44,14 @@ e um snapshot do catálogo. Vai pro **Cloudflare R2** (bucket `vg-backups`), ver
   As fotos vêm do CDN público (não loga no Imoview). O default é 10 fotos por imóvel
   (~3.400 imóveis ≈ 7-10 GB), pensado para caber nos 10 GB grátis do R2; dá para subir o
   `maxFotos` no workflow, mas aí pode passar do free tier (centavos/mês).
+- **Acervo de ORIGINAIS (automático):** toda foto que entra pelo site ANTES do Imoview
+  (formulário `/anunciar` do proprietário e upload do editor no /admin) é copiada em
+  segundo plano pro R2 em `acervo/anunciar/<id>/` e `acervo/admin/<cod>/` — original,
+  SEM marca d'água. É a garantia de "material original sempre" daqui pra frente (as fotos
+  que já nasceram no Imoview têm a marca queimada no arquivo; original irrecuperável).
+  LGPD/retenção: são fotos de imóveis (baixa sensibilidade), mas se um anúncio for
+  recusado/excluído a cópia em `acervo/anunciar/<id>/` NÃO é apagada automaticamente —
+  ao atender um pedido de exclusão de dados, lembre de apagar também essa pasta no R2.
 
 ## Captação automática de proprietários (3ª etapa)
 
