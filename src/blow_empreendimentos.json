@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-02T09:32:25.710Z",
+  "geradoEm": "2026-07-03T09:36:22.281Z",
   "fonte": "blow",
   "empreendimentos": [
     {
@@ -16224,7 +16224,11 @@
         "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/84115d2d-5889-44fd-a97e-0bbd18114db5/medium/5bbf4d24-9bc7-42d2-898f-675a60f7f868",
         "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/84115d2d-5889-44fd-a97e-0bbd18114db5/medium/467a2153-9207-4c6b-ab29-f82927c89fe1",
         "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/84115d2d-5889-44fd-a97e-0bbd18114db5/medium/01142759-440f-484d-b02c-31ad33a53d46",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/84115d2d-5889-44fd-a97e-0bbd18114db5/medium/1492910b-4884-4061-b35a-908f07a229b6"
+        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/84115d2d-5889-44fd-a97e-0bbd18114db5/medium/1492910b-4884-4061-b35a-908f07a229b6",
+        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/84115d2d-5889-44fd-a97e-0bbd18114db5/medium/5b4a0fde-a009-45e2-a839-423713239b8b",
+        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/84115d2d-5889-44fd-a97e-0bbd18114db5/medium/2690388b-e3f0-4676-b2bf-8b3465e7fea7",
+        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/84115d2d-5889-44fd-a97e-0bbd18114db5/medium/361dac12-6028-4166-b908-6a99d99014a3",
+        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/84115d2d-5889-44fd-a97e-0bbd18114db5/medium/08ab1913-d686-456f-bab7-8c32a34e74f9"
       ],
       "fotosComLegenda": [
         {
@@ -16274,6 +16278,22 @@
         {
           "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/84115d2d-5889-44fd-a97e-0bbd18114db5/medium/1492910b-4884-4061-b35a-908f07a229b6",
           "legenda": "Quarto"
+        },
+        {
+          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/84115d2d-5889-44fd-a97e-0bbd18114db5/medium/5b4a0fde-a009-45e2-a839-423713239b8b",
+          "legenda": null
+        },
+        {
+          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/84115d2d-5889-44fd-a97e-0bbd18114db5/medium/2690388b-e3f0-4676-b2bf-8b3465e7fea7",
+          "legenda": null
+        },
+        {
+          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/84115d2d-5889-44fd-a97e-0bbd18114db5/medium/361dac12-6028-4166-b908-6a99d99014a3",
+          "legenda": null
+        },
+        {
+          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/84115d2d-5889-44fd-a97e-0bbd18114db5/medium/08ab1913-d686-456f-bab7-8c32a34e74f9",
+          "legenda": null
         }
       ],
       "plantas": [
@@ -30834,7 +30854,7 @@
         }
       ],
       "pdfApresentacao": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/472adc14-bafd-4e41-a414-5157e0b46261/e9bbba5b-f25d-4591-953c-ee17775a4750",
-      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/472adc14-bafd-4e41-a414-5157e0b46261/347e0883-5d36-495a-bdce-8aa1abfc4de7",
+      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/472adc14-bafd-4e41-a414-5157e0b46261/a875e7c7-a6a3-490f-9d8d-ce3fc0fd4d93",
       "tipologias": [
         "1 a 3 quartos"
       ],
@@ -30905,7 +30925,17 @@
           "suites": 1,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 781900
+          "valor": 796900
+        },
+        {
+          "ap": "604",
+          "tipologia": "Apto. Tipo",
+          "area": 69.65,
+          "quartos": 1,
+          "suites": 1,
+          "banheiros": 1,
+          "vagas": 1,
+          "valor": 821900
         },
         {
           "ap": "1204",
@@ -30915,7 +30945,7 @@
           "suites": 1,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 862900
+          "valor": 880900
         },
         {
           "ap": "1304",
@@ -30925,7 +30955,7 @@
           "suites": 1,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 875900
+          "valor": 893900
         },
         {
           "ap": "301",
@@ -30935,7 +30965,7 @@
           "suites": 1,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 903900
+          "valor": 921900
         },
         {
           "ap": "305",
@@ -30945,7 +30975,7 @@
           "suites": 1,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 909900
+          "valor": 927900
         },
         {
           "ap": "701",
@@ -30955,7 +30985,7 @@
           "suites": 1,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 939900
+          "valor": 958900
         },
         {
           "ap": "705",
@@ -30965,7 +30995,7 @@
           "suites": 1,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 946900
+          "valor": 964900
         },
         {
           "ap": "801",
@@ -30975,7 +31005,7 @@
           "suites": 1,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 949900
+          "valor": 968900
         },
         {
           "ap": "805",
@@ -30985,7 +31015,7 @@
           "suites": 1,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 956900
+          "valor": 974900
         },
         {
           "ap": "1101",
@@ -30995,7 +31025,7 @@
           "suites": 1,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 983900
+          "valor": 1002900
         },
         {
           "ap": "1301",
@@ -31005,17 +31035,7 @@
           "suites": 1,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 1012900
-        },
-        {
-          "ap": "1401",
-          "tipologia": "Apto. Tipo",
-          "area": 80.53,
-          "quartos": 1,
-          "suites": 1,
-          "banheiros": 1,
-          "vagas": 1,
-          "valor": 1028900
+          "valor": 1033900
         }
       ],
       "valorCondominio": null,
