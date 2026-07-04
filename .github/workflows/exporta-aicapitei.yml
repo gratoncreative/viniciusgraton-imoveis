@@ -57,14 +57,19 @@ jobs:
           fi
           corpo='{}'
           if [ -n "$TETO" ]; then corpo="{\"teto\":$TETO}"; fi
+          # NÃO usar 'set -e' agressivo aqui: um grep sem match (resposta sem "novos")
+          # retorna 1 e mataria o passo antes do break. Tratamos tudo na mão.
+          set +e
           total=0
           for i in $(seq 1 "$RODADAS"); do
             resp=$(curl -fsS --max-time 90 --retry 2 --retry-delay 5 -X POST "https://viniciusgraton.com.br/api/exporta-aicapitei" \
               -H "x-backup-key: ${{ secrets.BACKUP_CRON_KEY }}" \
-              -H "content-type: application/json" -d "$corpo" || echo '{"erro":"http"}')
+              -H "content-type: application/json" -d "$corpo")
+            if [ $? -ne 0 ]; then resp='{"erro":"http"}'; fi
             echo "lote $i: $resp"
-            # pega o PRIMEIRO "novos" (top-level; o segundo é o ingest.novos aninhado)
-            n=$(printf '%s' "$resp" | grep -o '"novos":[0-9]*' | head -1 | grep -o '[0-9]*$')
+            # pega o PRIMEIRO "novos" (top-level; o segundo é o ingest.novos aninhado).
+            # '|| true' garante que grep-sem-match nunca derruba o passo.
+            n=$(printf '%s' "$resp" | grep -o '"novos":[0-9]*' | head -1 | grep -o '[0-9]*$' || true)
             total=$((total + ${n:-0}))
             case "$resp" in
               *'"error":"nao-autorizado"'*) echo "Chave recusada (BACKUP_CRON_KEY) — parando."; break ;;
@@ -73,6 +78,7 @@ jobs:
             esac
             sleep 20
           done
+          echo "exportados=$total"
           echo "exportados=$total" >> "$GITHUB_OUTPUT"
 
       - name: Avisar o Vinícius no WhatsApp (só se exportou algo)

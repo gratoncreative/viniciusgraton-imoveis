@@ -1,6 +1,8 @@
 # Mutirão de captação Rotina → aicapitei (04/07/2026, pedido do Vinícius:
 # "capte o máximo que conseguir hoje, sempre de forma segura").
 # Dar push neste arquivo dispara o workflow exporta-aicapitei com estes valores.
-# O ritmo por chamada continua gentil (4 por lote + pausas); o endpoint trava o teto em 500.
+# Ritmo por chamada continua gentil (4 por lote + pausas); o endpoint trava o teto em 500.
+# rodadas fica sob o limite de tempo do job (120 x ~25s ~= 50min).
+# rev: 2 (loop blindado contra grep-sem-match)
 teto=400
-rodadas=600
+rodadas=120
