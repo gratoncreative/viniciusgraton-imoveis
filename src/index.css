@@ -8838,7 +8838,9 @@ html[data-theme="claro"] .catalogo .cat-head { margin-bottom: 18px; }
 html[data-theme="claro"] .cat-count { font-family: var(--font-head); font-weight: 700; color: #5b606a; }
 
 /* ── Fase 3: hero com FOTO lifestyle de fundo (full-bleed) + card de busca à esquerda ── */
-.hero.hero--foto { min-height: min(90vh, 780px); padding-top: 116px; padding-bottom: 40px; overflow: hidden; align-items: center; }
+.hero.hero--foto { min-height: min(90vh, 780px); padding-top: 116px; padding-bottom: 40px; overflow: hidden; align-items: center;
+  /* base premium navy: elimina o "flash cinza" antes da foto pintar e dá profundidade */
+  background: linear-gradient(118deg, #212b3d 0%, #1b2438 52%, #2b3654 100%); }
 .hero-foto-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transform: translate(calc(var(--px,0) * -14px), calc(var(--py,0) * -8px)) scale(1.06); transition: transform .5s var(--ease); }
 .hero-foto-scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
