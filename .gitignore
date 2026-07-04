@@ -36,3 +36,6 @@ scripts/_*
 
 # worktrees internos do Claude Code
 .claude/worktrees/
+
+# estado local do wrangler (pages dev)
+.wrangler/

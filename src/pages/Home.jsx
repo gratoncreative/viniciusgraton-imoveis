@@ -1,11 +1,12 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 import Hero from '../components/Hero'
 import { useSEO } from '../useSEO'
 import { CONFIG } from '../data'
+import { lazyRetry } from '../lazyRetry'
 
-const Destaque = lazy(() => import('../components/Destaque'))
-const BlogHome = lazy(() => import('../components/BlogHome'))
-const QuickSimHome = lazy(() => import('../components/QuickSimHome'))
+const Destaque = lazyRetry(() => import('../components/Destaque'))
+const BlogHome = lazyRetry(() => import('../components/BlogHome'))
+const QuickSimHome = lazyRetry(() => import('../components/QuickSimHome'))
 
 export default function Home() {
   useSEO({

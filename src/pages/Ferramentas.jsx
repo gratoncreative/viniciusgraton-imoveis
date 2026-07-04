@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect, lazy, Suspense } from 'react'
+import { useState, useMemo, useRef, useEffect, Suspense } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import CampoMoeda from '../components/CampoMoeda'
 import { BAIRROS_IMOVEL, linkWhatsApp, estudoM2ACM } from '../data'
@@ -10,15 +10,16 @@ import ACM_INDEX from '../acm-m2.json'
 import { formatBRL } from '../extenso'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow } from '../components/icons'
+import { lazyRetry } from '../lazyRetry'
 
 // Ferramentas "de página" que abrem INLINE no modal (lazy — fora do bundle inicial).
-const ConverterFotos = lazy(() => import('./ConverterFotos'))
-const PdfParaJpgPage = lazy(() => import('./PdfParaJpgPage'))
-const TranscreverPage = lazy(() => import('./TranscreverPage'))
-const CompararPage = lazy(() => import('./Comparar'))
-const MapaPage = lazy(() => import('./Mapa'))
-const ImpulsionarPage = lazy(() => import('./Impulsionar'))
-const RemoverMarcaTool = lazy(() => import('../components/RemoverMarca'))
+const ConverterFotos = lazyRetry(() => import('./ConverterFotos'))
+const PdfParaJpgPage = lazyRetry(() => import('./PdfParaJpgPage'))
+const TranscreverPage = lazyRetry(() => import('./TranscreverPage'))
+const CompararPage = lazyRetry(() => import('./Comparar'))
+const MapaPage = lazyRetry(() => import('./Mapa'))
+const ImpulsionarPage = lazyRetry(() => import('./Impulsionar'))
+const RemoverMarcaTool = lazyRetry(() => import('../components/RemoverMarca'))
 
 // ─── helpers numéricos ──────────────────────────────────────────────────────
 const brl  = (n) => (isFinite(n) ? n : 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })

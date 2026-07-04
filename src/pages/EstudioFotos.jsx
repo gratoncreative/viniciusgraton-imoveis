@@ -1,12 +1,13 @@
-import { Suspense, lazy, useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
 import { IconArrow, IconWhats } from '../components/icons'
 import { linkWhatsApp } from '../data'
+import { lazyRetry } from '../lazyRetry'
 
 // Estúdio de fotos de imóvel — página pública (própria URL + HTML).
 // O editor completo (MelhorarFotos) roda 100% no navegador; nada é enviado a servidor.
-const MelhorarFotos = lazy(() => import('../components/MelhorarFotos'))
+const MelhorarFotos = lazyRetry(() => import('../components/MelhorarFotos'))
 
 const SITE = 'https://viniciusgraton.com.br'
 const URL = `${SITE}/ferramentas/estudio-de-fotos`

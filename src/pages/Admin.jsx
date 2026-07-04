@@ -1,17 +1,18 @@
-import { useState, useEffect, useCallback, lazy, Suspense } from 'react'
+import { useState, useEffect, useCallback, Suspense } from 'react'
 import { useSEO } from '../useSEO'
 import { CONFIG, IMOVEIS, IMOVEIS_PENDENTES, formatPreco, getImovel, fotosDe } from '../data'
 import { CONSTRUTORAS } from '../empreendimentos'
 import { IconShield, IconArrow, IconWhats } from '../components/icons'
 import AdminCRM from '../components/AdminCRM'
 import InputMoeda from '../components/InputMoeda'
+import { lazyRetry } from '../lazyRetry'
 
-const RemoverMarca = lazy(() => import('../components/RemoverMarca'))
-const MelhorarFotos = lazy(() => import('../components/MelhorarFotos'))
-const PostGen = lazy(() => import('../components/PostGen'))
-const AtendimentosPanel = lazy(() => import('../components/AtendimentosPanel'))
-const ConversoesPanel = lazy(() => import('../components/ConversoesPanel'))
-const BackupPanel = lazy(() => import('../components/BackupPanel'))
+const RemoverMarca = lazyRetry(() => import('../components/RemoverMarca'))
+const MelhorarFotos = lazyRetry(() => import('../components/MelhorarFotos'))
+const PostGen = lazyRetry(() => import('../components/PostGen'))
+const AtendimentosPanel = lazyRetry(() => import('../components/AtendimentosPanel'))
+const ConversoesPanel = lazyRetry(() => import('../components/ConversoesPanel'))
+const BackupPanel = lazyRetry(() => import('../components/BackupPanel'))
 
 const LSK = 'vg_admin_token'
 const waLink = (fone) => { const d = String(fone || '').replace(/\D/g, ''); const full = d.length <= 11 ? '55' + d : d; return `https://wa.me/${full}` }

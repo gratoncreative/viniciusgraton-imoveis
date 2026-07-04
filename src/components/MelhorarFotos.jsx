@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState, useCallback, lazy, Suspense } from 'react'
+import { useEffect, useRef, useState, useCallback, Suspense } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { lazyRetry } from '../lazyRetry'
 
 // Ferramenta de remover marca d'água (IA própria) — entra como 6ª aba do estúdio.
-const RemoverMarca = lazy(() => import('./RemoverMarca'))
+const RemoverMarca = lazyRetry(() => import('./RemoverMarca'))
 
 // Ferramenta (área restrita): corrige inclinação + realça fotos em lote, 100% no
 // navegador. Estima o ângulo automaticamente, deixa ajustar com grade de nível,

@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef, lazy, Suspense, useCallback } from 'react'
+﻿import { useState, useEffect, useRef, Suspense, useCallback } from 'react'
 import { gerarComIA } from '../useFerramentaIA'
 import { Link, useNavigate, useParams, Navigate } from 'react-router-dom'
 import { useSEO } from '../useSEO'
@@ -7,9 +7,10 @@ import { registrarLead } from '../engajamento'
 import { CalcComissao, CalcACM } from './Ferramentas'
 import FerramentaRotina from '../components/FerramentaRotina'
 import { IconShield, IconArrow } from '../components/icons'
+import { lazyRetry } from '../lazyRetry'
 
-const PostGen = lazy(() => import('../components/PostGen'))
-const RemoverMarca = lazy(() => import('../components/RemoverMarca'))
+const PostGen = lazyRetry(() => import('../components/PostGen'))
+const RemoverMarca = lazyRetry(() => import('../components/RemoverMarca'))
 
 const soNum = (s) => String(s || '').replace(/\D/g, '')
 const mascaraFone = (s) => {

@@ -1,9 +1,10 @@
-import { useEffect, useState, lazy, Suspense } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
+import { lazyRetry } from '../lazyRetry'
 
 // Página PÚBLICA de um tour 3D hospedado (link compartilhável). Reusa o viewer.
-const Tour3D = lazy(() => import('../components/Tour3D'))
+const Tour3D = lazyRetry(() => import('../components/Tour3D'))
 
 const Centro = ({ children }) => (
   <main className="pagina section--light" style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

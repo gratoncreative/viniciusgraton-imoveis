@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useRef, lazy, Suspense } from 'react'
+import { useEffect, useState, useMemo, useRef, Suspense } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import Galeria from '../components/Galeria'
@@ -18,12 +18,13 @@ import AdminImovelEditor from '../components/AdminImovelEditor'
 import BaixarFotosImovel from '../components/BaixarFotosImovel'
 import { jaCurtiu, alternarCurtida } from '../engajamento'
 import { registrarVisto } from '../vistos'
+import { lazyRetry } from '../lazyRetry'
 // Lazy.. o estudo do m² (componente pesado + fontes premium) só carrega ao abrir
-const EstudoModal = lazy(() => import('../components/EstudoModal'))
+const EstudoModal = lazyRetry(() => import('../components/EstudoModal'))
 // Lazy.. o visualizador 3D (engine PlayCanvas, pesada) só carrega ao clicar em "Tour 3D"
-const Tour3D = lazy(() => import('../components/Tour3D'))
+const Tour3D = lazyRetry(() => import('../components/Tour3D'))
 // Lazy.. o Tour 360° (iframe do tour hospedado) só carrega ao abrir
-const Tour360 = lazy(() => import('../components/Tour360'))
+const Tour360 = lazyRetry(() => import('../components/Tour360'))
 
 const plural = (n, s, p) => (n > 1 ? p : s)
 
