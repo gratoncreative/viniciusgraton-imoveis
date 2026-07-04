@@ -30,6 +30,9 @@ const ENRIQUECE_LOTE = 4  // reenvios de enriquecimento por chamada (não contam
 const PAUSA_MS = 1200     // respiro entre raspagens (gentil com o Imoview)
 const TETO_DIA = 50       // imóveis NOVOS por dia
 const PRECO_MIN = 500000
+// teto de sanidade: acima disso em Uberlândia é dado sujo do catálogo (centavos colados:
+// R$ 3.100.853,75 vira "310085375") — não exportar; corrigir na origem é outra frente
+const PRECO_MAX = 20000000
 
 const KEY_EXPORTADOS = 'aicapitei:exportados'   // map { cod: { em, owner:true/false } }
 const KEY_ENR_CURSOR = 'aicapitei:enr-cursor'   // janela rotativa do enriquecimento
@@ -44,7 +47,8 @@ const semAcento = (s) => String(s || '').toLowerCase().normalize('NFD').replace(
 const TIPOS_EXCLUIDOS = /terreno|lote|rural|comercial|chacara|sitio|cobertura/
 function elegivel(im) {
   if (semAcento(im && im.finalidade) !== 'venda') return false
-  if (!(Number(im && im.preco) >= PRECO_MIN)) return false
+  const preco = Number(im && im.preco)
+  if (!(preco >= PRECO_MIN) || preco > PRECO_MAX) return false
   const t = semAcento(im && im.tipo)
   if (!t || TIPOS_EXCLUIDOS.test(t)) return false
   return /^casa/.test(t) || /^(apartamento|apto)/.test(t)
