@@ -1,0 +1,56 @@
+name: Exportar imóveis para o aicapitei (diário)
+
+# Envia aos poucos os imóveis elegíveis do catálogo (casas e apartamentos à venda,
+# R$ 500 mil ou mais, maiores valores primeiro) pro cadastro do aicapitei, chamando
+# /api/exporta-aicapitei em loop gentil — ~4 novos por chamada, teto de 50 novos/dia.
+# O proprietário vai junto quando existe no cache; senão o imóvel vai sem owner e o
+# enriquecimento reenvia depois. Defasado 15 min do captar-proprietarios pra não
+# concorrer na mesma sessão do Imoview.
+# Pré-requisitos: secrets BACKUP_CRON_KEY (mesmo do Cloudflare) e AICAPITEI_INGEST_KEY
+# no Pages do site (env var). CALLMEBOT_KEY é opcional (aviso no WhatsApp).
+
+on:
+  schedule:
+    # SÓ de madrugada (Brasília ~1h-5h = 4h-8h UTC): janela em que o Imoview responde
+    # liso (mesma constatação do captar-proprietarios). :35 pra não colidir com o :20.
+    - cron: '35 4-8 * * *'
+  workflow_dispatch: {}   # botão "Run workflow" pra rodar na hora (testes)
+
+# evita duas execuções ao mesmo tempo (uma de cada vez = mais seguro pro Imoview)
+concurrency:
+  group: exporta-aicapitei
+  cancel-in-progress: false
+
+jobs:
+  exportar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exportar em lotes pequenos (gentil com o Imoview e com o ingest)
+        id: exportar
+        run: |
+          total=0
+          for i in $(seq 1 15); do
+            resp=$(curl -fsS --max-time 90 --retry 2 --retry-delay 5 -X POST "https://viniciusgraton.com.br/api/exporta-aicapitei" \
+              -H "x-backup-key: ${{ secrets.BACKUP_CRON_KEY }}" || echo '{"erro":"http"}')
+            echo "lote $i: $resp"
+            # pega o PRIMEIRO "novos" (top-level; o segundo é o ingest.novos aninhado)
+            n=$(printf '%s' "$resp" | grep -o '"novos":[0-9]*' | head -1 | grep -o '[0-9]*$')
+            total=$((total + ${n:-0}))
+            case "$resp" in
+              *'"error":"nao-autorizado"'*) echo "Chave recusada (BACKUP_CRON_KEY) — parando."; break ;;
+              *'"erro":"http"'*) echo "Falha HTTP (auth/rede) — parando por agora."; break ;;
+              *'"done"'*) echo "Endpoint pediu pra parar (teto do dia, fila vazia ou erro no ingest)."; break ;;
+            esac
+            sleep 20
+          done
+          echo "exportados=$total" >> "$GITHUB_OUTPUT"
+
+      - name: Avisar o Vinícius no WhatsApp (só se exportou algo)
+        if: steps.exportar.outputs.exportados != '' && steps.exportar.outputs.exportados != '0'
+        continue-on-error: true
+        run: |
+          msg="✅ aicapitei: ${{ steps.exportar.outputs.exportados }} imóvel(is) da Rotina exportado(s) hoje para o cadastro (maiores valores primeiro). Dados de proprietário completam aos poucos."
+          curl -fsS -G "https://api.callmebot.com/whatsapp.php" \
+            --data-urlencode "phone=553491570494" \
+            --data-urlencode "text=$msg" \
+            --data-urlencode "apikey=${{ secrets.CALLMEBOT_KEY }}" >/dev/null || true
