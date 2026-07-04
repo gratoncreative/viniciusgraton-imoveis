@@ -14,6 +14,11 @@ on:
     # SÓ de madrugada (Brasília ~1h-5h = 4h-8h UTC): janela em que o Imoview responde
     # liso (mesma constatação do captar-proprietarios). :35 pra não colidir com o :20.
     - cron: '35 4-8 * * *'
+    # TRICKLE DIURNO DE SÁBADO (pedido do dono 04/07: captar lento e contínuo o dia todo).
+    # :15 e :45 das 14h-23h UTC = sábado ~11h-20h de Brasília. Cada disparo faz um lote
+    # PEQUENO (teto do dia 500, 5 rodadas por disparo) — ritmo suave, espalhado ~30 min.
+    # Temporário: a supervisão remove este cron no fim do dia (posture padrão = só madrugada).
+    - cron: '15,45 14-23 * * 6'
   workflow_dispatch:      # botão "Run workflow" / mutirão manual
     inputs:
       teto:
@@ -45,6 +50,7 @@ jobs:
           TETO: ${{ github.event.inputs.teto || '' }}
           RODADAS: ${{ github.event.inputs.rodadas || '15' }}
           EVENTO: ${{ github.event_name }}
+          CRON: ${{ github.event.schedule }}
         run: |
           # mutirão por arquivo: SÓ quando o gatilho foi o push do .mutirao
           # (os crons da madrugada continuam no teto padrão de 50/dia)
@@ -54,6 +60,12 @@ jobs:
             [ -n "$T" ] && TETO="$T"
             [ -n "$R" ] && RODADAS="$R"
             echo "mutirão: teto=$TETO rodadas=$RODADAS"
+          fi
+          # trickle diurno de sábado (schedule específico): lote pequeno e espalhado.
+          # Teto do dia 500 (compartilhado no servidor); 5 rodadas/disparo mantém suave.
+          if [ "$EVENTO" = "schedule" ] && [ "$CRON" = "15,45 14-23 * * 6" ]; then
+            TETO=500; RODADAS=5
+            echo "trickle diurno: teto=$TETO rodadas=$RODADAS"
           fi
           corpo='{}'
           if [ -n "$TETO" ]; then corpo="{\"teto\":$TETO}"; fi
