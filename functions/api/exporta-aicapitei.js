@@ -87,7 +87,7 @@ function montarProp(owner) {
   return prop
 }
 
-function montarItem(im, prop) {
+function montarItem(im, prop, det) {
   const item = {
     codigo: String(im.codigo),
     tipo: im.tipo || '',
@@ -106,8 +106,64 @@ function montarItem(im, prop) {
     descricao: im.descricao || '',
     img: im.img || '',
   }
+  if (det) Object.assign(item, det) // detalhe da fonte (descrição completa, fotos, características..)
   if (prop) item.prop = prop
   return item
+}
+
+// Características que a Rotina publica como flag no retorno público — só entram quando = 1.
+// NUNCA derivar/estimar: rótulo só existe se a fonte afirmou.
+const CARACS = {
+  piscina: 'Piscina', churrasqueira: 'Churrasqueira', closet: 'Closet', escritorio: 'Escritório',
+  lavabo: 'Lavabo', despensa: 'Despensa', armariocozinha: 'Armários na cozinha', armarioquarto: 'Armários nos quartos',
+  armariobanheiro: 'Armários nos banheiros', arcondicionado: 'Ar-condicionado', aquecedorsolar: 'Aquecimento solar',
+  aquecedorgas: 'Aquecedor a gás', aquecedoreletrico: 'Aquecedor elétrico', jardim: 'Jardim', quintal: 'Quintal',
+  varandagourmet: 'Varanda gourmet', espacogourmet: 'Espaço gourmet', lareira: 'Lareira',
+  portaoeletronico: 'Portão eletrônico', cercaeletrica: 'Cerca elétrica', alarme: 'Alarme', interfone: 'Interfone',
+  portaria24horas: 'Portaria 24h', seguranca24horas: 'Segurança 24h', academia: 'Academia',
+  salaofestas: 'Salão de festas', salaojogos: 'Salão de jogos', playground: 'Playground',
+  quadraesportiva: 'Quadra esportiva', sauna: 'Sauna', hidromassagem: 'Hidromassagem',
+  permiteanimais: 'Aceita animais', areaservico: 'Área de serviço', dce: 'DCE', gascanalizado: 'Gás canalizado',
+  solmanha: 'Sol da manhã', vistalago: 'Vista para o lago', vistamar: 'Vista para o mar', wifi: 'Wi-Fi',
+  homecinema: 'Home cinema', salamassagem: 'Sala de massagem', lavanderia: 'Lavanderia', box: 'Box nos banheiros',
+}
+const flagSim = (v) => v === 1 || v === '1' || v === true
+
+// Ficha completa direto da FONTE pública da Rotina (mesmo endpoint do catálogo):
+// descrição inteira, todas as fotos e características reais. Falhou? Item vai básico.
+async function detalheRotina(cod) {
+  try {
+    const r = await fetch('https://www.rotina.com.br/retornar-imoveis-codigo', {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      body: 'codigo=' + encodeURIComponent(cod) + '&pagina=1',
+      signal: AbortSignal.timeout(9000),
+    })
+    const j = await r.json()
+    const im = j && j.lista && j.lista[0]
+    if (!im || String(im.codigo) !== String(cod)) return null
+    const det = {}
+    if (im.descricao) det.descricao = String(im.descricao)
+    if (Array.isArray(im.fotos) && im.fotos.length) {
+      const fotos = im.fotos.map((f) => f && (f.urlm || f.url)).filter((u) => /^https:\/\//.test(u || '')).slice(0, 30)
+      if (fotos.length) det.fotos = fotos
+    }
+    const carac = Object.entries(CARACS).filter(([k]) => flagSim(im[k])).map(([, rot]) => rot)
+    if (carac.length) det.caracteristicas = carac
+    const pos = (v) => { const x = Number(v); return isFinite(x) && x > 0 ? Math.round(x) : 0 }
+    if (pos(im.valoriptuanual)) det.iptuAnual = pos(im.valoriptuanual)
+    if (pos(im.anoconstrucao)) det.anoConstrucao = pos(im.anoconstrucao)
+    if (pos(im.numeroandar)) det.andar = pos(im.numeroandar)
+    if (pos(im.areainternatratado)) det.areaInterna = pos(im.areainternatratado)
+    if (pos(im.arealotetratado)) det.areaLote = pos(im.arealotetratado)
+    if (im.nomecondominio) det.nomeCondominio = String(im.nomecondominio)
+    if (flagSim(im.aceitafinanciamento)) det.aceitaFinanciamento = true
+    if (flagSim(im.aceitapermuta)) det.aceitaPermuta = true
+    if (flagSim(im.mobiliado)) det.mobiliado = true
+    if (im.urlvideo) det.video = String(im.urlvideo)
+    if (im.url_amigavel) det.urlRotina = String(im.url_amigavel).startsWith('http') ? String(im.url_amigavel) : 'https://www.rotina.com.br' + (String(im.url_amigavel).startsWith('/') ? '' : '/') + String(im.url_amigavel)
+    return det
+  } catch { return null }
 }
 
 export async function onRequest({ request, env }) {
@@ -197,11 +253,13 @@ export async function onRequest({ request, env }) {
         await sleep(PAUSA_MS)
       }
     }
-    novosItens.push({ im, prop: montarProp(owner) })
+    // ficha completa da fonte pública (fotos/descrição/características) — falha não bloqueia
+    const det = await detalheRotina(cod)
+    novosItens.push({ im, prop: montarProp(owner), det })
   }
 
   const itens = [
-    ...novosItens.map(({ im, prop }) => montarItem(im, prop)),
+    ...novosItens.map(({ im, prop, det }) => montarItem(im, prop, det)),
     ...paraEnriquecer.map(({ im, prop }) => montarItem(im, prop)),
   ] // máx 4 + 4 = 8 (o contrato aceita até 12)
 

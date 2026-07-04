@@ -4,7 +4,18 @@
 // O catálogo do site carrega esse feed em runtime (não vai no bundle). Detalhe busca via /api/rotina-imovel.
 import fs from 'node:fs'
 
-const n = (v) => { const x = parseInt(String(v == null ? '' : v).replace(/[^\d-]/g, ''), 10); return isFinite(x) ? x : 0 }
+// ATENÇÃO: valortratado/valorcondominio chegam como NÚMERO com decimais (ex.: 3100853.75).
+// A versão antiga removia o ponto decimal como se fosse milhar (3100853.75 → 310085375, preço ×100!).
+// Número entra direto (arredondado); string pt-BR ("R$ 9.000.000,00") é parseada de verdade.
+const n = (v) => {
+  if (v == null || v === '') return 0
+  if (typeof v === 'number') return isFinite(v) ? Math.round(v) : 0
+  let s = String(v).trim().replace(/[R$\s]/g, '')
+  if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.')
+  else if (!/^\d+\.\d{1,2}$/.test(s)) s = s.replace(/\./g, '')
+  const x = parseFloat(s)
+  return isFinite(x) ? Math.round(x) : 0
+}
 const f = (v) => { const x = parseFloat(String(v == null ? '' : v).replace(',', '.')); return isFinite(x) ? x : 0 }
 const ehApto = (t) => /apart|kit|studio|stúdio|loft|flat|cobertura/i.test(t || '')
 // extrai só o NOME da rua (sem número/complemento/bairro) — privacidade + autocomplete limpo
@@ -111,7 +122,9 @@ try {
     } else {
       // já existia: preserva a data de primeira aparição (se já tínhamos)
       if (a.visto) r.visto = a.visto
-      if (a.preco && r.preco && r.preco < a.preco) {
+      // preço antigo suspeito (era o bug do ×100/×10) não vale como base de "baixou de preço"
+      const antigoSujo = a.preco > 20000000 || (r.area > 20 && a.preco / r.area > 25000)
+      if (a.preco && r.preco && r.preco < a.preco && !antigoSujo) {
         r.baixouEm = geradoEm
         r.precoAnterior = a.preco
         baixaram.push({ ...r })
