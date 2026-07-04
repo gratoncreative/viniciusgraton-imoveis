@@ -49,6 +49,9 @@ function elegivel(im) {
   if (semAcento(im && im.finalidade) !== 'venda') return false
   const preco = Number(im && im.preco)
   if (!(preco >= PRECO_MIN) || preco > PRECO_MAX) return false
+  // dado sujo também aparece como R$/m2 impossível (mercado real de Uberlândia <= ~23 mil/m2)
+  const area = Number(im && im.area)
+  if (area > 20 && preco / area > 25000) return false
   const t = semAcento(im && im.tipo)
   if (!t || TIPOS_EXCLUIDOS.test(t)) return false
   return /^casa/.test(t) || /^(apartamento|apto)/.test(t)
