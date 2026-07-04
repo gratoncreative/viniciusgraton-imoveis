@@ -1,3 +1,5 @@
+import { importRetry } from './lazyRetry'
+
 // PDF de referência de mercado pela metragem (ferramenta ACM) — método comparativo
 // (NBR 14653) sobre a carteira da Rotina. NÃO é laudo nem avalia a edificação.
 const PW = 595.28, PH = 841.89, M = 46
@@ -8,7 +10,7 @@ const T = (s) => String(s == null ? '' : s).replace(/[—–]/g, '-')
 const GRAU = { III: 'consistente', II: 'moderada', I: 'preliminar' }
 
 export async function gerarPdfACM(d) {
-  const { jsPDF } = await import('jspdf')
+  const { jsPDF } = await importRetry(() => import('jspdf'))
   const doc = new jsPDF({ unit: 'pt', format: 'a4', compress: true })
   const r = d.r || {}
   let y = 0

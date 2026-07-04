@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from 'react'
 import * as pdfjs from 'pdfjs-dist'
 import PdfToolShell from '../components/PdfToolShell'
 import ArquivoDrop from '../components/ArquivoDrop'
+import { importRetry } from '../lazyRetry'
 
 pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs'
 
@@ -101,7 +102,7 @@ export default function DividirPdfPage() {
     setPhase('processing'); setResult(null)
     try {
       const buf = await fileRef.current.arrayBuffer()
-      const { PDFDocument } = await import('pdf-lib')
+      const { PDFDocument } = await importRetry(() => import('pdf-lib'))
       const src = await PDFDocument.load(buf, { ignoreEncryption: true })
       if (modo === 'extrair') {
         const out = await PDFDocument.create()
@@ -111,7 +112,7 @@ export default function DividirPdfPage() {
         const blob = new Blob([bytes], { type: 'application/pdf' })
         setResult({ url: URL.createObjectURL(blob), name: 'extraido.pdf', size: blob.size, count: idx.length, zip: false })
       } else {
-        const JSZip = (await import('jszip')).default
+        const JSZip = (await importRetry(() => import('jszip'))).default
         const zip = new JSZip()
         for (const i of idx) {
           const out = await PDFDocument.create()

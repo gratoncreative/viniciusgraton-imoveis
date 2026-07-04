@@ -10,7 +10,7 @@ import ACM_INDEX from '../acm-m2.json'
 import { formatBRL } from '../extenso'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow } from '../components/icons'
-import { lazyRetry } from '../lazyRetry'
+import { lazyRetry, importRetry } from '../lazyRetry'
 
 // Ferramentas "de página" que abrem INLINE no modal (lazy — fora do bundle inicial).
 const ConverterFotos = lazyRetry(() => import('./ConverterFotos'))
@@ -369,7 +369,7 @@ export function CalcACM() {
 
   const baixarPdf = async () => {
     try {
-      const { gerarPdfACM } = await import('../pdfACM')
+      const { gerarPdfACM } = await importRetry(() => import('../pdfACM'))
       gerarPdfACM({ bairro, tipo, quartos: ehResid ? qTxt : '', area: A, r, totMin, totMax, totCentral, dataTxt: new Date().toLocaleDateString('pt-BR') })
     } catch { alert('Não consegui gerar o PDF agora. Tente novamente em instantes.') }
   }

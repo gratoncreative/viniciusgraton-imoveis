@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import PdfToolShell from '../components/PdfToolShell'
 import ArquivoDrop from '../components/ArquivoDrop'
+import { importRetry } from '../lazyRetry'
 
 const FAQ = [
   { q: 'É gratuito juntar PDFs?', a: 'Sim, 100% gratuito e sem limite de arquivos ou páginas. Sem cadastro, sem plano pago e sem marca d\'água no resultado.' },
@@ -34,7 +35,7 @@ export default function JuntarPdfPage() {
     const pdfs = files.filter((f) => f.type === 'application/pdf' || /\.pdf$/i.test(f.name))
     if (!pdfs.length) return
     setCarregando(true)
-    const { PDFDocument } = await import('pdf-lib')
+    const { PDFDocument } = await importRetry(() => import('pdf-lib'))
     const novos = []
     for (const f of pdfs) {
       try {
@@ -60,7 +61,7 @@ export default function JuntarPdfPage() {
     if (items.length < 1) return
     setPhase('processing'); setResult(null)
     try {
-      const { PDFDocument } = await import('pdf-lib')
+      const { PDFDocument } = await importRetry(() => import('pdf-lib'))
       const merged = await PDFDocument.create()
       for (const it of items) {
         const bytes = await it.file.arrayBuffer()

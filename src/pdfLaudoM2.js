@@ -1,4 +1,5 @@
 import { formatPreco } from './data'
+import { importRetry } from './lazyRetry'
 
 // Laudo técnico do valor do m² (PDF) — gerado após o pagamento. Documento
 // completo: imóvel, metodologia NBR 14653, amostra de comparáveis, tratamento
@@ -8,7 +9,7 @@ const fmtM2 = (v) => 'R$ ' + Math.round(v).toLocaleString('pt-BR') + '/m²'
 const fmtN = (v) => Math.round(v).toLocaleString('pt-BR')
 
 export async function gerarPdfLaudoM2(im, est, opcao = 'baixar') {
-  const { jsPDF } = await import('jspdf')
+  const { jsPDF } = await importRetry(() => import('jspdf'))
   const doc = new jsPDF({ unit: 'pt', format: 'a4', compress: true })
   let y = 0
 

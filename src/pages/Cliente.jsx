@@ -5,6 +5,7 @@ import { IMOVEIS, getImovel, avaliarMatch, vantagensImovel, formatPreco, linkWha
 import { useSEO } from '../useSEO'
 import { IconWhats, IconHeart, IconClose } from '../components/icons'
 import { getConta, salvarConta } from '../conta'
+import { importRetry } from '../lazyRetry'
 
 const primeiroNome = (n) => (n || '').trim().split(/\s+/)[0] || ''
 
@@ -99,7 +100,7 @@ export default function Cliente() {
         setLaudoComprado(prev => new Set([...prev, String(codigo)]))
         setLaudoModal({ im, est })
         // Download automático
-        const { gerarPdfLaudoM2Blob } = await import('../pdfLaudoM2')
+        const { gerarPdfLaudoM2Blob } = await importRetry(() => import('../pdfLaudoM2'))
         const blob = await gerarPdfLaudoM2Blob(im, est)
         if (!blob) return
         const url = URL.createObjectURL(blob)
@@ -389,7 +390,7 @@ export default function Cliente() {
         }
 
         const baixarNovamente = async () => {
-          const { gerarPdfLaudoM2 } = await import('../pdfLaudoM2')
+          const { gerarPdfLaudoM2 } = await importRetry(() => import('../pdfLaudoM2'))
           gerarPdfLaudoM2(mIm, mEst)
         }
 

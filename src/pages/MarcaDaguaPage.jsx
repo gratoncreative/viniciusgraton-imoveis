@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import PdfToolShell from '../components/PdfToolShell'
 import ArquivoDrop from '../components/ArquivoDrop'
+import { importRetry } from '../lazyRetry'
 
 const CORES = [
   { v: 'cinza', l: 'Cinza', rgb: [0.5, 0.5, 0.5] },
@@ -41,7 +42,7 @@ export default function MarcaDaguaPage() {
   const abrir = useCallback(async (f) => {
     if (!f || (f.type !== 'application/pdf' && !/\.pdf$/i.test(f.name))) return
     try {
-      const { PDFDocument } = await import('pdf-lib')
+      const { PDFDocument } = await importRetry(() => import('pdf-lib'))
       const doc = await PDFDocument.load(await f.arrayBuffer(), { ignoreEncryption: true })
       setFile(f); setPages(doc.getPageCount()); setResult(null); setPhase('ready')
     } catch (e) { console.error(e); alert('Não consegui ler o PDF. Pode estar protegido por senha.') }
@@ -51,7 +52,7 @@ export default function MarcaDaguaPage() {
     if (!file || !texto.trim()) return
     setPhase('processing'); setResult(null)
     try {
-      const { PDFDocument, rgb, degrees, StandardFonts } = await import('pdf-lib')
+      const { PDFDocument, rgb, degrees, StandardFonts } = await importRetry(() => import('pdf-lib'))
       const doc = await PDFDocument.load(await file.arrayBuffer(), { ignoreEncryption: true })
       const font = await doc.embedFont(StandardFonts.HelveticaBold)
       const c = (CORES.find((x) => x.v === cor) || CORES[0]).rgb

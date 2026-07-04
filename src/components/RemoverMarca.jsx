@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { importRetry } from '../lazyRetry'
 
 // Remoção de marca d'água 100% no navegador (privado, na área restrita).
 // IA: MI-GAN (ONNX) via onnxruntime-web. O modelo é servido por /api/modelo-marca.
@@ -93,7 +94,7 @@ export default function RemoverMarca({ lote = false }) {
     let vivo = true
     ;(async () => {
       try {
-        const ortMod = await import('onnxruntime-web')
+        const ortMod = await importRetry(() => import('onnxruntime-web'))
         ortMod.env.wasm.wasmPaths = window.location.origin + '/ort/' // proxy same-origin (absoluto)
         ortMod.env.wasm.numThreads = 1 // single-thread: sem worker/SharedArrayBuffer (não exige COOP/COEP)
         const s = await ortMod.InferenceSession.create('/api/modelo-marca', { executionProviders: ['wasm'] })

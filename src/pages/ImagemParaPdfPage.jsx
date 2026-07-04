@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import PdfToolShell from '../components/PdfToolShell'
 import ArquivoDrop from '../components/ArquivoDrop'
+import { importRetry } from '../lazyRetry'
 
 const A4 = { w: 210, h: 297 } // mm
 const pxToMm = (px) => (px * 25.4) / 96
@@ -37,7 +38,7 @@ function carregarImagem(url) {
 async function normalizar(file) {
   const ehHeic = /heic|heif/i.test(file.type) || /\.(heic|heif)$/i.test(file.name)
   if (!ehHeic) return file
-  const heic2any = (await import('heic2any')).default
+  const heic2any = (await importRetry(() => import('heic2any'))).default
   const out = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.92 })
   const blob = Array.isArray(out) ? out[0] : out
   return new File([blob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' })
@@ -93,7 +94,7 @@ export default function ImagemParaPdfPage() {
     if (!items.length) return
     setPhase('processing'); setProgress(0); setResult(null)
     try {
-      const { jsPDF } = await import('jspdf')
+      const { jsPDF } = await importRetry(() => import('jspdf'))
       let doc
       for (let i = 0; i < items.length; i++) {
         const it = items[i]

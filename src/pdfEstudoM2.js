@@ -1,3 +1,5 @@
+import { importRetry } from './lazyRetry'
+
 // Estudo de valor de mercado (PDF) — referência preliminar pelo método da NBR 14653.
 // Documento técnico completo: capa, sumário executivo, metodologia, homogeneização,
 // memória de cálculo, saneamento, tratamento estatístico, tabela de comparáveis,
@@ -70,11 +72,11 @@ const TX = {
 }
 
 async function gerarQR(texto) {
-  try { const QR = (await import('qrcode')).default || (await import('qrcode')); return await QR.toDataURL(texto, { margin: 1, width: 220, color: { dark: '#1C2A44', light: '#ffffff' } }) } catch { return null }
+  try { const QR = (await importRetry(() => import('qrcode'))).default || (await importRetry(() => import('qrcode'))); return await QR.toDataURL(texto, { margin: 1, width: 220, color: { dark: '#1C2A44', light: '#ffffff' } }) } catch { return null }
 }
 
 async function montar(estudo, charts = {}) {
-  const { jsPDF } = await import('jspdf')
+  const { jsPDF } = await importRetry(() => import('jspdf'))
   const doc = new jsPDF({ unit: 'pt', format: 'a4', compress: true })
   const a = estudo.avaliando || {}, st = estudo.stats || {}, prm = estudo.parametros || {}
   const codigo = estudo.numero || a.codigo || ''

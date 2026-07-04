@@ -1,4 +1,5 @@
 import { formatPreco, vantagensImovel } from './data'
+import { importRetry } from './lazyRetry'
 
 // Material do imóvel em PDF — gerado no navegador (jsPDF). Layout na linguagem clara
 // do site: petróleo (#1C2A44), dourado (#9A7B3C/#C6A15B) e marfim (#F4EFE6).
@@ -41,7 +42,7 @@ function jpegFit(img, tw, th) {
 }
 
 export async function gerarPdfImovel(im, fotos, beneficios) {
-  const { jsPDF } = await import('jspdf')
+  const { jsPDF } = await importRetry(() => import('jspdf'))
   const doc = new jsPDF({ unit: 'pt', format: 'a4', compress: true })
   fotos = (fotos || []).filter(Boolean)
   const url = 'viniciusgraton.com.br'

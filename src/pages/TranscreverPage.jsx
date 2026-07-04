@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
+import { importRetry } from '../lazyRetry'
 
 // Transcrição de vídeo/áudio (Whisper) — 100% no navegador via @huggingface/transformers.
 // Vídeo/áudio do tour → texto, legenda e descrição. Nada sai do dispositivo.
@@ -59,7 +60,7 @@ export default function TranscreverPage() {
 
   const carregarModelo = useCallback(async () => {
     if (transcriberRef.current) return transcriberRef.current
-    const { pipeline, env } = await import('@huggingface/transformers')
+    const { pipeline, env } = await importRetry(() => import('@huggingface/transformers'))
     env.allowLocalModels = false
     env.allowRemoteModels = true
     env.useBrowserCache = true

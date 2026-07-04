@@ -18,7 +18,7 @@ import AdminImovelEditor from '../components/AdminImovelEditor'
 import BaixarFotosImovel from '../components/BaixarFotosImovel'
 import { jaCurtiu, alternarCurtida } from '../engajamento'
 import { registrarVisto } from '../vistos'
-import { lazyRetry } from '../lazyRetry'
+import { lazyRetry, importRetry } from '../lazyRetry'
 // Lazy.. o estudo do m² (componente pesado + fontes premium) só carrega ao abrir
 const EstudoModal = lazyRetry(() => import('../components/EstudoModal'))
 // Lazy.. o visualizador 3D (engine PlayCanvas, pesada) só carrega ao clicar em "Tour 3D"
@@ -419,7 +419,7 @@ export default function ImovelDetalhe() {
   const baixarPdf = async () => {
     if (!im) return
     setPdfProc(true)
-    try { const { gerarPdfImovel } = await import('../pdfImovel'); await gerarPdfImovel(im, fotos, beneficios) } catch { /* ignora */ }
+    try { const { gerarPdfImovel } = await importRetry(() => import('../pdfImovel')); await gerarPdfImovel(im, fotos, beneficios) } catch { /* ignora */ }
     setPdfProc(false)
   }
 
@@ -451,7 +451,7 @@ export default function ImovelDetalhe() {
   useEffect(() => {
     if (!laudoLiberado || !est || !est.ok || laudoGerado.current) return
     laudoGerado.current = true
-    import('../pdfLaudoM2').then((m) => m.gerarPdfLaudoM2(im, est)).catch(() => {})
+    importRetry(() => import('../pdfLaudoM2')).then((m) => m.gerarPdfLaudoM2(im, est)).catch(() => {})
   }, [laudoLiberado, est, im])
 
   // registra a visita no histórico do cliente (área do cliente / recomendações)

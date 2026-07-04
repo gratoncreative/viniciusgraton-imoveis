@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
 import { IconArrow, IconWhats } from '../components/icons'
 import { linkWhatsApp } from '../data'
+import { importRetry } from '../lazyRetry'
 
 // Conversor de fotos público — em lote, entre os principais formatos.
 // Tudo roda no próprio navegador (as fotos não saem do aparelho do usuário).
@@ -46,7 +47,7 @@ async function decodificar(file) {
   // Carrega o decodificador (libheif) SOB DEMANDA só quando aparece um HEIC.
   if (ehHeic(file)) {
     try {
-      const { default: heic2any } = await import('heic2any')
+      const { default: heic2any } = await importRetry(() => import('heic2any'))
       const out = await heic2any({ blob: file, toType: 'image/png' })
       const blob = Array.isArray(out) ? out[0] : out
       try { return await createImageBitmap(blob) } catch {}
@@ -188,7 +189,7 @@ export default function ConverterFotos() {
     const prontos = itens.filter((it) => it.status === 'ok' && it.outBlob)
     if (!prontos.length) return
     if (prontos.length === 1) return baixarUm(prontos[0])
-    const { default: JSZip } = await import('jszip')
+    const { default: JSZip } = await importRetry(() => import('jszip'))
     const zip = new JSZip()
     const usados = {}
     for (const it of prontos) {

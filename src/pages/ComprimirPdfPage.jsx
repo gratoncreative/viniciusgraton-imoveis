@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from 'react'
 import * as pdfjs from 'pdfjs-dist'
 import PdfToolShell from '../components/PdfToolShell'
 import ArquivoDrop from '../components/ArquivoDrop'
+import { importRetry } from '../lazyRetry'
 
 pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs'
 
@@ -56,7 +57,7 @@ export default function ComprimirPdfPage() {
     const p = PRESETS.find((x) => x.v === preset)
     setPhase('processing'); setProgress(0); setResult(null)
     try {
-      const { jsPDF } = await import('jspdf')
+      const { jsPDF } = await importRetry(() => import('jspdf'))
       const buf = await fileRef.current.arrayBuffer()
       const pdf = await pdfjs.getDocument({ data: buf }).promise
       const tot = pdf.numPages

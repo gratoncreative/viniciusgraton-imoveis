@@ -1,4 +1,5 @@
 import { formatPreco } from './data'
+import { importRetry } from './lazyRetry'
 
 // Montagem do "pacote do bairro" (dossiê + fotos -> .zip) usada pelo BACKUP DO SITE INTEIRO
 // (BackupPanel). O botão por-bairro do AdminImovelBar tem a sua própria cópia (verificada ao
@@ -78,7 +79,7 @@ export async function montarZipsBairro({ bairro, lista, postAdmin, ownerMode = '
     prog(ini + (ate / lista.length) * (ownersFim - ini), `Proprietários… ${ate}/${lista.length}`)
   }
 
-  const { default: JSZip } = await import('jszip')
+  const { default: JSZip } = await importRetry(() => import('jszip'))
   const PART = 80
   const np = Math.ceil(lista.length / PART)
   const buildBase = ownersFim

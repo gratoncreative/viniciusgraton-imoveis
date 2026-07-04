@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
 import { linkWhatsApp } from '../data'
 import { IconArrow, IconWhats } from '../components/icons'
+import { importRetry } from '../lazyRetry'
 
 // comprime a imagem no navegador p/ enviar à IA (mantém legível p/ ler acabamentos)
 function comprimir(file) {
@@ -77,7 +78,7 @@ export default function LevantamentoFotos() {
     if (baixando || !itens.length) return
     setBaixando(true)
     try {
-      const { default: JSZip } = await import('jszip')
+      const { default: JSZip } = await importRetry(() => import('jszip'))
       const zip = new JSZip()
       const L = ['LEVANTAMENTO TÉCNICO DAS FOTOS DO IMÓVEL', '']
       itens.forEach((it, k) => {

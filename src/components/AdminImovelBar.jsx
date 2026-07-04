@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { formatPreco } from '../data'
 import { subirParaDrive, driveConfigurado } from '../gdrive'
+import { importRetry } from '../lazyRetry'
 
 const LSK = 'vg_admin_token'
 
@@ -281,7 +282,7 @@ export default function AdminImovelBar({ im }) {
     if (baixando) return
     setBaixando(true); setProg('Preparando…'); setProgPct(0)
     try {
-      const { default: JSZip } = await import('jszip')
+      const { default: JSZip } = await importRetry(() => import('jszip'))
       const zip = new JSZip()
       zip.file('dados.txt', montarTxt())
       const pasta = zip.folder('fotos')
@@ -419,7 +420,7 @@ export default function AdminImovelBar({ im }) {
       const ate = Math.min(i + CH, lista.length)
       setBairroProg(`Proprietários… ${ate}/${lista.length}`); setBairroPct(2 + Math.round((ate / lista.length) * 33))
     }
-    const { default: JSZip } = await import('jszip')
+    const { default: JSZip } = await importRetry(() => import('jszip'))
     // Particiona em partes de ~80 imóveis: cada parte vira um .zip próprio, ENTREGUE (baixado/
     // enviado) e liberado da memória antes da próxima — evita estourar a aba em bairros gigantes
     // (ex.: Santa Mônica, 400+ imóveis). Bairro pequeno = 1 parte só.

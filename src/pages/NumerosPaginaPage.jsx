@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import PdfToolShell from '../components/PdfToolShell'
 import ArquivoDrop from '../components/ArquivoDrop'
+import { importRetry } from '../lazyRetry'
 
 const POSICOES = [
   { v: 'bottom-center', l: 'Rodapé centro' },
@@ -45,7 +46,7 @@ export default function NumerosPaginaPage() {
   const abrir = useCallback(async (f) => {
     if (!f || (f.type !== 'application/pdf' && !/\.pdf$/i.test(f.name))) return
     try {
-      const { PDFDocument } = await import('pdf-lib')
+      const { PDFDocument } = await importRetry(() => import('pdf-lib'))
       const doc = await PDFDocument.load(await f.arrayBuffer(), { ignoreEncryption: true })
       setFile(f); setPages(doc.getPageCount()); setResult(null); setPhase('ready')
     } catch (e) { console.error(e); alert('Não consegui ler o PDF. Pode estar protegido por senha.') }
@@ -55,7 +56,7 @@ export default function NumerosPaginaPage() {
     if (!file) return
     setPhase('processing'); setResult(null)
     try {
-      const { PDFDocument, rgb, StandardFonts } = await import('pdf-lib')
+      const { PDFDocument, rgb, StandardFonts } = await importRetry(() => import('pdf-lib'))
       const doc = await PDFDocument.load(await file.arrayBuffer(), { ignoreEncryption: true })
       const font = await doc.embedFont(StandardFonts.Helvetica)
       const total = doc.getPageCount()
