@@ -24,6 +24,9 @@ on:
         description: 'Quantos lotes chamar nesta execução (padrão 15)'
         required: false
         default: '15'
+  push:
+    branches: [main]
+    paths: ['.mutirao']   # mutirão sem login no Actions: dar push no arquivo dispara
 
 # evita duas execuções ao mesmo tempo (uma de cada vez = mais seguro pro Imoview)
 concurrency:
@@ -34,12 +37,24 @@ jobs:
   exportar:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - name: Exportar em lotes pequenos (gentil com o Imoview e com o ingest)
         id: exportar
         env:
           TETO: ${{ github.event.inputs.teto || '' }}
           RODADAS: ${{ github.event.inputs.rodadas || '15' }}
+          EVENTO: ${{ github.event_name }}
         run: |
+          # mutirão por arquivo: SÓ quando o gatilho foi o push do .mutirao
+          # (os crons da madrugada continuam no teto padrão de 50/dia)
+          if [ "$EVENTO" = "push" ] && [ -f .mutirao ]; then
+            T=$(grep -o 'teto=[0-9]*' .mutirao | head -1 | cut -d= -f2)
+            R=$(grep -o 'rodadas=[0-9]*' .mutirao | head -1 | cut -d= -f2)
+            [ -n "$T" ] && TETO="$T"
+            [ -n "$R" ] && RODADAS="$R"
+            echo "mutirão: teto=$TETO rodadas=$RODADAS"
+          fi
           corpo='{}'
           if [ -n "$TETO" ]; then corpo="{\"teto\":$TETO}"; fi
           total=0
