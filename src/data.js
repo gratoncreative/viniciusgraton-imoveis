@@ -724,7 +724,7 @@ export const PASSOS = [
   {
     n: '01',
     titulo: 'Conversa & objetivo',
-    texto: 'Entendo seu momento, seu orçamento e o que você realmente busca — morar, trocar ou investir.',
+    texto: 'Entendo seu momento, seu orçamento e o que você realmente busca: morar, trocar ou investir.',
   },
   {
     n: '02',

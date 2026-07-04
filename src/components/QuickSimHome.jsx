@@ -13,7 +13,7 @@ export default function QuickSimHome() {
             <div className="qsa-txt">
               <span className="eyebrow">Ferramenta nº 1 · grátis</span>
               <h2 className="qsa-tit">Simule seu <em>financiamento</em></h2>
-              <p className="qsa-sub">Veja a parcela, o CET e a renda necessária — já com os seguros e as taxas que os bancos cobram de verdade.</p>
+              <p className="qsa-sub">Veja a parcela, o CET e a renda necessária, já com os seguros e as taxas que os bancos cobram de verdade.</p>
             </div>
             <span className="qsa-cta">Abrir simulador <IconArrow width={15} height={15} /></span>
           </Link>

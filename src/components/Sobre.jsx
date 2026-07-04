@@ -21,7 +21,7 @@ export default function Sobre() {
           <Reveal delay={0.1}>
             <p>
               Sou o Vinícius Graton, consultor de imóveis em Uberlândia. Comprar um imóvel é uma das
-              decisões mais importantes da vida — e ninguém deveria fazer isso sozinho, no escuro ou
+              decisões mais importantes da vida, e ninguém deveria fazer isso sozinho, no escuro ou
               com pressa. Meu trabalho é tirar o medo dessa decisão.
             </p>
             <p>

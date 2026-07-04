@@ -27,7 +27,7 @@ export default function Destaque({ limite = 6 }) {
               <span className="eyebrow">Atualizado diariamente</span>
               <h2 className="section-title">Imóveis <em>mais recentes</em></h2>
               <p className="section-sub" style={{ marginTop: 14, maxWidth: 560 }}>
-                Os imóveis que acabaram de chegar na carteira da Rotina em Uberlândia — os mais
+                Os imóveis que acabaram de chegar na carteira da Rotina em Uberlândia, os mais
                 fresquinhos no topo, com o meu atendimento pessoal. Entram novos aqui todos os dias.
               </p>
             </div>

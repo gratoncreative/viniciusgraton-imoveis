@@ -7,6 +7,10 @@ import { lazyRetry } from '../lazyRetry'
 const Destaque = lazyRetry(() => import('../components/Destaque'))
 const BlogHome = lazyRetry(() => import('../components/BlogHome'))
 const QuickSimHome = lazyRetry(() => import('../components/QuickSimHome'))
+const ComoFunciona = lazyRetry(() => import('../components/ComoFunciona'))
+const Sobre = lazyRetry(() => import('../components/Sobre'))
+const Depoimentos = lazyRetry(() => import('../components/Depoimentos'))
+const VenderCta = lazyRetry(() => import('../components/VenderCta'))
 
 export default function Home() {
   useSEO({
@@ -72,7 +76,11 @@ export default function Home() {
       <Hero />
       <Suspense fallback={null}>
         <Destaque limite={8} />
+        <ComoFunciona />
+        <Sobre />
+        <Depoimentos />
         <QuickSimHome />
+        <VenderCta />
         <BlogHome />
       </Suspense>
     </main>

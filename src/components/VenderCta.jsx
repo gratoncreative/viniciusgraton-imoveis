@@ -12,7 +12,7 @@ export default function VenderCta() {
             <div className="vender-cta-txt">
               <span className="eyebrow">Quer vender ou alugar?</span>
               <h2>Eu cuido da venda do seu imóvel com <em>curadoria e segurança</em></h2>
-              <p>Cadastre seu imóvel com fotos em poucos minutos. Eu avalio, faço a curadoria e cuido da divulgação e da negociação — você acompanha tudo de perto, sem dor de cabeça.</p>
+              <p>Cadastre seu imóvel com fotos em poucos minutos. Eu avalio, faço a curadoria e cuido da divulgação e da negociação. Você acompanha tudo de perto, sem dor de cabeça.</p>
               <div className="vender-cta-acoes">
                 <Link className="btn btn-gold btn-grande" to="/anunciar">Cadastrar meu imóvel pra vender <IconArrow /></Link>
                 <Link className="btn btn-ghost" to="/avaliacao">Quanto vale meu imóvel?</Link>
