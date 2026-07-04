@@ -14,7 +14,16 @@ on:
     # SÓ de madrugada (Brasília ~1h-5h = 4h-8h UTC): janela em que o Imoview responde
     # liso (mesma constatação do captar-proprietarios). :35 pra não colidir com o :20.
     - cron: '35 4-8 * * *'
-  workflow_dispatch: {}   # botão "Run workflow" pra rodar na hora (testes)
+  workflow_dispatch:      # botão "Run workflow" / mutirão manual
+    inputs:
+      teto:
+        description: 'Teto de NOVOS no dia (mutirão; o endpoint trava em 500)'
+        required: false
+        default: ''
+      rodadas:
+        description: 'Quantos lotes chamar nesta execução (padrão 15)'
+        required: false
+        default: '15'
 
 # evita duas execuções ao mesmo tempo (uma de cada vez = mais seguro pro Imoview)
 concurrency:
@@ -27,11 +36,17 @@ jobs:
     steps:
       - name: Exportar em lotes pequenos (gentil com o Imoview e com o ingest)
         id: exportar
+        env:
+          TETO: ${{ github.event.inputs.teto || '' }}
+          RODADAS: ${{ github.event.inputs.rodadas || '15' }}
         run: |
+          corpo='{}'
+          if [ -n "$TETO" ]; then corpo="{\"teto\":$TETO}"; fi
           total=0
-          for i in $(seq 1 15); do
+          for i in $(seq 1 "$RODADAS"); do
             resp=$(curl -fsS --max-time 90 --retry 2 --retry-delay 5 -X POST "https://viniciusgraton.com.br/api/exporta-aicapitei" \
-              -H "x-backup-key: ${{ secrets.BACKUP_CRON_KEY }}" || echo '{"erro":"http"}')
+              -H "x-backup-key: ${{ secrets.BACKUP_CRON_KEY }}" \
+              -H "content-type: application/json" -d "$corpo" || echo '{"erro":"http"}')
             echo "lote $i: $resp"
             # pega o PRIMEIRO "novos" (top-level; o segundo é o ingest.novos aninhado)
             n=$(printf '%s' "$resp" | grep -o '"novos":[0-9]*' | head -1 | grep -o '[0-9]*$')

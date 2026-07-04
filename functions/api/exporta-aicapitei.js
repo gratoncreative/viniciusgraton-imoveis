@@ -179,6 +179,10 @@ export async function onRequest({ request, env }) {
   if (!chaveIngest) return json({ ok: false, motivo: 'sem-chave-ingest', msg: 'Defina AICAPITEI_INGEST_KEY no Cloudflare (Pages do site).' }, 503)
 
   let body = {}; try { body = await request.json() } catch {}
+  // teto do dia: padrão 50 (gradual). Em mutirão o cron autenticado pode pedir mais
+  // via body.teto — SEMPRE com trava de sanidade (500/dia) e o mesmo ritmo gentil
+  // por chamada (LOTE=4 + pausas): o que protege o Imoview é o ritmo, não o teto.
+  const tetoDia = Math.min(Math.max(parseInt(body && body.teto, 10) || TETO_DIA, 1), 500)
   const exportados = (await env.ENGAGEMENT.get(KEY_EXPORTADOS, 'json').catch(() => null)) || {}
   const chaveDia = 'aicapitei:dia:' + hojeSP()
   const hoje = parseInt((await env.ENGAGEMENT.get(chaveDia)) || '0', 10) || 0
@@ -201,9 +205,9 @@ export async function onRequest({ request, env }) {
   const pendentes = elegiveis.filter((im) => !exportados[String(im.codigo)])
   const restantes = pendentes.length
 
-  if (hoje >= TETO_DIA) return json({ ok: true, done: 'teto-diario', novos: 0, enriquecidos: 0, restantes })
+  if (hoje >= tetoDia) return json({ ok: true, done: 'teto-diario', novos: 0, enriquecidos: 0, restantes })
 
-  const novosAlvos = pendentes.slice(0, Math.min(LOTE, TETO_DIA - hoje))
+  const novosAlvos = pendentes.slice(0, Math.min(LOTE, tetoDia - hoje))
 
   // ENRIQUECIMENTO: já exportados sem owner cujo cache imovel:<cod>.owner agora existe.
   // Janela rotativa pra não checar sempre os mesmos 20 códigos a cada chamada.
@@ -290,7 +294,7 @@ export async function onRequest({ request, env }) {
   if (novos) await env.ENGAGEMENT.put(chaveDia, String(hoje + novos), { expirationTtl: 3 * 86400 }).catch(() => {})
 
   const restantesDepois = restantes - novos
-  const atingiuTeto = hoje + novos >= TETO_DIA
+  const atingiuTeto = hoje + novos >= tetoDia
   const out = { ok: true, novos, comOwner: novosItens.filter((x) => x.prop).length, enriquecidos: paraEnriquecer.length, restantes: restantesDepois, ingest: { novos: rj.novos, atualizados: rj.atualizados, rejeitados: rj.rejeitados } }
   if (atingiuTeto) out.done = 'teto-diario'
   else if (restantesDepois <= 0 && !paraEnriquecer.length) out.done = 'sem-pendencias'
