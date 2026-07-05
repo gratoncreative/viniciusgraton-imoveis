@@ -300,3 +300,36 @@
   .vgx-hero h1 { font-size: 29px; }
   .vgx-colecao-mini { grid-template-rows: auto auto; }
 }
+
+/* ============================================================================
+   BLINDAGEM contra o CSS global do tema claro (index.css)
+   O index.css tem `html[data-theme="claro"] h1,h2,h3,h4,p { color:#42261c }` com
+   especificidade maior que as minhas classes. Como a Home liga data-theme=claro,
+   isso pintava meus títulos e parágrafos de marrom (quase invisíveis no marinho).
+   Reafirmo as cores do design (só h1–h4 e p são afetados; spans escapam).
+   ========================================================================== */
+/* títulos e parágrafos sobre fundo MARINHO → claro */
+.vgx-hero h1,
+.vgx-colecao-head h2,
+.vgx-atende-col h2,
+.vgx-vender-col h2 { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
+.vgx-hero-sub,
+.vgx-atende-col p,
+.vgx-vender-col p { color: #cdd4e0 !important; -webkit-text-fill-color: #cdd4e0 !important; }
+.vgx-colecao-head p,
+.vgx-footer-col--brand p { color: #aeb8c9 !important; -webkit-text-fill-color: #aeb8c9 !important; }
+/* títulos e parágrafos sobre fundo CLARO → marinho / cinza */
+.vgx-h2,
+.vgx-sim-left h2,
+.vgx-card-tit,
+.vgx-passo h3,
+.vgx-post h3 { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+.vgx-secao-center p,
+.vgx-passo p,
+.vgx-post p,
+.vgx-depo blockquote { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
+.vgx-depo blockquote { color: #3d4a60 !important; -webkit-text-fill-color: #3d4a60 !important; }
+/* h4 do rodapé (o global também pinta h4 de marrom) → dourado */
+.vgx-footer-col h4 { color: var(--gold) !important; -webkit-text-fill-color: var(--gold) !important; }
+/* selects e suas opções (menu aberto) → marinho legível */
+.vgx-busca select, .vgx-busca option { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
