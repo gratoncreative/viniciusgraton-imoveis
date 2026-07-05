@@ -333,3 +333,13 @@
 .vgx-footer-col h4 { color: var(--gold) !important; -webkit-text-fill-color: var(--gold) !important; }
 /* selects e suas opções (menu aberto) → marinho legível */
 .vgx-busca select, .vgx-busca option { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+/* LINKS e BOTÕES — o reset `.vgx a{color:inherit}` e o tema antigo sequestravam a cor
+   (ex.: "Ver a coleção completa" saía navy sobre navy = invisível). */
+.vgx-btn-outline { color: var(--gold-light) !important; -webkit-text-fill-color: var(--gold-light) !important; }
+.vgx-btn-red, .vgx-nav-cta { color: #fff !important; -webkit-text-fill-color: #fff !important; }
+.vgx-link-gold { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+.vgx-nav-links a { color: #cdd4e0 !important; -webkit-text-fill-color: #cdd4e0 !important; }
+.vgx-nav-links a.is-active { color: var(--gold-light) !important; -webkit-text-fill-color: var(--gold-light) !important; }
+.vgx-footer-col a { color: #cdd4e0 !important; -webkit-text-fill-color: #cdd4e0 !important; }
+.vgx-footer-tel { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
+.vgx-card-cta { color: var(--red) !important; -webkit-text-fill-color: var(--red) !important; }
