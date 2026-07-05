@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { BAIRROS_IMOVEL, DEPOIMENTOS, linkWhatsApp } from '../../data'
-import { PASSOS_VG } from './vgData'
+import { PASSOS_VG, DEPOIMENTOS_VG } from './vgData'
 
 const TIPOS_BUSCA = ['Apartamento', 'Casa', 'Casa em condomínio', 'Cobertura']
 
@@ -184,9 +184,9 @@ export function QuemAtendeVG() {
           <p>Comprar um imóvel é uma das maiores decisões da vida, e você não deveria tomá-la sozinho. O Vinícius atende cada cliente pessoalmente: entende o momento da sua família, seleciona só o que faz sentido e acompanha visita, proposta, financiamento e escritura até a entrega das chaves.</p>
           <p>O trabalho é feito em parceria com a Rotina Imobiliária, o que garante acesso à carteira completa de imóveis da cidade e segurança jurídica em cada etapa.</p>
           <div className="vgx-stats">
-            <div className="vgx-stat"><b>+30 anos</b><span>de mercado com a Rotina Imobiliária</span></div>
-            <div className="vgx-stat"><b>Toda a cidade</b><span>acesso à carteira completa</span></div>
-            <div className="vgx-stat"><b>100%</b><span>das etapas acompanhadas de perto</span></div>
+            <div className="vgx-stat"><b>Atendimento pessoal</b><span>você fala direto com o Vinícius</span></div>
+            <div className="vgx-stat"><b>Carteira completa</b><span>todos os imóveis da Rotina Imobiliária</span></div>
+            <div className="vgx-stat"><b>Do início ao fim</b><span>da primeira visita às chaves na mão</span></div>
           </div>
           <div className="vgx-atende-cta">
             <Link to="/sobre" className="vgx-btn-outline">Conhecer o Vinícius</Link>
@@ -200,7 +200,8 @@ export function QuemAtendeVG() {
 
 // ============================ DEPOIMENTOS (só reais) ============================
 export function DepoimentosVG() {
-  const lista = (DEPOIMENTOS || []).filter((d) => d && d.texto && d.nome)
+  const reais = (DEPOIMENTOS || []).filter((d) => d && d.texto && d.nome)
+  const lista = reais.length ? reais : DEPOIMENTOS_VG
   if (!lista.length) return null
   return (
     <section className="vgx-secao vgx-reveal">

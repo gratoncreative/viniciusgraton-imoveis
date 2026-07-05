@@ -86,7 +86,6 @@ export function FooterVG() {
           <div className="vgx-footer-col vgx-footer-col--brand">
             <Brandmark seal={46} />
             <p>Consultoria pessoal para comprar e vender imóveis em Uberlândia, do primeiro imóvel ao alto padrão, em parceria com a Rotina Imobiliária.</p>
-            <span className="vgx-creci">Rotina Imobiliária · CRECI-MG PJ 132</span>
           </div>
           <div className="vgx-footer-col">
             <h4>Navegue</h4>

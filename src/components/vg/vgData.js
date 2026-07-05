@@ -74,6 +74,14 @@ export function selecaoHome(lista = IMOVEIS) {
   }
 }
 
+// Depoimentos do design (Claude Design). O Vinícius optou por publicá-los.
+// Assim que houver depoimentos REAIS em DEPOIMENTOS (data.js), eles têm prioridade.
+export const DEPOIMENTOS_VG = [
+  { nome: 'Mariana e Felipe', contexto: 'Primeiro apartamento, Santa Mônica', texto: 'A gente tinha medo de dar um passo maior que a perna. O Vinícius simulou tudo, mostrou o que cabia no orçamento e negociou uma entrada que a gente conseguia pagar. Hoje a parcela é menor que o aluguel que pagávamos.' },
+  { nome: 'Dr. Ricardo Almeida', contexto: 'Casa no Gávea Hill', texto: 'Eu não tinha tempo para visitar dezenas de casas. Ele entendeu exatamente o que eu procurava e me levou em três. A segunda foi a escolhida. Negociação impecável e discreta, do início ao fim.' },
+  { nome: 'Sônia Prado', contexto: 'Vendeu e comprou na Morada da Colina', texto: 'Vendi meu apartamento e comprei minha cobertura na mesma operação, sem estresse. Ele cuidou dos dois lados com a Rotina Imobiliária e eu só precisei assinar. Confiança total.' },
+]
+
 // Passos "Como funciona" (copy do design).
 export const PASSOS_VG = [
   { num: '01', titulo: 'Conversa inicial', texto: 'Você conta o momento da sua família, o orçamento e o que não pode faltar. Sem pressa e sem compromisso.' },
