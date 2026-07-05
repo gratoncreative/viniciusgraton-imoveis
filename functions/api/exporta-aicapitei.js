@@ -179,6 +179,30 @@ export async function onRequest({ request, env }) {
   if (!chaveIngest) return json({ ok: false, motivo: 'sem-chave-ingest', msg: 'Defina AICAPITEI_INGEST_KEY no Cloudflare (Pages do site).' }, 503)
 
   let body = {}; try { body = await request.json() } catch {}
+
+  // REPUBLICAR EM LOTE (decisão do dono 05/07): publicar os imóveis capturados que ficaram
+  // PENDENTES por falta de ficha do dono. Chama o endpoint republicar-lote do aicapitei em
+  // loop (com a chave de ingest) até zerar. Idempotente e gentil. Não mexe no export.
+  if (body && body.republicar) {
+    const REP_URL = 'https://aicapitei.com.br/api/republicar-lote'
+    const capVoltas = Math.min(Math.max(parseInt(body.voltas, 10) || 15, 1), 40)
+    let flip = 0, restam = null, voltas = 0
+    for (; voltas < capVoltas; voltas++) {
+      const rr = await fetch(REP_URL, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-ingest-key': chaveIngest },
+        signal: AbortSignal.timeout(20000),
+      }).catch(() => null)
+      const rj = rr && rr.ok ? await rr.json().catch(() => null) : null
+      if (!(rj && rj.ok)) break
+      flip += rj.flipados || 0
+      restam = rj.restantes
+      if (rj.done || (rj.flipados || 0) === 0) break
+      await sleep(800)
+    }
+    return json({ ok: true, republicar: true, flipados: flip, restantes: restam, voltas })
+  }
+
   // teto do dia: padrão 50 (gradual). Em mutirão o cron autenticado pode pedir mais
   // via body.teto — SEMPRE com trava de sanidade (500/dia) e o mesmo ritmo gentil
   // por chamada (LOTE=4 + pausas): o que protege o Imoview é o ritmo, não o teto.

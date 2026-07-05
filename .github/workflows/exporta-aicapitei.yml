@@ -94,6 +94,17 @@ jobs:
           echo "exportados=$total"
           echo "exportados=$total" >> "$GITHUB_OUTPUT"
 
+      - name: Republicar pendentes (publicar o acervo já capturado)
+        # Só no push do .mutirao (disparo pontual do dono): publica os imóveis que ficaram
+        # pendentes por falta de ficha do dono. Preserva o que o admin escondeu à mão.
+        if: github.event_name == 'push'
+        continue-on-error: true
+        run: |
+          resp=$(curl -fsS --max-time 180 -X POST "https://viniciusgraton.com.br/api/exporta-aicapitei" \
+            -H "x-backup-key: ${{ secrets.BACKUP_CRON_KEY }}" \
+            -H "content-type: application/json" -d '{"republicar":true,"voltas":40}' || echo '{"erro":"http"}')
+          echo "republicar: $resp"
+
       - name: Avisar o Vinícius no WhatsApp (só se exportou algo)
         if: steps.exportar.outputs.exportados != '' && steps.exportar.outputs.exportados != '0'
         continue-on-error: true
