@@ -48,7 +48,7 @@ export default function CadastroGate() {
     e.preventDefault()
     const nome = f.nome.trim()
     if (nome.length < 2) { setErro('Como posso te chamar?'); return }
-    if (!foneValido(f.fone)) { setErro('Digite um WhatsApp válido — DDD + 9 dígitos. Ex.: (34) 99999-9999'); return }
+    if (!foneValido(f.fone)) { setErro('Digite um WhatsApp válido - DDD + 9 dígitos. Ex.: (34) 99999-9999'); return }
     if (f.email.trim() && !emailValido(f.email)) { setErro('Esse e-mail parece incompleto. Confira ou deixe em branco.'); return }
     salvarConta({ nome, fone: f.fone.trim(), email: f.email.trim(), objetivo: 'Comprar' })
     try { registrarLead({ cod: 'ver-preco', nome, fone: f.fone.trim(), email: f.email.trim(), origem: 'Liberar preços' }) } catch {}
@@ -71,7 +71,7 @@ export default function CadastroGate() {
               <IconWhats width={18} height={18} /> Confirmar meu WhatsApp e falar com o Vinícius
             </a>
             <button type="button" className="cg-ok-fechar" onClick={() => setAberto(false)}>Continuar vendo os imóveis</button>
-            <p className="cg-nota" style={{ marginTop: 10 }}>A confirmação é opcional — seus preços já estão liberados. Falar comigo só agiliza a sua busca.</p>
+            <p className="cg-nota" style={{ marginTop: 10 }}>A confirmação é opcional - seus preços já estão liberados. Falar comigo só agiliza a sua busca.</p>
           </div>
         ) : (
           <>
@@ -99,7 +99,7 @@ export default function CadastroGate() {
               {erro && <p className="cg-erro">{erro}</p>}
 
               <button type="submit" className="cg-btn">Liberar os preços</button>
-              <p className="cg-nota">Sem custo. Seus dados ficam só com o Vinícius para te ajudar na busca — nunca compartilhados.</p>
+              <p className="cg-nota">Sem custo. Seus dados ficam só com o Vinícius para te ajudar na busca - nunca compartilhados.</p>
             </form>
           </>
         )}

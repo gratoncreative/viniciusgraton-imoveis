@@ -350,8 +350,8 @@ export async function onRequestPost({ env, request }) {
       return json({
         ok: false, bloqueado,
         erro: bloqueado
-          ? 'Esse portal bloqueou a leitura (mesmo com o leitor reforçado). É só preencher os campos abaixo na mão — leva 1 minutinho.'
-          : 'Não consegui ler os dados desse link. Preencha os campos abaixo na mão — funciona com qualquer imóvel.',
+          ? 'Esse portal bloqueou a leitura (mesmo com o leitor reforçado). É só preencher os campos abaixo na mão - leva 1 minutinho.'
+          : 'Não consegui ler os dados desse link. Preencha os campos abaixo na mão - funciona com qualquer imóvel.',
       }, 422)
     }
 

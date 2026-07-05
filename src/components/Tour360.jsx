@@ -33,13 +33,13 @@ export default function Tour360({ url, titulo, onClose }) {
   }
 
   return (
-    <div id="t360-root" style={S.root} role="dialog" aria-label={`Tour 360° — ${titulo || 'imóvel'}`}>
+    <div id="t360-root" style={S.root} role="dialog" aria-label={`Tour 360° - ${titulo || 'imóvel'}`}>
       <style>{'@keyframes t360spin{to{transform:rotate(360deg)}}'}</style>
 
       {src ? (
         <iframe
           src={src}
-          title={`Tour 360° — ${titulo || 'imóvel'}`}
+          title={`Tour 360° - ${titulo || 'imóvel'}`}
           style={S.frame}
           onLoad={() => setCarregando(false)}
           allow="accelerometer; gyroscope; magnetometer; xr-spatial-tracking; fullscreen; vr"

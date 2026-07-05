@@ -14,7 +14,7 @@ export default function AlugarDetalhe() {
 
   const titulo = im ? `${im.tipo} para alugar no ${im.bairro}, Uberlândia` : 'Imóvel para alugar'
   useSEO({
-    title: im ? `${titulo} — ${formatPreco(im.preco)}/mês · Cód. ${im.codigo}` : 'Imóvel para alugar',
+    title: im ? `${titulo} - ${formatPreco(im.preco)}/mês · Cód. ${im.codigo}` : 'Imóvel para alugar',
     description: im ? `${im.tipo} para alugar no ${im.bairro}, Uberlândia por ${formatPreco(im.preco)}/mês${im.quartos ? ` · ${im.quartos} quartos` : ''}${im.area ? ` · ${im.area}m²` : ''}. Fale com o Vinícius Graton sobre garantia e visita.`.slice(0, 158) : '',
     path: `/alugar/imovel/${codigo || ''}`,
   })
@@ -80,7 +80,7 @@ export default function AlugarDetalhe() {
             <figure className="det-foto" style={{ marginBottom: 18 }}>
               <img src={im.img} alt={`${im.tipo} para alugar no ${im.bairro}, Uberlândia`} loading="eager" onError={onImgError} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </figure>
-            <span className="eyebrow"><IconPin width={14} height={14} /> {im.cidade || 'Uberlândia'} — {im.uf || 'MG'} · Cód. {im.codigo}</span>
+            <span className="eyebrow"><IconPin width={14} height={14} /> {im.cidade || 'Uberlândia'} - {im.uf || 'MG'} · Cód. {im.codigo}</span>
             <h1 className="section-title" style={{ margin: '6px 0 4px' }}>{im.tipo} para alugar no <em>{im.bairro}</em></h1>
             {im.rua && <p className="det-local"><IconPin width={15} height={15} /> {im.rua}</p>}
             {specs.length > 0 && <p className="det-specs-txt" style={{ fontWeight: 600, color: '#1C2A44', margin: '12px 0' }}>{specs.join(' · ')}</p>}
@@ -99,7 +99,7 @@ export default function AlugarDetalhe() {
             </a>
             <div className="det-trust" style={{ marginTop: 16 }}>
               <IconShield width={20} height={20} />
-              <p><b>Garantia facilitada.</b> Trabalho com fiador, seguro-fiança e caução — te explico qual encaixa melhor no seu caso e agendo a visita.</p>
+              <p><b>Garantia facilitada.</b> Trabalho com fiador, seguro-fiança e caução - te explico qual encaixa melhor no seu caso e agendo a visita.</p>
             </div>
           </aside>
         </div>

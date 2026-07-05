@@ -30,8 +30,8 @@ function montarPerguntas(im, ex) {
     a: fin === true
       ? 'Sim! Aceita financiamento bancário e uso do FGTS (atendendo às regras do banco). Eu te ajudo na simulação, do começo ao fim.'
       : fin === false
-        ? 'O proprietário priorizou a venda à vista, mas posso consultar condições de financiamento pra você — às vezes dá pra negociar.'
-        : 'É um imóvel residencial financiável — na prática dá pra usar financiamento bancário e FGTS conforme as regras. Confirmo as condições exatas com você.',
+        ? 'O proprietário priorizou a venda à vista, mas posso consultar condições de financiamento pra você - às vezes dá pra negociar.'
+        : 'É um imóvel residencial financiável - na prática dá pra usar financiamento bancário e FGTS conforme as regras. Confirmo as condições exatas com você.',
   })
   lista.push({
     q: 'Aceita permuta?',
@@ -39,13 +39,13 @@ function montarPerguntas(im, ex) {
       ? 'Sim, o proprietário aceita permuta. Me conta o que você tem pra oferecer que eu levo a proposta pra ele.'
       : permuta === false
         ? 'Esse não está aberto a permuta. Mas se você tem um imóvel pra entrar na negociação, eu consulto o proprietário mesmo assim.'
-        : 'Posso consultar o proprietário sobre permuta — me conta o que você teria pra oferecer.',
+        : 'Posso consultar o proprietário sobre permuta - me conta o que você teria pra oferecer.',
   })
   if (ehApto) lista.push({
     q: 'Qual é o andar?',
     a: temAndar
       ? `${terreo ? 'Fica no térreo' : `Fica no ${andarRaw}º andar`}${elevador === true ? ', e o prédio tem elevador' : elevador === false ? ', e o prédio não tem elevador' : ''}.`
-      : 'Vou confirmar o andar certinho com você — me chama no WhatsApp que já te respondo.',
+      : 'Vou confirmar o andar certinho com você - me chama no WhatsApp que já te respondo.',
   })
   lista.push({
     q: 'Consegue me mandar mais fotos e vídeo?',

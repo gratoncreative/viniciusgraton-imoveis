@@ -161,7 +161,7 @@ export default function Tour3D({ url, titulo, onClose, marca }) {
   }
 
   return (
-    <div id="t3d-root" style={S.root} role="dialog" aria-label={`Tour 3D — ${titulo || 'imóvel'}`}>
+    <div id="t3d-root" style={S.root} role="dialog" aria-label={`Tour 3D - ${titulo || 'imóvel'}`}>
       <style>{'@keyframes t3dspin{to{transform:rotate(360deg)}}'}</style>
       <canvas ref={canvasRef} style={S.canvas} />
 

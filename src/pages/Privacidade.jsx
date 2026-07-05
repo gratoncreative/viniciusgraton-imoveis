@@ -26,7 +26,7 @@ export default function Privacidade() {
             <b> viniciusgraton.com.br</b> (o "Site"), operado por {CONFIG.nome}, consultor de imóveis em {cidade}-MG
             ("nós", "consultor"). Ao acessar e utilizar o Site, você ("usuário", "você") declara que leu, entendeu e
             concorda integralmente com as condições abaixo. Caso não concorde, por favor não utilize o Site. Tratamos
-            seus dados de acordo com a Lei Geral de Proteção de Dados — LGPD (Lei nº 13.709/2018), o Marco Civil da
+            seus dados de acordo com a Lei Geral de Proteção de Dados - LGPD (Lei nº 13.709/2018), o Marco Civil da
             Internet (Lei nº 12.965/2014) e o Código de Defesa do Consumidor, no que for aplicável.
           </p>
 

@@ -31,7 +31,7 @@ function Gate() {
       <div className="container" style={{ maxWidth: 640, textAlign: 'center', padding: '48px 0' }}>
         <h1 className="section-title">Crie seu Tour 3D</h1>
         <p className="section-sub" style={{ margin: '10px auto 24px' }}>
-          Transforme um imóvel num tour 3D navegável e ganhe um link pronto para mandar no WhatsApp e nos anúncios. É grátis — basta o cadastro de corretor.
+          Transforme um imóvel num tour 3D navegável e ganhe um link pronto para mandar no WhatsApp e nos anúncios. É grátis - basta o cadastro de corretor.
         </p>
         <Link to="/corretor" className="btn btn-gold">Fazer cadastro grátis</Link>
       </div>
@@ -60,7 +60,7 @@ function Criador({ corr, ehAdmin }) {
   const subir = () => {
     setErro('')
     if (!file) { setErro('Selecione o arquivo .ply ou .sog do tour.'); return }
-    if (!/\.(ply|sog)$/i.test(file.name)) { setErro('O arquivo precisa ser .ply (PLY comprimido) ou .sog — exporte assim no SuperSplat.'); return }
+    if (!/\.(ply|sog)$/i.test(file.name)) { setErro('O arquivo precisa ser .ply (PLY comprimido) ou .sog - exporte assim no SuperSplat.'); return }
     setProg(0)
     const fd = new FormData()
     fd.append('arquivo', file)

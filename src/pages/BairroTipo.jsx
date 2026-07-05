@@ -43,10 +43,10 @@ export default function BairroTipo() {
   const faq = []
   if (b && t && precos.length) faq.push({ q: `Quanto custa ${artigo(t)} no ${b.nome}, Uberlândia?`, a: `${t.plural} à venda no ${b.nome} vão de ${fmtC(precoLo)} a ${fmtC(precoHi)}${lista.length >= 3 ? `, com ${lista.length} opções na curadoria agora` : ''}.` })
   if (b && t && m2.length >= 3) faq.push({ q: `Quanto custa o metro quadrado de ${t.plural.toLowerCase()} no ${b.nome}?`, a: `O m² de ${t.plural.toLowerCase()} no ${b.nome} fica em torno de ${fmtM2(m2med)} (a maioria entre ${fmtM2(m2lo)} e ${fmtM2(m2hi)}), a partir dos anúncios à venda hoje. Para avaliar um imóvel específico, use o estudo do m² ou fale comigo.` })
-  if (b && t) faq.push({ q: `Tem ${t.plural.toLowerCase()} à venda no ${b.nome}?`, a: lista.length ? `Sim — no momento tenho ${lista.length} ${lista.length === 1 ? t.singular : t.plural.toLowerCase()} à venda no ${b.nome}. Veja abaixo ou me chame no WhatsApp.` : `Posso buscar pra você. Me chame no WhatsApp que eu trago ${t.plural.toLowerCase()} no ${b.nome} que cabem no seu perfil.` })
+  if (b && t) faq.push({ q: `Tem ${t.plural.toLowerCase()} à venda no ${b.nome}?`, a: lista.length ? `Sim - no momento tenho ${lista.length} ${lista.length === 1 ? t.singular : t.plural.toLowerCase()} à venda no ${b.nome}. Veja abaixo ou me chame no WhatsApp.` : `Posso buscar pra você. Me chame no WhatsApp que eu trago ${t.plural.toLowerCase()} no ${b.nome} que cabem no seu perfil.` })
 
   useSEO({
-    title: b && t ? `${t.plural} à venda em ${b.nome}, Uberlândia — preços` : 'Página não encontrada',
+    title: b && t ? `${t.plural} à venda em ${b.nome}, Uberlândia - preços` : 'Página não encontrada',
     description: b && t
       ? `${lista.length ? `${lista.length} ` : ''}${t.plural.toLowerCase()} à venda em ${b.nome}, Uberlândia${precos.length ? ` de ${fmtC(precoLo)} a ${fmtC(precoHi)}` : ''}.${m2.length >= 3 ? ` m² em torno de ${fmtM2(m2med)}.` : ''} Curadoria de Vinícius Graton.`.slice(0, 158)
       : 'Página não encontrada.',
@@ -132,7 +132,7 @@ export default function BairroTipo() {
             <p className="section-sub" style={{ textAlign: 'center', padding: '24px 0' }}>Carregando imóveis…</p>
           ) : (
             <div className="cat-vazio">
-              <p>Ainda não tenho {t.plural.toLowerCase()} publicado no {b.nome} — mas tenho acesso a muito mais opções na região. Me conta o que você procura.</p>
+              <p>Ainda não tenho {t.plural.toLowerCase()} publicado no {b.nome} - mas tenho acesso a muito mais opções na região. Me conta o que você procura.</p>
               <a className="btn btn-gold" href={linkWhatsApp(`Olá Vinícius! Procuro ${t.singular} no ${b.nome}, Uberlândia. Pode me ajudar?`)} target="_blank" rel="noopener noreferrer">
                 <IconWhats /> Me conta o que você procura
               </a>

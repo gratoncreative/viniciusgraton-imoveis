@@ -18,8 +18,8 @@ const SITE = 'https://viniciusgraton.com.br'
 const MP = 'https://api.mercadopago.com'
 
 const PLANOS = {
-  semanal: { preco: 15.0,  dias: 7,  label: 'Semanal — 7 dias' },
-  mensal:  { preco: 49.9,  dias: 30, label: 'Mensal — 30 dias' },
+  semanal: { preco: 15.0,  dias: 7,  label: 'Semanal - 7 dias' },
+  mensal:  { preco: 49.9,  dias: 30, label: 'Mensal - 30 dias' },
 }
 
 function gerarTempId() {

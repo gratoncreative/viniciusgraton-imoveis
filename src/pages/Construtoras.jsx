@@ -15,7 +15,7 @@ function CardConstrutora({ c }) {
   return (
     <Link className="cns-card" to={`/construtoras/${c.slug}`}>
       <span className="cns-capa">
-        {capa ? <img src={capa} alt={`${c.nome} — empreendimentos em Uberlândia`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
+        {capa ? <img src={capa} alt={`${c.nome} - empreendimentos em Uberlândia`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
           : <span className="cns-capa-vazia"><IconBuilding width={34} height={34} /></span>}
         <span className="cns-capa-grad" />
         <span className="cns-nome">{c.nome}</span>
@@ -37,7 +37,7 @@ export default function ConstrutorasPage() {
   useSEO({
     title: 'Construtoras de Uberlândia e seus lançamentos',
     description:
-      'As principais construtoras e incorporadoras de Uberlândia e seus empreendimentos atuais — Perplan, R. Freitas, Bild, MRV, ZP, ATP, Maxi, Castelo Real e mais. Veja os lançamentos e fale com o Vinícius para visitar.',
+      'As principais construtoras e incorporadoras de Uberlândia e seus empreendimentos atuais - Perplan, R. Freitas, Bild, MRV, ZP, ATP, Maxi, Castelo Real e mais. Veja os lançamentos e fale com o Vinícius para visitar.',
     path: '/construtoras',
   })
 
@@ -58,7 +58,7 @@ export default function ConstrutorasPage() {
             <span className="eyebrow" style={{ justifyContent: 'center' }}>Lançamentos em Uberlândia</span>
             <h1 className="section-title">As principais <em>construtoras</em> da cidade</h1>
             <p className="section-sub" style={{ marginTop: 14 }}>
-              Acompanho os lançamentos das maiores construtoras de Uberlândia e faço a curadoria de cada um. Clique numa marca para ver os empreendimentos com fotos, plantas, vídeos e tudo sobre o projeto — sem precisar sair do meu site.
+              Acompanho os lançamentos das maiores construtoras de Uberlândia e faço a curadoria de cada um. Clique numa marca para ver os empreendimentos com fotos, plantas, vídeos e tudo sobre o projeto - sem precisar sair do meu site.
             </p>
           </div>
         </Reveal>
@@ -83,14 +83,14 @@ export default function ConstrutorasPage() {
             <span className="cns-dif-ico"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg></span>
             <div>
               <b>Curadoria técnica e independente</b>
-              <p>Cada empreendimento é avaliado com base em histórico de entrega, padrão construtivo e localização — sem influência comercial de nenhuma construtora.</p>
+              <p>Cada empreendimento é avaliado com base em histórico de entrega, padrão construtivo e localização - sem influência comercial de nenhuma construtora.</p>
             </div>
           </div>
           <div className="cns-diferencial">
             <span className="cns-dif-ico"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 12h6M9 16h4"/></svg></span>
             <div>
               <b>Documentação e registro verificados</b>
-              <p>Consultamos CNPJ, alvarás e registro de incorporação antes de recomendar qualquer empreendimento — garantindo transparência e segurança jurídica.</p>
+              <p>Consultamos CNPJ, alvarás e registro de incorporação antes de recomendar qualquer empreendimento - garantindo transparência e segurança jurídica.</p>
             </div>
           </div>
           <div className="cns-diferencial">
@@ -121,13 +121,13 @@ export default function ConstrutorasPage() {
           </div>
         ) : (
           <p className="section-sub" style={{ textAlign: 'center', margin: '10px auto 0' }}>
-            Não achei "<b>{q}</b>". Tenta outro nome — ou me chama no WhatsApp que eu localizo pra você.
+            Não achei "<b>{q}</b>". Tenta outro nome - ou me chama no WhatsApp que eu localizo pra você.
           </p>
         )}
 
         <div className="det-trust" style={{ marginTop: 34, maxWidth: 900 }}>
           <IconShield width={20} height={20} />
-          <p><b>Eu faço a curadoria de cada empreendimento.</b> Confiro construtora, documentação, localização e padrão de entrega antes de te indicar — e te acompanho da visita à entrega das chaves. Marcas, imagens e materiais são das respectivas construtoras.</p>
+          <p><b>Eu faço a curadoria de cada empreendimento.</b> Confiro construtora, documentação, localização e padrão de entrega antes de te indicar - e te acompanho da visita à entrega das chaves. Marcas, imagens e materiais são das respectivas construtoras.</p>
         </div>
       </div>
     </main>

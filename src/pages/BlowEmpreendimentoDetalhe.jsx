@@ -61,7 +61,7 @@ export default function BlowEmpreendimentoDetalhe() {
 
   useSEO({
     title: e
-      ? `${e.nome} — ${e.construtoraNome}, ${e.bairro || 'Uberlândia'}`
+      ? `${e.nome} - ${e.construtoraNome}, ${e.bairro || 'Uberlândia'}`
       : 'Empreendimento não encontrado',
     description: e
       ? `${(e.descricao || '').slice(0, 150)} Fale com o Vinícius Graton e agende uma visita ao ${e.nome}.`
@@ -156,7 +156,7 @@ export default function BlowEmpreendimentoDetalhe() {
           <div className="empd-hero">
             <img
               src={capaUrl}
-              alt={`${e.nome} — ${e.construtoraNome}`}
+              alt={`${e.nome} - ${e.construtoraNome}`}
               className="empd-hero-img"
               loading="eager"
             />
@@ -355,7 +355,7 @@ export default function BlowEmpreendimentoDetalhe() {
                         onKeyDown={ev => ev.key === 'Enter' && setFotoLightbox(f.url)}
                         aria-label={f.legenda || `Foto ${i + 1}`}
                       >
-                        <img src={f.url} alt={f.legenda || `${e.nome} — foto ${i + 1}`} className="empd-foto-img" loading="lazy" />
+                        <img src={f.url} alt={f.legenda || `${e.nome} - foto ${i + 1}`} className="empd-foto-img" loading="lazy" />
                         {f.legenda && <div className="empd-foto-legenda">{f.legenda}</div>}
                       </div>
                     ))}
@@ -468,7 +468,7 @@ export default function BlowEmpreendimentoDetalhe() {
                 <h2 className="empd-secao-titulo">Localização</h2>
                 <p className="empd-mapa-end">
                   <IconPin width={16} height={16} />
-                  {e.endereco ? `${e.endereco}, ${e.bairro}` : `${e.bairro}, Uberlândia — MG`}
+                  {e.endereco ? `${e.endereco}, ${e.bairro}` : `${e.bairro}, Uberlândia - MG`}
                 </p>
                 <div className="empd-mapa-frame">
                   <iframe
@@ -522,7 +522,7 @@ export default function BlowEmpreendimentoDetalhe() {
               )}
 
               <a href={waVisita} className="btn btn-gold empd-aside-cta" target="_blank" rel="noopener noreferrer">
-                <IconWhats width={16} height={16} /> Tenho interesse — quero visitar
+                <IconWhats width={16} height={16} /> Tenho interesse - quero visitar
               </a>
               <a href={waInfos} className="btn btn-ghost empd-aside-ghost" target="_blank" rel="noopener noreferrer">
                 Pedir plantas e condições
@@ -545,7 +545,7 @@ export default function BlowEmpreendimentoDetalhe() {
 
               <div className="empd-trust">
                 <IconShield width={18} height={18} />
-                <p>Consultor Rotina Imobiliária — do primeiro contato até a entrega das chaves.</p>
+                <p>Consultor Rotina Imobiliária - do primeiro contato até a entrega das chaves.</p>
               </div>
             </div>
           </aside>

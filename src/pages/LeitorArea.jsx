@@ -33,7 +33,7 @@ function comprimir(file) {
 
 export default function LeitorArea() {
   useSEO({
-    title: 'Leitor de Área por IA — leia a metragem de plantas e anúncios',
+    title: 'Leitor de Área por IA - leia a metragem de plantas e anúncios',
     description: 'Envie a foto de uma planta baixa, print de anúncio ou lista de imóveis e a IA lê e calcula a área (total, por cômodo e média). Ferramenta gratuita do Vinícius Graton.',
     path: '/ferramentas/leitor-area',
   })
@@ -75,7 +75,7 @@ export default function LeitorArea() {
           <span className="eyebrow" style={{ justifyContent: 'center' }}>Ferramenta gratuita</span>
           <h1 className="section-title">Leitor de <em>Área</em> por IA</h1>
           <p className="section-sub" style={{ marginTop: 12 }}>
-            Mande a foto de uma <b>planta baixa</b>, <b>print de anúncio</b> ou <b>lista de imóveis</b> — a IA lê e calcula a área (total, por cômodo e média). A imagem é processada com segurança e não fica salva.
+            Mande a foto de uma <b>planta baixa</b>, <b>print de anúncio</b> ou <b>lista de imóveis</b> - a IA lê e calcula a área (total, por cômodo e média). A imagem é processada com segurança e não fica salva.
           </p>
         </div>
 
@@ -133,7 +133,7 @@ export default function LeitorArea() {
           )}
 
           <p className="conv-privacidade" style={{ marginTop: 18 }}>
-            🔒 A imagem é usada só pra essa leitura e não é arquivada. A área é uma <b>estimativa de apoio</b> — a metragem oficial é a da matrícula do imóvel.
+            🔒 A imagem é usada só pra essa leitura e não é arquivada. A área é uma <b>estimativa de apoio</b> - a metragem oficial é a da matrícula do imóvel.
           </p>
         </div>
 

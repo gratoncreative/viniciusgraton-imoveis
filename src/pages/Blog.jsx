@@ -6,7 +6,7 @@ import { useSEO } from '../useSEO'
 
 export default function Blog() {
   useSEO({
-    title: 'Blog — guias de compra, financiamento e bairros de Uberlândia',
+    title: 'Blog - guias de compra, financiamento e bairros de Uberlândia',
     description: 'Conteúdo prático sobre comprar imóvel em Uberlândia: FGTS, financiamento, ITBI, bairros e mercado. Por Vinícius Graton, consultor de imóveis.',
     path: '/blog',
   })
@@ -22,7 +22,7 @@ export default function Blog() {
           '@type': 'CollectionPage',
           '@id': 'https://viniciusgraton.com.br/blog',
           url: 'https://viniciusgraton.com.br/blog',
-          name: 'Blog — Guias de Compra de Imóveis em Uberlândia',
+          name: 'Blog - Guias de Compra de Imóveis em Uberlândia',
           description: 'Conteúdo prático sobre comprar imóvel em Uberlândia: FGTS, financiamento, ITBI, bairros e mercado.',
           inLanguage: 'pt-BR',
           publisher: { '@type': 'RealEstateAgent', name: 'Vinícius Graton Imóveis', url: 'https://viniciusgraton.com.br' },
@@ -77,7 +77,7 @@ export default function Blog() {
             <span className="eyebrow" style={{ justifyContent: 'center' }}>Blog</span>
             <h1 className="section-title">Aprenda a comprar <em>sem errar</em></h1>
             <p className="section-sub" style={{ marginTop: 14 }}>
-              Guias diretos sobre financiamento, FGTS, custos, bairros e mercado de Uberlândia — pra você decidir com segurança.
+              Guias diretos sobre financiamento, FGTS, custos, bairros e mercado de Uberlândia - pra você decidir com segurança.
             </p>
           </div>
         </Reveal>

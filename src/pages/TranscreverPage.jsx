@@ -44,8 +44,8 @@ function icone(p) {
 
 export default function TranscreverPage() {
   useSEO({
-    title: 'Transcrever Vídeo e Áudio em Texto — Grátis, no Navegador',
-    description: 'Transforme tours em vídeo e áudios em texto, legenda e descrição de anúncio. Transcrição em português com IA, 100% no seu navegador — nada é enviado a servidor. Grátis.',
+    title: 'Transcrever Vídeo e Áudio em Texto - Grátis, no Navegador',
+    description: 'Transforme tours em vídeo e áudios em texto, legenda e descrição de anúncio. Transcrição em português com IA, 100% no seu navegador - nada é enviado a servidor. Grátis.',
     path: '/ferramentas/transcrever',
   })
 
@@ -131,7 +131,7 @@ export default function TranscreverPage() {
           <div>
             <h1 className="pdfjpg-titulo">Transcreva seu <span className="pdfjpg-titulo-hl">tour em texto</span></h1>
             <p className="pdfjpg-sub">
-              Suba o <strong>vídeo do tour</strong> ou um <strong>áudio</strong> e receba a transcrição em português, mais um rascunho de <strong>legenda</strong> e <strong>descrição</strong>. Tudo no seu navegador — nada é enviado a servidor. Ótimo para SEO local.
+              Suba o <strong>vídeo do tour</strong> ou um <strong>áudio</strong> e receba a transcrição em português, mais um rascunho de <strong>legenda</strong> e <strong>descrição</strong>. Tudo no seu navegador - nada é enviado a servidor. Ótimo para SEO local.
             </p>
           </div>
         </div>

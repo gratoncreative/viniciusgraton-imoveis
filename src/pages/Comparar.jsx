@@ -11,21 +11,21 @@ const precoM2 = (im) => (im.preco > 0 && im.area > 0 ? im.preco / im.area : 0)
 
 const LINHAS = [
   ['Preço', (im) => formatPreco(im.preco)],
-  ['Bairro', (im) => im.bairro || '—'],
-  ['Tipo', (im) => im.tipo || '—'],
-  ['Área', (im) => (im.area ? formatArea(im.area) : '—')],
-  ['Quartos', (im) => rs(im.quartos) || '—'],
-  ['Suítes', (im) => rs(im.suites) || '—'],
-  ['Vagas', (im) => rs(im.vagas) || '—'],
-  ['Preço por m²', (im) => (precoM2(im) ? formatPreco(Math.round(precoM2(im))) : '—')],
+  ['Bairro', (im) => im.bairro || '-'],
+  ['Tipo', (im) => im.tipo || '-'],
+  ['Área', (im) => (im.area ? formatArea(im.area) : '-')],
+  ['Quartos', (im) => rs(im.quartos) || '-'],
+  ['Suítes', (im) => rs(im.suites) || '-'],
+  ['Vagas', (im) => rs(im.vagas) || '-'],
+  ['Preço por m²', (im) => (precoM2(im) ? formatPreco(Math.round(precoM2(im))) : '-')],
 ]
 
 export default function Comparar() {
-  useSEO({ title: 'Comparar imóveis lado a lado — Uberlândia', description: 'Compare imóveis de Uberlândia lado a lado: preço, área, quartos, vagas e preço por m². Ferramenta gratuita do consultor Vinícius Graton.', path: '/comparar' })
+  useSEO({ title: 'Comparar imóveis lado a lado - Uberlândia', description: 'Compare imóveis de Uberlândia lado a lado: preço, área, quartos, vagas e preço por m². Ferramenta gratuita do consultor Vinícius Graton.', path: '/comparar' })
   const [sel, setSel] = useState([])
   const toggle = (cod) => setSel((s) => s.includes(cod) ? s.filter((x) => x !== cod) : (s.length >= 4 ? s : [...s, cod]))
   const escolhidos = sel.map((c) => IMOVEIS.find((i) => i.codigo === c)).filter(Boolean)
-  const msgRecomenda = `Olá Vinícius! Estou comparando estes imóveis e queria a sua opinião sobre qual vale mais a pena pra mim:\n${escolhidos.map((im) => `• ${im.tipo} no ${im.bairro} — ${formatPreco(im.preco)} (cód. ${im.codigo})`).join('\n')}`
+  const msgRecomenda = `Olá Vinícius! Estou comparando estes imóveis e queria a sua opinião sobre qual vale mais a pena pra mim:\n${escolhidos.map((im) => `• ${im.tipo} no ${im.bairro} - ${formatPreco(im.preco)} (cód. ${im.codigo})`).join('\n')}`
 
   return (
     <main className="pagina section--light det comparar-pg">
@@ -34,7 +34,7 @@ export default function Comparar() {
           <div style={{ textAlign: 'center', maxWidth: 680, margin: '0 auto 10px' }}>
             <span className="eyebrow" style={{ justifyContent: 'center' }}>Comparador</span>
             <h1 className="section-title">Compare imóveis <em>lado a lado</em></h1>
-            <p className="section-sub" style={{ marginTop: 14 }}>Selecione até 4 imóveis e veja tudo numa tabela — preço, área, quartos, vagas e preço por m². Decida com clareza.</p>
+            <p className="section-sub" style={{ marginTop: 14 }}>Selecione até 4 imóveis e veja tudo numa tabela - preço, área, quartos, vagas e preço por m². Decida com clareza.</p>
           </div>
         </Reveal>
 

@@ -136,7 +136,7 @@ function bodySeo(im, descUnica) {
   const m2deste = (im.preco > 0 && im.area > 0) ? Math.round(im.preco / im.area) : 0
   // bloco de MERCADO do bairro (conteúdo único e local — Google valoriza)
   const mercado = m2bairro
-    ? `<p>No ${esc(im.bairro)}, o metro quadrado dos imóveis à venda gira em torno de <b>R$ ${m2bairro.toLocaleString('pt-BR')}/m²</b>${m2deste ? `. Este imóvel está a R$ ${m2deste.toLocaleString('pt-BR')}/m² — ${m2deste <= m2bairro ? 'na média ou abaixo' : 'acima'} da referência do bairro` : ''}. Veja o <a href="/mercado">preço do m² por bairro</a>, simule o <a href="/simulador-financiamento">financiamento</a> ou confira se <a href="/investir">vale como investimento</a>.</p>`
+    ? `<p>No ${esc(im.bairro)}, o metro quadrado dos imóveis à venda gira em torno de <b>R$ ${m2bairro.toLocaleString('pt-BR')}/m²</b>${m2deste ? `. Este imóvel está a R$ ${m2deste.toLocaleString('pt-BR')}/m² - ${m2deste <= m2bairro ? 'na média ou abaixo' : 'acima'} da referência do bairro` : ''}. Veja o <a href="/mercado">preço do m² por bairro</a>, simule o <a href="/simulador-financiamento">financiamento</a> ou confira se <a href="/investir">vale como investimento</a>.</p>`
     : ''
   // IMÓVEIS PARECIDOS no mesmo bairro (links internos → navegação + SEO)
   const pares = (_bairroLista[slug] || []).filter((x) => String(x.codigo) !== String(im.codigo)).slice(0, 6)
@@ -319,7 +319,7 @@ function renderBairro(b) {
   if (stats.faq.length) graph.push({ '@type': 'FAQPage', mainEntity: stats.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) })
   const ld = { '@context': 'https://schema.org', '@graph': graph }
   return baseHtml
-    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)} — preços e guia | Vinícius Graton</title>`)
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)} - preços e guia | Vinícius Graton</title>`)
     .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
     .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
     .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
@@ -365,7 +365,7 @@ function renderBairroTipo(b, t, s) {
   const faq = []
   if (s.precosN) faq.push({ q: `Quanto custa ${_art(t)} no ${b.nome}, Uberlândia?`, a: `${t.plural} à venda no ${b.nome} vão de ${_fmtC(s.precoLo)} a ${_fmtC(s.precoHi)}, com ${s.n} ${s.n === 1 ? 'opção' : 'opções'} na curadoria agora.` })
   if (s.m2n >= 3) faq.push({ q: `Quanto custa o metro quadrado de ${t.plural.toLowerCase()} no ${b.nome}?`, a: `O m² de ${t.plural.toLowerCase()} no ${b.nome} fica em torno de ${_fmtM2(s.m2med)} (a maioria entre ${_fmtM2(s.m2lo)} e ${_fmtM2(s.m2hi)}), a partir dos anúncios à venda hoje.` })
-  faq.push({ q: `Tem ${t.plural.toLowerCase()} à venda no ${b.nome}?`, a: `Sim — no momento há ${s.n} ${s.n === 1 ? t.singular : t.plural.toLowerCase()} à venda no ${b.nome}. Veja a lista ou fale com o Vinícius Graton.` })
+  faq.push({ q: `Tem ${t.plural.toLowerCase()} à venda no ${b.nome}?`, a: `Sim - no momento há ${s.n} ${s.n === 1 ? t.singular : t.plural.toLowerCase()} à venda no ${b.nome}. Veja a lista ou fale com o Vinícius Graton.` })
   const graph = [
     { '@type': 'CollectionPage', name: titulo, description: desc, url, about: { '@type': 'Place', name: `${b.nome}, Uberlândia, MG` } },
     { '@type': 'BreadcrumbList', itemListElement: [
@@ -383,7 +383,7 @@ function renderBairroTipo(b, t, s) {
     `<section><h2>Perguntas sobre ${esc(t.plural.toLowerCase())} no ${esc(b.nome)}</h2>${faq.map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}</section>` +
     `<p><a href="/imoveis/uberlandia/${b.slug}">Todos os imóveis no ${esc(b.nome)}</a> · <a href="/mercado">preço do m² por bairro</a> · <a href="/imoveis">imóveis em Uberlândia</a></p></main>`
   return baseHtml
-    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)} — preços | Vinícius Graton</title>`)
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(titulo)} - preços | Vinícius Graton</title>`)
     .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
     .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${esc(titulo)}$2`)
     .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${esc(desc)}$2`)
@@ -468,21 +468,21 @@ console.log(`✓ prerender empreendimentos: ${nemp} páginas em dist/construtora
 // ===== Landing dedicada do Louis (lançamento) — SEO forte p/ captação de leads =====
 function renderLouis() {
   const url = slash(`${SITE}/lancamentos/louis-studios-umuarama`)
-  const titulo = 'Louis Studios Umuarama — Investir ao lado da UFU e dos hospitais'
-  const desc = trunc('Louis Living Experience: studios de 35 a 37 m² no Umuarama, Uberlândia — ao lado do Campus UFU, do Hospital do Câncer e do HCU. A partir de R$ 387.000, entrada de R$ 38.700, gestão Housi e locação por temporada. Renda estimada de R$ 4.000 a R$ 6.000/mês.')
+  const titulo = 'Louis Studios Umuarama - Investir ao lado da UFU e dos hospitais'
+  const desc = trunc('Louis Living Experience: studios de 35 a 37 m² no Umuarama, Uberlândia - ao lado do Campus UFU, do Hospital do Câncer e do HCU. A partir de R$ 387.000, entrada de R$ 38.700, gestão Housi e locação por temporada. Renda estimada de R$ 4.000 a R$ 6.000/mês.')
   const image = `${SITE}/lancamentos/louis/og.jpg`
   const ld = {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': ['Product', 'Residence'],
-        name: 'Louis Living Experience — Studios no Umuarama',
+        name: 'Louis Living Experience - Studios no Umuarama',
         description: 'Studios de 35 a 37 m² no bairro Umuarama, Uberlândia/MG, ao lado do Campus Umuarama da UFU, do Hospital do Câncer e do Hospital de Clínicas (HCU). Locação por temporada com gestão Housi.',
         image: [`${SITE}/lancamentos/louis/tower.jpg`, image],
         brand: { '@type': 'Brand', name: 'Select Construtora' },
         url,
         address: { '@type': 'PostalAddress', streetAddress: 'Rua Dr. Luiz Antônio Waack, 1.163', addressLocality: 'Uberlândia', addressRegion: 'MG', addressCountry: 'BR' },
-        offers: { '@type': 'Offer', priceCurrency: 'BRL', price: '387000', availability: 'https://schema.org/InStock', url, seller: { '@type': 'RealEstateAgent', name: 'Vinícius Graton — Rotina Imobiliária' } },
+        offers: { '@type': 'Offer', priceCurrency: 'BRL', price: '387000', availability: 'https://schema.org/InStock', url, seller: { '@type': 'RealEstateAgent', name: 'Vinícius Graton - Rotina Imobiliária' } },
       },
       {
         '@type': 'BreadcrumbList',
@@ -495,7 +495,7 @@ function renderLouis() {
     ],
   }
   const body = `<main class="pre-seo">` +
-    `<h1>Louis Living Experience — studios para investir no Umuarama, Uberlândia</h1>` +
+    `<h1>Louis Living Experience - studios para investir no Umuarama, Uberlândia</h1>` +
     `<p>Lançamento da Select Construtora no bairro Umuarama, em Uberlândia/MG, na Rua Dr. Luiz Antônio Waack, 1.163. Studios de 35,53 a 37,09 m² privativos, pensados para investimento e locação por temporada com gestão profissional da Housi.</p>` +
     `<ul>` +
     `<li>Valor da unidade a partir de R$ 387.000</li>` +
@@ -618,10 +618,10 @@ console.log(`✓ prerender blog: ${np2} posts (base + extra) em dist/blog/{slug}
 const FAQ_ESTUDIO = [
   { q: 'Como deixar uma foto de imóvel tirada em pé na horizontal?', a: "Suba a foto no estúdio, abra Ajustes e Formato e escolha 16:9 (deitado). As laterais ficam com fundo desfocado da própria foto, branco ou cortando as bordas. Dá pra aplicar em todas as fotos de uma vez." },
   { q: 'Preciso instalar algum programa ou pagar?', a: 'Não. É grátis e roda 100% no navegador, no computador ou no celular, sem criar conta.' },
-  { q: 'As fotos são enviadas para algum servidor?', a: 'Não. Todo o processamento acontece no seu próprio aparelho — as imagens não saem dele.' },
+  { q: 'As fotos são enviadas para algum servidor?', a: 'Não. Todo o processamento acontece no seu próprio aparelho - as imagens não saem dele.' },
   { q: 'Dá para editar várias fotos de uma vez?', a: "Sim. Suba o álbum inteiro, ajuste uma foto e use Aplicar a todas para repetir o mesmo tratamento em todas, e baixe tudo de uma vez." },
   { q: 'O que dá para fazer com as fotos do imóvel?', a: "Endireitar a inclinação, melhorar luz, cor e nitidez, converter vertical em horizontal, aplicar marca d'água e exportar em JPG, PNG ou WebP." },
-  { q: 'Serve para foto de celular, para anúncio e WhatsApp?', a: 'Sim. É feito para fotos de imóvel — deixa o anúncio mais profissional e padronizado para portais, Instagram e WhatsApp.' },
+  { q: 'Serve para foto de celular, para anúncio e WhatsApp?', a: 'Sim. É feito para fotos de imóvel - deixa o anúncio mais profissional e padronizado para portais, Instagram e WhatsApp.' },
 ]
 const PAGINAS_FIXAS = [
   {
@@ -683,7 +683,7 @@ const PAGINAS_FIXAS = [
   },
   {
     rota: 'ferramentas/estudio-de-fotos',
-    titulo: 'Estúdio de fotos de imóvel — melhorar, endireitar e deixar na horizontal',
+    titulo: 'Estúdio de fotos de imóvel - melhorar, endireitar e deixar na horizontal',
     desc: "Ferramenta grátis para melhorar fotos de imóvel: endireitar, ajustar luz e cor, converter foto vertical em horizontal, marca d'água em lote e exportar em JPG, PNG ou WebP. Roda no navegador, sem enviar suas fotos.",
     image: `${SITE}/vinicius-graton.jpg`, w: 1200, h: 900,
     body: `<main class="pre-seo"><h1>Estúdio de fotos de imóvel</h1>` +
@@ -902,7 +902,7 @@ try {
   const rent = JSON.parse(readFileSync(resolve(ROOT, 'public/rentabilidade-bairros.json'), 'utf8'))
   const rows = rent.bairros || []
   if (rows.length) {
-    const titulo = 'Onde investir em Uberlândia — rentabilidade do aluguel por bairro'
+    const titulo = 'Onde investir em Uberlândia - rentabilidade do aluguel por bairro'
     const desc = `Ranking de rentabilidade do aluguel por bairro de Uberlândia: ${rows.length} bairros com yield real. Topo: ${rows[0].bairro} ${rows[0].yieldAa}% a.a. Compare com o CDI (${rent.cdiAa}% a.a.).`.slice(0, 158)
     const url = slash(`${SITE}/investir`)
     const faq = [
@@ -910,8 +910,8 @@ try {
       { q: 'Investir em imóvel para alugar rende mais que o CDI?', a: `Depende do bairro: o yield bruto vai de ${rows[rows.length - 1].yieldAa}% a ${rows[0].yieldAa}% a.a., enquanto o CDI está em ~${rent.cdiAa}% a.a. Bairros mais acessíveis tendem a render mais aluguel; bairros nobres rendem menos, mas valorizam mais.` },
     ]
     const body = `<main class="pre-seo"><h1>${esc(titulo)}</h1>` +
-      `<p>Rentabilidade (yield) do aluguel por bairro de Uberlândia, com dado real da carteira da Rotina Imobiliária — só residencial, saneado. Quanto maior, mais o aluguel rende sobre o preço do imóvel.</p>` +
-      `<ol>${rows.map((r) => `<li><a href="/imoveis/uberlandia/${esc(r.slug)}/">${esc(r.bairro)}</a> — ${r.yieldAa}% a.a. (aluguel R$ ${r.aluguelM2}/m² · venda R$ ${r.vendaM2}/m²)</li>`).join('')}</ol>` +
+      `<p>Rentabilidade (yield) do aluguel por bairro de Uberlândia, com dado real da carteira da Rotina Imobiliária - só residencial, saneado. Quanto maior, mais o aluguel rende sobre o preço do imóvel.</p>` +
+      `<ol>${rows.map((r) => `<li><a href="/imoveis/uberlandia/${esc(r.slug)}/">${esc(r.bairro)}</a> - ${r.yieldAa}% a.a. (aluguel R$ ${r.aluguelM2}/m² · venda R$ ${r.vendaM2}/m²)</li>`).join('')}</ol>` +
       `<section><h2>Perguntas frequentes</h2>${faq.map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}</section>` +
       `<p><a href="/mercado">preço do m² por bairro</a> · <a href="/ferramentas">calculadora de rentabilidade</a> · <a href="/imoveis">imóveis à venda em Uberlândia</a></p></main>`
     const ld = { '@context': 'https://schema.org', '@graph': [
@@ -965,11 +965,11 @@ try {
       .replace('<div id="root"></div>', `<div id="root">${slashHrefs(body)}</div>`)
     // landing /alugar
     {
-      const titulo = 'Imóveis para alugar em Uberlândia — casas, apartamentos e kitnets'
+      const titulo = 'Imóveis para alugar em Uberlândia - casas, apartamentos e kitnets'
       const desc = `${alug.length} imóveis para alugar em Uberlândia: casas, apartamentos, kitnets e salas. Filtre por bairro e preço e fale com o Vinícius Graton.`.slice(0, 158)
       const url = slash(`${SITE}/alugar`)
       const body = `<main class="pre-seo"><h1>Imóveis para alugar em Uberlândia</h1>` +
-        `<p>${alug.length} imóveis de locação na carteira da Rotina Imobiliária, com o atendimento do Vinícius Graton — análise de garantia (fiador, seguro-fiança ou caução) e agendamento de visita.</p>` +
+        `<p>${alug.length} imóveis de locação na carteira da Rotina Imobiliária, com o atendimento do Vinícius Graton - análise de garantia (fiador, seguro-fiança ou caução) e agendamento de visita.</p>` +
         `<nav><h2>Alugar por bairro em Uberlândia</h2>${bairrosAlug.map((b) => `<a href="/alugar/uberlandia/${b.slug}/">${esc(b.nome)} (${b.n})</a>`).join(' · ')}</nav>` +
         `<p><a href="/imoveis">Comprar imóvel em Uberlândia</a> · <a href="/investir">onde investir</a></p></main>`
       const ld = { '@context': 'https://schema.org', '@graph': [
@@ -985,7 +985,7 @@ try {
       const desc = `${b.n} imóveis para alugar em ${b.nome}, Uberlândia. Aluguel típico em torno de ${fmtAlug(b.med)}/mês. Fale com o Vinícius Graton.`.slice(0, 158)
       const url = slash(`${SITE}/alugar/uberlandia/${b.slug}`)
       const body = `<main class="pre-seo"><h1>Imóveis para alugar em ${esc(b.nome)}, Uberlândia</h1>` +
-        `<p>${b.n} ${b.n === 1 ? 'imóvel' : 'imóveis'} para alugar em ${esc(b.nome)} — aluguel típico em torno de ${esc(fmtAlug(b.med))}/mês. Atendimento do Vinícius Graton, da Rotina Imobiliária.</p>` +
+        `<p>${b.n} ${b.n === 1 ? 'imóvel' : 'imóveis'} para alugar em ${esc(b.nome)} - aluguel típico em torno de ${esc(fmtAlug(b.med))}/mês. Atendimento do Vinícius Graton, da Rotina Imobiliária.</p>` +
         `<p><a href="/alugar">todos os imóveis para alugar em Uberlândia</a> · <a href="/imoveis/uberlandia/${b.slug}">comprar no ${esc(b.nome)}</a></p></main>`
       const ld = { '@context': 'https://schema.org', '@graph': [
         { '@type': 'CollectionPage', url, name: titulo, description: desc, about: { '@type': 'Place', name: `${b.nome}, Uberlândia, MG` } },
@@ -1029,7 +1029,7 @@ const urls = [
     imgTitle: `${p.nome} · ${c.nome}, Uberlândia`,
   }))),
   { loc: `${SITE}/lancamentos`, freq: 'weekly', pri: '0.8' },
-  { loc: `${SITE}/lancamentos/louis-studios-umuarama`, freq: 'weekly', pri: '0.9', img: `${SITE}/lancamentos/louis/og.jpg`, imgTitle: 'Louis Living Experience — studios no Umuarama, Uberlândia' },
+  { loc: `${SITE}/lancamentos/louis-studios-umuarama`, freq: 'weekly', pri: '0.9', img: `${SITE}/lancamentos/louis/og.jpg`, imgTitle: 'Louis Living Experience - studios no Umuarama, Uberlândia' },
   { loc: `${SITE}/contato`, freq: 'monthly', pri: '0.5' },
   ...bairrosSeo.map((b) => ({ loc: `${SITE}/imoveis/uberlandia/${b.slug}`, freq: 'weekly', pri: '0.7' })),
   ...rotasAlugar.map((p) => ({ loc: `${SITE}${p}`, freq: 'weekly', pri: '0.6' })),

@@ -25,7 +25,7 @@ const SCHEMA = {
 
 export default function LancamentoGuia() {
   useSEO({
-    title: 'Como comprar na planta com segurança em Uberlândia — Guia completo',
+    title: 'Como comprar na planta com segurança em Uberlândia - Guia completo',
     description:
       'Tudo que você precisa saber antes de assinar um contrato de lançamento imobiliário. Documentação, INCC, financiamento na planta, prazos de entrega e direitos do comprador.',
     path: '/lancamentos/guia',

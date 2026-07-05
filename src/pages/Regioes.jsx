@@ -5,7 +5,7 @@ export default function Regioes() {
   useSEO({
     title: 'Imóveis por região em Uberlândia',
     description:
-      'Atuo nos principais bairros de Uberlândia — Jardim Karaíba, Gávea, Morada da Colina, Granja Marileusa, Santa Mônica, Tabajaras, Cidade Jardim e mais. Encontre imóveis na região certa pra você.',
+      'Atuo nos principais bairros de Uberlândia - Jardim Karaíba, Gávea, Morada da Colina, Granja Marileusa, Santa Mônica, Tabajaras, Cidade Jardim e mais. Encontre imóveis na região certa pra você.',
     path: '/regioes',
   })
   return (

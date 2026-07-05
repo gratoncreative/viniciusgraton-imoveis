@@ -216,6 +216,7 @@ function publicar(codigosArg) {
       .replace(/\(?\d{2}\)?\s*9?\d{4}[-\s]?\d{4}/g, '') // remove telefones
       .replace(/https?:\/\/\S+/gi, '') // remove links
       .replace(/[\w.+-]+@[\w-]+\.[\w.-]+/g, '') // remove e-mails
+      .replace(/\s*—\s*/g, ' - ') // regra de marca: sem travessão em texto público
       .trim()
 
   mkdirSync(IMG_DIR, { recursive: true })
@@ -245,7 +246,7 @@ function publicar(codigosArg) {
   const mantidos = existentes.filter((im) => !codsNovos.has(String(im.codigo)))
   const out = {
     geradoEm: new Date().toISOString(),
-    fonte: 'Imoview / Rotina Imobiliária — imóveis publicados na web',
+    fonte: 'Imoview / Rotina Imobiliária - imóveis publicados na web',
     imoveis: [...limpos, ...mantidos],
   }
   writeFileSync(OUT_JSON, JSON.stringify(out, null, 2) + '\n')

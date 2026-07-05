@@ -37,7 +37,7 @@ const mascaraFone = (s) => {
 
 export default function CatalogoLancamentos() {
   useSEO({
-    title: 'Catálogo de Lançamentos Imobiliários em Uberlândia — Vinícius Graton',
+    title: 'Catálogo de Lançamentos Imobiliários em Uberlândia - Vinícius Graton',
     description:
       'Catálogo completo de lançamentos, empreendimentos em obras e prontos em Uberlândia/MG. Filtre por bairro, status, quartos e tipo. Curadoria de um consultor da Rotina Imobiliária.',
     path: '/lancamentos/catalogo',
@@ -129,7 +129,7 @@ export default function CatalogoLancamentos() {
     ev.preventDefault()
     const nome = novidNome.trim()
     if (!nome || nome.length < 2) { setNovidErro('Informe seu nome'); return }
-    if (novidFone && soNum(novidFone).length < 11) { setNovidErro('WhatsApp inválido — informe DDD + número (11 dígitos)'); return }
+    if (novidFone && soNum(novidFone).length < 11) { setNovidErro('WhatsApp inválido - informe DDD + número (11 dígitos)'); return }
     const partes = [`Olá Vinícius! Me chamo ${nome}`]
     if (novidFone) partes.push(`meu WhatsApp é ${novidFone}`)
     if (novidPerfil) partes.push(`meu perfil: ${novidPerfil}`)

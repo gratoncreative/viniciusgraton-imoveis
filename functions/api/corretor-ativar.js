@@ -71,7 +71,7 @@ export async function onRequestPost({ request, env }) {
   // 4. Lê os dados pendentes do KV
   const pendKey = `corretor:pending:${externalRef}`
   const pend = await env.ENGAGEMENT.get(pendKey, 'json').catch(() => null)
-  if (!pend) return json({ ok: false, erro: 'Dados do cadastro não encontrados. O pagamento foi aprovado — entre em contato pelo WhatsApp informando o ID ' + paymentId + '.' })
+  if (!pend) return json({ ok: false, erro: 'Dados do cadastro não encontrados. O pagamento foi aprovado - entre em contato pelo WhatsApp informando o ID ' + paymentId + '.' })
 
   const planoInfo = PLANOS[pend.plano] || PLANOS.mensal
   const ttl       = planoInfo.dias * 86400

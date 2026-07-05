@@ -320,7 +320,7 @@ export default function Mapa() {
             <span className="eyebrow" style={{ justifyContent: 'center' }}>Busca por mapa</span>
             <h1 className="section-title">Imóveis no <em>mapa de Uberlândia</em></h1>
             <p className="section-sub" style={{ marginTop: 14 }}>
-              Cada ponto é um bairro — o tamanho representa a concentração de imóveis.
+              Cada ponto é um bairro - o tamanho representa a concentração de imóveis.
               Clique para explorar. Por privacidade, o endereço exato eu passo no atendimento.
             </p>
           </div>

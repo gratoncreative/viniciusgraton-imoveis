@@ -5,7 +5,7 @@
   { "bairro": "Jardim Sul", "m2": 8584, "fonte": "Proprietário Direto (Índice IPD)", "ref": "jun/2026", "lat": -18.929, "lng": -48.220 },
   { "bairro": "Gávea", "m2": 8404, "fonte": "ZAP Imóveis (Guia de Bairros)", "ref": "2026", "lat": -18.913, "lng": -48.193 },
   { "bairro": "Tabajaras", "m2": 7901, "fonte": "Proprietário Direto (Índice IPD)", "ref": "jun/2026", "lat": -18.902, "lng": -48.268 },
-  { "bairro": "Morada da Colina", "m2": 7692, "fonte": "Proprietário Direto (Índice IPD) — faixa acima de 250 m²", "ref": "jun/2026", "lat": -18.939, "lng": -48.196 },
+  { "bairro": "Morada da Colina", "m2": 7692, "fonte": "Proprietário Direto (Índice IPD) - faixa acima de 250 m²", "ref": "jun/2026", "lat": -18.939, "lng": -48.196 },
   { "bairro": "Centro", "m2": 7553, "fonte": "Proprietário Direto (Índice IPD)", "ref": "jun/2026", "lat": -18.919, "lng": -48.276 },
   { "bairro": "Fundinho", "m2": 7491, "fonte": "Proprietário Direto (Índice IPD)", "ref": "jun/2026", "lat": -18.911, "lng": -48.274 },
   { "bairro": "Martins", "m2": 6818, "fonte": "Proprietário Direto (Índice IPD)", "ref": "jun/2026", "lat": -18.922, "lng": -48.264 },

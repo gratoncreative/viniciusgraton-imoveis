@@ -29,7 +29,7 @@ export default function BarraContato() {
   return (
     <div className={`barra-contato ${show ? 'on' : ''}`}>
       <div className="container barra-inner">
-        <span className="barra-label">Vendas — fale comigo</span>
+        <span className="barra-label">Vendas - fale comigo</span>
         <div className="barra-acoes">
           <a href={linkWhatsApp(WA.flutuante)} target="_blank" rel="noopener noreferrer" className="barra-item barra-whats">
             <IconWhats width={18} height={18} /> WhatsApp

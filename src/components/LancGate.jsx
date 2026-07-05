@@ -72,7 +72,7 @@ export default function LancGate() {
           <h2 className="lg-titulo">Acesso gratuito ao catálogo completo</h2>
           <p className="lg-sub">
             Você explorou {LANC_LIMIT} empreendimentos. Cadastre-se para acessar todos os +90 lançamentos,
-            plantas, preços e condições de pagamento — sem custo.
+            plantas, preços e condições de pagamento - sem custo.
           </p>
         </div>
         <form className="lg-form" onSubmit={enviar} noValidate>

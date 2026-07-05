@@ -41,15 +41,15 @@ const TX = {
   ],
   homogBul: [
     'Fator oferta/fonte (0,90): os comparáveis são preços de ANÚNCIO, não de venda fechada. Há uma margem de negociação ("gordura do anúncio") em torno de 10%. O fator 0,90 converte o valor pedido em estimativa do provável valor de transação.',
-    'Fator área (expoente 0,10): há economia de escala no m² — imóveis maiores tendem a ter m² menor e vice-versa. Corrige-se pela razão entre as áreas elevada a um expoente. O expoente baixo aplica uma correção suave (parâmetro adotado neste estudo).',
+    'Fator área (expoente 0,10): há economia de escala no m² - imóveis maiores tendem a ter m² menor e vice-versa. Corrige-se pela razão entre as áreas elevada a um expoente. O expoente baixo aplica uma correção suave (parâmetro adotado neste estudo).',
     'Fator vaga (~R$ 32.000/vaga): a vaga tem valor próprio no mercado. Comparáveis com nº de vagas diferente são ajustados (soma/subtração) para padronizar todos sob a mesma quantidade de vagas.',
     'Fatores NÃO aplicados (exigem vistoria): idade, conservação, acabamento, padrão construtivo e microlocalização. Sua aferição depende de inspeção presencial por profissional habilitado.',
   ],
   tratamento: [
     'Sobre os comparáveis trabalha-se com o valor unitário (R$/m²). Aplica-se estatística descritiva: a média é a soma dividida pela quantidade; a mediana é o valor central da amostra ordenada; o desvio-padrão mede a dispersão em torno da média; e o coeficiente de variação (CV) é o desvio-padrão dividido pela média (%), indicando a homogeneidade da amostra.',
     'Adotamos a MEDIANA como referência (não a média) por ser robusta: não é distorcida por um anúncio muito alto ou muito baixo, situação comum em ofertas. A média, ao contrário, é puxada por esses extremos.',
-    'Antes do cálculo, fazemos um saneamento de outliers descartando dados a mais de 30% acima ou abaixo da mediana preliminar — critério simplificado adotado neste estudo (a norma usa critérios estatísticos próprios). Sobre a amostra limpa e homogeneizada recalculamos a mediana e o desvio-padrão. A faixa de referência (intervalo de dispersão) é construída a partir do desvio-padrão: dentro dela o valor é tecnicamente defensável, refletindo a incerteza natural do mercado.',
-    'Grau de fundamentação: a NBR 14653-2 classifica os trabalhos em Graus I, II e III conforme nº de dados, vistoria, qualidade do tratamento e detalhamento. O que apresentamos é uma AUTOAVALIAÇÃO SIMPLIFICADA, a partir de dois indicadores objetivos (quantidade de dados e CV — este ligado ao grau de precisão). Serve para dimensionar a robustez do estudo, mas NÃO é o enquadramento oficial, que exige profissional habilitado, vistoria e laudo assinado.',
+    'Antes do cálculo, fazemos um saneamento de outliers descartando dados a mais de 30% acima ou abaixo da mediana preliminar - critério simplificado adotado neste estudo (a norma usa critérios estatísticos próprios). Sobre a amostra limpa e homogeneizada recalculamos a mediana e o desvio-padrão. A faixa de referência (intervalo de dispersão) é construída a partir do desvio-padrão: dentro dela o valor é tecnicamente defensável, refletindo a incerteza natural do mercado.',
+    'Grau de fundamentação: a NBR 14653-2 classifica os trabalhos em Graus I, II e III conforme nº de dados, vistoria, qualidade do tratamento e detalhamento. O que apresentamos é uma AUTOAVALIAÇÃO SIMPLIFICADA, a partir de dois indicadores objetivos (quantidade de dados e CV - este ligado ao grau de precisão). Serve para dimensionar a robustez do estudo, mas NÃO é o enquadramento oficial, que exige profissional habilitado, vistoria e laudo assinado.',
   ],
   glossario: [
     ['Valor de mercado', 'preço mais provável de negociação em condições normais, entre comprador e vendedor sem pressa nem obrigação.'],
@@ -62,9 +62,9 @@ const TX = {
     ['Comparável (testemunha)', 'imóvel ofertado, semelhante ao de estudo, usado como referência de preço.'],
   ],
   referencias: [
-    'ABNT NBR 14653-1 — Avaliação de bens · Parte 1: Procedimentos gerais',
-    'ABNT NBR 14653-2 — Avaliação de bens · Parte 2: Imóveis urbanos',
-    'IBAPE — Instituto Brasileiro de Avaliações e Perícias de Engenharia (boas práticas)',
+    'ABNT NBR 14653-1 - Avaliação de bens · Parte 1: Procedimentos gerais',
+    'ABNT NBR 14653-2 - Avaliação de bens · Parte 2: Imóveis urbanos',
+    'IBAPE - Instituto Brasileiro de Avaliações e Perícias de Engenharia (boas práticas)',
     'Anúncios e base de ofertas da Rotina Imobiliária / Imoview (comparáveis na região)',
     'Índices públicos de mercado imobiliário (acompanhamento de tendência)',
     'Características do imóvel informadas pelo proprietário/interessado',
@@ -153,7 +153,7 @@ async function montar(estudo, charts = {}) {
   y += 132 + 30
   set(9.5, 'normal', SOFT)
   doc.text(T('Vinícius Graton · Consultor de Imóveis · Rotina Imobiliária'), M, y); y += 14
-  set(8.5, 'normal', MUTE); doc.text(T('Documento de referência preliminar — não é Laudo de Avaliação formal.'), M, y)
+  set(8.5, 'normal', MUTE); doc.text(T('Documento de referência preliminar - não é Laudo de Avaliação formal.'), M, y)
 
   // ═══ 1. Objetivo ═══
   nova()
@@ -200,11 +200,11 @@ async function montar(estudo, charts = {}) {
   }
   // ═══ 8. Grau ═══
   secao('Grau de fundamentação (autoavaliação)')
-  par(`Pelos indicadores objetivos deste estudo — ${estudo.n} dados de mercado e CV de ${pct1((st.cv || 0) * 100)} — a robustez se posiciona em GRAU ${estudo.grau || 'I'} nesta autoavaliação simplificada. Isto NÃO é o enquadramento oficial da NBR 14653, que exige profissional habilitado, vistoria e laudo assinado.`)
+  par(`Pelos indicadores objetivos deste estudo - ${estudo.n} dados de mercado e CV de ${pct1((st.cv || 0) * 100)} - a robustez se posiciona em GRAU ${estudo.grau || 'I'} nesta autoavaliação simplificada. Isto NÃO é o enquadramento oficial da NBR 14653, que exige profissional habilitado, vistoria e laudo assinado.`)
   bullets([
-    'Grau I (referência): poucos dados e/ou CV mais alto — robustez limitada.',
-    'Grau II (referência): nº intermediário de dados e CV moderado — robustez razoável.',
-    'Grau III (referência): muitos dados e CV baixo — maior robustez estatística.',
+    'Grau I (referência): poucos dados e/ou CV mais alto - robustez limitada.',
+    'Grau II (referência): nº intermediário de dados e CV moderado - robustez razoável.',
+    'Grau III (referência): muitos dados e CV baixo - maior robustez estatística.',
   ])
   // ═══ 9. Tabela de comparáveis ═══
   const tw = estudo.testemunhas || []

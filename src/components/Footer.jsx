@@ -77,7 +77,7 @@ export default function Footer() {
             <a href="tel:+5534991570494">(34) 99157-0494</a>
             <a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a>
             <a href={CONFIG.instagram} target="_blank" rel="noopener noreferrer">@viniciusgraton.imoveis</a>
-            <span className="footer-end">Av. Afonso Pena, 1535 — Aparecida<br />Uberlândia/MG · Rotina Imobiliária</span>
+            <span className="footer-end">Av. Afonso Pena, 1535 - Aparecida<br />Uberlândia/MG · Rotina Imobiliária</span>
           </div>
         </div>
 

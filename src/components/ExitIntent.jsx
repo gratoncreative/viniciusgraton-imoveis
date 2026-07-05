@@ -34,7 +34,7 @@ export default function ExitIntent() {
         <button className="exit-close" onClick={() => setAberto(false)} aria-label="Fechar"><IconClose width={18} height={18} /></button>
         <span className="eyebrow">Espera um segundo…</span>
         <h3>Antes de ir, deixa eu achar o imóvel <em>certo pra você</em></h3>
-        <p>Responde 1 minutinho que eu monto uma seleção sob medida e ela fica salva num link só seu — sem custo e sem compromisso.</p>
+        <p>Responde 1 minutinho que eu monto uma seleção sob medida e ela fica salva num link só seu - sem custo e sem compromisso.</p>
         <div className="exit-acoes">
           <Link className="btn btn-gold" to="/encontrar-imovel" onClick={() => setAberto(false)}>Montar minha seleção <IconArrow /></Link>
           <a className="btn btn-ghost" href={linkWhatsApp(WA.hero)} target="_blank" rel="noopener noreferrer" onClick={() => setAberto(false)}><IconWhats /> Falar no WhatsApp</a>

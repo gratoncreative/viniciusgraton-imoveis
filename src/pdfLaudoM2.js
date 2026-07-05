@@ -56,7 +56,7 @@ export async function gerarPdfLaudoM2(im, est, opcao = 'baixar') {
   header(); footer(pg); y = 80
   // Título do laudo
   doc.setTextColor(22, 26, 34); doc.setFont('helvetica', 'bold'); doc.setFontSize(19)
-  doc.text('Laudo técnico — valor do m²', M, y); y += 20
+  doc.text('Laudo técnico - valor do m²', M, y); y += 20
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10.5); doc.setTextColor(110, 118, 130)
   doc.text(`${im.tipo} no ${im.bairro} · ${im.cidade || 'Uberlândia'}/${im.uf || 'MG'} · Cód. ${im.codigo}`, M, y); y += 22
 

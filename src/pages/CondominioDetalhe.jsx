@@ -13,7 +13,7 @@ export default function CondominioDetalhe() {
   const c = getCondominio(slug)
 
   useSEO({
-    title: c ? `${c.nome} — condomínio fechado em ${c.regiao}, Uberlândia` : 'Condomínio não encontrado',
+    title: c ? `${c.nome} - condomínio fechado em ${c.regiao}, Uberlândia` : 'Condomínio não encontrado',
     description: c
       ? `${(c.descricao || '').slice(0, 150)} Fale com o Vinícius Graton para morar no ${c.nome}, em Uberlândia.`
       : 'Condomínio não encontrado.',
@@ -74,7 +74,7 @@ export default function CondominioDetalhe() {
             {fases.map((f) => (
               <Link className="condo-card" to={`/condominios/${f.slug}`} key={f.slug}>
                 <span className="condo-capa">
-                  <img src={f.capa || CAPA_COND_PADRAO} alt={`${f.nome} — Uberlândia`} loading="lazy" referrerPolicy="no-referrer" onError={onCondImgError} />
+                  <img src={f.capa || CAPA_COND_PADRAO} alt={`${f.nome} - Uberlândia`} loading="lazy" referrerPolicy="no-referrer" onError={onCondImgError} />
                   <span className="condo-tipo">{f.tipo}</span>
                 </span>
                 <span className="condo-body">
@@ -116,7 +116,7 @@ export default function CondominioDetalhe() {
         <div className="det-grid">
           <div className="det-galeria">
             {c.status && <span className="det-tag">{c.status}</span>}
-            {fotos.length ? <Galeria fotos={fotos} alt={`${c.nome} — condomínio fechado em Uberlândia`} /> : (
+            {fotos.length ? <Galeria fotos={fotos} alt={`${c.nome} - condomínio fechado em Uberlândia`} /> : (
               <div className="empre-semfoto"><IconBuilding width={40} height={40} /><span>Fotos sob consulta</span></div>
             )}
           </div>
@@ -133,7 +133,7 @@ export default function CondominioDetalhe() {
             )}
 
             <a className="btn btn-gold det-whats" href="#interesse">
-              Quero morar aqui — fazer curadoria <IconArrow />
+              Quero morar aqui - fazer curadoria <IconArrow />
             </a>
           </aside>
         </div>
@@ -156,7 +156,7 @@ export default function CondominioDetalhe() {
 
         <div className="det-mapa">
           <h2 className="det-rel-titulo">Localização</h2>
-          <p className="det-mapa-bairro"><IconPin width={18} height={18} /> {c.regiao}, Uberlândia — MG</p>
+          <p className="det-mapa-bairro"><IconPin width={18} height={18} /> {c.regiao}, Uberlândia - MG</p>
           <div className="det-mapa-frame det-mapa-frame--wide">
             <iframe title={`Mapa ${c.nome}`} src={`https://maps.google.com/maps?q=${mapsQuery}&z=14&output=embed`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
           </div>

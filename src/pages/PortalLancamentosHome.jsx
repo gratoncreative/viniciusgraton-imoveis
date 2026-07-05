@@ -42,7 +42,7 @@ export function CardEmpLan({ e, variante }) {
       <Link to={url} className="lan-row" onClick={handleClick}>
         <div className="lan-row-capa">
           {e.capa
-            ? <img src={e.capa} alt={`${e.nome} — ${e.bairro || 'Uberlândia'}`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
+            ? <img src={e.capa} alt={`${e.nome} - ${e.bairro || 'Uberlândia'}`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
             : <span className="lan-card-semfoto"><IconBuilding width={30} height={30} /></span>}
           <span className="lan-row-status">{e.status}</span>
         </div>
@@ -64,7 +64,7 @@ export function CardEmpLan({ e, variante }) {
     <Link to={url} className="lan-card" onClick={handleClick}>
       <div className="lan-card-capa">
         {e.capa
-          ? <img src={e.capa} alt={`${e.nome} — ${e.bairro || 'Uberlândia'}`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
+          ? <img src={e.capa} alt={`${e.nome} - ${e.bairro || 'Uberlândia'}`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
           : <span className="lan-card-semfoto"><IconBuilding width={32} height={32} /></span>}
         <span className="lan-card-status">{e.status}</span>
       </div>
@@ -82,7 +82,7 @@ export function CardEmpLan({ e, variante }) {
 
 export default function PortalLancamentosHome() {
   useSEO({
-    title: 'Portal de Lançamentos de Uberlândia — Curadoria Vinícius Graton',
+    title: 'Portal de Lançamentos de Uberlândia - Curadoria Vinícius Graton',
     description:
       'Os lançamentos imobiliários de Uberlândia com curadoria de um consultor da Rotina Imobiliária. Compare empreendimentos, veja plantas, simule financiamento e fale direto com o consultor credenciado.',
     path: '/lancamentos',
@@ -147,7 +147,7 @@ export default function PortalLancamentosHome() {
             <span className="condos-hero-eyebrow">Portal de Lançamentos · Uberlândia</span>
             <h2 className="condos-hero-title">Lançamentos de <em>Uberlândia</em></h2>
             <p className="condos-hero-desc">
-              Filtro, comparo e indico só o que faz sentido para o seu perfil — com análise independente.
+              Filtro, comparo e indico só o que faz sentido para o seu perfil - com análise independente.
             </p>
             <div className="condos-hero-stats">
               <span><b>{totalConstrutoras}</b> construtoras</span>

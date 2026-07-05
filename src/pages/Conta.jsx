@@ -25,11 +25,11 @@ const BenIcon = ({ name, size = 20 }) => (
 )
 
 const BENEFICIOS = [
-  ['star', 'Seleção VIP sob medida', 'Eu separo a dedo os imóveis com a sua cara e deixo prontos na sua área — você não perde tempo garimpando.'],
-  ['bell', 'Avisos em primeira mão', 'Imóvel bom voa. Você é o primeiro a saber quando entrar um no seu perfil — antes do anúncio público.'],
+  ['star', 'Seleção VIP sob medida', 'Eu separo a dedo os imóveis com a sua cara e deixo prontos na sua área - você não perde tempo garimpando.'],
+  ['bell', 'Avisos em primeira mão', 'Imóvel bom voa. Você é o primeiro a saber quando entrar um no seu perfil - antes do anúncio público.'],
   ['heart', 'Favoritos na nuvem', 'Salve quantos quiser e compare com calma, de qualquer celular ou computador.'],
   ['clock', 'Continue de onde parou', 'Seu histórico fica salvo e me ajuda a acertar cada vez mais nas indicações pra você.'],
-  ['bolt', 'Linha direta comigo', 'Atendimento prioritário, com o seu perfil já em mãos — sem precisar repetir tudo.'],
+  ['bolt', 'Linha direta comigo', 'Atendimento prioritário, com o seu perfil já em mãos - sem precisar repetir tudo.'],
   ['gift', 'Guias e bônus exclusivos', 'Materiais de compra, financiamento e os melhores bairros de Uberlândia, só pra cadastrados.'],
 ]
 
@@ -48,7 +48,7 @@ function CadastroView({ onPronto }) {
   // confirmação na prática: abre o WhatsApp do cliente com a mensagem pronta pra ELE te enviar.
   // Quando ele manda, você recebe do número real → confirma que o número é dele e já inicia a conversa.
   const confirmarNoWhats = (nome) => {
-    const msg = `Olá Vinícius! Acabo de criar minha conta no seu site e preciso confirmar para liberar meu acesso. Código de ativação: #VG${Math.floor(1000 + Math.random() * 9000)} — ${nome || ''}`
+    const msg = `Olá Vinícius! Acabo de criar minha conta no seu site e preciso confirmar para liberar meu acesso. Código de ativação: #VG${Math.floor(1000 + Math.random() * 9000)} - ${nome || ''}`
     try { window.open(linkWhatsApp(msg), '_blank', 'noopener') } catch { /* ok */ }
   }
   const enviar = (e) => {
@@ -141,7 +141,7 @@ function CadastroView({ onPronto }) {
       <form className="lead-form conta-form" onSubmit={enviar}>
         <span className="conta-form-selo">Grátis · 30 segundos</span>
         <h3>Crie sua conta e receba os imóveis com a sua cara no e-mail</h3>
-        <p className="conta-form-promessa">Todo imóvel <b>novo</b> que entrar no <b>perfil que você busca</b> chega <b>direto no seu e-mail</b>, em primeira mão — automático, sem você precisar ficar procurando.</p>
+        <p className="conta-form-promessa">Todo imóvel <b>novo</b> que entrar no <b>perfil que você busca</b> chega <b>direto no seu e-mail</b>, em primeira mão - automático, sem você precisar ficar procurando.</p>
         <label><span>Nome completo *</span><input value={f.nome} onChange={set('nome')} required /></label>
         <label><span>E-mail *</span><input type="email" value={f.email} onChange={set('email')} required /></label>
         <label><span>WhatsApp (com DDD) *</span><input type="tel" inputMode="tel" value={f.fone} onChange={(e) => { setF((s) => ({ ...s, fone: formatarFoneBR(e.target.value) })); if (erroFone) setErroFone('') }} placeholder="(34) 99157-0494" required /></label>
@@ -234,7 +234,7 @@ function PainelView({ conta, onSair }) {
         <div className="conta-selo-link">
           <div>
             <b>Sua página de seleção</b>
-            <span>Seus favoritos viram uma página só sua, com link salvo. Compartilhe com quem quiser — e o que você curtir aqui me ajuda a acertar ainda mais.</span>
+            <span>Seus favoritos viram uma página só sua, com link salvo. Compartilhe com quem quiser - e o que você curtir aqui me ajuda a acertar ainda mais.</span>
           </div>
           <div className="conta-selo-acoes">
             <a className="btn btn-gold" href={linkSel}>Ver minha seleção <IconArrow /></a>
@@ -258,7 +258,7 @@ function PainelView({ conta, onSair }) {
 
 export default function Conta() {
   useSEO({
-    title: 'Minha área — área do cliente | Vinícius Graton',
+    title: 'Minha área - área do cliente | Vinícius Graton',
     description: 'Crie sua conta grátis: favoritos salvos, histórico, seleção exclusiva de imóveis e atendimento prioritário com o consultor Vinícius Graton em Uberlândia.',
     path: '/conta',
     noindex: true,

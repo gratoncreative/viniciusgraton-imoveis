@@ -23,7 +23,7 @@ function GraficoBairros({ linhas }) {
     <div className="mercado-chart">
       <div className="mercado-chart-hd">
         <div>
-          <h2 className="mercado-chart-titulo">Mapa de calor — R$/m² por bairro</h2>
+          <h2 className="mercado-chart-titulo">Mapa de calor - R$/m² por bairro</h2>
           <p className="mercado-chart-sub">Top 20 bairros mais valorizados por metro quadrado</p>
         </div>
       </div>
@@ -54,7 +54,7 @@ const COLS = [
 
 export default function Mercado() {
   useSEO({
-    title: 'Mercado imobiliário em Uberlândia — preços por bairro',
+    title: 'Mercado imobiliário em Uberlândia - preços por bairro',
     description: 'Veja a mediana de preço e preço por m² em 120 bairros de Uberlândia. Dados reais do catálogo da Rotina Imobiliária.',
     path: '/mercado',
   })
@@ -194,9 +194,9 @@ export default function Mercado() {
                         </a>
                       </td>
                       <td>{l.count}</td>
-                      <td>{l.mediana_preco ? fmt(l.mediana_preco) : '—'}</td>
-                      <td>{l.mediana_area ? `${l.mediana_area} m²` : '—'}</td>
-                      <td>{l.mediana_m2 ? fmt(l.mediana_m2) : '—'}</td>
+                      <td>{l.mediana_preco ? fmt(l.mediana_preco) : '-'}</td>
+                      <td>{l.mediana_area ? `${l.mediana_area} m²` : '-'}</td>
+                      <td>{l.mediana_m2 ? fmt(l.mediana_m2) : '-'}</td>
                       <td><span className="mercado-faixa">{l.faixa}</span></td>
                     </tr>
                   ))}
@@ -208,7 +208,7 @@ export default function Mercado() {
             </div>
 
             <p className="mercado-nota">
-              Dados do catálogo ativo da Rotina Imobiliária — Uberlândia/MG.
+              Dados do catálogo ativo da Rotina Imobiliária - Uberlândia/MG.
               {dataAtual && <> Última atualização: {dataAtual}.</>}
             </p>
           </>

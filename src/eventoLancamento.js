@@ -38,7 +38,7 @@ export function useEventoLancamento(emp) {
     const evento = {
       '@context': 'https://schema.org',
       '@type': 'Event',
-      name: `${emp.nome} — entrega prevista`,
+      name: `${emp.nome} - entrega prevista`,
       startDate: data,
       eventStatus: 'https://schema.org/EventScheduled',
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',

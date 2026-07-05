@@ -53,7 +53,7 @@ export async function onRequestPost({ env, request }) {
     // valida o arquivo
     if (!file || typeof file === 'string' || !file.name) return json({ ok: false, erro: 'Selecione o arquivo do tour.' }, 400)
     const m = String(file.name).toLowerCase().match(/\.(ply|sog)$/)
-    if (!m) return json({ ok: false, erro: 'O arquivo precisa ser .ply (PLY comprimido) ou .sog — exporte assim no SuperSplat.' }, 400)
+    if (!m) return json({ ok: false, erro: 'O arquivo precisa ser .ply (PLY comprimido) ou .sog - exporte assim no SuperSplat.' }, 400)
     const ext = m[1]
     if (file.size > MAX) return json({ ok: false, erro: 'Arquivo muito grande (máx. 60 MB). Reduza/otimize no SuperSplat.' }, 400)
 

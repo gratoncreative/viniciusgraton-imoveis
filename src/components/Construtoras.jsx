@@ -15,7 +15,7 @@ export default function Construtoras() {
             <h2 className="section-title">As principais <em>construtoras</em></h2>
             <p className="section-sub" style={{ margin: '16px auto 0' }}>
               Acompanho os lançamentos das maiores construtoras da cidade. Clique em uma marca para ver
-              os empreendimentos atuais — e me chame para visitar.
+              os empreendimentos atuais - e me chame para visitar.
             </p>
           </div>
         </Reveal>

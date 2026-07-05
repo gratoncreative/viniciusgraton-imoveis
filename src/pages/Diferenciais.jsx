@@ -23,7 +23,7 @@ const DIFERENCIAIS = [
     lead: 'Você não recebe uma enxurrada de anúncios. Recebe os imóveis certos.',
     paras: [
       'A maioria dos compradores se perde em dezenas de links que não têm nada a ver com o que procuram. Eu faço o contrário: entendo o seu objetivo, seu orçamento e o que é inegociável pra você, e só então separo as opções que realmente fazem sentido.',
-      'Antes de te enviar qualquer imóvel, eu já olhei a localização, o estado de conservação, o valor frente ao mercado do bairro e os pontos de atenção. Você ganha tempo e foco — e chega na visita já sabendo o que esperar.',
+      'Antes de te enviar qualquer imóvel, eu já olhei a localização, o estado de conservação, o valor frente ao mercado do bairro e os pontos de atenção. Você ganha tempo e foco - e chega na visita já sabendo o que esperar.',
     ],
     ganha: ['Opções alinhadas ao seu perfil, sem ruído', 'Comparativo justo de preço por m² do bairro', 'Visitas mais produtivas, sem perder o dia'],
   },
@@ -33,7 +33,7 @@ const DIFERENCIAIS = [
     titulo: 'Pontos fortes e riscos, na transparência',
     lead: 'Todo imóvel tem qualidades e pontos de atenção. Eu te conto os dois.',
     paras: [
-      'Vendedor que só fala maravilha esconde o que importa. Comigo é diferente: eu aponto o que valoriza o imóvel e também o que merece cuidado — posição solar, barulho, idade da construção, custo de condomínio, o que precisa de reforma.',
+      'Vendedor que só fala maravilha esconde o que importa. Comigo é diferente: eu aponto o que valoriza o imóvel e também o que merece cuidado - posição solar, barulho, idade da construção, custo de condomínio, o que precisa de reforma.',
       'Comprar um imóvel é uma das maiores decisões da sua vida. Você merece tomá-la com a informação completa na mão, sem surpresa depois da assinatura.',
     ],
     ganha: ['Avaliação honesta de prós e contras', 'Sem surpresa depois do negócio fechado', 'Decisão segura, com os olhos abertos'],
@@ -44,7 +44,7 @@ const DIFERENCIAIS = [
     titulo: 'Documentação conferida',
     lead: 'A parte chata e técnica é comigo. Você compra com segurança jurídica.',
     paras: [
-      'Matrícula atualizada, certidões do imóvel e do vendedor, débitos de IPTU e condomínio, situação do financiamento — tudo isso é conferido antes de avançar. Com o suporte da estrutura da Rotina Imobiliária (CRECI PJ 132, mais de 30 anos de mercado), nada passa batido.',
+      'Matrícula atualizada, certidões do imóvel e do vendedor, débitos de IPTU e condomínio, situação do financiamento - tudo isso é conferido antes de avançar. Com o suporte da estrutura da Rotina Imobiliária (CRECI PJ 132, mais de 30 anos de mercado), nada passa batido.',
       'Você não precisa virar especialista em cartório nem em financiamento. Eu te explico cada etapa em português claro e cuido pra que a compra ande sem dor de cabeça.',
     ],
     ganha: ['Checagem completa da documentação', 'Apoio em financiamento, ITBI e cartório', 'Processo conduzido do início à entrega das chaves'],
@@ -53,10 +53,10 @@ const DIFERENCIAIS = [
     slug: 'negociacao',
     icon: 'negociacao',
     titulo: 'Negociação a seu favor',
-    lead: 'Eu trabalho pelo seu melhor negócio — preço, prazo e condições.',
+    lead: 'Eu trabalho pelo seu melhor negócio - preço, prazo e condições.',
     paras: [
       'Conhecer o mercado do bairro, o tempo de anúncio e a real motivação do vendedor muda completamente a conversa. Eu uso isso pra negociar o melhor valor e as melhores condições pra você, sem desgaste.',
-      'Do primeiro contato à proposta, você tem alguém do seu lado defendendo o seu interesse — não o do outro lado da mesa.',
+      'Do primeiro contato à proposta, você tem alguém do seu lado defendendo o seu interesse - não o do outro lado da mesa.',
     ],
     ganha: ['Estratégia de proposta baseada em dados', 'Melhor preço, prazo e condições possíveis', 'Você negocia com tranquilidade, sem pressão'],
   },
@@ -65,7 +65,7 @@ const DIFERENCIAIS = [
 export default function Diferenciais() {
   const { hash } = useLocation()
   useSEO({
-    title: 'Meus diferenciais — por que comprar comigo',
+    title: 'Meus diferenciais - por que comprar comigo',
     description: 'Curadoria criteriosa, transparência sobre pontos fortes e riscos, documentação conferida e negociação a seu favor. Conheça como o Vinícius Graton conduz a sua compra em Uberlândia.',
     path: '/diferenciais',
   })

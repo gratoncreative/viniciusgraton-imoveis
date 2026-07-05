@@ -13,8 +13,8 @@ const DESTINOS = [
   { id: 'webp', mime: 'image/webp', ext: 'webp', nome: 'WebP', lossy: true, desc: 'qualidade alta com arquivo pequeno (web)' },
   { id: 'avif', mime: 'image/avif', ext: 'avif', nome: 'AVIF', lossy: true, desc: 'o mais leve com ótima qualidade (moderno)' },
   { id: 'png', mime: 'image/png', ext: 'png', nome: 'PNG', lossy: false, desc: 'sem perda, mantém transparência' },
-  { id: 'webp-sl', mime: 'image/webp', ext: 'webp', nome: 'WebP sem perda', lossy: false, desc: 'WebP lossless — qualidade máxima, mais leve que PNG' },
-  { id: 'jpg-max', mime: 'image/jpeg', ext: 'jpg', nome: 'JPG máxima qualidade', lossy: true, qualFix: 0.99, desc: 'JPEG em qualidade máxima — ideal para impressão' },
+  { id: 'webp-sl', mime: 'image/webp', ext: 'webp', nome: 'WebP sem perda', lossy: false, desc: 'WebP lossless - qualidade máxima, mais leve que PNG' },
+  { id: 'jpg-max', mime: 'image/jpeg', ext: 'jpg', nome: 'JPG máxima qualidade', lossy: true, qualFix: 0.99, desc: 'JPEG em qualidade máxima - ideal para impressão' },
 ]
 const ORIGENS = [
   { id: 'auto', nome: 'Detectar automaticamente', match: () => true },
@@ -61,8 +61,8 @@ async function decodificar(file) {
 
 export default function ConverterFotos() {
   useSEO({
-    title: 'Conversor de fotos online — JPG, PNG, WebP, AVIF e mais, em lote',
-    description: 'Converta várias fotos de uma vez entre os 6 principais formatos — JPG, PNG, WebP, AVIF, WebP lossless e JPG máxima — direto no navegador, sem instalar nada e sem enviar suas imagens pra lugar nenhum.',
+    title: 'Conversor de fotos online - JPG, PNG, WebP, AVIF e mais, em lote',
+    description: 'Converta várias fotos de uma vez entre os 6 principais formatos - JPG, PNG, WebP, AVIF, WebP lossless e JPG máxima - direto no navegador, sem instalar nada e sem enviar suas imagens pra lugar nenhum.',
     path: '/ferramentas/converter',
   })
 
@@ -228,7 +228,7 @@ export default function ConverterFotos() {
           <h1 className="section-title">Conversor de <em>fotos</em></h1>
           <p className="section-sub" style={{ marginTop: 12 }}>
             Suba quantas fotos quiser, escolha o formato de destino e baixe tudo de uma vez.
-            As imagens são convertidas no próprio navegador — <b>não saem do seu aparelho</b>.
+            As imagens são convertidas no próprio navegador - <b>não saem do seu aparelho</b>.
           </p>
         </div>
 
@@ -244,7 +244,7 @@ export default function ConverterFotos() {
             <input ref={inputRef} type="file" accept="image/*,.heic,.heif" multiple onChange={onInput} hidden />
             <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" /></svg>
             <b>Arraste as fotos aqui ou clique pra escolher</b>
-            <i>JPG · PNG · WebP · AVIF · GIF · BMP · HEIC — quantas você quiser</i>
+            <i>JPG · PNG · WebP · AVIF · GIF · BMP · HEIC - quantas você quiser</i>
           </div>
 
           {/* controles origem -> destino */}
@@ -263,7 +263,7 @@ export default function ConverterFotos() {
               </select>
             </label>
           </div>
-          <p className="conv-dica">{dest.nome} — {dest.desc}.</p>
+          <p className="conv-dica">{dest.nome} - {dest.desc}.</p>
 
           {/* opções avançadas */}
           <div className="conv-opcoes">
@@ -353,7 +353,7 @@ export default function ConverterFotos() {
         )}
 
         <p className="conv-privacidade">
-          🔒 Suas fotos não são enviadas pra nenhum servidor — a conversão acontece 100% no seu navegador.
+          🔒 Suas fotos não são enviadas pra nenhum servidor - a conversão acontece 100% no seu navegador.
         </p>
 
         <div style={{ marginTop: 28, textAlign: 'center', display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>

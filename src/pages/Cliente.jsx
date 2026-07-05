@@ -199,7 +199,7 @@ export default function Cliente() {
           <div className="cliente-hero-texto">
             <span className="eyebrow">Seleção exclusiva{bairroFiltro ? ` · ${bairroFiltro}` : ''}{nome ? ` · ${nome}` : ''}</span>
             <h1 className="section-title">{nome ? `${nome}, ` : ''}essas opções{bairroFiltro ? ` no ${bairroFiltro}` : ''} são <em>pensando em você</em></h1>
-            <p className="cliente-intro">Selecionei a dedo o que combina com o que você procura. Curte o que gostou e descarta o que não é bem isso — me ajuda a entender ainda melhor o seu gosto. {salvo && <span className="cliente-salvo">✓ salvo</span>}</p>
+            <p className="cliente-intro">Selecionei a dedo o que combina com o que você procura. Curte o que gostou e descarta o que não é bem isso - me ajuda a entender ainda melhor o seu gosto. {salvo && <span className="cliente-salvo">✓ salvo</span>}</p>
             {cli.nota && (
               <div className="cliente-nota">
                 <span className="cliente-nota-label">💬 O que você procura</span>
@@ -235,7 +235,7 @@ export default function Cliente() {
                 <button type="button" className="cli-email-x" onClick={fecharEmail} aria-label="Fechar">✕</button>
                 <div className="cli-email-txt">
                   <b>Quer que eu te avise por e-mail?</b>
-                  <span>Quando entrar um imóvel novo com o seu perfil{bairroFiltro ? ` no ${bairroFiltro}` : ''}, eu te aviso. É opcional — seu WhatsApp já está comigo.</span>
+                  <span>Quando entrar um imóvel novo com o seu perfil{bairroFiltro ? ` no ${bairroFiltro}` : ''}, eu te aviso. É opcional - seu WhatsApp já está comigo.</span>
                 </div>
                 <div className="cli-email-form">
                   <input type="email" inputMode="email" placeholder="seu@email.com" value={emailVal} onChange={(e) => setEmailVal(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') enviarEmail() }} />
@@ -328,7 +328,7 @@ export default function Cliente() {
 
           {descartados.length > 0 && (
             <details className="cliente-descartados">
-              <summary>Você descartou {descartados.length} {descartados.length === 1 ? 'imóvel' : 'imóveis'} — ver / trazer de volta</summary>
+              <summary>Você descartou {descartados.length} {descartados.length === 1 ? 'imóvel' : 'imóveis'} - ver / trazer de volta</summary>
               <div className="cliente-desc-lista">
                 {descartados.map((im) => (
                   <div className="cliente-desc-item" key={im.codigo}>
@@ -343,7 +343,7 @@ export default function Cliente() {
           <div className="cliente-recado">
             <img src="/vinicius-graton.jpg" alt="Vinícius Graton" loading="lazy" />
             <div>
-              <p>{nome ? `${nome}, cada` : 'Cada'} imóvel desta lista passou pela minha análise de preço, localização e oportunidade — só indico o que, de fato, faz sentido para o seu perfil. Se algum chamou sua atenção, me chame e organizamos a visita. É lá que você vai sentir qual é o certo.</p>
+              <p>{nome ? `${nome}, cada` : 'Cada'} imóvel desta lista passou pela minha análise de preço, localização e oportunidade - só indico o que, de fato, faz sentido para o seu perfil. Se algum chamou sua atenção, me chame e organizamos a visita. É lá que você vai sentir qual é o certo.</p>
               <span className="cliente-recado-assina">Um abraço,<br /><b>Vinícius Graton</b></span>
             </div>
           </div>
@@ -451,7 +451,7 @@ export default function Cliente() {
                       </div>
                       <ul className="cli-modal-pay-items">
                         {mEst.n > 0 && <li>Todos os {mEst.n} imóveis do mesmo tipo no {mIm.bairro}, com preço, área e homogeneização detalhada</li>}
-                        <li>Metodologia NBR 14653 — a mesma que bancos usam para aprovar financiamento</li>
+                        <li>Metodologia NBR 14653 - a mesma que bancos usam para aprovar financiamento</li>
                         <li>PDF em minutos · argumento técnico na hora de negociar o preço</li>
                       </ul>
 

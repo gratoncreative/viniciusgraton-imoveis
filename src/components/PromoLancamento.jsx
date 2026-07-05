@@ -26,7 +26,7 @@ const DEFAULTS = {
 let _promoCache = null // memo entre instâncias — 1 fetch por carregamento da página
 
 const PubTag = () => (
-  <span className="im-pub promo-imovel-pub" title="Publicidade — anúncio">
+  <span className="im-pub promo-imovel-pub" title="Publicidade - anúncio">
     <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 15l7-7 7 7" /></svg>
     Publicidade
   </span>

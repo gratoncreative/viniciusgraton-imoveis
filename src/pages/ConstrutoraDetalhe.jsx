@@ -10,7 +10,7 @@ export default function ConstrutoraDetalhe() {
   const c = getConstrutora(slug)
 
   useSEO({
-    title: c ? `${c.nome} — empreendimentos em Uberlândia` : 'Construtora não encontrada',
+    title: c ? `${c.nome} - empreendimentos em Uberlândia` : 'Construtora não encontrada',
     description: c
       ? `${c.descricao} Veja fotos, plantas, vídeos e detalhes dos lançamentos da ${c.nome} em Uberlândia e fale com o Vinícius para visitar.`
       : 'Construtora não encontrada.',
@@ -112,7 +112,7 @@ export default function ConstrutoraDetalhe() {
 
           <div className="det-trust" style={{ marginTop: 28 }}>
             <IconShield width={20} height={20} />
-            <p><b>Faço a curadoria de cada empreendimento</b> antes de indicar — confiro construtora, documentação, localização e padrão de entrega, pra te apresentar só o que tem qualidade e excelência. Marcas, imagens e materiais são das respectivas construtoras. Valores e disponibilidade são confirmados no atendimento, e eu te acompanho na visita e em toda a negociação.</p>
+            <p><b>Faço a curadoria de cada empreendimento</b> antes de indicar - confiro construtora, documentação, localização e padrão de entrega, pra te apresentar só o que tem qualidade e excelência. Marcas, imagens e materiais são das respectivas construtoras. Valores e disponibilidade são confirmados no atendimento, e eu te acompanho na visita e em toda a negociação.</p>
           </div>
         </div>
       </section>

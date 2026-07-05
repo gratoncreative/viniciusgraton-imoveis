@@ -26,7 +26,7 @@ export default function ShareModal({ im, onClose, onShared }) {
   }, [onClose])
 
   const url = `${window.location.origin}/imovel/${im.codigo}`
-  const resumo = `${im.tipo} no ${im.bairro} — ${formatPreco(im.preco)}`
+  const resumo = `${im.tipo} no ${im.bairro} - ${formatPreco(im.preco)}`
   const textoShare = `Olha esse imóvel que encontrei: ${resumo}. Veja: ${url}`
 
   const compartilharWhats = () => {
@@ -72,7 +72,7 @@ export default function ShareModal({ im, onClose, onShared }) {
     if (!nome.trim() || !fone.trim()) return
     registrarLead({ cod: im.codigo, nome: nome.trim(), fone: fone.trim(), bairro: im.bairro })
     setEnviado(true)
-    const msg = `Olá Vinícius! Sou ${nome.trim()} e tenho interesse no imóvel cód. ${im.codigo} — ${resumo}. Meu WhatsApp é ${fone.trim()}. Pode me passar mais informações?`
+    const msg = `Olá Vinícius! Sou ${nome.trim()} e tenho interesse no imóvel cód. ${im.codigo} - ${resumo}. Meu WhatsApp é ${fone.trim()}. Pode me passar mais informações?`
     window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener')
   }
 
@@ -135,13 +135,13 @@ export default function ShareModal({ im, onClose, onShared }) {
             )}
           </div>
           {legendaDe && (
-            <p className="share-dica-app">Legenda e link copiados — é só <b>colar</b> no seu {legendaDe === 'insta' ? 'story ou post do Instagram' : 'vídeo do TikTok'}. No celular, o botão <b>“Mais opções”</b> também abre o {legendaDe === 'insta' ? 'Instagram' : 'TikTok'} direto.</p>
+            <p className="share-dica-app">Legenda e link copiados - é só <b>colar</b> no seu {legendaDe === 'insta' ? 'story ou post do Instagram' : 'vídeo do TikTok'}. No celular, o botão <b>“Mais opções”</b> também abre o {legendaDe === 'insta' ? 'Instagram' : 'TikTok'} direto.</p>
           )}
 
           {!enviado ? (
             <form className="share-lead" onSubmit={enviarLead}>
               <p className="share-lead-titulo">Quer que eu te ajude com este imóvel?</p>
-              <p className="share-lead-sub">Deixe seu nome e WhatsApp — eu te chamo com todos os detalhes, sem compromisso.</p>
+              <p className="share-lead-sub">Deixe seu nome e WhatsApp - eu te chamo com todos os detalhes, sem compromisso.</p>
               <div className="share-lead-row">
                 <input
                   type="text"

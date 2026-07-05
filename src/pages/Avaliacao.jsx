@@ -40,7 +40,7 @@ export default function Avaliacao() {
           <span className="aviseme-ico" style={{ margin: '0 auto 18px' }}><IconWhats width={28} height={28} /></span>
           <h1 className="section-title">Recebido, {f.nome.trim().split(' ')[0]}!</h1>
           <p className="section-sub" style={{ margin: '16px auto 28px' }}>
-            Vou analisar o seu imóvel e o preço praticado na região e te retorno com uma avaliação realista — sem compromisso. Já abri o WhatsApp pra gente conversar.
+            Vou analisar o seu imóvel e o preço praticado na região e te retorno com uma avaliação realista - sem compromisso. Já abri o WhatsApp pra gente conversar.
           </p>
           <Link className="btn btn-gold" to="/">Voltar ao início <IconArrow /></Link>
         </div>
@@ -56,7 +56,7 @@ export default function Avaliacao() {
             <span className="eyebrow" style={{ justifyContent: 'center' }}>Avaliação gratuita</span>
             <h1 className="section-title">Quanto vale o <em>seu imóvel?</em></h1>
             <p className="section-sub" style={{ marginTop: 14 }}>
-              Preço de menos você perde dinheiro; de mais, o imóvel encalha. Me conta os dados que eu faço uma avaliação realista, com base no mercado de Uberlândia — de graça e sem compromisso.
+              Preço de menos você perde dinheiro; de mais, o imóvel encalha. Me conta os dados que eu faço uma avaliação realista, com base no mercado de Uberlândia - de graça e sem compromisso.
             </p>
           </div>
         </Reveal>
@@ -83,7 +83,7 @@ export default function Avaliacao() {
 
           <div className="det-trust" style={{ margin: '4px 0 0' }}>
             <IconShield width={20} height={20} />
-            <p><b>Avaliação honesta, não chute.</b> Analiso seu imóvel e os preços reais praticados na região para te dar um número que faça o imóvel vender — sem inflar para te agradar nem desvalorizar.</p>
+            <p><b>Avaliação honesta, não chute.</b> Analiso seu imóvel e os preços reais praticados na região para te dar um número que faça o imóvel vender - sem inflar para te agradar nem desvalorizar.</p>
           </div>
 
           <button type="submit" className="btn btn-gold lead-submit"><IconWhats /> Quero minha avaliação grátis <IconArrow /></button>

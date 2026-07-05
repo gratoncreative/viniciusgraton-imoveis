@@ -30,7 +30,7 @@ const normTipo = (t) => {
 
 export default function EstudoAvulso() {
   useSEO({
-    title: 'Avalie qualquer imóvel · Estudo do valor do m² — Uberlândia',
+    title: 'Avalie qualquer imóvel · Estudo do valor do m² - Uberlândia',
     description: 'Descubra se o preço de qualquer imóvel está justo. Preencha os dados (ou de um anúncio de outro site) e receba o estudo do valor do m² pela metodologia NBR 14653, com comparáveis reais do bairro.',
     path: '/avaliar',
   })
@@ -155,7 +155,7 @@ export default function EstudoAvulso() {
           <span className="eyebrow" style={{ justifyContent: 'center' }}>Estudo do valor do m²</span>
           <h1 className="section-title">Esse imóvel <em>vale o que pedem?</em></h1>
           <p className="section-sub" style={{ margin: '14px auto 0', maxWidth: 620 }}>
-            Funciona para <b>qualquer imóvel</b> — mesmo os que não estão no meu site. <b>Cole o link</b> de um anúncio (ZAP, Viva Real, OLX…) que eu leio e preencho tudo sozinho, ou preencha os dados na mão. Comparo com os imóveis reais do bairro pela metodologia <b>NBR 14653</b>.
+            Funciona para <b>qualquer imóvel</b> - mesmo os que não estão no meu site. <b>Cole o link</b> de um anúncio (ZAP, Viva Real, OLX…) que eu leio e preencho tudo sozinho, ou preencha os dados na mão. Comparo com os imóveis reais do bairro pela metodologia <b>NBR 14653</b>.
           </p>
         </div>
 
@@ -207,7 +207,7 @@ export default function EstudoAvulso() {
             Calcular o estudo do m²
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
           </button>
-          <p className="eav-nota">O resultado aparece na hora, com os <b>números exatos</b> e o laudo em PDF — <b>de graça</b>. <Link to="/imoveis">← Voltar aos imóveis</Link></p>
+          <p className="eav-nota">O resultado aparece na hora, com os <b>números exatos</b> e o laudo em PDF - <b>de graça</b>. <Link to="/imoveis">← Voltar aos imóveis</Link></p>
         </div>
       </div>
     </main>

@@ -38,7 +38,7 @@ export default function AviseMe({ contexto = '' }) {
       <div className="aviseme-txt">
         <span className="eyebrow">Avise-me</span>
         <h3>Não achou agora? Eu te aviso quando entrar.</h3>
-        <p>Me diz o que você procura{contexto ? ` em ${contexto}` : ''} e deixe seu WhatsApp. Quando surgir algo com a sua cara, eu te chamo primeiro — sem spam.</p>
+        <p>Me diz o que você procura{contexto ? ` em ${contexto}` : ''} e deixe seu WhatsApp. Quando surgir algo com a sua cara, eu te chamo primeiro - sem spam.</p>
       </div>
       <div className="aviseme-form">
         <div className="aviseme-row">

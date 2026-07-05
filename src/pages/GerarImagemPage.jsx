@@ -29,7 +29,7 @@ function icone(p) {
 
 export default function GerarImagemPage() {
   useSEO({
-    title: 'Gerar Imagem com IA para Blog e Redes — Imóveis Uberlândia',
+    title: 'Gerar Imagem com IA para Blog e Redes - Imóveis Uberlândia',
     description: 'Crie capas de artigo, posts de bairro e peças de lançamento com IA. Imagens ilustrativas geradas na hora, no padrão da marca. Ferramenta de Vinícius Graton, consultor da Rotina Imobiliária.',
     path: '/ferramentas/gerar-imagem',
     noindex: true,
@@ -80,7 +80,7 @@ export default function GerarImagemPage() {
           <div className="pdfjpg-header-icon">{icone(<><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M21 15l-5-5L5 21" /></>)}</div>
           <div>
             <h1 className="pdfjpg-titulo">Gere imagens <span className="pdfjpg-titulo-hl">para seus posts</span></h1>
-            <p className="pdfjpg-sub">Capas de artigo, posts de bairro e peças de lançamento criadas por IA, no padrão da marca. São imagens <strong>ilustrativas</strong> — não são fotos reais do imóvel ou do bairro.</p>
+            <p className="pdfjpg-sub">Capas de artigo, posts de bairro e peças de lançamento criadas por IA, no padrão da marca. São imagens <strong>ilustrativas</strong> - não são fotos reais do imóvel ou do bairro.</p>
           </div>
         </div>
 
@@ -112,7 +112,7 @@ export default function GerarImagemPage() {
             <button className="btn btn-gold gi-gerar" onClick={gerar} disabled={estado === 'gerando'}>
               {estado === 'gerando' ? 'Gerando…' : '✨ Gerar imagem'}
             </button>
-            <p className="pdfjpg-progress-note" style={{ margin: 0 }}>A geração leva alguns segundos. A imagem sai quadrada, sem texto (a IA não escreve bem — adicione textos depois no Canva).</p>
+            <p className="pdfjpg-progress-note" style={{ margin: 0 }}>A geração leva alguns segundos. A imagem sai quadrada, sem texto (a IA não escreve bem - adicione textos depois no Canva).</p>
           </div>
 
           {estado === 'gerando' && (
@@ -133,7 +133,7 @@ export default function GerarImagemPage() {
 
         <div className="pdfjpg-privacy">
           {icone(<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />)}
-          Imagens geradas por IA (FLUX no Cloudflare). Use como arte ilustrativa de apoio — nunca como foto real de um imóvel ou bairro específico.
+          Imagens geradas por IA (FLUX no Cloudflare). Use como arte ilustrativa de apoio - nunca como foto real de um imóvel ou bairro específico.
         </div>
       </div>
     </main>

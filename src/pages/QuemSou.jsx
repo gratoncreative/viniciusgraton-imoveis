@@ -49,7 +49,7 @@ const DIFS = [
   {
     ico: <IcoLaptop />,
     titulo: 'Plataforma digital própria',
-    texto: 'Criei um portal com 12 ferramentas gratuitas para o comprador: simulador de financiamento, calculadora de ITBI, análise de mercado e mais. Informação que a maioria guarda pra si, eu coloco na sua mão — de graça.',
+    texto: 'Criei um portal com 12 ferramentas gratuitas para o comprador: simulador de financiamento, calculadora de ITBI, análise de mercado e mais. Informação que a maioria guarda pra si, eu coloco na sua mão - de graça.',
   },
   {
     ico: <IcoUser />,
@@ -64,7 +64,7 @@ const DIFS = [
   {
     ico: <IconEye width={24} height={24} />,
     titulo: 'Transparência sobre riscos',
-    texto: 'Não escondo problemas dos imóveis. Se tem risco, você fica sabendo antes de decidir — e antes do contrato. Essa é a diferença entre uma compra segura e um arrependimento caro.',
+    texto: 'Não escondo problemas dos imóveis. Se tem risco, você fica sabendo antes de decidir - e antes do contrato. Essa é a diferença entre uma compra segura e um arrependimento caro.',
   },
 ]
 
@@ -75,7 +75,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Você atende qual região de Uberlândia?',
-    a: 'Atendo todos os bairros de Uberlândia e cidades da região, sem restrição de área. Do setor central ao Santa Mônica, do Tibery ao Morada do Sol — onde o imóvel certo estiver, eu vou.',
+    a: 'Atendo todos os bairros de Uberlândia e cidades da região, sem restrição de área. Do setor central ao Santa Mônica, do Tibery ao Morada do Sol - onde o imóvel certo estiver, eu vou.',
   },
   {
     q: 'Posso usar o FGTS na compra?',
@@ -87,7 +87,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'O que acontece depois que eu entro em contato?',
-    a: 'A gente tem uma conversa rápida pelo WhatsApp onde entendo o que você procura. A partir daí, faço a curadoria e te apresento as opções que realmente fazem sentido — sem te encher de imóvel aleatório.',
+    a: 'A gente tem uma conversa rápida pelo WhatsApp onde entendo o que você procura. A partir daí, faço a curadoria e te apresento as opções que realmente fazem sentido - sem te encher de imóvel aleatório.',
   },
 ]
 
@@ -117,7 +117,7 @@ function Historia() {
             <span className="eyebrow">Por que imóveis</span>
             <h2 className="section-title">Uma escolha feita <em>com propósito</em></h2>
             <p>
-              Comprar um imóvel é uma das maiores decisões da vida — financeira, familiar,
+              Comprar um imóvel é uma das maiores decisões da vida - financeira, familiar,
               emocional. E ao mesmo tempo, é uma das mais opacas: linguagem técnica, burocracia,
               pressão de prazo, medo de pagar caro demais ou de comprar errado.
             </p>
@@ -125,7 +125,7 @@ function Historia() {
               Escolhi esse mercado exatamente por isso. Quero ser o tipo de consultor que eu
               gostaria de ter do meu lado numa compra assim: alguém que explica tudo com clareza,
               aponta os riscos antes do contrato, e que está genuinamente comprometido com a
-              melhor decisão para você — não com a comissão mais rápida.
+              melhor decisão para você - não com a comissão mais rápida.
             </p>
             <p>
               Trabalho pela <strong>Rotina Imobiliária</strong>, referência em Uberlândia há
@@ -138,7 +138,7 @@ function Historia() {
           <div className="qs-historia-box">
             <blockquote>
               "A diferença entre uma boa compra e um arrependimento caro é simples: ter ao
-              seu lado alguém que te diz a verdade — antes da assinatura, não depois."
+              seu lado alguém que te diz a verdade - antes da assinatura, não depois."
             </blockquote>
             <div className="qs-historia-ass">
               <img src="/favicon.svg" alt="" aria-hidden="true" className="qs-historia-logo" />
@@ -274,9 +274,9 @@ function CTAFinal() {
 
 export default function QuemSou() {
   useSEO({
-    title: 'Sobre mim — consultor de imóveis em Uberlândia | Vinícius Graton',
+    title: 'Sobre mim - consultor de imóveis em Uberlândia | Vinícius Graton',
     description:
-      'Vinícius Graton, consultor de imóveis em Uberlândia. Curadoria personalizada, transparência sobre riscos, documentação conferida e atendimento direto — do primeiro contato à chave na sua mão.',
+      'Vinícius Graton, consultor de imóveis em Uberlândia. Curadoria personalizada, transparência sobre riscos, documentação conferida e atendimento direto - do primeiro contato à chave na sua mão.',
     path: '/sobre',
   })
   return (

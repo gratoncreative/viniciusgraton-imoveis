@@ -21,7 +21,7 @@ export async function onRequestPost({ env, request }) {
   const sep = backBase.includes('?') ? '&' : '?'
   try {
     const pref = {
-      items: [{ title: `Laudo técnico do valor do m² — imóvel ${codigo}`, quantity: 1, unit_price: PRECO, currency_id: 'BRL' }],
+      items: [{ title: `Laudo técnico do valor do m² - imóvel ${codigo}`, quantity: 1, unit_price: PRECO, currency_id: 'BRL' }],
       external_reference: `laudo|${codigo}`,
       back_urls: {
         success: `${backBase}${sep}laudo=1`,

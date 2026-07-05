@@ -41,7 +41,7 @@ function SeloPublicidade({ im }) {
       to="/impulsionar"
       className="im-pub"
       onClick={(e) => e.stopPropagation()}
-      title="Publicidade — anúncio impulsionado (destaque pago). Você também pode impulsionar o seu anúncio."
+      title="Publicidade - anúncio impulsionado (destaque pago). Você também pode impulsionar o seu anúncio."
     >
       <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 15l7-7 7 7" /></svg>
       Publicidade
@@ -106,7 +106,7 @@ export default function CardImovel({ im, variante, overlayLabel }) {
             <div className="im-linha-tit">
               <span className="im-linha-tipo">{im.tipo}{im.suites > 0 ? ` · ${im.suites} ${plural(im.suites, 'suíte', 'suítes')}` : ''}</span>
               <h3 className="im-bairro">{im.bairro}</h3>
-              <p className="im-local">{im.cidade} — {im.uf} · Cód. {im.codigo}</p>
+              <p className="im-local">{im.cidade} - {im.uf} · Cód. {im.codigo}</p>
             </div>
             <Engajamento im={im} variante="detalhe" />
           </div>
@@ -157,7 +157,7 @@ export default function CardImovel({ im, variante, overlayLabel }) {
       </div>
       <div className="card-body im-body">
         <h3 className="im-bairro">{im.bairro}</h3>
-        <p className="im-local">{im.cidade} — {im.uf} · Cód. {im.codigo}</p>
+        <p className="im-local">{im.cidade} - {im.uf} · Cód. {im.codigo}</p>
         <p className="im-desc">{truncar(resumoImovel(im), 150)}</p>
         {im.baixouEm && (
           <span className="im-baixou-em im-baixou-em--card">

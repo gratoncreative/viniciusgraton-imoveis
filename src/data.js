@@ -374,7 +374,7 @@ export function estudoM2ACM({ tipo, bairro, area, quartos } = {}, base) {
       campoMin: Math.round(refIPD * 0.92), campoMax: Math.round(refIPD * 1.08), ic80: null, vendaEst: Math.round(refIPD * FATOR_OFERTA),
       grauFund: null, grauPrec: null, comparaveis: [], refFonte: refRow && refRow.fonte, refRef: refRow && refRow.ref,
       parametros: { vagaValor: VAGA_VALOR, fatorOferta: FATOR_OFERTA, expArea: EXP_AREA },
-      fatores: ['Poucos comparáveis no recorte — usamos o índice de mercado público do bairro como referência.'],
+      fatores: ['Poucos comparáveis no recorte - usamos o índice de mercado público do bairro como referência.'],
     }
   }
 
@@ -415,10 +415,10 @@ export function estudoM2ACM({ tipo, bairro, area, quartos } = {}, base) {
     refIPD, refFonte: refRow && refRow.fonte, refRef: refRow && refRow.ref,
     parametros: { vagaValor: VAGA_VALOR, fatorOferta: FATOR_OFERTA, expArea: EXP_AREA },
     fatores: [
-      `Só imóveis do mesmo tipo (${tipo})${qb ? `, ${qb === '4' ? '4+' : qb} quartos` : ''} — ${escopo.startsWith('bairro') ? bairro : 'cidade (sem amostra no bairro)'}`,
+      `Só imóveis do mesmo tipo (${tipo})${qb ? `, ${qb === '4' ? '4+' : qb} quartos` : ''} - ${escopo.startsWith('bairro') ? bairro : 'cidade (sem amostra no bairro)'}`,
       !ehTer ? `Vaga descontada (~${formatPreco(VAGA_VALOR)} cada) antes do m²` : 'Sem fator vaga (terreno)',
-      `Fator área (economia de escala) — heurística do app, base ${Math.round(A)} m²`,
-      `Saneamento robusto (Tukey 1,5·IQR + Chauvenet) — ${nDesc} imóvel(is) fora do padrão descartado(s)`,
+      `Fator área (economia de escala) - heurística do app, base ${Math.round(A)} m²`,
+      `Saneamento robusto (Tukey 1,5·IQR + Chauvenet) - ${nDesc} imóvel(is) fora do padrão descartado(s)`,
     ],
   }
 }
@@ -454,8 +454,8 @@ export const avaliarMatch = (im, p) => {
   }
   if (p.precoMin > 0 && im.preco < p.precoMin * 0.9) return { ok: false, score: 0, motivos: [] }
   // Quartos e área: filtro FORTE (campos confiáveis/preenchidos no feed).
-  if (p.quartosMin > 0) { if ((im.quartos || 0) < p.quartosMin) return { ok: false, score: 0, motivos: [] }; motivos.push(`${im.quartos} quartos — atende o que você precisa`); score += 12 }
-  if (p.areaMin > 0) { if ((im.area || 0) < p.areaMin) return { ok: false, score: 0, motivos: [] }; motivos.push(`${im.area} m² — bom espaço`); score += 8 }
+  if (p.quartosMin > 0) { if ((im.quartos || 0) < p.quartosMin) return { ok: false, score: 0, motivos: [] }; motivos.push(`${im.quartos} quartos - atende o que você precisa`); score += 12 }
+  if (p.areaMin > 0) { if ((im.area || 0) < p.areaMin) return { ok: false, score: 0, motivos: [] }; motivos.push(`${im.area} m² - bom espaço`); score += 8 }
   // Suítes e vagas: a Rotina muitas vezes NÃO preenche (0 = "não informado").
   // Então só excluímos quando o imóvel TEM o dado e ele é menor que o pedido — senão, mantém (benefício da dúvida).
   if (p.suitesMin > 0) { if (im.suites > 0 && im.suites < p.suitesMin) return { ok: false, score: 0, motivos: [] }; if ((im.suites || 0) >= p.suitesMin) { motivos.push(`${im.suites} suíte${im.suites > 1 ? 's' : ''}`); score += 8 } }
@@ -758,7 +758,7 @@ export const COMPROMISSO = [
   {
     icon: 'whats',
     titulo: 'Atendimento direto comigo',
-    texto: 'Do primeiro contato à entrega das chaves, quem cuida de você sou eu — sem call center.',
+    texto: 'Do primeiro contato à entrega das chaves, quem cuida de você sou eu - sem call center.',
   },
 ]
 

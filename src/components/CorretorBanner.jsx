@@ -20,7 +20,7 @@ export default function CorretorBanner() {
               <span className="eyebrow corrbn-eyebrow">Área exclusiva para corretores</span>
               <h2 className="section-title corrbn-h2">Ferramentas para <em>corretores</em></h2>
               <p className="section-sub corrbn-sub">
-                Tudo que você precisa para captar mais imóveis, divulgar com qualidade e fechar negócios mais rápido — num lugar só.
+                Tudo que você precisa para captar mais imóveis, divulgar com qualidade e fechar negócios mais rápido - num lugar só.
               </p>
               <ul className="corrbn-lista">
                 {FEATS.map((f) => <li key={f}>{f}</li>)}

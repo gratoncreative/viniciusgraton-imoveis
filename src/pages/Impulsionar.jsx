@@ -8,12 +8,12 @@ import { IconWhats, IconArrow, IconShield } from '../components/icons'
 const PLANOS = [
   { id: 'p7', nome: 'Destaque 7 dias', preco: 'R$ 29,90', desc: 'Seu anúncio sobe nas listagens e ganha selo de destaque por 7 dias.' },
   { id: 'p15', nome: 'Destaque 15 dias', preco: 'R$ 49,90', desc: '15 dias com prioridade nas buscas. O mais escolhido.', popular: true },
-  { id: 'p30', nome: 'Super Destaque 30 dias', preco: 'R$ 89,90', desc: '30 dias no topo — visibilidade máxima pro seu imóvel.' },
+  { id: 'p30', nome: 'Super Destaque 30 dias', preco: 'R$ 89,90', desc: '30 dias no topo - visibilidade máxima pro seu imóvel.' },
 ]
 
 export default function Impulsionar() {
   const [params] = useSearchParams()
-  useSEO({ title: 'Impulsionar anúncio — destaque seu imóvel', description: 'Coloque seu imóvel em destaque no site e venda mais rápido. Pagamento único via PIX ou cartão.', path: '/impulsionar' })
+  useSEO({ title: 'Impulsionar anúncio - destaque seu imóvel', description: 'Coloque seu imóvel em destaque no site e venda mais rápido. Pagamento único via PIX ou cartão.', path: '/impulsionar' })
   const status = params.get('status')
   const [codigo, setCodigo] = useState(params.get('cod') || '')
   const [plano, setPlano] = useState('p15')
@@ -36,7 +36,7 @@ export default function Impulsionar() {
   }
 
   const planoSel = PLANOS.find((p) => p.id === plano)
-  const waMsg = `Olá Vinícius! Quero IMPULSIONAR o anúncio do imóvel ${codigo ? `(cód. ${codigo.trim()}) ` : ''}— plano ${planoSel?.nome || ''}. Como faço o pagamento?`
+  const waMsg = `Olá Vinícius! Quero IMPULSIONAR o anúncio do imóvel ${codigo ? `(cód. ${codigo.trim()}) ` : ''}- plano ${planoSel?.nome || ''}. Como faço o pagamento?`
   const imovelPreview = useMemo(() => getImovel(codigo.trim()), [codigo])
 
   if (status === 'sucesso') {
@@ -60,13 +60,13 @@ export default function Impulsionar() {
             <span className="eyebrow" style={{ justifyContent: 'center' }}>Impulsionar anúncio</span>
             <h1 className="section-title">Coloque seu imóvel <em>em destaque</em></h1>
             <p className="section-sub" style={{ marginTop: 14 }}>
-              Anúncio em destaque aparece <b>primeiro</b> nas buscas e ganha mais visualizações — vende mais rápido. Pagamento único via <b>PIX ou cartão</b>, sem mensalidade.
+              Anúncio em destaque aparece <b>primeiro</b> nas buscas e ganha mais visualizações - vende mais rápido. Pagamento único via <b>PIX ou cartão</b>, sem mensalidade.
             </p>
           </div>
         </Reveal>
 
         {(status === 'pendente' || status === 'falha') && (
-          <p className="anunciar-erro" style={{ textAlign: 'center' }}>{status === 'pendente' ? 'Seu pagamento está em análise — assim que aprovar, o destaque entra automaticamente.' : 'O pagamento não foi concluído. Você pode tentar de novo abaixo.'}</p>
+          <p className="anunciar-erro" style={{ textAlign: 'center' }}>{status === 'pendente' ? 'Seu pagamento está em análise - assim que aprovar, o destaque entra automaticamente.' : 'O pagamento não foi concluído. Você pode tentar de novo abaixo.'}</p>
         )}
 
         <div className="imp-planos">
@@ -104,7 +104,7 @@ export default function Impulsionar() {
             </>
           ) : (
             <>
-              <button type="submit" className="btn btn-gold imp-btn" disabled={carregando}>{carregando ? 'Abrindo pagamento…' : `Pagar e destacar — ${planoSel?.preco}`}</button>
+              <button type="submit" className="btn btn-gold imp-btn" disabled={carregando}>{carregando ? 'Abrindo pagamento…' : `Pagar e destacar - ${planoSel?.preco}`}</button>
               <p className="imp-nota"><IconShield width={15} height={15} /> Pagamento seguro pelo Mercado Pago (PIX ou cartão). O destaque entra automaticamente após a confirmação.</p>
             </>
           )}

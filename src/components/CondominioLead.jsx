@@ -26,7 +26,7 @@ export default function CondominioLead({ condominio = '' }) {
     ].filter(Boolean)
     const perfilTxt = partes.length ? partes.join(', ') : 'meu perfil'
     const onde = condominio ? `no ${condominio}` : 'em um condomínio fechado de Uberlândia'
-    registrarLead({ cod: `condominio:${condominio || 'geral'}`, nome: f.nome.trim(), fone: f.fone.trim(), bairro: `${condominio || 'condomínio'} — ${perfilTxt}` })
+    registrarLead({ cod: `condominio:${condominio || 'geral'}`, nome: f.nome.trim(), fone: f.fone.trim(), bairro: `${condominio || 'condomínio'} · ${perfilTxt}` })
     setEnviado(true)
     const msg = `Olá Vinícius! Sou ${f.nome.trim()} e quero morar ${onde}. Procuro: ${perfilTxt}. Pode fazer a curadoria e o levantamento dos terrenos/imóveis disponíveis pra mim? Meu WhatsApp é ${f.fone.trim()}.`
     window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener')
@@ -49,7 +49,7 @@ export default function CondominioLead({ condominio = '' }) {
       <div className="aviseme-txt">
         <span className="eyebrow">Quero morar aqui</span>
         <h3>{condominio ? `Tenho interesse no ${condominio}` : 'Quer morar em condomínio fechado?'}</h3>
-        <p>Me conta o seu perfil que eu faço a curadoria e levanto os terrenos e imóveis disponíveis {condominio ? `no ${condominio}` : 'no condomínio ideal pra você'} — sem custo e sem compromisso.</p>
+        <p>Me conta o seu perfil que eu faço a curadoria e levanto os terrenos e imóveis disponíveis {condominio ? `no ${condominio}` : 'no condomínio ideal pra você'} - sem custo e sem compromisso.</p>
       </div>
       <div className="aviseme-form">
         <div className="aviseme-row">

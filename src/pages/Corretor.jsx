@@ -46,16 +46,16 @@ const Ico = ({ name, size = 22 }) => (
 
 // ─── ferramentas ────────────────────────────────────────────────────────────
 const TOOLS = [
-  { id: 'rotina',   nome: 'Abordagem por código',    desc: 'Mensagem de 1º contato com gatilhos e benefícios da região.',                 icon: 'chat',    dor: 'Cada hora sem resposta é um lead que o concorrente está capturando. Com o código de abordagem, você envia em 30 segundos uma mensagem personalizada para o bairro e o perfil do cliente — enquanto ele ainda está com o imóvel na cabeça.' },
-  { id: 'legenda',  nome: 'Legenda para portais',    desc: 'Gera descrição profissional para OLX, ZAP e VivaReal em segundos.',           icon: 'doc',     dor: 'Você gasta quanto tempo descrevendo o mesmo imóvel em três portais? Aqui você gera uma legenda completa e profissional em segundos — e adapta para cada portal sem digitar nada de novo.' },
-  { id: 'objecoes', nome: 'Script de objeções',      desc: 'Respostas prontas para as objeções mais comuns no WhatsApp.',                 icon: 'msg',     dor: '"Vou pensar." "Tá caro." "Não é a hora." Essas frases travam a maioria dos corretores. O script dá a você a resposta certa, no tom certo, para cada objeção — sem parecer forçado e sem perder o cliente.' },
-  { id: 'captacao', nome: 'Checklist de captação',   desc: 'Lista completa do que verificar na captação de um novo imóvel.',              icon: 'list',    dor: 'Já perdeu uma captação porque chegou sem as perguntas certas ou esqueceu de verificar a documentação? O checklist garante que você não deixa nenhum detalhe de lado — e demonstra profissionalismo desde a primeira visita.' },
-  { id: 'post',     nome: 'Estúdio de publicidade',  desc: 'Posts para Story e Feed com 6 estilos de design, em lote.',                  icon: 'megafone', dor: 'Fazer um post profissional para Instagram leva horas se feito manualmente. A ferramenta gera posts para Story e Feed em 6 estilos diferentes, em lote, em menos de 1 minuto — você fica ativo nas redes sem abrir o Canva.' },
-  { id: 'roteiro',  nome: 'Roteiro de vídeo',        desc: 'Gera roteiro completo para gravar o vídeo do imóvel de forma profissional.', icon: 'video',   dor: 'Vídeo amador espanta comprador. Um roteiro profissional guia você pelos cômodos na ordem certa, destaca os pontos fortes do imóvel e termina com um CTA que converte — sem improviso, sem editar depois.' },
-  { id: 'marca',    nome: 'Remover marcas das fotos', desc: 'Remove logotipos e marcas com IA, direto no navegador.',                    icon: 'varinha', dor: 'Recebeu uma boa foto do imóvel que veio com o logo da imobiliária concorrente? Com IA, a marca sai em segundos — foto limpa, pronta para usar nos seus anúncios sem precisar tirar foto nova.' },
-  { id: 'comissao', nome: 'Calculadora de comissão', desc: 'Comissão, repasse e líquido de uma venda.',                                  icon: 'percent', dor: 'Saber exatamente quanto você vai receber antes de fechar muda a negociação. Calcule comissão total, repasse para a imobiliária e seu líquido em segundos — sem improvisação na hora de assinar.' },
-  { id: 'acm',      nome: 'Análise de mercado (ACM)', desc: 'Faixa de referência da área pelo m² do bairro — não avalia a edificação.',       icon: 'chart',   dor: 'Proprietário acha que o imóvel vale mais do que o mercado paga? Com a ACM, você abre a conversa com a referência do m² real do bairro — dado concreto, com fonte. A edificação (acabamento, conservação) entra na avaliação presencial.' },
-  { id: 'agenda',   nome: 'Planner de visitas',      desc: 'Organize sua agenda de visitas do dia com horários e observações.',           icon: 'clock',   dor: 'Confusão de horário é uma das maiores causas de cancelamento de visita. O planner organiza seu dia com horários, endereços e observações de cada cliente — você vai a cada visita preparado e no horário.' },
+  { id: 'rotina',   nome: 'Abordagem por código',    desc: 'Mensagem de 1º contato com gatilhos e benefícios da região.',                 icon: 'chat',    dor: 'Cada hora sem resposta é um lead que o concorrente está capturando. Com o código de abordagem, você envia em 30 segundos uma mensagem personalizada para o bairro e o perfil do cliente - enquanto ele ainda está com o imóvel na cabeça.' },
+  { id: 'legenda',  nome: 'Legenda para portais',    desc: 'Gera descrição profissional para OLX, ZAP e VivaReal em segundos.',           icon: 'doc',     dor: 'Você gasta quanto tempo descrevendo o mesmo imóvel em três portais? Aqui você gera uma legenda completa e profissional em segundos - e adapta para cada portal sem digitar nada de novo.' },
+  { id: 'objecoes', nome: 'Script de objeções',      desc: 'Respostas prontas para as objeções mais comuns no WhatsApp.',                 icon: 'msg',     dor: '"Vou pensar." "Tá caro." "Não é a hora." Essas frases travam a maioria dos corretores. O script dá a você a resposta certa, no tom certo, para cada objeção - sem parecer forçado e sem perder o cliente.' },
+  { id: 'captacao', nome: 'Checklist de captação',   desc: 'Lista completa do que verificar na captação de um novo imóvel.',              icon: 'list',    dor: 'Já perdeu uma captação porque chegou sem as perguntas certas ou esqueceu de verificar a documentação? O checklist garante que você não deixa nenhum detalhe de lado - e demonstra profissionalismo desde a primeira visita.' },
+  { id: 'post',     nome: 'Estúdio de publicidade',  desc: 'Posts para Story e Feed com 6 estilos de design, em lote.',                  icon: 'megafone', dor: 'Fazer um post profissional para Instagram leva horas se feito manualmente. A ferramenta gera posts para Story e Feed em 6 estilos diferentes, em lote, em menos de 1 minuto - você fica ativo nas redes sem abrir o Canva.' },
+  { id: 'roteiro',  nome: 'Roteiro de vídeo',        desc: 'Gera roteiro completo para gravar o vídeo do imóvel de forma profissional.', icon: 'video',   dor: 'Vídeo amador espanta comprador. Um roteiro profissional guia você pelos cômodos na ordem certa, destaca os pontos fortes do imóvel e termina com um CTA que converte - sem improviso, sem editar depois.' },
+  { id: 'marca',    nome: 'Remover marcas das fotos', desc: 'Remove logotipos e marcas com IA, direto no navegador.',                    icon: 'varinha', dor: 'Recebeu uma boa foto do imóvel que veio com o logo da imobiliária concorrente? Com IA, a marca sai em segundos - foto limpa, pronta para usar nos seus anúncios sem precisar tirar foto nova.' },
+  { id: 'comissao', nome: 'Calculadora de comissão', desc: 'Comissão, repasse e líquido de uma venda.',                                  icon: 'percent', dor: 'Saber exatamente quanto você vai receber antes de fechar muda a negociação. Calcule comissão total, repasse para a imobiliária e seu líquido em segundos - sem improvisação na hora de assinar.' },
+  { id: 'acm',      nome: 'Análise de mercado (ACM)', desc: 'Faixa de referência da área pelo m² do bairro - não avalia a edificação.',       icon: 'chart',   dor: 'Proprietário acha que o imóvel vale mais do que o mercado paga? Com a ACM, você abre a conversa com a referência do m² real do bairro - dado concreto, com fonte. A edificação (acabamento, conservação) entra na avaliação presencial.' },
+  { id: 'agenda',   nome: 'Planner de visitas',      desc: 'Organize sua agenda de visitas do dia com horários e observações.',           icon: 'clock',   dor: 'Confusão de horário é uma das maiores causas de cancelamento de visita. O planner organiza seu dia com horários, endereços e observações de cada cliente - você vai a cada visita preparado e no horário.' },
 ]
 const ATALHOS = [
   { to: '/ferramentas/transcrever',  nome: 'Transcrever vídeo/áudio', desc: 'Tour ou áudio → texto, legenda e descrição.',          icon: 'doc'     },
@@ -113,7 +113,7 @@ function LegendaPortais() {
         ...(im.vagas && { vagas: String(im.vagas) }),
         ...(im.amenidades?.length && { diferenciais: im.amenidades.join('\n') }),
       }))
-      setCodMsg(`✓ Imóvel ${im.codigo} — ${im.tipo} no ${im.bairro}. Edite se precisar.`)
+      setCodMsg(`✓ Imóvel ${im.codigo} - ${im.tipo} no ${im.bairro}. Edite se precisar.`)
     } catch { setCodMsg('⚠ Falha de conexão.') }
     setBuscandoCod(false)
   }, [codImovel])
@@ -121,12 +121,12 @@ function LegendaPortais() {
   const gerarEstatico = useCallback(() => {
     const { tipo, quartos, suites, vagas, area, bairro, preco, diferenciais, disponivel } = f
     const linhas = []
-    linhas.push(`🏠 ${tipo}${bairro ? ' no ' + bairro : ''} — oportunidade imperdível!`)
+    linhas.push(`🏠 ${tipo}${bairro ? ' no ' + bairro : ''} - oportunidade imperdível!`)
     linhas.push('')
     if (quartos) linhas.push(`🛏 ${quartos} quarto${quartos > 1 ? 's' : ''}${suites ? ` (${suites} suíte${suites > 1 ? 's' : ''})` : ''}`)
     if (vagas) linhas.push(`🚗 ${vagas} vaga${vagas > 1 ? 's' : ''} de garagem`)
     if (area) linhas.push(`📐 ${area} m² de área`)
-    if (bairro) linhas.push(`📍 ${bairro} — Uberlândia/MG`)
+    if (bairro) linhas.push(`📍 ${bairro} - Uberlândia/MG`)
     if (preco) linhas.push(`💰 R$ ${preco}`)
     if (diferenciais) {
       linhas.push('')
@@ -163,7 +163,7 @@ function LegendaPortais() {
   return (
     <div className="corr-ferr">
       <div className="corr-ferr-cod">
-        <span className="corr-ferr-cod-label">Código do imóvel <em>(opcional — preenche automaticamente)</em></span>
+        <span className="corr-ferr-cod-label">Código do imóvel <em>(opcional - preenche automaticamente)</em></span>
         <div className="corr-ferr-cod-row">
           <input value={codImovel} onChange={e => setCodImovel(e.target.value)} onKeyDown={e => e.key === 'Enter' && buscarCod()} placeholder="Ex: 1601" inputMode="numeric" />
           <button type="button" className="btn btn-ghost" onClick={buscarCod} disabled={buscandoCod}>{buscandoCod ? 'Buscando…' : 'Buscar'}</button>
@@ -235,11 +235,11 @@ function ScriptObjecoes() {
     },
     {
       objecao: '"Vou pensar e te dou um retorno."',
-      resposta: 'Claro, sem pressão! Me ajuda só a entender o que travou — é o valor, o bairro, a parte do financiamento ou outra coisa? Pergunto porque às vezes é uma dúvida que resolve em 5 minutos e não precisa esperar.',
+      resposta: 'Claro, sem pressão! Me ajuda só a entender o que travou - é o valor, o bairro, a parte do financiamento ou outra coisa? Pergunto porque às vezes é uma dúvida que resolve em 5 minutos e não precisa esperar.',
     },
     {
       objecao: '"Não fui aprovado no financiamento."',
-      resposta: 'Isso é mais comum do que parece e quase sempre tem solução. Me conta o motivo que te informaram — renda, score ou restrição? A gente trabalha com vários bancos e dependendo do caso tem caminho alternativo.',
+      resposta: 'Isso é mais comum do que parece e quase sempre tem solução. Me conta o motivo que te informaram - renda, score ou restrição? A gente trabalha com vários bancos e dependendo do caso tem caminho alternativo.',
     },
     {
       objecao: '"Prefiro alugar do que comprar agora."',
@@ -247,7 +247,7 @@ function ScriptObjecoes() {
     },
     {
       objecao: '"Você é novo, não tem experiência."',
-      resposta: 'Verdade, estou em formação — e isso significa que você tem atenção total de alguém que quer mostrar resultado. E tenho o suporte completo de uma equipe com mais de 30 anos no mercado de Uberlândia. Melhor dos dois mundos.',
+      resposta: 'Verdade, estou em formação - e isso significa que você tem atenção total de alguém que quer mostrar resultado. E tenho o suporte completo de uma equipe com mais de 30 anos no mercado de Uberlândia. Melhor dos dois mundos.',
     },
     {
       objecao: '"Vou ver com outro corretor também."',
@@ -255,18 +255,18 @@ function ScriptObjecoes() {
     },
     {
       objecao: '"Não tenho entrada."',
-      resposta: 'Vamos ver o que você tem disponível de FGTS — muita gente tem mais do que imagina parado lá. E dependendo do imóvel, o Minha Casa Minha Vida financia com entrada reduzida. Quanto você tem no FGTS aproximadamente?',
+      resposta: 'Vamos ver o que você tem disponível de FGTS - muita gente tem mais do que imagina parado lá. E dependendo do imóvel, o Minha Casa Minha Vida financia com entrada reduzida. Quanto você tem no FGTS aproximadamente?',
     },
     {
       objecao: '"O imóvel não tem o que preciso."',
-      resposta: 'Me conta o que tava faltando — um cômodo, localização, tamanho? Com isso na mão consigo filtrar o catálogo e te mandar 3 opções que batem com exatamente o que você quer. Tem algum inegociável pra você?',
+      resposta: 'Me conta o que tava faltando - um cômodo, localização, tamanho? Com isso na mão consigo filtrar o catálogo e te mandar 3 opções que batem com exatamente o que você quer. Tem algum inegociável pra você?',
     },
   ]
 
   return (
     <div className="corr-ferr">
       <div style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: 12, padding: '16px', marginBottom: 20 }}>
-        <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-mute)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>🤖 IA — responda qualquer objeção</div>
+        <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-mute)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>🤖 IA - responda qualquer objeção</div>
         <textarea
           rows={3}
           value={objecaoCustom}
@@ -363,7 +363,7 @@ function RoteirVideo() {
   const gerarEstatico = useCallback(() => {
     const { tipo, quartos, area, bairro, destaque, publico } = f
     const desc = `${tipo}${quartos ? ' com ' + quartos + ' quartos' : ''}${area ? ' de ' + area + ' m²' : ''}${bairro ? ' no ' + bairro : ''}`
-    setRoteiro(`🎬 ROTEIRO DE VÍDEO — ${desc.toUpperCase()}
+    setRoteiro(`🎬 ROTEIRO DE VÍDEO - ${desc.toUpperCase()}
 
 ▶ ABERTURA (0:00–0:10)
 Câmera na fachada. Fala:
@@ -371,19 +371,19 @@ Câmera na fachada. Fala:
 
 ▶ ENTRADA (0:10–0:25)
 Mostrar corredor/hall de entrada.
-"Olha que entrada bem pensada — já dá pra sentir a qualidade do imóvel desde aqui."
+"Olha que entrada bem pensada - já dá pra sentir a qualidade do imóvel desde aqui."
 
 ▶ SALA (0:25–0:50)
 Panorâmica lenta da sala.
-"Aqui é a sala de estar${area ? ' — ' + area + ' m² no total' : ''}. Repara no espaço, na iluminação natural... perfeito para ${publico === 'Família' ? 'reunir a família' : 'receber clientes ou alugar'}."
+"Aqui é a sala de estar${area ? ' - ' + area + ' m² no total' : ''}. Repara no espaço, na iluminação natural... perfeito para ${publico === 'Família' ? 'reunir a família' : 'receber clientes ou alugar'}."
 
 ▶ COZINHA (0:50–1:10)
 Câmera passando pela cozinha.
-"A cozinha é bem funcional — [descreva o que viu: armários, bancada, área de serviço integrada etc.]."
+"A cozinha é bem funcional - [descreva o que viu: armários, bancada, área de serviço integrada etc.]."
 
 ▶ QUARTOS (1:10–1:45)
 ${quartos ? 'Mostrar cada quarto.' : 'Mostrar os ambientes.'}
-"${quartos ? `São ${quartos} quartos — ` : ''}[comentar sobre tamanho, armários embutidos, ventilação]."
+"${quartos ? `São ${quartos} quartos - ` : ''}[comentar sobre tamanho, armários embutidos, ventilação]."
 
 ▶ ÁREA EXTERNA / GARAGEM / LAZER (1:45–2:10)
 "Olha que diferencial: [citar área de lazer, garagem, varanda, vista]."
@@ -392,10 +392,10 @@ ${quartos ? 'Mostrar cada quarto.' : 'Mostrar os ambientes.'}
 ${destaque ? `"Mas o que realmente se destaca aqui é ${destaque}. Isso é raro de encontrar no bairro."` : '"[Cite o maior diferencial do imóvel aqui.]"'}
 
 ▶ FECHAMENTO (2:25–2:40)
-"Se você se interessou, me chama no WhatsApp — o link tá aqui embaixo. Atendo você pessoalmente e agendo a visita. Te vejo em breve!"
+"Se você se interessou, me chama no WhatsApp - o link tá aqui embaixo. Atendo você pessoalmente e agendo a visita. Te vejo em breve!"
 
 💡 DICAS DE GRAVAÇÃO:
-• Use luz natural — grave entre 9h e 15h
+• Use luz natural - grave entre 9h e 15h
 • Câmera no modo paisagem (horizontal)
 • Caminhe devagar e com movimentos suaves
 • Grave cada cômodo 3x e use a melhor tomada
@@ -687,8 +687,8 @@ function GateCorretor({ onOk }) {
           <div className="corr-trial-ok-ico">✓</div>
           <h2>{ehGratis ? 'Cadastro concluído!' : 'Pagamento aprovado!'}</h2>
           <p>{ehGratis
-            ? <>Suas ferramentas já estão liberadas. <b>Guarde seu código</b> — é com ele que você entra de novo em qualquer dispositivo.</>
-            : 'Seu código de acesso foi gerado. Guarde-o em local seguro — ele libera todas as ferramentas pelo período contratado.'}</p>
+            ? <>Suas ferramentas já estão liberadas. <b>Guarde seu código</b> - é com ele que você entra de novo em qualquer dispositivo.</>
+            : 'Seu código de acesso foi gerado. Guarde-o em local seguro - ele libera todas as ferramentas pelo período contratado.'}</p>
           <div className="corr-codigo-box">
             <span className="corr-codigo-label">Seu código de acesso</span>
             <strong className="corr-codigo-val">{codigoAtivado.codigo}</strong>
@@ -698,7 +698,7 @@ function GateCorretor({ onOk }) {
           <button className="btn btn-gold" style={{ marginTop: 20 }} onClick={() => { if (codigoAtivado.login) salvarCorretor(codigoAtivado.login); onOk(getCorretor()) }}>
             Entrar na área agora <IconArrow />
           </button>
-          <p style={{ fontSize: '0.78rem', color: 'var(--text-mute)', marginTop: 12 }}>Anote seu código — use-o na aba "Já tenho código" para entrar em outro dispositivo.</p>
+          <p style={{ fontSize: '0.78rem', color: 'var(--text-mute)', marginTop: 12 }}>Anote seu código - use-o na aba "Já tenho código" para entrar em outro dispositivo.</p>
         </div>
       </div>
     )
@@ -731,7 +731,7 @@ function GateCorretor({ onOk }) {
         <span className="eyebrow">Ferramentas exclusivas para corretores</span>
         <h1 className="section-title">Área do <em>corretor</em></h1>
         <p className="section-sub" style={{ marginTop: 12 }}>
-          Tudo que você precisa para captar, divulgar e vender mais rápido — num lugar só.
+          Tudo que você precisa para captar, divulgar e vender mais rápido - num lugar só.
         </p>
         <ul className="corr-lista">
           {TOOLS.map((t) => (
@@ -766,7 +766,7 @@ function GateCorretor({ onOk }) {
         {aba === 'cadastro' && (
           <form className="lead-form conta-form corr-form" onSubmit={cadastrarGratis}>
             <h3>Cadastre-se grátis</h3>
-            <p className="conta-form-promessa">Sem cartão, sem mensalidade. Preencha e <b>libere na hora todas as ferramentas</b> — você recebe um código pra entrar de novo quando quiser.</p>
+            <p className="conta-form-promessa">Sem cartão, sem mensalidade. Preencha e <b>libere na hora todas as ferramentas</b> - você recebe um código pra entrar de novo quando quiser.</p>
             <label><span>Nome completo *</span><input value={fCad.nome} onChange={setCad('nome')} required placeholder="Seu nome" /></label>
             <div className="conta-form-row">
               <label><span>WhatsApp *</span><input type="tel" inputMode="tel" value={fCad.fone} onChange={setCad('fone')} required placeholder="(34) 99999-9999" /></label>
@@ -780,7 +780,7 @@ function GateCorretor({ onOk }) {
             <button type="submit" className="btn btn-gold lead-submit" disabled={enviando}>
               <IconShield width={18} height={18} /> {enviando ? 'Liberando…' : 'Cadastrar e liberar ferramentas'} <IconArrow />
             </button>
-            <p className="lead-note">100% gratuito. Seus dados ficam comigo — não compartilho com terceiros.</p>
+            <p className="lead-note">100% gratuito. Seus dados ficam comigo - não compartilho com terceiros.</p>
           </form>
         )}
 
@@ -810,7 +810,7 @@ function GateCorretor({ onOk }) {
         <div className="corr-como-step">
           <span className="corr-como-num">1</span>
           <b>Ative o teste grátis</b>
-          <span>Só nome e WhatsApp — sem cartão, sem cobrança automática.</span>
+          <span>Só nome e WhatsApp - sem cartão, sem cobrança automática.</span>
         </div>
         <span className="corr-como-arr">→</span>
         <div className="corr-como-step">
@@ -822,7 +822,7 @@ function GateCorretor({ onOk }) {
         <div className="corr-como-step">
           <span className="corr-como-num">3</span>
           <b>Continue se gostar</b>
-          <span>Plano mensal por menos de R$ 2/dia — cancele quando quiser.</span>
+          <span>Plano mensal por menos de R$ 2/dia - cancele quando quiser.</span>
         </div>
       </div>
     </div>
@@ -847,7 +847,7 @@ function TrialCountdownBanner({ corretor, onAssinar }) {
   const m = Math.floor((rem % 3600000) / 60000)
   return (
     <div className={`corr-countdown-banner${rem < 2 * 3600000 ? ' corr-countdown-urgente' : ''}`}>
-      <span>⏰ Teste expira em <b>{h ? `${h}h ` : ''}{m}min</b> — assine para não perder o acesso.</span>
+      <span>⏰ Teste expira em <b>{h ? `${h}h ` : ''}{m}min</b> - assine para não perder o acesso.</span>
       <button type="button" className="corr-countdown-btn" onClick={onAssinar}>Assinar plano →</button>
     </div>
   )
@@ -904,7 +904,7 @@ function HubCorretor({ corretor, onSair }) {
   if (modoGate) return (
     <>
       <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, padding: '10px 18px', marginBottom: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, fontSize: '0.84rem', color: 'var(--text-soft)' }}>
-        <span>👁 Prévia — visualizando a tela de entrada como um corretor sem acesso veria.</span>
+        <span>👁 Prévia - visualizando a tela de entrada como um corretor sem acesso veria.</span>
         <button type="button" className="btn btn-ghost" onClick={() => setModoGate(false)}>← Voltar ao hub</button>
       </div>
       <GateCorretor onOk={() => setModoGate(false)} />
@@ -914,7 +914,7 @@ function HubCorretor({ corretor, onSair }) {
   return (
     <>
       <header className="corr-hub-header">
-        <h1 className="corr-hub-titulo">Área do Corretor — Ferramentas Profissionais</h1>
+        <h1 className="corr-hub-titulo">Área do Corretor - Ferramentas Profissionais</h1>
         <div className="corr-hero-acoes">
           <span className="corr-hub-ola">Olá, {primeiro || 'Corretor'}</span>
           {corretor.creci && <span className="corr-chip">CRECI {corretor.creci}</span>}
@@ -1024,8 +1024,8 @@ export default function Corretor() {
 
   useSEO({
     title: toolData
-      ? `${toolData.nome} — Área do corretor | Rotina Imobiliária`
-      : 'Área do corretor — Ferramentas profissionais | Rotina Imobiliária',
+      ? `${toolData.nome} - Área do corretor | Rotina Imobiliária`
+      : 'Área do corretor - Ferramentas profissionais | Rotina Imobiliária',
     description: toolData
       ? toolData.desc
       : 'Área exclusiva para corretores: abordagem por código, publicidade, legenda para portais, script de objeções, checklist de captação e mais.',

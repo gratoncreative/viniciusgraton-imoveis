@@ -111,7 +111,7 @@ export default function BaixarFotosImovel({ im, fotos = [], galeria = false }) {
       : estado === 'ok'
         ? 'Fotos baixadas!'
         : estado === 'erro'
-          ? 'Erro — tente de novo'
+          ? 'Erro - tente de novo'
           : galeria
             ? `Baixar todas as fotos (${fotos.length})`
             : `Baixar fotos (${fotos.length})`

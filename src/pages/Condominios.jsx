@@ -37,7 +37,7 @@ function CardCondo({ c }) {
   return (
     <Link className="condo-card" to={`/condominios/${c.slug}`}>
       <span className="condo-capa">
-        <img src={c.capa || CAPA_COND_PADRAO} alt={`${c.nome} — condomínio fechado em Uberlândia`} loading="lazy" referrerPolicy="no-referrer" onError={onCondImgError} />
+        <img src={c.capa || CAPA_COND_PADRAO} alt={`${c.nome} - condomínio fechado em Uberlândia`} loading="lazy" referrerPolicy="no-referrer" onError={onCondImgError} />
         <span className="condo-tipo">{c.tipo}</span>
         {c.segmento && <span className="condo-seg">{c.segmento}</span>}
       </span>
@@ -53,7 +53,7 @@ function CardCondo({ c }) {
 
 export default function Condominios() {
   useSEO({
-    title: 'Condomínios fechados em Uberlândia — casas, lotes e alto padrão',
+    title: 'Condomínios fechados em Uberlândia - casas, lotes e alto padrão',
     description: 'Conheça os condomínios fechados horizontais de Uberlândia: casas e lotes de alto padrão na Zona Sul, Granja Marileusa e Represa de Miranda. Busque pelo nome, filtre por região, tipo, padrão e situação, e fale com o Vinícius para uma curadoria sob medida.',
     path: '/condominios',
   })
@@ -187,7 +187,7 @@ export default function Condominios() {
 
         <div className="det-trust" style={{ marginTop: 30, maxWidth: 900 }}>
           <IconShield width={20} height={20} />
-          <p><b>Faço a curadoria pra você.</b> Me diga em qual condomínio quer morar e o seu perfil (quartos, suítes, vagas) que eu levanto pessoalmente os terrenos e imóveis à venda lá dentro — inclusive oportunidades que não estão anunciadas. Disponibilidade e valores confirmados no atendimento.</p>
+          <p><b>Faço a curadoria pra você.</b> Me diga em qual condomínio quer morar e o seu perfil (quartos, suítes, vagas) que eu levanto pessoalmente os terrenos e imóveis à venda lá dentro - inclusive oportunidades que não estão anunciadas. Disponibilidade e valores confirmados no atendimento.</p>
         </div>
 
         <div style={{ marginTop: 8 }}>

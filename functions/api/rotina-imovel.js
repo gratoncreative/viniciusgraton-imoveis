@@ -130,7 +130,7 @@ function categorizar(els) {
     C('mercado') && { t: `${C('mercado')} ${C('mercado') > 1 ? 'supermercados e mercados' : 'supermercado'} a poucos minutos${cit('mercado')}`, nomeado: N('mercado').length },
     C('shopping') && { t: `Shopping e lojas a poucos minutos${cit('shopping')}`, nomeado: N('shopping').length },
     C('educacao') && { t: `${C('educacao')} ${C('educacao') > 1 ? 'escolas, creches e cursos' : 'escola'} no entorno${cit('educacao')}`, nomeado: N('educacao').length },
-    C('saude') && { t: `Saúde por perto — hospitais e clínicas a menos de 1km${cit('saude')}`, nomeado: N('saude').length },
+    C('saude') && { t: `Saúde por perto - hospitais e clínicas a menos de 1km${cit('saude')}`, nomeado: N('saude').length },
     C('farmacia') && { t: `${C('farmacia')} ${C('farmacia') > 1 ? 'farmácias' : 'farmácia'} pertinho pra qualquer urgência${cit('farmacia')}`, nomeado: N('farmacia').length },
     C('comida') && { t: `Restaurantes e cafés na vizinhança${cit('comida')}`, nomeado: N('comida').length },
     C('padaria') && { t: `Padaria${C('padaria') > 1 ? 's' : ''} no dia a dia, a pé${cit('padaria')}`, nomeado: N('padaria').length },
@@ -139,7 +139,7 @@ function categorizar(els) {
     C('esporte') && { t: `Espaços esportivos e quadras pra família${cit('esporte')}`, nomeado: N('esporte').length },
     C('cultura') && { t: `Cultura e lazer por perto${cit('cultura')}`, nomeado: N('cultura').length },
     C('banco') && { t: `${C('banco')} agências e caixas eletrônicos a 1km${cit('banco')}`, nomeado: N('banco').length },
-    C('onibus') && { t: `Transporte fácil — ${C('onibus')} pontos de ônibus num raio de 1km`, nomeado: 0 },
+    C('onibus') && { t: `Transporte fácil - ${C('onibus')} pontos de ônibus num raio de 1km`, nomeado: 0 },
     C('posto') && { t: `${C('posto')} ${C('posto') > 1 ? 'postos' : 'posto'} de combustível no caminho${cit('posto')}`, nomeado: N('posto').length },
     C('igreja') && { t: `Igrejas e templos na própria vizinhança${cit('igreja')}`, nomeado: N('igreja').length },
   ].filter(Boolean)

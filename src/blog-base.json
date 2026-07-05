@@ -11,7 +11,7 @@
     "cor": 0,
     "capa": "/img/emp/vitta__arysta.jpg",
     "conteudo": [
-      { "tipo": "p", "txt": "O FGTS é um dos maiores aliados de quem quer comprar o primeiro imóvel — e muita gente não usa todo o potencial dele. Neste guia, explico de forma simples o que você pode fazer com o seu saldo e como se planejar." },
+      { "tipo": "p", "txt": "O FGTS é um dos maiores aliados de quem quer comprar o primeiro imóvel - e muita gente não usa todo o potencial dele. Neste guia, explico de forma simples o que você pode fazer com o seu saldo e como se planejar." },
       { "tipo": "h2", "txt": "Quem pode usar o FGTS na compra" },
       { "tipo": "p", "txt": "Em linhas gerais, você pode usar o FGTS se tiver pelo menos 3 anos de trabalho sob o regime do FGTS (somados, não precisam ser seguidos), se o imóvel for urbano e residencial e destinado à sua moradia, e se você não tiver outro imóvel residencial nem financiamento ativo no Sistema Financeiro de Habitação (SFH) na cidade onde mora ou trabalha." },
       { "tipo": "h2", "txt": "O que dá pra fazer com o saldo" },
@@ -35,9 +35,9 @@
     "conteudo": [
       { "tipo": "p", "txt": "Financiar assusta quem nunca passou pelo processo, mas ele é mais organizado do que parece. Aqui vai o caminho completo, do início ao fim." },
       { "tipo": "h2", "txt": "1. Simulação e capacidade" },
-      { "tipo": "p", "txt": "Tudo começa entendendo quanto cabe no seu bolso. Os bancos costumam aprovar parcelas de até cerca de 30% da renda familiar e financiar até 80% do valor do imóvel — ou seja, você entra com aproximadamente 20% de entrada, que pode incluir o FGTS." },
+      { "tipo": "p", "txt": "Tudo começa entendendo quanto cabe no seu bolso. Os bancos costumam aprovar parcelas de até cerca de 30% da renda familiar e financiar até 80% do valor do imóvel - ou seja, você entra com aproximadamente 20% de entrada, que pode incluir o FGTS." },
       { "tipo": "h2", "txt": "2. Análise de crédito" },
-      { "tipo": "p", "txt": "O banco avalia seu histórico (score), renda, estabilidade e se você tem o nome limpo. Quanto mais organizada a comprovação de renda — principalmente para autônomos e MEI —, melhores as condições." },
+      { "tipo": "p", "txt": "O banco avalia seu histórico (score), renda, estabilidade e se você tem o nome limpo. Quanto mais organizada a comprovação de renda - principalmente para autônomos e MEI -, melhores as condições." },
       { "tipo": "h2", "txt": "3. Avaliação do imóvel e contrato" },
       { "tipo": "p", "txt": "Depois da aprovação, o banco avalia o imóvel e analisa a documentação. Estando tudo certo, é gerado o contrato, que já vale como a transferência e vai a registro no Cartório de Registro de Imóveis." },
       { "tipo": "h2", "txt": "SAC ou Price?" },
@@ -57,13 +57,13 @@
     "cor": 2,
     "capa": "/img/emp/inconew__leme-do-praia.jpg",
     "conteudo": [
-      { "tipo": "p", "txt": "Na hora de comprar, o preço do imóvel não é a única conta. Existem os custos de transferência — e quem não se planeja acaba apertado no fim. Veja o que reservar." },
-      { "tipo": "h2", "txt": "ITBI — o imposto da transferência" },
+      { "tipo": "p", "txt": "Na hora de comprar, o preço do imóvel não é a única conta. Existem os custos de transferência - e quem não se planeja acaba apertado no fim. Veja o que reservar." },
+      { "tipo": "h2", "txt": "ITBI - o imposto da transferência" },
       { "tipo": "p", "txt": "O ITBI é o imposto municipal pago para passar o imóvel para o seu nome. Em Uberlândia, a alíquota para compra e venda comum é de 2% sobre o valor do imóvel. Em operações de financiamento pelo SFH para menor renda, há uma alíquota reduzida sobre a parte financiada. Sem o ITBI pago, o cartório não registra a compra." },
       { "tipo": "h2", "txt": "Escritura e registro" },
       { "tipo": "p", "txt": "A escritura (quando não é compra financiada) e o registro no Cartório de Registro de Imóveis seguem uma tabela de emolumentos. Some isso ao ITBI e, na prática, vale reservar em torno de 4% a 6% do valor do imóvel para esses custos." },
       { "tipo": "h2", "txt": "A regra de ouro" },
-      { "tipo": "p", "txt": "No Brasil, só é dono quem registra. Não deixe de registrar o imóvel no seu nome — é o que garante a sua segurança jurídica. Use a calculadora de custos aqui do site para estimar o seu caso, e me chame para conferir tudo antes de fechar." }
+      { "tipo": "p", "txt": "No Brasil, só é dono quem registra. Não deixe de registrar o imóvel no seu nome - é o que garante a sua segurança jurídica. Use a calculadora de custos aqui do site para estimar o seu caso, e me chame para conferir tudo antes de fechar." }
     ]
   },
   {
@@ -99,9 +99,9 @@
     "cor": 4,
     "capa": "/img/emp/perplan__grandverse-place.jpg",
     "conteudo": [
-      { "tipo": "p", "txt": "Uma das primeiras dúvidas de quem vai comprar: lançamento na planta ou um imóvel pronto? As duas opções são boas — depende do seu momento." },
+      { "tipo": "p", "txt": "Uma das primeiras dúvidas de quem vai comprar: lançamento na planta ou um imóvel pronto? As duas opções são boas - depende do seu momento." },
       { "tipo": "h2", "txt": "Comprar na planta" },
-      { "tipo": "p", "txt": "Você costuma pagar mais barato, parcela a entrada direto com a construtora durante a obra e tende a ver o imóvel valorizar até a entrega. Em troca, espera para morar e assume o risco do prazo — por isso é fundamental escolher uma construtora sólida e com bom histórico de entregas." },
+      { "tipo": "p", "txt": "Você costuma pagar mais barato, parcela a entrada direto com a construtora durante a obra e tende a ver o imóvel valorizar até a entrega. Em troca, espera para morar e assume o risco do prazo - por isso é fundamental escolher uma construtora sólida e com bom histórico de entregas." },
       { "tipo": "h2", "txt": "Comprar pronto" },
       { "tipo": "p", "txt": "Você vê exatamente o que está levando, muda mais rápido e tira dúvidas olhando o imóvel real. O preço tende a ser maior, mas a segurança de já estar pronto pesa bastante para quem tem pressa." },
       { "tipo": "h2", "txt": "Como eu te ajudo a decidir" },

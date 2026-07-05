@@ -17,7 +17,7 @@ export function initAnalytics() {
   let dono = false
   try {
     const q = new URLSearchParams(location.search)
-    if (q.has('sou-eu')) { localStorage.setItem(CHAVE, '1'); alert('Pronto! Este aparelho foi marcado como SEU — seus acessos não serão contados no Google Analytics.') }
+    if (q.has('sou-eu')) { localStorage.setItem(CHAVE, '1'); alert('Pronto! Este aparelho foi marcado como SEU - seus acessos não serão contados no Google Analytics.') }
     if (q.has('contar-me')) { localStorage.removeItem(CHAVE); alert('Ok, este aparelho voltará a ser contado no Google Analytics.') }
     dono = localStorage.getItem(CHAVE) === '1'
   } catch (e) { /* localStorage indisponível */ }

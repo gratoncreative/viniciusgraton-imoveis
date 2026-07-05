@@ -46,7 +46,7 @@ export default function AppCorretor() {
   // título + noindex (app privado, não deve aparecer na busca)
   useEffect(() => {
     const titAntes = document.title
-    document.title = 'VG Corretor — Painel'
+    document.title = 'VG Corretor - Painel'
     const meta = document.createElement('meta')
     meta.name = 'robots'; meta.content = 'noindex, nofollow'
     document.head.appendChild(meta)
@@ -173,7 +173,7 @@ export default function AppCorretor() {
         </Link>
       </section>
 
-      <div className="appc-rodape">Painel de trabalho — {CONFIG.marca}</div>
+      <div className="appc-rodape">Painel de trabalho - {CONFIG.marca}</div>
       {/* A barra de abas é global (AppTabBar), renderizada pelo App em modo app. */}
     </div>
   )

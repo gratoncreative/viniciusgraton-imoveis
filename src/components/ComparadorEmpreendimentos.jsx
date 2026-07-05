@@ -7,13 +7,13 @@ const STATUS = ['Todos', 'Lançamento', 'Em obras', 'Pronto']
 const matchStatus = (p, f) => f === 'Todos' || (p.status || '').toLowerCase().includes(f.toLowerCase())
 
 const LINHAS = [
-  ['Status', (p) => p.status || '—'],
-  ['Bairro', (p) => p.bairro || '—'],
-  ['Entrega', (p) => p.entrega || '—'],
+  ['Status', (p) => p.status || '-'],
+  ['Bairro', (p) => p.bairro || '-'],
+  ['Entrega', (p) => p.entrega || '-'],
   ['Preço', (p) => p.preco || 'Sob consulta'],
-  ['Tipologias', (p) => (p.tipologias || []).join(' · ') || '—'],
+  ['Tipologias', (p) => (p.tipologias || []).join(' · ') || '-'],
   ['Lazer e estrutura', (p) => `${(p.amenidades || []).length} itens`],
-  ['Vídeo', (p) => (p.video ? 'Sim' : '—')],
+  ['Vídeo', (p) => (p.video ? 'Sim' : '-')],
 ]
 
 export default function ComparadorEmpreendimentos({ c }) {
@@ -52,7 +52,7 @@ export default function ComparadorEmpreendimentos({ c }) {
             )}
             <Link className="proj-card-link" to={`/construtoras/${c.slug}/${p.slug}`}>
               <span className="proj-capa">
-                {p.capa ? <img src={p.capa} alt={`${p.nome} — ${c.nome}, Uberlândia`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
+                {p.capa ? <img src={p.capa} alt={`${p.nome} - ${c.nome}, Uberlândia`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
                   : <span className="proj-capa-vazia"><IconBuilding width={34} height={34} /></span>}
                 {p.status && <span className="proj-status proj-status--over">{p.status}</span>}
                 {p.video && <span className="proj-capa-video">▶ vídeo</span>}

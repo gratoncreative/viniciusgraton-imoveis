@@ -48,19 +48,19 @@ function apresentacao(im) {
 
   const abre = pick([
     `Se você procura um ${tl} no ${b} que une boa localização, conforto e um negócio que vale a pena, esse merece a sua atenção.`,
-    `Imóvel bom no ${b} não fica muito tempo no mercado — e esse ${tl} reúne o que mais pesa na hora de comprar bem.`,
+    `Imóvel bom no ${b} não fica muito tempo no mercado - e esse ${tl} reúne o que mais pesa na hora de comprar bem.`,
     `Esse ${tl} no ${b} foi feito pra quem quer morar bem, sem abrir mão de praticidade, espaço e segurança.`,
   ])
-  const corpo = `São ${[im.area && `${im.area} m²`, im.quartos && `${im.quartos} quartos`, ...extras].filter(Boolean).join(', ')}${im.condominio ? `, com condomínio organizado` : ''} — espaço e conforto pensados pra sua rotina.`
+  const corpo = `São ${[im.area && `${im.area} m²`, im.quartos && `${im.quartos} quartos`, ...extras].filter(Boolean).join(', ')}${im.condominio ? `, com condomínio organizado` : ''} - espaço e conforto pensados pra sua rotina.`
   const valor = op.abaixoMercado
-    ? `E olha que oportunidade: pelo preço do metro quadrado no ${b}, ele está abaixo da média da região — chance real de comprar bem e ainda valorizar.`
+    ? `E olha que oportunidade: pelo preço do metro quadrado no ${b}, ele está abaixo da média da região - chance real de comprar bem e ainda valorizar.`
     : pick([
       `Pelo padrão e pela localização, é o tipo de imóvel que mantém valor e tem boa liquidez na hora de revender.`,
       `Comprar no ${b} é decisão segura: região consolidada, procurada e com tendência de valorização.`,
     ], 1)
   const fecha = pick([
     `Quer ver de perto? Eu te acompanho na visita, esclareço tudo e cuido da documentação e do financiamento. Me chama no WhatsApp que a gente agenda.`,
-    `Posso te mostrar pessoalmente e simular o financiamento com você — atendimento direto, do primeiro contato à entrega das chaves. É só chamar.`,
+    `Posso te mostrar pessoalmente e simular o financiamento com você - atendimento direto, do primeiro contato à entrega das chaves. É só chamar.`,
   ], 2)
   // destaques REAIS do imóvel (preenchem a apresentação de forma verdadeira)
   const ehTerreo = ehApto && (Number(im.andar) === 0)
@@ -74,7 +74,7 @@ function apresentacao(im) {
     im.condominio && `Condomínio de ${formatPreco(im.condominio)}`,
     ...(im.amenidades || []),
     op.abaixoMercado && 'Preço abaixo da média do m² do bairro',
-    `Localização no ${b}, ${im.cidade || 'Uberlândia'} — MG`,
+    `Localização no ${b}, ${im.cidade || 'Uberlândia'} - MG`,
   ].filter(Boolean)
   return { paras: [abre, corpo, valor, fecha], destaques }
 }
@@ -158,7 +158,7 @@ function CustoAquisicao({ preco }) {
         <b>+{brl0(extras)}</b>
       </summary>
       <ul className="det-custo-lista">
-        <li><span>ITBI — 2% (Uberlândia)</span><b>{brl0(itbi)}</b></li>
+        <li><span>ITBI - 2% (Uberlândia)</span><b>{brl0(itbi)}</b></li>
         <li><span>Escritura + registro (estimativa)</span><b>{brl0(cartorio)}</b></li>
         <li><span>Avaliação bancária (estimativa)</span><b>{brl0(avaliacao)}</b></li>
         <li className="det-custo-total"><span>Custo total estimado</span><b>{brl0(p + extras)}</b></li>
@@ -183,112 +183,112 @@ const MSG_LOAD = [
 const BAIRRO_POIS = {
   'Jardim Karaíba': [
     { icon: 'pin', text: 'Shopping Park e Pátio Sabiá a 5 min', sub: 'Os dois principais shoppings da Zona Sul com cinema UCI, Renner, Centauro e praças de alimentação completas no mesmo eixo de saída do bairro.' },
-    { icon: 'home', text: 'Parque do Sabiá a menos de 2 km', sub: 'O maior parque urbano do Triângulo Mineiro: zoológico, lagoa natural, pista de cooper, arena de shows e ciclovia — lazer gratuito de alto nível a distância de caminhada.' },
-    { icon: 'shield', text: 'Hospital Santa Marta e UAI Zona Sul', sub: 'Atendimento médico particular de referência e urgência pública a menos de 8 min — UTI, cirurgia, pronto-atendimento pediátrico e adulto.' },
-    { icon: 'pin', text: 'Bretas Sabiá, Sam\'s Club e Atacadão na rota', sub: 'Supermercado, clube de compras e atacarejo num raio de 5 min — abastecimento mensal sem desvio de rota.' },
-    { icon: 'home', text: 'Colégios Pitágoras e Colégio Santa Teresa', sub: 'Rede de ensino fundamental e médio de referência dentro do raio de 7 min — fundamental para famílias com filhos.' },
+    { icon: 'home', text: 'Parque do Sabiá a menos de 2 km', sub: 'O maior parque urbano do Triângulo Mineiro: zoológico, lagoa natural, pista de cooper, arena de shows e ciclovia - lazer gratuito de alto nível a distância de caminhada.' },
+    { icon: 'shield', text: 'Hospital Santa Marta e UAI Zona Sul', sub: 'Atendimento médico particular de referência e urgência pública a menos de 8 min - UTI, cirurgia, pronto-atendimento pediátrico e adulto.' },
+    { icon: 'pin', text: 'Bretas Sabiá, Sam\'s Club e Atacadão na rota', sub: 'Supermercado, clube de compras e atacarejo num raio de 5 min - abastecimento mensal sem desvio de rota.' },
+    { icon: 'home', text: 'Colégios Pitágoras e Colégio Santa Teresa', sub: 'Rede de ensino fundamental e médio de referência dentro do raio de 7 min - fundamental para famílias com filhos.' },
   ],
   'Morada da Colina': [
-    { icon: 'pin', text: 'Av. Marcos de Freitas Costa — corredor nobre da Zona Sul', sub: 'A principal avenida da Zona Sul, com bancos (Itaú, Bradesco, Caixa), farmácias, clínicas e comércio diário a poucos passos.' },
-    { icon: 'home', text: 'Praia Clube a menos de 5 min de carro', sub: 'Um dos maiores clubes do Brasil — piscinas olímpicas, quadras poliesportivas, tênis, academia e restaurantes. Raridade ter um clube deste porte tão próximo.' },
+    { icon: 'pin', text: 'Av. Marcos de Freitas Costa - corredor nobre da Zona Sul', sub: 'A principal avenida da Zona Sul, com bancos (Itaú, Bradesco, Caixa), farmácias, clínicas e comércio diário a poucos passos.' },
+    { icon: 'home', text: 'Praia Clube a menos de 5 min de carro', sub: 'Um dos maiores clubes do Brasil - piscinas olímpicas, quadras poliesportivas, tênis, academia e restaurantes. Raridade ter um clube deste porte tão próximo.' },
     { icon: 'shield', text: 'Hospital Santa Marta e clínicas especializadas', sub: 'Atendimento médico completo a poucos minutos, com maternidade, UTI e especialidades como cardiologia e ortopedia.' },
-    { icon: 'pin', text: 'Supermercado Bretas e BH Supermercados na vizinhança', sub: 'Compras do dia a dia sem sair do raio do bairro — cadeia de frios, padaria, açougue e hortifruti frescos.' },
+    { icon: 'pin', text: 'Supermercado Bretas e BH Supermercados na vizinhança', sub: 'Compras do dia a dia sem sair do raio do bairro - cadeia de frios, padaria, açougue e hortifruti frescos.' },
     { icon: 'home', text: 'Escola Estadual na rota e colégios particulares próximos', sub: 'Acesso fácil a opções de ensino fundamental e médio público e particular com transporte escolar disponível.' },
   ],
   'Vigilato Pereira': [
-    { icon: 'home', text: 'Praia Clube literalmente ao lado', sub: 'Um dos maiores clubes particulares do Brasil, com piscinas, quadras, academia, salões e restaurantes — vizinhança de clube é raridade absoluta em qualquer cidade.' },
-    { icon: 'pin', text: 'Av. Segismundo Pereira — comércio e serviços premium', sub: 'Farmácias, academias (Bodytech, Smart Fit), clínicas e restaurantes de alto padrão concentrados na mesma avenida.' },
+    { icon: 'home', text: 'Praia Clube literalmente ao lado', sub: 'Um dos maiores clubes particulares do Brasil, com piscinas, quadras, academia, salões e restaurantes - vizinhança de clube é raridade absoluta em qualquer cidade.' },
+    { icon: 'pin', text: 'Av. Segismundo Pereira - comércio e serviços premium', sub: 'Farmácias, academias (Bodytech, Smart Fit), clínicas e restaurantes de alto padrão concentrados na mesma avenida.' },
     { icon: 'shield', text: 'Hospital Santa Marta a 6 min', sub: 'Um dos melhores hospitais particulares de Uberlândia, com pronto-socorro 24h, UTI adulto e pediátrico, e especialidades completas.' },
     { icon: 'pin', text: 'Pátio Sabiá e Shopping Park a 8 min', sub: 'Dois shoppings completos com cinema, lojas âncoras e ampla praça de alimentação acessíveis sem trânsito pesado.' },
     { icon: 'home', text: 'Colégios Objetivo e Colégio Santa Teresa', sub: 'Redes de ensino de referência com ótimo ENEM e transporte escolar disponível para o bairro.' },
   ],
   'Santa Maria': [
-    { icon: 'pin', text: 'Av. Nicomedes Alves dos Santos — eixo de expansão da Zona Sul', sub: 'A avenida que mais cresceu nos últimos 5 anos: Caixa Econômica, Farmácias São João, supermercados e serviços novos a cada quadra.' },
+    { icon: 'pin', text: 'Av. Nicomedes Alves dos Santos - eixo de expansão da Zona Sul', sub: 'A avenida que mais cresceu nos últimos 5 anos: Caixa Econômica, Farmácias São João, supermercados e serviços novos a cada quadra.' },
     { icon: 'home', text: 'Shopping Park a 7 min', sub: 'Principal shopping do sul da cidade, com Casas Bahia, Renner, cinema Cinépolis e ampla praça de alimentação.' },
-    { icon: 'shield', text: 'UAI Zona Sul e clínicas particulares', sub: 'Atendimento de urgência público e privado em até 10 min — tranquilidade garantida para a família.' },
-    { icon: 'pin', text: 'Bretas Zona Sul e Atacadão na saída do bairro', sub: 'Compras semanais sem cruzar a cidade — supermercado e atacarejo na mesma rota de casa.' },
+    { icon: 'shield', text: 'UAI Zona Sul e clínicas particulares', sub: 'Atendimento de urgência público e privado em até 10 min - tranquilidade garantida para a família.' },
+    { icon: 'pin', text: 'Bretas Zona Sul e Atacadão na saída do bairro', sub: 'Compras semanais sem cruzar a cidade - supermercado e atacarejo na mesma rota de casa.' },
     { icon: 'home', text: 'Escola Municipal e Colégio Salesiano na região', sub: 'Tradição no ensino fundamental e médio, com transporte escolar e atividades extracurriculares para alunos da Zona Sul.' },
   ],
   'Jardim Sul': [
-    { icon: 'pin', text: 'Av. Rondon Pacheco e Av. João Naves — acesso express', sub: 'Dois dos maiores eixos viários de Uberlândia a poucos minutos — aeroporto, centro e Zona Leste sem trânsito pesado.' },
+    { icon: 'pin', text: 'Av. Rondon Pacheco e Av. João Naves - acesso express', sub: 'Dois dos maiores eixos viários de Uberlândia a poucos minutos - aeroporto, centro e Zona Leste sem trânsito pesado.' },
     { icon: 'home', text: 'Uberlândia Shopping (Praça Umuarama) a 8 min', sub: 'Shopping central com C&A, Riachuelo, praça de alimentação diversificada e cinema, sem sair do eixo sul.' },
-    { icon: 'shield', text: 'Clínicas médicas particulares e UAI', sub: 'Rede médica privada e pública num raio de 10 min — pediatria, ortopedia e pronto-atendimento.' },
+    { icon: 'shield', text: 'Clínicas médicas particulares e UAI', sub: 'Rede médica privada e pública num raio de 10 min - pediatria, ortopedia e pronto-atendimento.' },
     { icon: 'pin', text: 'Supermercado Bretas e hipermercado na rota', sub: 'Opções completas de supermercado e hipermercado sem precisar cruzar a cidade.' },
-    { icon: 'home', text: 'Colégio Marista e Escola Estadual Polivalente', sub: 'Tradição no ensino com destaque no ENEM — colégio privado e público de qualidade a menos de 10 min.' },
+    { icon: 'home', text: 'Colégio Marista e Escola Estadual Polivalente', sub: 'Tradição no ensino com destaque no ENEM - colégio privado e público de qualidade a menos de 10 min.' },
   ],
   'Jardim Finotti': [
-    { icon: 'pin', text: 'Av. Rondon Pacheco — acessibilidade total à cidade', sub: 'A maior via expressa de Uberlândia conecta o bairro ao centro, Zona Leste e aeroporto em minutos sem semáforos.' },
-    { icon: 'home', text: 'Parque do Sabiá a 5 min de carro', sub: 'Zoológico, lago, pista de cooper e arena de shows no maior parque da cidade — ideal para crianças e atividades ao ar livre.' },
+    { icon: 'pin', text: 'Av. Rondon Pacheco - acessibilidade total à cidade', sub: 'A maior via expressa de Uberlândia conecta o bairro ao centro, Zona Leste e aeroporto em minutos sem semáforos.' },
+    { icon: 'home', text: 'Parque do Sabiá a 5 min de carro', sub: 'Zoológico, lago, pista de cooper e arena de shows no maior parque da cidade - ideal para crianças e atividades ao ar livre.' },
     { icon: 'shield', text: 'Hospital Santa Marta e UAI Zona Sul', sub: 'Atendimento especializado com maternidade, UTI e pronto-socorro particulares em menos de 10 min.' },
     { icon: 'pin', text: 'Supermercado Extra e Bretas próximos', sub: 'Conveniência máxima para compras do dia a dia sem precisar de deslocamentos longos.' },
     { icon: 'home', text: 'SESI e colégios particulares com transporte', sub: 'Infraestrutura educacional e esportiva do SESI, com academia, piscina e atividades para crianças acessível a pé.' },
   ],
   'Parque Una': [
-    { icon: 'home', text: 'Parque do Sabiá a menos de 1 km — literalmente a vizinhança', sub: 'O nome "Parque Una" não é por acaso: o maior parque urbano de Uberlândia, com zoológico e lago, está praticamente na calçada — raro em qualquer cidade brasileira.' },
+    { icon: 'home', text: 'Parque do Sabiá a menos de 1 km - literalmente a vizinhança', sub: 'O nome "Parque Una" não é por acaso: o maior parque urbano de Uberlândia, com zoológico e lago, está praticamente na calçada - raro em qualquer cidade brasileira.' },
     { icon: 'pin', text: 'Av. Monsenhor Eduardo e comércio consolidado', sub: 'Farmácias São João, padarias, mercados e serviços de saúde concentrados na avenida principal a 3 min de caminhada.' },
     { icon: 'shield', text: 'UAI Central e clínicas de especialidades', sub: 'Atendimento de urgência pública e clínicas privadas de pediatria, clínica geral e ortopedia num raio de 8 min.' },
-    { icon: 'pin', text: 'BH Supermercados e feira livre na Av. Monsenhor', sub: 'Supermercado completo e feira semanal com frutas, verduras e hortifruti frescos — alimentação de qualidade sem depender de carro.' },
-    { icon: 'home', text: 'Escola Municipal Parque Una e E. E. na região', sub: 'Ensino público consolidado a distância de caminhada — bairro autossuficiente também na educação infantil.' },
+    { icon: 'pin', text: 'BH Supermercados e feira livre na Av. Monsenhor', sub: 'Supermercado completo e feira semanal com frutas, verduras e hortifruti frescos - alimentação de qualidade sem depender de carro.' },
+    { icon: 'home', text: 'Escola Municipal Parque Una e E. E. na região', sub: 'Ensino público consolidado a distância de caminhada - bairro autossuficiente também na educação infantil.' },
   ],
   'Patrimônio': [
-    { icon: 'pin', text: 'Centro de Uberlândia a 5 min a pé', sub: 'Bancos (todos os grandes), Fórum, Prefeitura, Câmara Municipal e comércio popular intenso — máxima comodidade urbana, zero deslocamento.' },
+    { icon: 'pin', text: 'Centro de Uberlândia a 5 min a pé', sub: 'Bancos (todos os grandes), Fórum, Prefeitura, Câmara Municipal e comércio popular intenso - máxima comodidade urbana, zero deslocamento.' },
     { icon: 'home', text: 'Igreja São Pedro e patrimônio histórico tombado', sub: 'Bairro com identidade cultural forte: arquitetura histórica da cidade, Festa do Rosário, feiras tradicionais e calendário de eventos ao longo do ano.' },
     { icon: 'shield', text: 'Hospital de Clínicas UFU a 10 min', sub: 'Um dos maiores hospitais universitários do Brasil, referência em cirurgias de alta complexidade, oncologia e medicina de urgência.' },
-    { icon: 'pin', text: 'Mercado Municipal, feiras e comércio atacadista', sub: 'Produtos frescos diariamente no Mercado Municipal de Uberlândia — alimentação de qualidade a preço de atacado a poucos quarteirões.' },
+    { icon: 'pin', text: 'Mercado Municipal, feiras e comércio atacadista', sub: 'Produtos frescos diariamente no Mercado Municipal de Uberlândia - alimentação de qualidade a preço de atacado a poucos quarteirões.' },
     { icon: 'home', text: 'CESEC, E. E. Raul Soares e escolas municipais', sub: 'Rede pública completa de ensino fundamental, médio, EJA e cursos profissionalizantes a poucos quarteirões do bairro.' },
   ],
   'Lídice': [
-    { icon: 'pin', text: 'Av. Belo Horizonte — conectividade a toda a cidade', sub: 'A avenida corta o bairro e conecta diretamente ao centro, Zona Sul e todos os principais terminais de ônibus urbanos de Uberlândia.' },
-    { icon: 'home', text: 'Arborização generosa — temperatura e qualidade de ar acima da média', sub: 'Um dos bairros mais arborizados de Uberlândia: ruas com árvores centenárias, microclima mais fresco e qualidade de vida percebida muito maior.' },
+    { icon: 'pin', text: 'Av. Belo Horizonte - conectividade a toda a cidade', sub: 'A avenida corta o bairro e conecta diretamente ao centro, Zona Sul e todos os principais terminais de ônibus urbanos de Uberlândia.' },
+    { icon: 'home', text: 'Arborização generosa - temperatura e qualidade de ar acima da média', sub: 'Um dos bairros mais arborizados de Uberlândia: ruas com árvores centenárias, microclima mais fresco e qualidade de vida percebida muito maior.' },
     { icon: 'shield', text: 'Clínicas privadas e farmácias Drogaria São Paulo', sub: 'Cobertura médica do pediatra ao cardiologista a menos de 10 min, com drogarias 24h a distância de caminhada.' },
-    { icon: 'pin', text: 'Padaria, açougue e mercado local a pé', sub: 'Bairro autossuficiente para a rotina: serviços básicos resolvidos sem usar o carro — economia real de tempo e combustível.' },
-    { icon: 'home', text: 'Escola Municipal Lídice e Centro Cultural UFU', sub: 'Escola pública de referência no ensino fundamental e UFU com programação cultural aberta ao público — biblioteca, teatro e eventos gratuitos.' },
+    { icon: 'pin', text: 'Padaria, açougue e mercado local a pé', sub: 'Bairro autossuficiente para a rotina: serviços básicos resolvidos sem usar o carro - economia real de tempo e combustível.' },
+    { icon: 'home', text: 'Escola Municipal Lídice e Centro Cultural UFU', sub: 'Escola pública de referência no ensino fundamental e UFU com programação cultural aberta ao público - biblioteca, teatro e eventos gratuitos.' },
   ],
   'Santa Mônica': [
-    { icon: 'home', text: 'Praia Clube no bairro — acesso pelo portão', sub: 'O maior clube particular de Uberlândia tem sede em Santa Mônica: piscinas olímpicas, ginásio, quadras de tênis, academia e restaurantes. Pouquíssimos bairros do Brasil têm esse privilégio.' },
+    { icon: 'home', text: 'Praia Clube no bairro - acesso pelo portão', sub: 'O maior clube particular de Uberlândia tem sede em Santa Mônica: piscinas olímpicas, ginásio, quadras de tênis, academia e restaurantes. Pouquíssimos bairros do Brasil têm esse privilégio.' },
     { icon: 'shield', text: 'UFU e Hospital Universitário (HU-UFU) na mesma quadra', sub: 'Referência nacional em medicina universitária: ambulatórios especializados, centro cirúrgico de alta complexidade e urgência 24h, tudo a 5 min de carro.' },
-    { icon: 'pin', text: 'BIG Hipermercado e Bretas Santa Mônica', sub: 'Dois grandes supermercados num raio de 3 km — compras do mês sem trânsito e com fácil estacionamento.' },
-    { icon: 'home', text: 'Av. João Naves de Ávila — o maior corredor comercial da cidade', sub: 'Bancos de todos os tipos, concessionárias, restaurantes e os principais serviços de Uberlândia concentrados na mesma avenida que beira o bairro.' },
-    { icon: 'pin', text: 'E. E. Bueno Brandão e CEFORES na região', sub: 'Ensino médio público histórico e formação profissional — raro ter essa concentração de oferta educacional pública num único bairro.' },
+    { icon: 'pin', text: 'BIG Hipermercado e Bretas Santa Mônica', sub: 'Dois grandes supermercados num raio de 3 km - compras do mês sem trânsito e com fácil estacionamento.' },
+    { icon: 'home', text: 'Av. João Naves de Ávila - o maior corredor comercial da cidade', sub: 'Bancos de todos os tipos, concessionárias, restaurantes e os principais serviços de Uberlândia concentrados na mesma avenida que beira o bairro.' },
+    { icon: 'pin', text: 'E. E. Bueno Brandão e CEFORES na região', sub: 'Ensino médio público histórico e formação profissional - raro ter essa concentração de oferta educacional pública num único bairro.' },
   ],
   'Tabajaras': [
-    { icon: 'pin', text: 'Av. João Pinheiro — eixo histórico de serviços e transporte', sub: 'Uma das principais vias de acesso ao Centro Histórico de Uberlândia, com comércio estabelecido e linhas de ônibus a cada 10 min.' },
-    { icon: 'home', text: 'Teatro Municipal Rondon Pacheco a 10 min', sub: 'O maior teatro de Uberlândia, com programação anual de espetáculos, shows e festivais — acesso à cultura da cidade sem grandes deslocamentos.' },
-    { icon: 'shield', text: 'Clínicas médicas e Hospital Municipal próximos', sub: 'Cobertura de saúde pública e privada acessível a pé ou de bicicleta — do clínico geral à emergência.' },
-    { icon: 'pin', text: 'Mercado, padaria e Farmácia São João na rua principal', sub: 'Bairro residencial autossuficiente — necessidades básicas do dia a dia resolvidas sem usar o carro.' },
-    { icon: 'home', text: 'E. E. Presidente Roosevelt — escola centenária', sub: 'Uma das escolas públicas mais antigas e respeitadas de Uberlândia, com décadas de tradição no ensino médio.' },
+    { icon: 'pin', text: 'Av. João Pinheiro - eixo histórico de serviços e transporte', sub: 'Uma das principais vias de acesso ao Centro Histórico de Uberlândia, com comércio estabelecido e linhas de ônibus a cada 10 min.' },
+    { icon: 'home', text: 'Teatro Municipal Rondon Pacheco a 10 min', sub: 'O maior teatro de Uberlândia, com programação anual de espetáculos, shows e festivais - acesso à cultura da cidade sem grandes deslocamentos.' },
+    { icon: 'shield', text: 'Clínicas médicas e Hospital Municipal próximos', sub: 'Cobertura de saúde pública e privada acessível a pé ou de bicicleta - do clínico geral à emergência.' },
+    { icon: 'pin', text: 'Mercado, padaria e Farmácia São João na rua principal', sub: 'Bairro residencial autossuficiente - necessidades básicas do dia a dia resolvidas sem usar o carro.' },
+    { icon: 'home', text: 'E. E. Presidente Roosevelt - escola centenária', sub: 'Uma das escolas públicas mais antigas e respeitadas de Uberlândia, com décadas de tradição no ensino médio.' },
   ],
   'Nova Uberlândia': [
-    { icon: 'pin', text: 'Zona Sul em expansão documentada — valorização real', sub: 'Bairro com aprovação de empreendimentos residenciais de médio padrão nos últimos 3 anos — comprar agora significa aprovechar o início do ciclo de valorização.' },
+    { icon: 'pin', text: 'Zona Sul em expansão documentada - valorização real', sub: 'Bairro com aprovação de empreendimentos residenciais de médio padrão nos últimos 3 anos - comprar agora significa aprovechar o início do ciclo de valorização.' },
     { icon: 'home', text: 'Acesso direto à Av. Nicomedes Alves dos Santos', sub: 'Conexão expressa à Av. Rondon Pacheco e ao centro em menos de 15 min, sem passar por bairros congestionados.' },
     { icon: 'shield', text: 'UAI Zona Sul e Hospital Santa Marta em 10 min', sub: 'Cobertura médica de qualidade disponível em menos de 15 min em qualquer direção da Zona Sul.' },
-    { icon: 'pin', text: 'Supermercado Bretas e comércio local aquecido', sub: 'Nova unidade Bretas inaugurada na região — sinal objetivo de que o bairro já justifica investimentos comerciais de grande porte.' },
-    { icon: 'home', text: 'Escola Municipal e rede de creches em expansão', sub: 'Infraestrutura educacional acompanhando o crescimento do bairro — vagas em creche e ensino fundamental a poucos quarteirões.' },
+    { icon: 'pin', text: 'Supermercado Bretas e comércio local aquecido', sub: 'Nova unidade Bretas inaugurada na região - sinal objetivo de que o bairro já justifica investimentos comerciais de grande porte.' },
+    { icon: 'home', text: 'Escola Municipal e rede de creches em expansão', sub: 'Infraestrutura educacional acompanhando o crescimento do bairro - vagas em creche e ensino fundamental a poucos quarteirões.' },
   ],
   'Tubalina': [
-    { icon: 'pin', text: 'Av. dos Municípios — artéria norte com comércio ativo', sub: 'Acesso facilitado ao centro, UFU e aeroporto, com Bretas, farmácias e serviços concentrados na avenida principal.' },
-    { icon: 'home', text: 'Linhas de ônibus integradas na esquina — a cada 12 min', sub: 'Mobilidade urbana acima da média: integração com o terminal central sem necessidade de troca, reduzindo dependência de carro.' },
+    { icon: 'pin', text: 'Av. dos Municípios - artéria norte com comércio ativo', sub: 'Acesso facilitado ao centro, UFU e aeroporto, com Bretas, farmácias e serviços concentrados na avenida principal.' },
+    { icon: 'home', text: 'Linhas de ônibus integradas na esquina - a cada 12 min', sub: 'Mobilidade urbana acima da média: integração com o terminal central sem necessidade de troca, reduzindo dependência de carro.' },
     { icon: 'shield', text: 'UAI Norte e Hospital Municipal acessíveis', sub: 'Atendimento de saúde pública completa na região, sem deslocamentos longos ao centro da cidade.' },
-    { icon: 'pin', text: 'Bretas Tubalina e feira livre toda semana', sub: 'Abastecimento com custo menor que a média da cidade — comércio local aquecido e feira de rua com hortifrutigranjeiros.' },
+    { icon: 'pin', text: 'Bretas Tubalina e feira livre toda semana', sub: 'Abastecimento com custo menor que a média da cidade - comércio local aquecido e feira de rua com hortifrutigranjeiros.' },
     { icon: 'home', text: 'Escola Municipal Tubalina e APAE Regional', sub: 'Infraestrutura educacional pública consolidada no bairro, com atendimento especializado para alunos com necessidades especiais.' },
   ],
   'Cidade Jardim': [
     { icon: 'pin', text: 'Condomínios horizontais de alto padrão na vizinhança imediata', sub: 'Bairro cercado por loteamentos fechados: perfil socioeconômico elevado dos moradores, manutenção das ruas e valorização constante do entorno.' },
-    { icon: 'home', text: 'Pátio Sabiá e Shopping Park a 7 min', sub: 'Os dois shoppings da Zona Sul — cinema, Centauro, Hering, praça gourmet e supermercados — acessíveis sem trânsito intenso.' },
-    { icon: 'shield', text: 'Hospital Santa Marta e clínicas particulares de especialidade', sub: 'Atendimento médico de alto padrão a menos de 10 min — hospitalar, laboratorial e ambulatorial num único raio.' },
-    { icon: 'pin', text: 'Bretas, empório e comércio gourmet chegando na região', sub: 'Supermercado e lojas especializadas abrindo na região — sinal claro de que o bairro atinge um público de poder aquisitivo elevado.' },
+    { icon: 'home', text: 'Pátio Sabiá e Shopping Park a 7 min', sub: 'Os dois shoppings da Zona Sul - cinema, Centauro, Hering, praça gourmet e supermercados - acessíveis sem trânsito intenso.' },
+    { icon: 'shield', text: 'Hospital Santa Marta e clínicas particulares de especialidade', sub: 'Atendimento médico de alto padrão a menos de 10 min - hospitalar, laboratorial e ambulatorial num único raio.' },
+    { icon: 'pin', text: 'Bretas, empório e comércio gourmet chegando na região', sub: 'Supermercado e lojas especializadas abrindo na região - sinal claro de que o bairro atinge um público de poder aquisitivo elevado.' },
     { icon: 'home', text: 'Colégios Pitágoras e Anglo próximos via Av. Rondon', sub: 'Redes de ensino privado com excelente ENEM, acessíveis por via expressa e com transporte escolar para o bairro.' },
   ],
   'Gávea': [
     { icon: 'home', text: 'Alphaville Uberlândia e condomínios fechados como vizinhos', sub: 'Entorno de alto padrão: o vizinhança de condomínios fechados valoriza organicamente o imóvel e filtra o perfil dos moradores da região.' },
-    { icon: 'pin', text: 'Av. Rondon Pacheco em 4 min — mobilidade total', sub: 'A maior via expressa de Uberlândia leva ao aeroporto em 15 min, ao centro em 12 min e a qualquer ponto da cidade sem trânsito intenso.' },
-    { icon: 'shield', text: 'Hospital Santa Marta e UAI Zona Sul', sub: 'Atendimento médico particular e público a menos de 12 min — tranquilidade para famílias com crianças e idosos.' },
+    { icon: 'pin', text: 'Av. Rondon Pacheco em 4 min - mobilidade total', sub: 'A maior via expressa de Uberlândia leva ao aeroporto em 15 min, ao centro em 12 min e a qualquer ponto da cidade sem trânsito intenso.' },
+    { icon: 'shield', text: 'Hospital Santa Marta e UAI Zona Sul', sub: 'Atendimento médico particular e público a menos de 12 min - tranquilidade para famílias com crianças e idosos.' },
     { icon: 'pin', text: 'Shopping Park e Atacadão no mesmo eixo de saída', sub: 'Compras, lazer e abastecimento mensal na mesma rota de casa, sem desvio de trajeto.' },
     { icon: 'home', text: 'Colégios particulares com van escolar disponível', sub: 'Redes de ensino fundamental e médio de referência com logística de transporte consolidada para o bairro.' },
   ],
   'Granja Marileusa': [
-    { icon: 'home', text: 'Algar Telecom — sede nacional no bairro', sub: 'A maior empresa de Uberlândia tem sede aqui. A Granja Marileusa foi concebida como distrito tecnológico: startups, empresas de tecnologia e co-workings premium no mesmo quarteirão que o seu futuro imóvel.' },
-    { icon: 'pin', text: 'Av. Belarmino Cotta Pacheco — o endereço mais exclusivo da cidade', sub: 'A avenida que concentra os condomínios mais valorizados de Uberlândia, com paisagismo planejado, iluminação premium e calçadas de granito.' },
+    { icon: 'home', text: 'Algar Telecom - sede nacional no bairro', sub: 'A maior empresa de Uberlândia tem sede aqui. A Granja Marileusa foi concebida como distrito tecnológico: startups, empresas de tecnologia e co-workings premium no mesmo quarteirão que o seu futuro imóvel.' },
+    { icon: 'pin', text: 'Av. Belarmino Cotta Pacheco - o endereço mais exclusivo da cidade', sub: 'A avenida que concentra os condomínios mais valorizados de Uberlândia, com paisagismo planejado, iluminação premium e calçadas de granito.' },
     { icon: 'shield', text: 'Hospital Unimed e clínicas de alta complexidade a 8 min', sub: 'Atendimento médico cooperado de alto padrão com UTI, maternidade e especialidades concentradas a menos de 10 min.' },
     { icon: 'pin', text: 'Empório, restaurantes e lojas gourmet na região', sub: 'O perfil econômico do bairro atrai comércio especializado: padarias artesanais, restaurantes executivos e lojas de decoração premium.' },
     { icon: 'home', text: 'Colégios bilíngues e internacionais próximos', sub: 'Bairro que atrai famílias que priorizam educação diferenciada: ensino bilíngue, métodos construtivistas e projetos de alto desempenho acadêmico.' },
@@ -623,7 +623,7 @@ export default function ImovelDetalhe() {
     })
   prox.push({
     icon: 'home',
-    text: `Bairro ${im.bairro}, ${im.cidade} — ${im.uf}`,
+    text: `Bairro ${im.bairro}, ${im.cidade} - ${im.uf}`,
     sub: bairroInfo
       ? bairroInfo.desc
       : `Região consolidada de ${im.cidade}, com boa infraestrutura, comércio por perto e liquidez para uma compra segura.`,
@@ -631,10 +631,10 @@ export default function ImovelDetalhe() {
   // POIs específicos por bairro — nomeados com precisão
   const bairroPois = BAIRRO_POIS[im.bairro] || [
     { icon: 'pin', text: `Comércio completo no entorno de ${im.bairro}`, sub: 'Supermercados Bretas, farmácias São João, padarias e comércio do dia a dia concentrados nas ruas do bairro.' },
-    { icon: 'home', text: 'Escolas públicas e particulares a poucos minutos', sub: 'Opções de ensino fundamental e médio com transporte escolar disponível — desde colégios municipais a redes privadas de referência.' },
-    { icon: 'shield', text: 'Cobertura médica acessível', sub: `UAI, clínicas de especialidade e farmácias 24h num raio de 10 min de ${im.bairro} — atendimento pediátrico, clínico e de urgência disponíveis.` },
+    { icon: 'home', text: 'Escolas públicas e particulares a poucos minutos', sub: 'Opções de ensino fundamental e médio com transporte escolar disponível - desde colégios municipais a redes privadas de referência.' },
+    { icon: 'shield', text: 'Cobertura médica acessível', sub: `UAI, clínicas de especialidade e farmácias 24h num raio de 10 min de ${im.bairro} - atendimento pediátrico, clínico e de urgência disponíveis.` },
     { icon: 'pin', text: 'Transporte público e vias de acesso', sub: `Linhas de ônibus com integração ao terminal central de Uberlândia, e acesso direto às principais avenidas da cidade em minutos.` },
-    { icon: 'home', text: 'Liquidez e valorização comprovadas na região', sub: 'Bairro com histórico de procura consistente e valorização documentada — compra segura e boa liquidez na hora de revender.' },
+    { icon: 'home', text: 'Liquidez e valorização comprovadas na região', sub: 'Bairro com histórico de procura consistente e valorização documentada - compra segura e boa liquidez na hora de revender.' },
   ]
   prox.push(...bairroPois)
 
@@ -703,7 +703,7 @@ export default function ImovelDetalhe() {
                     <div className="det-apre-desc">
                       {paragrafos.map((p, i) => {
                         const isTopico = p.length < 70 && !/\.\s*$/.test(p.trim()) && !p.trim().endsWith(':') && (p.match(/,/g) || []).length < 2
-                        return <p key={i} className={isTopico ? 'det-apre-topico' : ''}>{isTopico ? `— ${p}` : p}</p>
+                        return <p key={i} className={isTopico ? 'det-apre-topico' : ''}>{isTopico ? `- ${p}` : p}</p>
                       })}
                     </div>
                   </div>
@@ -715,7 +715,7 @@ export default function ImovelDetalhe() {
           {/* Painel de info */}
           <aside className={`det-info det-info--claro${mounted ? ' det-mounted' : ''}`}>
             <Reveal>
-              <p className="det-local"><IconPin width={15} height={15} /> {im.cidade} — {im.uf} · Cód. {im.codigo}</p>
+              <p className="det-local"><IconPin width={15} height={15} /> {im.cidade} - {im.uf} · Cód. {im.codigo}</p>
               <h1 className="det-titulo">{`${im.tipo} à venda no ${im.bairro}, Uberlândia`}</h1>
               <p className="det-subtitulo">{subtituloImovel(im)}</p>
               {im.impulsionado && (
@@ -815,7 +815,7 @@ export default function ImovelDetalhe() {
                     </span>
                     <span className="det-tour360-badge">Exclusivo</span>
                   </button>
-                  <p className="det-tour360-nota">Tour 360° é um diferencial exclusivo que ofereço — pouquíssimos imóveis têm.</p>
+                  <p className="det-tour360-nota">Tour 360° é um diferencial exclusivo que ofereço - pouquíssimos imóveis têm.</p>
                   </>
                 )}
                 {im.tour3d && (
@@ -869,7 +869,7 @@ export default function ImovelDetalhe() {
 
               <div className="det-trust">
                 <IconShield width={20} height={20} />
-                <p><b>Atendimento direto comigo</b>, do primeiro contato à entrega das chaves. Te ajudo na visita, na negociação e em toda a documentação — compra segura e sem dor de cabeça.</p>
+                <p><b>Atendimento direto comigo</b>, do primeiro contato à entrega das chaves. Te ajudo na visita, na negociação e em toda a documentação - compra segura e sem dor de cabeça.</p>
               </div>
             </Reveal>
           </aside>
@@ -899,7 +899,7 @@ export default function ImovelDetalhe() {
 
         <div className="det-mapa">
           <h2 className="det-rel-titulo">Localização e proximidades</h2>
-          <p className="det-mapa-bairro"><IconPin width={18} height={18} /> {im.bairro}, {im.cidade} — {im.uf}</p>
+          <p className="det-mapa-bairro"><IconPin width={18} height={18} /> {im.bairro}, {im.cidade} - {im.uf}</p>
           <div className="det-mapa-grid">
             <figure className="det-mapa-col">
               <div className="det-mapa-frame">
@@ -930,7 +930,7 @@ export default function ImovelDetalhe() {
                   )
                 })}
               </ul>
-              <p className="det-mapa-aviso">Localização aproximada do bairro — o mapa mostra escolas, comércio e serviços ao redor. O endereço exato é informado no atendimento.</p>
+              <p className="det-mapa-aviso">Localização aproximada do bairro - o mapa mostra escolas, comércio e serviços ao redor. O endereço exato é informado no atendimento.</p>
             </div>
           </div>
         </div>

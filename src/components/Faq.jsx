@@ -30,7 +30,7 @@ export default function Faq() {
             <span className="eyebrow" style={{ justifyContent: 'center' }}>Tire suas dúvidas</span>
             <h2 className="section-title">Perguntas <em>frequentes</em></h2>
             <p className="section-sub" style={{ marginTop: 14 }}>
-              As 30 dúvidas que mais aparecem na hora de comprar — respondidas de forma direta. Ficou outra? É só me chamar.
+              As 30 dúvidas que mais aparecem na hora de comprar - respondidas de forma direta. Ficou outra? É só me chamar.
             </p>
           </div>
         </Reveal>

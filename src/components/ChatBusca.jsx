@@ -94,7 +94,7 @@ export default function ChatBusca() {
           <span className="cb-sucesso-ok">✓</span>
           <h2>{enviado.nome ? `Prontinho, ${enviado.nome}!` : 'Prontinho!'}</h2>
           <p>{top.length > 0 ? `Separei ${matches.length} ${matches.length === 1 ? 'imóvel' : 'imóveis'} com a sua cara. Já te mando os melhores aqui embaixo.` : 'Recebi tudo! No momento não achei um match exato, mas tenho acesso a muito mais na base e vou garimpar pra você.'}</p>
-          {link && <p className="cb-sucesso-link-aviso">Sua seleção fica <b>salva nesse link</b> — você pode curtir e descartar imóveis quando quiser, que eu vou afinando pra você.</p>}
+          {link && <p className="cb-sucesso-link-aviso">Sua seleção fica <b>salva nesse link</b> - você pode curtir e descartar imóveis quando quiser, que eu vou afinando pra você.</p>}
         </div>
 
         {link && (
@@ -172,7 +172,7 @@ export default function ChatBusca() {
                 <input className="cb-busca" value={buscaBairro} onChange={(e) => setBuscaBairro(e.target.value)} placeholder="Digite o bairro (ou escolha abaixo)" />
                 <div className="cb-chips cb-chips--wrap">
                   {bairrosVisiveis.map((o) => <button type="button" key={o} className={`cb-chip ${ans.bairros.includes(o) ? 'on' : ''}`} onClick={() => toggle('bairros', o)}>{o}</button>)}
-                  {bairrosVisiveis.length === 0 && <span className="cb-nada">Nenhum bairro com esse nome — tente outro.</span>}
+                  {bairrosVisiveis.length === 0 && <span className="cb-nada">Nenhum bairro com esse nome - tente outro.</span>}
                 </div>
                 <div className="cb-actions">
                   <button type="button" className="cb-skip" onClick={() => { setAns((a) => ({ ...a, bairros: [] })); avancar() }}>Tanto faz</button>
@@ -221,7 +221,7 @@ export default function ChatBusca() {
             )}
 
             {erro && <p className="cb-erro">{erro}</p>}
-            {atual.tipo === 'tel' && <p className="cb-lgpd">Seu contato é usado só pra te atender. Nada de spam — palavra do Vinícius.</p>}
+            {atual.tipo === 'tel' && <p className="cb-lgpd">Seu contato é usado só pra te atender. Nada de spam - palavra do Vinícius.</p>}
           </div>
         </motion.div>
       </AnimatePresence>

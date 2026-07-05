@@ -509,7 +509,7 @@ export default function Catalogo() {
           </span>
           <span className="cat-avaliar-txt">
             <b>Quanto fica a parcela desse imóvel?</b>
-            <i>Simule o <u>financiamento</u> em 30 segundos — parcela, renda necessária e custos. SAC e Price.</i>
+            <i>Simule o <u>financiamento</u> em 30 segundos - parcela, renda necessária e custos. SAC e Price.</i>
           </span>
           <span className="cat-avaliar-seta" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>

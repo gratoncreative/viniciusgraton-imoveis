@@ -76,7 +76,7 @@ export default function EstudoM2({ im, est, onClose, onLaudo }) {
           </div>
           <ul className="em2-gatilhos">
             <li><span className="em2-check">✓</span> Todos os {est.baseLabel} com preço, área e homogeneização detalhada</li>
-            <li><span className="em2-check">✓</span> Metodologia NBR 14653 — a mesma que bancos usam para aprovar financiamento</li>
+            <li><span className="em2-check">✓</span> Metodologia NBR 14653 - a mesma que bancos usam para aprovar financiamento</li>
             <li><span className="em2-check">✓</span> PDF em minutos · argumento técnico na hora de negociar o preço</li>
           </ul>
           <button className="em2-laudo em2-laudo--destaque" onClick={onLaudo}>
@@ -110,7 +110,7 @@ export default function EstudoM2({ im, est, onClose, onLaudo }) {
       </ul>
       <p className="em2-disc">
         Estudo comparativo de mercado, calculado pelo método ABNT NBR 14653 com homogeneização da amostra.
-        É uma estimativa de referência — não substitui um laudo com vistoria por profissional credenciado.
+        É uma estimativa de referência - não substitui um laudo com vistoria por profissional credenciado.
       </p>
       <a className="btn btn-gold em2-cta" href={linkWhatsApp(msg)} target="_blank" rel="noopener noreferrer">
         <IconWhats width={18} height={18} /> Falar sobre o preço com o Vinícius

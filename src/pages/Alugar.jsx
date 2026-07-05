@@ -30,8 +30,8 @@ export default function Alugar() {
 
   useSEO({
     title: bairroNome
-      ? `Imóveis para alugar em ${bairroNome}, Uberlândia — casas e apartamentos`
-      : 'Imóveis para alugar em Uberlândia — casas, apartamentos e kitnets',
+      ? `Imóveis para alugar em ${bairroNome}, Uberlândia - casas e apartamentos`
+      : 'Imóveis para alugar em Uberlândia - casas, apartamentos e kitnets',
     description: bairroNome
       ? `Casas e apartamentos para alugar em ${bairroNome}, Uberlândia. Filtre por preço, quartos e tipo e fale com o Vinícius Graton.`
       : 'Imóveis para alugar em Uberlândia: casas, apartamentos, kitnets e salas. Filtre por bairro, preço e quartos e fale direto com o Vinícius Graton.',
@@ -136,7 +136,7 @@ export default function Alugar() {
                 : <><b>{lista.length.toLocaleString('pt-BR')}</b> {lista.length === 1 ? 'imóvel' : 'imóveis'} para <em>alugar</em> em {bairroNome || 'Uberlândia'}</>}
             </h1>
             <p className="cat-head-sub">
-              Imóveis de locação da carteira da <b>Rotina Imobiliária</b>, com o meu atendimento do começo ao fim — análise de garantia (fiador, seguro-fiança ou caução) e agendamento de visita.
+              Imóveis de locação da carteira da <b>Rotina Imobiliária</b>, com o meu atendimento do começo ao fim - análise de garantia (fiador, seguro-fiança ou caução) e agendamento de visita.
             </p>
           </div>
         </Reveal>

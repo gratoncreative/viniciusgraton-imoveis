@@ -52,7 +52,7 @@ export const getBairroFotoInfo = (slug) => FOTOS[BAIRRO_FOTO[slug]] || FOTO_PADR
 export const BAIRROS_EDITORIAL = {
   'jardim-karaiba': {
     foto: FOTO.luxo,
-    intro: 'Considerado um dos endereços mais valorizados e desejados de Uberlândia, o Jardim Karaíba é um bairro residencial de alto padrão na Zona Sul, a poucos minutos do centro. Seu planejamento urbano arrojado — ruas largas, calçadas amplas e casas com grandes jardins frontais sem muros — o consolida como referência de paisagismo na cidade.',
+    intro: 'Considerado um dos endereços mais valorizados e desejados de Uberlândia, o Jardim Karaíba é um bairro residencial de alto padrão na Zona Sul, a poucos minutos do centro. Seu planejamento urbano arrojado - ruas largas, calçadas amplas e casas com grandes jardins frontais sem muros - o consolida como referência de paisagismo na cidade.',
     historia: 'Lançado em maio de 1980 pelo engenheiro Roberto Freire (Karaíba Imobiliária), o bairro nasceu sobre uma área de 237 mil m² e trouxe uma proposta de urbanismo inédita em Uberlândia, inspirada nos subúrbios norte-americanos, voltada a quem buscava qualidade de vida numa Zona Sul então afastada.',
     curiosidades: [
       'Foi um dos primeiros bairros do Brasil concebidos com casas sem muros e grandes jardins na frente',
@@ -78,7 +78,7 @@ export const BAIRROS_EDITORIAL = {
   'cidade-jardim': {
     foto: FOTO.arborizado,
     intro: 'O Cidade Jardim é um bairro arborizado e tranquilo da Zona Sul de Uberlândia, marcado por ruas largas, avenidas amplas e muitas áreas verdes, praças e parques. Com predomínio de casas de alto padrão, é procurado por quem valoriza qualidade de vida e contato com a natureza.',
-    historia: 'O bairro tem origem na Fazenda Guaribas, comprada em 1967 pelo banqueiro Aldorando Dias de Sousa. Em 1977 ele lançou o primeiro "projeto dirigido" de Uberlândia — lotes de 1.000 m² entregues já com água, esgoto, drenagem, energia e asfalto.',
+    historia: 'O bairro tem origem na Fazenda Guaribas, comprada em 1967 pelo banqueiro Aldorando Dias de Sousa. Em 1977 ele lançou o primeiro "projeto dirigido" de Uberlândia - lotes de 1.000 m² entregues já com água, esgoto, drenagem, energia e asfalto.',
     curiosidades: [
       'Foi o 1º "projeto dirigido" (loteamento com infraestrutura completa) de Uberlândia',
       'As ruas da primeira fase receberam nomes de pássaros, como a Avenida Uirapuru; depois vieram nomes de árvores e flores',
@@ -124,7 +124,7 @@ export const BAIRROS_EDITORIAL = {
   'santa-maria': {
     foto: FOTO.classico,
     intro: 'O Santa Maria é um bairro residencial da Zona Sul de Uberlândia, bem situado e com boa infraestrutura, que faz parte do conjunto de bairros valorizados que cresceram a partir das antigas fazendas da região. Oferece tranquilidade e proximidade dos principais polos de comércio e serviços do sul da cidade.',
-    historia: 'Tem origem na Fazenda da Barra do Rio Claro, na divisa entre Uberlândia e Uberaba — a mesma propriedade que deu origem a outros bairros da Zona Sul e Leste, como Vigilato Pereira e Santa Mônica.',
+    historia: 'Tem origem na Fazenda da Barra do Rio Claro, na divisa entre Uberlândia e Uberaba - a mesma propriedade que deu origem a outros bairros da Zona Sul e Leste, como Vigilato Pereira e Santa Mônica.',
     curiosidades: [
       'Surgiu a partir da Fazenda da Barra do Rio Claro',
       'Tem ligação histórica com a família Vigilato Pereira, que originou vários bairros',
@@ -171,7 +171,7 @@ export const BAIRROS_EDITORIAL = {
   },
   'patrimonio': {
     foto: FOTO.central,
-    intro: 'O Patrimônio é um dos bairros mais antigos e historicamente significativos de Uberlândia — o primeiro a surgir após o núcleo original da cidade, o Fundinho. Hoje, na região central/sul e vizinho de bairros nobres, combina forte carga histórica com excelente localização e proximidade do Praia Clube.',
+    intro: 'O Patrimônio é um dos bairros mais antigos e historicamente significativos de Uberlândia - o primeiro a surgir após o núcleo original da cidade, o Fundinho. Hoje, na região central/sul e vizinho de bairros nobres, combina forte carga histórica com excelente localização e proximidade do Praia Clube.',
     historia: 'Conhecido como Patrimônio de Nossa Senhora da Abadia, nasceu de uma doação de 12 alqueires de terra à igreja em 1883, pelo fazendeiro José Machado Rodrigues. Após a abolição (1888), tornou-se refúgio de ex-escravizados, e por anos foi considerado área marginalizada antes de se valorizar.',
     curiosidades: [
       'É o primeiro bairro surgido após o Fundinho, núcleo original da cidade',
@@ -208,7 +208,7 @@ export const BAIRROS_EDITORIAL = {
   'tabajaras': {
     foto: FOTO.central,
     intro: 'O Tabajaras é um bairro tradicional da região central de Uberlândia, ligado às origens da própria cidade, que cresceu em torno da capela fundadora do século XIX. Hoje oferece a praticidade de morar perto do centro em um bairro consolidado, com comércio e serviços à mão.',
-    historia: 'A área está ligada à capela fundadora de Uberlândia: a Capela de Nossa Senhora do Carmo, idealizada em 1846 em adobe e barro, em terras doadas à santa — patrimônio que corresponde à parte central da atual cidade. O nome "Tabajara" vem do tupi (taba = aldeia, jara = senhor): "senhores da aldeia".',
+    historia: 'A área está ligada à capela fundadora de Uberlândia: a Capela de Nossa Senhora do Carmo, idealizada em 1846 em adobe e barro, em terras doadas à santa - patrimônio que corresponde à parte central da atual cidade. O nome "Tabajara" vem do tupi (taba = aldeia, jara = senhor): "senhores da aldeia".',
     curiosidades: [
       'Ligado à área da capela fundadora de Uberlândia, do século XIX',
       'A Capela de Nossa Senhora do Carmo foi idealizada em 1846',
@@ -354,7 +354,7 @@ export const BAIRROS_EDITORIAL = {
   },
   'nossa-senhora-aparecida': {
     foto: FOTO.classico,
-    intro: 'O Nossa Senhora Aparecida (bairro Aparecida) é um dos bairros tradicionais e centrais de Uberlândia, próximo ao hipercentro e com forte vocação comercial. É uma região consolidada, de fácil acesso, que reúne moradia, comércio e serviços — inclusive uma das unidades da Rotina Imobiliária, na Avenida Afonso Pena.',
+    intro: 'O Nossa Senhora Aparecida (bairro Aparecida) é um dos bairros tradicionais e centrais de Uberlândia, próximo ao hipercentro e com forte vocação comercial. É uma região consolidada, de fácil acesso, que reúne moradia, comércio e serviços - inclusive uma das unidades da Rotina Imobiliária, na Avenida Afonso Pena.',
     historia: '',
     curiosidades: [
       'Bairro tradicional e central, conhecido como Aparecida',

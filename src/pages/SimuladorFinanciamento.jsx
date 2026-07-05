@@ -58,7 +58,7 @@ function MedidorRenda({ comprometimento }) {
     <div className="simf-medidor">
       <div className="simf-medidor-topo">
         <span>Comprometimento da renda</span>
-        <b style={{ color: cor }}>{c == null ? '—' : pct(c, 0)}</b>
+        <b style={{ color: cor }}>{c == null ? '-' : pct(c, 0)}</b>
       </div>
       <svg viewBox="0 0 100 10" className="simf-medidor-svg" preserveAspectRatio="none" aria-hidden="true">
         <rect x="0" y="3" width="100" height="4" rx="2" fill="rgba(10,14,22,0.10)" />
@@ -74,7 +74,7 @@ function MedidorRenda({ comprometimento }) {
         <p className={`simf-medidor-tag${aprovavel ? ' simf-medidor-tag--ok' : ' simf-medidor-tag--warn'}`}>
           {aprovavel
             ? 'Dentro do limite que os bancos costumam aceitar.'
-            : 'Acima de 30% da renda — os bancos tendem a recusar. Aumente a entrada, o prazo ou a renda informada.'}
+            : 'Acima de 30% da renda - os bancos tendem a recusar. Aumente a entrada, o prazo ou a renda informada.'}
         </p>
       )}
     </div>
@@ -210,7 +210,7 @@ export default function SimuladorFinanciamento() {
                   <CampoMoeda label="Entrada que você tem" valor={entradaReais} onChange={setEntradaReais} />
                   <CampoMoeda label="Quanto quer financiar" valor={financiarReais} onChange={setFinanciarReais} />
                 </div>
-                <p className="calc-nota" style={{ margin: '2px 0 0' }}>Dá um imóvel de <b>{brl(valorImovel)}</b> — entrada de {pct(entradaPctEff, 0)} do valor.</p>
+                <p className="calc-nota" style={{ margin: '2px 0 0' }}>Dá um imóvel de <b>{brl(valorImovel)}</b> - entrada de {pct(entradaPctEff, 0)} do valor.</p>
               </>
             )}
             {entradaAbaixoMin && <p className="simf-aviso">Para o {banco.nome}, a entrada mínima costuma ser {Math.round(100 - cotaMax)}% do imóvel (cota de até {Math.round(cotaMax)}%). Considere aumentar a entrada.</p>}
@@ -235,7 +235,7 @@ export default function SimuladorFinanciamento() {
                 </div>
               </label>
             </div>
-            {prazoLimitadoPorIdade && <p className="simf-aviso">Pela regra idade + prazo (teto de 80 anos e 6 meses), com {idade} anos o prazo máximo cai para {Math.floor(prazoMaxIdade / 12)} anos — já apliquei esse limite.</p>}
+            {prazoLimitadoPorIdade && <p className="simf-aviso">Pela regra idade + prazo (teto de 80 anos e 6 meses), com {idade} anos o prazo máximo cai para {Math.floor(prazoMaxIdade / 12)} anos - já apliquei esse limite.</p>}
 
             <div className="simf-toggle" role="tablist" aria-label="Sistema de amortização">
               {['SAC', 'Price'].map((s) => (
@@ -278,7 +278,7 @@ export default function SimuladorFinanciamento() {
               <div><span>Taxa mensal efetiva</span><b>{pct((r?.i || 0) * 100, 4)}</b></div>
             </div>
             {r?.cetAnual != null && (
-              <p className="simf-renda-min simf-cet">CET — Custo Efetivo Total.. <b>{pct(r.cetAnual * 100)} a.a.</b> <span>(juros + seguros MIP/DFI + taxas — é o custo real do crédito, acima da taxa de juros)</span></p>
+              <p className="simf-renda-min simf-cet">CET - Custo Efetivo Total.. <b>{pct(r.cetAnual * 100)} a.a.</b> <span>(juros + seguros MIP/DFI + taxas - é o custo real do crédito, acima da taxa de juros)</span></p>
             )}
 
             <MedidorRenda comprometimento={r?.comprometimento} />

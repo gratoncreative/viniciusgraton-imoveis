@@ -12,7 +12,7 @@ const PATH = '/lancamentos/louis-studios-umuarama'
 const OG = '/lancamentos/louis/og.jpg'
 
 const WA_MSG =
-  'Olá Vinícius! Vi a página do Louis (studios no Umuarama) e quero entender a oportunidade de investimento — rentabilidade, tabela de preços e disponibilidade. Pode me ajudar?'
+  'Olá Vinícius! Vi a página do Louis (studios no Umuarama) e quero entender a oportunidade de investimento - rentabilidade, tabela de preços e disponibilidade. Pode me ajudar?'
 
 // Cenários de locação por temporada — ESTIMATIVAS divulgadas no material da Select/Housi
 // (diária média ~R$200–300, conforme ocupação). Não são promessa de rentabilidade.
@@ -23,17 +23,17 @@ const CENARIOS = [
 ]
 
 const ANCORAS = [
-  { t: 'Hospital de Clínicas (HCU)', d: '3º maior hospital universitário do Brasil — mais de 3.000 funcionários e fluxo diário de pacientes, acompanhantes e profissionais da saúde.' },
-  { t: 'Hospital do Câncer de Uberlândia', d: 'Mais de 8.200 pacientes e cerca de 600 atendimentos por dia, vindos de mais de 75 cidades da região — demanda constante por estadia.' },
-  { t: 'Campus Umuarama — UFU', d: 'Cerca de 20 mil alunos e mais de 6.000 funcionários nas áreas de saúde e ciências biológicas. Demanda fixa de moradia estudantil.' },
-  { t: 'Polo Jornalístico', d: 'Por ser o bairro mais alto da cidade, concentra as emissoras de TV e rádio — região consolidada e de fácil acesso.' },
+  { t: 'Hospital de Clínicas (HCU)', d: '3º maior hospital universitário do Brasil - mais de 3.000 funcionários e fluxo diário de pacientes, acompanhantes e profissionais da saúde.' },
+  { t: 'Hospital do Câncer de Uberlândia', d: 'Mais de 8.200 pacientes e cerca de 600 atendimentos por dia, vindos de mais de 75 cidades da região - demanda constante por estadia.' },
+  { t: 'Campus Umuarama - UFU', d: 'Cerca de 20 mil alunos e mais de 6.000 funcionários nas áreas de saúde e ciências biológicas. Demanda fixa de moradia estudantil.' },
+  { t: 'Polo Jornalístico', d: 'Por ser o bairro mais alto da cidade, concentra as emissoras de TV e rádio - região consolidada e de fácil acesso.' },
 ]
 
 const PORQUES = [
-  { ico: 'M3 21h18M5 21V7l7-4 7 4v14M9 13h.01M9 17h.01M15 13h.01M15 17h.01', t: 'Demanda que não falta', d: 'Estudantes da UFU, profissionais e acompanhantes dos hospitais. Público que precisa morar perto — todos os meses do ano.' },
-  { ico: 'M20 7h-9M14 17H5M17 3v8M7 13v8M3 7a2 2 0 1 0 4 0 2 2 0 0 0-4 0M17 7a2 2 0 1 0 4 0 2 2 0 0 0-4 0', t: 'Gestão Housi, sem dor de cabeça', d: 'A Housi cuida da locação por temporada de ponta a ponta — anúncio, reservas, limpeza e repasse. Você recebe sem administrar nada.' },
-  { ico: 'M3 3v18h18M7 14l3-3 3 3 5-6', t: 'Locação por temporada autorizada', d: 'Locação de curta estadia (Airbnb) prevista em convenção do condomínio — modelo pensado desde o projeto para render mais que o aluguel tradicional.' },
-  { ico: 'M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6', t: 'Entrada acessível, no lançamento', d: 'A partir de R$ 38.700 de sinal e parcelamento direto com a construtora, comprando ainda na planta — o melhor preço da curva.' },
+  { ico: 'M3 21h18M5 21V7l7-4 7 4v14M9 13h.01M9 17h.01M15 13h.01M15 17h.01', t: 'Demanda que não falta', d: 'Estudantes da UFU, profissionais e acompanhantes dos hospitais. Público que precisa morar perto - todos os meses do ano.' },
+  { ico: 'M20 7h-9M14 17H5M17 3v8M7 13v8M3 7a2 2 0 1 0 4 0 2 2 0 0 0-4 0M17 7a2 2 0 1 0 4 0 2 2 0 0 0-4 0', t: 'Gestão Housi, sem dor de cabeça', d: 'A Housi cuida da locação por temporada de ponta a ponta - anúncio, reservas, limpeza e repasse. Você recebe sem administrar nada.' },
+  { ico: 'M3 3v18h18M7 14l3-3 3 3 5-6', t: 'Locação por temporada autorizada', d: 'Locação de curta estadia (Airbnb) prevista em convenção do condomínio - modelo pensado desde o projeto para render mais que o aluguel tradicional.' },
+  { ico: 'M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6', t: 'Entrada acessível, no lançamento', d: 'A partir de R$ 38.700 de sinal e parcelamento direto com a construtora, comprando ainda na planta - o melhor preço da curva.' },
 ]
 
 // Renders oficiais (extraídos do book da Select) — studios + lazer do prédio
@@ -59,9 +59,9 @@ function Stat({ k, v }) {
 
 export default function LancamentoLouis() {
   useSEO({
-    title: 'Louis Studios Umuarama — Investir ao lado da UFU e dos hospitais | Vinícius Graton',
+    title: 'Louis Studios Umuarama - Investir ao lado da UFU e dos hospitais | Vinícius Graton',
     description:
-      'Louis Living Experience: studios de 35 a 37 m² no Umuarama, Uberlândia — ao lado do Campus UFU, do Hospital do Câncer e do HCU. A partir de R$ 387.000, entrada de R$ 38.700, gestão Housi e locação por temporada. Renda estimada de R$ 4.000 a R$ 6.000/mês. Fale com o consultor.',
+      'Louis Living Experience: studios de 35 a 37 m² no Umuarama, Uberlândia - ao lado do Campus UFU, do Hospital do Câncer e do HCU. A partir de R$ 387.000, entrada de R$ 38.700, gestão Housi e locação por temporada. Renda estimada de R$ 4.000 a R$ 6.000/mês. Fale com o consultor.',
     path: PATH,
     image: OG,
   })
@@ -80,7 +80,7 @@ export default function LancamentoLouis() {
       '@graph': [
         {
           '@type': ['Product', 'Residence'],
-          name: 'Louis Living Experience — Studios no Umuarama',
+          name: 'Louis Living Experience - Studios no Umuarama',
           description:
             'Studios de 35 a 37 m² no bairro Umuarama, Uberlândia/MG, ao lado do Campus Umuarama da UFU, do Hospital do Câncer e do Hospital de Clínicas (HCU). Locação por temporada com gestão Housi.',
           image: [SITE + '/lancamentos/louis/tower.jpg', SITE + '/lancamentos/louis/og.jpg'],
@@ -99,7 +99,7 @@ export default function LancamentoLouis() {
             price: '387000',
             availability: 'https://schema.org/InStock',
             url: SITE + PATH,
-            seller: { '@type': 'RealEstateAgent', name: 'Vinícius Graton — Rotina Imobiliária' },
+            seller: { '@type': 'RealEstateAgent', name: 'Vinícius Graton - Rotina Imobiliária' },
           },
         },
         {
@@ -126,7 +126,7 @@ export default function LancamentoLouis() {
     if (!nome.trim() || !fone.trim()) return
     registrarLead({ cod: 'louis-umuarama', nome: nome.trim(), fone: fone.trim(), bairro: `Louis (${perfil})` })
     setEnviado(true)
-    const msg = `Olá Vinícius! Sou ${nome.trim()}. Tenho interesse no Louis (studios no Umuarama) — perfil: ${perfil}. Meu WhatsApp é ${fone.trim()}. Pode me passar a tabela e a disponibilidade?`
+    const msg = `Olá Vinícius! Sou ${nome.trim()}. Tenho interesse no Louis (studios no Umuarama) - perfil: ${perfil}. Meu WhatsApp é ${fone.trim()}. Pode me passar a tabela e a disponibilidade?`
     window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener')
   }
   const irForm = () => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -146,7 +146,7 @@ export default function LancamentoLouis() {
                 Studios para <em>investir</em>, ao lado da UFU e dos hospitais
               </h1>
               <p className="lou-lead">
-                Studios de 35 a 37 m² no bairro mais estratégico de Uberlândia para renda — colado no Campus Umuarama da UFU,
+                Studios de 35 a 37 m² no bairro mais estratégico de Uberlândia para renda - colado no Campus Umuarama da UFU,
                 no Hospital do Câncer e no Hospital de Clínicas. Locação por temporada com <b>gestão Housi</b>:
                 você investe, a Housi opera, você recebe.
               </p>
@@ -176,7 +176,7 @@ export default function LancamentoLouis() {
           <Reveal>
             <span className="eyebrow">Por que o Louis</span>
             <h2 className="lou-h2">Um investimento que se sustenta sozinho</h2>
-            <p className="lou-sub">Não é promessa — é localização. O entorno gera demanda de moradia o ano inteiro, e a operação é terceirizada para quem entende de temporada.</p>
+            <p className="lou-sub">Não é promessa - é localização. O entorno gera demanda de moradia o ano inteiro, e a operação é terceirizada para quem entende de temporada.</p>
           </Reveal>
           <div className="lou-porques">
             {PORQUES.map((p, i) => (
@@ -200,12 +200,12 @@ export default function LancamentoLouis() {
           <Reveal>
             <span className="eyebrow">Studios & lazer</span>
             <h2 className="lou-h2">Um produto desenhado para render</h2>
-            <p className="lou-sub">Studios prontos para morar ou alugar por temporada, com lazer completo no prédio — exatamente a estrutura que o hóspede procura e que mantém a ocupação alta o ano inteiro.</p>
+            <p className="lou-sub">Studios prontos para morar ou alugar por temporada, com lazer completo no prédio - exatamente a estrutura que o hóspede procura e que mantém a ocupação alta o ano inteiro.</p>
           </Reveal>
           <div className="lou-visuais">
             {VISUAIS.map((v) => (
               <figure key={v.img} className={`lou-vis ${v.wide ? 'lou-vis--wide' : ''}`}>
-                <img src={`/lancamentos/louis/${v.img}`} alt={`Louis Living Experience — ${v.t}`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
+                <img src={`/lancamentos/louis/${v.img}`} alt={`Louis Living Experience - ${v.t}`} loading="lazy" referrerPolicy="no-referrer" onError={onImgError} />
                 <figcaption>{v.t}</figcaption>
               </figure>
             ))}
@@ -220,7 +220,7 @@ export default function LancamentoLouis() {
           <Reveal>
             <span className="eyebrow">Veja por dentro</span>
             <h2 className="lou-h2">Vídeos e material completo</h2>
-            <p className="lou-sub">Um tour pelo Louis e pela região — e o book oficial da Select com plantas, tipologias e lazer, pra você analisar com calma.</p>
+            <p className="lou-sub">Um tour pelo Louis e pela região - e o book oficial da Select com plantas, tipologias e lazer, pra você analisar com calma.</p>
           </Reveal>
           <div className="lou-videos">
             <video className="lou-video lou-video--port" controls preload="metadata" playsInline poster="/lancamentos/louis/entrance.jpg">
@@ -251,7 +251,7 @@ export default function LancamentoLouis() {
           <Reveal>
             <span className="eyebrow eyebrow--gold">Cenários de locação por temporada</span>
             <h2 className="lou-h2 lou-h2--light">Quanto pode render por mês</h2>
-            <p className="lou-sub lou-sub--light">Estimativas divulgadas no material da Select/Housi, considerando diária média e taxa de ocupação. São cenários de referência — não garantia.</p>
+            <p className="lou-sub lou-sub--light">Estimativas divulgadas no material da Select/Housi, considerando diária média e taxa de ocupação. São cenários de referência - não garantia.</p>
           </Reveal>
           <div className="lou-cenarios">
             {CENARIOS.map((c, i) => (
@@ -289,7 +289,7 @@ export default function LancamentoLouis() {
           <Reveal delay={80}>
             <aside className="lou-cond-cta">
               <h3>Quer simular o seu caso?</h3>
-              <p>Eu monto a conta cheia — entrada, parcelas, financiamento e a estimativa de retorno — pra você decidir com clareza.</p>
+              <p>Eu monto a conta cheia - entrada, parcelas, financiamento e a estimativa de retorno - pra você decidir com clareza.</p>
               <a className="btn btn-gold" href={linkWhatsApp(WA_MSG)} target="_blank" rel="noopener noreferrer"><IconWhats /> Falar com o Vinícius</a>
               <button type="button" className="lou-btn-ghost lou-btn-ghost--dark" onClick={irForm}>Deixar meu contato <IconArrow /></button>
             </aside>
@@ -306,7 +306,7 @@ export default function LancamentoLouis() {
           <Reveal>
             <span className="eyebrow eyebrow--gold">Localização</span>
             <h2 className="lou-h2 lou-h2--light">No coração da economia do Umuarama</h2>
-            <p className="lou-end"><IconPin width={16} height={16} /> Rua Dr. Luiz Antônio Waack, 1.163 — Umuarama, Uberlândia/MG</p>
+            <p className="lou-end"><IconPin width={16} height={16} /> Rua Dr. Luiz Antônio Waack, 1.163 - Umuarama, Uberlândia/MG</p>
           </Reveal>
           <div className="lou-ancoras">
             {ANCORAS.map((a, i) => (
@@ -331,7 +331,7 @@ export default function LancamentoLouis() {
           </Reveal>
           <div className="lou-galeria">
             <figure className="lou-gal lou-gal--big"><img src="/lancamentos/louis/tower.jpg" alt="Render do edifício Louis" loading="lazy" /></figure>
-            <figure className="lou-gal"><img src="/lancamentos/louis/obra1.jpg" alt="Obra do Louis em andamento — fundação" loading="lazy" /><figcaption>Obras em andamento</figcaption></figure>
+            <figure className="lou-gal"><img src="/lancamentos/louis/obra1.jpg" alt="Obra do Louis em andamento - fundação" loading="lazy" /><figcaption>Obras em andamento</figcaption></figure>
             <figure className="lou-gal"><img src="/lancamentos/louis/obra2.jpg" alt="Obra do Louis em andamento" loading="lazy" /><figcaption>Fundação e contenção</figcaption></figure>
             <figure className="lou-gal"><img src="/lancamentos/louis/obra3.jpg" alt="Canteiro de obras do Louis" loading="lazy" /><figcaption>Canteiro de obras</figcaption></figure>
           </div>

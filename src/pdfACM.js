@@ -69,7 +69,7 @@ export async function gerarPdfACM(d) {
 
   // Aviso
   doc.setDrawColor(...RED).setLineWidth(2.4); doc.line(M, y, M, y + 56)
-  doc.setTextColor(...NAVY).setFont('helvetica', 'bold').setFontSize(10).text('Referência pela metragem — não avalia a edificação.', M + 14, y + 13)
+  doc.setTextColor(...NAVY).setFont('helvetica', 'bold').setFontSize(10).text('Referência pela metragem - não avalia a edificação.', M + 14, y + 13)
   doc.setTextColor(...INK).setFont('helvetica', 'normal').setFontSize(9)
   const aviso = doc.splitTextToSize(T('Baseado em preços anunciados de imóveis semelhantes (costumam ficar acima do fechado). Conservação, acabamento, reforma, andar e vista mudam o valor real. A avaliação formal é presencial: eu, Vinícius, vou até o imóvel.'), PW - 2 * M - 14)
   doc.text(aviso, M + 14, y + 30); y += 70

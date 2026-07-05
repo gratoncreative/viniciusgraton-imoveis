@@ -24,7 +24,7 @@ function Premissa({ label, val, set, min, max, step, suf }) {
 
 export default function Investir() {
   useSEO({
-    title: 'Onde investir em Uberlândia — rentabilidade do aluguel por bairro',
+    title: 'Onde investir em Uberlândia - rentabilidade do aluguel por bairro',
     description: 'Ranking de rentabilidade (yield) do aluguel por bairro de Uberlândia, com dados reais: aluguel/m², preço/m², apartamento × casa, retorno bruto e líquido por ano. Veja onde o aluguel rende mais e compare com o CDI.',
     path: '/investir',
   })
@@ -180,8 +180,8 @@ export default function Investir() {
               <summary>Como calculamos a rentabilidade</summary>
               <div className="investir-metodo-corpo">
                 <p>Cruzamos os imóveis <b>residenciais</b> (apartamento e casa) à venda e para alugar da carteira da Rotina Imobiliária, por bairro. Usamos a <b>mediana</b> do aluguel por m² e do preço de venda por m² (mais robusta que a média) e só publicamos bairros com amostra suficiente dos dois lados, descartando valores distorcidos (comercial, terreno, fora da faixa).</p>
-                <p><b>Yield bruto</b> = aluguel anual ÷ preço de compra. <b>Yield líquido</b> = aplica as premissas que você ajusta acima — vacância, custos/administração (sobre o aluguel) e IPTU (sobre o valor). Não inclui imposto de renda nem a <b>valorização</b> do imóvel, que é um ganho à parte (por isso bairros nobres rendem menos de aluguel, mas costumam valorizar mais). A <b>valorização do m²</b> por bairro passa a aparecer no ranking conforme acumulamos histórico de preços (a partir de ~5 meses de dados).</p>
-                <p>É uma estimativa de mercado a partir dos anúncios, atualizada automaticamente — não é recomendação de investimento. Para o número exato do seu caso, use a <Link to="/ferramentas">calculadora de rentabilidade</Link>.</p>
+                <p><b>Yield bruto</b> = aluguel anual ÷ preço de compra. <b>Yield líquido</b> = aplica as premissas que você ajusta acima - vacância, custos/administração (sobre o aluguel) e IPTU (sobre o valor). Não inclui imposto de renda nem a <b>valorização</b> do imóvel, que é um ganho à parte (por isso bairros nobres rendem menos de aluguel, mas costumam valorizar mais). A <b>valorização do m²</b> por bairro passa a aparecer no ranking conforme acumulamos histórico de preços (a partir de ~5 meses de dados).</p>
+                <p>É uma estimativa de mercado a partir dos anúncios, atualizada automaticamente - não é recomendação de investimento. Para o número exato do seu caso, use a <Link to="/ferramentas">calculadora de rentabilidade</Link>.</p>
               </div>
             </details>
 

@@ -320,7 +320,7 @@ const msgVideo = (p) => p < 25 ? 'Preparando as cenas…' : p < 50 ? 'Aplicando 
 //  - escalaExtra: amplia o resultado da IA de novo, no canvas (4× = IA 2× + 2× comum).
 const MODELO_IA = 'Xenova/swin2SR-lightweight-x2-64'
 const IA_MODOS = {
-  padrao:   { capGpu: 640, capCpu: 512, deblock: 0,   escalaExtra: 1, rotulo: 'Padrão',     sub: '2× · nítido',     desc: 'Recompõe nitidez e detalhe. Rápido e estável — bom pra quase tudo.' },
+  padrao:   { capGpu: 640, capCpu: 512, deblock: 0,   escalaExtra: 1, rotulo: 'Padrão',     sub: '2× · nítido',     desc: 'Recompõe nitidez e detalhe. Rápido e estável - bom pra quase tudo.' },
   whatsapp: { capGpu: 640, capCpu: 512, deblock: 0.7, escalaExtra: 1, rotulo: 'WhatsApp',   sub: '2× · anti-ruído', desc: 'Suaviza o “quadriculado” de JPEG/compressão antes de recompor o detalhe. Pra foto ruim de Zap.' },
   quatro:   { capGpu: 512, capCpu: 384, deblock: 0,   escalaExtra: 2, rotulo: 'Ampliar 4×', sub: '4× · foto pequena', desc: 'Recompõe com IA e ainda dobra o tamanho (4× no total). Pra foto muito pequena. Sai bem grande.' },
 }
@@ -561,7 +561,7 @@ export default function MelhorarFotos() {
   const pedirWorker = (msg, transfer) => new Promise((resolve, reject) => {
     const w = garantirWorker()
     const id = ++iaMsgIdRef.current
-    const to = setTimeout(() => { if (iaPendentesRef.current.delete(id)) reject(new Error('tempo esgotado — a IA demorou demais neste aparelho.')) }, 240000)
+    const to = setTimeout(() => { if (iaPendentesRef.current.delete(id)) reject(new Error('tempo esgotado - a IA demorou demais neste aparelho.')) }, 240000)
     iaPendentesRef.current.set(id, { resolve: (v) => { clearTimeout(to); resolve(v) }, reject: (e) => { clearTimeout(to); reject(e) } })
     w.postMessage({ ...msg, id }, transfer || [])
   })
@@ -631,7 +631,7 @@ export default function MelhorarFotos() {
     if (iaRealce) { const { angle, ...realce } = autoConfig(blended); return { ...ft, img: blended, iaCanvas, iaBase: base, s: { ...sBase, ...realce } } }
     return { ...ft, img: blended, iaCanvas, iaBase: base, s: sBase }
   }
-  const msgErroIA = (e) => 'A IA não rodou neste navegador (' + (e?.message || e) + '). Tente de novo ou use a ampliação 2× normal — também melhora bastante.'
+  const msgErroIA = (e) => 'A IA não rodou neste navegador (' + (e?.message || e) + '). Tente de novo ou use a ampliação 2× normal - também melhora bastante.'
   const melhorarIA = async () => {
     if (!foto || iaRodando) return
     setIa({ fase: 'carregando', msg: 'Preparando a IA… (a 1ª vez baixa o modelo)' })
@@ -814,7 +814,7 @@ export default function MelhorarFotos() {
       <div className="mf-intro">
         <h3>✨ Corrigir e embelezar fotos</h3>
         <p className="section-sub" style={{ margin: '6px 0 0' }}>
-          Suba as fotos (em lote). Eu corrijo a inclinação automaticamente, realço nitidez, cor e luz, e você baixa tudo pronto. Funciona no seu navegador — nada sai do computador até você baixar.
+          Suba as fotos (em lote). Eu corrijo a inclinação automaticamente, realço nitidez, cor e luz, e você baixa tudo pronto. Funciona no seu navegador - nada sai do computador até você baixar.
         </p>
       </div>
 
@@ -882,7 +882,7 @@ export default function MelhorarFotos() {
                 <div className={`mf-dropzone ${arrastando ? 'on' : ''}`} onClick={() => inputFotosRef.current?.click()} onDragOver={(e) => { e.preventDefault(); setArrastando(true) }} onDragLeave={() => setArrastando(false)} onDrop={onDrop}>
                   <svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" /></svg>
                   <b>Arraste as fotos do imóvel aqui</b>
-                  <span>ou clique para selecionar — quantas quiser, em lote</span>
+                  <span>ou clique para selecionar - quantas quiser, em lote</span>
                   <small>🔒 Tudo acontece no seu navegador. As fotos não saem do seu computador.</small>
                 </div>
               )}
@@ -906,7 +906,7 @@ export default function MelhorarFotos() {
                   <div className="mf-painel-vazio">
                     <span className="mf-painel-vazio-ico" aria-hidden="true">🛠️</span>
                     <b>Ferramentas prontas</b>
-                    <p>Ajustes, formato (deitar / em pé), IA, marca d'água, exportação e vídeo — tudo já carregado. Solte suas fotos pra começar a operar.</p>
+                    <p>Ajustes, formato (deitar / em pé), IA, marca d'água, exportação e vídeo - tudo já carregado. Solte suas fotos pra começar a operar.</p>
                   </div>
                 )}
                 {foto && aba === 'ajustes' && (
@@ -920,7 +920,7 @@ export default function MelhorarFotos() {
                       </div>
                     </div>
                     <div className="mf-grupo mf-grupo--destaque">
-                      <div className="mf-grupo-tit">📐 Formato — vertical ⇄ horizontal</div>
+                      <div className="mf-grupo-tit">📐 Formato - vertical ⇄ horizontal</div>
                       <p className="mf-nota" style={{ marginTop: 0 }}>Pra portais/sites que só aceitam foto <b>deitada</b>: escolha o formato e a foto é reenquadrada sem distorcer. Vale só pra esta foto ou pra <b>TODAS</b> de uma vez.</p>
                       <div className="mf-modo-sel mf-modo-sel--wrap">
                         {[['orig', 'Original'], ['16:9', 'Deitada 16:9'], ['4:3', 'Deitada 4:3'], ['1:1', 'Quadrada 1:1'], ['9:16', 'Em pé 9:16']].map(([v, l]) => (
@@ -988,10 +988,10 @@ export default function MelhorarFotos() {
                 {foto && aba === 'ia' && (
                   <div className="mf-grupo mf-grupo--ia">
                     <div className="mf-grupo-tit">🤖 Melhorar qualidade com IA <span className="mf-beta">Beta</span></div>
-                    <p className="mf-nota" style={{ marginTop: 0 }}>Pra fotos de baixa resolução/qualidade. Uma IA open-source recompõe o detalhe (não é só ampliar) e deixa a foto maior e mais nítida. Roda no seu navegador — a 1ª vez baixa o modelo (~alguns MB).</p>
+                    <p className="mf-nota" style={{ marginTop: 0 }}>Pra fotos de baixa resolução/qualidade. Uma IA open-source recompõe o detalhe (não é só ampliar) e deixa a foto maior e mais nítida. Roda no seu navegador - a 1ª vez baixa o modelo (~alguns MB).</p>
                     {modoCPU && !iaRodando && (
                       <p className="mf-nota" style={{ background: 'rgba(235,1,40,0.06)', border: '1px solid rgba(235,1,40,0.25)', borderRadius: 8, padding: '8px 10px' }}>
-                        🐢 Este navegador está sem aceleração por GPU (WebGPU) — a IA roda na <b>CPU</b> (mais lento, ~20–40s por foto). Use o Chrome/Edge atualizados pra ter GPU; ou use a <b>Ampliação 2×</b> na aba Exportar (instantânea). Recarregar a página tenta a GPU de novo.
+                        🐢 Este navegador está sem aceleração por GPU (WebGPU) - a IA roda na <b>CPU</b> (mais lento, ~20–40s por foto). Use o Chrome/Edge atualizados pra ter GPU; ou use a <b>Ampliação 2×</b> na aba Exportar (instantânea). Recarregar a página tenta a GPU de novo.
                       </p>
                     )}
                     <div className="mf-campo" style={{ marginTop: 4 }}>
@@ -1028,7 +1028,7 @@ export default function MelhorarFotos() {
                     {foto.iaCanvas && !iaRodando && (
                       <div style={{ marginTop: 10, borderTop: '1px solid var(--border)', paddingTop: 8 }}>
                         <Slider label="Intensidade da IA" val={iaForca} min={0} max={1} step={0.05} on={ajustarForcaIA} fmt={(v) => v >= 0.999 ? '100% (só IA)' : v <= 0.001 ? '0% (sem IA)' : Math.round(v * 100) + '%'} />
-                        <p className="mf-nota" style={{ marginTop: 2 }}>Mistura o resultado da IA com a foto original — baixe se ficar “artificial” demais. Atualiza esta foto na hora.</p>
+                        <p className="mf-nota" style={{ marginTop: 2 }}>Mistura o resultado da IA com a foto original - baixe se ficar “artificial” demais. Atualiza esta foto na hora.</p>
                       </div>
                     )}
                   </div>
@@ -1134,9 +1134,9 @@ export default function MelhorarFotos() {
                       </div>
                     </div>
                     <div>
-                      <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-mute)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 6 }}>🎵 Trilha sonora <span style={{ fontWeight: 400, textTransform: 'none' }}>(opcional — use uma trilha livre de direitos)</span></div>
+                      <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-mute)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 6 }}>🎵 Trilha sonora <span style={{ fontWeight: 400, textTransform: 'none' }}>(opcional - use uma trilha livre de direitos)</span></div>
                       <input type="file" accept="audio/*" disabled={!!video} onChange={(e) => { const f = e.target.files?.[0]; setTrilha(f || null) }} style={{ fontSize: '0.85rem' }} />
-                      {trilha && <p className="mf-nota" style={{ marginTop: 4 }}>✓ {trilha.name} — será mixada no vídeo (saída em WebM para compatibilidade com áudio).</p>}
+                      {trilha && <p className="mf-nota" style={{ marginTop: 4 }}>✓ {trilha.name} - será mixada no vídeo (saída em WebM para compatibilidade com áudio).</p>}
                       {trilha && <button type="button" className="admin-btn admin-btn--mini" style={{ marginTop: 4 }} onClick={() => setTrilha(null)}>✕ Remover trilha</button>}
                     </div>
                     <button className="btn btn-gold" onClick={gerarVideo} disabled={!!video}>
@@ -1151,7 +1151,7 @@ export default function MelhorarFotos() {
                         </div>
                       </div>
                     )}
-                    <p className="mf-nota">Slideshow com transição bem suave (dissolve esmaecendo). Usa a <b>mesma marca d'água</b> ({wm.on ? `modo ${wm.modo}` : 'ative na aba 💧 Marca'}) e o realce de cada foto. Gera em tempo real (~{Math.round(fotos.length * durSeg)}s). {trilha ? 'Com trilha sonora — sai em WebM.' : 'Sai em MP4 (ou WebM, conforme o navegador).'}</p>
+                    <p className="mf-nota">Slideshow com transição bem suave (dissolve esmaecendo). Usa a <b>mesma marca d'água</b> ({wm.on ? `modo ${wm.modo}` : 'ative na aba 💧 Marca'}) e o realce de cada foto. Gera em tempo real (~{Math.round(fotos.length * durSeg)}s). {trilha ? 'Com trilha sonora - sai em WebM.' : 'Sai em MP4 (ou WebM, conforme o navegador).'}</p>
                     {video?.fase === 'erro' && <p className="lead-erro">{video.msg}</p>}
                   </div>
                 )}
@@ -1163,10 +1163,10 @@ export default function MelhorarFotos() {
           {/* GUIA SEO DE NOME */}
           <div className="mf-seo-panel">
             <div className="mf-seo-panel-corpo">
-              <span className="mf-seo-titulo">💡 Nome ideal para salvar — impacto no SEO</span>
+              <span className="mf-seo-titulo">💡 Nome ideal para salvar - impacto no SEO</span>
               <p className="mf-seo-texto">
                 O Google indexa imagens pelo <strong>nome do arquivo</strong> como sinal de relevância. Em imóveis, nomes com tipo, bairro e cidade
-                aumentam a visibilidade no Google Imagens — canal onde compradores frequentemente iniciam a busca, antes mesmo de abrir um portal.
+                aumentam a visibilidade no Google Imagens - canal onde compradores frequentemente iniciam a busca, antes mesmo de abrir um portal.
                 Use hífens entre palavras, tudo em minúsculas e sem acentos.
               </p>
               <div className="mf-seo-modelo">

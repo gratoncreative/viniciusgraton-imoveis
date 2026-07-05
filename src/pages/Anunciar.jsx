@@ -80,7 +80,7 @@ const PlacaPreview = ({ modelo }) => {
 const ANU_HERO = 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1600&auto=format&fit=crop'
 const PASSOS = [
   { d: 'M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z', titulo: 'Cadastre em 2 minutos', txt: 'Preencha os dados e mande as fotos aqui mesmo. Sem custo e sem compromisso.' },
-  { d: 'M4 20V4M4 20h16M8 20v-7M13 20V9M18 20v-4', titulo: 'Eu avalio o valor justo', txt: 'Faço a avaliação real pelo mercado do seu bairro — preço certo pra vender no tempo certo.' },
+  { d: 'M4 20V4M4 20h16M8 20v-7M13 20V9M18 20v-4', titulo: 'Eu avalio o valor justo', txt: 'Faço a avaliação real pelo mercado do seu bairro - preço certo pra vender no tempo certo.' },
   { d: 'M3 11v2a1 1 0 0 0 1 1h2l4 4V6L6 10H4a1 1 0 0 0-1 1zM15 8a5 5 0 0 1 0 8M18 5a9 9 0 0 1 0 14', titulo: 'Divulgo pra vender', txt: 'No site, nas redes e direto pros clientes que já procuram um imóvel como o seu.' },
   { d: 'M12 2l8 4v5c0 5-3.5 9-8 11-4.5-2-8-6-8-11V6l8-4zM9 12l2 2 4-4', titulo: 'Cuido até as chaves', txt: 'Negociação e documentação conferidas, com a estrutura da Rotina Imobiliária.' },
 ]
@@ -94,7 +94,7 @@ const PIco = ({ d }) => <svg viewBox="0 0 24 24" width="26" height="26" fill="no
 
 export default function Anunciar() {
   useSEO({
-    title: 'Anuncie seu imóvel em Uberlândia — cadastre com o Vinícius Graton',
+    title: 'Anuncie seu imóvel em Uberlândia - cadastre com o Vinícius Graton',
     description: 'Quer vender ou alugar seu imóvel em Uberlândia? Cadastre aqui com fotos e detalhes. Eu avalio, faço a curadoria e cuido da divulgação e da venda com segurança.',
     path: '/anunciar',
   })
@@ -128,7 +128,7 @@ export default function Anunciar() {
   const enviar = async (e) => {
     e.preventDefault()
     if (!f.nome.trim() || !f.fone.trim()) { setValidMsg('Preencha seu nome e WhatsApp para eu te enviar a avaliação.'); return }
-    if (!f.bairro.trim()) { setValidMsg('Informe ao menos o bairro do imóvel — preciso dele para avaliar.'); return }
+    if (!f.bairro.trim()) { setValidMsg('Informe ao menos o bairro do imóvel - preciso dele para avaliar.'); return }
     if (!consent) { setValidMsg('Marque o consentimento para eu poder entrar em contato.'); return }
     setValidMsg('')
     setEstado('enviando')
@@ -144,7 +144,7 @@ export default function Anunciar() {
       const j = await r.json().catch(() => ({}))
       if (!r.ok || !j.ok) throw new Error('falha')
       setEstado('ok')
-      const resumo = `${f.tipo} para ${f.finalidade.toLowerCase()} em ${f.bairro || 'Uberlândia'}${f.preco ? ` — ${formatBRL(f.preco)}` : ''}`
+      const resumo = `${f.tipo} para ${f.finalidade.toLowerCase()} em ${f.bairro || 'Uberlândia'}${f.preco ? ` - ${formatBRL(f.preco)}` : ''}`
       const msg = `Olá Vinícius! Acabei de cadastrar meu imóvel no site para avaliação: ${resumo}. Enviei ${fotos.length} foto(s) e os detalhes completos. Placa VENDE-SE: ${placaTxt}. Meu nome é ${f.nome.trim()}, WhatsApp ${f.fone.trim()}.`
       window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener')
     } catch {
@@ -164,8 +164,8 @@ export default function Anunciar() {
             WhatsApp pra gente conversar.
           </p>
           <p className="section-sub" style={{ margin: '0 auto 28px' }}>
-            Aprovado, seu imóvel também <b>pode ser cadastrado e divulgado no site da Rotina Imobiliária</b> —
-            mais de 30 anos de mercado em Uberlândia — e em portais parceiros, ampliando o alcance e a credibilidade do seu anúncio.
+            Aprovado, seu imóvel também <b>pode ser cadastrado e divulgado no site da Rotina Imobiliária</b> -
+            mais de 30 anos de mercado em Uberlândia - e em portais parceiros, ampliando o alcance e a credibilidade do seu anúncio.
           </p>
           <Link className="btn btn-gold" to="/">Voltar ao início <IconArrow /></Link>
           <div className="anu-parceria">
@@ -195,7 +195,7 @@ export default function Anunciar() {
 
         <form className="lead-form anunciar-form" onSubmit={enviar}>
           <fieldset className="anu-grupo">
-            <legend className="anu-grupo-tit"><span className="anu-grupo-n">1</span> Seus dados <i>— pra eu te retornar</i></legend>
+            <legend className="anu-grupo-tit"><span className="anu-grupo-n">1</span> Seus dados <i>- pra eu te retornar</i></legend>
             <div className="anunciar-grid">
               <label><span>Seu nome *</span><input value={f.nome} onChange={set('nome')} required /></label>
               <label><span>WhatsApp (com DDD) *</span><input type="tel" inputMode="tel" value={f.fone} onChange={set('fone')} placeholder="(34) 9____-____" required /></label>
@@ -210,7 +210,7 @@ export default function Anunciar() {
               <label><span>Tipo de imóvel</span><select value={f.tipo} onChange={set('tipo')}>{TIPOS.map((o) => <option key={o}>{o}</option>)}</select></label>
               <label><span>Bairro</span><input value={f.bairro} onChange={set('bairro')} placeholder="Ex.: Santa Mônica" /></label>
               <label><span>Área (m²)</span><input inputMode="numeric" value={f.area} onChange={set('area')} placeholder="Ex.: 120" /></label>
-              <label className="anunciar-full"><span>Endereço <i>(rua e número — fica só comigo)</i></span><input value={f.endereco} onChange={set('endereco')} /></label>
+              <label className="anunciar-full"><span>Endereço <i>(rua e número - fica só comigo)</i></span><input value={f.endereco} onChange={set('endereco')} /></label>
             </div>
             <div className="anu-mini-grid">
               <label><span>Quartos</span><input inputMode="numeric" value={f.quartos} onChange={set('quartos')} placeholder="0" /></label>
@@ -236,7 +236,7 @@ export default function Anunciar() {
           </fieldset>
 
           <fieldset className="anu-grupo">
-          <legend className="anu-grupo-tit"><span className="anu-grupo-n">5</span> Fotos do imóvel <i>({fotos.length}/15 — quanto mais, melhor)</i></legend>
+          <legend className="anu-grupo-tit"><span className="anu-grupo-n">5</span> Fotos do imóvel <i>({fotos.length}/15 - quanto mais, melhor)</i></legend>
           <div className="anunciar-fotos">
             <div className="anunciar-thumbs">
               {fotos.map((src, i) => (
@@ -258,7 +258,7 @@ export default function Anunciar() {
           <fieldset className="anu-grupo placa-bloco">
             <legend className="anu-grupo-tit"><span className="anu-grupo-n">6</span> Placa “VENDE-SE” no seu imóvel <i>(grátis e opcional)</i></legend>
             <p className="placa-pitch">
-              Placa <b>vende</b>. Quem passa na rua, o vizinho, o porteiro — muita gente compra (ou indica alguém) ao ver uma placa profissional no imóvel. Ela transmite <b>credibilidade</b> e <b>autoridade</b>, mostra que o imóvel está <b>seriamente à venda</b> com um consultor de confiança e gera contatos diretos, somando à divulgação online. <b>A colocação é por minha conta — sem nenhum custo pra você.</b>
+              Placa <b>vende</b>. Quem passa na rua, o vizinho, o porteiro - muita gente compra (ou indica alguém) ao ver uma placa profissional no imóvel. Ela transmite <b>credibilidade</b> e <b>autoridade</b>, mostra que o imóvel está <b>seriamente à venda</b> com um consultor de confiança e gera contatos diretos, somando à divulgação online. <b>A colocação é por minha conta - sem nenhum custo pra você.</b>
             </p>
             <div className="placa-opt">
               <button type="button" className={`placa-toggle ${placa.quer ? 'on' : ''}`} onClick={() => setPlaca((s) => ({ ...s, quer: true }))}>Quero a placa (grátis)</button>

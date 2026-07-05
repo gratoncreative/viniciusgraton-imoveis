@@ -424,7 +424,7 @@ function desenharGuias(canvas, formato) {
   ctx.strokeRect(safe.side, safe.top, W - 2 * safe.side, (H - safe.bottom) - safe.top); ctx.setLineDash([])
   ctx.fillStyle = 'rgba(255,70,70,0.95)'; ctx.font = '600 26px Arial'; ctx.textAlign = 'center'
   if (formato === 'story') {
-    ctx.fillText('▲ zona do @perfil — evite texto', W / 2, safe.top - 16)
+    ctx.fillText('▲ zona do @perfil - evite texto', W / 2, safe.top - 16)
     ctx.fillText('▼ barra de resposta / botões', W / 2, H - safe.bottom + 36)
   } else { ctx.fillText('margem segura', W / 2, safe.top - 12) }
   ctx.restore()
@@ -442,7 +442,7 @@ function montarLegenda(im) {
   const bairroTag = '#' + String(im.bairro || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '')
   const tipoTag = /apart/i.test(im.tipo) ? '#apartamentoavenda' : /casa/i.test(im.tipo) ? '#casaavenda' : /lote|terreno/i.test(im.tipo) ? '#terrenoavenda' : '#imovelavenda'
   return [
-    `🏡 ${im.tipo} no ${im.bairro} — ${im.cidade}/${im.uf || 'MG'}`,
+    `🏡 ${im.tipo} no ${im.bairro} - ${im.cidade}/${im.uf || 'MG'}`,
     `💰 ${precoTxt(im)}`, '',
     specs.join('  ·  '),
     frases ? '\n' + frases : '', '',
@@ -638,7 +638,7 @@ export default function PostGen() {
             <div className="pg-bloco">
               <span className="pg-lbl">
                 Paleta de cores
-                {combos && <span className="pg-pal-sub"> — extraída da foto em destaque</span>}
+                {combos && <span className="pg-pal-sub"> - extraída da foto em destaque</span>}
               </span>
               <div className="pg-combos">
                 {combosVisiveis.map(combo => (

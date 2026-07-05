@@ -170,7 +170,7 @@ export default function FerramentaRotina() {
 
   return (
     <div className="rt-tool">
-      <p className="rt-intro">Cole o <b>código do imóvel da Rotina</b>, informe o <b>nome</b> e o <b>WhatsApp do cliente</b>. Eu busco o imóvel no site da Rotina, levanto os <b>benefícios reais num raio de 1km</b> e gero 5 mensagens de primeiro contato com gatilhos mentais — é só clicar e enviar.</p>
+      <p className="rt-intro">Cole o <b>código do imóvel da Rotina</b>, informe o <b>nome</b> e o <b>WhatsApp do cliente</b>. Eu busco o imóvel no site da Rotina, levanto os <b>benefícios reais num raio de 1km</b> e gero 5 mensagens de primeiro contato com gatilhos mentais - é só clicar e enviar.</p>
 
       <form className="rt-form" onSubmit={buscar}>
         <label className="calc-campo"><span>Nome do cliente</span><div className="calc-input"><input value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Ex.: Mariana" /></div></label>
@@ -195,7 +195,7 @@ export default function FerramentaRotina() {
           </div>
 
           <div className="rt-bloco">
-            <h5 className="rt-bloco-tit">📍 Benefícios da região (até 1km — dados reais)</h5>
+            <h5 className="rt-bloco-tit">📍 Benefícios da região (até 1km - dados reais)</h5>
             <ul className="rt-benef">{beneficios.map((b, i) => <li key={i}>{b}</li>)}</ul>
           </div>
 

@@ -24,7 +24,7 @@ function icone(children) {
 
 export default function EditarFotoPage() {
   useSEO({
-    title: 'Editar Foto de Imóvel com IA — Remover Objeto e Mobiliar',
+    title: 'Editar Foto de Imóvel com IA - Remover Objeto e Mobiliar',
     description: 'Remova objetos, mobilie ambientes vazios (virtual staging) e troque o céu de fotos de imóveis com IA. Ferramenta de Vinícius Graton, consultor da Rotina Imobiliária.',
     path: '/ferramentas/editar-foto',
     noindex: true,
@@ -158,7 +158,7 @@ export default function EditarFotoPage() {
           <div className="pdfjpg-header-icon">{icone(<><path d="M12 19l7-7 3 3-7 7-3-3z" /><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" /><path d="M2 2l7.586 7.586" /><circle cx="11" cy="11" r="2" /></>)}</div>
           <div>
             <h1 className="pdfjpg-titulo">Edite a foto <span className="pdfjpg-titulo-hl">com IA</span></h1>
-            <p className="pdfjpg-sub">Pinte uma área e a IA refaz só ela.. <strong>remover</strong> um objeto, <strong>mobiliar</strong> um ambiente vazio (virtual staging) ou <strong>trocar o céu</strong>. Use com bom senso — staging deve parecer crível, não perfeito demais.</p>
+            <p className="pdfjpg-sub">Pinte uma área e a IA refaz só ela.. <strong>remover</strong> um objeto, <strong>mobiliar</strong> um ambiente vazio (virtual staging) ou <strong>trocar o céu</strong>. Use com bom senso - staging deve parecer crível, não perfeito demais.</p>
           </div>
         </div>
 
@@ -229,7 +229,7 @@ export default function EditarFotoPage() {
 
         <div className="pdfjpg-privacy">
           {icone(<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />)}
-          A edição usa a IA da Cloudflare — a foto é enviada para processamento (não fica no dispositivo, diferente das outras ferramentas). Resolução de saída limitada pela IA; para staging de alto padrão, fale comigo.
+          A edição usa a IA da Cloudflare - a foto é enviada para processamento (não fica no dispositivo, diferente das outras ferramentas). Resolução de saída limitada pela IA; para staging de alto padrão, fale comigo.
         </div>
       </div>
     </main>

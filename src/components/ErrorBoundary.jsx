@@ -56,7 +56,7 @@ function ErroFallback({ chunk }) {
         <p className="section-sub" style={{ margin: '14px auto 18px', maxWidth: 520 }}>
           {chunk
             ? <>Acabaram de chegar <b>novos imóveis</b> e estou colocando tudo no ar pra você. Já vou recarregar pra pegar a versão nova.</>
-            : <>Tive um probleminha pra abrir isso. Toque em <b>Atualizar agora</b> — se persistir, me chame que eu resolvo rapidinho.</>}
+            : <>Tive um probleminha pra abrir isso. Toque em <b>Atualizar agora</b> - se persistir, me chame que eu resolvo rapidinho.</>}
         </p>
         {chunk && (
           <div className="erro-contador" role="status" aria-live="polite">

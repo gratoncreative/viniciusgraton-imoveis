@@ -32,7 +32,7 @@ export default function LancamentoBairro() {
 
   useSEO({
     title: bairroNome
-      ? `Lançamentos no ${bairroNome} — Uberlândia | Vinícius Graton`
+      ? `Lançamentos no ${bairroNome} - Uberlândia | Vinícius Graton`
       : 'Lançamentos por bairro em Uberlândia',
     description: bairroNome
       ? `${empreendimentos.length} empreendimento${empreendimentos.length !== 1 ? 's' : ''} no ${bairroNome} com curadoria de um consultor da Rotina Imobiliária. Veja plantas, vídeos e fale direto com o consultor.`

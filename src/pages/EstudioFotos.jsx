@@ -23,7 +23,7 @@ const FAQ = [
   },
   {
     q: 'As fotos são enviadas para algum servidor?',
-    a: 'Não. Todo o processamento acontece no seu próprio aparelho — as imagens não saem dele.',
+    a: 'Não. Todo o processamento acontece no seu próprio aparelho - as imagens não saem dele.',
   },
   {
     q: 'Dá para editar várias fotos de uma vez?',
@@ -35,13 +35,13 @@ const FAQ = [
   },
   {
     q: 'Serve para foto de celular, para anúncio e WhatsApp?',
-    a: 'Sim. É feito para fotos de imóvel — deixa o anúncio mais profissional e padronizado para portais, Instagram e WhatsApp.',
+    a: 'Sim. É feito para fotos de imóvel - deixa o anúncio mais profissional e padronizado para portais, Instagram e WhatsApp.',
   },
 ]
 
 export default function EstudioFotos() {
   useSEO({
-    title: 'Estúdio de fotos de imóvel — melhorar, endireitar e deixar na horizontal',
+    title: 'Estúdio de fotos de imóvel - melhorar, endireitar e deixar na horizontal',
     description: "Ferramenta grátis para melhorar fotos de imóvel: endireitar, ajustar luz e cor, converter foto vertical em horizontal, marca d'água em lote e exportar em JPG, PNG ou WebP. Roda no navegador, sem instalar nada e sem enviar suas fotos.",
     path: '/ferramentas/estudio-de-fotos',
     image: '/vinicius-graton.jpg',

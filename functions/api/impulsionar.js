@@ -103,7 +103,7 @@ export async function onRequestPost({ env, request }) {
   if (!token) return json({ ok: false, naoConfigurado: true })
   try {
     const pref = {
-      items: [{ title: `${plano.nome} — imóvel ${codigo}`, quantity: 1, unit_price: plano.preco, currency_id: 'BRL' }],
+      items: [{ title: `${plano.nome} - imóvel ${codigo}`, quantity: 1, unit_price: plano.preco, currency_id: 'BRL' }],
       external_reference: `${codigo}|${b.plano}`,
       back_urls: { success: `${SITE}/impulsionar?status=sucesso`, pending: `${SITE}/impulsionar?status=pendente`, failure: `${SITE}/impulsionar?status=falha` },
       auto_return: 'approved',

@@ -30,7 +30,7 @@ function montarDesc(im) {
   if (im.vagas > 0) parts.push(`${im.vagas} ${plural(im.vagas, 'vaga', 'vagas')}`)
   if (im.areaNum > 0) parts.push(`${im.areaNum} m²`)
   const specs = parts.join(' · ')
-  const loc = `${im.bairro || ''}${im.bairro && im.cidade ? ' — ' : ''}${im.cidade || 'Uberlândia'}/${im.uf || im.estado || 'MG'}`
+  const loc = `${im.bairro || ''}${im.bairro && im.cidade ? ' - ' : ''}${im.cidade || 'Uberlândia'}/${im.uf || im.estado || 'MG'}`
   const preco = im.valor ? `${im.valor} · ` : ''
   return `${preco}${specs}${specs && loc ? '  ·  ' : ''}${loc}`.trim()
 }
@@ -65,7 +65,7 @@ export async function onRequest(context) {
         const tipo = im.tipo || 'Imóvel'
         const bairro = im.bairro ? ` no ${im.bairro}` : ''
         const cidade = im.cidade || 'Uberlândia'
-        const preco = im.valor ? ` — ${im.valor}` : ''
+        const preco = im.valor ? ` - ${im.valor}` : ''
         titulo = `${tipo}${bairro}${preco} · ${cidade} | Rotina Imobiliária`
         desc = montarDesc(im)
         // Usa a foto de capa do imóvel (URL direta do CDN da Rotina — pública)

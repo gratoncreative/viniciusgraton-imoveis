@@ -72,7 +72,7 @@ export default function Galeria({ fotos = [], alt = '' }) {
             >
               <img
                 src={src}
-                alt={alt ? `${alt} — foto ${n + 1}` : `Foto ${n + 1}`}
+                alt={alt ? `${alt} - foto ${n + 1}` : `Foto ${n + 1}`}
                 loading={n === 0 ? 'eager' : 'lazy'}
                 fetchpriority={n === 0 ? 'high' : 'auto'}
                 decoding="async"

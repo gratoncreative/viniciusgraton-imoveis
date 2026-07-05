@@ -28,7 +28,7 @@ let _seq = 0
 
 export default function LevantamentoFotos() {
   useSEO({
-    title: 'Levantamento técnico de fotos por IA — acabamentos do imóvel',
+    title: 'Levantamento técnico de fotos por IA - acabamentos do imóvel',
     description: 'Envie as fotos do imóvel e a IA descreve cada uma: piso, revestimento, bancada/pedra, teto, esquadrias e estado de conservação. Baixe as fotos com a descrição. Ferramenta gratuita do Vinícius Graton.',
     path: '/ferramentas/levantamento-fotos',
   })
@@ -84,7 +84,7 @@ export default function LevantamentoFotos() {
       itens.forEach((it, k) => {
         const num = String(k + 1).padStart(2, '0')
         zip.file(`fotos/${num}-${it.nome}`, it.file)
-        L.push(`FOTO ${num} — ${it.res?.ambiente || 'Ambiente não identificado'}`)
+        L.push(`FOTO ${num} - ${it.res?.ambiente || 'Ambiente não identificado'}`)
         if (it.res?.resumo) L.push(it.res.resumo)
         ;(it.res?.itens || []).forEach((i) => L.push(`  ${i.rotulo}: ${i.valor}`))
         if (it.res?.estado) L.push(`  Estado: ${it.res.estado}`)
@@ -109,7 +109,7 @@ export default function LevantamentoFotos() {
           <span className="eyebrow" style={{ justifyContent: 'center' }}>Ferramenta gratuita</span>
           <h1 className="section-title">Levantamento técnico de <em>fotos</em></h1>
           <p className="section-sub" style={{ marginTop: 12 }}>
-            Envie as fotos do imóvel e a IA <b>lê foto por foto</b> e descreve os acabamentos — <b>piso, revestimento, pedra/bancada, teto, esquadrias</b> e o estado de conservação. A descrição aparece no rodapé de cada foto, e você baixa tudo (individual ou em lote .zip).
+            Envie as fotos do imóvel e a IA <b>lê foto por foto</b> e descreve os acabamentos - <b>piso, revestimento, pedra/bancada, teto, esquadrias</b> e o estado de conservação. A descrição aparece no rodapé de cada foto, e você baixa tudo (individual ou em lote .zip).
           </p>
         </div>
 
@@ -168,7 +168,7 @@ export default function LevantamentoFotos() {
           )}
 
           <p className="conv-privacidade" style={{ marginTop: 18 }}>
-            🔒 As fotos são usadas só pra essa leitura e não ficam salvas no servidor. A descrição é uma <b>análise de apoio</b> — confirme os materiais no imóvel.
+            🔒 As fotos são usadas só pra essa leitura e não ficam salvas no servidor. A descrição é uma <b>análise de apoio</b> - confirme os materiais no imóvel.
           </p>
         </div>
 

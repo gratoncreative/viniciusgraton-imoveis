@@ -21,13 +21,13 @@ const FORMAT_OPTIONS = [
 
 const FAQ_ITEMS = [
   { q: 'É realmente gratuito converter PDF para JPG?', a: 'Sim, 100% gratuito e sem limite de uso. Não há plano pago, assinatura ou marca d\'água nas imagens geradas. Nunca haverá.' },
-  { q: 'Meus arquivos são enviados para algum servidor?', a: 'Não. Todo o processamento é feito localmente no seu navegador usando PDF.js e Canvas API. Nenhum byte do seu arquivo sai do seu dispositivo — garantido.' },
-  { q: 'Posso converter só algumas páginas do PDF?', a: 'Sim. Depois de carregar o arquivo, mostramos uma prévia de todas as páginas. Você marca exatamente quais quer exportar — clicando nas miniaturas ou digitando um intervalo como "1, 3, 5-8". Só as páginas selecionadas são convertidas.' },
+  { q: 'Meus arquivos são enviados para algum servidor?', a: 'Não. Todo o processamento é feito localmente no seu navegador usando PDF.js e Canvas API. Nenhum byte do seu arquivo sai do seu dispositivo - garantido.' },
+  { q: 'Posso converter só algumas páginas do PDF?', a: 'Sim. Depois de carregar o arquivo, mostramos uma prévia de todas as páginas. Você marca exatamente quais quer exportar - clicando nas miniaturas ou digitando um intervalo como "1, 3, 5-8". Só as páginas selecionadas são convertidas.' },
   { q: 'Qual DPI escolher para impressão?', a: '300 DPI é o padrão da indústria para impressão de qualidade. Use 150 DPI para imagens digitais (e-mail, redes sociais) e 600 DPI para materiais gráficos de altíssima precisão como cartazes e banners.' },
   { q: 'Consigo converter um PDF com senha?', a: 'Não. Arquivos protegidos por senha não podem ser processados. Você precisará remover a proteção antes de converter.' },
   { q: 'Qual a diferença entre JPG, PNG e WebP?', a: 'JPG comprime bem e é universalmente compatível. PNG preserva qualidade sem perda e suporta fundo transparente. WebP oferece ótimo equilíbrio entre qualidade e tamanho de arquivo, mas pode não abrir em sistemas muito antigos.' },
   { q: 'Como baixo todas as páginas de uma vez?', a: 'Ao final da conversão, clique em "Baixar tudo em ZIP" e todas as imagens vêm num único arquivo compactado. Você também pode baixar cada página individualmente.' },
-  { q: 'Funciona no celular?', a: 'Sim! A ferramenta funciona em qualquer dispositivo com um navegador moderno — Android, iPhone, iPad, PC ou Mac. Não precisa instalar nada.' },
+  { q: 'Funciona no celular?', a: 'Sim! A ferramenta funciona em qualquer dispositivo com um navegador moderno - Android, iPhone, iPad, PC ou Mac. Não precisa instalar nada.' },
 ]
 
 function iconePdf(size = 28) {
@@ -144,7 +144,7 @@ export default function PdfParaJpgPage() {
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'BRL' },
       featureList: [
         '100% gratuito, sem cadastro',
-        'Processamento local — sem upload de arquivos',
+        'Processamento local - sem upload de arquivos',
         'Pré-visualização e seleção de páginas',
         'Resolução configurável: 150, 300 ou 600 DPI',
         'Formatos JPG, PNG e WebP',
@@ -407,7 +407,7 @@ export default function PdfParaJpgPage() {
               Seu PDF vira <span className="pdfjpg-titulo-hl">imagem nítida</span><br className="pdfjpg-titulo-br" /> em segundos
             </h1>
             <p className="pdfjpg-sub">
-              Converta cada página em <strong>JPG, PNG ou WebP</strong> de alta definição — direto no seu navegador, sem enviar nada a servidor. <strong>PDF para JPG grátis</strong>, ilimitado e sem marca d'água.
+              Converta cada página em <strong>JPG, PNG ou WebP</strong> de alta definição - direto no seu navegador, sem enviar nada a servidor. <strong>PDF para JPG grátis</strong>, ilimitado e sem marca d'água.
             </p>
             <div className="pdfjpg-trust-chips">
               <span className="pdfjpg-trust-chip pdfjpg-trust-chip--free">{iconeTag(13)} 100% Gratuito</span>
@@ -429,7 +429,7 @@ export default function PdfParaJpgPage() {
               <div className="pdfjpg-opcoes-group">
                 <span className="pdfjpg-opcoes-label">
                   Resolução
-                  <span className="pdfjpg-help" tabIndex={0} role="img" aria-label="O que é DPI? DPI (pontos por polegada) define a nitidez da imagem: quanto maior, mais detalhada e mais pesada." data-tip="DPI = pontos por polegada. Quanto maior, mais nítida e detalhada a imagem — e maior o arquivo.">?</span>
+                  <span className="pdfjpg-help" tabIndex={0} role="img" aria-label="O que é DPI? DPI (pontos por polegada) define a nitidez da imagem: quanto maior, mais detalhada e mais pesada." data-tip="DPI = pontos por polegada. Quanto maior, mais nítida e detalhada a imagem - e maior o arquivo.">?</span>
                 </span>
                 <div className="pdfjpg-dpi-row">
                   {DPI_OPTIONS.map(o => (
@@ -468,7 +468,7 @@ export default function PdfParaJpgPage() {
               {currentFmt.hasQuality && (
                 <div className="pdfjpg-opcoes-group" style={{ flexBasis: '100%' }}>
                   <span className="pdfjpg-opcoes-label">
-                    Qualidade {currentFmt.label} — <b>{Math.round(quality * 100)}%</b>
+                    Qualidade {currentFmt.label} - <b>{Math.round(quality * 100)}%</b>
                   </span>
                   <input
                     type="range" min="0.7" max="1" step="0.01"
@@ -575,7 +575,7 @@ export default function PdfParaJpgPage() {
             <div className="pdfjpg-progress-wrap">
               <ConversaoAnim />
               <div className="pdfjpg-progress-info">
-                <span>Convertendo página {currentPage} de {selected.size}{dpi === 600 ? ' (600 DPI — pode demorar)' : ''}…</span>
+                <span>Convertendo página {currentPage} de {selected.size}{dpi === 600 ? ' (600 DPI - pode demorar)' : ''}…</span>
                 <span className="pdfjpg-progress-pct">{progress}%</span>
               </div>
               <div className="pdfjpg-progress-bar">
@@ -633,7 +633,7 @@ export default function PdfParaJpgPage() {
         {/* ── nota de privacidade ── */}
         <div className="pdfjpg-privacy">
           {iconeShield(14)}
-          Seus arquivos nunca saem do seu dispositivo. Todo o processamento é feito localmente no navegador (PDF.js + Canvas API). Não temos servidor para receber uploads — é matematicamente impossível.
+          Seus arquivos nunca saem do seu dispositivo. Todo o processamento é feito localmente no navegador (PDF.js + Canvas API). Não temos servidor para receber uploads - é matematicamente impossível.
         </div>
 
         {/* ── Como funciona ── */}
@@ -643,7 +643,7 @@ export default function PdfParaJpgPage() {
             <div className="pdfjpg-how-step">
               <span className="pdfjpg-how-num">1</span>
               <h3>Selecione o PDF</h3>
-              <p>Arraste o arquivo para a área acima ou clique para abrir o seletor. Qualquer PDF funciona — sem limite de tamanho ou número de páginas.</p>
+              <p>Arraste o arquivo para a área acima ou clique para abrir o seletor. Qualquer PDF funciona - sem limite de tamanho ou número de páginas.</p>
             </div>
             <div className="pdfjpg-how-step">
               <span className="pdfjpg-how-num">2</span>
@@ -679,14 +679,14 @@ export default function PdfParaJpgPage() {
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
               </span>
               <h3>Alta resolução</h3>
-              <p>Até 600 DPI — qualidade profissional para impressão e design gráfico.</p>
+              <p>Até 600 DPI - qualidade profissional para impressão e design gráfico.</p>
             </div>
             <div className="pdfjpg-benefit">
               <span className="pdfjpg-benefit-ico">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
               </span>
               <h3>Você escolhe as páginas</h3>
-              <p>Pré-visualize e converta só os trechos que precisa — uma página ou o documento inteiro.</p>
+              <p>Pré-visualize e converta só os trechos que precisa - uma página ou o documento inteiro.</p>
             </div>
             <div className="pdfjpg-benefit">
               <span className="pdfjpg-benefit-ico">

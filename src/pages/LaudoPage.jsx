@@ -112,7 +112,7 @@ function CustoCard({ item }) {
       {economia > 0 && (
         <p className="ldr-custo-economia">
           Economia estimada vs. mercado: <strong>{formatPreco(economia)}</strong>
-          <span> — você paga {formatPreco(Math.round(item.m2))} vs {formatPreco(Math.round(item.m2Mediana))}/m² de referência</span>
+          <span> - você paga {formatPreco(Math.round(item.m2))} vs {formatPreco(Math.round(item.m2Mediana))}/m² de referência</span>
         </p>
       )}
     </div>
@@ -123,24 +123,24 @@ function CustoCard({ item }) {
 function gerarRazoes(item, top3) {
   const r = []
   if (item.abaixoMercado && item.pctAbaixo >= 5)
-    r.push({ tag: 'destaque', txt: `Preço ${item.pctAbaixo}% abaixo do valor médio do m² no ${item.bairro} — você paga menos que a maioria dos imóveis disponíveis na região.` })
+    r.push({ tag: 'destaque', txt: `Preço ${item.pctAbaixo}% abaixo do valor médio do m² no ${item.bairro} - você paga menos que a maioria dos imóveis disponíveis na região.` })
   if (item.temDesconto && item.pctDesconto >= 5)
-    r.push({ tag: 'positivo', txt: `Desconto real de ${item.pctDesconto}% em relação ao preço anterior registrado — oportunidade com dado concreto.` })
+    r.push({ tag: 'positivo', txt: `Desconto real de ${item.pctDesconto}% em relação ao preço anterior registrado - oportunidade com dado concreto.` })
   if (item.m2 && item.m2Mediana && item.m2 < item.m2Mediana * 0.92) {
     const econ = Math.round(item.m2Mediana - item.m2)
-    r.push({ tag: 'positivo', txt: `${formatPreco(econ)}/m² mais barato que a mediana do mercado — em ${item.area > 0 ? item.area + ' m²' : 'uma área generosa'}, isso representa economia real no total.` })
+    r.push({ tag: 'positivo', txt: `${formatPreco(econ)}/m² mais barato que a mediana do mercado - em ${item.area > 0 ? item.area + ' m²' : 'uma área generosa'}, isso representa economia real no total.` })
   }
   const maiorArea = top3.length > 1 && item.area > 0 && top3.every((x) => x.codigo === item.codigo || (x.area || 0) <= item.area)
   if (maiorArea)
-    r.push({ tag: 'positivo', txt: `Maior área entre as 3 opções (${item.area} m²) — mais espaço pelo custo total mais competitivo da seleção.` })
+    r.push({ tag: 'positivo', txt: `Maior área entre as 3 opções (${item.area} m²) - mais espaço pelo custo total mais competitivo da seleção.` })
   if (item.vagas >= 2)
-    r.push({ tag: 'positivo', txt: `${item.vagas} vagas de garagem — diferencial valorizado e que impacta positivamente a revenda.` })
+    r.push({ tag: 'positivo', txt: `${item.vagas} vagas de garagem - diferencial valorizado e que impacta positivamente a revenda.` })
   if (item.aceitaFinanciamento && item.aceitaFgts)
-    r.push({ tag: 'neutro', txt: 'Aceita financiamento bancário e FGTS — amplia as possibilidades de compra.' })
+    r.push({ tag: 'neutro', txt: 'Aceita financiamento bancário e FGTS - amplia as possibilidades de compra.' })
   else if (item.aceitaFinanciamento)
-    r.push({ tag: 'neutro', txt: 'Aceita financiamento bancário — você pode parcelar com taxas do banco.' })
+    r.push({ tag: 'neutro', txt: 'Aceita financiamento bancário - você pode parcelar com taxas do banco.' })
   if (item.suites >= 2)
-    r.push({ tag: 'positivo', txt: `${item.suites} suítes — conforto que eleva o padrão do imóvel e o diferencia no mercado.` })
+    r.push({ tag: 'positivo', txt: `${item.suites} suítes - conforto que eleva o padrão do imóvel e o diferencia no mercado.` })
   return r.slice(0, 4)
 }
 
@@ -239,15 +239,15 @@ function ImovelCard({ item, rank, top3 }) {
 
 /* ── comparativo com vencedores ─────────────────────────── */
 const COMP_ROWS = [
-  { label: 'Preço de venda',        key: 'preco',       fmt: (v) => v > 0 ? formatPreco(v) : '—',                        melhor: 'min' },
-  { label: 'Área total',            key: 'area',        fmt: (v) => v > 0 ? `${v} m²` : '—',                             melhor: 'max' },
-  { label: 'Valor do m²',           key: 'm2',          fmt: (v) => v > 0 ? formatPreco(Math.round(v)) : '—',             melhor: 'min' },
-  { label: 'M² vs. mercado',        key: 'diffPct',     fmt: (v) => v != null ? (v > 0 ? `+${v}%` : `${v}%`) : '—',     melhor: 'min', isMkt: true },
-  { label: 'Quartos',               key: 'quartos',     fmt: (v) => v > 0 ? String(v) : '—',                             melhor: 'max' },
-  { label: 'Suítes',                key: 'suites',      fmt: (v) => v > 0 ? String(v) : '—',                             melhor: 'max' },
-  { label: 'Vagas',                 key: 'vagas',       fmt: (v) => v > 0 ? String(v) : '—',                             melhor: 'max' },
-  { label: 'Financiamento / FGTS',  key: 'aceitaFinanciamento', fmt: (v, x) => [v && 'Financiamento', x.aceitaFgts && 'FGTS'].filter(Boolean).join(' · ') || '—', melhor: 'bool' },
-  { label: 'Custo total estimado',  key: 'preco',       fmt: (v) => v > 0 ? formatPreco(Math.round(v * 1.05)) : '—',     melhor: 'min', isCusto: true },
+  { label: 'Preço de venda',        key: 'preco',       fmt: (v) => v > 0 ? formatPreco(v) : '-',                        melhor: 'min' },
+  { label: 'Área total',            key: 'area',        fmt: (v) => v > 0 ? `${v} m²` : '-',                             melhor: 'max' },
+  { label: 'Valor do m²',           key: 'm2',          fmt: (v) => v > 0 ? formatPreco(Math.round(v)) : '-',             melhor: 'min' },
+  { label: 'M² vs. mercado',        key: 'diffPct',     fmt: (v) => v != null ? (v > 0 ? `+${v}%` : `${v}%`) : '-',     melhor: 'min', isMkt: true },
+  { label: 'Quartos',               key: 'quartos',     fmt: (v) => v > 0 ? String(v) : '-',                             melhor: 'max' },
+  { label: 'Suítes',                key: 'suites',      fmt: (v) => v > 0 ? String(v) : '-',                             melhor: 'max' },
+  { label: 'Vagas',                 key: 'vagas',       fmt: (v) => v > 0 ? String(v) : '-',                             melhor: 'max' },
+  { label: 'Financiamento / FGTS',  key: 'aceitaFinanciamento', fmt: (v, x) => [v && 'Financiamento', x.aceitaFgts && 'FGTS'].filter(Boolean).join(' · ') || '-', melhor: 'bool' },
+  { label: 'Custo total estimado',  key: 'preco',       fmt: (v) => v > 0 ? formatPreco(Math.round(v * 1.05)) : '-',     melhor: 'min', isCusto: true },
 ]
 
 function Comparativo({ top3 }) {
@@ -316,7 +316,7 @@ function ProximosPassos({ clienteNome }) {
       <h3 className="ldr-passos-titulo">Próximos passos</h3>
       <div className="ldr-passos-grid">
         {[
-          { n: '01', titulo: 'Agendar visitas', txt: 'Escolha os imóveis de interesse e agende as visitas — já organizamos o roteiro para você ver tudo em uma saída.' },
+          { n: '01', titulo: 'Agendar visitas', txt: 'Escolha os imóveis de interesse e agende as visitas - já organizamos o roteiro para você ver tudo em uma saída.' },
           { n: '02', titulo: 'Simular financiamento', txt: 'Se for financiar, fazemos a simulação comparativa entre bancos antes da visita, para você já chegar sabendo o que cabe.' },
           { n: '03', titulo: 'Fazer proposta', txt: 'Quando encontrar o certo, agimos rapidamente com proposta técnica para garantir a oportunidade.' },
         ].map(({ n, titulo, txt }) => (
@@ -551,7 +551,7 @@ export default function LaudoPage() {
         {top3.length > 0 && (
           <section className="ldr-sec">
             <div className="ldr-sec-label">Análise completa</div>
-            <h2 className="ldr-sec-titulo">Top 3 — Análise técnica detalhada</h2>
+            <h2 className="ldr-sec-titulo">Top 3 - Análise técnica detalhada</h2>
             <p className="ldr-sec-sub">Cada imóvel foi avaliado por m² vs. mercado, specs, oportunidade e custo total de aquisição.</p>
             <div className="ldr-cards-list">
               {top3.map((item, i) => <ImovelCard key={item.codigo} item={item} rank={i + 1} top3={top3}/>)}
@@ -563,7 +563,7 @@ export default function LaudoPage() {
         {top3.length > 1 && (
           <section className="ldr-sec">
             <div className="ldr-sec-label">Comparativo</div>
-            <h2 className="ldr-sec-titulo">Lado a lado — todos os critérios</h2>
+            <h2 className="ldr-sec-titulo">Lado a lado - todos os critérios</h2>
             <Comparativo top3={top3}/>
           </section>
         )}
@@ -590,7 +590,7 @@ export default function LaudoPage() {
           <p className="ldr-footer-legal">
             Este laudo tem caráter informativo e foi preparado com base na carteira ativa da Rotina Imobiliária em {emissao}.
             Os valores de m² são estimativas baseadas em preços anunciados (não escrituras/ITBI), ajustados pelo fator oferta (~10%).
-            Custos de ITBI e cartório são aproximações para Uberlândia/MG — confirme com contador ou Prefeitura.
+            Custos de ITBI e cartório são aproximações para Uberlândia/MG - confirme com contador ou Prefeitura.
             Documento válido até {expiracao}.
           </p>
         </footer>

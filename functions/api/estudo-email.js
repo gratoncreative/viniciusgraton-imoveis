@@ -63,7 +63,7 @@ export async function onRequestPost({ env, request }) {
     const body = {
       from: 'Vinícius Graton <laudo@viniciusgraton.com.br>',
       to: [email],
-      subject: `Seu estudo do valor do m² — Imóvel cód. ${codigo}`,
+      subject: `Seu estudo do valor do m² - Imóvel cód. ${codigo}`,
       html: `<div style="font-family:sans-serif;color:#1a1f2b;max-width:540px;margin:0 auto">
   <div style="background:#16181e;padding:20px 24px;border-radius:12px 12px 0 0">
     <p style="color:#ecc869;font-weight:700;font-size:13px;margin:0">VINÍCIUS GRATON · IMÓVEIS</p>

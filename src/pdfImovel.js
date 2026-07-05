@@ -123,12 +123,12 @@ export async function gerarPdfImovel(im, fotos, beneficios) {
     }
     if (im.codigo) { set(8, 'normal', [225, 230, 238]); doc.text(`Cód. ${im.codigo}`, PW - M, HEADER_H + 29, { align: 'right' }) }
     set(21, 'bold', [255, 255, 255]); doc.text(tituloTxt, M, HEADER_H + capaH - 36, { maxWidth: PW - 2 * M })
-    set(9.5, 'normal', [215, 221, 230]); doc.text(`${im.cidade || 'Uberlândia'} — ${im.uf || 'MG'}`, M, HEADER_H + capaH - 18)
+    set(9.5, 'normal', [215, 221, 230]); doc.text(`${im.cidade || 'Uberlândia'} - ${im.uf || 'MG'}`, M, HEADER_H + capaH - 18)
     y = HEADER_H + capaH + 22
   } else {
     y = CONTENT_TOP + 6
     set(22, 'bold', NAVY); doc.text(tituloTxt, M, y); y += 20
-    set(10, 'normal', SOFT); doc.text(`${im.cidade || 'Uberlândia'} — ${im.uf || 'MG'} · Cód. ${im.codigo}`, M, y); y += 24
+    set(10, 'normal', SOFT); doc.text(`${im.cidade || 'Uberlândia'} - ${im.uf || 'MG'} · Cód. ${im.codigo}`, M, y); y += 24
   }
 
   // Preço
@@ -205,7 +205,7 @@ export async function gerarPdfImovel(im, fotos, beneficios) {
   fill(...NAVY); doc.roundedRect(M, y, PW - 2 * M, ctaH, 10, 10, 'F')
   fill(...GOLD2); doc.roundedRect(M, y, PW - 2 * M, 4, 2, 2, 'F')
   set(17, 'bold', [255, 255, 255]); doc.text('Gostou? Vamos marcar uma visita.', PW / 2, y + 36, { align: 'center' })
-  set(9.5, 'normal', [205, 212, 222]); doc.text('Atendimento direto, do primeiro contato à entrega das chaves —', PW / 2, y + 54, { align: 'center' })
+  set(9.5, 'normal', [205, 212, 222]); doc.text('Atendimento direto, do primeiro contato à entrega das chaves -', PW / 2, y + 54, { align: 'center' })
   doc.text('te ajudo na visita, na negociação e na documentação.', PW / 2, y + 67, { align: 'center' })
   fill(...GOLD2); doc.roundedRect(PW / 2 - 92, y + 80, 184, 34, 6, 6, 'F')
   set(11, 'bold', NAVY); doc.text(`WhatsApp ${whats}`, PW / 2, y + 102, { align: 'center' })

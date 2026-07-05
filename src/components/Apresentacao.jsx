@@ -16,7 +16,7 @@ export default function Apresentacao() {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="apres-lead">
-              <b>Consultor de imóveis em Uberlândia</b>, da <b>Rotina Imobiliária</b>. Te ajudo a comprar, vender ou investir com segurança — da primeira conversa à chave.
+              <b>Consultor de imóveis em Uberlândia</b>, da <b>Rotina Imobiliária</b>. Te ajudo a comprar, vender ou investir com segurança - da primeira conversa à chave.
             </p>
           </Reveal>
           <Reveal delay={0.12}>
