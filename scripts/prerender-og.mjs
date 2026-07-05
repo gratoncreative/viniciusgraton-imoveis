@@ -1112,3 +1112,23 @@ ${imoveis.map(feedItem).join('\n')}
 `
 writeFileSync(resolve(DIST, 'feed.xml'), feedXml)
 console.log(`✓ feed.xml (portais): ${imoveis.length} imóveis (captações curadas)`)
+
+// ===== HOME: hero estático dentro do #root (FCP/LCP sem esperar o React) =====
+// PRECISA ser o último passo: os prerenders acima usam o baseHtml pristino (lido no topo);
+// aqui gravamos só o dist/index.html (home + fallback do SPA — o parcial tem guarda de rota).
+try {
+  const heroEstatico = readFileSync(resolve(ROOT, 'scripts/home-hero-estatico.html'), 'utf8')
+    .replace(/<!--[\s\S]*?-->/g, '') // o comentário é documentação do fonte, não vai pro HTML público
+    .trim()
+  const idx = readFileSync(resolve(DIST, 'index.html'), 'utf8')
+  if (idx.includes('<div id="root"></div>')) {
+    writeFileSync(resolve(DIST, 'index.html'), idx.replace('<div id="root"></div>', `<div id="root">${heroEstatico}</div>`))
+    console.log('✓ home: hero estático injetado no dist/index.html (pinta antes do React)')
+  } else {
+    // o hero estático virou parte do LCP da home: sumir em silêncio seria regressão muda
+    console.log('⚠ home: <div id="root"></div> não encontrado - hero estático NÃO injetado (falhando o build)')
+    process.exitCode = 1
+  }
+} catch (e) {
+  console.log('⚠ home: hero estático pulado:', e.message)
+}
