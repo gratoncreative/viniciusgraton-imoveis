@@ -46,15 +46,23 @@ export default defineConfig({
     assetsInlineLimit: 4096,
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          lenis: ['lenis'],
-          motion: ['framer-motion'],
-          search: ['fuse.js'],
-          pdf: ['jspdf'],
-          zip: ['jszip'],
-          playcanvas: ['playcanvas'],
+        // FUNÇÃO, e só pros PESADOS LAZY. A forma de objeto punha o preload-helper
+        // do Vite dentro do chunk playcanvas → modulepreload de 1,9MB em toda página
+        // (LCP mobile 9,9s). NÃO separar react/react-dom manualmente: a 1ª tentativa
+        // (chunk react + chunk helpers) criou ciclo de inicialização e QUEBROU a
+        // produção ("Cannot set properties of undefined (setting 'Children')").
+        // react/router/motion/lenis ficam no default do Rollup, que resolve a ordem.
+        manualChunks(id) {
+          // o preload-helper do Vite é importado por TODO lazy import; se ficar
+          // dentro de um chunk pesado (caía no playcanvas), o chunk pesado vira
+          // dependência de todos. Chunk próprio minúsculo resolve.
+          if (id.includes('vite/preload-helper') || id.includes('commonjsHelpers')) return 'preload'
+          if (!id.includes('node_modules')) return undefined
+          if (id.includes('playcanvas')) return 'playcanvas'
+          if (id.includes('jspdf')) return 'pdf'
+          if (id.includes('jszip')) return 'zip'
+          if (id.includes('fuse.js')) return 'search'
+          return undefined
         },
       },
     },
