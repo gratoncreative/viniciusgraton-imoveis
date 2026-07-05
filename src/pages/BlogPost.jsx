@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { getPost, POSTS } from '../blog'
 import CardPost from '../components/CardPost'
 import { linkWhatsApp } from '../data'
 import { registrarView } from '../engajamento'
@@ -26,8 +25,43 @@ const richText = (t) => String(t || '').split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\
 
 export default function BlogPost() {
   const { slug } = useParams()
-  const p = getPost(slug)
+  // O post vem por fetch de /blog-data/{slug}.json (gerado no build pelo prerender) —
+  // assim o bundle JS do blog não carrega os 189 posts (blog-extra.json, 1,4MB).
+  // undefined = carregando · null = não existe · objeto = post.
+  const [p, setP] = useState(undefined)
+  const [outros, setOutros] = useState([])
   const [views, setViews] = useState(0)
+
+  useEffect(() => {
+    let vivo = true
+    setP(undefined)
+    fetch(`/blog-data/${encodeURIComponent(slug || '')}.json`)
+      .then((r) => {
+        if (r.ok) return r.json()
+        // em produção o 404 é resposta definitiva (post não existe) — não baixa o fallback
+        if (r.status === 404 && !import.meta.env.DEV) return null
+        return Promise.reject(new Error('sem blog-data'))
+      })
+      .then((post) => { if (vivo) setP(post && post.slug ? post : null) })
+      .catch(() => {
+        // dev (vite serve só o public/, sem blog-data) ou falha de rede: cai pro módulo
+        // completo, que vira um chunk lazy próprio — em produção este caminho não roda.
+        import('../blog')
+          .then((m) => { if (vivo) setP(m.getPost(slug) || null) })
+          .catch(() => { if (vivo) setP(null) })
+      })
+    return () => { vivo = false }
+  }, [slug])
+
+  // "Continue lendo": usa o índice leve que a listagem do blog já usa (e já pode estar em cache)
+  useEffect(() => {
+    let vivo = true
+    fetch('/blog-preview.json')
+      .then((r) => (r.ok ? r.json() : []))
+      .then((lista) => { if (vivo && Array.isArray(lista)) setOutros(lista) })
+      .catch(() => {})
+    return () => { vivo = false }
+  }, [])
 
   // registra a leitura (contador real no KV)
   useEffect(() => {
@@ -36,8 +70,8 @@ export default function BlogPost() {
   }, [p?.slug])
 
   useSEO({
-    title: p ? `${p.titulo} | Blog Vinícius Graton` : 'Post não encontrado',
-    description: p ? p.resumo : 'Post não encontrado.',
+    title: p ? `${p.titulo} | Blog Vinícius Graton` : (p === null ? 'Post não encontrado' : 'Blog | Vinícius Graton'),
+    description: p ? p.resumo : 'Blog de imóveis de Uberlândia por Vinícius Graton.',
     path: `/blog/${slug || ''}`,
     image: p?.capa || undefined,
   })
@@ -75,6 +109,11 @@ export default function BlogPost() {
     return () => { document.getElementById('post-jsonld')?.remove() }
   }, [p])
 
+  // carregando: mesmo spinner das trocas de rota (o HTML pré-renderizado já mostrou o conteúdo pro leitor/robô)
+  if (p === undefined) {
+    return <div className="rota-load" aria-busy="true"><span className="rota-spinner" /></div>
+  }
+
   if (!p) {
     return (
       <main className="pagina section--light det-vazio">
@@ -86,7 +125,7 @@ export default function BlogPost() {
     )
   }
 
-  const outros = POSTS.filter((x) => x.slug !== p.slug).slice(0, 3)
+  const maisPosts = outros.filter((x) => x.slug !== p.slug).slice(0, 3)
   const dataFmt = new Date(p.data + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
 
   return (
@@ -160,10 +199,12 @@ export default function BlogPost() {
           Vai vender um imóvel em Uberlândia? Você também pode <a href="https://aicapitei.com.br" target="_blank" rel="noopener" style={{ color: '#1C2A44', fontWeight: 600 }}>anunciar grátis no aicapitei</a>, portal parceiro que divulga em todos os portais e dá cashback na venda.
         </p>
 
-        <div className="det-rel" style={{ marginTop: 50 }}>
-          <h2 className="det-rel-titulo">Continue lendo</h2>
-          <div className="post-grid">{outros.map((x) => <CardPost key={x.slug} p={x} />)}</div>
-        </div>
+        {maisPosts.length > 0 && (
+          <div className="det-rel" style={{ marginTop: 50 }}>
+            <h2 className="det-rel-titulo">Continue lendo</h2>
+            <div className="post-grid">{maisPosts.map((x) => <CardPost key={x.slug} p={x} />)}</div>
+          </div>
+        )}
       </div>
     </main>
   )

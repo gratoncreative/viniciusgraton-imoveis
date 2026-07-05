@@ -605,14 +605,19 @@ function renderPost(post) {
     .replace('<div id="root"></div>', `<div id="root">${slashHrefs(blogBodySeo(post))}</div>`)
 }
 let np2 = 0
+// blog-data/{slug}.json: o BlogPost.jsx busca o post por fetch em vez de embutir
+// os 189 posts no bundle JS (blog-extra.json tem 1,4MB — era o maior chunk do site).
+const blogDataDir = resolve(DIST, 'blog-data')
+mkdirSync(blogDataDir, { recursive: true })
 for (const post of blogTodos) {
   if (!post || !post.slug) continue
   const dir = resolve(DIST, 'blog', post.slug)
   mkdirSync(dir, { recursive: true })
   writeFileSync(resolve(dir, 'index.html'), renderPost(post))
+  writeFileSync(resolve(blogDataDir, `${post.slug}.json`), JSON.stringify(post))
   np2++
 }
-console.log(`✓ prerender blog: ${np2} posts (base + extra) em dist/blog/{slug}/index.html`)
+console.log(`✓ prerender blog: ${np2} posts (base + extra) em dist/blog/{slug}/index.html + blog-data/{slug}.json`)
 
 // páginas fixas com capa/OG própria (não a foto do Vinícius)
 const FAQ_ESTUDIO = [

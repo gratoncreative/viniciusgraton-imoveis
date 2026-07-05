@@ -52,6 +52,12 @@
 /blog-preview.json
   Cache-Control: public, max-age=3600, stale-while-revalidate=7200
 
+# Conteúdo completo de cada post (1 JSON por slug, gerado no build pelo prerender).
+# noindex: dado bruto; a página indexável é /blog/{slug}.
+/blog-data/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=7200
+  X-Robots-Tag: noindex
+
 # Novidades do dia: 30 min (sync diário às 05h). noindex: dado bruto, não página.
 /novidades.json
   Cache-Control: public, max-age=1800, stale-while-revalidate=3600
