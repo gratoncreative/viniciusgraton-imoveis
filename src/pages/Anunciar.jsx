@@ -273,7 +273,7 @@ export default function Anunciar() {
 
           <div className="det-trust" style={{ margin: '4px 0 0' }}>
             <IconShield width={20} height={20} />
-            <p><b>Fica tudo comigo, com segurança.</b> Seus dados e fotos vão direto para a minha avaliação — não são publicados automaticamente. Eu seleciono a dedo os imóveis que represento para garantir qualidade e excelência aos meus clientes.</p>
+            <p><b>Fica tudo comigo, com segurança.</b> Seus dados e fotos vão direto para a minha avaliação - não são publicados automaticamente. Eu seleciono a dedo os imóveis que represento para garantir qualidade e excelência aos meus clientes.</p>
           </div>
 
           {validMsg && <p className="anunciar-erro">{validMsg}</p>}
