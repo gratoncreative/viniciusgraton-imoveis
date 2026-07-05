@@ -9,7 +9,7 @@ import BackToTop from './components/BackToTop'
 import AppTabBar from './components/AppTabBar'
 import CadastroGate from './components/CadastroGate'
 import LancGate from './components/LancGate'
-import Home from './pages/Home'
+import HomeVG from './pages/HomeVG'
 import { CONFIG, linkWhatsApp, WA, aplicarOverridesImoveis } from './data'
 import { IconWhats } from './components/icons'
 import { lazyRetry } from './lazyRetry'
@@ -93,6 +93,9 @@ export default function App() {
   // barra de abas ou qualquer chrome do site. Só o editor, ocupando a tela toda.
   const modoEstudio = pathname.replace(/\/+$/, '') === '/ferramentas/estudio-de-fotos'
   const semChrome = modoApp || modoEstudio
+  // A Home nova (redesign Claude Design) traz o próprio chrome (navbar/rodapé/WhatsApp),
+  // então na rota "/" suprimimos o chrome global para não duplicar.
+  const rotaHome = pathname === '/'
   // Overrides dos imóveis: ao carregar, mutam IMOVEIS no lugar e disparam UM re-render.
   // NÃO usamos isso como `key` da árvore (remontar fechava modais/ferramentas no meio do uso).
   const [, aplicarOvRender] = useState(0)
@@ -181,12 +184,12 @@ export default function App() {
     <>
       <a href="#conteudo" className="skip-link">Pular para o conteúdo</a>
       {!semChrome && <ScrollProgress />}
-      {!semChrome && <Navbar />}
+      {!semChrome && !rotaHome && <Navbar />}
       <div id="conteudo" tabIndex={-1}>
         <ErrorBoundary>
           <Suspense fallback={<div className="rota-load" aria-busy="true"><span className="rota-spinner" /></div>}>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<HomeVG />} />
               <Route path="/imoveis" element={<Catalogo />} />
               <Route path="/alugar" element={CONFIG.alugarAtivo ? <Alugar /> : <Navigate to="/imoveis" replace />} />
               <Route path="/alugar/imovel/:codigo" element={CONFIG.alugarAtivo ? <AlugarDetalhe /> : <Navigate to="/imoveis" replace />} />
@@ -258,9 +261,9 @@ export default function App() {
           </Suspense>
         </ErrorBoundary>
       </div>
-      {!semChrome && <Footer />}
+      {!semChrome && !rotaHome && <Footer />}
 
-      {!semChrome && (
+      {!semChrome && !rotaHome && (
         <a className="wa-float" href={linkWhatsApp(WA.flutuante)} target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp">
           <IconWhats />
         </a>
