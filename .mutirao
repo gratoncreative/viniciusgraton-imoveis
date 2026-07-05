@@ -4,5 +4,6 @@
 # Ritmo por chamada continua gentil (4 por lote + pausas); o endpoint trava o teto em 500.
 # rodadas fica sob o limite de tempo do job (120 x ~25s ~= 50min).
 # rev: 4 (publicar acervo: dispara export + REPUBLICAR-LOTE dos pendentes; decisao do dono)
+# rev: 5 (05/07/2026: re-disparo do mutirao — capitacao estava parada em ~441/1348)
 teto=500
 rodadas=120
