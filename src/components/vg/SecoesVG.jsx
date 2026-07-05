@@ -25,7 +25,7 @@ export function HeroVG() {
   return (
     <section className="vgx-hero vgx-reveal">
       <div className="vgx-hero-media">
-        <div className="vgx-hero-photo" style={{ backgroundImage: "url('/casa-conceito.jpg')" }} />
+        <div className="vgx-hero-photo" />
         <div className="vgx-hero-sheen" />
       </div>
       <div className="vgx-hero-scrim" />
@@ -229,10 +229,7 @@ export function DepoimentosVG() {
 export function QuerVenderVG() {
   return (
     <section className="vgx-vender vgx-reveal">
-      <div
-        className="vgx-vender-band"
-        style={{ backgroundImage: "linear-gradient(rgba(33,43,61,0.85), rgba(33,43,61,0.85)), url('/casa-conceito.jpg')" }}
-      >
+      <div className="vgx-vender-band">
         <div className="vgx-vender-col">
           <span className="vgx-kicker vgx-kicker--gold">07 · Para proprietários</span>
           <h2>Quer vender seu imóvel pelo preço certo?</h2>

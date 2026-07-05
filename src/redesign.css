@@ -103,7 +103,11 @@
 /* ============================ HERO ============================ */
 .vgx-hero { position: relative; min-height: 660px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: var(--navy-900); }
 .vgx-hero-media { position: absolute; inset: 0; overflow: hidden; }
-.vgx-hero-photo { position: absolute; inset: 0; background-size: cover; background-position: center; animation: vgx-kenburns 26s ease-in-out infinite; }
+.vgx-hero-photo { position: absolute; inset: 0; background-image: url('/casa-conceito.webp'); background-size: cover; background-position: center; animation: vgx-kenburns 26s ease-in-out infinite; }
+/* celular baixa o recorte central leve (62KB vs 256KB do jpg) - LCP mobile */
+@media (max-width: 768px) {
+  .vgx-hero-photo { background-image: url('/casa-conceito-mobile.webp'); }
+}
 .vgx-hero-sheen { position: absolute; top: 0; bottom: 0; left: 0; width: 40%; background: linear-gradient(90deg, transparent, rgba(230,211,163,0.14), transparent); animation: vgx-sheen 7s ease-in-out infinite; pointer-events: none; }
 .vgx-hero-scrim { position: absolute; inset: 0; background: linear-gradient(rgba(33,43,61,0.72), rgba(33,43,61,0.9)); pointer-events: none; }
 .vgx-hero-grid { position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(201,169,98,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(201,169,98,0.07) 1px, transparent 1px); background-size: 88px 88px; animation: vgx-griddrift 32s linear infinite; }
@@ -222,7 +226,11 @@
 
 /* ============================ QUER VENDER ============================ */
 .vgx-vender { max-width: 1200px; margin: 0 auto; padding: 96px 28px 0; }
-.vgx-vender-band { background-size: cover; background-position: center; border-radius: 12px; padding: 72px 64px; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
+.vgx-vender-band { background-image: linear-gradient(rgba(33,43,61,0.85), rgba(33,43,61,0.85)), url('/casa-conceito.webp'); background-size: cover; background-position: center; border-radius: 12px; padding: 72px 64px; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
+/* celular reusa a imagem leve já baixada pro hero (zero byte extra) */
+@media (max-width: 768px) {
+  .vgx-vender-band { background-image: linear-gradient(rgba(33,43,61,0.85), rgba(33,43,61,0.85)), url('/casa-conceito-mobile.webp'); }
+}
 .vgx-vender-col { display: flex; flex-direction: column; gap: 12px; max-width: 560px; }
 .vgx-vender-col h2 { font-family: 'Instrument Sans', sans-serif; font-size: 34px; font-weight: 600; letter-spacing: -0.02em; color: var(--ivory); line-height: 1.15; }
 .vgx-vender-col p { font-size: 16px; line-height: 1.65; color: #cdd4e0; }
