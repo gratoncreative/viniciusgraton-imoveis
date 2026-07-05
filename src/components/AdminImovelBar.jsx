@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { formatPreco } from '../data'
 import { subirParaDrive, driveConfigurado } from '../gdrive'
 import { importRetry } from '../lazyRetry'
+import '../styles/admin.css'
 
 const LSK = 'vg_admin_token'
 

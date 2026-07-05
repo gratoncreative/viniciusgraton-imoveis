@@ -4,6 +4,7 @@ import Reveal from './Reveal'
 import { CONFIG, linkWhatsApp, WA } from '../data'
 import { registrarLead } from '../engajamento'
 import { IconWhats, IconPhone, IconMail, IconPin, IconInsta, IconArrow } from './icons'
+import '../styles/lead.css'
 
 function fmtPhone(w) {
   const n = w.replace(/\D/g, '')

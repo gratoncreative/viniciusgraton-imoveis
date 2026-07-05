@@ -6,6 +6,10 @@ import { CONDOMINIOS } from '../empreendimentos'
 import { useSEO } from '../useSEO'
 import { onCondImgError, CAPA_COND_PADRAO } from '../img'
 import { IconArrow, IconPin, IconShield, IconSearch } from '../components/icons'
+import '../styles/condominios.css'
+import '../styles/detalhe.css'
+import '../styles/condominio.css'
+import '../styles/construtoras.css'
 
 const norm = (s = '') => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim()
 const zonaDe = (r = '') => /sul/i.test(r) ? 'Zona Sul' : (/leste|marileusa/i.test(r) ? 'Zona Leste' : (/represa|miranda/i.test(r) ? 'Represa de Miranda' : (/oeste/i.test(r) ? 'Zona Oeste' : 'Outras regiões')))

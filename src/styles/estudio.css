@@ -1,0 +1,80 @@
+/* CSS da página/feature "estudio" — extraído do index.css (fase 2) para carregar só na rota que usa.
+   Regras 🔒 (regra de ouro / ferramentas / anunciar) seguem no index.css e vencem por !important. */
+.estudio-editor-wrap { max-width: 1480px; margin: 22px auto 0; padding: 0 clamp(12px, 3vw, 28px); }
+.estudio-faq { max-width: 820px; margin: 44px auto 0; }
+.estudio-faq-lista { display: grid; gap: 14px; margin-top: 16px; }
+.estudio-faq-item { border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; background: #fff; }
+.estudio-faq-item h3 { font-family: var(--font-head); font-size: 1rem; color: #42261c; margin: 0 0 6px; }
+.estudio-faq-item p { font-size: 0.92rem; color: #5b606a; line-height: 1.55; margin: 0; }
+
+/* — fase 3 — */
+.estudio-app .mf-edit:not(.mf-edit--vazio) .mf-preview {
+  background: #212b3d;
+  border: 1px solid #1b2433;
+  border-radius: 16px;
+  padding: clamp(16px, 2.2vw, 30px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 380px;
+}
+.estudio-app .mf-edit:not(.mf-edit--vazio) .mf-preview .mf-canvas { box-shadow: 0 20px 50px -24px rgba(33, 43, 61, 0.55); }
+.estudio-app .mf-edit:not(.mf-edit--vazio) .mf-preview-acoes { justify-content: center; margin-top: 14px; }
+.estudio-app .mf-edit:not(.mf-edit--vazio) .mf-preview-acoes .admin-btn { background: rgba(255,255,255,0.10); color: #fff; border: 1px solid rgba(255,255,255,0.22); }
+.estudio-app .mf-edit:not(.mf-edit--vazio) .mf-preview-acoes .admin-btn:hover { background: rgba(255,255,255,0.18); }
+.estudio-app .mf-edit:not(.mf-edit--vazio) .mf-preview .mf-check { color: #d6dae2; }
+.estudio-app .mf-edit:not(.mf-edit--vazio) .mf-grade span { border-color: rgba(255,255,255,0.25) !important; }
+.estudio-app .mf-zoom-btn, .estudio-app .mf-zoom-reset { background: rgba(255,255,255,0.12); color: #fff; border-color: rgba(255,255,255,0.25); }
+.estudio-app .mf-zoom-btn:hover, .estudio-app .mf-zoom-reset:hover { background: rgba(255,255,255,0.22); }
+.estudio-app .mf-dica-arraste { color: #aeb6c2; }
+.estudio-app { position: fixed; inset: 0; display: flex; flex-direction: column; background: #f6f3f3; overflow: hidden; z-index: 50; }
+.estudio-app-bar { flex-shrink: 0; height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 clamp(12px, 2vw, 22px); background: #fff; border-bottom: 1px solid #E6DED7; }
+.estudio-app-tit { font-family: var(--font-head); font-weight: 700; font-size: 1.08rem; color: #42261c; }
+.estudio-app-tit em { font-style: italic; color: #C6A15B; }
+.estudio-app-back, .estudio-app-wa { display: inline-flex; align-items: center; gap: 7px; font-size: 0.9rem; font-weight: 700; padding: 8px 15px; border-radius: 100px; text-decoration: none; cursor: pointer; font-family: var(--font-head); }
+.estudio-app-back { color: #1C2A44; border: 1px solid #E6DED7; background: #fff; }
+.estudio-app-back:hover { border-color: #1C2A44; }
+.estudio-app-wa { background: #EB0128; color: #fff; }
+.estudio-app-wa:hover { background: #C20020; }
+.estudio-app-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; }
+.estudio-app-load { padding: 48px 20px; text-align: center; color: #5b626e; }
+.estudio-app .mf-intro { display: none; }
+.estudio-app .mf { background: transparent; border: none; border-radius: 0; padding: 10px clamp(12px, 2vw, 20px) 8px; box-shadow: none; }
+.estudio-app .mf-upload { margin-bottom: 8px; }
+.estudio-app .mf-edit, .estudio-app .mf-edit--vazio {
+  grid-template-columns: clamp(420px, 40vw, 600px) minmax(0, 1fr);
+  grid-template-areas: "painel canvas" "painel tiras";
+  gap: 10px 14px; align-items: stretch;
+}
+.estudio-app .mf-preview { grid-area: canvas; position: static; }
+.estudio-app .mf-canvas { max-height: 66vh; }
+.estudio-app .mf-tiras { grid-area: tiras; flex-direction: row; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; max-height: none; position: static; top: auto; gap: 6px; padding: 2px 0; }
+.estudio-app .mf-tira { width: 58px; flex: 0 0 auto; aspect-ratio: 4 / 3; }
+.estudio-app .mf-painel { grid-area: painel; display: flex; flex-direction: row; align-items: stretch; border: none; background: transparent; overflow: visible; max-height: none; border-radius: 0; }
+.estudio-app .mf-abas { flex-direction: column; flex-wrap: nowrap; width: 82px; flex: 0 0 82px; gap: 4px; padding: 10px 7px; background: #fff; border: 1px solid var(--border); border-right: none; border-radius: 14px 0 0 14px; align-self: stretch; }
+.estudio-app .mf-aba { width: 100%; flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 6px 2px; border: none !important; border-radius: 12px; font-family: var(--font-body); font-size: 0.63rem; font-weight: 600; line-height: 1.15; text-align: center; white-space: normal; color: #6a6f79; background: transparent !important; box-shadow: none !important; cursor: pointer; }
+.estudio-app .mf-aba .mf-aba-ico { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; background: #F1EEE8; color: #1C2A44; font-size: 0; transition: background .16s ease, color .16s ease, transform .12s ease; }
+.estudio-app .mf-aba:hover:not(.on) { color: #1C2A44; }
+.estudio-app .mf-aba:hover:not(.on) .mf-aba-ico { background: #E7E2D8; }
+.estudio-app .mf-aba:active .mf-aba-ico { transform: scale(0.93); }
+html[data-theme="claro"] .estudio-app .mf-aba.on { background: transparent !important; border-color: transparent !important; color: #1C2A44; font-weight: 700; }
+.estudio-app .mf-aba.on .mf-aba-ico { background: #1C2A44; color: #fff; box-shadow: 0 6px 16px -8px rgba(28,42,68,0.6); }
+.estudio-app .mf-aba--rem .mf-aba-ico { background: #FBEAEA; color: #C20020; }
+.estudio-app .mf-aba--rem:hover .mf-aba-ico { background: #F7D9D9; }
+.estudio-app .mf-abas-div { width: auto; height: 1px; align-self: stretch; margin: 5px 6px; }
+.estudio-app .mf-aba-conteudo { flex: 1 1 auto; min-width: 0; columns: auto; column-gap: 0; padding: 16px; background: #fff; border: 1px solid var(--border); border-radius: 0 14px 14px 0; max-height: calc(100dvh - 150px); overflow-y: auto; }
+.estudio-app .mf-aba-conteudo > .mf-grupo { margin: 0 0 12px; }
+.estudio-app .mf-grupo { padding: 10px 11px; gap: 6px; border-radius: 10px; }
+.estudio-app .mf-grupo-tit { font-size: 0.72rem; padding-bottom: 6px; margin-bottom: 0; }
+.estudio-app .mf-slider { gap: 1px; font-size: 0.8rem; }
+.estudio-app .mf-modo-btn { padding: 6px 6px; font-size: 0.76rem; }
+.estudio-app .mf-botoes-col { gap: 6px; }
+.estudio-app .mf-painel-vazio { padding: 22px 14px; }
+@media (max-width: 920px) {
+.estudio-app .mf-edit, .estudio-app .mf-edit--vazio { grid-template-columns: 1fr; grid-template-areas: "painel" "canvas" "tiras"; }
+.estudio-app .mf-painel { flex-direction: column; }
+.estudio-app .mf-abas { flex-direction: row; flex-wrap: wrap; width: auto; flex: none; border: 1px solid var(--border); border-radius: 14px 14px 0 0; border-bottom: none; }
+.estudio-app .mf-abas .mf-aba { flex: 1 1 auto; }
+.estudio-app .mf-aba-conteudo { width: auto; border-radius: 0 0 14px 14px; max-height: none; }
+}
+@media (max-width: 600px) {
+.estudio-app-tit { display: none; }
+}

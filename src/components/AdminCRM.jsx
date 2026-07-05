@@ -2,6 +2,11 @@ import { useEffect, useState, useMemo } from 'react'
 import { IMOVEIS, BAIRROS_TODOS, filtrarParaCliente, formatPreco, getImovel, oportunidade, ehEsquina, fotosDe } from '../data'
 import InputMoeda from './InputMoeda'
 import { agruparPorSetor } from '../bairros-setores'
+import '../styles/detalhe.css'
+import '../styles/admin.css'
+import '../styles/anunciar.css'
+import '../styles/calc.css'
+import '../styles/lead.css'
 
 const TIPOS_CRM = ['Apartamento', 'Casa', 'Casa em condomínio', 'Chácara', 'Cobertura', 'Galpão', 'Kitnet/Studio', 'Lote', 'Sala comercial', 'Terreno']
 

@@ -6,6 +6,8 @@ import { todosEmpreendimentosTodos, bairrosComEmpreendimentos } from '../empreen
 import Reveal from '../components/Reveal'
 import { IconArrow, IconWhats } from '../components/icons'
 import { CardEmpLan } from './PortalLancamentosHome'
+import '../styles/lancamentos.css'
+import '../styles/catalogo.css'
 
 const WA_CAT = 'Olá Vinícius! Estou vendo o catálogo de lançamentos e quero ajuda para encontrar um empreendimento no meu perfil.'
 

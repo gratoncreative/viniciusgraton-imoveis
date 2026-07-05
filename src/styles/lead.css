@@ -1,0 +1,37 @@
+/* CSS da página/feature "lead" — extraído do index.css (fase 2) para carregar só na rota que usa.
+   Regras 🔒 (regra de ouro / ferramentas / anunciar) seguem no index.css e vencem por !important. */
+.lead-ok { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; min-height: 320px; }
+.lead-ok-ico { width: 66px; height: 66px; border-radius: 50%; background: var(--gold-grad); color: #FFFFFF; display: grid; place-items: center; box-shadow: 0 14px 36px -12px rgba(10, 14, 22,0.6); }
+.lead-ok p { color: var(--text-soft); max-width: 360px; line-height: 1.6; }
+.lead-consent, .lead-form label.lead-consent { display: flex; flex-direction: row; gap: 10px; align-items: flex-start; font-size: 0.8rem; color: var(--text-soft); margin: 6px 0 2px; cursor: pointer; line-height: 1.45; }
+.lead-consent input[type="checkbox"], .lead-form label.lead-consent input[type="checkbox"] { margin: 2px 0 0; flex: 0 0 auto; width: 18px; height: 18px; min-width: 18px; accent-color: var(--gold-2); cursor: pointer; }
+.lead-consent a { color: var(--gold-1); text-decoration: underline; }
+.lead-badge { font-family: var(--font-head); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 8px; border-radius: 100px; margin-left: 6px; vertical-align: middle; }
+.lead-badge--novo { background: rgba(10, 14, 22,0.16); color: #8a6418; }
+.lead-badge--andamento { background: rgba(46,108,164,0.14); color: #245a8c; }
+.lead-badge--ok { background: rgba(46,140,87,0.16); color: #1d6b41; }
+.lead-badge--off { background: rgba(22,26,34,0.08); color: #6a7280; }
+.lead-status { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0 4px; }
+.lead-status-b { font-family: var(--font-head); font-size: 0.72rem; font-weight: 600; color: #5a616e; background: rgba(22,26,34,0.05); border: 1px solid rgba(22,26,34,0.12); padding: 4px 9px; border-radius: 100px; cursor: pointer; transition: all 0.15s var(--ease); }
+.lead-status-b:hover { border-color: var(--gold-3); }
+.lead-status-b.on { background: #212b3d; color: var(--gold-1); border-color: transparent; }
+.lead-nota { font-size: 0.85rem; color: #4a5160; cursor: pointer; margin: 4px 0; }
+.lead-nota:hover { color: var(--gold-3); }
+.lead-nota-edit { display: flex; flex-direction: column; gap: 6px; margin: 4px 0; }
+.lead-nota-edit textarea { width: 100%; border: 1px solid rgba(22,26,34,0.16); border-radius: 8px; padding: 8px; font-family: inherit; font-size: 0.85rem; resize: vertical; }
+.lead-acoes { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+.lead-salvo { color: #1d6b41; font-size: 0.8rem; font-weight: 600; }
+.lead-erro { font-size: 0.84rem; color: #c0392b; font-weight: 600; }
+.lead-form { padding: 30px; border-radius: 20px; background: rgba(7,10,17,0.85); border: 1px solid var(--border); backdrop-filter: blur(10px); display: flex; flex-direction: column; gap: 14px; --text: #f4f1ea; --text-soft: #cfd4dd; --text-mute: #8b93a3; --surface: rgba(255,255,255,0.05); --border: rgba(255,255,255,0.1); --border-strong: rgba(255,255,255,0.2); color: var(--text); }
+.lead-form h3 { font-family: var(--font-head); font-weight: 600; font-size: 1.25rem; }
+.lead-form label { display: flex; flex-direction: column; gap: 6px; }
+.lead-form label > span { font-size: 0.82rem; color: var(--text-soft); }
+.lead-form label > span i { color: var(--text-mute); font-style: normal; }
+.lead-form input, .lead-form select, .lead-form textarea { width: 100%; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text); font-family: var(--font-body); font-size: 0.95rem; transition: border-color 0.3s, background 0.3s; }
+.lead-form input::placeholder, .lead-form textarea::placeholder { color: var(--text-mute); }
+.lead-form input:focus, .lead-form select:focus, .lead-form textarea:focus { outline: none; border-color: var(--gold-3); background: rgba(255,255,255,0.06); }
+.lead-form select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%23EB0128' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M3 5l4 4 4-4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; }
+.lead-form select option { background: #212b3d; color: var(--text); }
+.lead-form textarea { resize: vertical; min-height: 56px; }
+.lead-submit { justify-content: center; margin-top: 4px; }
+.lead-note { font-size: 0.78rem; color: var(--text-mute); text-align: center; }

@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
 import { linkWhatsApp } from '../data'
 import { IconArrow, IconWhats } from '../components/icons'
+import '../styles/converter.css'
+import '../styles/catalogo.css'
+import '../styles/admin.css'
 
 const MODOS = [
   { id: 'auto', nome: 'Detectar automaticamente' },

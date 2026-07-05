@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
+import '../styles/pdf-tools.css'
 
 // Remover objeto / mobiliar ambiente (inpainting) via Cloudflare AI.
 // O usuário pinta a área a editar; a IA refaz só essa parte.

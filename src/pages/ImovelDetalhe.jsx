@@ -19,6 +19,7 @@ import BaixarFotosImovel from '../components/BaixarFotosImovel'
 import { jaCurtiu, alternarCurtida } from '../engajamento'
 import { registrarVisto } from '../vistos'
 import { lazyRetry, importRetry } from '../lazyRetry'
+import '../styles/detalhe.css'
 // Lazy.. o estudo do m² (componente pesado + fontes premium) só carrega ao abrir
 const EstudoModal = lazyRetry(() => import('../components/EstudoModal'))
 // Lazy.. o visualizador 3D (engine PlayCanvas, pesada) só carrega ao clicar em "Tour 3D"

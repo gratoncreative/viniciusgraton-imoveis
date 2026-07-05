@@ -3,6 +3,7 @@ import { useSEO } from '../useSEO'
 import { linkWhatsApp } from '../data'
 import Reveal from '../components/Reveal'
 import { IconArrow, IconWhats, IconShield, IconPin } from '../components/icons'
+import '../styles/lancamentos.css'
 
 const WA_GUIA = 'Olá Vinícius! Li o guia de compra na planta e tenho dúvidas que gostaria de esclarecer antes de tomar qualquer decisão.'
 

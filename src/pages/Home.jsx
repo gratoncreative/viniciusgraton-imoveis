@@ -3,6 +3,7 @@ import Hero from '../components/Hero'
 import { useSEO } from '../useSEO'
 import { CONFIG } from '../data'
 import { lazyRetry } from '../lazyRetry'
+import '../styles/home-legada.css'
 
 const Destaque = lazyRetry(() => import('../components/Destaque'))
 const BlogHome = lazyRetry(() => import('../components/BlogHome'))

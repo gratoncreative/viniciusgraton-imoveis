@@ -1,0 +1,53 @@
+/* CSS da página/feature "cards" — extraído do index.css (fase 2) para carregar só na rota que usa.
+   Regras 🔒 (regra de ouro / ferramentas / anunciar) seguem no index.css e vencem por !important. */
+.card-imovel {
+  --rx: 0deg; --ry: 0deg; --mx: 50%; --my: 50%; --act: 0;
+  position: relative; height: 100%; display: flex; flex-direction: column; border-radius: var(--radius);
+  background: var(--surface); border: 1px solid var(--border);
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(calc(var(--act) * -10px));
+  transform-style: preserve-3d;
+  transition: transform 0.2s var(--ease), border-color 0.5s, box-shadow 0.5s;
+  box-shadow:
+    0 calc(var(--act) * 32px) calc(var(--act) * 56px - 0px) -32px rgba(33, 43, 61, 0.88),
+    0 0 0 1px rgba(10, 14, 22, calc(var(--act) * 0.18));
+  will-change: transform;
+}
+.card-media { position: relative; aspect-ratio: 4/3; overflow: hidden; border-radius: var(--radius) var(--radius) 0 0; transform: translateZ(34px); }
+.card-media img { width: 100%; height: 100%; object-fit: cover; transform: scale(calc(1 + var(--act) * 0.07)); transition: transform 0.55s var(--ease); }
+.card-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(7,10,17,0.85) 100%); }
+.card-body { transform: translateZ(52px); flex: 1 1 auto; display: flex; flex-direction: column; }
+.card-glare {
+  position: absolute; inset: -1px; border-radius: var(--radius); pointer-events: none;
+  background: radial-gradient(440px circle at var(--mx) var(--my), rgba(255,255,255,0.09), rgba(255,255,255,0.02) 26%, transparent 58%);
+  opacity: var(--act); transition: opacity 0.45s var(--ease); transform: translateZ(72px); mix-blend-mode: soft-light;
+}
+.card-seg-ico { position: absolute; top: 14px; left: 14px; z-index: 2; width: 42px; height: 42px; border-radius: 12px; background: rgba(7,10,17,0.55); border: 1px solid var(--gold-3); backdrop-filter: blur(8px); display: grid; place-items: center; color: var(--gold-1); transform: translateZ(40px); transition: 0.45s var(--ease); }
+.card-imovel:hover .card-seg-ico { background: var(--gold-grad); color: #FFFFFF; border-color: transparent; }
+.card-seg-ico svg { width: 21px; height: 21px; }
+.card-seg-title { position: absolute; bottom: 15px; left: 18px; right: 18px; z-index: 2; font-family: var(--font-head); font-weight: 700; font-size: 1.45rem; line-height: 1.1; }
+.card-body .card-seg-desc { color: var(--text-soft); font-size: 0.96rem; }
+.card-clickable { cursor: pointer; }
+.card-seg-link { display: inline-flex; align-items: center; gap: 8px; margin-top: auto; padding: 18px 0 0; background: none; border: none; cursor: pointer; font-family: var(--font-head); font-weight: 600; font-size: 0.9rem; color: var(--gold-1); transition: gap 0.3s var(--ease); align-self: flex-start; }
+.card-seg-link svg { width: 16px; height: 16px; }
+.card-imovel:hover .card-seg-link { gap: 13px; }
+.card-tag { position: absolute; top: 14px; left: 14px; z-index: 2; font-family: var(--font-head); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 12px; border-radius: 100px; background: rgba(7,10,17,0.6); border: 1px solid var(--gold-3); color: var(--gold-1); backdrop-filter: blur(6px); }
+.card-price { position: absolute; bottom: 14px; left: 16px; z-index: 2; font-family: var(--font-head); font-weight: 700; font-size: 1.35rem; }
+.card-body { padding: 20px 22px 24px; }
+.card-body h3 { font-family: var(--font-head); font-weight: 600; font-size: 1.18rem; }
+.card-body .bairro { color: var(--gold-2); font-size: 0.88rem; margin-top: 4px; display: flex; align-items: center; gap: 6px; }
+.card-body .bairro svg { width: 15px; height: 15px; flex: none; }
+.card-specs { display: flex; gap: 18px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-soft); }
+.card-specs span { display: flex; align-items: center; gap: 6px; }
+.card-specs svg { width: 16px; height: 16px; color: var(--text-mute); }
+.card-clickable:focus-visible { outline: 2px solid var(--gold-2); outline-offset: 4px; }
+.card-media { background: #212b3d; }
+html[data-theme="claro"] .im-card .card-media { border-radius: var(--radius-card) var(--radius-card) 0 0; transform: none; }
+html[data-theme="claro"] .im-card .card-media img { transform: none; transition: transform .5s var(--ease); }
+html[data-theme="claro"] .im-card:hover .card-media img { transform: scale(1.045); }
+html[data-theme="claro"] .im-card .card-body { transform: none; }
+.im-card .card-body { display: flex; flex-direction: column; }
+.im-card .card-body .im-actions { margin-top: auto; padding-top: 16px; }
+
+/* Ordem original da cascata: .im-body (index.css, vinha DEPOIS de .card-body) vencia o padding.
+   Com o split este arquivo carrega por último, então explicitamos o vencedor. */
+.card-body.im-body { padding: 18px 22px 22px; }

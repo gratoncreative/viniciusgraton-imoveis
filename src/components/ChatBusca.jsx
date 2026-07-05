@@ -2,6 +2,8 @@ import { useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import CardImovel from './CardImovel'
 import { filtrarParaCliente, TIPOS_IMOVEL, BAIRROS_IMOVEL, linkWhatsApp, formatPreco } from '../data'
+import '../styles/chat.css'
+import '../styles/admin.css'
 
 const FAIXAS = [
   { label: 'Até R$ 300 mil', min: 0, max: 300000 },

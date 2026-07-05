@@ -1,6 +1,7 @@
 import Reveal from './Reveal'
 import { linkWhatsApp, WA } from '../data'
 import { IconShield, IconWhats } from './icons'
+import '../styles/quemsou.css'
 
 export default function Sobre() {
   return (

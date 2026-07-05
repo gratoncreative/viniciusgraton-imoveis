@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { linkWhatsApp } from '../data'
 import { IconClose, IconWhats } from './icons'
+import '../styles/estudo.css'
 
 const fmtM2 = (v) => 'R$ ' + Math.round(v).toLocaleString('pt-BR') + '/m²'
 

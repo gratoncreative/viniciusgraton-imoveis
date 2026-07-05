@@ -7,6 +7,10 @@ import { getCondominio, CONDOMINIOS } from '../empreendimentos'
 import { useSEO } from '../useSEO'
 import { onCondImgError, CAPA_COND_PADRAO } from '../img'
 import { IconArrow, IconPin, IconBuilding } from '../components/icons'
+import '../styles/condominios.css'
+import '../styles/detalhe.css'
+import '../styles/condominio.css'
+import '../styles/construtoras.css'
 
 export default function CondominioDetalhe() {
   const { slug } = useParams()

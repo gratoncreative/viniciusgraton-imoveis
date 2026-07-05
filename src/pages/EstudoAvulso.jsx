@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
 import { estudoM2, BAIRROS_TODOS, CONFIG } from '../data'
 import { buildEstudo, EstudoContent } from './EstudoM2Page'
+import '../styles/detalhe.css'
 
 // Estudo do valor do m² para QUALQUER imóvel. Dois caminhos:
 //  1) o cliente COLA O LINK de um anúncio (ZAP, Viva Real, OLX, Rotina…) → /api/analisar-url

@@ -1,0 +1,63 @@
+/* CSS da página/feature "condominio" — extraído do index.css (fase 2) para carregar só na rota que usa.
+   Regras 🔒 (regra de ouro / ferramentas / anunciar) seguem no index.css e vencem por !important. */
+.mapa-bairros .condo-chip i { font-style: normal; opacity: 0.7; }
+.condo-strip-wrap { margin: 36px 0 8px; }
+.condo-strip { display: flex; gap: 20px; overflow-x: auto; padding: 6px 4px 22px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--gold-3) transparent; }
+.condo-strip::-webkit-scrollbar { height: 8px; }
+.condo-strip::-webkit-scrollbar-thumb { background: rgba(10, 14, 22,0.5); border-radius: 100px; }
+.condo-strip::-webkit-scrollbar-track { background: rgba(22,26,34,0.06); border-radius: 100px; }
+.condo-card { scroll-snap-align: start; flex: 0 0 300px; max-width: 300px; display: flex; flex-direction: column; border-radius: 16px; overflow: hidden; background: #fff; border: 1px solid rgba(22,26,34,0.1); box-shadow: 0 14px 34px -24px rgba(22,26,34,0.5); text-decoration: none; color: inherit; transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease); }
+.condo-card:hover { transform: translateY(-5px); box-shadow: 0 26px 50px -28px rgba(22,26,34,0.55); border-color: var(--gold-3); }
+.condo-capa { position: relative; display: block; width: 100%; aspect-ratio: 16 / 11; overflow: hidden; background: #212b3d; }
+.condo-capa img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.55s var(--ease); }
+.condo-card:hover .condo-capa img { transform: scale(1.06); }
+.condo-capa-vazia { display: grid; place-items: center; align-content: center; gap: 8px; width: 100%; height: 100%; color: var(--gold-3); background: radial-gradient(120% 120% at 30% 20%, #212b3d 0%, #212b3d 55%, #212b3d 100%); }
+.condo-capa-vazia small { font-family: var(--font-head); font-size: 0.66rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #8a9080; }
+.condo-tipo { position: absolute; top: 12px; left: 12px; font-family: var(--font-head); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #FFFFFF; background: #1C2A44; border: 1px solid rgba(255,255,255,0.18); padding: 5px 11px; border-radius: 100px; backdrop-filter: blur(6px); }
+.condo-body { display: flex; flex-direction: column; gap: 7px; padding: 18px; }
+.condo-nome { font-family: var(--font-head); font-weight: 700; font-size: 1.15rem; color: #42261c; }
+.condo-regiao { display: flex; align-items: center; gap: 6px; color: #8a909c; font-size: 0.88rem; }
+.condo-regiao svg { color: var(--gold-3); flex: none; }
+.condo-destaque { color: #5a6370; font-size: 0.9rem; line-height: 1.5; flex: 1; }
+.condo-ver { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-head); font-weight: 600; font-size: 0.85rem; color: var(--gold-3); margin-top: 2px; }
+.condo-card:hover .condo-ver { gap: 10px; }
+.condo-destaques { list-style: none; display: flex; flex-direction: column; gap: 8px; margin: 18px 0 22px; }
+.condo-destaques li { display: flex; align-items: flex-start; gap: 9px; color: var(--text-soft); font-size: 0.95rem; }
+.condo-lead { margin-top: 28px; }
+.condo-lead-selects { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.condo-lead-selects select { width: 100%; padding: 13px 12px; border-radius: 11px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); color: #fff; font-size: 0.9rem; font-family: var(--font-body); cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23EB0128' d='M6 8 0 0h12z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
+.condo-lead-selects select:focus { outline: none; border-color: var(--gold-2); }
+.condo-lead-selects option { background: #212b3d; color: #e8eaf0; }
+@media (max-width: 600px) {
+.condo-lead-selects { grid-template-columns: 1fr 1fr; }
+.condo-card { flex-basis: 260px; }
+}
+.condo-grid { margin-top: 6px; }
+.condo-grid .condo-card { flex: initial; max-width: none; width: 100%; }
+.condo-busca-wrap { margin: 30px 0 14px; }
+.condo-busca { display: flex; align-items: center; gap: 11px; background: #fff; border: 1px solid rgba(22,26,34,0.14); border-radius: 14px; padding: 0 16px; box-shadow: 0 14px 34px -28px rgba(22,26,34,0.5); transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease); }
+.condo-busca:focus-within { border-color: var(--gold-3); box-shadow: 0 0 0 3px rgba(176,141,87,0.16); }
+.condo-busca svg { color: var(--gold-3); flex: 0 0 auto; }
+.condo-busca input { flex: 1; border: none; outline: none; background: none; font-family: var(--font-head); font-size: 1rem; color: #42261c; padding: 15px 0; }
+.condo-busca input::placeholder { color: #8a909b; font-weight: 500; }
+.condo-busca-x { background: rgba(22,26,34,0.06); border: none; color: #5a616e; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; font-size: 0.85rem; line-height: 1; flex: 0 0 auto; }
+.condo-busca-x:hover { background: rgba(22,26,34,0.12); }
+.condo-filtros { display: flex; flex-wrap: wrap; gap: 22px 36px; margin: 0 0 18px; padding: 18px 20px; background: #fff; border: 1px solid rgba(22,26,34,0.1); border-radius: 16px; box-shadow: 0 14px 34px -28px rgba(22,26,34,0.5); }
+.condo-filtro-grupo { display: flex; flex-direction: column; gap: 9px; }
+.condo-filtro-grupo--full { flex-basis: 100%; border-top: 1px solid rgba(22,26,34,0.08); padding-top: 16px; }
+.condo-filtro-rot { font-family: var(--font-head); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--gold-3); }
+.condo-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.condo-chip { font-family: var(--font-head); font-size: 0.85rem; font-weight: 600; color: #3a4150; background: rgba(22,26,34,0.05); border: 1px solid rgba(22,26,34,0.14); padding: 8px 15px; border-radius: 100px; cursor: pointer; transition: all 0.2s var(--ease); }
+.condo-chip:hover { border-color: var(--gold-3); }
+.condo-chip.on { background: var(--gold-grad); color: #FFFFFF; border-color: transparent; }
+.condo-contagem { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 16px; font-family: var(--font-head); font-weight: 600; color: #3a4150; }
+.condo-limpar { background: none; border: none; color: var(--gold-3); font-family: var(--font-head); font-weight: 600; font-size: 0.9rem; cursor: pointer; }
+.condo-limpar:hover { text-decoration: underline; }
+.condo-seg { position: absolute; top: 12px; right: 12px; font-family: var(--font-head); font-size: 0.65rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: #FFFFFF; background: #1C2A44; border: 1px solid rgba(255,255,255,0.18); backdrop-filter: blur(6px); padding: 5px 11px; border-radius: 100px; }
+html[data-theme="dark"] .condo-chip { color: #d6dae2; background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.16); }
+.condo-filtros-v2 { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; background:transparent; border:none; box-shadow:none; padding:0; margin-bottom:18px; }
+.condo-filtro-grupo-v2 { background:var(--surface); border:1px solid var(--border); border-radius:13px; padding:14px 16px; display:flex; flex-direction:column; gap:10px; }
+.condo-filtro-grupo-v2.condo-filtro-grupo--full { grid-column:1/-1; }
+.condo-filtros-v2 .condo-filtro-rot { display:flex; align-items:center; gap:6px; font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:.09em; color:var(--gold-2); }
+.condo-filtros-v2 .condo-chip { border-radius:8px; font-size:0.78rem; padding:6px 12px; }
+html[data-theme="dark"] .condo-filtro-grupo-v2 { background:var(--surface); border-color:var(--border); }

@@ -9,6 +9,7 @@ import {
   haversine, azimuth, calcStats, calcGrau,
   fmtBRL, fmtM2, fmtKm, fmtData,
 } from '../utils/estudo-calc'
+import '../styles/estudo.css'
 
 // ── Fontes carregadas dinamicamente (só nesta página) ─────────────────────────
 export function useFontsPremium() {

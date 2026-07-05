@@ -8,6 +8,10 @@ import { TIPOS_SEO, tipoSeoPorSlug } from '../tiposSeo'
 import { useFeed } from '../useFeed'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow, IconPin } from '../components/icons'
+import '../styles/detalhe.css'
+import '../styles/catalogo.css'
+import '../styles/construtoras.css'
+import '../styles/bairros.css'
 
 const SITE = 'https://viniciusgraton.com.br'
 const artigo = (t) => (t.singular === 'casa' ? 'uma casa' : `um ${t.singular}`)

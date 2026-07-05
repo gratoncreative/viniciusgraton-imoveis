@@ -4,6 +4,7 @@ import Reveal from './Reveal'
 import CardPost from './CardPost'
 import { lerBlogViews } from '../engajamento'
 import { IconArrow } from './icons'
+import '../styles/catalogo.css'
 
 export default function BlogHome() {
   const [posts, setPosts] = useState(null)

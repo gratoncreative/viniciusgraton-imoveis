@@ -4,6 +4,8 @@ import { registrarLead } from '../engajamento'
 import { formatBRL } from '../extenso'
 import CampoMoeda from './CampoMoeda'
 import { IconWhats, IconArrow } from './icons'
+import '../styles/condominio.css'
+import '../styles/aviseme.css'
 
 // Lead qualificado de condomínio: cliente diz o perfil (quartos, suítes, vagas,
 // terreno/casa, orçamento) e o Vinícius faz a curadoria e o levantamento de

@@ -3,6 +3,7 @@ import Reveal from './Reveal'
 import { BAIRROS, linkWhatsApp, slugify } from '../data'
 import { getBairroFoto } from '../bairros-editorial'
 import { IconPin, IconArrow } from './icons'
+import '../styles/bairros.css'
 
 export default function Bairros() {
   return (

@@ -1,4 +1,5 @@
 import { formatPreco } from '../data'
+import '../styles/detalhe.css'
 
 // Preço PÚBLICO (sem gate). Mantém o "De X por Y" quando há preço anterior real.
 export default function PrecoGate({ valor, anterior, className = '', tipo = 'card', sufixo = '' }) {

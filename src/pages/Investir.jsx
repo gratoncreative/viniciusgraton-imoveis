@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow } from '../components/icons'
 import { linkWhatsApp } from '../data'
+import '../styles/simulador.css'
+import '../styles/catalogo.css'
 
 // "Onde investir em Uberlândia" — ranking de rentabilidade (yield) do aluguel por bairro,
 // com dado real (residencial, saneado) de public/rentabilidade-bairros.json.

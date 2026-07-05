@@ -11,6 +11,8 @@ import AdminImovelEditor from '../components/AdminImovelEditor'
 import { IMOVEIS, TIPOS_IMOVEL, BAIRROS_IMOVEL, BAIRROS_SEO, linkWhatsApp, WA, aplicarOverrideEmUm } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconClose } from '../components/icons'
+import '../styles/lancamentos.css'
+import '../styles/catalogo.css'
 
 // Chips de tipo com ícone (referência Chaves na Mão) — cada um agrupa vários tipos
 const TIPO_CHIPS = [

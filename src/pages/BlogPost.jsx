@@ -7,6 +7,8 @@ import { registrarView } from '../engajamento'
 import { useSEO } from '../useSEO'
 import { IconArrow, IconWhats } from '../components/icons'
 import OuvirPost from '../components/OuvirPost'
+import '../styles/blog.css'
+import '../styles/detalhe.css'
 
 // negrito estratégico **termo** e links [texto](url) (internos e externos)
 const richText = (t) => String(t || '').split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g).map((s, i) => {

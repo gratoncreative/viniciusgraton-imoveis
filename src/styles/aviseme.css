@@ -1,0 +1,22 @@
+/* CSS da página/feature "aviseme" — extraído do index.css (fase 3). Regras 🔒 seguem no index.css. */
+.aviseme { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 4vw, 48px); align-items: center; margin-top: 40px; padding: clamp(26px, 4vw, 44px); border-radius: 22px; background: linear-gradient(135deg, #15110a 0%, #212b3d 70%); border: 1px solid rgba(10, 14, 22,0.3); box-shadow: 0 30px 70px -40px rgba(33, 43, 61,0.7); --text: #f4f1ea; --text-soft: #d3d8e1; --text-mute: #9298a6; --surface: rgba(255,255,255,0.06); --surface-2: rgba(255,255,255,0.1); --border: rgba(255,255,255,0.14); --border-strong: rgba(255,255,255,0.22); color: #f4f1ea; }
+.aviseme-txt h3 { font-family: var(--font-head); font-weight: 700; font-size: clamp(1.4rem, 2.4vw, 1.9rem); color: #fff; margin-top: 8px; line-height: 1.15; }
+.aviseme-txt p { color: var(--text-soft); margin-top: 12px; line-height: 1.6; font-size: 0.96rem; }
+.aviseme-form { display: flex; flex-direction: column; gap: 10px; }
+.aviseme-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.aviseme input { width: 100%; padding: 13px 15px; border-radius: 11px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text); font-family: inherit; font-size: 0.95rem; transition: border-color 0.2s var(--ease); }
+.aviseme input:focus { outline: none; border-color: var(--gold-2); }
+.aviseme input::placeholder { color: var(--text-mute); }
+.aviseme-btn { width: 100%; justify-content: center; margin-top: 4px; }
+.aviseme--ok { display: flex; align-items: center; gap: 16px; }
+.aviseme--ok h3 { font-family: var(--font-head); color: #fff; font-size: 1.3rem; }
+.aviseme--ok p { color: var(--text-soft); margin-top: 4px; line-height: 1.5; }
+.aviseme-ico { flex: none; width: 52px; height: 52px; border-radius: 50%; background: rgba(37,211,102,0.16); color: #25d366; display: grid; place-items: center; }
+@media (max-width: 760px) {
+.aviseme { grid-template-columns: 1fr; }
+.aviseme-row { grid-template-columns: 1fr; }
+}
+
+/* No form do CondominioLead (.aviseme.condo-lead) o vencedor original era o margin do .condo-lead.
+   Especificidade maior deixa o resultado independente da ordem dos chunks. */
+.aviseme.condo-lead { margin-top: 28px; }

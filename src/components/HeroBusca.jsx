@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { TIPOS_IMOVEL, BAIRROS_IMOVEL, FAIXAS_PRECO } from '../data'
 import { IconSearch } from './icons'
 import FiltroSelect from './FiltroSelect'
+import '../styles/home-legada.css'
 
 // Card de busca da capa (estilo portal): campos empilhados + botão grande.
 // Bairro com seleção MÚLTIPLA (FiltroSelect multiple + busca).

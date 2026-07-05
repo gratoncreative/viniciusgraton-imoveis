@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
+import '../styles/pdf-tools.css'
 
 // Geração de imagem para blog/redes via Cloudflare Workers AI (FLUX-1-schnell).
 // Sem chave externa. Imagens ILUSTRATIVAS/decorativas — não são fotos reais do bairro.

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import HeroBusca from './HeroBusca'
+import '../styles/home-legada.css'
 
 // Capa estilo portal: FOTO lifestyle no fundo de toda a seção + card de busca
 // flutuando por cima, à esquerda. Parallax sutil na foto ao mover o mouse.

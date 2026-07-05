@@ -6,6 +6,8 @@ import { useAlugueis } from '../useAlugueis'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconPin, IconArrow, IconShield } from '../components/icons'
 import { onImgError } from '../img'
+import '../styles/detalhe.css'
+import '../styles/catalogo.css'
 
 export default function AlugarDetalhe() {
   const { codigo } = useParams()

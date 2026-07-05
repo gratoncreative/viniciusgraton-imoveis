@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import '../styles/tour360.css'
 
 // Visor de Tour 360° — abre o tour hospedado (link/embed colado no campo tour360)
 // num overlay imersivo em tela cheia, dentro de um iframe. Aceita tanto a URL direta

@@ -8,6 +8,10 @@ import { useFeed } from '../useFeed'
 import { getBairroEditorial, getBairroFotoInfo } from '../bairros-editorial'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow, IconPin, IconShield } from '../components/icons'
+import '../styles/detalhe.css'
+import '../styles/catalogo.css'
+import '../styles/construtoras.css'
+import '../styles/bairros.css'
 
 export default function Bairro() {
   const { bairro: slug } = useParams()

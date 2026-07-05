@@ -6,6 +6,7 @@ import { CONFIG, linkWhatsApp } from '../data'
 import { onImgError } from '../img'
 import { registrarLead } from '../engajamento'
 import { IconWhats, IconArrow, IconPin } from '../components/icons'
+import '../styles/louis.css'
 
 const SITE = 'https://viniciusgraton.com.br'
 const PATH = '/lancamentos/louis-studios-umuarama'

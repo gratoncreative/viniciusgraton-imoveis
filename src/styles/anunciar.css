@@ -1,0 +1,113 @@
+/* CSS da página/feature "anunciar" — extraído do index.css (fase 2) para carregar só na rota que usa.
+   Regras 🔒 (regra de ouro / ferramentas / anunciar) seguem no index.css e vencem por !important. */
+.anunciar-beneficios { list-style: none; margin: 26px auto 8px; padding: 0; max-width: 920px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
+.anunciar-beneficios li { display: flex; gap: 12px; align-items: flex-start; background: #fff; border: 1px solid rgba(10, 14, 22,0.22); border-radius: 14px; padding: 14px 16px; box-shadow: 0 14px 34px -30px rgba(22,26,34,0.5); }
+.anunciar-beneficios li span { flex: none; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; background: rgba(10, 14, 22,0.14); color: var(--gold-1); font-weight: 700; font-size: 0.82rem; margin-top: 1px; }
+.anunciar-beneficios li b { display: block; font-family: var(--font-head); color: #42261c; font-size: 0.98rem; margin-bottom: 3px; }
+.anunciar-beneficios li i { font-style: normal; color: #5a6370; font-size: 0.86rem; line-height: 1.45; }
+.anunciar-pg2 { background: #fff; padding: 0 0 80px; }
+.anunciar-pg2.section--light { background: #fff; }
+.anu-hero { position: relative; overflow: hidden; padding: clamp(90px, 13vw, 150px) 0 clamp(40px, 6vw, 64px); }
+.anu-hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; transform: scale(1.05); }
+.anu-hero-tint { position: absolute; inset: 0; background: linear-gradient(120deg, rgba(8,11,18,0.92) 0%, rgba(8,11,18,0.74) 50%, rgba(8,11,18,0.5) 100%); }
+.anu-hero-in { position: relative; z-index: 2; max-width: 760px; }
+.anu-hero .eyebrow { color: var(--gold-1); }
+.anu-hero .eyebrow::before { background: var(--gold-1); }
+.anu-hero-tit { font-family: var(--font-head); font-weight: 800; font-size: clamp(2.1rem, 5vw, 3.4rem); line-height: 1.05; letter-spacing: -0.02em; color: #fff; margin: 12px 0 16px; }
+.anu-hero-tit em { font-family: var(--font-serif); font-style: italic; font-weight: 500; background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.anu-hero-sub { color: rgba(235,238,244,0.9); font-size: clamp(1.02rem, 1.5vw, 1.18rem); line-height: 1.6; max-width: 620px; }
+.anu-hero-acoes { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 26px; }
+.anu-hero-selo { display: inline-flex; align-items: center; gap: 8px; color: var(--gold-1); font-family: var(--font-head); font-weight: 600; font-size: 0.9rem; }
+.anu-hero-imp { margin-top: 16px; font-size: 0.92rem; color: rgba(255,255,255,0.82); }
+.anu-hero-imp a { color: var(--gold-1); font-weight: 600; text-decoration: none; border-bottom: 1px solid rgba(212,175,108,0.4); padding-bottom: 1px; transition: border-color 0.2s; }
+.anu-hero-imp a:hover { border-color: var(--gold-1); }
+.anu-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 40px; max-width: 640px; }
+.anu-stat { background: rgba(255,255,255,0.07); border: 1px solid rgba(10, 14, 22,0.28); border-radius: 14px; padding: 16px 12px; text-align: center; backdrop-filter: blur(6px); }
+.anu-stat b { display: block; font-family: var(--font-head); font-weight: 500; font-style: italic; font-size: clamp(1.1rem, 2.1vw, 1.45rem); letter-spacing: 0.01em; color: var(--gold-1); }
+.anu-stat span { display: block; font-size: 0.76rem; letter-spacing: 0.02em; color: rgba(235,238,244,0.72); margin-top: 5px; }
+.anunciar-corpo { max-width: 1040px; }
+.anu-sec-head { text-align: center; max-width: 640px; margin: clamp(46px, 7vw, 78px) auto 26px; }
+.anu-passos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.anu-passo { position: relative; background: #faf7f0; border: 1px solid rgba(22,26,34,0.08); border-radius: 18px; padding: 30px 22px 24px; height: 100%; transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease); }
+.anu-passo:hover { transform: translateY(-4px); box-shadow: 0 24px 48px -30px rgba(33, 43, 61,0.45); }
+.anu-passo-num { position: absolute; top: 16px; right: 18px; font-family: var(--font-head); font-weight: 800; font-size: 1.6rem; color: rgba(10, 14, 22,0.25); }
+.anu-passo-ico { display: inline-grid; place-items: center; width: 52px; height: 52px; border-radius: 14px; background: #212b3d; color: var(--gold-1); margin-bottom: 14px; }
+.anu-passo b { display: block; font-family: var(--font-head); font-weight: 700; font-size: 1.05rem; color: #2a2118; margin-bottom: 7px; }
+.anu-passo i { font-style: normal; color: #5b5446; font-size: 0.9rem; line-height: 1.5; }
+.anu-beneficios { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.anu-benef-card { display: flex; gap: 13px; align-items: flex-start; background: #fff; border: 1px solid rgba(22,26,34,0.1); border-radius: 16px; padding: 20px; height: 100%; transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s; }
+.anu-benef-card:hover { transform: translateY(-3px); box-shadow: 0 22px 44px -30px rgba(33, 43, 61,0.4); border-color: var(--gold-3); }
+.anu-benef-check { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: rgba(10, 14, 22,0.14); color: var(--gold-3); margin-top: 1px; }
+.anu-benef-card b { display: block; font-family: var(--font-head); font-weight: 700; font-size: 1rem; color: #2a2118; margin-bottom: 5px; }
+.anu-benef-card i { font-style: normal; color: #5b5446; font-size: 0.9rem; line-height: 1.5; }
+.anu-form-wrap { margin: clamp(46px, 7vw, 78px) auto 0; max-width: 880px; scroll-margin-top: 90px; }
+.anu-form-wrap .anu-sec-head { margin-top: 0; }
+.anu-form-wrap .anunciar-form { margin-top: 18px; }
+@media (max-width: 900px) {
+.anu-passos { grid-template-columns: repeat(2, 1fr); }
+.anu-beneficios { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+.anu-stats { grid-template-columns: repeat(2, 1fr); }
+.anu-passos, .anu-beneficios { grid-template-columns: 1fr; }
+.anu-hero-acoes { gap: 12px; }
+}
+.anunciar-form { margin-top: 30px; }
+.anunciar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.anunciar-full { grid-column: 1 / -1; }
+.anunciar-fotos { margin-top: 6px; }
+.anunciar-fotos-tit { display: block; font-size: 0.82rem; color: var(--text-soft); margin-bottom: 10px; }
+.anunciar-fotos-tit i { color: var(--text-mute); font-style: normal; }
+.anunciar-thumbs { display: flex; flex-wrap: wrap; gap: 10px; }
+.anunciar-thumb { position: relative; width: 96px; height: 96px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-strong); }
+.anunciar-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.anunciar-thumb button { position: absolute; top: 4px; right: 4px; width: 22px; height: 22px; border: none; border-radius: 50%; background: rgba(7,10,17,0.75); color: #fff; display: grid; place-items: center; cursor: pointer; }
+.anunciar-add { display: grid; place-items: center; width: 96px; height: 96px; border-radius: 12px; border: 1.5px dashed var(--gold-3); color: var(--gold-1); font-family: var(--font-head); font-weight: 600; font-size: 0.78rem; text-align: center; cursor: pointer; padding: 6px; transition: background 0.2s; }
+.anunciar-add:hover { background: rgba(10, 14, 22,0.12); }
+.anunciar-erro { color: #ff9b9b; font-size: 0.88rem; }
+@media (max-width: 640px) {
+.anunciar-grid { grid-template-columns: 1fr; }
+}
+.anu-grupo { border: 0; margin: 0 0 18px; padding: 18px 18px 20px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); border-radius: 16px; }
+.anu-grupo-tit { font-family: var(--font-head); font-weight: 600; font-size: 1.02rem; color: var(--text); display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding: 0; }
+.anu-grupo-tit i { font-style: normal; font-weight: 400; font-size: 0.85rem; color: var(--text-mute); }
+.anu-grupo-n { flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 0.85rem; font-weight: 700; color: #FFFFFF; background: var(--gold-grad); }
+.anu-grupo .anunciar-grid { margin: 0; }
+.anu-mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+.anu-grupo.placa-bloco { background: linear-gradient(135deg, rgba(10, 14, 22,0.08), rgba(255,255,255,0.02)); border-color: rgba(10, 14, 22,0.28); }
+@media (max-width: 560px) {
+.anu-mini-grid { gap: 10px; }
+.anu-grupo { padding: 16px 14px 18px; }
+}
+html[data-theme="dark"] .anu-passo b { color: #f1ede4; }
+html[data-theme="dark"] .anu-passo i { color: #9298a6; }
+html[data-theme="dark"] .anunciar-beneficios li b { color: #f1ede4; }
+html[data-theme="dark"] .anunciar-beneficios li i { color: #9298a6; }
+html[data-theme="dark"] .anu-benef-card b { color: #f1ede4; }
+html[data-theme="dark"] .anu-benef-card i { color: #aab2bf; }
+.anu-head2 { text-align: center; padding: clamp(26px, 5vw, 54px) 0 6px; }
+.anu-head2-tit { font-family: var(--font-display, 'Fraunces', serif); font-size: clamp(1.7rem, 3.4vw, 2.4rem); color: #42261c; margin: 8px 0 12px; line-height: 1.15; }
+.anu-head2-tit em { font-style: normal; background: var(--gold-grad, linear-gradient(135deg,#FF4D67,#EB0128,#C20020)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.anu-head2-sub { display: inline-flex; align-items: center; gap: 7px; flex-wrap: wrap; justify-content: center; max-width: 720px; margin: 0 auto 10px; color: var(--text-soft); font-size: 0.98rem; line-height: 1.55; }
+.anu-head2-sub svg { color: var(--gold-3, #C20020); flex: none; }
+
+/* — fase 3 — */
+.placa-bloco { background: #fff; border: 1px solid rgba(10, 14, 22,0.3); border-radius: 16px; padding: 20px; margin: 6px 0 4px; box-shadow: 0 14px 34px -28px rgba(22,26,34,0.5); }
+.placa-pitch { color: #4a5160; font-size: 0.95rem; line-height: 1.6; margin: 8px 0 14px; }
+.placa-opt { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+.placa-toggle { font-family: var(--font-head); font-weight: 600; font-size: 0.92rem; color: #3a4150; background: rgba(22,26,34,0.05); border: 1px solid rgba(22,26,34,0.16); padding: 11px 18px; border-radius: 100px; cursor: pointer; transition: all 0.18s var(--ease); }
+.placa-toggle.on { background: var(--gold-grad); color: #FFFFFF; border-color: transparent; }
+.placa-label { display: block; font-family: var(--font-head); font-size: 0.74rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-3); margin: 16px 0 9px; }
+.placa-modelos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.placa-card { display: flex; flex-direction: column; gap: 4px; padding: 10px; background: #fbf9f4; border: 2px solid rgba(22,26,34,0.1); border-radius: 12px; cursor: pointer; text-align: center; transition: border-color 0.18s var(--ease), transform 0.18s var(--ease); }
+.placa-card:hover { transform: translateY(-2px); }
+.placa-card.on { border-color: var(--gold-2); box-shadow: 0 0 0 3px rgba(10, 14, 22,0.18); }
+.placa-card b { font-family: var(--font-head); font-size: 0.9rem; color: #42261c; margin-top: 4px; }
+.placa-card i { font-style: normal; font-size: 0.78rem; color: #6a7280; }
+.placa-svg { width: 100%; height: auto; border-radius: 7px; display: block; }
+@media (max-width: 560px) {
+.placa-modelos { grid-template-columns: 1fr; }
+}
+html[data-theme="dark"] .placa-bloco, html[data-theme="dark"] .placa-card { background: #212b3d; border-color: rgba(255,255,255,0.12); color: var(--text); }
+html[data-theme="dark"] .placa-card b { color: #f1ede4; }
+html[data-theme="dark"] .placa-card i { color: #9298a6; }

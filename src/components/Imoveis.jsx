@@ -4,6 +4,7 @@ import { SEGMENTOS } from '../data'
 import { IconArrow, ICONS } from './icons'
 import FiltroModal from './FiltroModal'
 import { onImgError } from '../img'
+import '../styles/cards.css'
 
 function CardSegmento({ s, onAbrir }) {
   const ref = useRef(null)

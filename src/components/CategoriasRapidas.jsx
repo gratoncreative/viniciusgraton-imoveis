@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import Reveal from './Reveal'
+import '../styles/catalogo.css'
 
 // Atalhos de busca por categoria/estilo de vida — entram direto no catálogo já filtrado.
 // Ícones de linha, em círculo champanhe sutil, com hover elegante (sistema claro v2.0).

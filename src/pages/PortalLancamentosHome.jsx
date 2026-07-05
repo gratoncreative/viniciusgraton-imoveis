@@ -7,6 +7,8 @@ import { onImgError } from '../img'
 import Reveal from '../components/Reveal'
 import { IconWhats, IconArrow, IconPin, IconShield, IconBuilding } from '../components/icons'
 import { isLancLivre, getLancVistos, markLancVisto, LANC_LIMIT } from '../components/LancGate'
+import '../styles/lancamentos.css'
+import '../styles/condominios.css'
 
 const WA_PORTAL = 'Olá Vinícius! Acessei o portal de lançamentos e gostaria de saber mais sobre os empreendimentos disponíveis em Uberlândia.'
 

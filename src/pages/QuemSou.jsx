@@ -5,6 +5,7 @@ import Reveal from '../components/Reveal'
 import { useSEO } from '../useSEO'
 import { linkWhatsApp, WA } from '../data'
 import { IconWhats, IconShield, IconEye } from '../components/icons'
+import '../styles/quemsou.css'
 
 // ícones inline simples
 const IcoLaptop = (p) => (

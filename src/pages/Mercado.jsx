@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useSEO } from '../useSEO'
+import '../styles/mercado.css'
 
 const fmt = (n) => 'R$ ' + Number(n).toLocaleString('pt-BR')
 const fmtK = (n) => n >= 1000 ? `R$ ${Math.round(n / 1000)}k` : fmt(n)

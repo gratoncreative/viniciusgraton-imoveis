@@ -1,0 +1,41 @@
+/* CSS da página/feature "condominios" — extraído do index.css para carregar só na rota que usa.
+   Carrega DEPOIS do index.css (chunk lazy): as regras 🔒 (regra de ouro / ferramentas / anunciar)
+   continuam vencendo por !important + especificidade html[data-theme]. Não adicionar regra de botão aqui. */
+.condos-pg { background: #212b3d; min-height: 100vh; padding-bottom: 60px; }
+.condos-hero { position: relative; background: linear-gradient(to bottom, rgba(5,8,14,0.88) 0%, rgba(5,8,14,0.72) 50%, rgba(5,8,14,0.96) 100%), url('/img/cond/alphaville-uberlandia-1.jpg') center/cover no-repeat; padding: clamp(120px,13vw,180px) 0 56px; text-align: center; overflow: hidden; }
+.condos-hero::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 600px; height: 260px; background: radial-gradient(ellipse at 50% 0%, rgba(10, 14, 22,0.18) 0%, transparent 70%); pointer-events: none; }
+.condos-hero-inner { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; }
+.condos-hero-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-2); margin-bottom: 14px; }
+.condos-hero-eyebrow::before, .condos-hero-eyebrow::after { content: ''; display: inline-block; width: 28px; height: 1.5px; background: var(--gold-2); opacity: 0.6; }
+.condos-hero-title { font-family: var(--font-head); font-size: clamp(2rem,3.8vw,2.8rem); font-weight: 900; color: #f0ecdf; line-height: 1.15; margin: 0 0 18px; }
+.condos-hero-title em { font-style: italic; background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.condos-hero-desc { font-size: 1rem; color: #c0bab0; max-width: 680px; margin: 0 auto 36px; line-height: 1.7; }
+.condos-hero-search { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 0 18px; margin-bottom: 16px; transition: border-color 0.2s; }
+.condos-hero-search:focus-within { border-color: rgba(10, 14, 22,0.45); }
+.condos-hero-search svg { color: var(--gold-2); flex: none; }
+.condos-hero-search input { flex: 1; border: none; outline: none; background: none; font-size: 0.97rem; color: #e8eaf0; padding: 16px 0; }
+.condos-hero-search input::placeholder { color: #6a738a; }
+.condos-search-x { background: rgba(255,255,255,0.08); border: none; color: #9aa0b0; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; font-size: 0.82rem; line-height: 1; flex: none; }
+.condos-search-x:hover { background: rgba(255,255,255,0.14); color: #e8eaf0; }
+.condos-hero-filtros { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.condos-hf { position: relative; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 0 14px 0 14px; transition: border-color 0.2s; flex: 1 1 190px; min-width: 0; }
+.condos-hf:focus-within { border-color: rgba(10, 14, 22,0.45); }
+.condos-hf > svg:first-child { color: var(--gold-2); flex: none; opacity: 0.75; }
+.condos-hf select { flex: 1; min-width: 0; border: none; outline: none; background: none; font-size: 0.88rem; color: #d0d4de; padding: 14px 0; cursor: pointer; appearance: none; -webkit-appearance: none; }
+.condos-hf > svg:last-child { color: #6a738a; flex: none; pointer-events: none; }
+.condos-hf--wide { flex: 2 1 380px; }
+.condos-hf-limpar { flex: 0 0 auto; border: 1px solid rgba(255,255,255,0.18); border-radius: 12px; background: none; color: #d0d4de; font-size: 0.88rem; font-weight: 600; cursor: pointer; padding: 14px 20px; transition: background 0.18s, border-color 0.18s; white-space: nowrap; }
+.condos-hf-limpar:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.28); }
+.condos-lista { padding-top: 32px; }
+@media (max-width: 900px) {
+.condos-hf { flex: 1 1 160px; }
+.condos-hf--wide { flex: 2 1 320px; }
+}
+@media (max-width: 600px) {
+.condos-hf, .condos-hf--wide { flex: 1 1 100%; }
+.condos-hf-limpar { flex: 1 1 100%; text-align: center; }
+}
+
+/* Manual de Marca (regra primordial, vive no index.css): títulos nobres em Playfair.
+   Este arquivo carrega depois do index.css, então reafirmamos o vencedor da cascata. */
+.condos-hero-title { font-family: var(--font-display); letter-spacing: -0.01em; }

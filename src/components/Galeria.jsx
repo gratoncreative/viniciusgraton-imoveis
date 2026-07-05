@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { IconClose, IconArrow } from './icons'
 import { onImgError } from '../img'
+import '../styles/detalhe.css'
 
 const DUR = 4.5 // segundos por foto no tour (dentro do lightbox)
 

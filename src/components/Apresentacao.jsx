@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import Reveal from './Reveal'
 import { linkWhatsApp, WA } from '../data'
 import { IconWhats, IconArrow } from './icons'
+import '../styles/home-legada.css'
 
 // "Quem te atende" — banner do Vinícius ao fundo (escurecido) com o texto sobreposto.
 export default function Apresentacao() {

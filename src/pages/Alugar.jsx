@@ -9,6 +9,8 @@ import { slugify, linkWhatsApp, WA } from '../data'
 import { useAlugueis } from '../useAlugueis'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconClose } from '../components/icons'
+import '../styles/lancamentos.css'
+import '../styles/catalogo.css'
 
 const ORDENS = [
   { value: 'menor', label: 'Menor aluguel' },

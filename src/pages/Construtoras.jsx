@@ -7,6 +7,8 @@ const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-
 import { useSEO } from '../useSEO'
 import { onImgError } from '../img'
 import { IconArrow, IconBuilding, IconShield, IconSearch } from '../components/icons'
+import '../styles/detalhe.css'
+import '../styles/construtoras.css'
 
 function CardConstrutora({ c }) {
   const projetos = c.projetos || []

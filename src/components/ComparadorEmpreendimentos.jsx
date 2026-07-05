@@ -2,6 +2,10 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { onImgError } from '../img'
 import { IconArrow, IconPin, IconBuilding, IconClose } from './icons'
+import '../styles/condominio.css'
+import '../styles/construtoras.css'
+import '../styles/calc.css'
+import '../styles/comparar.css'
 
 const STATUS = ['Todos', 'Lançamento', 'Em obras', 'Pronto']
 const matchStatus = (p, f) => f === 'Todos' || (p.status || '').toLowerCase().includes(f.toLowerCase())

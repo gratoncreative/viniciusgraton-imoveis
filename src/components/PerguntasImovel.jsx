@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { linkWhatsApp } from '../data'
 import { IconWhats } from './icons'
+import '../styles/detalhe.css'
 
 // Monta as perguntas + respostas a partir dos dados REAIS do imóvel.
 // `im` = dados do site; `ex` = dados vivos da Rotina/Imoview (aceita financiamento/permuta, situação, vídeo).

@@ -4,6 +4,8 @@ import { useSEO } from '../useSEO'
 import { linkWhatsApp } from '../data'
 import { IconArrow, IconWhats } from '../components/icons'
 import { importRetry } from '../lazyRetry'
+import '../styles/converter.css'
+import '../styles/catalogo.css'
 
 // comprime a imagem no navegador p/ enviar à IA (mantém legível p/ ler acabamentos)
 function comprimir(file) {

@@ -7,6 +7,7 @@ import CardImovel from '../components/CardImovel'
 import { IMOVEIS } from '../data'
 import { useSEO } from '../useSEO'
 import { IconArrow } from '../components/icons'
+import '../styles/detalhe.css'
 
 // Coordenadas aproximadas [lng, lat] dos principais bairros de Uberlândia
 const BAIRROS_GEO = {

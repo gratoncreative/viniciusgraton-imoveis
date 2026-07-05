@@ -6,6 +6,10 @@ import { useSEO } from '../useSEO'
 import { IconWhats, IconHeart, IconClose } from '../components/icons'
 import { getConta, salvarConta } from '../conta'
 import { importRetry } from '../lazyRetry'
+import '../styles/crm.css'
+import '../styles/detalhe.css'
+import '../styles/catalogo.css'
+import '../styles/admin.css'
 
 const primeiroNome = (n) => (n || '').trim().split(/\s+/)[0] || ''
 

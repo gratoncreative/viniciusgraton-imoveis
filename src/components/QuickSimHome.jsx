@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import Reveal from './Reveal'
 import { IconArrow } from './icons'
+import '../styles/simulador.css'
+import '../styles/home-legada.css'
 
 // Atalho DISCRETO para o simulador na home — apenas um link para a ferramenta completa
 // (/simulador-financiamento), sem o widget interativo ocupando a página.

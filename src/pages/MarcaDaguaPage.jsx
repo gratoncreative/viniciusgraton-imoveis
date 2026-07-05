@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import PdfToolShell from '../components/PdfToolShell'
 import ArquivoDrop from '../components/ArquivoDrop'
 import { importRetry } from '../lazyRetry'
+import '../styles/marca-dagua.css'
 
 const CORES = [
   { v: 'cinza', l: 'Cinza', rgb: [0.5, 0.5, 0.5] },

@@ -1,5 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { formatPreco, oportunidade } from '../data'
+import '../styles/postgen.css'
+import '../styles/detalhe.css'
+import '../styles/catalogo.css'
+import '../styles/admin.css'
+import '../styles/lead.css'
 
 const fotoProxy = (url) => `/api/foto?u=${encodeURIComponent(url)}`
 const esperar = (ms) => new Promise((r) => setTimeout(r, ms))

@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { linkWhatsApp } from '../data'
 import { IconWhats } from './icons'
 import AdminPromoEditor from './AdminPromoEditor'
+import '../styles/cards.css'
 
 // Publicidade de lançamento no MESMO layout dos imóveis da página onde aparece.
 // REGRA: todo anúncio se mistura à listagem, no formato de card daquela página.

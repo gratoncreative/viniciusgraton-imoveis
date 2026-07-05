@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { linkWhatsApp } from '../data'
 import parceirosData from '../parceiros.json'
+import '../styles/banner-ads.css'
 
 /**
  * Banner rotativo de publicidade. Mostra parceiros reais quando cadastrados;

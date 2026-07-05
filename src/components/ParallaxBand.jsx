@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { linkWhatsApp, WA, formatPreco } from '../data'
 import { estaLogado } from '../conta'
 import { IconWhats, IconArrow } from './icons'
+import '../styles/home-legada.css'
 
 // Mostra o preço só para quem já se cadastrou; senão "Ver preço" (o clique leva ao imóvel, onde libera).
 function BandPreco({ valor }) {

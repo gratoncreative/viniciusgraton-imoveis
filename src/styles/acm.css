@@ -1,0 +1,50 @@
+/* CSS da página/feature "acm" — extraído do index.css (fase 3). Regras 🔒 seguem no index.css. */
+.acm-aviso { margin-top: 14px; padding: 13px 15px; border-radius: 12px; background: #FBF7F0; border-left: 3px solid #eb0128; color: #42261c; font-size: 0.86rem; line-height: 1.5; }
+.acm-aviso b { color: #42261c; }
+.acm-barra { margin-top: 16px; }
+.acm-barra-track { position: relative; height: 10px; border-radius: 100px; background: linear-gradient(90deg, #f6c9d1, #eb0128); }
+.acm-barra-marca { position: absolute; top: -4px; width: 3px; height: 18px; background: #212b3d; border-radius: 2px; transform: translateX(-50%); }
+.acm-barra-labels { display: flex; justify-content: space-between; align-items: baseline; margin-top: 8px; font-size: 0.8rem; color: #5a6172; }
+.acm-barra-labels b { color: #42261c; font-size: 0.92rem; }
+.acm-acoes { margin-top: 14px; }
+.acm-pdf-btn { display: inline-flex; align-items: center; gap: 8px; background: #212b3d; color: #FFFFFF; border: 1px solid #212b3d; border-radius: 10px; padding: 11px 18px; font-family: var(--font-head); font-weight: 700; font-size: 0.86rem; cursor: pointer; transition: background .16s; }
+.acm-pdf-btn:hover { background: #1C2A44; border-color: #42261c; }
+.acm-lead { margin-top: 16px; padding: 16px; border: 1px solid #E4DFD4; border-radius: 14px; background: #FFFFFF; }
+.acm-lead-tit { margin: 0 0 12px; font-size: 0.9rem; color: #42261c; line-height: 1.45; }
+.acm-lead-tit b { color: #42261c; }
+.acm-lead-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.acm-lead-row input { width: 100%; box-sizing: border-box; padding: 12px 14px; border-radius: 10px; border: 1px solid #E0D8C8; background: #ECE7DD; color: #42261c; font-size: 0.95rem; }
+.acm-lead-row input::placeholder { color: #9c958a; }
+.acm-lead-row input:focus { outline: none; border-color: #eb0128; background: #F1EDE4; }
+.acm-lead-btn { width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #eb0128; color: #FFFFFF; border: 1px solid #eb0128; border-radius: 11px; padding: 13px 18px; font-family: var(--font-head); font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: background .16s; }
+.acm-lead-btn:hover { background: #C20020; border-color: #C20020; }
+.acm-lead-btn svg { color: #FFFFFF; }
+.acm-lead-ok { margin-top: 16px; padding: 14px 16px; border-radius: 12px; background: #ECF7EE; border: 1px solid #BfE3C6; color: #1a7f37; font-weight: 600; font-size: 0.9rem; }
+@media (max-width: 560px) {
+.acm-lead-row { grid-template-columns: 1fr; }
+}
+.acm-loading { margin-top: 10px; font-size: 0.8rem; color: #8a8377; font-style: italic; }
+.acm-comps { margin-top: 14px; }
+.acm-comps-toggle { background: none; border: none; padding: 0; cursor: pointer; font-family: var(--font-head); font-weight: 700; font-size: 0.84rem; color: #42261c; }
+.acm-comps-toggle:hover { color: #eb0128; }
+.acm-comps-lista { list-style: none; margin: 12px 0 0; padding: 0; border: 1px solid #E4DFD4; border-radius: 12px; overflow: hidden; }
+.acm-comps-lista li { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 10px 14px; font-size: 0.84rem; color: #42261c; border-bottom: 1px solid #EFEAE0; }
+.acm-comps-lista li:last-child { border-bottom: none; }
+.acm-comp-d { color: #5a6172; }
+.acm-comp-v { font-weight: 700; color: #42261c; white-space: nowrap; }
+.acm-comp-v i { font-weight: 400; font-style: normal; color: #8a8377; font-size: 0.78rem; }
+.acm-comp-desc { color: #8a8377 !important; font-style: italic; font-size: 0.78rem !important; }
+.acm-sensi { margin-top: 12px; font-size: 0.84rem; color: #4a5160; }
+.acm-sensi b { color: #42261c; }
+.acm-fatores { margin-top: 12px; }
+.acm-fatores summary { cursor: pointer; font-family: var(--font-head); font-weight: 700; font-size: 0.84rem; color: #42261c; }
+.acm-fatores ul { margin: 10px 0 0; padding-left: 18px; }
+.acm-fatores li { font-size: 0.82rem; color: #4a5160; line-height: 1.5; margin-bottom: 4px; }
+.acm-base-data { margin-top: 10px; font-size: 0.76rem; color: #8a8377; }
+.acm-gate { padding: 20px; border: 1px solid #E4DFD4; border-radius: 14px; background: #FBF7F0; }
+.acm-gate-tit { margin: 0 0 6px; font-family: var(--font-head); font-weight: 800; font-size: 1.05rem; color: #42261c; }
+.acm-gate-sub { margin: 0 0 14px; font-size: 0.88rem; color: #4a5160; line-height: 1.5; }
+.acm-gate-btn { width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #212b3d; color: #fff; border: 1px solid #212b3d; border-radius: 11px; padding: 13px 18px; font-family: var(--font-head); font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: background .16s; }
+.acm-gate-btn:hover { background: #1C2A44; border-color: #42261c; }
+.acm-gate-btn svg { color: #fff; }
+.acm-gate-nota { margin: 10px 0 0; font-size: 0.76rem; color: #8a8377; text-align: center; }

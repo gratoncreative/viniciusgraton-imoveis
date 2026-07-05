@@ -8,6 +8,10 @@ import { registrarLead } from '../engajamento'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow, IconShield } from '../components/icons'
 import Tour360Pitch from '../components/Tour360Pitch'
+import '../styles/detalhe.css'
+import '../styles/anunciar.css'
+import '../styles/lead.css'
+import '../styles/aviseme.css'
 
 const TIPOS = ['Casa', 'Apartamento', 'Casa em condomínio', 'Terreno / lote', 'Comercial', 'Rural / chácara']
 const ESTADOS = ['Novo / nunca usado', 'Seminovo / bem conservado', 'Usado / precisa de reforma']

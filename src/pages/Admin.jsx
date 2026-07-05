@@ -6,6 +6,14 @@ import { IconShield, IconArrow, IconWhats } from '../components/icons'
 import AdminCRM from '../components/AdminCRM'
 import InputMoeda from '../components/InputMoeda'
 import { lazyRetry } from '../lazyRetry'
+import '../styles/crm.css'
+import '../styles/corretor.css'
+import '../styles/detalhe.css'
+import '../styles/admin.css'
+import '../styles/anunciar.css'
+import '../styles/calc.css'
+import '../styles/lead.css'
+import '../styles/aviseme.css'
 
 const RemoverMarca = lazyRetry(() => import('../components/RemoverMarca'))
 const MelhorarFotos = lazyRetry(() => import('../components/MelhorarFotos'))

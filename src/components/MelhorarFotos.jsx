@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState, useCallback, Suspense } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { lazyRetry } from '../lazyRetry'
+import '../styles/mf.css'
+import '../styles/admin.css'
+import '../styles/lead.css'
 
 // Ferramenta de remover marca d'água (IA própria) — entra como 6ª aba do estúdio.
 const RemoverMarca = lazyRetry(() => import('./RemoverMarca'))

@@ -3,6 +3,9 @@ import Reveal from '../components/Reveal'
 import CardPost from '../components/CardPost'
 import { lerBlogViews } from '../engajamento'
 import { useSEO } from '../useSEO'
+import '../styles/blog.css'
+import '../styles/catalogo.css'
+import '../styles/condominio.css'
 
 export default function Blog() {
   useSEO({

@@ -8,6 +8,9 @@ import GoogleLogin from '../components/GoogleLogin'
 import LoginSenha from '../components/LoginSenha'
 import { useSEO } from '../useSEO'
 import { IconArrow, IconHeart, IconShield, IconWhats } from '../components/icons'
+import '../styles/crm.css'
+import '../styles/detalhe.css'
+import '../styles/lead.css'
 
 const BEN_ICN = {
   star: 'M12 3l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.3 6.8 19l1-5.8L3.6 9.2l5.8-.9z',

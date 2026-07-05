@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { montarZipsBairro } from '../bairroZip'
 import { subirParaDrive, driveConfigurado } from '../gdrive'
+import '../styles/admin.css'
 
 // Backup geral do cadastro -> Cloudflare R2 (bucket próprio).
 // Catálogo inteiro organizado por bairro, 1 .zip por imóvel (dados + proprietário do

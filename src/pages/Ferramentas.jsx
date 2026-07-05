@@ -11,6 +11,10 @@ import { formatBRL } from '../extenso'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow } from '../components/icons'
 import { lazyRetry, importRetry } from '../lazyRetry'
+import '../styles/ferramentas.css'
+import '../styles/calc.css'
+import '../styles/acm.css'
+import '../styles/marca-dagua.css'
 
 // Ferramentas "de página" que abrem INLINE no modal (lazy — fora do bundle inicial).
 const ConverterFotos = lazyRetry(() => import('./ConverterFotos'))

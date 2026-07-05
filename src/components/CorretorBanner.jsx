@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import Reveal from './Reveal'
+import '../styles/home-legada.css'
 
 const FEATS = [
   'Abordagem por código',

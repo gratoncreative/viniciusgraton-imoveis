@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { linkWhatsApp, WA } from '../data'
 import { useSEO } from '../useSEO'
 import { IconArrow, IconWhats } from '../components/icons'
+import '../styles/detalhe.css'
 
 export default function NotFound() {
   useSEO({ title: 'Página não encontrada | Vinícius Graton', description: 'Esta página não existe ou foi removida. Encontre imóveis à venda em Uberlândia.', path: '/404', noindex: true })

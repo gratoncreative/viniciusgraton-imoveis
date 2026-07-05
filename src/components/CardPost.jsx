@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { IconArrow } from './icons'
+import '../styles/blog.css'
 
 export default function CardPost({ p, views }) {
   return (

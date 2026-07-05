@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { IconShield } from './icons'
+import '../styles/detalhe.css'
+import '../styles/admin.css'
 
 // Painel de CONVERSÃO — quantos visitantes clicam em contato (WhatsApp/telefone/e-mail)
 // e em QUAIS páginas. Lê o endpoint público /api/eng?convstats=1 (só contagens, sem PII).

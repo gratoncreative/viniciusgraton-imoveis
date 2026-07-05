@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Reveal from './Reveal'
 import { IconArrow, IconShield } from './icons'
+import '../styles/blog.css'
 
 // Chamada para o funil de venda (proprietário) — leva pra /anunciar.
 export default function VenderCta() {

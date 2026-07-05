@@ -2,6 +2,7 @@ import Reveal from '../components/Reveal'
 import { linkWhatsApp } from '../data'
 import { IconWhats, IconArrow } from '../components/icons'
 import { useSEO } from '../useSEO'
+import '../styles/tour360.css'
 
 const WA_360 = 'Olá Vinícius! Tenho um imóvel e quero o Tour Virtual 360° (R$50 por cômodo, ou grátis na exclusividade de 90 dias). Pode me explicar como funciona?'
 

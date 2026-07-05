@@ -8,6 +8,10 @@ import { CalcComissao, CalcACM } from './Ferramentas'
 import FerramentaRotina from '../components/FerramentaRotina'
 import { IconShield, IconArrow } from '../components/icons'
 import { lazyRetry } from '../lazyRetry'
+import '../styles/corretor.css'
+import '../styles/crm.css' // gate de login usa .conta-form (mesmo visual da página /conta)
+import '../styles/ferramentas.css'
+import '../styles/lead.css'
 
 const PostGen = lazyRetry(() => import('../components/PostGen'))
 const RemoverMarca = lazyRetry(() => import('../components/RemoverMarca'))

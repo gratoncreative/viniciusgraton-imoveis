@@ -4,6 +4,7 @@ import { useSEO } from '../useSEO'
 import { IconArrow, IconWhats } from '../components/icons'
 import { linkWhatsApp } from '../data'
 import { lazyRetry } from '../lazyRetry'
+import '../styles/estudio.css'
 
 // Estúdio de fotos de imóvel — página pública (própria URL + HTML).
 // O editor completo (MelhorarFotos) roda 100% no navegador; nada é enviado a servidor.

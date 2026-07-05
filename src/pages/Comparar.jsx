@@ -5,6 +5,9 @@ import { IMOVEIS, fotosDe, formatPreco, formatArea, linkWhatsApp } from '../data
 import { onImgError } from '../img'
 import { useSEO } from '../useSEO'
 import { IconArrow, IconClose, IconWhats } from '../components/icons'
+import '../styles/catalogo.css'
+import '../styles/condominio.css'
+import '../styles/comparar.css'
 
 const rs = (n) => (n > 0 ? n : 0)
 const precoM2 = (im) => (im.preco > 0 && im.area > 0 ? im.preco / im.area : 0)

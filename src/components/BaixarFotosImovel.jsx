@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import '../styles/detalhe.css'
 
 // Download de TODAS as fotos do imóvel aberto, com marca d'água do site
 // (grande, diagonal, baixa opacidade) aplicada no momento do download.

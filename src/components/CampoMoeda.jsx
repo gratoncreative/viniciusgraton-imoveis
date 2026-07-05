@@ -1,4 +1,5 @@
 import { reaisPorExtenso, formatBRL } from '../extenso'
+import '../styles/calc.css'
 
 // Campo de dinheiro: digita e já formata R$500.000,00 + mostra o valor por extenso.
 // `valor` é em reais (pode ter centavos); internamente trabalha em centavos.

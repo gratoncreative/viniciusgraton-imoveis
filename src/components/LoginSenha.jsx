@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { salvarConta } from '../conta'
+import '../styles/lead.css'
 
 // Login do cliente por e-mail + senha (além do Google e do cadastro).
 const MSG = {

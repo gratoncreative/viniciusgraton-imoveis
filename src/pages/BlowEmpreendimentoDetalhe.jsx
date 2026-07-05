@@ -7,6 +7,9 @@ import { getBlowEmpreendimento } from '../empreendimentos'
 import { useSEO } from '../useSEO'
 import { useEventoLancamento } from '../eventoLancamento'
 import { IconWhats, IconArrow, IconPin, IconShield, IconBuilding } from '../components/icons'
+import '../styles/lancamentos.css'
+import '../styles/empreendimento.css'
+import '../styles/detalhe.css'
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
 

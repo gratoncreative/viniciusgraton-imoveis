@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { fotosDe } from '../data'
+import '../styles/admin-editores.css'
 
 const LSK = 'vg_admin_token'
 const TIPOS = ['Apartamento', 'Casa', 'Casa em condomínio', 'Cobertura', 'Kitnet/Studio', 'Sala comercial', 'Galpão', 'Lote', 'Terreno', 'Chácara']

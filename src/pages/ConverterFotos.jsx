@@ -4,6 +4,8 @@ import { useSEO } from '../useSEO'
 import { IconArrow, IconWhats } from '../components/icons'
 import { linkWhatsApp } from '../data'
 import { importRetry } from '../lazyRetry'
+import '../styles/converter.css'
+import '../styles/catalogo.css'
 
 // Conversor de fotos público — em lote, entre os principais formatos.
 // Tudo roda no próprio navegador (as fotos não saem do aparelho do usuário).

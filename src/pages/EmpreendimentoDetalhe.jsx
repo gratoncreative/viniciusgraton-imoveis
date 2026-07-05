@@ -7,6 +7,8 @@ import { getEmpreendimento } from '../empreendimentos'
 import { useSEO } from '../useSEO'
 import { useEventoLancamento } from '../eventoLancamento'
 import { IconWhats, IconArrow, IconPin, IconShield, IconBuilding } from '../components/icons'
+import '../styles/detalhe.css'
+import '../styles/construtoras.css'
 
 const ytId = (u = '') => {
   const m = String(u).match(/(?:v=|embed\/|youtu\.be\/)([\w-]{11})/)

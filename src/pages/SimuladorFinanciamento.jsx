@@ -4,6 +4,9 @@ import { useSEO } from '../useSEO'
 import CampoMoeda from '../components/CampoMoeda'
 import { IconWhats, IconArrow } from '../components/icons'
 import { BANCOS, PARAMS, simular, prazoMaxPorIdade } from '../financiamento'
+import '../styles/pdf-tools.css'
+import '../styles/simulador.css'
+import '../styles/calc.css'
 
 const WA = '5534991570494'
 const brl = (n) => (isFinite(n) ? n : 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })

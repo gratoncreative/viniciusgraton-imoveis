@@ -1,5 +1,6 @@
 import { useState, useRef, useLayoutEffect } from 'react'
 import { createPortal } from 'react-dom'
+import '../styles/catalogo.css'
 
 // Dropdown de filtro personalizado (substitui o <select> nativo).
 // - single: escolha única (tipo, preço, quartos…)

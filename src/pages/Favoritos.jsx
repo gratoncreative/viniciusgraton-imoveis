@@ -5,6 +5,7 @@ import { getImovel } from '../data'
 import { favoritos } from '../engajamento'
 import { useSEO } from '../useSEO'
 import { IconArrow, IconHeart } from '../components/icons'
+import '../styles/catalogo.css'
 
 export default function Favoritos() {
   useSEO({

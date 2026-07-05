@@ -4,6 +4,8 @@ import { getConstrutora, CONSTRUTORAS, waConstrutora } from '../empreendimentos'
 import { useSEO } from '../useSEO'
 import ComparadorEmpreendimentos from '../components/ComparadorEmpreendimentos'
 import { IconWhats, IconArrow, IconShield } from '../components/icons'
+import '../styles/detalhe.css'
+import '../styles/construtoras.css'
 
 export default function ConstrutoraDetalhe() {
   const { slug } = useParams()

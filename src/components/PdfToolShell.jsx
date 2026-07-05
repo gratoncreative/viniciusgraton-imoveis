@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSEO } from '../useSEO'
 import { pdfLive } from '../pdfTools'
+import '../styles/pdf-tools.css'
 
 const SITE = 'https://viniciusgraton.com.br'
 

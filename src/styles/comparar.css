@@ -1,0 +1,30 @@
+/* CSS da página/feature "comparar" — extraído do index.css (fase 3). Regras 🔒 seguem no index.css. */
+.comparar-cta { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; background: linear-gradient(165deg, #fefdfb, #f6f1e6); border: 1px solid rgba(10, 14, 22,0.26); border-radius: 16px; padding: 22px; margin-bottom: 30px; }
+.comparar-cta p { margin: 0; color: var(--text-soft); font-size: 0.98rem; max-width: 520px; }
+.comparar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.comparar-mini { text-align: left; background: #fff; border: 1px solid rgba(22,26,34,0.1); border-radius: 13px; overflow: hidden; cursor: pointer; padding: 0; display: flex; flex-direction: column; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; }
+.comparar-mini:hover { transform: translateY(-3px); box-shadow: 0 16px 32px -24px rgba(22,26,34,0.5); }
+.comparar-mini.on { border-color: var(--gold-3); box-shadow: 0 0 0 2px var(--gold-3); }
+.comparar-mini-capa { position: relative; aspect-ratio: 16/11; background: #212b3d; }
+.comparar-mini-capa img { width: 100%; height: 100%; object-fit: cover; }
+.comparar-check { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; border-radius: 50%; background: var(--gold-grad); color: #FFFFFF; display: grid; place-items: center; font-weight: 800; font-size: 0.9rem; }
+.comparar-mini-b { font-family: var(--font-head); font-weight: 700; color: #42261c; font-size: 0.95rem; padding: 10px 12px 0; }
+.comparar-mini-s { color: #6a7280; font-size: 0.8rem; padding: 2px 12px 12px; }
+.comparar-table th { min-width: 150px; }
+.comparar-th { display: flex; flex-direction: column; gap: 6px; }
+.comparar-th img { width: 100%; height: 80px; object-fit: cover; border-radius: 8px; }
+.comparar-th b { font-size: 0.85rem; font-weight: 600; }
+.cmp-bar { position: sticky; bottom: 16px; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 22px auto 0; max-width: 520px; padding: 10px 12px 10px 22px; border-radius: 100px; background: rgba(7,10,17,0.94); border: 1px solid var(--gold-3); box-shadow: 0 20px 50px -20px rgba(33, 43, 61,0.6); color: #fff; backdrop-filter: blur(8px); font-family: var(--font-head); font-weight: 600; }
+.cmp-bar-acoes { display: flex; align-items: center; gap: 10px; }
+.cmp-bar-limpar { background: none; border: none; color: #aab0bd; cursor: pointer; font-family: var(--font-head); font-weight: 600; font-size: 0.85rem; }
+.cmp-bar-btn { padding: 9px 18px; }
+.cmp-bar-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+.cmp-modal { position: fixed; inset: 0; z-index: 1600; background: rgba(7,10,17,0.72); display: grid; place-items: center; padding: 18px; backdrop-filter: blur(4px); }
+.cmp-box { position: relative; background: #fff; border-radius: 20px; padding: clamp(20px, 4vw, 34px); max-width: 840px; width: 100%; max-height: 86vh; overflow: auto; }
+.cmp-close { position: absolute; top: 14px; right: 14px; background: rgba(22,26,34,0.06); border: none; border-radius: 50%; width: 38px; height: 38px; display: grid; place-items: center; cursor: pointer; color: #42261c; }
+.cmp-scroll { overflow-x: auto; margin-top: 8px; }
+.cmp-table { width: 100%; border-collapse: collapse; min-width: 440px; }
+.cmp-table th { font-family: var(--font-head); font-size: 0.98rem; color: #42261c; padding: 10px; text-align: left; border-bottom: 2px solid var(--gold-3); vertical-align: bottom; }
+.cmp-table td { padding: 10px; border-bottom: 1px solid rgba(22,26,34,0.1); font-size: 0.88rem; color: #3a4150; vertical-align: top; line-height: 1.45; }
+.cmp-rot { font-family: var(--font-head); font-weight: 700; color: var(--gold-3) !important; white-space: nowrap; }
+.cmp-ver { padding: 7px 14px; font-size: 0.8rem; }

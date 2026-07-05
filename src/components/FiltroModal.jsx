@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CONFIG, FILTRO, BAIRROS, SEG_PRESET } from '../data'
 import { IconWhats, IconClose, IconArrow } from './icons'
+import '../styles/catalogo.css'
 
 const PILLS = ['1', '2', '3', '4+']
 const PILLS0 = ['0', '1', '2', '3+']

@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from 'react'
 import { avaliarMatch, formatPreco } from '../data'
+import '../styles/admin.css'
 
 // WhatsApp com DDI Brasil
 const waLink = (wa, msg) => { const d = String(wa || '').replace(/\D/g, ''); if (d.length < 8) return null; const full = d.length <= 11 ? '55' + d : d; return `https://wa.me/${full}?text=${encodeURIComponent(msg)}` }

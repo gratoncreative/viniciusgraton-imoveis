@@ -1,5 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { importRetry } from '../lazyRetry'
+import '../styles/mf.css'
+import '../styles/detalhe.css'
+import '../styles/admin.css'
+import '../styles/anunciar.css'
+import '../styles/calc.css'
+import '../styles/marca-dagua.css'
 
 // Remoção de marca d'água 100% no navegador (privado, na área restrita).
 // IA: MI-GAN (ONNX) via onnxruntime-web. O modelo é servido por /api/modelo-marca.

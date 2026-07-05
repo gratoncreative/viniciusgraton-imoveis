@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { linkWhatsApp } from '../data'
 import { IconWhats, IconArrow } from './icons'
+import '../styles/detalhe.css'
 
 const PERIODOS = ['Manhã', 'Tarde', 'Noite']
 

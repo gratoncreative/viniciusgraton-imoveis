@@ -7,6 +7,8 @@ import { BAIRROS_EDITORIAL } from '../bairros-editorial'
 import Reveal from '../components/Reveal'
 import { IconArrow, IconWhats, IconPin } from '../components/icons'
 import { CardEmpLan } from './PortalLancamentosHome'
+import '../styles/lancamentos.css'
+import '../styles/bairros.css'
 
 const slugify = (b) =>
   b.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, '-')

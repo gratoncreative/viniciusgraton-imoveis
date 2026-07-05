@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { CONFIG, formatPreco } from '../data'
 import { registrarLead } from '../engajamento'
 import { IconWhats, IconClose, IconLink, IconCheck, IconShare, IconFacebook, IconTelegram, IconInsta, IconTikTok } from './icons'
+import '../styles/share.css'
 
 // Modal de compartilhamento + captação de lead.
 // Ao compartilhar (WhatsApp / copiar / nativo) dispara onShared (incrementa o contador).

@@ -6,6 +6,11 @@ import { CONFIG } from '../data'
 import { formatBRL } from '../extenso'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow, IconShield, IconClose } from '../components/icons'
+import '../styles/converter.css'
+import '../styles/detalhe.css'
+import '../styles/anunciar.css'
+import '../styles/lead.css'
+import '../styles/aviseme.css'
 
 const FINALIDADES = ['Vender', 'Alugar']
 const TIPOS = ['Casa', 'Apartamento', 'Casa em condomínio', 'Terreno / lote', 'Comercial', 'Rural / chácara', 'Outro']

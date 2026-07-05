@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { IconWhats, IconShield } from './icons'
 import { getCorretorOuAdmin, salvarCorretor } from '../corretor'
 import { registrarLead } from '../engajamento'
+import '../styles/rotina-tool.css'
+import '../styles/calc.css'
 
 const soNum = (s) => String(s || '').replace(/\D/g, '')
 const mascaraFone = (s) => {

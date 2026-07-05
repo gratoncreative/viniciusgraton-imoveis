@@ -4,6 +4,7 @@ import Reveal from '../components/Reveal'
 import { linkWhatsApp, WA } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow, IconShield } from '../components/icons'
+import '../styles/diferenciais.css'
 
 const ICN = {
   curadoria: 'M21 21l-4.3-4.3M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM8.5 11l2 2 3.5-3.5',

@@ -4,6 +4,11 @@ import Reveal from '../components/Reveal'
 import { linkWhatsApp, getImovel, formatPreco } from '../data'
 import { useSEO } from '../useSEO'
 import { IconWhats, IconArrow, IconShield } from '../components/icons'
+import '../styles/anunciar.css'
+import '../styles/rotina-tool.css'
+import '../styles/calc.css'
+import '../styles/impulsionar.css'
+import '../styles/aviseme.css'
 
 const PLANOS = [
   { id: 'p7', nome: 'Destaque 7 dias', preco: 'R$ 29,90', desc: 'Seu anúncio sobe nas listagens e ganha selo de destaque por 7 dias.' },

@@ -4,6 +4,7 @@ import PrecoGate from './PrecoGate'
 import { IconWhats, ICONS } from './icons'
 import Engajamento from './Engajamento'
 import { onImgError } from '../img'
+import '../styles/cards.css'
 
 const plural = (n, s, p) => (n > 1 ? p : s)
 

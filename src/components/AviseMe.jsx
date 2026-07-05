@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { CONFIG } from '../data'
 import { registrarLead } from '../engajamento'
 import { IconWhats, IconArrow } from './icons'
+import '../styles/aviseme.css'
 
 // "Avise-me": o visitante deixa o que procura + WhatsApp; vira lead (KV) e
 // abre a conversa com o Vinícius. Reaproveita o backend de leads (/api/eng).

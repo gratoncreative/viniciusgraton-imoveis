@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { IconWhats } from './icons'
+import '../styles/detalhe.css'
+import '../styles/admin.css'
 
 // Atendimentos em aberto do Imoview → mensagem de WhatsApp + plano por IA (token-gated).
 const api = (payload) => fetch('/api/admin', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) }).then((r) => r.json().then((j) => ({ status: r.status, j })).catch(() => ({ status: r.status, j: null })))

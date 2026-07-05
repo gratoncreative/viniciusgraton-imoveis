@@ -1,0 +1,26 @@
+/* CSS da página/feature "banner-ads" — extraído do index.css (fase 3). Regras 🔒 seguem no index.css. */
+.adslot { position: relative; display: flex; overflow: hidden; border-radius: 16px; text-decoration: none; color: #fff; box-shadow: 0 18px 44px -22px rgba(33, 43, 61,0.6); border: 1px solid rgba(255,255,255,0.08); }
+.adslot:hover { box-shadow: 0 24px 56px -22px rgba(33, 43, 61,0.7); }
+.adbox--horizontal .adslot { flex-direction: row; align-items: center; justify-content: space-between; gap: 18px; min-height: 132px; padding: 22px 28px; }
+.adbox--vertical .adslot { flex-direction: column; align-items: flex-start; justify-content: center; gap: 14px; min-height: 420px; padding: 30px 26px; text-align: left; }
+.adslot--c0 { background: linear-gradient(120deg, #212b3d 0%, #232e40 100%); }
+.adslot--c1 { background: linear-gradient(120deg, #2a1f0c 0%, #4a3414 100%); }
+.adslot--c2 { background: linear-gradient(120deg, #10211b 0%, #1d3a2e 100%); }
+.adslot-img { width: 100%; height: 100%; object-fit: cover; }
+.adslot-body { display: flex; flex-direction: column; gap: 5px; min-width: 0; position: relative; z-index: 2; }
+.adslot-eyebrow { font-family: var(--font-head); font-weight: 700; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-1); }
+.adslot-tit { font-family: var(--font-head); font-weight: 800; font-size: 1.45rem; line-height: 1.1; letter-spacing: -0.01em; }
+.adbox--vertical .adslot-tit { font-size: 1.7rem; }
+.adslot-sub { font-size: 0.9rem; color: rgba(255,255,255,0.78); line-height: 1.45; max-width: 52ch; }
+.adslot-cta { position: relative; z-index: 2; flex: none; display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-head); font-weight: 700; font-size: 0.92rem; color: #FFFFFF; background: var(--gold-grad); padding: 11px 20px; border-radius: 999px; box-shadow: 0 8px 20px rgba(10, 14, 22,0.4); transition: transform 0.2s var(--ease); }
+.adslot:hover .adslot-cta { transform: translateY(-2px); }
+.adslot-cta i { font-style: normal; transition: transform 0.2s var(--ease); }
+.adslot:hover .adslot-cta i { transform: translateX(3px); }
+.adslot-shine { position: absolute; top: 0; left: -60%; width: 38%; height: 100%; background: linear-gradient(100deg, transparent, rgba(255,255,255,0.16), transparent); transform: skewX(-18deg); animation: adShine 4.8s ease-in-out infinite; pointer-events: none; z-index: 1; }
+@media (prefers-reduced-motion: reduce) {
+.adslot-shine { animation: none; }
+}
+@media (max-width: 680px) {
+.adbox--horizontal .adslot { flex-direction: column; align-items: flex-start; text-align: left; min-height: 0; padding: 20px 22px; }
+.adslot-tit { font-size: 1.25rem; }
+}

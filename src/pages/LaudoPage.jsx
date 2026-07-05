@@ -1,6 +1,8 @@
 import { useEffect, useState, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { formatPreco } from '../data'
+import '../styles/laudo.css'
+import '../styles/lancamentos.css'
 
 /* ── Score ring ─────────────────────────────────────────── */
 function ScoreRing({ score }) {
