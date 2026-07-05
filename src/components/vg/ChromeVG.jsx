@@ -98,6 +98,7 @@ export function FooterVG() {
             <h4>Para você</h4>
             <Link to="/contato">Quero comprar</Link>
             <Link to="/anunciar">Quero vender meu imóvel</Link>
+            <a href="https://aicapitei.com.br" target="_blank" rel="noopener">Anunciar grátis no aicapitei</a>
             <a href="#simulador">Simular financiamento</a>
             <Link to="/mercado">Preço do m² por bairro</Link>
           </div>

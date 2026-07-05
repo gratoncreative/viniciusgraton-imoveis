@@ -561,6 +561,7 @@ function blogBodySeo(post) {
     `<p>${esc(post.resumo || '')}</p>` +
     blocos +
     `<p>Por <strong>Vinícius Graton</strong>, consultor de imóveis em Uberlândia, Rotina Imobiliária.</p>` +
+    `<p>Vai vender um imóvel em Uberlândia? Você também pode <a href="https://aicapitei.com.br">anunciar grátis no aicapitei</a>, portal parceiro que divulga em todos os portais e dá cashback na venda.</p>` +
     `<nav><a href="/blog">← Voltar ao blog</a> · <a href="/imoveis">Ver imóveis em Uberlândia</a></nav></article>`
 }
 

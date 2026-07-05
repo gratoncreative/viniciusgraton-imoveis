@@ -147,12 +147,16 @@ export default function BlogPost() {
         <div className="post-cta">
           <div>
             <b>Quer um acompanhamento de verdade nessa decisão?</b>
-            <span>Comigo você tem atenção dedicada do início ao fim — eu cuido de cada detalhe, no seu tempo, até a entrega das chaves. Aqui você não é mais um número.</span>
+            <span>Comigo você tem atenção dedicada do início ao fim - eu cuido de cada detalhe, no seu tempo, até a entrega das chaves. Aqui você não é mais um número.</span>
           </div>
           <a className="btn btn-gold" href={linkWhatsApp('Olá Vinícius! Li um artigo no seu site e quero tirar uma dúvida / começar a procurar meu imóvel.')} target="_blank" rel="noopener noreferrer">
             <IconWhats /> Falar com o Vinícius
           </a>
         </div>
+
+        <p style={{ marginTop: 18, fontSize: 14, color: '#5a6478' }}>
+          Vai vender um imóvel em Uberlândia? Você também pode <a href="https://aicapitei.com.br" target="_blank" rel="noopener" style={{ color: '#1C2A44', fontWeight: 600 }}>anunciar grátis no aicapitei</a>, portal parceiro que divulga em todos os portais e dá cashback na venda.
+        </p>
 
         <div className="det-rel" style={{ marginTop: 50 }}>
           <h2 className="det-rel-titulo">Continue lendo</h2>
