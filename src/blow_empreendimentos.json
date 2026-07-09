@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-08T08:45:39.522Z",
+  "geradoEm": "2026-07-09T10:02:50.126Z",
   "fonte": "blow",
   "empreendimentos": [
     {
@@ -7204,7 +7204,7 @@
         }
       ],
       "pdfApresentacao": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/eefbee23-bdec-4517-9f10-02018301150d/0a8d00c8-ebf6-4ef1-8cc1-b3a5ade8353f",
-      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/eefbee23-bdec-4517-9f10-02018301150d/612c83a0-9b9b-458d-b690-74861475a226",
+      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/eefbee23-bdec-4517-9f10-02018301150d/cdec709a-9352-496b-83be-6e1755e25c0d",
       "tipologias": [
         "2 quartos"
       ],
@@ -11968,74 +11968,44 @@
       ],
       "unidadesDetalhes": [
         {
-          "ap": "2107",
+          "ap": "1402",
           "tipologia": "Apto. Tipo",
-          "area": 103.05,
-          "quartos": 2,
-          "suites": 1,
-          "banheiros": 2,
-          "vagas": 2,
-          "valor": 1002622.8
+          "area": 31.33,
+          "quartos": 1,
+          "suites": null,
+          "banheiros": 1,
+          "vagas": 1,
+          "valor": 405656.61
         },
         {
-          "ap": "03",
-          "tipologia": "Loja",
-          "area": 99.89,
-          "quartos": null,
+          "ap": "1502",
+          "tipologia": "Apto. Tipo",
+          "area": 31.33,
+          "quartos": 1,
           "suites": null,
-          "banheiros": null,
-          "vagas": 2,
-          "valor": 1198680
+          "banheiros": 1,
+          "vagas": 1,
+          "valor": 410857.33
         },
         {
-          "ap": "05",
-          "tipologia": "Loja",
-          "area": 115.77,
-          "quartos": null,
+          "ap": "1803",
+          "tipologia": "Apto. Tipo",
+          "area": 33.67,
+          "quartos": 1,
           "suites": null,
-          "banheiros": null,
-          "vagas": 2,
-          "valor": 1389240
-        },
-        {
-          "ap": "02",
-          "tipologia": "Loja",
-          "area": 169.61,
-          "quartos": null,
-          "suites": null,
-          "banheiros": null,
-          "vagas": 2,
-          "valor": 2035320
-        },
-        {
-          "ap": "06",
-          "tipologia": "Loja",
-          "area": 217.38,
-          "quartos": null,
-          "suites": null,
-          "banheiros": null,
-          "vagas": 2,
-          "valor": 2608560
-        },
-        {
-          "ap": "01",
-          "tipologia": "Loja",
-          "area": 336.83,
-          "quartos": null,
-          "suites": null,
-          "banheiros": null,
-          "vagas": 2,
-          "valor": 4041960
+          "banheiros": 1,
+          "vagas": 1,
+          "valor": 426459.51
         }
       ],
       "valorCondominio": null,
       "quantAndares": 18,
       "quantElevadores": 3,
-      "fracaoVendida": 0.6,
+      "fracaoVendida": 0.8,
       "dataEntrega": "2028-12-31T03:00:00Z",
       "aquecimento": "Elétrico",
       "arCondicionado": "Previsão de Ar Condicionado",
-      "unidadesDisponiveis": 6,
+      "unidadesDisponiveis": 3,
       "totalUnidades": 15,
       "lat": -18.8775049,
       "lng": -48.2470291,
@@ -13814,7 +13784,7 @@
         }
       ],
       "pdfApresentacao": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/bf1251a5-1a7c-46e3-a432-9b7d05a13032/41d6a6b7-5312-436d-8a5c-14f1c81d8467",
-      "pdfTabela": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/bf1251a5-1a7c-46e3-a432-9b7d05a13032/485ae613-384a-4393-aa02-82b01ec3160c",
+      "pdfTabela": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/bf1251a5-1a7c-46e3-a432-9b7d05a13032/feaa1dc7-f0fa-4bdb-823b-6fdb449cee3f",
       "tipologias": [
         "2 quartos"
       ],
@@ -20797,7 +20767,7 @@
         }
       ],
       "pdfApresentacao": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/edd73ef3-13a5-4bb1-b08c-27fe5275a44e/01527eff-8fce-457e-badd-a27e1efd595e",
-      "pdfTabela": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/edd73ef3-13a5-4bb1-b08c-27fe5275a44e/732c3bd6-f347-4db0-b607-b5a17e1e9b20",
+      "pdfTabela": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/edd73ef3-13a5-4bb1-b08c-27fe5275a44e/e6f79991-8071-4d78-bc9b-d0c5e10485ea",
       "tipologias": [
         "2 quartos"
       ],
@@ -28177,7 +28147,7 @@
         }
       ],
       "pdfApresentacao": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/08acc3bb-e015-48f6-a400-5e636286c9b1/566ca9de-0c2b-4691-be9b-7379f311f301",
-      "pdfTabela": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/08acc3bb-e015-48f6-a400-5e636286c9b1/30c4cc97-32d9-42ba-ad68-718c40e50087",
+      "pdfTabela": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/08acc3bb-e015-48f6-a400-5e636286c9b1/da3323ab-fd8b-48e0-8e43-5bc940babf10",
       "tipologias": [
         "2 quartos"
       ],
@@ -30024,7 +29994,7 @@
         }
       ],
       "pdfApresentacao": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/43da262c-fd30-4b1d-9e6b-0b312afae918/c4542f90-dc14-4bdb-b07d-552fa0b34b84",
-      "pdfTabela": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/43da262c-fd30-4b1d-9e6b-0b312afae918/3c76dfe8-f647-47cb-aa67-400c2185349c",
+      "pdfTabela": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/43da262c-fd30-4b1d-9e6b-0b312afae918/00c44b3f-962b-4529-a66c-80d66c3d15df",
       "tipologias": [
         "2 quartos"
       ],
