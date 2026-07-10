@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-09T10:02:50.126Z",
+  "geradoEm": "2026-07-10T09:53:43.046Z",
   "fonte": "blow",
   "empreendimentos": [
     {
@@ -3201,7 +3201,7 @@
         }
       ],
       "pdfApresentacao": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/88987372-60fd-4c00-8314-0311937d6e56/5e32dd6d-4a66-4d78-8863-99256decc463",
-      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/88987372-60fd-4c00-8314-0311937d6e56/feba021d-99b1-4782-94d4-71679a75fa56",
+      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/88987372-60fd-4c00-8314-0311937d6e56/017d692a-4c89-4bab-b292-44cfa3eddf74",
       "tipologias": [
         "4 a 5 quartos"
       ],
@@ -3636,7 +3636,7 @@
         }
       ],
       "pdfApresentacao": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/dc711681-c3a8-4f3e-b19d-85cb0b044faf/d9d3d713-3b15-4e45-b242-54c9cf658582",
-      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/dc711681-c3a8-4f3e-b19d-85cb0b044faf/359b8450-63fe-496f-a486-ea3b44d6418e",
+      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/dc711681-c3a8-4f3e-b19d-85cb0b044faf/884659ac-bebf-43a3-afff-da04dc818718",
       "tipologias": [
         "3 quartos"
       ],
@@ -16766,7 +16766,7 @@
       "plantas": [],
       "plantasComLegenda": [],
       "pdfApresentacao": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/90dc0c42-d7ac-4529-9198-d2f04505c006/1e89fa77-2b8b-4a18-8786-46ad94f0c3f4",
-      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/90dc0c42-d7ac-4529-9198-d2f04505c006/62763cbc-c662-44ba-af18-7df525ab78bb",
+      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/90dc0c42-d7ac-4529-9198-d2f04505c006/55c010cd-db3f-4544-a243-1e7d12ad4f92",
       "tipologias": [
         "2 quartos"
       ],
@@ -16813,7 +16813,7 @@
           "suites": null,
           "banheiros": 1,
           "vagas": 1,
-          "valor": 255728
+          "valor": 260000
         },
         {
           "ap": "203",
@@ -19418,455 +19418,6 @@
       "origem": "blow"
     },
     {
-      "blowId": "315db963-c0cb-4144-ac71-d30c39f11780",
-      "nome": "Antilhas Residence",
-      "slug": "antilhas-residence",
-      "construtoraNome": "PERSA INCORPORACOES",
-      "construtoraSlug": "persa-incorporacoes",
-      "construtoraLogo": "https://blow-app.s3.us-east-2.amazonaws.com/empresa/ce104ff4-e985-4660-bb2d-3acfb5ba6a74/1d88221e-4d76-4d74-9097-4e7705eb577b",
-      "construtoraPortal": "https://drive.google.com/drive/folders/1Foz_eUQGyekyO4di7KigTGAuHHh_iP9s",
-      "bairro": "Tibery",
-      "cidade": "Uberlândia",
-      "status": "Em obras",
-      "tipo": "residencial",
-      "capa": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/8216da5d-4dee-4220-a069-faa183c0e63d",
-      "fotos": [
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/7bf4bd82-f884-4ddb-94b7-b7f65ed99fcc",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/5fd35aff-5b58-4a2c-89a2-e01b8694bdc6",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/c918d3d5-3884-4594-97a1-38c556962562",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/a900a88b-56fa-444f-b396-ce2f4c75fbe8",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/08988ec6-3033-4d63-bd1e-e96753a72a9c",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/aed8fd4a-34f6-4d85-becc-86dc38cb3496",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/b3ff86ec-d239-49a4-b296-e9d045d2b89a",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/0e985ea6-ec95-447c-8de6-0544d9ca63fe",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/41f6c32b-541e-4e3c-a067-0cc72dc035b6",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/11898b56-ff9d-479c-89fd-6cfbc00b63a3",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/4c65b806-157e-4ee1-9046-552c978f500b",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/a5e4a540-8c96-4211-9d9f-50c2e46d0b3d",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/a1230476-379c-454f-a1b7-d9a6a8f6f2b9",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/c2b14630-d9c5-4fca-91c0-a74aa5c955fa",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/3f199aa5-f170-4052-bc43-6663680e9e7c",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/77a24acb-b053-4fb5-8945-f989fa90e849",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/39e7e2e6-2293-4b78-9c0f-fbe6f85df558",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/497423d8-34dd-4547-b15e-5e7d3de4ed28",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/b03eb1fa-fe6d-45e1-99c3-d382813daa83",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/3a085777-c45e-4298-8c65-411a89fef6b4",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/44301766-edaa-4cc6-a395-19632d5bc67b",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/62d60225-76ff-43ce-84f2-ceba5d9b9f7c",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/8461baaf-eeaf-43b0-bf35-f48e485599fe",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/1a50807f-5b19-48b8-b304-1500a73d0174",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/634e8989-5032-48e6-917e-1af196360ab9",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/80ef25d1-2a04-44ea-89a8-f6c1a788cbeb",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/32b8591e-e4ba-40e1-85d1-7f156dad997d",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/0dc1ac2c-09fa-41b8-bd80-0b078fc750ea",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/2e8da5be-2f48-450c-a3a0-446e77c977e1"
-      ],
-      "fotosComLegenda": [
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/7bf4bd82-f884-4ddb-94b7-b7f65ed99fcc",
-          "legenda": "Lobby"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/5fd35aff-5b58-4a2c-89a2-e01b8694bdc6",
-          "legenda": "Piscina com deck"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/c918d3d5-3884-4594-97a1-38c556962562",
-          "legenda": "Piscina com deck"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/a900a88b-56fa-444f-b396-ce2f4c75fbe8",
-          "legenda": "Espaço Gourmet"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/08988ec6-3033-4d63-bd1e-e96753a72a9c",
-          "legenda": "Academia"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/aed8fd4a-34f6-4d85-becc-86dc38cb3496",
-          "legenda": "PUB"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/b3ff86ec-d239-49a4-b296-e9d045d2b89a",
-          "legenda": "Salão de festas"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/0e985ea6-ec95-447c-8de6-0544d9ca63fe",
-          "legenda": "Espaço fogo"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/41f6c32b-541e-4e3c-a067-0cc72dc035b6",
-          "legenda": "Playground"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/11898b56-ff9d-479c-89fd-6cfbc00b63a3",
-          "legenda": "Academia ao ar-livre"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/4c65b806-157e-4ee1-9046-552c978f500b",
-          "legenda": "Pet place"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/a5e4a540-8c96-4211-9d9f-50c2e46d0b3d",
-          "legenda": "Sauna"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/a1230476-379c-454f-a1b7-d9a6a8f6f2b9",
-          "legenda": "Lavanderia"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/c2b14630-d9c5-4fca-91c0-a74aa5c955fa",
-          "legenda": "Coworking"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/3f199aa5-f170-4052-bc43-6663680e9e7c",
-          "legenda": "Espaço zen"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/77a24acb-b053-4fb5-8945-f989fa90e849",
-          "legenda": "Studio Aruba"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/39e7e2e6-2293-4b78-9c0f-fbe6f85df558",
-          "legenda": "Studio Aruba"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/497423d8-34dd-4547-b15e-5e7d3de4ed28",
-          "legenda": "Studio Aruba"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/b03eb1fa-fe6d-45e1-99c3-d382813daa83",
-          "legenda": "Studio Curaçao"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/3a085777-c45e-4298-8c65-411a89fef6b4",
-          "legenda": "Studio Curaçao"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/44301766-edaa-4cc6-a395-19632d5bc67b",
-          "legenda": "Studio Curaçao"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/62d60225-76ff-43ce-84f2-ceba5d9b9f7c",
-          "legenda": "Studio Bonaire"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/8461baaf-eeaf-43b0-bf35-f48e485599fe",
-          "legenda": "Studio Bonaire"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/1a50807f-5b19-48b8-b304-1500a73d0174",
-          "legenda": "Studio Bonaire"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/634e8989-5032-48e6-917e-1af196360ab9",
-          "legenda": "Cobertura Montserrat"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/80ef25d1-2a04-44ea-89a8-f6c1a788cbeb",
-          "legenda": "Cobertura Montserrat"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/32b8591e-e4ba-40e1-85d1-7f156dad997d",
-          "legenda": "Cobertura Saint-Martin"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/0dc1ac2c-09fa-41b8-bd80-0b078fc750ea",
-          "legenda": "Localização"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/2e8da5be-2f48-450c-a3a0-446e77c977e1",
-          "legenda": "Localização"
-        }
-      ],
-      "plantas": [
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/ba895be6-37e4-4b9b-b90e-b4aaaf825742",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/1347f37c-643d-4e7f-9536-55274e7d300b",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/b58dec26-d621-4a5e-b1b4-1fb8156efc57",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/4e3f64a6-0700-4099-b021-f11bb1a02083",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/18c59662-163b-4fab-b745-0ad942e9c62b",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/bf1fed0b-6053-4512-b0d7-c80a35ac7511",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/2926c3e8-db66-4c5f-9a30-1a2b9a2e59de",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/2e8e7c4d-cc39-4e92-9e3d-68e111b6a21b",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/be3970dc-facc-48a9-83f7-4df32c149781",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/c99c43dd-1f8e-44b3-b5b1-de1525ee221d",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/6ecee358-79bf-49fa-bb29-bb63e26e3b7e",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/e3c70341-84cf-463a-9500-295a8c88597c",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/fb116a8b-cc3d-48ee-99d1-3d7ef0cdeab5",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/4537d995-5d3f-4bf4-a2d3-04fd9a303d48"
-      ],
-      "plantasComLegenda": [
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/ba895be6-37e4-4b9b-b90e-b4aaaf825742",
-          "legenda": "SUBSOLO 1"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/1347f37c-643d-4e7f-9536-55274e7d300b",
-          "legenda": "SUBSOLO 2"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/b58dec26-d621-4a5e-b1b4-1fb8156efc57",
-          "legenda": "PLANTA TÉRREO"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/4e3f64a6-0700-4099-b021-f11bb1a02083",
-          "legenda": "COBERTURA B"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/18c59662-163b-4fab-b745-0ad942e9c62b",
-          "legenda": "PLANTA ÁREA COMUM"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/bf1fed0b-6053-4512-b0d7-c80a35ac7511",
-          "legenda": "PAVIMENTO TIPO NOMES E COTAS"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/2926c3e8-db66-4c5f-9a30-1a2b9a2e59de",
-          "legenda": "PAVIMENTO COBERTURA NOMES E COTAS"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/2e8e7c4d-cc39-4e92-9e3d-68e111b6a21b",
-          "legenda": "PAVIMENTO COBERTURA"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/be3970dc-facc-48a9-83f7-4df32c149781",
-          "legenda": "COBERTURA A"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/c99c43dd-1f8e-44b3-b5b1-de1525ee221d",
-          "legenda": "PAVIMENTO TIPO (1)"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/6ecee358-79bf-49fa-bb29-bb63e26e3b7e",
-          "legenda": "APARTAMENTO DOIS QUARTOS"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/e3c70341-84cf-463a-9500-295a8c88597c",
-          "legenda": "STUDIO A (2)"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/fb116a8b-cc3d-48ee-99d1-3d7ef0cdeab5",
-          "legenda": "STUDIO B (1)"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/medium/4537d995-5d3f-4bf4-a2d3-04fd9a303d48",
-          "legenda": "STUDIO C (2)"
-        }
-      ],
-      "pdfApresentacao": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/86f04613-1dcc-449a-b6cb-a4e44718cc0f",
-      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/315db963-c0cb-4144-ac71-d30c39f11780/18d3a371-2775-49d3-883d-9d7c3a3580d8",
-      "tipologias": [
-        "1 quarto"
-      ],
-      "areaMin": 27,
-      "areaMax": 40.23,
-      "quartosMin": 1,
-      "quartosMax": 1,
-      "suitesMin": 1,
-      "suitesMax": 1,
-      "banheirosMin": 1,
-      "banheirosMax": 1,
-      "vagasMin": 1,
-      "vagasMax": 1,
-      "descricao": "Mobilidade, lazer e serviços num ambiente com qualidade arquitetônica se juntam à sofisticação e ao conforto inigualáveis de se morar em um imóvel inteligente na melhor localização da cidade. Um investimento seguro que, ao mesmo tempo, te mantém conectado ao que há de mais essencial na cidade.",
-      "comodidades": [
-        "Coworking",
-        "Controle de Acesso a áreas comuns",
-        "Piscina",
-        "Salão de Festas",
-        "Lavanderia",
-        "Pet Place",
-        "Solarium",
-        "Academia",
-        "Espaço Gourmet",
-        "Playground",
-        "Sauna",
-        "Circuito CFTV",
-        "Fechadura Biométrica"
-      ],
-      "comodidadesGrupadas": {
-        "Facilidades": [
-          "Coworking",
-          "Lavanderia",
-          "Pet Place"
-        ],
-        "Segurança": [
-          "Controle de Acesso a áreas comuns",
-          "Circuito CFTV",
-          "Fechadura Biométrica"
-        ],
-        "Esporte e Lazer": [
-          "Piscina",
-          "Salão de Festas",
-          "Solarium",
-          "Academia",
-          "Espaço Gourmet",
-          "Playground",
-          "Sauna"
-        ]
-      },
-      "parcelamentos": [
-        {
-          "descricao": "Entrada",
-          "percentual": 0.1,
-          "quant": 1
-        },
-        {
-          "descricao": "Mensal",
-          "percentual": 0.05,
-          "quant": 10
-        },
-        {
-          "descricao": "Intermediária",
-          "percentual": 0.05,
-          "quant": 1
-        },
-        {
-          "descricao": "Financiamento",
-          "percentual": 0.8,
-          "quant": 1
-        }
-      ],
-      "unidadesDetalhes": [
-        {
-          "ap": "107",
-          "tipologia": "Apto. Tipo",
-          "area": 30.36,
-          "quartos": 1,
-          "suites": 1,
-          "banheiros": 1,
-          "vagas": 1,
-          "valor": 367356
-        },
-        {
-          "ap": "207",
-          "tipologia": "Apto. Tipo",
-          "area": 30.36,
-          "quartos": 1,
-          "suites": 1,
-          "banheiros": 1,
-          "vagas": 1,
-          "valor": 370392
-        },
-        {
-          "ap": "507",
-          "tipologia": "Apto. Tipo",
-          "area": 30.36,
-          "quartos": 1,
-          "suites": 1,
-          "banheiros": 1,
-          "vagas": 1,
-          "valor": 374946
-        },
-        {
-          "ap": "106",
-          "tipologia": "Apto. Tipo",
-          "area": 31.21,
-          "quartos": 1,
-          "suites": 1,
-          "banheiros": 1,
-          "vagas": 1,
-          "valor": 376080.5
-        },
-        {
-          "ap": "206",
-          "tipologia": "Apto. Tipo",
-          "area": 31.21,
-          "quartos": 1,
-          "suites": 1,
-          "banheiros": 1,
-          "vagas": 1,
-          "valor": 377641
-        },
-        {
-          "ap": "607",
-          "tipologia": "Apto. Tipo",
-          "area": 30.36,
-          "quartos": 1,
-          "suites": 1,
-          "banheiros": 1,
-          "vagas": 1,
-          "valor": 377982
-        },
-        {
-          "ap": "306",
-          "tipologia": "Apto. Tipo",
-          "area": 31.21,
-          "quartos": 1,
-          "suites": 1,
-          "banheiros": 1,
-          "vagas": 1,
-          "valor": 378577.3
-        },
-        {
-          "ap": "406",
-          "tipologia": "Apto. Tipo",
-          "area": 31.21,
-          "quartos": 1,
-          "suites": 1,
-          "banheiros": 1,
-          "vagas": 1,
-          "valor": 379201.5
-        },
-        {
-          "ap": "506",
-          "tipologia": "Apto. Tipo",
-          "area": 31.21,
-          "quartos": 1,
-          "suites": 1,
-          "banheiros": 1,
-          "vagas": 1,
-          "valor": 382322.5
-        },
-        {
-          "ap": "707",
-          "tipologia": "Apto. Tipo",
-          "area": 30.36,
-          "quartos": 1,
-          "suites": 1,
-          "banheiros": 1,
-          "vagas": 1,
-          "valor": 384054
-        },
-        {
-          "ap": "606",
-          "tipologia": "Apto. Tipo",
-          "area": 31.21,
-          "quartos": 1,
-          "suites": 1,
-          "banheiros": 1,
-          "vagas": 1,
-          "valor": 385443.5
-        },
-        {
-          "ap": "807",
-          "tipologia": "Apto. Tipo",
-          "area": 30.36,
-          "quartos": 1,
-          "suites": 1,
-          "banheiros": 1,
-          "vagas": 1,
-          "valor": 387090
-        }
-      ],
-      "valorCondominio": null,
-      "quantAndares": 11,
-      "quantElevadores": 2,
-      "fracaoVendida": 0.47,
-      "dataEntrega": "2027-03-30T03:00:00Z",
-      "aquecimento": "Elétrico",
-      "arCondicionado": "Previsão de Ar Condicionado",
-      "unidadesDisponiveis": 46,
-      "totalUnidades": 87,
-      "lat": -18.9086109,
-      "lng": -48.2567523,
-      "videos": [],
-      "youtube": null,
-      "endereco": "Rua Antilhas, 321",
-      "primeiraPublicacao": "2025-07-09T20:05:37.403Z",
-      "origem": "blow"
-    },
-    {
       "blowId": "c14fbd88-931d-4c07-a3f0-18ad729fa036",
       "nome": "Dolce Vita",
       "slug": "dolce-vita",
@@ -21343,7 +20894,7 @@
         }
       ],
       "pdfApresentacao": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/f34c8185-f62c-4503-a9f7-f6ffad3bb1f6/950557c5-aadd-4b70-93e1-c7371361ad02",
-      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/f34c8185-f62c-4503-a9f7-f6ffad3bb1f6/d7f77199-8242-4196-9704-1c6abb7a67d4",
+      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/f34c8185-f62c-4503-a9f7-f6ffad3bb1f6/589e91bc-785f-4a0c-ac67-5c63a7291023",
       "tipologias": [
         "2 a 3 quartos"
       ],
@@ -21409,26 +20960,6 @@
       ],
       "unidadesDetalhes": [
         {
-          "ap": "301",
-          "tipologia": "Apto. Tipo",
-          "area": 79.23,
-          "quartos": 3,
-          "suites": 1,
-          "banheiros": 2,
-          "vagas": 2,
-          "valor": 63177
-        },
-        {
-          "ap": "203",
-          "tipologia": "Apto. Tipo",
-          "area": 61.27,
-          "quartos": 2,
-          "suites": 1,
-          "banheiros": 2,
-          "vagas": 1,
-          "valor": 484775
-        },
-        {
           "ap": "303",
           "tipologia": "Apto. Tipo",
           "area": 61.27,
@@ -21436,7 +20967,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 488982
+          "valor": 494609
         },
         {
           "ap": "404",
@@ -21446,7 +20977,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 496335
+          "valor": 502718
         },
         {
           "ap": "403",
@@ -21456,7 +20987,17 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 496335
+          "valor": 502718
+        },
+        {
+          "ap": "503",
+          "tipologia": "Apto. Tipo",
+          "area": 61.27,
+          "quartos": 2,
+          "suites": 1,
+          "banheiros": 2,
+          "vagas": 1,
+          "valor": 505758
         },
         {
           "ap": "603",
@@ -21466,7 +21007,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 501329
+          "valor": 507785
         },
         {
           "ap": "804",
@@ -21476,7 +21017,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 510347
+          "valor": 516904
         },
         {
           "ap": "903",
@@ -21486,7 +21027,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 516185
+          "valor": 521975
         },
         {
           "ap": "904",
@@ -21496,7 +21037,27 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 1,
-          "valor": 516185
+          "valor": 521975
+        },
+        {
+          "ap": "203",
+          "tipologia": "Apto. Tipo",
+          "area": 61.27,
+          "quartos": 2,
+          "suites": 1,
+          "banheiros": 2,
+          "vagas": 1,
+          "valor": 552110
+        },
+        {
+          "ap": "301",
+          "tipologia": "Apto. Tipo",
+          "area": 79.23,
+          "quartos": 3,
+          "suites": 1,
+          "banheiros": 2,
+          "vagas": 2,
+          "valor": 634155
         },
         {
           "ap": "202",
@@ -21506,7 +21067,7 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 2,
-          "valor": 627107
+          "valor": 635492
         },
         {
           "ap": "201",
@@ -21516,27 +21077,17 @@
           "suites": 1,
           "banheiros": 2,
           "vagas": 2,
-          "valor": 627107
-        },
-        {
-          "ap": "901",
-          "tipologia": "Cobertura",
-          "area": 158.4,
-          "quartos": 3,
-          "suites": 1,
-          "banheiros": 2,
-          "vagas": 2,
-          "valor": 1567003
+          "valor": 635492
         }
       ],
       "valorCondominio": null,
       "quantAndares": 9,
       "quantElevadores": 1,
-      "fracaoVendida": 0.62,
+      "fracaoVendida": 0.53,
       "dataEntrega": "2026-07-01T03:00:00Z",
       "aquecimento": "Elétrico",
       "arCondicionado": "Previsão de Ar Condicionado",
-      "unidadesDisponiveis": 12,
+      "unidadesDisponiveis": 15,
       "totalUnidades": 32,
       "lat": -18.9559975,
       "lng": -48.2476194,
@@ -21718,193 +21269,6 @@
       "youtube": null,
       "endereco": "Avenida José Paes de Almeida, 94",
       "primeiraPublicacao": "2025-12-03T13:25:14.176Z",
-      "origem": "blow"
-    },
-    {
-      "blowId": "df2f1a2b-3f45-495b-bbe3-e2d13e17f70a",
-      "nome": "Casa no Condominio Tamboré",
-      "slug": "casa-no-condominio-tambore",
-      "construtoraNome": "Construtora",
-      "construtoraSlug": "construtora",
-      "construtoraLogo": "https://blow-app.s3.us-east-2.amazonaws.com/empresa/8c18b98b-d996-4297-a7c9-e975cc865273/75cb521a-e1e2-462d-97e8-9a290d46d8b3",
-      "construtoraPortal": "https://plataforma.studio360.app/incorporadora/conexlar/ login: brunogalizzi@gmail.com senha: Master@1352",
-      "bairro": "Gávea",
-      "cidade": "Uberlândia",
-      "status": "Pronto",
-      "tipo": "residencial",
-      "capa": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/146afe7c-fb0c-4ebb-a05e-1d52fe2fab45",
-      "fotos": [
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/2889bb2f-8e95-4a73-81d1-9c576494921f",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/076a1cd5-690c-4bdf-80ec-6e6ad729f03b",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/bacac5f2-d74e-4a52-8066-7f5eb1e96f3e",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/f41897a0-f964-4425-9abc-cec09bc6ddbf",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/662f2617-ea65-43d1-a2f5-f07eea98d584",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/cce9bdda-6cff-4386-80f7-e92bf7205dfa",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/0111fb0c-357d-4517-b60b-0f01d4f87556",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/a98ea859-da1f-407a-bd07-c507af23fd61",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/21f78540-6d95-4e39-bd50-4d054e444872",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/396c55a0-8358-40ea-b396-ab0750006930",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/3a60f86f-500f-47a0-9c5a-c20fe114a2d2",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/8f77508c-c27c-4913-943b-c3a4ee7210b2",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/48e47019-5752-4aa9-9b95-e905f1a9231a",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/6749ded0-0945-48ed-a8d4-464a1da98713",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/8cee1e15-298a-4ffc-97b0-56e6f4307844",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/8716cce8-4f06-4b16-8821-82ee36794876"
-      ],
-      "fotosComLegenda": [
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/2889bb2f-8e95-4a73-81d1-9c576494921f",
-          "legenda": null
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/076a1cd5-690c-4bdf-80ec-6e6ad729f03b",
-          "legenda": null
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/bacac5f2-d74e-4a52-8066-7f5eb1e96f3e",
-          "legenda": null
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/f41897a0-f964-4425-9abc-cec09bc6ddbf",
-          "legenda": null
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/662f2617-ea65-43d1-a2f5-f07eea98d584",
-          "legenda": null
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/cce9bdda-6cff-4386-80f7-e92bf7205dfa",
-          "legenda": null
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/0111fb0c-357d-4517-b60b-0f01d4f87556",
-          "legenda": null
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/a98ea859-da1f-407a-bd07-c507af23fd61",
-          "legenda": null
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/21f78540-6d95-4e39-bd50-4d054e444872",
-          "legenda": null
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/396c55a0-8358-40ea-b396-ab0750006930",
-          "legenda": null
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/3a60f86f-500f-47a0-9c5a-c20fe114a2d2",
-          "legenda": null
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/8f77508c-c27c-4913-943b-c3a4ee7210b2",
-          "legenda": null
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/48e47019-5752-4aa9-9b95-e905f1a9231a",
-          "legenda": null
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/6749ded0-0945-48ed-a8d4-464a1da98713",
-          "legenda": null
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/8cee1e15-298a-4ffc-97b0-56e6f4307844",
-          "legenda": null
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/df2f1a2b-3f45-495b-bbe3-e2d13e17f70a/medium/8716cce8-4f06-4b16-8821-82ee36794876",
-          "legenda": null
-        }
-      ],
-      "plantas": [],
-      "plantasComLegenda": [],
-      "pdfApresentacao": null,
-      "pdfTabela": null,
-      "tipologias": [
-        "Lotes"
-      ],
-      "areaMin": 399,
-      "areaMax": 399,
-      "quartosMin": 3,
-      "quartosMax": 3,
-      "suitesMin": 3,
-      "suitesMax": 3,
-      "banheirosMin": 4,
-      "banheirosMax": 4,
-      "vagasMin": 2,
-      "vagasMax": 2,
-      "descricao": "Projeto moderno e acabamento refinado. Sala ampla com pé-direito duplo, proporcionando elegância e luminosidade natural. Cozinha impecável, planejada para oferecer funcionalidade e estilo. Banheiro social com acabamento de alto padrão. 3 Suítes amplas e bem distribuídas, garantindo conforto e privacidade. Escritório integrado, ideal para home office ou estudos. Piscina privativa, perfeita para momentos de lazer e relaxamento.",
-      "comodidades": [
-        "Quadra Poliesportiva",
-        "Espaço Kids Interno",
-        "Quadra de Beach Tennis",
-        "Piscina",
-        "Salão de Festas",
-        "Usina Fotovoltaica",
-        "Portaria 24 Horas",
-        "Bicicletário",
-        "Pet Place",
-        "Academia",
-        "Playground",
-        "Wi-Fi",
-        "Sauna",
-        "Campo de Futebol",
-        "Irrigação Automática",
-        "Quadra de Tênis"
-      ],
-      "comodidadesGrupadas": {
-        "Esporte e Lazer": [
-          "Quadra Poliesportiva",
-          "Espaço Kids Interno",
-          "Quadra de Beach Tennis",
-          "Piscina",
-          "Salão de Festas",
-          "Bicicletário",
-          "Academia",
-          "Playground",
-          "Sauna",
-          "Campo de Futebol",
-          "Quadra de Tênis"
-        ],
-        "Facilidades": [
-          "Usina Fotovoltaica",
-          "Pet Place",
-          "Wi-Fi",
-          "Irrigação Automática"
-        ],
-        "Segurança": [
-          "Portaria 24 Horas"
-        ]
-      },
-      "parcelamentos": [],
-      "unidadesDetalhes": [
-        {
-          "ap": "175",
-          "tipologia": "Área Priv.",
-          "area": 207.29,
-          "quartos": 3,
-          "suites": 3,
-          "banheiros": 4,
-          "vagas": 2,
-          "valor": 2205000
-        }
-      ],
-      "valorCondominio": null,
-      "quantAndares": null,
-      "quantElevadores": null,
-      "fracaoVendida": 0,
-      "dataEntrega": null,
-      "aquecimento": "Elétrico",
-      "arCondicionado": "Previsão de Ar Condicionado",
-      "unidadesDisponiveis": 1,
-      "totalUnidades": 1,
-      "lat": -18.9578142,
-      "lng": -48.2819514,
-      "videos": [],
-      "youtube": null,
-      "endereco": "Avenida das Copaibas, 175",
-      "primeiraPublicacao": "2025-11-11T12:43:29.663Z",
       "origem": "blow"
     },
     {
@@ -22938,183 +22302,6 @@
       "youtube": null,
       "endereco": "Avenida Doutor Jaime Ribeiro da Luz, 1800",
       "primeiraPublicacao": "2025-11-11T19:19:00.070Z",
-      "origem": "blow"
-    },
-    {
-      "blowId": "d088280c-aa9b-4c8c-93da-c7031d3395e9",
-      "nome": "Casa 2/4 Com Suite",
-      "slug": "casa-2-4-com-suite",
-      "construtoraNome": "Construtora",
-      "construtoraSlug": "construtora",
-      "construtoraLogo": "https://blow-app.s3.us-east-2.amazonaws.com/empresa/8c18b98b-d996-4297-a7c9-e975cc865273/75cb521a-e1e2-462d-97e8-9a290d46d8b3",
-      "construtoraPortal": "https://plataforma.studio360.app/incorporadora/conexlar/ login: brunogalizzi@gmail.com senha: Master@1352",
-      "bairro": "Shopping Park",
-      "cidade": "Uberlândia",
-      "status": "Pronto",
-      "tipo": "residencial",
-      "capa": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/8af49a1d-0353-4e3c-8f7c-61fd0c420bef",
-      "fotos": [
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/fe537dd1-8486-481a-9d02-7a9da093c7eb",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/b4c5b9bb-5733-4394-ab67-1ace0fc9c5b7",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/501881b2-736f-417c-8bfa-7de43f5eaf27",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/d075c209-98c5-4619-9fab-57161073736d",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/65ce3dc0-0195-4999-b866-091095379fa9",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/1cbb19c9-e564-4b8d-8eac-b184cabda55f",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/f4cf1ab9-fd7d-4cbc-ab00-f45d618e852f",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/a7ffad03-049e-40fa-a5ce-e2b432bebc5b",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/b09f58a7-8a02-46ec-aea1-62247f70c8a0",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/04d7a909-8a4d-4fb0-ae3b-abb2b112e103",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/c5aef9ec-a421-40d1-b197-811beeedff9c",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/e033355a-d2fc-4579-9940-bd4c5de220ec",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/7c08fc68-f859-4896-a15d-1e0a4b8c3fd7",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/a7297d7e-dd4e-4c1e-a6a2-b5beceb42309",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/4244db0e-c6e4-45e2-96ba-d3c26ef7b414",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/c1c62a10-e1ba-48d8-b621-7acf3a8d2cbe",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/b47413c3-9a93-4d24-bf1b-20f69c546e2d",
-        "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/678e07ba-6bf5-4614-8f34-d59882812c5b"
-      ],
-      "fotosComLegenda": [
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/fe537dd1-8486-481a-9d02-7a9da093c7eb",
-          "legenda": "Sala"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/b4c5b9bb-5733-4394-ab67-1ace0fc9c5b7",
-          "legenda": "Sala"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/501881b2-736f-417c-8bfa-7de43f5eaf27",
-          "legenda": "Sala"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/d075c209-98c5-4619-9fab-57161073736d",
-          "legenda": "Cozinha"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/65ce3dc0-0195-4999-b866-091095379fa9",
-          "legenda": "Cozinha"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/1cbb19c9-e564-4b8d-8eac-b184cabda55f",
-          "legenda": "Cozinha"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/f4cf1ab9-fd7d-4cbc-ab00-f45d618e852f",
-          "legenda": "Cozinha"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/a7ffad03-049e-40fa-a5ce-e2b432bebc5b",
-          "legenda": "Quarto"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/b09f58a7-8a02-46ec-aea1-62247f70c8a0",
-          "legenda": "Quarto"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/04d7a909-8a4d-4fb0-ae3b-abb2b112e103",
-          "legenda": "Lavanderia"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/c5aef9ec-a421-40d1-b197-811beeedff9c",
-          "legenda": "Lavanderia"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/e033355a-d2fc-4579-9940-bd4c5de220ec",
-          "legenda": "Banheiro"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/7c08fc68-f859-4896-a15d-1e0a4b8c3fd7",
-          "legenda": "Banheiro"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/a7297d7e-dd4e-4c1e-a6a2-b5beceb42309",
-          "legenda": "Quintal"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/4244db0e-c6e4-45e2-96ba-d3c26ef7b414",
-          "legenda": "Quintal"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/c1c62a10-e1ba-48d8-b621-7acf3a8d2cbe",
-          "legenda": "Churrasqueira"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/b47413c3-9a93-4d24-bf1b-20f69c546e2d",
-          "legenda": "Churrasqueira"
-        },
-        {
-          "url": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/d088280c-aa9b-4c8c-93da-c7031d3395e9/medium/678e07ba-6bf5-4614-8f34-d59882812c5b",
-          "legenda": "Garagem"
-        }
-      ],
-      "plantas": [],
-      "plantasComLegenda": [],
-      "pdfApresentacao": null,
-      "pdfTabela": null,
-      "tipologias": [
-        "Lotes"
-      ],
-      "areaMin": 150,
-      "areaMax": 150,
-      "quartosMin": 2,
-      "quartosMax": 2,
-      "suitesMin": 1,
-      "suitesMax": 1,
-      "banheirosMin": 2,
-      "banheirosMax": 2,
-      "vagasMin": 1,
-      "vagasMax": 1,
-      "descricao": "Excelente oportunidade em uma das regiões que mais se valorizam da cidade. Localização privilegiada, próxima ao Parque UNA, Uberlândia Shopping, Condomínio Varanda Sul e Casteli Master.",
-      "comodidades": [
-        "Alarme",
-        "Portão Eletrônico",
-        "Interfone",
-        "Cerca Elétrica",
-        "Veneziana Integrada",
-        "Churrasqueira"
-      ],
-      "comodidadesGrupadas": {
-        "Segurança": [
-          "Alarme",
-          "Portão Eletrônico",
-          "Interfone",
-          "Cerca Elétrica"
-        ],
-        "Facilidades": [
-          "Veneziana Integrada"
-        ],
-        "Esporte e Lazer": [
-          "Churrasqueira"
-        ]
-      },
-      "parcelamentos": [],
-      "unidadesDetalhes": [
-        {
-          "ap": "0",
-          "tipologia": "Área Priv.",
-          "area": 66,
-          "quartos": 2,
-          "suites": 1,
-          "banheiros": 2,
-          "vagas": 1,
-          "valor": 399999
-        }
-      ],
-      "valorCondominio": null,
-      "quantAndares": null,
-      "quantElevadores": null,
-      "fracaoVendida": 0,
-      "dataEntrega": null,
-      "aquecimento": "Elétrico",
-      "arCondicionado": "Nenhuma",
-      "unidadesDisponiveis": 1,
-      "totalUnidades": 1,
-      "lat": -18.9725707,
-      "lng": -48.279918,
-      "videos": [],
-      "youtube": null,
-      "endereco": "Rua Aziza Nicolau Daud, 50",
-      "primeiraPublicacao": "2026-06-16T17:36:57.373Z",
       "origem": "blow"
     },
     {
