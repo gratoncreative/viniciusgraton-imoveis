@@ -5,8 +5,8 @@ import { scrapeOwnerCod } from './admin.js'
 /**
  * EXPORTADOR diário Rotina → aicapitei — Cloudflare Pages Function (cron).
  *
- * Envia aos poucos os imóveis do catálogo público (casas e apartamentos à venda a partir
- * de R$ 500.000, maiores valores primeiro) para o cadastro do aicapitei via
+ * Envia aos poucos os imóveis do catálogo público (TODOS os imóveis à venda, qualquer preço
+ * e tipo, maiores valores primeiro) para o cadastro do aicapitei via
  * POST https://aicapitei.com.br/api/imovel-ingest. O proprietário vai junto quando já
  * existe no cache `imovel:<cod>.owner` (ou quando dá pra raspar na hora, com a mesma
  * sessão gentil do captar-cron). Se o Imoview estiver indisponível o imóvel vai MESMO
@@ -29,7 +29,9 @@ const LOTE = 4            // imóveis NOVOS por chamada (mesmo teto seguro do ca
 const ENRIQUECE_LOTE = 4  // reenvios de enriquecimento por chamada (não contam no teto)
 const PAUSA_MS = 1200     // respiro entre raspagens (gentil com o Imoview)
 const TETO_DIA = 50       // imóveis NOVOS por dia
-const PRECO_MIN = 500000
+// escopo AMPLO (decisão do dono 12/07): todos os imóveis À VENDA, qualquer preço/tipo.
+// Piso só de sanidade (> 0). Antes era R$500k + só casa/apto.
+const PRECO_MIN = 1
 // teto de sanidade: acima disso em Uberlândia é dado sujo do catálogo (centavos colados:
 // R$ 3.100.853,75 vira "310085375") — não exportar; corrigir na origem é outra frente
 const PRECO_MAX = 20000000
@@ -42,19 +44,17 @@ const hojeSP = () => new Date().toLocaleDateString('en-CA', { timeZone: 'America
 
 const semAcento = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 
-// Elegível: à venda, preço >= 500 mil, tipo casa/apartamento (nunca terreno, lote, rural,
-// comercial, chácara, sítio; cobertura só entraria se o tipo COMEÇASSE com "apartamento").
-const TIPOS_EXCLUIDOS = /terreno|lote|rural|comercial|chacara|sitio|cobertura/
+// Elegível: à venda, qualquer preço e QUALQUER tipo de imóvel (escopo amplo, decisão do
+// dono 12/07 — antes era só casa/apto >= R$500k). Mantém as travas anti-dado-sujo:
+// preço saudável (> 0 e <= 20M) e R$/m2 possível (mercado real de Uberlândia <= ~23 mil/m2).
 function elegivel(im) {
   if (semAcento(im && im.finalidade) !== 'venda') return false
   const preco = Number(im && im.preco)
   if (!(preco >= PRECO_MIN) || preco > PRECO_MAX) return false
-  // dado sujo também aparece como R$/m2 impossível (mercado real de Uberlândia <= ~23 mil/m2)
   const area = Number(im && im.area)
   if (area > 20 && preco / area > 25000) return false
-  const t = semAcento(im && im.tipo)
-  if (!t || TIPOS_EXCLUIDOS.test(t)) return false
-  return /^casa/.test(t) || /^(apartamento|apto)/.test(t)
+  const t = semAcento(im && im.tipo).trim()
+  return !!t
 }
 
 // Monta o bloco `prop` do contrato a partir do owner cacheado ({ nome, fone, email,
