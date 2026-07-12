@@ -1,2 +1,2 @@
 teto=500 rodadas=15
-# mutirao disparado p/ revelar pendentes + retomar export apos ampliar escopo (todos a venda)
+# re-disparo (endpoint novo ja deployado) p/ exportar sub-500k + outros tipos
