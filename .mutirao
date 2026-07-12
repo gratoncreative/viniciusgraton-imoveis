@@ -1,12 +1,2 @@
-# Mutirão de captação Rotina → aicapitei (04/07/2026, pedido do Vinícius:
-# "capte o máximo que conseguir hoje, sempre de forma segura").
-# Dar push neste arquivo dispara o workflow exporta-aicapitei com estes valores.
-# Ritmo por chamada continua gentil (4 por lote + pausas); o endpoint trava o teto em 500.
-# rodadas fica sob o limite de tempo do job (120 x ~25s ~= 50min).
-# rev: 4 (publicar acervo: dispara export + REPUBLICAR-LOTE dos pendentes; decisao do dono)
-# rev: 5 (05/07/2026: re-disparo do mutirao — capitacao estava parada em ~441/1348)
-# rev: 6 (05/07/2026: acelerar rumo a 1348 — ja em 671; entregar mais + re-rodar republicar)
-# rev: 7 (12/07/2026: pedido "trabalhe ate 23:30 captando e publicando, ritmo seguro" —
-#         re-disparo: pega novos da Rotina + enriquece dono + REPUBLICA pendentes. Acervo ja ~1372.)
-teto=500
-rodadas=120
+teto=500 rodadas=15
+# mutirao disparado p/ revelar pendentes + retomar export apos ampliar escopo (todos a venda)
