@@ -162,6 +162,11 @@ async function detalheRotina(cod) {
     if (flagSim(im.mobiliado)) det.mobiliado = true
     if (im.urlvideo) det.video = String(im.urlvideo)
     if (im.url_amigavel) det.urlRotina = String(im.url_amigavel).startsWith('http') ? String(im.url_amigavel) : 'https://www.rotina.com.br' + (String(im.url_amigavel).startsWith('/') ? '' : '/') + String(im.url_amigavel)
+    // DATA DE CADASTRO NA ORIGEM (Imoview) — a data REAL em que o imóvel foi cadastrado,
+    // não a de quando nós importamos. Serve pro admin separar imóvel antigo x recém-cadastrado.
+    // Formato da fonte: "AAAA-MM-DD HH:MM:SS" (lexicograficamente ordenável).
+    if (im.datahoracadastro) det.cadastradoEmOrigem = String(im.datahoracadastro).slice(0, 19)
+    if (im.datahoraultimaalteracao) det.alteradoEmOrigem = String(im.datahoraultimaalteracao).slice(0, 19)
     return det
   } catch { return null }
 }
