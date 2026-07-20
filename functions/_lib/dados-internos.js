@@ -25,9 +25,28 @@ const negado = () =>
     },
   })
 
+// Comparação em tempo constante (não vaza a chave por tempo de resposta).
+function chaveIgual(a, b) {
+  if (!a || !b || a.length !== b.length) return false
+  let d = 0
+  for (let i = 0; i < a.length; i++) d |= a.charCodeAt(i) ^ b.charCodeAt(i)
+  return d === 0
+}
+
 export async function serveInterno(context) {
-  const { request, next } = context
+  const { request, next, env } = context
   const url = new URL(request.url)
+
+  // NOSSOS ROBÔS (GitHub Actions) leem estes arquivos para vigiar o site. Eles não
+  // têm navegador, então passam pela mesma chave secreta usada nos outros crons.
+  const chave = request.headers.get('x-backup-key')
+  if (chave && env && env.BACKUP_CRON_KEY && chaveIgual(chave, env.BACKUP_CRON_KEY)) {
+    const r = await next()
+    const h = new Headers(r.headers)
+    h.set('x-robots-tag', 'noindex, nofollow')
+    h.set('cache-control', 'no-store')
+    return new Response(r.body, { status: r.status, statusText: r.statusText, headers: h })
+  }
 
   const site = request.headers.get('sec-fetch-site')
   const dest = request.headers.get('sec-fetch-dest')

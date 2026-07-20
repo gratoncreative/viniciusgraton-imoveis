@@ -1,0 +1,34 @@
+name: Fiscal dos robôs
+
+# A cada 2 dias, confere se as automações estão MESMO acontecendo:
+# se cada robô rodou no prazo e terminou bem, e se o trabalho saiu de verdade
+# (catálogo fresco, site no ar). Avisa no WhatsApp SÓ quando algo sai do conforme.
+# Roda na nuvem, sem PC ligado.
+
+on:
+  schedule:
+    - cron: '5 11 */2 * *'   # a cada 2 dias, 08h05 de Brasília (depois do briefing)
+  workflow_dispatch: {}
+
+concurrency:
+  group: fiscal-robos
+  cancel-in-progress: false
+
+permissions:
+  actions: read       # ler o histórico de execução dos outros robôs
+  contents: read
+
+jobs:
+  fiscal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Fiscalizar automações
+        env:
+          CALLMEBOT_KEY: ${{ secrets.CALLMEBOT_KEY }}
+          BACKUP_CRON_KEY: ${{ secrets.BACKUP_CRON_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/fiscal-robos.mjs

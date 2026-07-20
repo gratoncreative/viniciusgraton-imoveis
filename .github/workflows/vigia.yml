@@ -24,4 +24,5 @@ jobs:
       - name: Checar site + sincronização
         env:
           CALLMEBOT_KEY: ${{ secrets.CALLMEBOT_KEY }}
+          BACKUP_CRON_KEY: ${{ secrets.BACKUP_CRON_KEY }}
         run: node scripts/vigia.mjs

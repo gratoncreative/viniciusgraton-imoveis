@@ -13,7 +13,12 @@ try {
 
 // 2) Sincronização da Rotina recente e bem-sucedida?
 try {
-  const r = await fetch(SITE + '/sync-status.json', { signal: AbortSignal.timeout(15000) })
+  // O sync-status é dado interno (tem o total do acervo) e fica bloqueado para o
+  // público. Nossos robôs entram com a chave dos crons.
+  const r = await fetch(SITE + '/sync-status.json', {
+    headers: process.env.BACKUP_CRON_KEY ? { 'x-backup-key': process.env.BACKUP_CRON_KEY } : {},
+    signal: AbortSignal.timeout(15000),
+  })
   if (r.ok) {
     const s = await r.json().catch(() => null)
     if (s && s.ok === false) problemas.push('sync da Rotina falhou (' + (s.motivo || '?') + ', ' + (s.recebidos ?? '?') + ' imóveis)')
