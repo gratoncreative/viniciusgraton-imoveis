@@ -58,6 +58,16 @@ export const tagDe = (im) => {
   return im.tipo || 'Destaque'
 }
 
+// Foto SEMPRE pelo nosso domínio (/foto/...), nunca com o endereço do CDN de origem.
+// Isso esconde de onde vêm as imagens no código-fonte e ganha cache de 30 dias na borda.
+// Fotos que já são locais (/imoveis/...) passam direto.
+export const fotoUrl = (im, idx = 1) => {
+  if (!im || !im.codigo) return im?.img || ''
+  const atual = idx === 1 ? im.img : (im.fotos || [])[idx - 1]
+  if (atual && atual.startsWith('/')) return atual
+  return `/foto/${im.codigo}/${idx}.jpg`
+}
+
 export const refDe = (im) => `Cód. ${im.codigo}`
 export const bairroCaps = (im) => `${im.bairro} · Uberlândia`
 export const hrefImovel = (im) => `/imovel/${im.codigo}`
@@ -73,7 +83,7 @@ export const cardVM = (im) => ({
   specs: specsLinha(im),
   precoFmt: precoCompacto(im.preco),
   tag: tagDe(im),
-  img: im.img,
+  img: fotoUrl(im, 1),
 })
 
 // Seleciona os imóveis da Home a partir da base real.

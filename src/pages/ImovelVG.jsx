@@ -5,7 +5,7 @@ import {
   IMOVEIS, getImovel, fotosDe, formatArea, resumoImovel, vantagensImovel,
   linkWhatsApp, aplicarOverrideEmUm,
 } from '../data'
-import { precoCompacto, tituloCard, cardVM, m2DoBairro, SPEC_ICONS, tagDe } from '../components/vg/vgData'
+import { precoCompacto, tituloCard, cardVM, m2DoBairro, SPEC_ICONS, tagDe, fotoUrl } from '../components/vg/vgData'
 import { NavbarVG, FooterVG, WhatsFloatVG } from '../components/vg/ChromeVG'
 import { CardVG } from '../components/vg/SecoesVG'
 import { onImgError } from '../img'
@@ -70,7 +70,8 @@ export default function ImovelVG() {
   const [visQuando, setVisQuando] = useState('Esta semana')
   const [visPeriodo, setVisPeriodo] = useState('À tarde')
 
-  const galeria = useMemo(() => fotosDe(im), [im])
+  // Fotos sempre pelo nosso domínio (/foto/...), nunca com o endereço do CDN de origem.
+  const galeria = useMemo(() => fotosDe(im).map((_, i) => fotoUrl(im, i + 1)), [im])
   const idx = Math.min(fotoIdx, Math.max(0, galeria.length - 1))
 
   const titulo = im ? tituloCard(im) : ''
