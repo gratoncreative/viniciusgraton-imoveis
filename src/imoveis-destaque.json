@@ -198,7 +198,8 @@
       ],
       "novo": false,
       "pendente": true,
-      "visto": "2026-06-15T18:47:08.813Z"
+      "visto": "2026-06-15T18:47:08.813Z",
+      "vendido": true
     },
     {
       "codigo": "84025",
@@ -297,7 +298,8 @@
       ],
       "novo": false,
       "pendente": true,
-      "visto": "2026-06-15T18:47:08.813Z"
+      "visto": "2026-06-15T18:47:08.813Z",
+      "vendido": true
     },
     {
       "codigo": "98497",
@@ -462,7 +464,8 @@
       ],
       "novo": false,
       "pendente": true,
-      "visto": "2026-06-15T18:47:08.813Z"
+      "visto": "2026-06-15T18:47:08.813Z",
+      "vendido": true
     },
     {
       "codigo": "94055",
@@ -528,7 +531,8 @@
       ],
       "novo": false,
       "pendente": true,
-      "visto": "2026-06-15T18:47:08.813Z"
+      "visto": "2026-06-15T18:47:08.813Z",
+      "vendido": true
     },
     {
       "codigo": "98858",
@@ -561,7 +565,8 @@
       ],
       "novo": false,
       "pendente": true,
-      "visto": "2026-06-15T18:47:08.813Z"
+      "visto": "2026-06-15T18:47:08.813Z",
+      "vendido": true
     },
     {
       "codigo": "86743",
@@ -823,7 +828,8 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/90878/2xt98-71367c60-5115-441a-9e6a-31817af47710-1737547365.jpg"
       ],
       "novo": true,
-      "pendente": true
+      "pendente": true,
+      "vendido": true
     },
     {
       "codigo": "33508",
@@ -914,7 +920,8 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/95384/v2awii-uberlandia-apto-bairro-santa-monica-3-quartos-suite-elevador-enorme-area-de-lazer-2-vagas-4-1756509885.jpeg"
       ],
       "novo": false,
-      "pendente": true
+      "pendente": true,
+      "vendido": true
     },
     {
       "codigo": "97498",
@@ -1042,7 +1049,8 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/93153/kijmlk-whatsapp-image-2026-03-05-at-152521-3-1772736542.jpeg"
       ],
       "novo": false,
-      "pendente": true
+      "pendente": true,
+      "vendido": true
     },
     {
       "codigo": "98505",
@@ -1621,7 +1629,8 @@
       ],
       "conferido": "2026-06-10",
       "andar": 0,
-      "elevador": true
+      "elevador": true,
+      "vendido": true
     },
     {
       "codigo": "48719",
@@ -1892,7 +1901,8 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/90771/j11zf-4a3d908b-b741-4c8d-8b4f-0c1e70cbe834-1737577091.jpg?1737631654",
         "https://cdn.imoview.com.br/rotina/Imoveis/90771/mgoz3-886ba52b-6dae-4105-81bf-8a3f5b6f809b-1737577091.jpg?1737631654"
       ],
-      "conferido": "2026-06-10"
+      "conferido": "2026-06-10",
+      "vendido": true
     },
     {
       "codigo": "91988",
@@ -2308,7 +2318,8 @@
       ],
       "conferido": "2026-06-10",
       "andar": 9,
-      "elevador": true
+      "elevador": true,
+      "vendido": true
     },
     {
       "codigo": "97789",
@@ -2653,7 +2664,8 @@
         "https://cdn.imoview.com.br/rotina/Imoveis/98566/bpq5f-102346c1-4614-46fb-8d17-26dda8b5892d-1775912089.jpg?1775912129",
         "https://cdn.imoview.com.br/rotina/Imoveis/98566/vyx95-422a0046-5d58-4d35-822f-2a98b425755b-1775912089.jpg?1775912129"
       ],
-      "conferido": "2026-06-10"
+      "conferido": "2026-06-10",
+      "vendido": true
     },
     {
       "codigo": "98765",

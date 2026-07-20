@@ -32,14 +32,16 @@ async function carregarIndice(env, origin) {
   if (INDICE && agora - INDICE_EM < TTL_INDICE) return INDICE
   const mapa = new Map()
   try {
-    // ASSETS serve o arquivo estático direto (não passa pela blindagem de /catalogo.json)
-    const r = await env.ASSETS.fetch(new Request(`${origin}/catalogo.json`))
+    // Índice pronto (catálogo + curados), gerado no build por scripts/gen-fotos-index.mjs.
+    // Antes o índice saía só do catálogo, então imóvel curado que tinha saído da
+    // base da Rotina ficava sem foto. ASSETS serve o arquivo direto (não passa
+    // pela blindagem que barra o acesso externo).
+    const r = await env.ASSETS.fetch(new Request(`${origin}/_fotos.json`))
     if (r.ok) {
       const d = await r.json()
-      const lista = Array.isArray(d) ? d : d.imoveis || []
-      for (const im of lista) {
-        const fotos = Array.isArray(im.fotos) && im.fotos.length ? im.fotos : im.img ? [im.img] : []
-        if (fotos.length) mapa.set(String(im.codigo), fotos)
+      for (const cod of Object.keys(d)) {
+        const fotos = (d[cod] || []).filter(Boolean)
+        if (fotos.length) mapa.set(String(cod), fotos)
       }
     }
   } catch { /* segue com o que tiver */ }

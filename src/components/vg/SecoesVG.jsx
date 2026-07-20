@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { BAIRROS_IMOVEL, DEPOIMENTOS, linkWhatsApp } from '../../data'
 import { PASSOS_VG, DEPOIMENTOS_VG } from './vgData'
+import { onImgError } from '../../img'
 
 const TIPOS_BUSCA = ['Apartamento', 'Casa', 'Casa em condomínio', 'Cobertura']
 
@@ -66,7 +67,13 @@ export function CardVG({ vm }) {
   return (
     <Link to={vm.href} className="vgx-card">
       <div className="vgx-card-media">
-        <img src={vm.img} alt={`${vm.titulo} no ${vm.bairro}, Uberlândia`} loading="lazy" decoding="async" />
+        <img
+          src={vm.img}
+          alt={`${vm.titulo} no ${vm.bairro}, Uberlândia`}
+          loading="lazy"
+          decoding="async"
+          onError={onImgError}
+        />
         <span className="vgx-card-tag">{vm.tag}</span>
         <span className="vgx-card-ref">{vm.ref}</span>
       </div>

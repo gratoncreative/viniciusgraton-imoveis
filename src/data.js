@@ -104,7 +104,9 @@ import bairrosM2 from './bairros-m2.json'
 
 const TODOS_IMOVEIS = destaqueData.imoveis || []
 // Imóveis importados entram como `pendente` e ficam FORA do site até o Vinícius aprovar.
-export const IMOVEIS = TODOS_IMOVEIS.filter((i) => !i.pendente)
+// `vendido` é marcado no build (scripts/gen-fotos-index.mjs) quando o imóvel sai
+// da base da Rotina: some do site em vez de virar card com foto quebrada.
+export const IMOVEIS = TODOS_IMOVEIS.filter((i) => !i.pendente && !i.vendido)
 
 // Vitrine/publicidade do próprio site enquanto não há cliente pagando o impulsionamento.
 // São imóveis REAIS (do Vinícius) usados como demonstração do recurso. Ficam sempre
