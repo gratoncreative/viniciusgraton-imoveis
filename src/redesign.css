@@ -622,10 +622,19 @@
 .vgx-adm {
   --navy-900: #212b3d; --navy-700: #2e3c55; --text-2: #5c6675; --text-3: #8a94a8;
   --gold: #c9a962; --gold-dark: #b08e45; --gold-light: #e6d3a3; --gold-bg: #f1e9d8;
-  --red: #c1352f; --red-hover: #a92c27; --ivory: #f7f4ee; --border: #e6e1d5; --divider: #efeadd;
+  --red: #c1352f; --red-hover: #a92c27; --ivory: #f7f4ee;
+  /* tokens PRÓPRIOS do painel (LEIA-ME do handoff-admin): o fundo do app e as
+     bordas são mais frios que os do site público. */
+  --adm-bg: #eef0f3; --border: #e2e5ea; --divider: #e8eaee;
+  --ok: #1f7a4d; --ok-bg: #e4f0e8;
   font-family: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
-  background: var(--ivory) !important;
+  background: var(--adm-bg) !important;
   color: var(--navy-900) !important;
+}
+/* estados de sucesso (publicado/aprovado) no verde do design */
+.vgx-adm .ok, .vgx-adm .badge-ok, .vgx-adm .admin-ok {
+  background: var(--ok-bg) !important; color: var(--ok) !important;
+  -webkit-text-fill-color: var(--ok) !important; border-radius: 999px;
 }
 .vgx-adm * { box-sizing: border-box; }
 
@@ -702,7 +711,7 @@
 .vgx-adm th {
   font-size: 11px !important; font-weight: 700 !important; letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--text-3) !important; -webkit-text-fill-color: var(--text-3) !important;
-  background: var(--ivory) !important; border-bottom: 1px solid var(--border) !important; text-align: left; padding: 12px 14px;
+  background: var(--adm-bg) !important; border-bottom: 1px solid var(--border) !important; text-align: left; padding: 12px 14px;
 }
 .vgx-adm td { border-bottom: 1px solid var(--divider) !important; padding: 12px 14px; color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
 .vgx-adm code, .vgx-adm .mono { font-family: 'JetBrains Mono', monospace !important; font-size: 12px; }
