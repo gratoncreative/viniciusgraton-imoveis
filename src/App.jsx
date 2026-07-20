@@ -19,6 +19,7 @@ const Catalogo = lazyRetry(() => import('./pages/Catalogo'))
 const ImovelDetalhe = lazyRetry(() => import('./pages/ImovelDetalhe'))
 const ImovelVG = lazyRetry(() => import('./pages/ImovelVG'))
 const CatalogoVG = lazyRetry(() => import('./pages/CatalogoVG'))
+const LancamentosVG = lazyRetry(() => import('./pages/LancamentosVG'))
 const ComoAjudo = lazyRetry(() => import('./pages/ComoAjudo'))
 const QuemSou = lazyRetry(() => import('./pages/QuemSou'))
 const Regioes = lazyRetry(() => import('./pages/Regioes'))
@@ -98,7 +99,8 @@ export default function App() {
   // Páginas já no redesign (.vgx) trazem o próprio chrome (navbar/rodapé/WhatsApp),
   // então nelas suprimimos o chrome global para não duplicar. Conforme cada página
   // for redesenhada, entra nesta lista; no fim o chrome novo vira global.
-  const rotaHome = pathname === '/' || pathname.startsWith('/imovel/') || pathname.replace(/\/+$/, '') === '/imoveis'
+  const rotaVgx = ['/imoveis', '/lancamentos'].includes(pathname.replace(/\/+$/, ''))
+  const rotaHome = pathname === '/' || pathname.startsWith('/imovel/') || rotaVgx
   // Overrides dos imóveis: ao carregar, mutam IMOVEIS no lugar e disparam UM re-render.
   // NÃO usamos isso como `key` da árvore (remontar fechava modais/ferramentas no meio do uso).
   const [, aplicarOvRender] = useState(0)
@@ -204,7 +206,7 @@ export default function App() {
               <Route path="/como-funciona" element={<ComoAjudo />} />
               <Route path="/sobre" element={<QuemSou />} />
               <Route path="/regioes" element={<Regioes />} />
-              <Route path="/lancamentos" element={<PortalLancamentosHome />} />
+              <Route path="/lancamentos" element={<LancamentosVG />} />
               <Route path="/lancamentos/louis-studios-umuarama" element={<LancamentoLouis />} />
               <Route path="/louis" element={<Navigate to="/lancamentos/louis-studios-umuarama" replace />} />
               <Route path="/lancamentos/catalogo" element={<CatalogoLancamentos />} />

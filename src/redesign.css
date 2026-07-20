@@ -461,6 +461,48 @@
 }
 
 /* ============================================================================
+   LANÇAMENTOS (/lancamentos)
+   ========================================================================== */
+.vgx-lanc-hero { background: var(--navy-900); }
+.vgx-lanc-hero-in { max-width: 1200px; margin: 0 auto; padding: 56px 28px 48px; display: flex; flex-direction: column; gap: 10px; }
+.vgx-lanc-hero h1 { font-family: 'Instrument Sans', sans-serif; font-size: 41px; font-weight: 600; letter-spacing: -0.02em; color: var(--ivory); }
+.vgx-lanc-hero p { font-size: 16px; color: #cdd4e0; max-width: 620px; line-height: 1.6; }
+
+.vgx-lanc-lista { max-width: 1200px; margin: 0 auto; padding: 56px 28px 40px; display: flex; flex-direction: column; gap: 32px; }
+.vgx-lanc { background: #fff; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); transition: box-shadow 0.25s ease; }
+.vgx-lanc:hover { box-shadow: 0 24px 48px rgba(33,43,61,0.12); }
+.vgx-lanc-foto { position: relative; min-height: 320px; background: var(--gold-bg); }
+.vgx-lanc-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.vgx-lanc-status { position: absolute; top: 16px; left: 16px; background: rgba(33,43,61,0.88); color: var(--gold-light); font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 7px 12px; border-radius: 4px; }
+.vgx-lanc-body { padding: 40px 44px; display: flex; flex-direction: column; gap: 14px; }
+.vgx-lanc-body h2 { font-family: 'Instrument Sans', sans-serif; font-size: 32px; font-weight: 600; letter-spacing: -0.02em; color: var(--navy-900); line-height: 1.1; }
+.vgx-lanc-tipo { font-size: 15px; font-weight: 600; color: var(--text-2); }
+.vgx-lanc-resumo { font-size: 15.5px; line-height: 1.7; color: #3d4a60; max-width: 520px; }
+.vgx-lanc-rodape { margin-top: auto; padding-top: 18px; border-top: 1px solid var(--divider); display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.vgx-lanc-de { font-size: 12.5px; color: var(--text-3); }
+.vgx-lanc-preco { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; color: var(--navy-900); }
+
+.vgx-cond { max-width: 1200px; margin: 0 auto; padding: 24px 28px 96px; }
+.vgx-cond-card { background: var(--gold-bg); border: 1px solid #e2d5b4; border-radius: 12px; padding: 48px 56px; display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+.vgx-cond-card h2 { font-family: 'Instrument Sans', sans-serif; font-size: 30px; font-weight: 600; letter-spacing: -0.02em; color: var(--navy-900); }
+.vgx-cond-card p { font-size: 15.5px; line-height: 1.65; color: var(--text-2); }
+.vgx-btn-navy { display: inline-block; background: var(--navy-900); color: var(--ivory); font-size: 14.5px; font-weight: 600; padding: 15px 28px; border-radius: 6px; white-space: nowrap; transition: background 0.2s ease; }
+.vgx-btn-navy:hover { background: var(--navy-700); }
+
+@media (max-width: 900px) {
+  .vgx-lanc-hero h1 { font-size: 28px; }
+  .vgx-lanc-hero-in { padding: 40px 20px 32px; }
+  .vgx-lanc-lista { padding: 32px 20px 24px; gap: 24px; }
+  .vgx-lanc { grid-template-columns: 1fr; }
+  .vgx-lanc-foto { min-height: 220px; }
+  .vgx-lanc-body { padding: 24px 22px; }
+  .vgx-lanc-body h2 { font-size: 24px; }
+  .vgx-cond { padding: 8px 20px 72px; }
+  .vgx-cond-card { padding: 28px 22px; }
+  .vgx-cond-card h2 { font-size: 23px; }
+}
+
+/* ============================================================================
    BLINDAGEM contra o CSS global do tema claro (index.css)
    O index.css tem `html[data-theme="claro"] h1,h2,h3,h4,p { color:#42261c }` com
    especificidade maior que as minhas classes. Como a Home liga data-theme=claro,
@@ -527,3 +569,10 @@
 .vgx-filtros input, .vgx-filtros select, .vgx-filtros option { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
 .vgx-limpar { color: var(--red) !important; -webkit-text-fill-color: var(--red) !important; }
 .vgx-chip-colecao { color: var(--gold-light) !important; -webkit-text-fill-color: var(--gold-light) !important; }
+/* LANÇAMENTOS — títulos e textos */
+.vgx-lanc-hero h1 { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
+.vgx-lanc-hero p { color: #cdd4e0 !important; -webkit-text-fill-color: #cdd4e0 !important; }
+.vgx-lanc-body h2, .vgx-cond-card h2 { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+.vgx-lanc-resumo { color: #3d4a60 !important; -webkit-text-fill-color: #3d4a60 !important; }
+.vgx-cond-card p { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
+.vgx-btn-navy { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
