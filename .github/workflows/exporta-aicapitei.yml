@@ -43,7 +43,7 @@ jobs:
   exportar:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Exportar em lotes pequenos (gentil com o Imoview e com o ingest)
         id: exportar
