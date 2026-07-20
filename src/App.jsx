@@ -18,6 +18,7 @@ import { lazyRetry } from './lazyRetry'
 const Catalogo = lazyRetry(() => import('./pages/Catalogo'))
 const ImovelDetalhe = lazyRetry(() => import('./pages/ImovelDetalhe'))
 const ImovelVG = lazyRetry(() => import('./pages/ImovelVG'))
+const CatalogoVG = lazyRetry(() => import('./pages/CatalogoVG'))
 const ComoAjudo = lazyRetry(() => import('./pages/ComoAjudo'))
 const QuemSou = lazyRetry(() => import('./pages/QuemSou'))
 const Regioes = lazyRetry(() => import('./pages/Regioes'))
@@ -97,7 +98,7 @@ export default function App() {
   // Páginas já no redesign (.vgx) trazem o próprio chrome (navbar/rodapé/WhatsApp),
   // então nelas suprimimos o chrome global para não duplicar. Conforme cada página
   // for redesenhada, entra nesta lista; no fim o chrome novo vira global.
-  const rotaHome = pathname === '/' || pathname.startsWith('/imovel/')
+  const rotaHome = pathname === '/' || pathname.startsWith('/imovel/') || pathname.replace(/\/+$/, '') === '/imoveis'
   // Overrides dos imóveis: ao carregar, mutam IMOVEIS no lugar e disparam UM re-render.
   // NÃO usamos isso como `key` da árvore (remontar fechava modais/ferramentas no meio do uso).
   const [, aplicarOvRender] = useState(0)
@@ -140,8 +141,9 @@ export default function App() {
   useEffect(() => {
     // normaliza barra final (o Cloudflare Pages pode servir /imoveis/) p/ a classe
     // do catálogo sempre valer e o rodapé nunca aparecer nessa tela.
-    const rota = pathname.replace(/\/+$/, '') || '/'
-    document.body.classList.toggle('rota-catalogo', rota === '/imoveis')
+    // O /imoveis agora usa o design novo (.vgx), que rola normalmente. A classe
+    // antiga forçava o layout de duas colunas travadas e quebraria a página.
+    document.body.classList.remove('rota-catalogo')
     return () => document.body.classList.remove('rota-catalogo')
   }, [pathname])
 
@@ -192,7 +194,7 @@ export default function App() {
           <Suspense fallback={<div className="rota-load" aria-busy="true"><span className="rota-spinner" /></div>}>
             <Routes>
               <Route path="/" element={<HomeVG />} />
-              <Route path="/imoveis" element={<Catalogo />} />
+              <Route path="/imoveis" element={<CatalogoVG />} />
               <Route path="/alugar" element={CONFIG.alugarAtivo ? <Alugar /> : <Navigate to="/imoveis" replace />} />
               <Route path="/alugar/imovel/:codigo" element={CONFIG.alugarAtivo ? <AlugarDetalhe /> : <Navigate to="/imoveis" replace />} />
               <Route path="/alugar/uberlandia/:bairro" element={CONFIG.alugarAtivo ? <Alugar /> : <Navigate to="/imoveis" replace />} />

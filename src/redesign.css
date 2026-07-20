@@ -418,6 +418,49 @@
 }
 
 /* ============================================================================
+   CATÁLOGO (/imoveis)
+   ========================================================================== */
+.vgx-cat-hero { position: relative; background: var(--navy-900); overflow: hidden; }
+.vgx-cat-hero-in { position: relative; max-width: 1200px; margin: 0 auto; padding: 60px 28px 54px; display: flex; flex-direction: column; gap: 12px; }
+.vgx-cat-hero-in > div { display: flex; flex-direction: column; gap: 12px; max-width: 660px; }
+.vgx-cat-hero h1 { font-family: 'Instrument Sans', sans-serif; font-size: 46px; font-weight: 600; letter-spacing: -0.02em; color: var(--ivory); line-height: 1.1; text-wrap: balance; }
+.vgx-cat-hero p { font-size: 16.5px; color: #cdd4e0; line-height: 1.65; }
+
+.vgx-cat { max-width: 1200px; margin: 0 auto; padding: 32px 28px 96px; width: 100%; box-sizing: border-box; }
+.vgx-filtros { position: sticky; top: 12px; z-index: 20; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; box-shadow: 0 8px 24px rgba(33,43,61,0.06); }
+.vgx-filtros-l1 { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.vgx-filtros-l2 { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; border-top: 1px solid var(--divider); padding-top: 12px; }
+.vgx-filtros input, .vgx-filtros select { border: 1px solid var(--border); border-radius: 6px; font-size: 14px; color: var(--navy-900); background: #fff; outline-color: var(--gold); }
+.vgx-filtros-l1 input { flex: 2; min-width: 240px; padding: 11px 14px; }
+.vgx-filtros-l1 select { flex: 1; min-width: 150px; padding: 11px 14px; }
+.vgx-filtros-l2 select { padding: 10px 12px; font-size: 13.5px; }
+.vgx-chip-colecao { border: 1px solid var(--gold); background: var(--navy-900); color: var(--gold-light); font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 12px 16px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.vgx-limpar { margin-left: auto; border: none; background: none; color: var(--red); font-size: 14px; font-weight: 600; cursor: pointer; padding: 6px 4px; }
+.vgx-cat .vgx-card-media { height: 220px; }
+
+.vgx-vazio { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 56px 28px; text-align: center; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+.vgx-vazio h3 { font-family: 'Instrument Sans', sans-serif; font-size: 28px; font-weight: 600; letter-spacing: -0.02em; color: var(--navy-900); }
+.vgx-vazio p { font-size: 15px; color: var(--text-2); max-width: 440px; line-height: 1.65; }
+
+.vgx-faixa { margin-top: 48px; background: var(--navy-900); border-radius: 12px; padding: 40px 44px; display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+.vgx-faixa-col { display: flex; flex-direction: column; gap: 8px; max-width: 620px; }
+.vgx-faixa h3 { font-family: 'Instrument Sans', sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.02em; color: var(--ivory); line-height: 1.2; }
+.vgx-faixa p { font-size: 15px; color: #aeb8c9; line-height: 1.6; }
+.vgx-faixa .vgx-btn-red { font-size: 15px; padding: 15px 30px; }
+
+.vgx-mais { display: flex; justify-content: center; margin-top: 36px; }
+
+@media (max-width: 900px) {
+  .vgx-cat-hero h1 { font-size: 30px; }
+  .vgx-cat-hero-in { padding: 40px 20px 36px; }
+  .vgx-cat { padding: 20px 20px 72px; }
+  .vgx-filtros { position: static; }
+  .vgx-filtros-l1 input, .vgx-filtros-l1 select, .vgx-filtros-l2 select { flex: 1 1 100%; min-width: 0; width: 100%; }
+  .vgx-faixa { padding: 28px 22px; }
+  .vgx-faixa h3 { font-size: 21px; }
+}
+
+/* ============================================================================
    BLINDAGEM contra o CSS global do tema claro (index.css)
    O index.css tem `html[data-theme="claro"] h1,h2,h3,h4,p { color:#42261c }` com
    especificidade maior que as minhas classes. Como a Home liga data-theme=claro,
@@ -475,3 +518,12 @@
 .vgx-aside-form select { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
 .vgx-aside-form select option { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
 .vgx-aside-form button { color: #fff !important; -webkit-text-fill-color: #fff !important; }
+/* CATÁLOGO — títulos, textos, campos e botões */
+.vgx-cat-hero h1, .vgx-faixa h3 { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
+.vgx-cat-hero p { color: #cdd4e0 !important; -webkit-text-fill-color: #cdd4e0 !important; }
+.vgx-faixa p { color: #aeb8c9 !important; -webkit-text-fill-color: #aeb8c9 !important; }
+.vgx-vazio h3 { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+.vgx-vazio p { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
+.vgx-filtros input, .vgx-filtros select, .vgx-filtros option { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+.vgx-limpar { color: var(--red) !important; -webkit-text-fill-color: var(--red) !important; }
+.vgx-chip-colecao { color: var(--gold-light) !important; -webkit-text-fill-color: var(--gold-light) !important; }
