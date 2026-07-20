@@ -503,6 +503,55 @@
 }
 
 /* ============================================================================
+   MERCADO (/mercado)
+   ========================================================================== */
+.vgx-merc-hero { background: var(--navy-900); position: relative; overflow: hidden; }
+.vgx-merc-hero-in { position: relative; max-width: 1200px; margin: 0 auto; padding: 56px 28px 48px; display: flex; flex-direction: column; gap: 10px; }
+.vgx-merc-hero h1 { font-family: 'Instrument Sans', sans-serif; font-size: 41px; font-weight: 600; letter-spacing: -0.02em; color: var(--ivory); }
+.vgx-merc-hero p { font-size: 16px; color: #cdd4e0; max-width: 620px; line-height: 1.6; }
+
+.vgx-merc { max-width: 1200px; margin: 0 auto; padding: 40px 28px 32px; width: 100%; box-sizing: border-box; }
+.vgx-tabela { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.vgx-tab-head, .vgx-tab-linha { display: grid; grid-template-columns: 1.3fr 2fr 1fr 1.1fr; gap: 16px; align-items: center; padding: 15px 24px; }
+.vgx-tab-head { padding: 14px 24px; border-bottom: 1px solid var(--border); background: var(--ivory); }
+.vgx-tab-head span { font-size: 11px; font-weight: 700; color: var(--text-3); letter-spacing: 0.14em; text-transform: uppercase; }
+.vgx-tab-head span:nth-child(3), .vgx-tab-head span:nth-child(4) { text-align: right; }
+.vgx-tab-linha { border-bottom: 1px solid var(--divider); transition: background 0.15s ease; }
+.vgx-tab-linha:hover { background: #faf8f2; }
+.vgx-tab-linha:last-child { border-bottom: none; }
+.vgx-tab-bairro { font-size: 15px; font-weight: 600; color: var(--navy-900); }
+.vgx-tab-barra { display: block; height: 8px; background: var(--gold-bg); border-radius: 4px; overflow: hidden; }
+.vgx-tab-barra i { display: block; height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-dark)); border-radius: 4px; }
+.vgx-tab-m2 { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; color: var(--navy-900); text-align: right; }
+.vgx-tab-fonte { font-size: 12.5px; color: var(--text-3); text-align: right; }
+.vgx-merc-nota { margin: 14px 4px 0; font-size: 13px; line-height: 1.6; color: var(--text-3); }
+
+.vgx-merc-ctas { max-width: 1200px; margin: 0 auto; padding: 16px 28px 96px; width: 100%; box-sizing: border-box; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+.vgx-merc-cta { border-radius: 10px; padding: 32px; display: flex; flex-direction: column; gap: 12px; }
+.vgx-merc-cta--navy { background: var(--navy-900); }
+.vgx-merc-cta--claro { background: #fff; border: 1px solid var(--border); }
+.vgx-merc-cta h2 { font-family: 'Instrument Sans', sans-serif; font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
+.vgx-merc-cta--navy h2 { color: var(--ivory); }
+.vgx-merc-cta--claro h2 { color: var(--navy-900); }
+.vgx-merc-cta p { font-size: 14.5px; line-height: 1.65; }
+.vgx-merc-cta--navy p { color: #aeb8c9; }
+.vgx-merc-cta--claro p { color: var(--text-2); }
+.vgx-merc-cta a { align-self: flex-start; }
+
+@media (max-width: 820px) {
+  .vgx-merc-hero h1 { font-size: 28px; }
+  .vgx-merc-hero-in { padding: 40px 20px 32px; }
+  .vgx-merc, .vgx-merc-ctas { padding-left: 20px; padding-right: 20px; }
+  .vgx-tab-head { display: none; }
+  /* linha vira: bairro + valor na 1ª linha, barra na 2ª, fonte na 3ª */
+  .vgx-tab-linha { grid-template-columns: 1fr auto; gap: 6px 12px; padding: 14px 16px; }
+  .vgx-tab-bairro { grid-column: 1; grid-row: 1; }
+  .vgx-tab-m2 { grid-column: 2; grid-row: 1; }
+  .vgx-tab-barra { grid-column: 1 / -1; grid-row: 2; }
+  .vgx-tab-fonte { grid-column: 1 / -1; grid-row: 3; text-align: left; }
+}
+
+/* ============================================================================
    BLINDAGEM contra o CSS global do tema claro (index.css)
    O index.css tem `html[data-theme="claro"] h1,h2,h3,h4,p { color:#42261c }` com
    especificidade maior que as minhas classes. Como a Home liga data-theme=claro,
@@ -576,3 +625,10 @@
 .vgx-lanc-resumo { color: #3d4a60 !important; -webkit-text-fill-color: #3d4a60 !important; }
 .vgx-cond-card p { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
 .vgx-btn-navy { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
+/* MERCADO — títulos e textos */
+.vgx-merc-hero h1, .vgx-merc-cta--navy h2 { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
+.vgx-merc-hero p { color: #cdd4e0 !important; -webkit-text-fill-color: #cdd4e0 !important; }
+.vgx-merc-cta--navy p { color: #aeb8c9 !important; -webkit-text-fill-color: #aeb8c9 !important; }
+.vgx-merc-cta--claro h2 { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+.vgx-merc-cta--claro p { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
+.vgx-merc-nota { color: var(--text-3) !important; -webkit-text-fill-color: var(--text-3) !important; }

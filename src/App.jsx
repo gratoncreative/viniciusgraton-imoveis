@@ -20,6 +20,7 @@ const ImovelDetalhe = lazyRetry(() => import('./pages/ImovelDetalhe'))
 const ImovelVG = lazyRetry(() => import('./pages/ImovelVG'))
 const CatalogoVG = lazyRetry(() => import('./pages/CatalogoVG'))
 const LancamentosVG = lazyRetry(() => import('./pages/LancamentosVG'))
+const MercadoVG = lazyRetry(() => import('./pages/MercadoVG'))
 const ComoAjudo = lazyRetry(() => import('./pages/ComoAjudo'))
 const QuemSou = lazyRetry(() => import('./pages/QuemSou'))
 const Regioes = lazyRetry(() => import('./pages/Regioes'))
@@ -99,7 +100,7 @@ export default function App() {
   // Páginas já no redesign (.vgx) trazem o próprio chrome (navbar/rodapé/WhatsApp),
   // então nelas suprimimos o chrome global para não duplicar. Conforme cada página
   // for redesenhada, entra nesta lista; no fim o chrome novo vira global.
-  const rotaVgx = ['/imoveis', '/lancamentos'].includes(pathname.replace(/\/+$/, ''))
+  const rotaVgx = ['/imoveis', '/lancamentos', '/mercado'].includes(pathname.replace(/\/+$/, ''))
   const rotaHome = pathname === '/' || pathname.startsWith('/imovel/') || rotaVgx
   // Overrides dos imóveis: ao carregar, mutam IMOVEIS no lugar e disparam UM re-render.
   // NÃO usamos isso como `key` da árvore (remontar fechava modais/ferramentas no meio do uso).
@@ -259,7 +260,7 @@ export default function App() {
               <Route path="/laudo/:id" element={<LaudoPage />} />
               <Route path="/estudo/:codigo" element={<EstudoM2Page />} />
               <Route path="/avaliar" element={<EstudoAvulso />} />
-              <Route path="/mercado" element={<Mercado />} />
+              <Route path="/mercado" element={<MercadoVG />} />
               <Route path="/investir" element={<Investir />} />
               <Route path="/app" element={<AppCorretor />} />
               <Route path="*" element={<NotFound />} />
