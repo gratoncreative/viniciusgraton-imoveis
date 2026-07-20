@@ -42,6 +42,18 @@ const stripHtml = (s) =>
     .replace(/\s+/g, ' ')
     .trim()
 
+// Campos livres do Blow já vieram com "login: x senha: y" digitado pela
+// construtora, e isso foi parar no bundle PÚBLICO do site. Aqui só passa uma
+// URL pura; qualquer texto com credencial, telefone ou espaço é descartado.
+const urlLimpa = (s) => {
+  const v = String(s || '').trim()
+  if (!v) return null
+  if (/senha|password|login|usu[aá]rio|:\s*\S+\s+\S+@/i.test(v)) return null
+  if (/\s/.test(v)) return null
+  if (!/^https?:\/\/\S+$/i.test(v)) return null
+  return v
+}
+
 const mapStatus = (s) => {
   const sl = String(s || '').toLowerCase()
   if (/conclu/.test(sl)) return 'Pronto'
@@ -198,7 +210,10 @@ function transformar(e) {
     construtoraNome: nomeConst,
     construtoraSlug: slugify(nomeConst),
     construtoraLogo: getLogo(e.empresa),
-    construtoraPortal: e.empresa?.local_tabela_vendas || null,
+    // SÓ uma URL limpa. Esse campo é livre no sistema do Blow e já veio com
+    // "login: x senha: y" digitado pela construtora — isso foi parar no bundle
+    // público do site. Qualquer coisa que não seja uma URL pura é descartada.
+    construtoraPortal: urlLimpa(e.empresa?.local_tabela_vendas),
     bairro: e.bairro || '',
     cidade: e.cidade || 'Uberlândia',
     status: mapStatus(e.status),
