@@ -310,6 +310,114 @@
 }
 
 /* ============================================================================
+   PÁGINA DE IMÓVEL (ficha)
+   ========================================================================== */
+.vgx-pagina { max-width: 1200px; margin: 0 auto; padding: 28px 28px 96px; }
+.vgx-voltar { display: inline-block; font-size: 14px; font-weight: 600; color: var(--text-2); transition: color 0.2s ease; }
+.vgx-voltar:hover { color: var(--gold-dark); }
+
+/* galeria */
+.vgx-galeria { margin-top: 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 12px; }
+.vgx-galeria-main { width: 100%; height: 520px; object-fit: cover; border-radius: 10px; cursor: zoom-in; background: var(--gold-bg); }
+.vgx-galeria-thumbs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.vgx-thumb { width: 100%; height: 254px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 3px solid transparent; box-sizing: border-box; background: var(--gold-bg); transition: opacity 0.2s ease; }
+.vgx-thumb:hover { opacity: 0.85; }
+.vgx-thumb.is-ativa { border-color: var(--gold); }
+
+/* corpo + aside */
+.vgx-ficha { margin-top: 40px; display: grid; grid-template-columns: 1fr 380px; gap: 48px; align-items: start; }
+.vgx-ficha-main { display: flex; flex-direction: column; gap: 40px; min-width: 0; }
+.vgx-ficha-head { display: flex; flex-direction: column; gap: 12px; }
+.vgx-ficha-kicker { font-size: 12px; font-weight: 600; color: var(--gold-dark); letter-spacing: 0.2em; text-transform: uppercase; }
+.vgx-ficha-head h1 { font-family: 'Instrument Sans', sans-serif; font-size: 40px; font-weight: 600; letter-spacing: -0.02em; color: var(--navy-900); line-height: 1.12; }
+.vgx-ficha-preco { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; color: var(--navy-900); }
+
+/* specs */
+.vgx-specs { display: flex; flex-wrap: wrap; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.vgx-spec { flex: 1 1 140px; display: flex; align-items: center; gap: 11px; padding: 20px 16px; background: #fff; }
+.vgx-spec svg { flex: none; }
+.vgx-spec-txt { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.vgx-spec-v { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; color: var(--navy-900); line-height: 1.2; }
+.vgx-spec-l { font-size: 12px; font-weight: 500; color: var(--text-3); }
+
+/* blocos de conteúdo */
+.vgx-bloco { display: flex; flex-direction: column; gap: 14px; }
+.vgx-bloco h2 { font-family: 'Instrument Sans', sans-serif; font-size: 28px; font-weight: 600; letter-spacing: -0.02em; color: var(--navy-900); }
+.vgx-bloco-p { font-size: 16px; line-height: 1.75; color: #3d4a60; }
+.vgx-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+.vgx-chip { background: var(--gold-bg); color: #7a6230; font-size: 13px; font-weight: 500; padding: 8px 14px; border-radius: 4px; }
+
+/* análise do m² */
+.vgx-analise { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 28px; display: flex; flex-direction: column; gap: 22px; }
+.vgx-analise-topo { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.vgx-analise-valor { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: var(--navy-900); }
+.vgx-analise-sub { font-size: 13px; color: var(--text-3); }
+.vgx-badge { font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 999px; }
+.vgx-barras { display: flex; flex-direction: column; gap: 12px; }
+.vgx-barra-linha { display: flex; flex-direction: column; gap: 6px; }
+.vgx-barra-top { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--text-2); }
+.vgx-barra-top strong { color: var(--navy-900); font-weight: 700; }
+.vgx-barra { height: 10px; background: #f3efe4; border-radius: 999px; overflow: hidden; }
+.vgx-barra i { display: block; height: 100%; border-radius: 999px; }
+.vgx-analise-nota { font-size: 13px; line-height: 1.6; color: var(--text-3); }
+.vgx-links-ferr { display: flex; gap: 10px; flex-wrap: wrap; }
+.vgx-btn-ouro { display: inline-block; border: 1px solid var(--gold); color: #7a6230; font-size: 13.5px; font-weight: 600; padding: 11px 18px; border-radius: 6px; transition: background 0.2s ease; }
+.vgx-btn-ouro:hover { background: var(--gold-bg); }
+
+/* mapa */
+.vgx-mapa-sub { font-size: 15px; color: var(--text-2); }
+.vgx-mapa { width: 100%; height: 320px; border: 1px solid var(--border); border-radius: 10px; }
+
+/* FAQ */
+.vgx-faq { display: flex; flex-direction: column; gap: 10px; }
+.vgx-faq details { background: #fff; border: 1px solid var(--border); border-radius: 8px; }
+.vgx-faq summary { cursor: pointer; padding: 17px 20px; font-size: 15.5px; font-weight: 600; color: var(--navy-900); }
+.vgx-faq p { padding: 0 20px 17px; font-size: 15px; line-height: 1.7; color: var(--text-2); }
+
+/* aside de contato */
+.vgx-aside { position: sticky; top: 24px; background: var(--navy-900); border-radius: 10px; padding: 32px; display: flex; flex-direction: column; gap: 18px; }
+.vgx-aside-quem { display: flex; align-items: center; gap: 14px; }
+.vgx-aside-quem img { width: 58px; height: 58px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); flex: none; }
+.vgx-aside-nome { font-size: 16px; font-weight: 700; color: var(--ivory); }
+.vgx-aside-papel { font-size: 12.5px; color: #aeb8c9; }
+.vgx-aside p { font-size: 14px; line-height: 1.65; color: #cdd4e0; }
+.vgx-aside-form { display: flex; flex-direction: column; gap: 10px; }
+.vgx-aside-form input, .vgx-aside-form select { background: rgba(255,255,255,0.07); border: 1px solid rgba(201,169,98,0.35); border-radius: 6px; padding: 13px 14px; font-size: 14px; color: var(--ivory); outline: none; width: 100%; box-sizing: border-box; }
+.vgx-aside-form input::placeholder { color: #8a94a8; }
+.vgx-aside-form select option { color: var(--navy-900); }
+.vgx-aside-linha { display: flex; gap: 10px; }
+.vgx-aside-linha select { flex: 1; padding: 13px 12px; font-size: 13.5px; }
+.vgx-aside-form button { border: none; background: var(--red); color: #fff; font-size: 15px; font-weight: 600; padding: 15px 24px; border-radius: 6px; cursor: pointer; transition: background 0.2s ease; }
+.vgx-aside-form button:hover { background: var(--red-hover); }
+.vgx-aside-rodape { font-size: 12px; color: var(--text-3); text-align: center; }
+
+/* semelhantes */
+.vgx-semelhantes { margin-top: 80px; }
+.vgx-semelhantes h2 { margin-bottom: 28px; font-family: 'Instrument Sans', sans-serif; font-size: 31px; font-weight: 600; letter-spacing: -0.02em; color: var(--navy-900); }
+.vgx-semelhantes .vgx-card-media { height: 200px; }
+
+/* lightbox */
+.vgx-lb { position: fixed; inset: 0; background: rgba(33,43,61,0.96); z-index: 1000; display: flex; align-items: center; justify-content: center; cursor: zoom-out; }
+.vgx-lb img { max-width: 86vw; max-height: 84vh; object-fit: contain; border-radius: 6px; box-shadow: 0 32px 80px rgba(33,43,61,0.55); }
+.vgx-lb button { position: absolute; border: 1px solid rgba(201,169,98,0.5); background: rgba(33,43,61,0.6); color: var(--gold-light); border-radius: 50%; cursor: pointer; display: grid; place-items: center; }
+.vgx-lb-x { top: 24px; right: 28px; width: 44px; height: 44px; font-size: 18px; }
+.vgx-lb-ant { left: 28px; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; font-size: 22px; }
+.vgx-lb-prox { right: 28px; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; font-size: 22px; }
+.vgx-lb-cont { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.14em; color: #cdd4e0; }
+
+@media (max-width: 980px) {
+  .vgx-ficha { grid-template-columns: 1fr; gap: 32px; }
+  .vgx-aside { position: static; }
+  .vgx-galeria { grid-template-columns: 1fr; }
+  .vgx-galeria-main { height: 300px; }
+  .vgx-thumb { height: 140px; }
+  .vgx-ficha-head h1 { font-size: 28px; }
+  .vgx-semelhantes { margin-top: 56px; }
+  .vgx-semelhantes h2 { font-size: 26px; }
+  .vgx-pagina { padding: 20px 20px 72px; }
+}
+
+/* ============================================================================
    BLINDAGEM contra o CSS global do tema claro (index.css)
    O index.css tem `html[data-theme="claro"] h1,h2,h3,h4,p { color:#42261c }` com
    especificidade maior que as minhas classes. Como a Home liga data-theme=claro,
@@ -351,3 +459,19 @@
 .vgx-footer-col a { color: #cdd4e0 !important; -webkit-text-fill-color: #cdd4e0 !important; }
 .vgx-footer-tel { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
 .vgx-card-cta { color: var(--red) !important; -webkit-text-fill-color: var(--red) !important; }
+/* PÁGINA DE IMÓVEL — títulos e parágrafos (mesmo sequestro do tema antigo) */
+.vgx-ficha-head h1,
+.vgx-bloco h2,
+.vgx-semelhantes h2 { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+.vgx-bloco-p { color: #3d4a60 !important; -webkit-text-fill-color: #3d4a60 !important; }
+.vgx-faq p, .vgx-mapa-sub { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
+.vgx-analise-nota { color: var(--text-3) !important; -webkit-text-fill-color: var(--text-3) !important; }
+.vgx-aside p { color: #cdd4e0 !important; -webkit-text-fill-color: #cdd4e0 !important; }
+.vgx-voltar { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
+.vgx-btn-ouro { color: #7a6230 !important; -webkit-text-fill-color: #7a6230 !important; }
+/* campos do formulário de visita: valor em claro sobre o card marinho,
+   mas as opções do menu aberto em marinho (fundo branco do sistema) */
+.vgx-aside-form input,
+.vgx-aside-form select { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
+.vgx-aside-form select option { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+.vgx-aside-form button { color: #fff !important; -webkit-text-fill-color: #fff !important; }

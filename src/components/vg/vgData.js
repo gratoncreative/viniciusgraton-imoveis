@@ -1,6 +1,27 @@
 // Helpers do redesign (Home) — liga o design da Claude Design aos dados REAIS.
 // Preço sem centavos (padrão do design: "R$ 1.290.000").
 import { IMOVEIS, oportunidade } from '../../data'
+import bairrosM2 from '../../bairros-m2.json'
+
+const _norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim()
+
+// Referência de R$/m² do bairro (dado real do nosso bairros-m2). 0 = sem referência.
+export const m2DoBairro = (bairro) => {
+  const r = (bairrosM2 || []).find((x) => _norm(x.bairro) === _norm(bairro))
+  return (r && r.m2) || 0
+}
+
+// Ícones de linha (1.5px, dourados) da barra de specs — traçados do design.
+export const SPEC_ICONS = {
+  area: 'M3 3h18v18H3z M3 9h6 M9 3v6',
+  quartos: 'M2 4v16 M2 8h18a2 2 0 0 1 2 2v10 M2 17h20 M6 8v9',
+  banheiros: 'M12 2.7c3.3 3.7 6 6.9 6 10a6 6 0 0 1-12 0c0-3.1 2.7-6.3 6-10z',
+  vagas: 'M5 11l1.5-4a2 2 0 0 1 1.9-1.3h7.2a2 2 0 0 1 1.9 1.3L19 11 M3 16v-3a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3 M5 16a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0z M16 16a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0z',
+  casa: 'M3 11l9-7 9 7 M5 9.5V21h14V9.5 M9 21v-6h6v6',
+  predio: 'M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16 M20 21V11a2 2 0 0 0-2-2h-2 M4 21h16 M8 7h2 M8 11h2 M8 15h2',
+  terreno: 'M3 20h18 M5 20l4-9 3 5 2-3 5 7 M16 6a2 2 0 1 0 4 0 2 2 0 0 0-4 0z',
+  m2: 'M3 21L21 3 M9 3H3v6 M15 21h6v-6',
+}
 
 const plural = (n, s, p) => (n > 1 ? p : s)
 

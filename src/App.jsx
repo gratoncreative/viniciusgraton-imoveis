@@ -17,6 +17,7 @@ import { lazyRetry } from './lazyRetry'
 // páginas internas carregadas sob demanda (home fica mais leve e rápida)
 const Catalogo = lazyRetry(() => import('./pages/Catalogo'))
 const ImovelDetalhe = lazyRetry(() => import('./pages/ImovelDetalhe'))
+const ImovelVG = lazyRetry(() => import('./pages/ImovelVG'))
 const ComoAjudo = lazyRetry(() => import('./pages/ComoAjudo'))
 const QuemSou = lazyRetry(() => import('./pages/QuemSou'))
 const Regioes = lazyRetry(() => import('./pages/Regioes'))
@@ -93,9 +94,10 @@ export default function App() {
   // barra de abas ou qualquer chrome do site. Só o editor, ocupando a tela toda.
   const modoEstudio = pathname.replace(/\/+$/, '') === '/ferramentas/estudio-de-fotos'
   const semChrome = modoApp || modoEstudio
-  // A Home nova (redesign Claude Design) traz o próprio chrome (navbar/rodapé/WhatsApp),
-  // então na rota "/" suprimimos o chrome global para não duplicar.
-  const rotaHome = pathname === '/'
+  // Páginas já no redesign (.vgx) trazem o próprio chrome (navbar/rodapé/WhatsApp),
+  // então nelas suprimimos o chrome global para não duplicar. Conforme cada página
+  // for redesenhada, entra nesta lista; no fim o chrome novo vira global.
+  const rotaHome = pathname === '/' || pathname.startsWith('/imovel/')
   // Overrides dos imóveis: ao carregar, mutam IMOVEIS no lugar e disparam UM re-render.
   // NÃO usamos isso como `key` da árvore (remontar fechava modais/ferramentas no meio do uso).
   const [, aplicarOvRender] = useState(0)
@@ -196,7 +198,7 @@ export default function App() {
               <Route path="/alugar/uberlandia/:bairro" element={CONFIG.alugarAtivo ? <Alugar /> : <Navigate to="/imoveis" replace />} />
               <Route path="/imoveis/uberlandia/:bairro" element={<Bairro />} />
               <Route path="/imoveis/uberlandia/:bairro/:tipo" element={<BairroTipo />} />
-              <Route path="/imovel/:codigo" element={<ImovelDetalhe />} />
+              <Route path="/imovel/:codigo" element={<ImovelVG />} />
               <Route path="/como-funciona" element={<ComoAjudo />} />
               <Route path="/sobre" element={<QuemSou />} />
               <Route path="/regioes" element={<Regioes />} />

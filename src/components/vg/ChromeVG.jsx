@@ -37,10 +37,10 @@ const NAV_LINKS = [
   { label: 'Contato', to: '/contato', key: 'contato' },
 ]
 
-export function NavbarVG() {
+export function NavbarVG({ ativo: ativoProp }) {
   const [aberto, setAberto] = useState(false)
   const { pathname } = useLocation()
-  const ativo = pathname === '/' ? 'home' : pathname.replace('/', '').split('/')[0]
+  const ativo = ativoProp || (pathname === '/' ? 'home' : pathname.replace('/', '').split('/')[0])
 
   return (
     <header className="vgx-nav">
