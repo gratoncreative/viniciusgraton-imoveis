@@ -615,6 +615,119 @@
 }
 
 /* ============================================================================
+   PAINEL ADMIN — "pele" do design novo sobre o painel que já funciona.
+   Só aparência (cor, fonte, borda, raio). Nenhuma função foi alterada, e nada
+   aqui vaza para o site público: tudo está preso ao escopo .vgx-adm.
+   ========================================================================== */
+.vgx-adm {
+  --navy-900: #212b3d; --navy-700: #2e3c55; --text-2: #5c6675; --text-3: #8a94a8;
+  --gold: #c9a962; --gold-dark: #b08e45; --gold-light: #e6d3a3; --gold-bg: #f1e9d8;
+  --red: #c1352f; --red-hover: #a92c27; --ivory: #f7f4ee; --border: #e6e1d5; --divider: #efeadd;
+  font-family: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+  background: var(--ivory) !important;
+  color: var(--navy-900) !important;
+}
+.vgx-adm * { box-sizing: border-box; }
+
+/* títulos e textos (o tema claro antigo pinta tudo de marrom) */
+.vgx-adm h1, .vgx-adm h2, .vgx-adm h3, .vgx-adm h4,
+.vgx-adm .section-title, .vgx-adm .admin-sec-tit, .vgx-adm .det-rel-titulo, .vgx-adm .rel-h {
+  font-family: 'Instrument Sans', sans-serif !important;
+  color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important;
+  letter-spacing: -0.02em; font-weight: 600 !important;
+}
+.vgx-adm .section-sub, .vgx-adm .painel-meta, .vgx-adm .calc-nota, .vgx-adm p {
+  color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important;
+}
+.vgx-adm .painel-meta, .vgx-adm .calc-nota { color: var(--text-3) !important; -webkit-text-fill-color: var(--text-3) !important; }
+.vgx-adm .eyebrow { color: var(--gold-dark) !important; -webkit-text-fill-color: var(--gold-dark) !important; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+
+/* cartões e blocos */
+.vgx-adm .painel-card, .vgx-adm .admin-card-end, .vgx-adm .lead-salvo, .vgx-adm .admin-stats > * {
+  background: #fff !important; border: 1px solid var(--border) !important; border-radius: 10px !important;
+  box-shadow: none !important;
+}
+.vgx-adm .admin-barra {
+  background: var(--navy-900) !important; border: 1px solid rgba(201,169,98,0.28) !important;
+  border-radius: 10px !important; color: var(--ivory) !important;
+}
+.vgx-adm .admin-barra, .vgx-adm .admin-barra * { -webkit-text-fill-color: currentColor !important; }
+
+/* botões */
+.vgx-adm .admin-btn, .vgx-adm .btn {
+  font-family: 'Instrument Sans', sans-serif !important; font-weight: 600 !important;
+  border-radius: 6px !important; cursor: pointer; transition: background 0.2s ease;
+  background: var(--navy-900) !important; color: #fff !important;
+  -webkit-text-fill-color: #fff !important; border: 1px solid var(--navy-900) !important;
+}
+.vgx-adm .admin-btn:hover, .vgx-adm .btn:hover { background: var(--navy-700) !important; border-color: var(--navy-700) !important; }
+.vgx-adm .admin-btn--ok, .vgx-adm .btn-gold {
+  background: var(--red) !important; border-color: var(--red) !important; color: #fff !important; -webkit-text-fill-color: #fff !important;
+}
+.vgx-adm .admin-btn--ok:hover, .vgx-adm .btn-gold:hover { background: var(--red-hover) !important; border-color: var(--red-hover) !important; }
+.vgx-adm .admin-btn--del { background: #fff !important; color: var(--red) !important; -webkit-text-fill-color: var(--red) !important; border-color: var(--red) !important; }
+.vgx-adm .admin-btn--del:hover { background: #fdf1f0 !important; }
+.vgx-adm .btn-ghost {
+  background: #fff !important; color: #7a6230 !important; -webkit-text-fill-color: #7a6230 !important;
+  border: 1px solid var(--gold) !important;
+}
+.vgx-adm .btn-ghost:hover { background: var(--gold-bg) !important; }
+.vgx-adm .admin-btn--mini { font-size: 12.5px !important; padding: 7px 12px !important; }
+
+/* campos */
+.vgx-adm input, .vgx-adm select, .vgx-adm textarea, .vgx-adm .admin-field {
+  font-family: 'Instrument Sans', sans-serif !important; font-size: 14px;
+  color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important;
+  background: #fff !important; border: 1px solid var(--border) !important; border-radius: 6px !important;
+  outline-color: var(--gold);
+}
+.vgx-adm input::placeholder, .vgx-adm textarea::placeholder { color: var(--text-3) !important; -webkit-text-fill-color: var(--text-3) !important; }
+.vgx-adm option { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+
+/* abas */
+.vgx-adm .admin-abas { gap: 6px; border-bottom: 1px solid var(--border); }
+.vgx-adm .admin-aba, .vgx-adm .admin-subaba {
+  font-family: 'Instrument Sans', sans-serif !important; font-weight: 600 !important;
+  color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important;
+  background: transparent !important; border: none !important; border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important; cursor: pointer;
+}
+.vgx-adm .admin-aba.on, .vgx-adm .admin-subaba.on {
+  color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important;
+  border-bottom-color: var(--gold) !important; background: transparent !important;
+}
+
+/* tabelas e códigos */
+.vgx-adm table { border-collapse: collapse; width: 100%; }
+.vgx-adm th {
+  font-size: 11px !important; font-weight: 700 !important; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-3) !important; -webkit-text-fill-color: var(--text-3) !important;
+  background: var(--ivory) !important; border-bottom: 1px solid var(--border) !important; text-align: left; padding: 12px 14px;
+}
+.vgx-adm td { border-bottom: 1px solid var(--divider) !important; padding: 12px 14px; color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+.vgx-adm code, .vgx-adm .mono { font-family: 'JetBrains Mono', monospace !important; font-size: 12px; }
+.vgx-adm a { color: var(--gold-dark) !important; -webkit-text-fill-color: var(--gold-dark) !important; }
+.vgx-adm .admin-btn, .vgx-adm .btn, .vgx-adm .admin-aba, .vgx-adm .admin-subaba { text-decoration: none !important; }
+
+/* ajuste fino: regras antigas do tema claro ainda venciam nestes três pontos */
+html .vgx-adm.vgx-adm .btn.btn-gold, html .vgx-adm.vgx-adm .admin-btn.admin-btn--ok,
+html .vgx-adm.vgx-adm .btn-gold {
+  background: var(--red) !important; border-color: var(--red) !important;
+  color: #fff !important; -webkit-text-fill-color: #fff !important;
+}
+.vgx-adm .btn.btn-gold:hover, .vgx-adm .admin-btn.admin-btn--ok:hover { background: var(--red-hover) !important; border-color: var(--red-hover) !important; }
+/* palavra destacada no título (o tema antigo pintava de marrom/gradiente) */
+.vgx-adm h1 em, .vgx-adm h2 em, .vgx-adm h3 em, .vgx-adm .section-title em, .vgx-adm .admin-sec-tit em {
+  color: var(--gold-dark) !important; -webkit-text-fill-color: var(--gold-dark) !important;
+  background: none !important; -webkit-background-clip: border-box !important; background-clip: border-box !important;
+  font-style: normal;
+}
+html .vgx-adm.vgx-adm input, html .vgx-adm.vgx-adm select, html .vgx-adm.vgx-adm textarea {
+  border: 1px solid var(--border) !important; background: #fff !important;
+  color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important;
+}
+
+/* ============================================================================
    BLINDAGEM contra o CSS global do tema claro (index.css)
    O index.css tem `html[data-theme="claro"] h1,h2,h3,h4,p { color:#42261c }` com
    especificidade maior que as minhas classes. Como a Home liga data-theme=claro,

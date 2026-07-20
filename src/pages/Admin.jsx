@@ -49,7 +49,7 @@ function Login({ onOk }) {
   }
 
   return (
-    <main className="pagina section--light det" style={{ minHeight: '66vh' }}>
+    <main className="pagina section--light det vgx-adm" style={{ minHeight: '66vh' }}>
       <div className="container" style={{ maxWidth: 430 }}>
         <div style={{ textAlign: 'center', marginBottom: 6 }}>
           <span className="aviseme-ico" style={{ margin: '0 auto 14px' }}><IconShield width={26} height={26} /></span>
@@ -792,8 +792,9 @@ export default function Admin() {
     ['backup', '💾 Backup geral'],
   ]
 
+  // vgx-adm = pele do design novo (redesign.css); só visual, nenhuma função mudou
   return (
-    <main className="pagina section--light det painel-pg admin-pg">
+    <main className="pagina section--light det painel-pg admin-pg vgx-adm">
       <div className="container">
         <div className="conta-hero">
           <div><span className="eyebrow">Painel administrativo</span><h1 className="section-title">Central do <em>Vinícius</em></h1></div>
