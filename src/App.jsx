@@ -21,6 +21,8 @@ const ImovelVG = lazyRetry(() => import('./pages/ImovelVG'))
 const CatalogoVG = lazyRetry(() => import('./pages/CatalogoVG'))
 const LancamentosVG = lazyRetry(() => import('./pages/LancamentosVG'))
 const MercadoVG = lazyRetry(() => import('./pages/MercadoVG'))
+const SobreVG = lazyRetry(() => import('./pages/SobreVG'))
+const ContatoVG = lazyRetry(() => import('./pages/ContatoVG'))
 const ComoAjudo = lazyRetry(() => import('./pages/ComoAjudo'))
 const QuemSou = lazyRetry(() => import('./pages/QuemSou'))
 const Regioes = lazyRetry(() => import('./pages/Regioes'))
@@ -100,7 +102,7 @@ export default function App() {
   // Páginas já no redesign (.vgx) trazem o próprio chrome (navbar/rodapé/WhatsApp),
   // então nelas suprimimos o chrome global para não duplicar. Conforme cada página
   // for redesenhada, entra nesta lista; no fim o chrome novo vira global.
-  const rotaVgx = ['/imoveis', '/lancamentos', '/mercado'].includes(pathname.replace(/\/+$/, ''))
+  const rotaVgx = ['/imoveis', '/lancamentos', '/mercado', '/sobre', '/contato'].includes(pathname.replace(/\/+$/, ''))
   const rotaHome = pathname === '/' || pathname.startsWith('/imovel/') || rotaVgx
   // Overrides dos imóveis: ao carregar, mutam IMOVEIS no lugar e disparam UM re-render.
   // NÃO usamos isso como `key` da árvore (remontar fechava modais/ferramentas no meio do uso).
@@ -205,7 +207,7 @@ export default function App() {
               <Route path="/imoveis/uberlandia/:bairro/:tipo" element={<BairroTipo />} />
               <Route path="/imovel/:codigo" element={<ImovelVG />} />
               <Route path="/como-funciona" element={<ComoAjudo />} />
-              <Route path="/sobre" element={<QuemSou />} />
+              <Route path="/sobre" element={<SobreVG />} />
               <Route path="/regioes" element={<Regioes />} />
               <Route path="/lancamentos" element={<LancamentosVG />} />
               <Route path="/lancamentos/louis-studios-umuarama" element={<LancamentoLouis />} />
@@ -250,7 +252,7 @@ export default function App() {
               <Route path="/conta" element={<Conta />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
-              <Route path="/contato" element={<FaleComigo />} />
+              <Route path="/contato" element={<ContatoVG />} />
               <Route path="/favoritos" element={<Favoritos />} />
               <Route path="/cliente/:token" element={<Cliente />} />
               <Route path="/encontrar-imovel" element={<EncontrarImovel />} />

@@ -552,6 +552,69 @@
 }
 
 /* ============================================================================
+   SOBRE (/sobre)
+   ========================================================================== */
+.vgx-sobre-topo { max-width: 1200px; margin: 0 auto; padding: 72px 28px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 72px; align-items: start; }
+.vgx-sobre-foto { position: relative; }
+.vgx-sobre-foto .vgx-frame { position: absolute; inset: 20px -20px -20px 20px; border: 1px solid var(--gold); border-radius: 10px; }
+.vgx-sobre-foto img { position: relative; width: 100%; height: 540px; object-fit: cover; border-radius: 10px; }
+.vgx-sobre-txt { display: flex; flex-direction: column; gap: 20px; }
+.vgx-sobre-txt h1 { font-family: 'Instrument Sans', sans-serif; font-size: 45px; font-weight: 600; letter-spacing: -0.02em; color: var(--navy-900); line-height: 1.1; }
+.vgx-sobre-p { font-size: 17px; line-height: 1.75; color: #3d4a60; }
+.vgx-sobre-acoes { display: flex; gap: 14px; margin-top: 4px; flex-wrap: wrap; }
+.vgx-principios { max-width: 1200px; margin: 0 auto; padding: 88px 28px 0; }
+.vgx-princ-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; }
+.vgx-princ { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 32px 28px; display: flex; flex-direction: column; gap: 12px; }
+.vgx-princ b { font-family: 'Instrument Sans', sans-serif; font-size: 28px; font-weight: 600; letter-spacing: -0.02em; color: var(--gold-dark); line-height: 1.15; }
+.vgx-princ p { font-size: 15px; line-height: 1.7; color: var(--text-2); }
+.vgx-parceria { background: var(--navy-900); margin-top: 88px; }
+.vgx-parceria-in { max-width: 1200px; margin: 0 auto; padding: 72px 28px; display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+.vgx-parceria-col { display: flex; flex-direction: column; gap: 12px; max-width: 640px; }
+.vgx-parceria h2 { font-family: 'Instrument Sans', sans-serif; font-size: 32px; font-weight: 600; letter-spacing: -0.02em; color: var(--ivory); line-height: 1.15; }
+.vgx-parceria p { font-size: 16px; line-height: 1.7; color: #cdd4e0; }
+
+/* ============================================================================
+   CONTATO (/contato)
+   ========================================================================== */
+.vgx-cont-hero { background: var(--navy-900); }
+.vgx-cont-hero-in { max-width: 1200px; margin: 0 auto; padding: 56px 28px 48px; display: flex; flex-direction: column; gap: 10px; }
+.vgx-cont-hero h1 { font-family: 'Instrument Sans', sans-serif; font-size: 41px; font-weight: 600; letter-spacing: -0.02em; color: var(--ivory); }
+.vgx-cont-hero p { font-size: 16px; color: #cdd4e0; max-width: 560px; line-height: 1.6; }
+.vgx-cont { max-width: 1200px; margin: 0 auto; padding: 48px 28px 96px; width: 100%; box-sizing: border-box; display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 48px; align-items: start; }
+.vgx-cont-col { display: flex; flex-direction: column; gap: 20px; }
+.vgx-cont-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 32px; display: flex; flex-direction: column; gap: 12px; scroll-margin-top: 90px; }
+.vgx-cont-card h2 { font-family: 'Instrument Sans', sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.01em; color: var(--navy-900); }
+.vgx-cont-card p { font-size: 15px; line-height: 1.65; color: var(--text-2); }
+.vgx-cont-card a { align-self: flex-start; }
+.vgx-cont-aside { position: sticky; top: 24px; background: var(--navy-900); border-radius: 10px; padding: 36px; display: flex; flex-direction: column; gap: 20px; }
+.vgx-cont-aside > img { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); }
+.vgx-cont-nome { font-family: 'Instrument Sans', sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.01em; color: var(--ivory); }
+.vgx-cont-papel { font-size: 13px; color: #aeb8c9; line-height: 1.6; }
+.vgx-cont-rule { height: 1px; background: rgba(201,169,98,0.25); }
+.vgx-cont-itens { display: flex; flex-direction: column; gap: 14px; }
+.vgx-cont-item { display: flex; flex-direction: column; gap: 2px; }
+.vgx-cont-rot { font-size: 11px; font-weight: 600; color: var(--text-3); letter-spacing: 0.12em; text-transform: uppercase; }
+.vgx-cont-zap { font-size: 17px; font-weight: 700; color: var(--gold-light); }
+.vgx-cont-val { font-size: 15px; font-weight: 600; color: var(--ivory); }
+.vgx-cont-txt { font-size: 15px; color: #cdd4e0; line-height: 1.6; }
+
+@media (max-width: 900px) {
+  .vgx-sobre-topo { padding: 40px 20px 0; gap: 44px; }
+  .vgx-sobre-foto img { height: 380px; }
+  .vgx-sobre-txt h1 { font-size: 29px; }
+  .vgx-principios { padding: 56px 20px 0; }
+  .vgx-parceria { margin-top: 56px; }
+  .vgx-parceria-in { padding: 44px 20px; }
+  .vgx-parceria h2 { font-size: 24px; }
+  .vgx-cont-hero h1 { font-size: 28px; }
+  .vgx-cont-hero-in { padding: 40px 20px 32px; }
+  .vgx-cont { padding: 32px 20px 72px; gap: 28px; }
+  .vgx-cont-aside { position: static; padding: 28px 22px; }
+  .vgx-cont-card { padding: 24px 22px; }
+  .vgx-cont-card h2 { font-size: 21px; }
+}
+
+/* ============================================================================
    BLINDAGEM contra o CSS global do tema claro (index.css)
    O index.css tem `html[data-theme="claro"] h1,h2,h3,h4,p { color:#42261c }` com
    especificidade maior que as minhas classes. Como a Home liga data-theme=claro,
@@ -632,3 +695,9 @@
 .vgx-merc-cta--claro h2 { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
 .vgx-merc-cta--claro p { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
 .vgx-merc-nota { color: var(--text-3) !important; -webkit-text-fill-color: var(--text-3) !important; }
+/* SOBRE e CONTATO — títulos e textos */
+.vgx-sobre-txt h1, .vgx-cont-card h2 { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+.vgx-sobre-p { color: #3d4a60 !important; -webkit-text-fill-color: #3d4a60 !important; }
+.vgx-princ p, .vgx-cont-card p { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
+.vgx-parceria h2, .vgx-cont-hero h1 { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
+.vgx-parceria p, .vgx-cont-hero p { color: #cdd4e0 !important; -webkit-text-fill-color: #cdd4e0 !important; }
