@@ -132,10 +132,9 @@ export default function Alugar() {
               <Link to="/alugar">Alugar</Link>
               {bairroNome && <><span aria-hidden="true">›</span><span>{bairroNome}</span></>}
             </nav>
+            {/* REGRA: nunca expor QUANTOS imóveis temos. */}
             <h1 className="cat-h1">
-              {carregando && !alugueis.length
-                ? <>Imóveis para <em>alugar</em> em Uberlândia</>
-                : <><b>{lista.length.toLocaleString('pt-BR')}</b> {lista.length === 1 ? 'imóvel' : 'imóveis'} para <em>alugar</em> em {bairroNome || 'Uberlândia'}</>}
+              Imóveis para <em>alugar</em> em {bairroNome || 'Uberlândia'}
             </h1>
             <p className="cat-head-sub">
               Imóveis de locação da carteira da <b>Rotina Imobiliária</b>, com o meu atendimento do começo ao fim - análise de garantia (fiador, seguro-fiança ou caução) e agendamento de visita.
@@ -169,7 +168,7 @@ export default function Alugar() {
           </div>
         )}
 
-        <p className="cat-count">{carregando && !alugueis.length ? 'Carregando imóveis para alugar…' : `${lista.length} ${lista.length === 1 ? 'imóvel encontrado' : 'imóveis encontrados'}`}</p>
+        {carregando && !alugueis.length && <p className="cat-count">Carregando imóveis para alugar…</p>}
 
         {lista.length ? (
           <>

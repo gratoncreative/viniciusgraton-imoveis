@@ -406,10 +406,9 @@ export default function Catalogo() {
               <span aria-hidden="true">›</span>
               <span>Imóveis à venda{f.bairros.length === 1 ? ` em ${f.bairros[0]}` : ' em Uberlândia'}</span>
             </nav>
+            {/* REGRA: nunca expor QUANTOS imóveis temos (nem total, nem por bairro). */}
             <h1 className="cat-h1">
-              {carregandoFeed && !feed.length
-                ? <>Imóveis à venda em <em>Uberlândia</em></>
-                : <><b>{lista.length.toLocaleString('pt-BR')}</b> {lista.length === 1 ? 'imóvel' : 'imóveis'} à venda em <em>{f.bairros.length === 1 ? f.bairros[0] : 'Uberlândia'}</em></>}
+              Imóveis à venda em <em>{f.bairros.length === 1 ? f.bairros[0] : 'Uberlândia'}</em>
             </h1>
             <p className="cat-head-sub">
               Imóveis da carteira da <b>Rotina Imobiliária</b>, com o meu atendimento pessoal do começo ao fim. Use os filtros para encontrar o que combina com você.
@@ -484,7 +483,7 @@ export default function Catalogo() {
         </div>
         {/* botão "Ver X imóveis" — só aparece no drawer mobile */}
         <button type="button" className="cat-mob-aplicar" onClick={() => setFiltrosAbertos(false)}>
-          Ver {lista.length} {lista.length === 1 ? 'imóvel' : 'imóveis'}
+          Ver imóveis
         </button>
         </div>
 
@@ -547,7 +546,7 @@ export default function Catalogo() {
         )}
 
 
-        <p className="cat-count">{carregandoFeed && !feed.length ? 'Carregando imóveis da Rotina…' : `${lista.length} ${lista.length === 1 ? 'imóvel encontrado' : 'imóveis encontrados'}`}</p>
+        {carregandoFeed && !feed.length && <p className="cat-count">Carregando imóveis da Rotina…</p>}
 
         {lista.length ? (
           <>
@@ -591,7 +590,7 @@ export default function Catalogo() {
             <div className="cat-seo-grid">
               {bairrosSeoGrid.map((b) => (
                 <Link key={b.slug} to={`/imoveis/uberlandia/${b.slug}`} className="cat-seo-link">
-                  Imóveis no {b.nome} <span>{b.n}</span>
+                  Imóveis no {b.nome}
                 </Link>
               ))}
             </div>

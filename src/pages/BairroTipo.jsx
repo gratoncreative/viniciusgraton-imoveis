@@ -45,14 +45,14 @@ export default function BairroTipo() {
   const tiposNoBairro = TIPOS_SEO.map((x) => ({ ...x, n: todosBairro.filter((im) => x.re.test(im.tipo || '')).length })).filter((x) => x.n > 0)
 
   const faq = []
-  if (b && t && precos.length) faq.push({ q: `Quanto custa ${artigo(t)} no ${b.nome}, Uberlândia?`, a: `${t.plural} à venda no ${b.nome} vão de ${fmtC(precoLo)} a ${fmtC(precoHi)}${lista.length >= 3 ? `, com ${lista.length} opções na curadoria agora` : ''}.` })
+  if (b && t && precos.length) faq.push({ q: `Quanto custa ${artigo(t)} no ${b.nome}, Uberlândia?`, a: `${t.plural} à venda no ${b.nome} vão de ${fmtC(precoLo)} a ${fmtC(precoHi)}.` })
   if (b && t && m2.length >= 3) faq.push({ q: `Quanto custa o metro quadrado de ${t.plural.toLowerCase()} no ${b.nome}?`, a: `O m² de ${t.plural.toLowerCase()} no ${b.nome} fica em torno de ${fmtM2(m2med)} (a maioria entre ${fmtM2(m2lo)} e ${fmtM2(m2hi)}), a partir dos anúncios à venda hoje. Para avaliar um imóvel específico, use o estudo do m² ou fale comigo.` })
-  if (b && t) faq.push({ q: `Tem ${t.plural.toLowerCase()} à venda no ${b.nome}?`, a: lista.length ? `Sim - no momento tenho ${lista.length} ${lista.length === 1 ? t.singular : t.plural.toLowerCase()} à venda no ${b.nome}. Veja abaixo ou me chame no WhatsApp.` : `Posso buscar pra você. Me chame no WhatsApp que eu trago ${t.plural.toLowerCase()} no ${b.nome} que cabem no seu perfil.` })
+  if (b && t) faq.push({ q: `Tem ${t.plural.toLowerCase()} à venda no ${b.nome}?`, a: lista.length ? `Sim - tenho ${t.plural.toLowerCase()} à venda no ${b.nome}. Veja abaixo ou me chame no WhatsApp.` : `Posso buscar pra você. Me chame no WhatsApp que eu trago ${t.plural.toLowerCase()} no ${b.nome} que cabem no seu perfil.` })
 
   useSEO({
     title: b && t ? `${t.plural} à venda em ${b.nome}, Uberlândia - preços` : 'Página não encontrada',
     description: b && t
-      ? `${lista.length ? `${lista.length} ` : ''}${t.plural.toLowerCase()} à venda em ${b.nome}, Uberlândia${precos.length ? ` de ${fmtC(precoLo)} a ${fmtC(precoHi)}` : ''}.${m2.length >= 3 ? ` m² em torno de ${fmtM2(m2med)}.` : ''} Curadoria de Vinícius Graton.`.slice(0, 158)
+      ? `${t.plural} à venda em ${b.nome}, Uberlândia${precos.length ? ` de ${fmtC(precoLo)} a ${fmtC(precoHi)}` : ''}.${m2.length >= 3 ? ` m² em torno de ${fmtM2(m2med)}.` : ''} Curadoria de Vinícius Graton.`.slice(0, 158)
       : 'Página não encontrada.',
     path: `/imoveis/uberlandia/${slug || ''}/${tipoSlug || ''}`,
   })
@@ -103,7 +103,7 @@ export default function BairroTipo() {
           <span className="eyebrow"><IconPin width={14} height={14} /> {b.nome}, Uberlândia</span>
           <h1 className="section-title">{t.plural} à venda em <em>{b.nome}</em></h1>
           <p className="construtora-desc">
-            {lista.length ? `${lista.length} ${lista.length === 1 ? t.singular : t.plural.toLowerCase()} à venda no ${b.nome}` : `${t.plural} no ${b.nome}`}{precos.length ? `, de ${fmtC(precoLo)} a ${fmtC(precoHi)}` : ''}{m2.length >= 3 ? ` · m² em torno de ${fmtM2(m2med)}` : ''}. Curadoria pessoal do Vinícius Graton.
+            {`${t.plural} à venda no ${b.nome}`}{precos.length ? `, de ${fmtC(precoLo)} a ${fmtC(precoHi)}` : ''}{m2.length >= 3 ? ` · m² em torno de ${fmtM2(m2med)}` : ''}. Curadoria pessoal do Vinícius Graton.
           </p>
           <div className="construtora-hero-acoes">
             <a className="btn btn-gold" href={linkWhatsApp(`Olá Vinícius! Quero ver ${t.plural.toLowerCase()} à venda em ${b.nome}, Uberlândia.`)} target="_blank" rel="noopener noreferrer">
@@ -120,7 +120,7 @@ export default function BairroTipo() {
             <p className="bairro-faq-links" style={{ marginBottom: 18 }}>
               No {b.nome}:{' '}
               {tiposNoBairro.map((x, i) => (
-                <span key={x.slug}>{i > 0 ? ' · ' : ''}{x.slug === t.slug ? <b>{x.plural} ({x.n})</b> : <Link to={`/imoveis/uberlandia/${slug}/${x.slug}`}>{x.plural} ({x.n})</Link>}</span>
+                <span key={x.slug}>{i > 0 ? ' · ' : ''}{x.slug === t.slug ? <b>{x.plural}</b> : <Link to={`/imoveis/uberlandia/${slug}/${x.slug}`}>{x.plural}</Link>}</span>
               ))}
               {' · '}<Link to={`/imoveis/uberlandia/${slug}`}>tudo no {b.nome}</Link>
             </p>

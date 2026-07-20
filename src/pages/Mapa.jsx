@@ -349,7 +349,8 @@ export default function Mapa() {
               {[1, 2, 3, 4].map((q) => <option key={q} value={q}>{q}+ quartos</option>)}
             </select>
           </label>
-          <span className="mapa-filtro-cont">{imoveisFiltrados.length} imóveis · {porBairro.length} bairros</span>
+          {/* REGRA: nunca expor QUANTOS imóveis temos — só a cobertura por bairro. */}
+          <span className="mapa-filtro-cont">{porBairro.length} bairros</span>
           {filtrosAtivos && <button type="button" className="mapa-filtro-limpar" onClick={() => { setTipoF(''); setPrecoMaxF(0); setQuartosF(0) }}>limpar ×</button>}
         </div>
 

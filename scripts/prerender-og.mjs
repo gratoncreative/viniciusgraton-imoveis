@@ -285,10 +285,11 @@ function bairroStats(b) {
   const nLote = todos.filter((im) => /lote|terreno/i.test(im.tipo || '')).length
   const faq = []
   if (m2.length >= 3) faq.push({ q: `Quanto custa o metro quadrado no ${b.nome}?`, a: `Considerando os imóveis à venda hoje no ${b.nome}, o preço fica em torno de ${_fmtM2(m2med)} (a maioria entre ${_fmtM2(m2lo)} e ${_fmtM2(m2hi)}). É uma referência de mercado a partir dos anúncios; para avaliar um imóvel específico, fale com o Vinícius Graton.` })
-  if (precos.length) faq.push({ q: `Quanto custa um imóvel no ${b.nome}, Uberlândia?`, a: `Os imóveis à venda no ${b.nome} vão de ${_fmtC(precoLo)} a ${_fmtC(precoHi)}${todos.length >= 3 ? `, com ${todos.length} opções na curadoria agora` : ''}.` })
-  const tp = []; if (nApto) tp.push(`${nApto} ${nApto === 1 ? 'apartamento' : 'apartamentos'}`); if (nCasa) tp.push(`${nCasa} ${nCasa === 1 ? 'casa' : 'casas'}`); if (nLote) tp.push(`${nLote} ${nLote === 1 ? 'lote/terreno' : 'lotes/terrenos'}`)
-  if (tp.length) faq.push({ q: `Tem apartamento ou casa à venda no ${b.nome}?`, a: `No momento há ${tp.join(', ')} à venda no ${b.nome}. Veja todas no catálogo ou fale com o Vinícius Graton para opções que cabem no seu perfil.` })
-  const desc = `${todos.length ? `${todos.length} imóveis à venda em ${b.nome}, Uberlândia` : `Imóveis à venda em ${b.nome}, Uberlândia`}${precos.length ? ` de ${_fmtC(precoLo)} a ${_fmtC(precoHi)}` : ''}.${m2.length >= 3 ? ` Preço médio ${_fmtM2(m2med)}.` : ''} Curadoria de Vinícius Graton.`.slice(0, 158)
+  // REGRA: nunca expor QUANTOS imóveis temos (nem total, nem por bairro, nem por tipo).
+  if (precos.length) faq.push({ q: `Quanto custa um imóvel no ${b.nome}, Uberlândia?`, a: `Os imóveis à venda no ${b.nome} vão de ${_fmtC(precoLo)} a ${_fmtC(precoHi)}.` })
+  const tp = []; if (nApto) tp.push('apartamentos'); if (nCasa) tp.push('casas'); if (nLote) tp.push('lotes e terrenos')
+  if (tp.length) faq.push({ q: `Tem apartamento ou casa à venda no ${b.nome}?`, a: `No momento há ${tp.join(', ')} à venda no ${b.nome}. Veja as opções no catálogo ou fale com o Vinícius Graton para o que cabe no seu perfil.` })
+  const desc = `Imóveis à venda em ${b.nome}, Uberlândia${precos.length ? ` de ${_fmtC(precoLo)} a ${_fmtC(precoHi)}` : ''}.${m2.length >= 3 ? ` Preço médio ${_fmtM2(m2med)}.` : ''} Curadoria de Vinícius Graton.`.slice(0, 158)
   return { doBairro: todos.slice(0, 24), faq, desc }
 }
 
@@ -363,9 +364,10 @@ function renderBairroTipo(b, t, s) {
   const url = slash(`${SITE}/imoveis/uberlandia/${b.slug}/${t.slug}`)
   const bairroUrl = slash(`${SITE}/imoveis/uberlandia/${b.slug}`)
   const faq = []
-  if (s.precosN) faq.push({ q: `Quanto custa ${_art(t)} no ${b.nome}, Uberlândia?`, a: `${t.plural} à venda no ${b.nome} vão de ${_fmtC(s.precoLo)} a ${_fmtC(s.precoHi)}, com ${s.n} ${s.n === 1 ? 'opção' : 'opções'} na curadoria agora.` })
+  // REGRA: nunca expor QUANTOS imóveis temos (nem por bairro, nem por tipo).
+  if (s.precosN) faq.push({ q: `Quanto custa ${_art(t)} no ${b.nome}, Uberlândia?`, a: `${t.plural} à venda no ${b.nome} vão de ${_fmtC(s.precoLo)} a ${_fmtC(s.precoHi)}.` })
   if (s.m2n >= 3) faq.push({ q: `Quanto custa o metro quadrado de ${t.plural.toLowerCase()} no ${b.nome}?`, a: `O m² de ${t.plural.toLowerCase()} no ${b.nome} fica em torno de ${_fmtM2(s.m2med)} (a maioria entre ${_fmtM2(s.m2lo)} e ${_fmtM2(s.m2hi)}), a partir dos anúncios à venda hoje.` })
-  faq.push({ q: `Tem ${t.plural.toLowerCase()} à venda no ${b.nome}?`, a: `Sim - no momento há ${s.n} ${s.n === 1 ? t.singular : t.plural.toLowerCase()} à venda no ${b.nome}. Veja a lista ou fale com o Vinícius Graton.` })
+  faq.push({ q: `Tem ${t.plural.toLowerCase()} à venda no ${b.nome}?`, a: `Sim - há ${t.plural.toLowerCase()} à venda no ${b.nome}. Veja a lista ou fale com o Vinícius Graton.` })
   const graph = [
     { '@type': 'CollectionPage', name: titulo, description: desc, url, about: { '@type': 'Place', name: `${b.nome}, Uberlândia, MG` } },
     { '@type': 'BreadcrumbList', itemListElement: [
@@ -638,10 +640,10 @@ const PAGINAS_FIXAS = [
   {
     rota: 'imoveis',
     titulo: 'Imóveis à venda em Uberlândia · Catálogo completo',
-    desc: `Mais de ${[...imoveis, ...feed].length} imóveis à venda em Uberlândia, com o atendimento pessoal do Vinícius Graton, consultor da Rotina Imobiliária.`,
+    desc: `Imóveis à venda em Uberlândia, com o atendimento pessoal do Vinícius Graton, consultor da Rotina Imobiliária.`,
     image: `${SITE}/vinicius-graton.jpg`, w: 1200, h: 900,
     body: `<main class="pre-seo"><h1>Imóveis à venda em Uberlândia</h1>` +
-      `<p>Catálogo completo com mais de ${[...imoveis, ...feed].length} imóveis à venda em Uberlândia - MG, com o atendimento pessoal do Vinícius Graton, consultor credenciado da Rotina Imobiliária. Casas, apartamentos, terrenos, salas comerciais e lançamentos.</p>` +
+      `<p>Catálogo completo de imóveis à venda em Uberlândia - MG, com o atendimento pessoal do Vinícius Graton, consultor credenciado da Rotina Imobiliária. Casas, apartamentos, terrenos, salas comerciais e lançamentos.</p>` +
       `<nav><h2>Principais bairros</h2>${bairrosSeo.slice(0, 20).map((b) => `<a href="/imoveis/uberlandia/${b.slug}">${esc(b.nome)}</a>`).join(' · ')}</nav>` +
       `</main>`,
   },
@@ -971,11 +973,11 @@ try {
     // landing /alugar
     {
       const titulo = 'Imóveis para alugar em Uberlândia - casas, apartamentos e kitnets'
-      const desc = `${alug.length} imóveis para alugar em Uberlândia: casas, apartamentos, kitnets e salas. Filtre por bairro e preço e fale com o Vinícius Graton.`.slice(0, 158)
+      const desc = `Imóveis para alugar em Uberlândia: casas, apartamentos, kitnets e salas. Filtre por bairro e preço e fale com o Vinícius Graton.`.slice(0, 158)
       const url = slash(`${SITE}/alugar`)
       const body = `<main class="pre-seo"><h1>Imóveis para alugar em Uberlândia</h1>` +
-        `<p>${alug.length} imóveis de locação na carteira da Rotina Imobiliária, com o atendimento do Vinícius Graton - análise de garantia (fiador, seguro-fiança ou caução) e agendamento de visita.</p>` +
-        `<nav><h2>Alugar por bairro em Uberlândia</h2>${bairrosAlug.map((b) => `<a href="/alugar/uberlandia/${b.slug}/">${esc(b.nome)} (${b.n})</a>`).join(' · ')}</nav>` +
+        `<p>Imóveis de locação na carteira da Rotina Imobiliária, com o atendimento do Vinícius Graton - análise de garantia (fiador, seguro-fiança ou caução) e agendamento de visita.</p>` +
+        `<nav><h2>Alugar por bairro em Uberlândia</h2>${bairrosAlug.map((b) => `<a href="/alugar/uberlandia/${b.slug}/">${esc(b.nome)}</a>`).join(' · ')}</nav>` +
         `<p><a href="/imoveis">Comprar imóvel em Uberlândia</a> · <a href="/investir">onde investir</a></p></main>`
       const ld = { '@context': 'https://schema.org', '@graph': [
         { '@type': 'CollectionPage', url, name: titulo, description: desc, publisher: { '@type': 'RealEstateAgent', name: 'Vinícius Graton Imóveis', url: SITE } },
@@ -987,10 +989,10 @@ try {
     // /alugar/uberlandia/:bairro
     for (const b of bairrosAlug) {
       const titulo = `Imóveis para alugar em ${b.nome}, Uberlândia`
-      const desc = `${b.n} imóveis para alugar em ${b.nome}, Uberlândia. Aluguel típico em torno de ${fmtAlug(b.med)}/mês. Fale com o Vinícius Graton.`.slice(0, 158)
+      const desc = `Imóveis para alugar em ${b.nome}, Uberlândia. Aluguel típico em torno de ${fmtAlug(b.med)}/mês. Fale com o Vinícius Graton.`.slice(0, 158)
       const url = slash(`${SITE}/alugar/uberlandia/${b.slug}`)
       const body = `<main class="pre-seo"><h1>Imóveis para alugar em ${esc(b.nome)}, Uberlândia</h1>` +
-        `<p>${b.n} ${b.n === 1 ? 'imóvel' : 'imóveis'} para alugar em ${esc(b.nome)} - aluguel típico em torno de ${esc(fmtAlug(b.med))}/mês. Atendimento do Vinícius Graton, da Rotina Imobiliária.</p>` +
+        `<p>Imóveis para alugar em ${esc(b.nome)} - aluguel típico em torno de ${esc(fmtAlug(b.med))}/mês. Atendimento do Vinícius Graton, da Rotina Imobiliária.</p>` +
         `<p><a href="/alugar">todos os imóveis para alugar em Uberlândia</a> · <a href="/imoveis/uberlandia/${b.slug}">comprar no ${esc(b.nome)}</a></p></main>`
       const ld = { '@context': 'https://schema.org', '@graph': [
         { '@type': 'CollectionPage', url, name: titulo, description: desc, about: { '@type': 'Place', name: `${b.nome}, Uberlândia, MG` } },

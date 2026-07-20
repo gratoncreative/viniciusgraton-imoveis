@@ -45,7 +45,7 @@ export default function Bairro() {
   // FAQ hiperlocal a partir de DADO real (única por bairro — não duplica entre páginas)
   const faq = []
   if (b && m2.length >= 3) faq.push({ q: `Quanto custa o metro quadrado no ${b.nome}?`, a: `Considerando os imóveis à venda hoje no ${b.nome}, o preço fica em torno de ${fmtM2(m2med)} (a maioria entre ${fmtM2(m2lo)} e ${fmtM2(m2hi)}). É uma referência de mercado a partir dos anúncios - para avaliar um imóvel específico, use o estudo do m² ou fale comigo.` })
-  if (b && precos.length) faq.push({ q: `Quanto custa um imóvel no ${b.nome}, Uberlândia?`, a: `Os imóveis à venda no ${b.nome} vão de ${fmtC(precoLo)} a ${fmtC(precoHi)}${lista.length >= 3 ? `, com ${lista.length} opções na curadoria agora` : ''}.` })
+  if (b && precos.length) faq.push({ q: `Quanto custa um imóvel no ${b.nome}, Uberlândia?`, a: `Os imóveis à venda no ${b.nome} vão de ${fmtC(precoLo)} a ${fmtC(precoHi)}.` })
   const tp = []; if (nApto) tp.push(`${nApto} ${nApto === 1 ? 'apartamento' : 'apartamentos'}`); if (nCasa) tp.push(`${nCasa} ${nCasa === 1 ? 'casa' : 'casas'}`); if (nLote) tp.push(`${nLote} ${nLote === 1 ? 'lote/terreno' : 'lotes/terrenos'}`)
   if (b && tp.length) faq.push({ q: `Tem apartamento ou casa à venda no ${b.nome}?`, a: `No momento tenho ${tp.join(', ')} à venda no ${b.nome}. Veja todas no catálogo filtrado por bairro ou me chame no WhatsApp que eu trago opções que cabem no seu perfil.` })
   if (b && ed && ed.perfil) faq.push({ q: `Vale a pena morar no ${b.nome}?`, a: `${ed.perfil}${ed.destaques && ed.destaques.length ? ` Destaques do bairro: ${ed.destaques.slice(0, 3).join(', ')}.` : ''}` })
@@ -53,7 +53,7 @@ export default function Bairro() {
   useSEO({
     title: b ? `Imóveis à venda em ${b.nome}, Uberlândia - preços e guia do bairro` : 'Bairro não encontrado',
     description: b
-      ? `${lista.length ? `${lista.length} imóveis à venda em ${b.nome}, Uberlândia` : `Imóveis à venda em ${b.nome}, Uberlândia`}${precos.length ? ` de ${fmtC(precoLo)} a ${fmtC(precoHi)}` : ''}.${m2.length >= 3 ? ` Preço médio ${fmtM2(m2med)}.` : ''} Curadoria de Vinícius Graton.`.slice(0, 158)
+      ? `Imóveis à venda em ${b.nome}, Uberlândia${precos.length ? ` de ${fmtC(precoLo)} a ${fmtC(precoHi)}` : ''}.${m2.length >= 3 ? ` Preço médio ${fmtM2(m2med)}.` : ''} Curadoria de Vinícius Graton.`.slice(0, 158)
       : 'Bairro não encontrado.',
     path: `/imoveis/uberlandia/${slug || ''}`,
   })
@@ -194,14 +194,14 @@ export default function Bairro() {
               <p className="bairro-faq-links" style={{ marginBottom: 18 }}>
                 Por tipo no {b.nome}:{' '}
                 {tlinks.map((x, i) => (
-                  <span key={x.slug}>{i > 0 ? ' · ' : ''}<Link to={`/imoveis/uberlandia/${b.slug}/${x.slug}`}>{x.plural} ({x.n})</Link></span>
+                  <span key={x.slug}>{i > 0 ? ' · ' : ''}<Link to={`/imoveis/uberlandia/${b.slug}/${x.slug}`}>{x.plural}</Link></span>
                 ))}
               </p>
             ) : null
           })()}
           {lista.length ? (
             <>
-              <h2 className="det-rel-titulo">{lista.length} {lista.length === 1 ? 'imóvel' : 'imóveis'} em {b.nome}</h2>
+              <h2 className="det-rel-titulo">Imóveis em {b.nome}</h2>
               <div className="im-grid" style={{ perspective: '1400px' }}>
                 {lista.map((im, i) => (
                   <Reveal key={im.codigo} delay={(i % 3) * 0.06}><CardImovel im={im} /></Reveal>
