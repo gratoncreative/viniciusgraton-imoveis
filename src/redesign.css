@@ -559,8 +559,8 @@
 .vgx-sobre-foto .vgx-frame { position: absolute; inset: 20px -20px -20px 20px; border: 1px solid var(--gold); border-radius: 10px; }
 .vgx-sobre-foto img { position: relative; width: 100%; height: 540px; object-fit: cover; border-radius: 10px; }
 .vgx-sobre-txt { display: flex; flex-direction: column; gap: 20px; }
-.vgx-sobre-txt h1 { font-family: 'Instrument Sans', sans-serif; font-size: 45px; font-weight: 600; letter-spacing: -0.02em; color: var(--navy-900); line-height: 1.1; }
-.vgx-sobre-p { font-size: 17px; line-height: 1.75; color: #3d4a60; }
+.vgx-sobre-txt h1 { font-family: 'Instrument Sans', sans-serif; font-size: 36px; font-weight: 600; letter-spacing: -0.02em; color: var(--navy-900); line-height: 1.15; }
+.vgx-sobre-p { font-size: 15.5px; line-height: 1.75; color: #3d4a60; }
 .vgx-sobre-acoes { display: flex; gap: 14px; margin-top: 4px; flex-wrap: wrap; }
 .vgx-principios { max-width: 1200px; margin: 0 auto; padding: 88px 28px 0; }
 .vgx-princ-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; }
@@ -967,6 +967,14 @@ html .vgx-adm.vgx-adm input, html .vgx-adm.vgx-adm select, html .vgx-adm.vgx-adm
 .vgx-princ p, .vgx-cont-card p { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
 .vgx-parceria h2, .vgx-cont-hero h1 { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
 .vgx-parceria p, .vgx-cont-hero p { color: #cdd4e0 !important; -webkit-text-fill-color: #cdd4e0 !important; }
+/* Contatos do cartão lateral: são LINKS e estavam herdando o marinho do texto
+   base, ficando invisíveis sobre o cartão marinho. */
+.vgx-cont-zap { color: var(--gold-light) !important; -webkit-text-fill-color: var(--gold-light) !important; }
+.vgx-cont-val { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
+.vgx-cont-txt { color: #cdd4e0 !important; -webkit-text-fill-color: #cdd4e0 !important; }
+.vgx-cont-rot { color: var(--text-3) !important; -webkit-text-fill-color: var(--text-3) !important; }
+.vgx-cont-nome { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
+.vgx-cont-papel { color: #aeb8c9 !important; -webkit-text-fill-color: #aeb8c9 !important; }
 /* BLOG (/blog) — títulos, textos, chips e cards */
 .vgx-blog-hero h1 { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
 .vgx-blog-hero p { color: #cdd4e0 !important; -webkit-text-fill-color: #cdd4e0 !important; }
