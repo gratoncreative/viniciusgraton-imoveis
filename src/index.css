@@ -2369,17 +2369,14 @@ html[data-theme="dark"] .ficha-preview { background: #212b3d; color: #dfe3ea; bo
 
 /* blog (cards, post e tabelas) */
 html[data-theme="dark"] .blog-home { background: #212b3d; }
-html[data-theme="dark"] .post-card, html[data-theme="dark"] .blog-feat, html[data-theme="dark"] .post-autor { background: #212b3d; border-color: rgba(255,255,255,0.1); }
+html[data-theme="dark"] .post-card, html[data-theme="dark"] .blog-feat { background: #212b3d; border-color: rgba(255,255,255,0.1); }
 html[data-theme="dark"] .post-titulo, html[data-theme="dark"] .blog-feat-titulo { color: #f1ede4; }
-html[data-theme="dark"] .post-resumo, html[data-theme="dark"] .blog-feat-resumo, html[data-theme="dark"] .post-autor span { color: #aab2bf; }
-html[data-theme="dark"] .post-lead { color: #c6cbd5; }
-html[data-theme="dark"] .post-artigo h2, html[data-theme="dark"] .post-artigo h3, html[data-theme="dark"] .post-artigo strong, html[data-theme="dark"] .post-faq-item b, html[data-theme="dark"] .post-cta b, html[data-theme="dark"] .post-autor b, html[data-theme="dark"] .post-fontes b { color: #f1ede4; }
-html[data-theme="dark"] .post-artigo p, html[data-theme="dark"] .post-lista li, html[data-theme="dark"] .post-tabela td { color: #c2c8d2; }
+html[data-theme="dark"] .post-resumo, html[data-theme="dark"] .blog-feat-resumo { color: #aab2bf; }
+html[data-theme="dark"] .post-cta b { color: #f1ede4; }
+html[data-theme="dark"] .post-tabela td { color: #c2c8d2; }
 html[data-theme="dark"] .post-cta span { color: #aab2bf; }
-html[data-theme="dark"] .post-destaque { color: #d6dae2; }
 html[data-theme="dark"] .post-tabela th { background: #212b3d; color: #f1ede4; }
 html[data-theme="dark"] .post-tabela tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
-html[data-theme="dark"] .post-fig figcaption { color: #9298a6; }
 
 /* CTA de venda na home */
 html[data-theme="dark"] .vender-cta-sec { background: #212b3d; }
@@ -3089,7 +3086,7 @@ html[data-theme="dark"] .cb-form input, html[data-theme="dark"] .cb-textarea { b
 
 /* ══ Manual de Marca.. títulos nobres em Playfair Display (regra primordial) ══ */
 .hero h1, .lan-hero-title, .cat-titulo, .condos-hero-title, .det-titulo,
-.pre-seo h1, .post-hero h1, .blog-feat-titulo, .hero-card h1,
+.pre-seo h1, .blog-feat-titulo, .hero-card h1,
 .pdfjpg-titulo, .simf-titulo, .lou-h1, .lou-marca {
   font-family: var(--font-display);
   letter-spacing: -0.01em;
@@ -3205,9 +3202,6 @@ html[data-theme="claro"] .nav .nav-conta:hover { color: #42261c; }
 
 /* ── Largura "portal": container quase full-width (alinhado nav + conteúdo) ── */
 /* cards um pouco maiores p/ a grade respirar na largura nova */
-/* texto longo continua com medida legível mesmo com o container largo (não estica a linha) */
-.post-artigo { max-width: 820px; margin-inline: auto; }
-.post-lead { max-width: 820px; margin-inline: auto; }
 
 /* ── /ferramentas: hero CLARO (branco) estilo Chaves — antes era banda escura ── */
 /* eyebrow e <em> continuam vermelhos (acento) — legíveis sobre o branco */

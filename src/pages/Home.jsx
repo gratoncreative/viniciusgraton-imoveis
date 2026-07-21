@@ -1,3 +1,6 @@
+// HOME LEGADA — sem rota desde o redesign .vgx: a rota "/" é src/pages/HomeVG.jsx (src/App.jsx).
+// Nada importa este arquivo hoje, e com ele ficam parados BlogHome.jsx, CardPost.jsx, VenderCta.jsx
+// e src/styles/blog.css. Está guardado de propósito; se for apagar, apague o conjunto todo.
 import { Suspense, useEffect } from 'react'
 import Hero from '../components/Hero'
 import { useSEO } from '../useSEO'

@@ -607,7 +607,7 @@ function renderPost(post) {
     .replace('<div id="root"></div>', `<div id="root">${slashHrefs(blogBodySeo(post))}</div>`)
 }
 let np2 = 0
-// blog-data/{slug}.json: o BlogPost.jsx busca o post por fetch em vez de embutir
+// blog-data/{slug}.json: o BlogPostVG.jsx busca o post por fetch em vez de embutir
 // os 189 posts no bundle JS (blog-extra.json tem 1,4MB — era o maior chunk do site).
 const blogDataDir = resolve(DIST, 'blog-data')
 mkdirSync(blogDataDir, { recursive: true })

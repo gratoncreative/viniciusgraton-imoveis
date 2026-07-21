@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 // Gera public/blog-preview.json (metadados sem `conteudo`) antes de cada build e dev start.
-// BlogHome.jsx faz fetch desse arquivo — assim o JSON completo (1.25 MB) não vai no bundle.
+// BlogVG.jsx, BlogPostVG.jsx e SecoesVG.jsx fazem fetch desse arquivo — assim o JSON completo (1.25 MB) não vai no bundle.
 function blogPreviewPlugin() {
   const generate = () => {
     const base = JSON.parse(readFileSync(resolve(__dirname, 'src/blog-base.json'), 'utf8'))
