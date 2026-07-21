@@ -29,7 +29,6 @@ const WhatsGlyph = ({ size = 28 }) => (
 const NAV_LINKS = [
   { label: 'Início', to: '/', key: 'home' },
   { label: 'Imóveis', to: '/imoveis', key: 'imoveis' },
-  { label: 'Alto padrão', to: '/imoveis?precoMin=1000000', key: 'alto-padrao' },
   { label: 'Lançamentos', to: '/lancamentos', key: 'lancamentos' },
   { label: 'Mercado', to: '/mercado', key: 'mercado' },
   { label: 'Sobre', to: '/sobre', key: 'sobre' },
