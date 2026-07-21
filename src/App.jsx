@@ -104,7 +104,10 @@ export default function App() {
   // for redesenhada, entra nesta lista; no fim o chrome novo vira global.
   const rotaVgx = ['/imoveis', '/lancamentos', '/mercado', '/sobre', '/contato', '/blog'].includes(pathname.replace(/\/+$/, ''))
     || pathname.startsWith('/blog/')
-  const rotaHome = pathname === '/' || pathname.startsWith('/imovel/') || rotaVgx
+  // /admin virou um app próprio (barra lateral marinho + cabeçalho): também traz o
+  // próprio chrome, então some com a navbar/rodapé/WhatsApp público por cima dele.
+  const rotaAdmin = pathname.replace(/\/+$/, '') === '/admin'
+  const rotaHome = pathname === '/' || pathname.startsWith('/imovel/') || rotaVgx || rotaAdmin
   // Overrides dos imóveis: ao carregar, mutam IMOVEIS no lugar e disparam UM re-render.
   // NÃO usamos isso como `key` da árvore (remontar fechava modais/ferramentas no meio do uso).
   const [, aplicarOvRender] = useState(0)

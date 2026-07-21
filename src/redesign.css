@@ -628,8 +628,10 @@
 .vgx-blog-lista { max-width: 1200px; margin: 0 auto; padding: 40px 28px 96px; width: 100%; box-sizing: border-box; }
 .vgx-blog-carregando { padding: 60px 0; text-align: center; font-size: 15px; color: var(--text-3); }
 .vgx-bchips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
-.vgx-bchip { background: #fff; border: 1px solid var(--border); border-radius: 999px; padding: 9px 16px; font-size: 13.5px; font-weight: 600; color: var(--text-2); cursor: pointer; transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease; }
-.vgx-bchip:hover { border-color: var(--gold); background: var(--gold-bg); }
+/* Regra de ouro dos botões (trancada): filtro usa a Opção 3 - fundo branco,
+   letra marinho e borda vermelha da marca. Nunca letra cinza-médio. */
+.vgx-bchip { background: #fff; border: 1px solid #eb0128; border-radius: 999px; padding: 9px 16px; font-size: 13.5px; font-weight: 600; color: var(--navy-900); cursor: pointer; transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease; }
+.vgx-bchip:hover { border-color: #c20020; background: #fdf1f0; }
 .vgx-bchip.is-on { background: var(--navy-900); border-color: var(--navy-900); color: var(--ivory); }
 .vgx-bgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; }
 .vgx-bgrid--mini { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
@@ -677,8 +679,9 @@
 
 .vgx-art-ouvir { margin-top: 26px; }
 .vgx .ouvir-post { margin: 0; }
-.vgx .ouvir-btn { font-family: 'Instrument Sans', sans-serif; font-size: 13.5px; font-weight: 600; padding: 10px 18px; border-radius: 999px; border: 1px solid var(--border); background: #fff; color: var(--text-2); cursor: pointer; transition: background 0.2s ease, border-color 0.2s ease; }
-.vgx .ouvir-btn:hover { background: var(--gold-bg); border-color: var(--gold); }
+/* Regra de ouro: botão sólido marinho (Opção 1), nunca fantasma com letra cinza. */
+.vgx .ouvir-btn { font-family: 'Instrument Sans', sans-serif; font-size: 13.5px; font-weight: 600; padding: 10px 18px; border-radius: 999px; border: 1px solid var(--navy-900); background: var(--navy-900); color: var(--ivory); cursor: pointer; transition: background 0.2s ease, border-color 0.2s ease; }
+.vgx .ouvir-btn:hover { background: var(--navy-700); border-color: var(--navy-700); }
 
 .vgx-art-indice { margin-top: 26px; background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 22px 26px; display: flex; flex-direction: column; gap: 10px; }
 .vgx-art-indice b { font-size: 11.5px; font-weight: 700; color: var(--gold-dark); letter-spacing: 0.16em; text-transform: uppercase; }
@@ -691,7 +694,9 @@
 .vgx-art-corpo h3 { margin-top: 10px; font-family: 'Instrument Sans', sans-serif; font-size: 19px; font-weight: 600; letter-spacing: -0.01em; color: var(--navy-900); line-height: 1.3; }
 .vgx-art-corpo p { font-size: 17px; line-height: 1.8; color: #3d4a60; }
 /* links da prosa — o :not() poupa o botão vermelho do bloco de CTA no meio do texto */
-.vgx-art-corpo a:not(.vgx-btn-red) { color: var(--gold-dark); font-weight: 600; border-bottom: 1px solid rgba(201,169,98,0.55); }
+/* Link de prosa em marinho (dourado sobre ivory dava 2,8:1, abaixo do mínimo
+   legível de 4,5:1). O dourado fica só no sublinhado, como detalhe. */
+.vgx-art-corpo a:not(.vgx-btn-red) { color: var(--navy-900); font-weight: 600; border-bottom: 1px solid rgba(201,169,98,0.85); }
 .vgx-art-corpo a:not(.vgx-btn-red):hover { color: var(--red); border-bottom-color: var(--red); }
 .vgx-art-corpo strong { color: var(--navy-900); font-weight: 700; }
 .vgx-art-lista { display: flex; flex-direction: column; gap: 10px; }
@@ -833,15 +838,14 @@
 .vgx-adm input::placeholder, .vgx-adm textarea::placeholder { color: var(--text-3) !important; -webkit-text-fill-color: var(--text-3) !important; }
 .vgx-adm option { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
 
-/* abas */
-.vgx-adm .admin-abas { gap: 6px; border-bottom: 1px solid var(--border); }
-.vgx-adm .admin-aba, .vgx-adm .admin-subaba {
+/* sub-abas (as abas principais viraram a barra lateral, mais abaixo) */
+.vgx-adm .admin-subaba {
   font-family: 'Instrument Sans', sans-serif !important; font-weight: 600 !important;
   color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important;
   background: transparent !important; border: none !important; border-bottom: 2px solid transparent !important;
   border-radius: 0 !important; cursor: pointer;
 }
-.vgx-adm .admin-aba.on, .vgx-adm .admin-subaba.on {
+.vgx-adm .admin-subaba.on {
   color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important;
   border-bottom-color: var(--gold) !important; background: transparent !important;
 }
@@ -856,7 +860,7 @@
 .vgx-adm td { border-bottom: 1px solid var(--divider) !important; padding: 12px 14px; color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
 .vgx-adm code, .vgx-adm .mono { font-family: 'JetBrains Mono', monospace !important; font-size: 12px; }
 .vgx-adm a { color: var(--gold-dark) !important; -webkit-text-fill-color: var(--gold-dark) !important; }
-.vgx-adm .admin-btn, .vgx-adm .btn, .vgx-adm .admin-aba, .vgx-adm .admin-subaba { text-decoration: none !important; }
+.vgx-adm .admin-btn, .vgx-adm .btn, .vgx-adm .admin-subaba, .vgx-adm .vgx-adm-navb { text-decoration: none !important; }
 
 /* ajuste fino: regras antigas do tema claro ainda venciam nestes três pontos */
 html .vgx-adm.vgx-adm .btn.btn-gold, html .vgx-adm.vgx-adm .admin-btn.admin-btn--ok,
@@ -969,7 +973,7 @@ html .vgx-adm.vgx-adm input, html .vgx-adm.vgx-adm select, html .vgx-adm.vgx-adm
 .vgx-blog-cta h2 { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
 .vgx-blog-cta p { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
 .vgx-blog-carregando, .vgx-blog-mais { color: var(--text-3) !important; -webkit-text-fill-color: var(--text-3) !important; }
-.vgx-bchip { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
+.vgx-bchip { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
 .vgx-bchip.is-on { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
 .vgx-bcard-tit { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
 .vgx-bcard-res { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
@@ -982,7 +986,8 @@ html .vgx-adm.vgx-adm input, html .vgx-adm.vgx-adm select, html .vgx-adm.vgx-adm
 .vgx-art-lead, .vgx-art-404 p, .vgx-art-faq-item p { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
 .vgx-art-corpo p, .vgx-art-lista li, .vgx-art-destaque, .vgx-art-tabela td { color: #3d4a60 !important; -webkit-text-fill-color: #3d4a60 !important; }
 .vgx-art-corpo strong, .vgx-art-faq-item b, .vgx-art-bread b { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
-.vgx-art-corpo a:not(.vgx-btn-red), .vgx-art-nota a, .vgx-art-indice b { color: var(--gold-dark) !important; -webkit-text-fill-color: var(--gold-dark) !important; }
+.vgx-art-corpo a:not(.vgx-btn-red), .vgx-art-nota a { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+.vgx-art-indice b { color: var(--gold-dark) !important; -webkit-text-fill-color: var(--gold-dark) !important; }
 .vgx-art-corpo a:not(.vgx-btn-red):hover { color: var(--red) !important; -webkit-text-fill-color: var(--red) !important; }
 .vgx-art-corpo a.vgx-btn-red { color: #fff !important; -webkit-text-fill-color: #fff !important; border-bottom: none !important; }
 .vgx-art-indice a { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
@@ -994,4 +999,348 @@ html .vgx-adm.vgx-adm input, html .vgx-adm.vgx-adm select, html .vgx-adm.vgx-adm
 .vgx-art-bread a:hover, .vgx-art-fontes a:hover { color: var(--gold-dark) !important; -webkit-text-fill-color: var(--gold-dark) !important; }
 .vgx-art-autor-txt b { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
 .vgx-art-autor-txt span { color: #aeb8c9 !important; -webkit-text-fill-color: #aeb8c9 !important; }
-.vgx .ouvir-btn { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
+.vgx .ouvir-btn { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
+
+/* ============================================================================
+   PAINEL ADMIN — parte 2: barra lateral marinho, cabeçalho, login e
+   acabamento fino (cards, tabelas, modais, funil do CRM).
+   TUDO preso ao escopo .vgx-adm: nenhuma regra daqui alcança o site público.
+   Só aparência — nenhuma função, chamada de API ou estado foi alterado.
+   ========================================================================== */
+
+/* ---------- casca: lateral + coluna de conteúdo ----------
+   O /admin não tem mais a navbar/rodapé público por cima (App.jsx), então a casca
+   ocupa a tela inteira. `--adm-vh` compensa o `html { zoom: 0.85 }` do index.css,
+   igual o `.det` já faz — sem isso sobra uma faixa morta no fim da página. */
+.vgx-adm { --adm-vh: 100vh; }
+@media (min-width: 769px) { .vgx-adm { --adm-vh: calc(100vh / 0.85); } }
+.vgx-adm.vgx-adm-shell {
+  padding: 0 !important;
+  background: var(--adm-bg) !important;
+  min-height: var(--adm-vh);
+}
+.vgx-adm .vgx-adm-grid {
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  align-items: start;
+  min-height: var(--adm-vh);
+}
+.vgx-adm .vgx-adm-col { min-width: 0; display: flex; flex-direction: column; }
+
+/* ---------- barra lateral ---------- */
+.vgx-adm .vgx-adm-side {
+  background: var(--navy-900);
+  display: flex; flex-direction: column;
+  padding: 22px 0 18px;
+  position: sticky; top: 0;
+  min-height: var(--adm-vh);
+  max-height: var(--adm-vh);
+  overflow-y: auto;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.vgx-adm .vgx-adm-side-marca {
+  padding: 0 22px 18px; display: flex; flex-direction: column; gap: 3px;
+  border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 12px;
+}
+.vgx-adm .vgx-adm-side-nome {
+  font-family: 'Instrument Sans', sans-serif; font-size: 14px; font-weight: 700;
+  letter-spacing: 0.16em; color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important;
+}
+.vgx-adm .vgx-adm-side-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.26em;
+  color: var(--gold) !important; -webkit-text-fill-color: var(--gold) !important;
+}
+.vgx-adm .vgx-adm-nav { display: flex; flex-direction: column; gap: 1px; padding: 0 10px; flex: 1; }
+.vgx-adm .vgx-adm-navb {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  font-family: 'Instrument Sans', sans-serif !important; font-size: 13.5px; font-weight: 600;
+  text-align: left; padding: 10px 13px; cursor: pointer;
+  background: transparent !important; border: none !important;
+  border-left: 3px solid transparent !important; border-radius: 8px !important;
+  color: #aeb8c9 !important; -webkit-text-fill-color: #aeb8c9 !important;
+  transition: background 0.18s ease, color 0.18s ease;
+  line-height: 1.3;
+}
+.vgx-adm .vgx-adm-navb:hover {
+  background: rgba(255,255,255,0.06) !important;
+  color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important;
+}
+.vgx-adm .vgx-adm-navb.on {
+  background: rgba(201,169,98,0.14) !important;
+  border-left-color: var(--gold) !important;
+  color: var(--gold-light) !important; -webkit-text-fill-color: var(--gold-light) !important;
+}
+.vgx-adm .vgx-adm-side-pe { padding: 12px 22px 0; margin-top: 8px; border-top: 1px solid rgba(255,255,255,0.08); }
+/* Regra de ouro dos botões (trancada): nada de botão fantasma nem letra cinza.
+   "Sair" usa a Opção 3 — fundo #fff, letra #212b3d, borda #eb0128. */
+.vgx-adm .vgx-adm-sair {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  background: #fff !important; border: 1px solid #eb0128 !important;
+  padding: 8px 14px; border-radius: 8px; cursor: pointer;
+  font-family: 'Instrument Sans', sans-serif !important; font-size: 13px; font-weight: 600;
+  color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important;
+}
+.vgx-adm .vgx-adm-sair:hover { background: #fdf0ef !important; }
+
+/* ---------- cabeçalho da coluna ---------- */
+.vgx-adm .vgx-adm-topo {
+  background: #fff; border-bottom: 1px solid var(--border);
+  padding: 16px 30px; display: flex; align-items: center; justify-content: space-between;
+  gap: 18px; flex-wrap: wrap;
+  position: sticky; top: 0; z-index: 30;
+}
+.vgx-adm .vgx-adm-topo-tit { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.vgx-adm .vgx-adm-topo-tit h1 {
+  margin: 0; font-size: 21px; font-weight: 600; letter-spacing: -0.02em;
+  color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important;
+}
+.vgx-adm .vgx-adm-topo-tit span {
+  font-size: 12.5px; color: var(--text-3) !important; -webkit-text-fill-color: var(--text-3) !important;
+}
+.vgx-adm .vgx-adm-topo-acoes { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+/* Atualizar e Backup também seguem a Opção 3 da regra de ouro (branco · #212b3d · borda #eb0128) */
+.vgx-adm .vgx-adm-topo-acoes .btn.btn-ghost {
+  background: #fff !important; border: 1px solid #eb0128 !important;
+  color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important;
+  font-size: 13px !important; font-weight: 600 !important; padding: 10px 16px !important; border-radius: 8px !important;
+}
+.vgx-adm .vgx-adm-topo-acoes .btn.btn-ghost:hover { background: #fdf0ef !important; border-color: #eb0128 !important; }
+
+/* ---------- área de conteúdo ---------- */
+.vgx-adm .vgx-adm-conteudo { padding: 26px 30px 60px; flex: 1; min-width: 0; max-width: 1560px; }
+
+/* negrito: o tema claro antigo pinta todo <b>/<strong> de marrom (#42261c).
+   Dentro do painel eles voltam ao marinho — menos nas faixas escuras e nos
+   links, onde o texto tem que seguir a cor do próprio elemento. */
+.vgx-adm b, .vgx-adm strong {
+  color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important;
+}
+.vgx-adm .admin-barra b, .vgx-adm .admin-barra strong,
+.vgx-adm .vgx-adm-side b, .vgx-adm .vgx-adm-side strong,
+.vgx-adm a b, .vgx-adm a strong,
+.vgx-adm button b, .vgx-adm button strong {
+  color: inherit !important; -webkit-text-fill-color: inherit !important;
+}
+
+/* blocos internos que reabrem o tema claro antigo (`.section--light` do painel de
+   Backup e o `.mf` do Melhorar fotos declaram --text marrom e pintam tudo dentro). */
+.vgx-adm .section--light, .vgx-adm .mf {
+  --text: #212b3d; --text-soft: #5c6675; --text-mute: #8a94a8;
+  --border: #e2e5ea; --border-strong: #cfd4dc;
+  color: var(--navy-900) !important;
+}
+.vgx-adm .mf { background: #fff !important; border-color: var(--border) !important; border-radius: 12px !important; }
+.vgx-adm .mf-grupo-tit, .vgx-adm .mf-seo-titulo, .vgx-adm .mf-seo-code,
+.vgx-adm .mf-aba.on, .vgx-adm .mf-tira.on, .vgx-adm .mf-sel select, .vgx-adm .mf-sel select option {
+  color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important;
+}
+
+/* ---------- acabamento fino: cartões, tabelas, listas ---------- */
+.vgx-adm .admin-stats { gap: 16px; }
+.vgx-adm .admin-stat {
+  background: #fff !important; border: 1px solid var(--border) !important; border-radius: 12px !important;
+  box-shadow: none !important; padding: 20px 22px !important; gap: 5px !important;
+}
+.vgx-adm .admin-stat--clk:hover { border-color: var(--gold) !important; }
+.vgx-adm .admin-stat-num {
+  font-family: 'Instrument Sans', sans-serif !important; font-size: 32px !important; font-weight: 700 !important;
+  color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; line-height: 1;
+  letter-spacing: -0.02em;
+}
+.vgx-adm .admin-stat-rot {
+  font-size: 11px !important; font-weight: 700 !important; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gold-dark) !important; -webkit-text-fill-color: var(--gold-dark) !important;
+}
+.vgx-adm .admin-stat-sub, .vgx-adm .admin-stat-go {
+  font-size: 12px !important; color: var(--text-3) !important; -webkit-text-fill-color: var(--text-3) !important;
+}
+.vgx-adm .admin-stat-go { color: var(--red) !important; -webkit-text-fill-color: var(--red) !important; font-weight: 600 !important; }
+.vgx-adm .admin-card, .vgx-adm .admin-rank, .vgx-adm .admin-news-lista,
+.vgx-adm .admin-info-box, .vgx-adm .aprovar-banner, .vgx-adm .crm-card,
+.vgx-adm .crm-funil, .vgx-adm .admin-owner, .vgx-adm .rel-doc, .vgx-adm .det-trust {
+  background: #fff !important; border: 1px solid var(--border) !important;
+  border-radius: 12px !important; box-shadow: none !important;
+}
+.vgx-adm .admin-card--ok { border-color: rgba(31,122,77,0.4) !important; }
+.vgx-adm .admin-tag-ok, .vgx-adm .aprovar-conf {
+  background: var(--ok-bg) !important; color: var(--ok) !important; -webkit-text-fill-color: var(--ok) !important;
+  border-color: rgba(31,122,77,0.3) !important;
+}
+.vgx-adm .admin-alerta-stale {
+  background: #fbf3d6 !important; border: 1px solid #ecd98a !important;
+  color: #7a5f10 !important; -webkit-text-fill-color: #7a5f10 !important; border-radius: 10px !important;
+}
+.vgx-adm .admin-alerta-stale code { background: rgba(33,43,61,0.07) !important; font-family: 'JetBrains Mono', monospace !important; }
+.vgx-adm .admin-rank li b, .vgx-adm .admin-im-preco, .vgx-adm .ficha-im-preco, .vgx-adm .aprovar-banner-preco {
+  font-family: 'JetBrains Mono', monospace !important;
+  color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important;
+}
+.vgx-adm .admin-news-data, .vgx-adm .rel-data b { font-family: 'JetBrains Mono', monospace !important; }
+.vgx-adm .admin-news-x {
+  background: #fff !important; border: 1px solid var(--border) !important;
+  color: var(--red) !important; -webkit-text-fill-color: var(--red) !important;
+}
+.vgx-adm .admin-news-x:hover { background: #fdf0ef !important; border-color: var(--red) !important; }
+.vgx-adm .admin-im-card {
+  background: #fff !important; border: 1px solid var(--border) !important;
+  border-radius: 12px !important; box-shadow: none !important;
+}
+.vgx-adm .admin-im-card:hover { border-color: var(--gold) !important; }
+
+/* ---------- sub-abas (Imóveis) e chips ---------- */
+.vgx-adm .admin-subabas { border-bottom: 1px solid var(--border); gap: 6px; }
+.vgx-adm .crm-chip {
+  background: #fff !important; border: 1px solid var(--border) !important; border-radius: 999px !important;
+  color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important;
+  font-family: 'Instrument Sans', sans-serif !important; font-weight: 600 !important;
+}
+.vgx-adm .crm-chip.on {
+  background: var(--navy-900) !important; border-color: var(--navy-900) !important;
+  color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important;
+}
+
+/* ---------- funil do CRM ---------- */
+.vgx-adm .crm-funil-etapa { background: #fff !important; border: 1px solid var(--border) !important; border-radius: 10px !important; }
+.vgx-adm .crm-funil-bar { background: var(--navy-900) !important; }
+.vgx-adm .crm-funil-kpis > * { background: #fff !important; border: 1px solid var(--border) !important; border-radius: 10px !important; }
+.vgx-adm .crm-funil-kpi--alerta { background: #fbf3d6 !important; border-color: #ecd98a !important; color: #7a5f10 !important; -webkit-text-fill-color: #7a5f10 !important; }
+.vgx-adm .crm-novo-tag, .vgx-adm .crm-mexeu-tag {
+  background: var(--gold-bg) !important; border-color: #e2d5b4 !important;
+  color: var(--gold-dark) !important; -webkit-text-fill-color: var(--gold-dark) !important;
+}
+.vgx-adm .crm-parado { background: #fdf0ef !important; color: var(--red) !important; -webkit-text-fill-color: var(--red) !important; border-color: rgba(193,53,47,0.28) !important; }
+.vgx-adm .crm-tabs { border-bottom: 1px solid var(--border); }
+
+/* ---------- modais (ficha do cliente, laudo, importação) ---------- */
+.vgx-adm .ficha-overlay, .vgx-adm .crm-laudo-modal-overlay { background: rgba(33,43,61,0.6) !important; }
+.vgx-adm .ficha-modal, .vgx-adm .crm-laudo-modal {
+  background: #fff !important; border: 1px solid var(--border) !important;
+  border-radius: 14px !important; box-shadow: 0 30px 70px rgba(33,43,61,0.28) !important;
+}
+.vgx-adm .ficha-topo { border-bottom: 1px solid var(--border) !important; }
+
+/* ---------- telefone, código e valores em fonte mono ---------- */
+.vgx-adm .lead-badge, .vgx-adm .crm-status-chip {
+  font-family: 'Instrument Sans', sans-serif !important; border-radius: 999px !important;
+}
+.vgx-adm .lead-badge--ok { background: var(--ok-bg) !important; color: var(--ok) !important; -webkit-text-fill-color: var(--ok) !important; }
+.vgx-adm .lead-badge--novo { background: var(--gold-bg) !important; color: var(--gold-dark) !important; -webkit-text-fill-color: var(--gold-dark) !important; }
+.vgx-adm .lead-status-b {
+  background: #fff !important; border: 1px solid var(--border) !important; border-radius: 999px !important;
+  color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important;
+  font-family: 'Instrument Sans', sans-serif !important; font-weight: 600 !important;
+}
+.vgx-adm .lead-status-b.on {
+  background: var(--navy-900) !important; border-color: var(--navy-900) !important;
+  color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important;
+}
+.vgx-adm .lead-salvo { color: var(--ok) !important; -webkit-text-fill-color: var(--ok) !important; background: var(--ok-bg) !important; }
+
+/* ---------- relatório ---------- */
+.vgx-adm .rel-doc { padding: 28px !important; }
+.vgx-adm .rel-nums > div b { font-family: 'JetBrains Mono', monospace !important; color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+.vgx-adm .rel-marca { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+
+/* ---------- tela de login ---------- */
+.vgx-adm.vgx-adm-login {
+  padding: 40px 18px !important;
+  background: var(--navy-900) !important;
+  background-image:
+    linear-gradient(rgba(201,169,98,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,169,98,0.06) 1px, transparent 1px) !important;
+  background-size: 88px 88px !important;
+  min-height: var(--adm-vh);
+  display: flex; align-items: center; justify-content: center;
+}
+.vgx-adm .vgx-adm-login-card {
+  width: 400px; max-width: calc(100vw - 36px);
+  background: #fff; border-radius: 14px; padding: 36px 34px;
+  display: flex; flex-direction: column; gap: 16px;
+  box-shadow: 0 40px 90px rgba(33,43,61,0.45);
+}
+.vgx-adm .vgx-adm-login-marca { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+.vgx-adm .vgx-adm-login-marca .aviseme-ico { margin: 0 0 6px; color: var(--gold-dark); }
+.vgx-adm .vgx-adm-login-nome {
+  font-size: 18px; font-weight: 700; letter-spacing: 0.22em;
+  color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important;
+}
+.vgx-adm .vgx-adm-login-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.3em;
+  color: var(--gold-dark) !important; -webkit-text-fill-color: var(--gold-dark) !important;
+}
+/* o .lead-form do site é uma caixa escura translúcida; dentro do cartão branco
+   do login ela vira transparente (só os campos ficam) */
+.vgx-adm .vgx-adm-login-form {
+  margin: 0; display: flex; flex-direction: column; gap: 12px;
+  background: transparent !important; border: none !important; padding: 0 !important;
+  backdrop-filter: none !important; border-radius: 0 !important;
+  --text: #212b3d; --text-soft: #5c6675; --text-mute: #8a94a8;
+  --border: #e2e5ea; --border-strong: #cfd4dc;
+  color: var(--navy-900) !important;
+}
+.vgx-adm .vgx-adm-login-form input {
+  background: #fff !important; border: 1px solid var(--border) !important; border-radius: 8px !important;
+  padding: 12px 14px !important; color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important;
+}
+.vgx-adm .vgx-adm-login-form input:focus { border-color: var(--gold) !important; background: #fff !important; }
+.vgx-adm .senha-olho { color: var(--text-3) !important; }
+.vgx-adm .senha-olho:hover { color: var(--navy-900) !important; background: rgba(33,43,61,0.06) !important; }
+.vgx-adm .vgx-adm-login-form label > span {
+  font-size: 12px; font-weight: 600;
+  color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important;
+}
+.vgx-adm .vgx-adm-login-form .lead-submit { width: 100%; justify-content: center; border-radius: 8px !important; }
+.vgx-adm .vgx-adm-ou { display: flex; align-items: center; gap: 10px; }
+.vgx-adm .vgx-adm-ou::before, .vgx-adm .vgx-adm-ou::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.vgx-adm .vgx-adm-ou span { font-size: 11px; color: var(--text-3) !important; -webkit-text-fill-color: var(--text-3) !important; }
+/* o divisor próprio do componente de Google ("ou preencha seus dados") não faz
+   sentido aqui: escondo só dentro do painel, o resto do site continua igual. */
+.vgx-adm .google-login-ou { display: none !important; }
+.vgx-adm .google-login { margin: 0; }
+.vgx-adm .google-login-btn { display: flex; justify-content: center; }
+.vgx-adm .vgx-adm-login-nota {
+  margin: 0; text-align: center; font-size: 12px; line-height: 1.5;
+  color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important;
+}
+.vgx-adm .anunciar-erro { color: var(--red) !important; -webkit-text-fill-color: var(--red) !important; margin: 0; font-size: 13px; }
+
+/* ---------- telas menores: a lateral vira barra horizontal rolável ---------- */
+@media (max-width: 900px) {
+  .vgx-adm .vgx-adm-grid { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  /* min-height: 0 é obrigatório: sem ele o `min-height` da regra desktop deixaria
+     uma faixa marinho vazia empurrando o painel inteiro pra baixo da dobra. */
+  .vgx-adm .vgx-adm-side {
+    position: sticky; top: 0; min-height: 0; max-height: none; height: auto;
+    flex-direction: row; align-items: center; gap: 10px;
+    padding: 10px 14px; overflow-x: auto; overflow-y: hidden;
+    border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08);
+    z-index: 32;
+  }
+  .vgx-adm .vgx-adm-side-marca {
+    padding: 0 12px 0 0; margin: 0; border-bottom: none;
+    border-right: 1px solid rgba(255,255,255,0.12); flex: none;
+  }
+  .vgx-adm .vgx-adm-side-nome { font-size: 12px; letter-spacing: 0.12em; white-space: nowrap; }
+  .vgx-adm .vgx-adm-side-tag { font-size: 8px; letter-spacing: 0.2em; white-space: nowrap; }
+  .vgx-adm .vgx-adm-nav { flex-direction: row; gap: 6px; padding: 0; flex: 1 0 auto; }
+  .vgx-adm .vgx-adm-navb {
+    white-space: nowrap; padding: 8px 12px; font-size: 12.5px;
+    border-left: none !important; border-bottom: 2px solid transparent !important; border-radius: 8px !important;
+  }
+  .vgx-adm .vgx-adm-navb.on { border-left: none !important; border-bottom-color: var(--gold) !important; }
+  /* "Sair" fica grudado na direita pra não precisar rolar a barra inteira até o fim */
+  .vgx-adm .vgx-adm-side-pe {
+    padding: 0 0 0 10px; margin: 0; border-top: none; flex: none;
+    position: sticky; right: 0; background: var(--navy-900);
+    box-shadow: -12px 0 12px -6px var(--navy-900);
+  }
+  .vgx-adm .vgx-adm-topo { position: static; padding: 14px 18px; }
+  .vgx-adm .vgx-adm-conteudo { padding: 18px 18px 52px; }
+}
+
+/* ---------- impressão do relatório: sem grade, sem lateral ---------- */
+@media print {
+  .vgx-adm .vgx-adm-grid { display: block !important; }
+  .vgx-adm.vgx-adm-shell { padding: 0 !important; background: #fff !important; }
+  .vgx-adm .vgx-adm-conteudo { padding: 0 !important; }
+}

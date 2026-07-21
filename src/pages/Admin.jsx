@@ -4,6 +4,7 @@ import { CONFIG, IMOVEIS, IMOVEIS_PENDENTES, formatPreco, getImovel, fotosDe } f
 import { CONSTRUTORAS } from '../empreendimentos'
 import { IconShield, IconArrow, IconWhats } from '../components/icons'
 import AdminCRM from '../components/AdminCRM'
+import GoogleLogin from '../components/GoogleLogin'
 import InputMoeda from '../components/InputMoeda'
 import { lazyRetry } from '../lazyRetry'
 import '../styles/crm.css'
@@ -48,15 +49,25 @@ function Login({ onOk }) {
     finally { setCarregando(false) }
   }
 
+  // Entrar com Google: o componente GoogleLogin valida no /api/google-login e, se o e-mail
+  // bater com ADMIN_GOOGLE_EMAIL, o backend já devolve o adminToken e ele grava em vg_admin_token.
+  // Aqui só leio esse token e abro o painel — nenhuma regra de acesso nova.
+  const entrarComGoogle = () => {
+    let t = ''
+    try { t = localStorage.getItem(LSK) || '' } catch {}
+    if (t) onOk(t)
+    else setErro('Esta conta do Google não é a do administrador. Entre com e-mail e senha.')
+  }
+
   return (
-    <main className="pagina section--light det vgx-adm" style={{ minHeight: '66vh' }}>
-      <div className="container" style={{ maxWidth: 430 }}>
-        <div style={{ textAlign: 'center', marginBottom: 6 }}>
-          <span className="aviseme-ico" style={{ margin: '0 auto 14px' }}><IconShield width={26} height={26} /></span>
-          <span className="eyebrow" style={{ justifyContent: 'center' }}>Área restrita</span>
-          <h1 className="section-title">Painel do <em>Vinícius</em></h1>
+    <main className="pagina section--light det vgx-adm vgx-adm-login">
+      <div className="vgx-adm-login-card">
+        <div className="vgx-adm-login-marca">
+          <span className="aviseme-ico"><IconShield width={24} height={24} /></span>
+          <span className="vgx-adm-login-nome">VINÍCIUS GRATON</span>
+          <span className="vgx-adm-login-tag">PAINEL ADMINISTRATIVO</span>
         </div>
-        <form className="lead-form" onSubmit={entrar} style={{ marginTop: 18 }}>
+        <form className="lead-form vgx-adm-login-form" onSubmit={entrar}>
           <label><span>E-mail</span><input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="contato@viniciusgraton.com.br" autoComplete="username" autoFocus required /></label>
           <label><span>Senha</span>
             <span className="senha-wrap">
@@ -71,7 +82,13 @@ function Login({ onOk }) {
           <button className="btn btn-gold lead-submit" type="submit" disabled={carregando}>{carregando ? 'Entrando…' : 'Entrar'} <IconArrow /></button>
           {erro && <p className="anunciar-erro">{erro}</p>}
         </form>
-        <p className="calc-nota" style={{ marginTop: 18, textAlign: 'center' }}>Acesso exclusivo do corretor. Seus dados são verificados no servidor.</p>
+        {CONFIG.googleClientId && (
+          <>
+            <div className="vgx-adm-ou"><span>ou</span></div>
+            <GoogleLogin onPronto={entrarComGoogle} />
+          </>
+        )}
+        <p className="calc-nota vgx-adm-login-nota">Acesso exclusivo do consultor. Seus dados são verificados no servidor.</p>
       </div>
     </main>
   )
@@ -792,24 +809,57 @@ export default function Admin() {
     ['backup', '💾 Backup geral'],
   ]
 
+  // Subtítulo do cabeçalho (só texto de apoio, não muda nada do funcionamento)
+  const SUBTITULO = {
+    geral: 'Os números do seu negócio em tempo real',
+    relatorio: 'Documento completo para salvar em PDF',
+    imoveis: 'Fila de aprovação e edição dos publicados',
+    leads: 'Pedidos do site com status e anotação',
+    crm: 'Funil de clientes, matches e atendimentos',
+    atendimentos: 'Leads do Imoview com mensagem sugerida',
+    news: 'Inscritos por e-mail no rodapé do site',
+    acessos: 'O que o próprio site registra de visitas',
+    conversoes: 'De onde vêm os contatos e o que converte',
+    post: 'Arte e legenda prontas para as redes',
+    fotos: 'Ferramentas de tratamento de imagem',
+    marca: "Apagar marca d'água das fotos",
+    backup: 'Cópia de segurança dos seus dados',
+  }
+  const abaAtual = ABAS.find(([k]) => k === aba)
+  const tituloSecao = abaAtual ? abaAtual[1] : 'Painel'
+
   // vgx-adm = pele do design novo (redesign.css); só visual, nenhuma função mudou
   return (
-    <main className="pagina section--light det painel-pg admin-pg vgx-adm">
-      <div className="container">
-        <div className="conta-hero">
-          <div><span className="eyebrow">Painel administrativo</span><h1 className="section-title">Central do <em>Vinícius</em></h1></div>
-          <div className="conta-hero-acoes">
-            <button className="btn btn-ghost" onClick={carregar} disabled={carregando}>{carregando ? 'Atualizando…' : 'Atualizar'}</button>
-            <button className="btn btn-ghost" title="Baixa JSON com todos os leads, anúncios, clientes, newsletter e CRM — arquivo backup-YYYY-MM-DD.json" onClick={baixarBackup}>⬇ Backup</button>
-            <button className="btn btn-ghost" onClick={sair}>Sair</button>
+    <main className="pagina section--light det painel-pg admin-pg vgx-adm vgx-adm-shell">
+      <div className="vgx-adm-grid">
+        <aside className="vgx-adm-side rel-noprint">
+          <div className="vgx-adm-side-marca">
+            <span className="vgx-adm-side-nome">VINÍCIUS GRATON</span>
+            <span className="vgx-adm-side-tag">PAINEL ADMIN</span>
           </div>
-        </div>
+          <nav className="vgx-adm-nav" aria-label="Seções do painel">
+            {ABAS.map(([k, label]) => (
+              <button key={k} className={`vgx-adm-navb ${aba === k ? 'on' : ''}`} aria-current={aba === k ? 'true' : undefined} onClick={() => setAba(k)}>{label}</button>
+            ))}
+          </nav>
+          <div className="vgx-adm-side-pe">
+            <button className="vgx-adm-sair" onClick={sair}>↩ Sair</button>
+          </div>
+        </aside>
 
-        <div className="admin-abas">
-          {ABAS.map(([k, label]) => (
-            <button key={k} className={`admin-aba ${aba === k ? 'on' : ''}`} onClick={() => setAba(k)}>{label}</button>
-          ))}
-        </div>
+        <div className="vgx-adm-col">
+          <header className="vgx-adm-topo rel-noprint">
+            <div className="vgx-adm-topo-tit">
+              <h1>{tituloSecao}</h1>
+              <span>{SUBTITULO[aba] || 'Central do Vinícius'}</span>
+            </div>
+            <div className="vgx-adm-topo-acoes">
+              <button className="btn btn-ghost" onClick={carregar} disabled={carregando}>{carregando ? 'Atualizando…' : '⟳ Atualizar'}</button>
+              <button className="btn btn-ghost" title="Baixa JSON com todos os leads, anúncios, clientes, newsletter e CRM — arquivo backup-YYYY-MM-DD.json" onClick={baixarBackup}>⬇ Backup</button>
+            </div>
+          </header>
+
+          <div className="vgx-adm-conteudo">
 
         {erro && <p className="anunciar-erro">{erro}</p>}
         {carregando && !dados && (
@@ -842,7 +892,7 @@ export default function Admin() {
             })()}
             <div className="det-trust" style={{ marginTop: 18 }}>
               <IconShield width={20} height={20} />
-              <p><b>Visão geral do seu negócio.</b> Aqui ficam os números em tempo real. Use as abas acima para gerenciar os imóveis enviados pelos proprietários, seus leads (com status e anotações) e os cadastros da área do cliente.</p>
+              <p><b>Visão geral do seu negócio.</b> Aqui ficam os números em tempo real. Use o menu ao lado para gerenciar os imóveis enviados pelos proprietários, seus leads (com status e anotações) e os cadastros da área do cliente.</p>
             </div>
           </section>
         )}
@@ -1091,7 +1141,9 @@ export default function Admin() {
 
         {aba === 'marca' && <Suspense fallback={<p className="section-sub">Carregando…</p>}><RemoverMarca lote /></Suspense>}
 
-        <p className="calc-nota rel-noprint" style={{ marginTop: 22 }}>Painel seguro · sessão de 12h · WhatsApp do site: {CONFIG.telefone || ''}.</p>
+            <p className="calc-nota rel-noprint" style={{ marginTop: 22 }}>Painel seguro · sessão de 12h · WhatsApp do site: {CONFIG.telefone || ''}.</p>
+          </div>
+        </div>
       </div>
     </main>
   )
