@@ -30,6 +30,34 @@ const STATUS_LEAD = ['Novo', 'Em conversa', 'Visita marcada', 'Fechado', 'Descar
 // célula CSV segura: neutraliza injeção de fórmula (= + - @ tab CR no início) e aspas
 const csvCel = (c) => { let s = String(c == null ? '' : c); if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; return '"' + s.replace(/"/g, '""') + '"' }
 
+// Ícones de linha do menu lateral (só desenho, mesma pegada do SpecIcon da ficha).
+// A chave é a MESMA do array ABAS — nada aqui muda comportamento.
+const ICONE_ABA = {
+  geral: 'M3 3h8v8H3z M13 3h8v5h-8z M13 12h8v9h-8z M3 15h8v6H3z',
+  relatorio: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M9 13h6 M9 17h6',
+  imoveis: 'M3 11l9-7 9 7 M5 9.5V21h14V9.5',
+  leads: 'M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z',
+  crm: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75',
+  atendimentos: 'M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z',
+  news: 'M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z M22 6l-10 7L2 6',
+  acessos: 'M3 3v18h18 M18 9l-5 5-3-3-4 4',
+  conversoes: 'M4 20V10 M10 20V4 M16 20v-6 M22 20H2',
+  post: 'M12 2.6l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6-5.9-3.2-5.9 3.2 1.2-6.6L2.5 9.6l6.6-.9z',
+  fotos: 'M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',
+  marca: 'M7 21l-4.3-4.3a2.4 2.4 0 0 1 0-3.4l9.6-9.6a2.4 2.4 0 0 1 3.4 0l5.6 5.6a2.4 2.4 0 0 1 0 3.4L13 21 M22 21H7 M5 11l9 9',
+  backup: 'M21 12a9 9 0 1 1-3-6.7 M21 3v6h-6',
+}
+function IconeAba({ chave }) {
+  const d = ICONE_ABA[chave]
+  if (!d) return null
+  return (
+    <svg className="vgx-adm-navb-ico" viewBox="0 0 24 24" width="18" height="18" fill="none"
+      stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d={d} />
+    </svg>
+  )
+}
+
 function Login({ onOk }) {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
@@ -793,20 +821,24 @@ export default function Admin() {
     setTimeout(() => URL.revokeObjectURL(a.href), 2000)
   }
 
+  // Mesmas chaves e mesmo setAba de sempre. O 3º item é só a bolinha de contagem
+  // (mesmos números que antes ficavam dentro do texto do rótulo).
   const ABAS = [
     ['geral', 'Visão geral'],
-    ['relatorio', '📄 Relatório'],
-    ['imoveis', `Imóveis${aAvaliar ? ` (${aAvaliar} a avaliar)` : ''}`],
-    ['leads', `Leads (${leads.length})`],
-    ['crm', `Clientes${crmNovidades ? ` 🔔${crmNovidades}` : crmNovos ? ` (${crmNovos} novos)` : ''}`],
-    ['atendimentos', '🔥 Atendimentos'],
-    ['news', `Newsletter (${(dados?.news || []).length})`],
+    ['relatorio', 'Relatório'],
+    ['imoveis', 'Imóveis', aAvaliar ? { n: aAvaliar, tom: 'ouro', titulo: `${aAvaliar} imóveis a avaliar` } : null],
+    ['leads', 'Leads', leads.length ? { n: leads.length, tom: 'vermelho', titulo: `${leads.length} leads` } : null],
+    ['crm', 'Clientes (CRM)', crmNovidades
+      ? { n: crmNovidades, tom: 'vermelho', titulo: `${crmNovidades} clientes mexeram no cadastro` }
+      : crmNovos ? { n: crmNovos, tom: 'neutro', titulo: `${crmNovos} clientes novos` } : null],
+    ['atendimentos', 'Atendimentos'],
+    ['news', 'Newsletter', (dados?.news || []).length ? { n: (dados.news || []).length, tom: 'neutro', titulo: `${(dados.news || []).length} inscritos` } : null],
     ['acessos', 'Acessos'],
-    ['conversoes', '📊 Conversões'],
-    ['post', '📣 Gerar post'],
-    ['fotos', '✨ Melhorar fotos'],
-    ['marca', "Remover marca d'água"],
-    ['backup', '💾 Backup geral'],
+    ['conversoes', 'Conversões'],
+    ['post', 'Gerar post'],
+    ['fotos', 'Melhorar fotos'],
+    ['marca', 'Remover marca'],
+    ['backup', 'Backup'],
   ]
 
   // Subtítulo do cabeçalho (só texto de apoio, não muda nada do funcionamento)
@@ -838,12 +870,21 @@ export default function Admin() {
             <span className="vgx-adm-side-tag">PAINEL ADMIN</span>
           </div>
           <nav className="vgx-adm-nav" aria-label="Seções do painel">
-            {ABAS.map(([k, label]) => (
-              <button key={k} className={`vgx-adm-navb ${aba === k ? 'on' : ''}`} aria-current={aba === k ? 'true' : undefined} onClick={() => setAba(k)}>{label}</button>
+            {ABAS.map(([k, label, badge]) => (
+              <button key={k} className={`vgx-adm-navb ${aba === k ? 'on' : ''}`} aria-current={aba === k ? 'true' : undefined} onClick={() => setAba(k)}>
+                <IconeAba chave={k} />
+                <span className="vgx-adm-navb-txt">{label}</span>
+                {badge && <span className={`vgx-adm-badge ${badge.tom}`} role="img" title={badge.titulo} aria-label={badge.titulo}>{badge.n}</span>}
+              </button>
             ))}
           </nav>
           <div className="vgx-adm-side-pe">
-            <button className="vgx-adm-sair" onClick={sair}>↩ Sair</button>
+            <button className="vgx-adm-sair" onClick={sair}>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9" />
+              </svg>
+              Sair
+            </button>
           </div>
         </aside>
 

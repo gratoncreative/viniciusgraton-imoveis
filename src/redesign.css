@@ -1078,6 +1078,28 @@ html .vgx-adm.vgx-adm input, html .vgx-adm.vgx-adm select, html .vgx-adm.vgx-adm
   border-left-color: var(--gold) !important;
   color: var(--gold-light) !important; -webkit-text-fill-color: var(--gold-light) !important;
 }
+/* ícone de linha + rótulo + bolinha de contagem dentro do item do menu */
+.vgx-adm .vgx-adm-navb-ico { flex: none; width: 18px; height: 18px; display: block; }
+.vgx-adm .vgx-adm-navb-txt { flex: 1 1 auto; min-width: 0; }
+.vgx-adm .vgx-adm-badge {
+  flex: none; display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px;
+  font-size: 10px; font-weight: 700; line-height: 1; letter-spacing: 0;
+  background: rgba(255,255,255,0.16);
+  color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important;
+}
+.vgx-adm .vgx-adm-badge.neutro {
+  background: rgba(255,255,255,0.16);
+  color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important;
+}
+.vgx-adm .vgx-adm-badge.ouro {
+  background: var(--gold);
+  color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important;
+}
+.vgx-adm .vgx-adm-badge.vermelho {
+  background: var(--red);
+  color: #fff !important; -webkit-text-fill-color: #fff !important;
+}
 .vgx-adm .vgx-adm-side-pe { padding: 12px 22px 0; margin-top: 8px; border-top: 1px solid rgba(255,255,255,0.08); }
 /* Regra de ouro dos botões (trancada): nada de botão fantasma nem letra cinza.
    "Sair" usa a Opção 3 — fundo #fff, letra #212b3d, borda #eb0128. */
