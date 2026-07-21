@@ -55,8 +55,8 @@ const Comparar = lazyRetry(() => import('./pages/Comparar'))
 const Mapa = lazyRetry(() => import('./pages/Mapa'))
 const Painel = lazyRetry(() => import('./pages/Painel'))
 const Admin = lazyRetry(() => import('./pages/Admin'))
-const Blog = lazyRetry(() => import('./pages/Blog'))
-const BlogPost = lazyRetry(() => import('./pages/BlogPost'))
+const Blog = lazyRetry(() => import('./pages/BlogVG'))
+const BlogPost = lazyRetry(() => import('./pages/BlogPostVG'))
 const CondominioDetalhe = lazyRetry(() => import('./pages/CondominioDetalhe'))
 const ConstrutorasPage = lazyRetry(() => import('./pages/Construtoras'))
 const ConstrutoraDetalhe = lazyRetry(() => import('./pages/ConstrutoraDetalhe'))
@@ -102,7 +102,8 @@ export default function App() {
   // Páginas já no redesign (.vgx) trazem o próprio chrome (navbar/rodapé/WhatsApp),
   // então nelas suprimimos o chrome global para não duplicar. Conforme cada página
   // for redesenhada, entra nesta lista; no fim o chrome novo vira global.
-  const rotaVgx = ['/imoveis', '/lancamentos', '/mercado', '/sobre', '/contato'].includes(pathname.replace(/\/+$/, ''))
+  const rotaVgx = ['/imoveis', '/lancamentos', '/mercado', '/sobre', '/contato', '/blog'].includes(pathname.replace(/\/+$/, ''))
+    || pathname.startsWith('/blog/')
   const rotaHome = pathname === '/' || pathname.startsWith('/imovel/') || rotaVgx
   // Overrides dos imóveis: ao carregar, mutam IMOVEIS no lugar e disparam UM re-render.
   // NÃO usamos isso como `key` da árvore (remontar fechava modais/ferramentas no meio do uso).

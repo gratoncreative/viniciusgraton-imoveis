@@ -615,6 +615,146 @@
 }
 
 /* ============================================================================
+   BLOG (/blog) e POST (/blog/:slug)
+   ========================================================================== */
+/* ---- cabeçalho do blog ---- */
+.vgx-blog-hero { position: relative; background: var(--navy-900); overflow: hidden; }
+.vgx-blog-hero-in { position: relative; max-width: 1200px; margin: 0 auto; padding: 60px 28px 54px; display: flex; flex-direction: column; gap: 12px; }
+.vgx-blog-hero-in > * { max-width: 680px; }
+.vgx-blog-hero h1 { font-family: 'Instrument Sans', sans-serif; font-size: 46px; font-weight: 600; letter-spacing: -0.02em; color: var(--ivory); line-height: 1.1; text-wrap: balance; }
+.vgx-blog-hero p { font-size: 16.5px; color: #cdd4e0; line-height: 1.65; }
+
+/* ---- lista de artigos ---- */
+.vgx-blog-lista { max-width: 1200px; margin: 0 auto; padding: 40px 28px 96px; width: 100%; box-sizing: border-box; }
+.vgx-blog-carregando { padding: 60px 0; text-align: center; font-size: 15px; color: var(--text-3); }
+.vgx-bchips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+.vgx-bchip { background: #fff; border: 1px solid var(--border); border-radius: 999px; padding: 9px 16px; font-size: 13.5px; font-weight: 600; color: var(--text-2); cursor: pointer; transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease; }
+.vgx-bchip:hover { border-color: var(--gold); background: var(--gold-bg); }
+.vgx-bchip.is-on { background: var(--navy-900); border-color: var(--navy-900); color: var(--ivory); }
+.vgx-bgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; }
+.vgx-bgrid--mini { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+
+.vgx-bcard { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.vgx-bcard:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(33,43,61,0.14); }
+.vgx-bcard-img { width: 100%; height: 200px; object-fit: cover; background: var(--gold-bg); flex: none; }
+.vgx-bcard-body { padding: 24px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.vgx-bcard-meta { font-size: 11.5px; font-weight: 700; color: var(--gold-dark); letter-spacing: 0.16em; text-transform: uppercase; }
+.vgx-bcard-tit { font-family: 'Instrument Sans', sans-serif; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; color: var(--navy-900); line-height: 1.25; }
+.vgx-bcard-res { font-size: 14.5px; line-height: 1.65; color: var(--text-2); }
+.vgx-bcard-ler { margin-top: auto; padding-top: 12px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.vgx-bcard-ler-a { font-size: 13.5px; font-weight: 600; color: var(--red); white-space: nowrap; }
+.vgx-bcard-ler-b { font-size: 12.5px; color: var(--text-3); text-align: right; }
+/* variante "Continue lendo" */
+.vgx-bcard--mini .vgx-bcard-img { height: 150px; }
+.vgx-bcard--mini .vgx-bcard-body { padding: 20px; gap: 8px; }
+.vgx-bcard-tema { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; color: var(--gold-dark); letter-spacing: 0.14em; text-transform: uppercase; }
+.vgx-bcard--mini .vgx-bcard-tit { font-size: 18px; line-height: 1.3; }
+
+.vgx-blog-mais { padding: 34px 0 0; text-align: center; font-size: 14px; color: var(--text-3); }
+.vgx-blog-cta { margin-top: 48px; background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 36px 40px; display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap; }
+.vgx-blog-cta-col { display: flex; flex-direction: column; gap: 6px; max-width: 540px; }
+.vgx-blog-cta h2 { font-family: 'Instrument Sans', sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.01em; color: var(--navy-900); }
+.vgx-blog-cta p { font-size: 15px; line-height: 1.6; color: var(--text-2); }
+
+/* ---- artigo ---- */
+.vgx-artigo { max-width: 840px; margin: 0 auto; padding: 32px 28px 64px; width: 100%; box-sizing: border-box; }
+.vgx-art-load { max-width: 840px; margin: 0 auto; padding: 96px 28px; text-align: center; font-size: 15px; color: var(--text-3); }
+.vgx-art-404 { max-width: 840px; margin: 0 auto; padding: 96px 28px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+.vgx-art-404 h1 { font-family: 'Instrument Sans', sans-serif; font-size: 34px; font-weight: 600; letter-spacing: -0.02em; color: var(--navy-900); }
+.vgx-art-404 p { font-size: 15.5px; color: var(--text-2); }
+.vgx-art-404 a { margin-top: 6px; }
+
+.vgx-art-bread { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-3); }
+.vgx-art-bread a { color: var(--text-2); font-weight: 600; transition: color 0.2s ease; }
+.vgx-art-bread a:hover { color: var(--gold-dark); }
+.vgx-art-bread b { color: var(--navy-900); font-weight: 600; }
+
+.vgx-art-head { margin-top: 26px; display: flex; flex-direction: column; gap: 14px; }
+.vgx-art-kicker { font-size: 11.5px; font-weight: 700; color: var(--gold-dark); letter-spacing: 0.16em; text-transform: uppercase; }
+.vgx-art-head h1 { font-family: 'Instrument Sans', sans-serif; font-size: 42px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.12; color: var(--navy-900); text-wrap: balance; }
+.vgx-art-lead { font-size: 18px; line-height: 1.65; color: var(--text-2); }
+.vgx-art-capa { width: 100%; height: 400px; object-fit: cover; border-radius: 10px; margin-top: 32px; background: var(--gold-bg); }
+
+.vgx-art-ouvir { margin-top: 26px; }
+.vgx .ouvir-post { margin: 0; }
+.vgx .ouvir-btn { font-family: 'Instrument Sans', sans-serif; font-size: 13.5px; font-weight: 600; padding: 10px 18px; border-radius: 999px; border: 1px solid var(--border); background: #fff; color: var(--text-2); cursor: pointer; transition: background 0.2s ease, border-color 0.2s ease; }
+.vgx .ouvir-btn:hover { background: var(--gold-bg); border-color: var(--gold); }
+
+.vgx-art-indice { margin-top: 26px; background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 22px 26px; display: flex; flex-direction: column; gap: 10px; }
+.vgx-art-indice b { font-size: 11.5px; font-weight: 700; color: var(--gold-dark); letter-spacing: 0.16em; text-transform: uppercase; }
+.vgx-art-indice ul { display: flex; flex-direction: column; gap: 8px; }
+.vgx-art-indice a { font-size: 15px; line-height: 1.45; color: var(--navy-900); border-bottom: 1px solid transparent; transition: border-color 0.2s ease, color 0.2s ease; }
+.vgx-art-indice a:hover { color: var(--gold-dark); border-bottom-color: var(--gold); }
+
+.vgx-art-corpo { margin-top: 36px; display: flex; flex-direction: column; gap: 18px; }
+.vgx-art-corpo h2 { margin-top: 18px; font-family: 'Instrument Sans', sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.02em; color: var(--navy-900); line-height: 1.25; scroll-margin-top: 96px; }
+.vgx-art-corpo h3 { margin-top: 10px; font-family: 'Instrument Sans', sans-serif; font-size: 19px; font-weight: 600; letter-spacing: -0.01em; color: var(--navy-900); line-height: 1.3; }
+.vgx-art-corpo p { font-size: 17px; line-height: 1.8; color: #3d4a60; }
+/* links da prosa — o :not() poupa o botão vermelho do bloco de CTA no meio do texto */
+.vgx-art-corpo a:not(.vgx-btn-red) { color: var(--gold-dark); font-weight: 600; border-bottom: 1px solid rgba(201,169,98,0.55); }
+.vgx-art-corpo a:not(.vgx-btn-red):hover { color: var(--red); border-bottom-color: var(--red); }
+.vgx-art-corpo strong { color: var(--navy-900); font-weight: 700; }
+.vgx-art-lista { display: flex; flex-direction: column; gap: 10px; }
+.vgx-art-lista li { position: relative; padding-left: 24px; font-size: 16.5px; line-height: 1.7; color: #3d4a60; }
+.vgx-art-lista li::before { content: ''; position: absolute; left: 4px; top: 11px; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+.vgx-art-tabela-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; background: #fff; }
+.vgx-art-tabela { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 420px; }
+.vgx-art-tabela th { background: var(--ivory); text-align: left; padding: 13px 16px; font-size: 11.5px; font-weight: 700; color: var(--text-3); letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+.vgx-art-tabela td { padding: 13px 16px; border-bottom: 1px solid var(--divider); color: #3d4a60; line-height: 1.55; }
+.vgx-art-tabela tr:last-child td { border-bottom: none; }
+.vgx-art-destaque { background: var(--gold-bg); border-left: 3px solid var(--gold); border-radius: 8px; padding: 20px 24px; font-size: 16.5px; line-height: 1.7; color: #3d4a60; }
+.vgx-art-fig { display: flex; flex-direction: column; gap: 8px; }
+.vgx-art-fig img { width: 100%; border-radius: 10px; background: var(--gold-bg); }
+.vgx-art-fig figcaption { font-size: 13px; color: var(--text-3); text-align: center; line-height: 1.5; }
+.vgx-art-cta-inline { display: flex; justify-content: center; padding: 8px 0; }
+.vgx-art-faq { display: flex; flex-direction: column; gap: 6px; }
+.vgx-art-faq-item { padding: 16px 0; border-bottom: 1px solid var(--divider); display: flex; flex-direction: column; gap: 6px; }
+.vgx-art-faq-item b { font-size: 16.5px; font-weight: 700; color: var(--navy-900); line-height: 1.4; }
+.vgx-art-faq-item p { font-size: 16px; line-height: 1.7; color: var(--text-2); }
+
+.vgx-art-fontes { margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
+.vgx-art-fontes b { font-size: 11.5px; font-weight: 700; color: var(--gold-dark); letter-spacing: 0.16em; text-transform: uppercase; }
+.vgx-art-fontes ul { display: flex; flex-direction: column; gap: 7px; }
+.vgx-art-fontes a { font-size: 14.5px; color: var(--text-2); border-bottom: 1px solid var(--border); }
+.vgx-art-fontes a:hover { color: var(--gold-dark); border-bottom-color: var(--gold); }
+
+.vgx-art-autor { margin-top: 48px; background: var(--navy-900); border-radius: 10px; padding: 32px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.vgx-art-autor > img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); flex: none; }
+.vgx-art-autor-txt { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 240px; }
+.vgx-art-autor-txt b { font-size: 16px; font-weight: 700; color: var(--ivory); }
+.vgx-art-autor-txt span { font-size: 13.5px; line-height: 1.6; color: #aeb8c9; }
+
+.vgx-art-nota { margin-top: 22px; font-size: 14px; line-height: 1.7; color: var(--text-3); }
+.vgx-art-nota a { color: var(--gold-dark); font-weight: 600; border-bottom: 1px solid rgba(201,169,98,0.55); }
+
+.vgx-art-outros { max-width: 840px; margin: 0 auto; padding: 0 28px 96px; width: 100%; box-sizing: border-box; }
+.vgx-art-outros h2 { margin-bottom: 24px; font-family: 'Instrument Sans', sans-serif; font-size: 28px; font-weight: 600; letter-spacing: -0.02em; color: var(--navy-900); }
+
+@media (max-width: 900px) {
+  .vgx-blog-hero h1 { font-size: 30px; }
+  .vgx-blog-hero-in { padding: 40px 20px 36px; }
+  .vgx-blog-lista { padding: 28px 20px 72px; }
+  .vgx-blog-cta { padding: 26px 22px; margin-top: 36px; }
+  .vgx-blog-cta h2 { font-size: 21px; }
+  .vgx-artigo { padding: 24px 20px 48px; }
+  .vgx-art-head h1 { font-size: 28px; }
+  .vgx-art-lead { font-size: 16.5px; }
+  .vgx-art-capa { height: 220px; margin-top: 24px; }
+  .vgx-art-corpo h2 { font-size: 22px; }
+  .vgx-art-corpo p { font-size: 16.5px; }
+  .vgx-art-autor { padding: 24px 22px; gap: 18px; }
+  .vgx-art-outros { padding: 0 20px 72px; }
+  .vgx-art-outros h2 { font-size: 23px; }
+  .vgx-art-load, .vgx-art-404 { padding: 64px 20px; }
+}
+
+@media (max-width: 460px) {
+  .vgx-art-autor > img { width: 54px; height: 54px; }
+  .vgx-art-autor-txt { min-width: 0; }
+  .vgx-art-autor .vgx-btn-red, .vgx-blog-cta .vgx-btn-red { width: 100%; text-align: center; }
+}
+
+/* ============================================================================
    PAINEL ADMIN — "pele" do design novo sobre o painel que já funciona.
    Só aparência (cor, fonte, borda, raio). Nenhuma função foi alterada, e nada
    aqui vaza para o site público: tudo está preso ao escopo .vgx-adm.
@@ -823,3 +963,35 @@ html .vgx-adm.vgx-adm input, html .vgx-adm.vgx-adm select, html .vgx-adm.vgx-adm
 .vgx-princ p, .vgx-cont-card p { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
 .vgx-parceria h2, .vgx-cont-hero h1 { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
 .vgx-parceria p, .vgx-cont-hero p { color: #cdd4e0 !important; -webkit-text-fill-color: #cdd4e0 !important; }
+/* BLOG (/blog) — títulos, textos, chips e cards */
+.vgx-blog-hero h1 { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
+.vgx-blog-hero p { color: #cdd4e0 !important; -webkit-text-fill-color: #cdd4e0 !important; }
+.vgx-blog-cta h2 { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+.vgx-blog-cta p { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
+.vgx-blog-carregando, .vgx-blog-mais { color: var(--text-3) !important; -webkit-text-fill-color: var(--text-3) !important; }
+.vgx-bchip { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
+.vgx-bchip.is-on { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
+.vgx-bcard-tit { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+.vgx-bcard-res { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
+.vgx-bcard-meta, .vgx-bcard-tema { color: var(--gold-dark) !important; -webkit-text-fill-color: var(--gold-dark) !important; }
+.vgx-bcard-ler-a { color: var(--red) !important; -webkit-text-fill-color: var(--red) !important; }
+.vgx-bcard-ler-b { color: var(--text-3) !important; -webkit-text-fill-color: var(--text-3) !important; }
+/* POST (/blog/:slug) — cabeçalho, prosa, tabela, FAQ, autor e índice */
+.vgx-art-head h1, .vgx-art-404 h1, .vgx-art-outros h2,
+.vgx-art-corpo h2, .vgx-art-corpo h3 { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+.vgx-art-lead, .vgx-art-404 p, .vgx-art-faq-item p { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
+.vgx-art-corpo p, .vgx-art-lista li, .vgx-art-destaque, .vgx-art-tabela td { color: #3d4a60 !important; -webkit-text-fill-color: #3d4a60 !important; }
+.vgx-art-corpo strong, .vgx-art-faq-item b, .vgx-art-bread b { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+.vgx-art-corpo a:not(.vgx-btn-red), .vgx-art-nota a, .vgx-art-indice b { color: var(--gold-dark) !important; -webkit-text-fill-color: var(--gold-dark) !important; }
+.vgx-art-corpo a:not(.vgx-btn-red):hover { color: var(--red) !important; -webkit-text-fill-color: var(--red) !important; }
+.vgx-art-corpo a.vgx-btn-red { color: #fff !important; -webkit-text-fill-color: #fff !important; border-bottom: none !important; }
+.vgx-art-indice a { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
+.vgx-art-indice a:hover { color: var(--gold-dark) !important; -webkit-text-fill-color: var(--gold-dark) !important; }
+.vgx-art-kicker, .vgx-art-fontes b { color: var(--gold-dark) !important; -webkit-text-fill-color: var(--gold-dark) !important; }
+.vgx-art-tabela th, .vgx-art-fig figcaption, .vgx-art-nota, .vgx-art-load,
+.vgx-art-bread, .vgx-art-bread span { color: var(--text-3) !important; -webkit-text-fill-color: var(--text-3) !important; }
+.vgx-art-bread a, .vgx-art-fontes a { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
+.vgx-art-bread a:hover, .vgx-art-fontes a:hover { color: var(--gold-dark) !important; -webkit-text-fill-color: var(--gold-dark) !important; }
+.vgx-art-autor-txt b { color: var(--ivory) !important; -webkit-text-fill-color: var(--ivory) !important; }
+.vgx-art-autor-txt span { color: #aeb8c9 !important; -webkit-text-fill-color: #aeb8c9 !important; }
+.vgx .ouvir-btn { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
