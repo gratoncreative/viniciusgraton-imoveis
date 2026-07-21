@@ -645,7 +645,7 @@
 .vgx-bcard-res { font-size: 14.5px; line-height: 1.65; color: var(--text-2); }
 .vgx-bcard-ler { margin-top: auto; padding-top: 12px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .vgx-bcard-ler-a { font-size: 13.5px; font-weight: 600; color: var(--red); white-space: nowrap; }
-.vgx-bcard-ler-b { font-size: 12.5px; color: var(--text-3); text-align: right; }
+.vgx-bcard-ler-b { font-size: 12.5px; color: var(--text-2); text-align: right; }
 /* variante "Continue lendo" */
 .vgx-bcard--mini .vgx-bcard-img { height: 150px; }
 .vgx-bcard--mini .vgx-bcard-body { padding: 20px; gap: 8px; }
@@ -666,7 +666,7 @@
 .vgx-art-404 p { font-size: 15.5px; color: var(--text-2); }
 .vgx-art-404 a { margin-top: 6px; }
 
-.vgx-art-bread { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-3); }
+.vgx-art-bread { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-2); }
 .vgx-art-bread a { color: var(--text-2); font-weight: 600; transition: color 0.2s ease; }
 .vgx-art-bread a:hover { color: var(--gold-dark); }
 .vgx-art-bread b { color: var(--navy-900); font-weight: 600; }
@@ -729,7 +729,7 @@
 .vgx-art-autor-txt b { font-size: 16px; font-weight: 700; color: var(--ivory); }
 .vgx-art-autor-txt span { font-size: 13.5px; line-height: 1.6; color: #aeb8c9; }
 
-.vgx-art-nota { margin-top: 22px; font-size: 14px; line-height: 1.7; color: var(--text-3); }
+.vgx-art-nota { margin-top: 22px; font-size: 14px; line-height: 1.7; color: var(--text-2); }
 .vgx-art-nota a { color: var(--gold-dark); font-weight: 600; border-bottom: 1px solid rgba(201,169,98,0.55); }
 
 .vgx-art-outros { max-width: 840px; margin: 0 auto; padding: 0 28px 96px; width: 100%; box-sizing: border-box; }
@@ -979,7 +979,7 @@ html .vgx-adm.vgx-adm input, html .vgx-adm.vgx-adm select, html .vgx-adm.vgx-adm
 .vgx-bcard-res { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
 .vgx-bcard-meta, .vgx-bcard-tema { color: var(--gold-dark) !important; -webkit-text-fill-color: var(--gold-dark) !important; }
 .vgx-bcard-ler-a { color: var(--red) !important; -webkit-text-fill-color: var(--red) !important; }
-.vgx-bcard-ler-b { color: var(--text-3) !important; -webkit-text-fill-color: var(--text-3) !important; }
+.vgx-bcard-ler-b { color: var(--text-2) !important; -webkit-text-fill-color: var(--text-2) !important; }
 /* POST (/blog/:slug) — cabeçalho, prosa, tabela, FAQ, autor e índice */
 .vgx-art-head h1, .vgx-art-404 h1, .vgx-art-outros h2,
 .vgx-art-corpo h2, .vgx-art-corpo h3 { color: var(--navy-900) !important; -webkit-text-fill-color: var(--navy-900) !important; }
