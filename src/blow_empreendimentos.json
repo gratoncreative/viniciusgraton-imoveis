@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-22T08:45:04.174Z",
+  "geradoEm": "2026-07-23T08:46:43.769Z",
   "fonte": "blow",
   "empreendimentos": [
     {
@@ -18457,6 +18457,16 @@
       ],
       "unidadesDetalhes": [
         {
+          "ap": "1008",
+          "tipologia": "Apto. Tipo",
+          "area": 59.27,
+          "quartos": 2,
+          "suites": 1,
+          "banheiros": 2,
+          "vagas": 1,
+          "valor": 265000
+        },
+        {
           "ap": "01",
           "tipologia": "Área Priv.",
           "area": 93.1,
@@ -19860,7 +19870,7 @@
         }
       ],
       "pdfApresentacao": "https://blow-app.s3.us-east-2.amazonaws.com/empreendimento/f0289b66-20bb-465a-b45f-e522bd56f5fc/86514a08-bacc-4f05-8ae8-257a032f253a",
-      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/f0289b66-20bb-465a-b45f-e522bd56f5fc/ce98c238-a7ad-4e6e-8dc6-32ac72f39267",
+      "pdfTabela": "https://blow-app-temp.s3.us-east-2.amazonaws.com/empreendimento/f0289b66-20bb-465a-b45f-e522bd56f5fc/a8a0a6e2-a113-4483-aa03-6431760fa6a7",
       "tipologias": [
         "1 a 3 quartos"
       ],
@@ -19905,6 +19915,16 @@
       ],
       "unidadesDetalhes": [
         {
+          "ap": "204",
+          "tipologia": "Apto. Tipo",
+          "area": 35.92,
+          "quartos": 1,
+          "suites": 1,
+          "banheiros": 1,
+          "vagas": 1,
+          "valor": 318000
+        },
+        {
           "ap": "902",
           "tipologia": "Cobertura",
           "area": 116.44,
@@ -19918,11 +19938,11 @@
       "valorCondominio": null,
       "quantAndares": 9,
       "quantElevadores": 1,
-      "fracaoVendida": 0.96,
+      "fracaoVendida": 0.93,
       "dataEntrega": "2025-11-30T03:00:00Z",
       "aquecimento": "Elétrico",
       "arCondicionado": "Previsão de Ar Condicionado",
-      "unidadesDisponiveis": 1,
+      "unidadesDisponiveis": 2,
       "totalUnidades": 32,
       "lat": -18.9254777,
       "lng": -48.2585061,
